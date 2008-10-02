@@ -1,0 +1,33 @@
+<%
+	account_id = friend.friend.id
+	account_nick = friend.friend.get_nick
+	account_pic_url = friend.friend.get_profile_pic_url
+	
+	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, friend.friend.email)
+%>
+
+<div class="friend_nick_pic">
+	<div>
+		<table cellpadding="0" cellspacing="0" class="main_part_w">
+			<tr>
+				<td>
+					<a href="#" onclick="var checked = document.getElementById('invited_account_id_<%= account_id %>').checked; document.getElementById('invited_account_id_<%= account_id %>').checked = !checked; return false;">
+						<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+				</td>
+				
+				<td>
+					<div class="ext_link_small">
+						<a href="/spaces/show/<%= account_id %>" target="_blank" title="查看朋友信息">
+							<img src="/images/ext_link_small.gif" border="0" /></a>
+					</div>
+					<input type="checkbox" id="invited_account_id_<%= account_id %>" name="invited_account_id[]" value="<%= account_id %>" />
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div>
+		<a href="/spaces/show/<%= account_id %>" target="_blank" class="account_nick_link">
+			<%= h(account_nick) %></a>
+	</div>
+</div>
+

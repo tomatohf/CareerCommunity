@@ -1,0 +1,70 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的博客" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_small_container_r">
+	<% if @edit %>
+		<div class="community_block">
+			<a href="/blogs/new"><h2>+ 写新文章</h2></a>
+		</div>
+	<% else %>
+		<div class="community_title">
+			博客的主人 ~~~
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		</div>
+	<% end %>
+	
+	<% if @new_comments.size > 0 %>
+		<div class="community_title">
+			最近评论 ~~~
+		</div>
+		
+		<div class="community_block">
+			<%= render(:partial => "small_comment", :collection => @new_comments, :locals => {:edit => @edit}) %>
+		</div>
+	<% end %>
+	
+	
+	<!--
+	<div class="community_title">
+		订阅 (RSS/Feed) ~~~
+	</div>
+	
+	<div class="community_block">
+		
+	</div>
+	-->
+</div>
+
+<div class="blog_small_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @blogs.total_entries %></b>
+		篇文章
+	</div>
+	
+	<div class="form_info_l">
+		列表中只包含纯文字内容, 请点击 标题 或 完整阅读, 来阅读文章的全部内容
+	</div>
+	
+	<br />
+
+	<div>
+		<%= render(:partial => "owner_blog", :collection => @blogs, :locals => {:edit => @edit, :owner_name => owner_name}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@blogs) %>
+	</div>
+</div>
+

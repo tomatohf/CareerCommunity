@@ -1,0 +1,63 @@
+<% community_page_title("修改照片描述") %>
+
+<div class="float_r photo_container_r">
+	<div class="community_title">
+		修改好了 ~~~
+	</div>
+	
+	<div class="community_block">
+		<a href="/photos/show_edit/<%= @photo.id %>">返回照片</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/albums/show_edit/<%= @photo.album_id %>">返回相册</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/albums">返回相册列表</a>
+	</div>
+</div>
+
+<div class="photo_container_l">
+	<h2>修改照片描述</h2>
+	
+	<div class="community_block photo_view_container">
+		<div class="photo_view">
+			<a target="_blank" href="<%= @photo.image.url %>">
+				<img src="<%= @photo.image.url(:thumb_200) %>" border="0" title="原图" alt="原图" /></a>
+		</div>
+	
+		<div class="community_block_narrow form_info_s">
+			<%= format_date(@photo.created_at) %>  创建
+		</div>
+	</div>
+	
+	<div class="community_title">
+		编辑照片描述 ~~~
+	</div>
+	
+	<div class="community_block_narrow">
+		<% if @photo.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@photo) %>
+			</p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		
+		
+		<% form_tag "/photos/#{@photo.id}", :method => :put do %>
+			<textarea name="photo_title" class="text_field" cols="50" rows="5"><%= h(@photo.title) %></textarea>
+			
+			<div>
+				<input type="submit" value="保存照片描述" class="button" />
+			</div>
+		<% end %>
+	</div>
+
+</div>
+

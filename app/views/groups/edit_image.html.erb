@@ -1,0 +1,94 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "设置圈子 #{group_name} 的图标" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r profile_container_r">
+	<div class="community_block">
+		<a href="/groups/<%= @group.id %>">返回圈子 <%= group_name %></a>
+	</div>
+</div>
+
+<div class="profile_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_title">
+		从相册中选择一张图片作为圈子的图标 ~~~
+	</div>
+	
+	<div class="community_block_narrow">
+
+		<div id="error_msg" style="display: none"></div>
+		<div id="info_msg" style="display: none"></div>
+
+	</div>
+	
+	<div class="community_block_narrow">
+		<% form_tag "/groups/#{@group.id}/update_image", :method => :post, :onsubmit => "on_group_img_submit(this); return false;" do %>
+			<a id="current_pic_label">圈子当前图标:</a>
+			<div class="pic_profile_current_pic_photo">
+				<img id="current_img" src="<%= face_img_src(@group_image) %>" border="0" />
+				<input id="photo_id" name="photo_id" type="hidden" value="" />
+			</div>
+			
+			<p class="form_info_l">
+				选定一个相册, 然后选择你想用作圈子图标的图片
+			</p>
+			
+			<input type="submit" id="save_img_button" value="保存圈子图标" class="button" disabled="true" />
+			&nbsp;&nbsp;&nbsp;
+			<img src="/images/loading_small.gif" id="saving_indicator" style="display: none" />
+			&nbsp;&nbsp;&nbsp;
+			或者, 先去 <a href="/albums">相册</a> 上传想用作圈子图标的图片
+		<% end %>
+	</div>
+	
+	<br />
+	
+	<div class="community_block_narrow" id="photo_selector_container">
+		<img src="/images/loading_small.gif" />
+		正在加载 相册 ...
+	</div>
+</div>
+
+<script language="JavaScript" src="/lib/protopack/protoculous-effects-packer.js"></script>
+<script type="text/javascript" src="/javascripts/photo_selector.js"></script>
+
+<script language="JavaScript">
+	new Ajax.Updater(
+        "photo_selector_container",
+        "/groups/photo_selector_for_group_image",
+        {
+            asynchronous:true,
+            evalScripts:true,
+			method: "get"
+        }
+    );
+	
+	function on_photo_selected(photo_id, img_src){
+		$("photo_id").value = photo_id;
+		$("current_img").src = img_src;
+		$("save_img_button").disabled = <%= @account_limited.to_s %>;
+	}
+	
+	function on_group_img_submit(group_img_form){
+		$("save_img_button").disabled = true;
+		Element.show("saving_indicator");
+		
+		new Ajax.Request(
+            "/groups/<%= @group.id %>/update_image",
+            {
+            	asynchronous:true,
+                evalScripts:true,
+                onComplete:function(request){
+					Element.hide("saving_indicator");
+				},
+                //onLoading:function(request){},
+				method:"post",
+                parameters:Form.serialize(group_img_form)
+            }
+        );
+
+	}
+</script>
+

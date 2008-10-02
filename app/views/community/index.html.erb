@@ -1,0 +1,124 @@
+<% community_page_title("首页") %>
+
+<div class="float_r community_container_r">
+	<% unless @has_login %>
+		<div class="community_title">
+			迅速加入我们 ~~~
+		</div>
+		<script language="JavaScript">
+			function show_register_form(){
+				document.getElementById("index_register_form").style.display = "";
+				document.getElementById("index_login_form").style.display = "none";
+			}
+			
+			function show_login_form(){
+				document.getElementById("index_register_form").style.display = "none";
+				document.getElementById("index_login_form").style.display = "";
+			}
+		</script>
+		<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8" do %>
+			<div class="community_block">
+				<div id="index_register_form">
+					<%= render :partial => "accounts/register_form", :locals => {:simple => true} %>
+					<a href="#" onclick="javascript: show_login_form();return false;">已注册 请登录</a>
+				</div>
+					
+				<div id="index_login_form" style="display: none">
+					<%= render :partial => "accounts/login_form", :locals => {:simple => true} %>
+					<a href="#" onclick="javascript: show_register_form();return false;">我要注册</a>
+				</div>
+			</div>
+		<% end %>
+	<% else %>
+		<div class="community_title">
+			谁新加入了我们 ~~~
+		</div>
+		<div class="community_block">
+			<%= float_list(@new_accounts, "account", :account, {}, 3) %>
+		</div>
+		<div class="clear_l">
+		</div>
+	<% end %>
+	
+
+	<div class="community_title">
+		大家在做些什么 ~~~
+	</div>
+	<div class="community_block">
+		<%= render(:partial => "action", :collection => @new_actions)%>
+	</div>
+</div>
+
+<div class="community_container_l">
+	<% unless @has_login %>
+		<h2>欢迎来到 乔布圈</h2>
+		<div class="community_block">
+			<table class="main_part_w" border="1">
+				<tr>
+					<td>
+						<h2 style="color: red">参与</h2>
+					</td>
+					<td>
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h2 style="color: green">交流</h2>
+					</td>
+					<td>
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h2 style="color: blue">发展</h2>
+					</td>
+					<td>
+						
+					</td>
+				</tr>
+			</table>
+		</div>
+	<% else %>
+		<h2>欢迎回来 <%= h(session[:nick]) %></h2>
+	<% end %>
+	
+	<div class="community_title">
+		最新活动 ~~~
+	</div>
+	<div>
+		<%= float_list(@new_activities, "activity", :activity, {}, 2) %>
+	</div>
+	<div class="clear_l">
+	</div>
+
+
+	
+	<div class="community_title">
+		圈子博客照片 ~~~
+	</div>
+	<div class="community_block">
+		热门圈子<br />
+		照片<br />
+		活动<br />
+		博客<br />
+		......
+	</div>
+	
+	<div class="community_title">
+		想法评论和话 ~~~
+	</div>
+	<div class="community_block">
+		博客<br />
+		用户评论<br />
+		想法<br />
+		会员们的话<br />
+		......
+	</div>
+	
+</div>
+
+<div class="clear"></div>
+
+

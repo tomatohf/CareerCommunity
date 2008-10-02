@@ -1,0 +1,55 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 参加的圈子的全部圈子照片" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<% if @edit %>
+		<div class="community_block">
+			<a href="/spaces/show_edit/<%= @owner_id %>">我的空间</a>
+		</div>
+	<% else %>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+			&nbsp;&nbsp;&nbsp;
+			<a href="/spaces/show/<%= @owner_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+		</div>
+	<% end %>
+</div>
+	
+<div class="album_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @all_photos.total_entries %></b>
+		张圈子照片,
+		<a href="/groups/recent/<%= @owner_id %>">
+			返回 <%= owner_name %> 的圈子近况
+		</a>
+	</div>
+	
+	<div class="community_block">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="overflow_hidden ">
+		<%= float_list(@all_photos, "/linked_photos/linked_photo_for_all", :linked_photo_for_all, {:type => :group, :text => :name}, 6) %>
+	</div>
+	
+	<div class="community_block clear_l">
+		<%= paging_buttons(@all_photos) %>
+	</div>
+
+</div>
+
+
+
+<link rel="stylesheet" href="/lib/lightbox/css/lightbox.css" type="text/css" media="screen"></link>
+
+<script language="JavaScript" src="/lib/protopack/protoculous-packer.js"></script>
+<script language="JavaScript" src="/lib/lightbox/js/lightbox.js"></script>
+
+

@@ -1,0 +1,58 @@
+<% account ||= Account.new %>
+<% simple &&= true %>
+<% input_size ||= 20 %>
+
+<div class="register_form">
+	<% form_for account, :url => "/accounts", :html => { :method => :post } do |f| %>
+	
+		<div>
+			<label for="account_email">
+		        你常用的 email 地址(<span style="color: red;">*</span>)
+		    </label>
+		</div>
+		<div>
+			<input type="text" id="account_email" name="account_email" class="text_field" size="<%= input_size %>" value="<%= account.email %>" />
+
+			<%= image_tag "info_small.gif", :border=> 0, :alt => "信息" %>
+			<span class="form_info_s">不可更改的标识</span>
+		</div>
+		
+		<div>
+			<label for="account_password">
+                你想使用的密码(<span style="color: red;">*</span>)
+            </label>
+		</div>
+		<div>
+			<input type="password" id="account_password" name="account_password" class="text_field" size="<%= input_size %>" value="<%= account.new_record? ? h(account.password) : '' %>" />
+			
+			<%= image_tag "info_small.gif", :border=> 0, :alt => "信息" %>
+			<span class="form_info_s">遗忘后可被找回</span>
+		</div>
+		
+		<% unless simple %>
+		<div>
+			<label for="account_nick">
+                你喜欢的昵称
+            </label>
+		</div>
+		<div>
+			<input type="text" id="account_nick" name="account_nick" class="text_field" size="<%= input_size %>" value="<%= h(account.get_nick(false)) %>" />
+		</div>
+		<div>
+			<%= image_tag "info_small.gif", :border=> 0, :alt => "信息" %>
+			<span class="form_info_s">可随时更改</span>
+		</div>
+		<div>
+			<%= image_tag "info_small.gif", :border=> 0, :alt => "信息" %>
+			<span class="form_info_s">不能包含 空格</span>
+		</div>
+		<div>
+			<%= image_tag "info_small.gif", :border=> 0, :alt => "信息" %>
+			<span class="form_info_s">15 个字符以内</span>
+		</div>
+		<% end %>
+		
+		<div><%= f.submit "注册", :class => "button" %></div>
+	
+	<% end %>
+</div>

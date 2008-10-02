@@ -1,0 +1,37 @@
+<div>
+	<% if photos.size > 0 %>
+	
+		<% form_tag "", :method => :post, :id => "create_link_form_#{album.id}" do %>
+			<div class="community_block album_title">
+				<%= h(album.name) %>
+				<a href="/albums/show_edit/<%= album.id %>" target="_blank" title="查看相册">
+					<img src="/images/ext_link_small.gif" border="0" /></a>
+			</div>
+			
+			<div class="community_block form_info_s">
+				包含 <b><%= photos.size %></b> 张照片
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="#" onclick="unselect_all(<%= album.id %>); return false;">
+					全部不选
+				</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="#" onclick="select_all(<%= album.id %>); return false;">
+					全部选中
+				</a>
+			</div>
+			
+			<%= render(:partial => "/linked_photos/photo_for_select", :collection => photos) %>
+		
+			<div class="community_block clear_l">
+				<input type="button" value="添加该相册内选中的照片" class="button" onclick="submit_create_link_form(<%= album.id %>)" />
+			</div>
+		<% end %>
+	
+	<% else %>
+	
+		<div>
+			相册中还没有照片 ... 现在就去 <a href="/albums/<%= album.id %>/upload">添加照片</a> 吧
+		</div>
+	
+	<% end %>
+</div>

@@ -1,0 +1,17 @@
+<%
+	account_id = action.account.id
+	account_nick = action.account.get_nick
+	account_pic_url = action.account.get_profile_pic_url
+	
+	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, action.account.email)
+%>
+
+<div class="account_action_item">
+	<div>
+		<%= eval(action.action_text([account_nick, account_pic_url, account_id])) %>
+	</div>
+	
+	<div class="form_info_s account_action_datetime">
+		<%= format_datetime(action.created_at) %>
+	</div>
+</div>

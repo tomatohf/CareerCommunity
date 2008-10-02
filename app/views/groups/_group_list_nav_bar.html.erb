@@ -1,0 +1,11 @@
+<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 500px;" do %>
+	<div class="action_bar">
+		<a href="/groups/new">
+			<img src="/images/groups/new_group_small.gif" border="0" style="margin-right: 5px;" />创建一个新的圈子</a>
+		|
+		<a href="/groups/list_edit/<%= session[:account_id] %>"<%= " class=\"link_selected\"" if action_name == "list_edit" %>>我参加的圈子</a>
+		<a href="/groups/all">全部圈子</a>
+		|
+		<a href="/groups/recent/<%= session[:account_id] %>">我的圈子近况</a>
+	</div>
+<% end %>

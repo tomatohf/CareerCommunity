@@ -1,0 +1,19 @@
+<%
+	group = activity_group[0]
+	group_id = group.id
+	group_name = group.name
+	group_image = activity_group[1]
+%>
+
+<div class="group_name_img">
+	<div>
+		<a href="/groups/<%= group_id %>" target="_blank">
+			<img src="<%= face_img_src(group_image) %>" border="0" /></a>
+	</div>
+	<div>
+		<a href="/groups/<%= group_id %>" target="_blank" class="group_name_link">
+			<%= h(group_name) %></a>
+	</div>
+	<input type="hidden" name="activity_groups[]" value="<%= group_id %>" />
+</div>
+

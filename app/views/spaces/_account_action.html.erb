@@ -1,0 +1,23 @@
+<%
+	if owner_id
+		account_id = owner_id
+		account_nick = owner_nick
+		account_pic_url = owner_pic_url
+	else
+		account_id = account_action.account.id
+		account_nick = account_action.account.get_nick
+		account_pic_url = account_action.account.get_profile_pic_url
+		
+		Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account_action.account.email)
+	end
+%>
+
+<div class="account_action_item">
+	<div>
+		<%= eval(account_action.action_text([account_nick, account_pic_url, account_id])) %>
+	</div>
+	
+	<div class="form_info_s account_action_datetime">
+		<%= format_datetime(account_action.created_at) %>
+	</div>
+</div>

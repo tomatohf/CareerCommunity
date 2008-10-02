@@ -1,0 +1,35 @@
+<% show_icon &&= true %>
+
+<%
+	is_group = group_name_img.kind_of?(Group)
+	group = is_group ? group_name_img : group_name_img.group
+	group_id = group.id
+	group_name = group.name
+	group_image = group.get_image_url
+
+	Group.set_group_with_image_cache(group_id, group, group_image)
+
+	show_icon &&= (!is_group)
+	if show_icon
+		is_master = (group.master_id.to_s == group_name_img.account_id)
+		is_admin = group_name_img.admin
+	end
+%>
+
+<div class="group_name_img">
+	<div>
+		<a href="/groups/<%= group_id %>">
+			<img src="<%= face_img_src(group_image) %>" border="0" /></a>
+			
+		<% if show_icon && is_master %>
+			<img src="/images/groups/master_icon.png" title="<%= owner_name %> 是圈主" width="12" height="17" border="0" />
+		<% elsif show_icon && is_admin %>
+			<img src="/images/groups/admin_icon.png" title="<%= owner_name %> 是管理员" width="12" height="17" border="0" />
+		<% end %>
+	</div>
+	<div>
+		<a href="/groups/<%= group_id %>" class="group_name_link">
+			<%= h(group_name) %></a>
+	</div>
+</div>
+

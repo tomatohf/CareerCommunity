@@ -1,0 +1,59 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 参加的圈子的全部圈内活动" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	<% if @edit %>
+		<div class="community_block">
+			<a href="/spaces/show_edit/<%= @owner_id %>">我的空间</a>
+		</div>
+	<% else %>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		</div>
+	<% end %>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/recent/<%= @owner_id %>">
+			返回 <%= owner_name %> 的圈子近况
+		</a>
+	</div>
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities">浏览其他现有的活动</a>
+	</div>
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @all_activitie.total_entries %></b>
+		个圈内活动
+	</div>
+
+	<div class="community_block overflow_hidden">
+		<%= render(:partial => "/activities/activity", :collection => @all_activitie) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@all_activitie) %>
+	</div>
+</div>
+

@@ -1,0 +1,25 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "退出活动 #{activity_title}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+	</div>
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<p class="error_msg">
+		无法退出活动
+	</p>
+</div
+

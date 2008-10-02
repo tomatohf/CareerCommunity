@@ -1,0 +1,36 @@
+<% community_page_title("注册验证") %>
+
+<div class="float_r community_container_r">
+	<div class="community_title">
+		没有收到注册确认 ~~~
+	</div>
+	<div class="community_block">
+		<a href="/accounts/send_register_confirmation">重新发送注册确认邮件</a>
+	</div>
+</div>
+
+<div class="community_container_l">
+	<h2>感谢注册</h2>
+	
+	<div class="community_block_narrow">
+
+		<br />
+		<br />
+		
+		<% unless @account.checked %>
+			<p>
+			    我们已经发送了一封确认邮件到你的 email 地址 <b><%= @account.email %></b>, 请按照确认邮件中的操作来验证你的 email 地址
+			</p>
+			<p>
+				你可以保留好这封确认邮件，当完成了 email 地址验证后，你还可以使用它来直接进行登录
+			</p>
+		<% else %>
+			<p>
+				你的 email 地址已经通过验证了
+			</p>
+		<% end %>
+	</div>
+</div>
+
+<div class="clear"></div>
+

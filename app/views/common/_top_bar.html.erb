@@ -1,0 +1,100 @@
+<div id="top_bar">
+	<div id="top_bar_left">
+		<nobr>
+			<a href="#">公司</a>
+			<a href="#">课程</a>
+			<a href="/community">社区</a>
+			
+			&nbsp;
+			<span>[
+				<label for="top_bar_more">更多</label>
+				<input id="top_bar_more" type="checkbox" onclick="var display = 'none';if(this.checked){display=''};document.getElementById('top_bar_more_links').style.display=display;" />
+				<span id="top_bar_more_links" style="display: none">
+					<a href="/activities">活动</a>
+					<a href="/groups">圈子</a>
+					<a href="#">招聘信息</a>
+				</span>
+			]</span>
+		</nobr>
+	</div>
+	
+	<div id="top_bar_right" align="right">
+		<nobr>
+			<span id="top_bar_right_has_login" style="visibility: hidden">
+				<b><span id="top_bar_right_nick"></span></b>
+				|
+				<a href="/accounts">帐号</a>
+				<a href="#">设置</a>
+				<!--
+				<a href="#">帮助</a>
+				-->
+				<a href="/accounts/logout">退出</a>
+			</span>
+			<span id="top_bar_right_not_login" style="visibility: hidden">
+				<a href="/accounts/login_form">登录</a>
+				<a href="/accounts/new">注册</a>
+				<!--
+				<a href="#">帮助</a>
+				-->
+			</span>
+		</nobr>
+	</div>
+</div>
+
+
+
+<script type="text/javascript" language="JavaScript">
+
+	function read_cookie(name) {
+		var name_eq = name + "=";
+		var cookie_pairs = document.cookie.split(";");
+		for(var i = 0; i < cookie_pairs.length; i++) {
+			var cookie_pair = cookie_pairs[i];
+			while(cookie_pair.charAt(0) == " ") {
+				cookie_pair = cookie_pair.substring(1, cookie_pair.length);
+			}
+			if(cookie_pair.indexOf(name_eq) == 0) {
+				return cookie_pair.substring(name_eq.length, cookie_pair.length);
+			}
+		}
+		return null;
+	}
+	
+	function display_top_bar_right() {
+		var nick = read_cookie("n");
+		var show_part_id = "";
+		var remove_part_id = "";
+		if(nick == null || nick == "") {
+			show_part_id = "top_bar_right_not_login";
+			remove_part_id = "top_bar_right_has_login";
+		}
+		else {
+			show_part_id = "top_bar_right_has_login";
+			remove_part_id = "top_bar_right_not_login";
+			
+			document.getElementById("top_bar_right_nick").appendChild(document.createTextNode(decodeURIComponent(nick)));
+		}
+		
+		var show_part = document.getElementById(show_part_id);
+		show_part.style.visibility = "visible";
+		
+		var remove_part = document.getElementById(remove_part_id);
+		remove_part.parentNode.removeChild(remove_part);
+	}
+	
+	function add_load_event(func) {
+		var oldonload = window.onload;
+		if(typeof(window.onload) != "function") {
+			window.onload = func;
+		}
+		else {
+			window.onload = function() {
+				oldonload();
+				func();
+			}
+		}
+	}
+	
+	add_load_event(display_top_bar_right);
+	
+</script>

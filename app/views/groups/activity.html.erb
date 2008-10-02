@@ -1,0 +1,47 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "圈子 #{group_name} 的全部圈内活动" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	<div class="community_title">
+		圈子 ~~~
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+	</div>
+
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities">浏览其他现有的活动</a>
+	</div>
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @group_activities.total_entries %></b>
+		个圈内活动
+	</div>
+
+	<div class="community_block overflow_hidden">
+		<%= render(:partial => "/activities/activity", :collection => @group_activities) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@group_activities) %>
+	</div>
+</div>
+

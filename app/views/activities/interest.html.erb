@@ -1,0 +1,63 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "对活动 #{activity_title} 感兴趣的成员" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+	</div>
+			
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+	<div class="community_title">
+		活动负责人 ~~~
+	</div>
+	
+	<div class="community_block">
+		<div>
+			<a href="/spaces/show/<%= @master_id %>">
+				<img src="<%= face_img_src(@master_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div>
+			<a href="/spaces/show/<%= @master_id %>" class="account_nick_link">
+				<%= h(@master_nick_pic[0]) %></a>
+		</div>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		点击
+		<a title="查看其活动出席/缺席情况的统计" href="#">
+			<img src="/images/activities/edit_absent_small.png" border="0" /></a>
+		查看网友的出席/缺席活动的情况的统计
+	</div>
+	
+	<div class="community_title">
+		对活动感兴趣的成员 ~~~
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @accounts.total_entries %></b>
+		名成员感兴趣
+	</div>
+	
+	<div class="community_block overflow_hidden">
+		<%= float_list(@accounts, "member", :member, {}, 6) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@accounts) %>
+	</div>
+	
+</div>
+

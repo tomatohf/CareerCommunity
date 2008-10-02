@@ -1,0 +1,78 @@
+<% owner_name = @edit ? "我" : h(@account_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的留言板" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r profile_container_r">
+	<% if @edit %>
+		<div class="community_block">
+			<a href="/spaces/show_edit/<%= @account_id %>">返回我的空间</a>
+		</div>
+	<% else %>
+		<div class="community_title">
+			留言板的主人 ~~~
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @account_id %>">
+				<img src="<%= face_img_src(@account_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @account_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		</div>
+	<% end %>
+	
+	<div class="community_block">
+		<a href="#comment_new">
+			+ 添加留言
+		</a>
+	</div>
+</div>
+
+<div class="profile_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b>
+			<%= @space_comments.total_entries %>
+		</b>
+		条留言
+	</div>
+	
+	<% if @edit %>
+		<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
+			<input type="hidden" name="e" value="<%= true if @edit %>" />
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_comment(comment_id) {
+				if(confirm("确定要删除留言么 ?")) {
+					del_form = document.getElementById("delete_comment_form");
+					del_form.action = "/spaces/delete_comment/" + comment_id;
+					del_form.submit();
+				}
+			}
+		</script>
+	<% end %>
+	
+	<div class="community_block">
+		<%= render(:partial => "/common/comment", :collection => @space_comments, :locals => {:can_del => @edit}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@space_comments) %>
+	</div>
+	
+	<div class="community_block_narrow">
+		<a id="comment_new">添加留言 »</a>
+		<% form_tag "/spaces/create_comment/#{@account_id}", :method => :post, :onsubmit => "if(document.getElementById('space_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
+			<textarea id="space_comment" name="space_comment" class="text_field" cols="50" rows="5"></textarea>
+			
+			<div>
+				<input type="hidden" name="e" value="<%= true if @edit %>" />
+				<input type="submit" value="发表留言" class="button" />
+			</div>
+		<% end %>
+	</div>
+</div>

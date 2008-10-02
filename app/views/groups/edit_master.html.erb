@@ -1,0 +1,64 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "转让圈子 #{group_name} 的圈主" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/members_edit/<%= @group_id %>">
+			<img src="/images/groups/members_small.gif" border="0" />
+			管理圈子成员</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/members_master/<%= @group_id %>">
+			<img src="/images/groups/admin_icon.png" border="0" />
+			设置圈子的管理员</a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_l">
+		将圈主转让给其他的圈子管理员
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		选择要将圈主转让给哪位管理员
+	</div>
+	
+	
+	<div class="community_block overflow_hidden">
+		<%= float_list(@admin_members, "master_selector", :master_selector, {}, 6) %>
+	</div>
+	
+</div>
+
+
+
+<% form_tag "/groups/#{@group_id}/update_master", :method => :post, :id => "update_master_form" do %>
+	<input type="hidden" id="new_master_id" name="new_master_id" />
+<% end %>
+
+<script language="JavaScript">
+	function update_master(account_id, account_name) {
+		if(confirm("确定要将圈主转让给 " + account_name + " 么 ?")) {
+			var update_form = document.getElementById("update_master_form");
+			document.getElementById("new_master_id").value = account_id;
+			update_form.submit();
+		}
+	}
+</script>
+

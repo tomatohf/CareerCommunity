@@ -1,0 +1,30 @@
+<% account = linked_photo_for_all.account %>
+<% photo = linked_photo_for_all.photo %>
+
+<% comment_count = PhotoComment.get_count(photo.id) %>
+
+<% type_obj = linked_photo_for_all.send(type) %>
+<% type_text = type_obj.send(text) %>
+<div class="linked_photo">
+	<div class="align_c">
+		<a href="<%= photo.image.url(:big) %>" rel="lightbox[activity]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='/photos/<%= photo.id %>'&gt;查看/评论&lt;/a&gt; &lt;br /&gt; <%= photo.title %> &lt;br /&gt;">
+			<img src="<%= photo.image.url(:thumb_120) %>" border="0" /></a>
+	</div>
+	
+	<div class="form_info_s" style="margin-top: 5px;">
+		<div>
+			<a href="/spaces/show/<%= account.id %>" class="account_nick_link" target="_blank">
+				<%= h(account.get_nick) %></a>
+			添加到
+		</div>
+		<div>
+			<a href="/<%= type.to_s.pluralize %>/<%= type_obj.id %>" title="<%= type_text %>" class="account_nick_link" target="_blank">
+				<%= truncate(type_text, 20) %>
+			</a>
+		</div>
+		<div>
+			<a target="_blank" href="/photos/<%= photo.id %>#comment_list" class="account_nick_link">评论(<%= comment_count %>)</a>
+		</div>
+	</div>
+</div>
+

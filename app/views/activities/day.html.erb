@@ -1,0 +1,95 @@
+<% community_page_title("浏览活动") %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block">
+		<a href="/activities/new">
+			<img src="/images/activities/new_activity_small.gif" border="0" />
+			发起一个全局的活动</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/activity_groups/<%= session[:account_id] %>">
+			<img src="/images/activities/new_activity_in_group_small.gif" border="0" />
+			发起一个圈子内活动</a>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/recent_index" style="font-size: 14px; font-weight: bold;">
+			我的活动近况</a>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<div id="calendar_container"></div>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2>浏览活动</h2>
+	
+	<div class="community_block">
+		<%= render :partial => "activity_list_nav_bar", :locals => {:date => @date} %>
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		<b><%= @activities.total_entries %></b>
+		个活动
+	</div>
+	
+	<div class="community_block overflow_hidden">
+		<%= render(:partial => "activity", :collection => @activities) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@activities) %>
+	</div>
+	
+</div>
+
+
+
+<link rel="stylesheet" href="/lib/jscalendar/css/calendar-brown.css" type="text/css" media="screen"></link>
+
+<script language="JavaScript" type="text/javascript" src="/lib/jscalendar/js/calendar_stripped.js"></script>
+<script language="JavaScript" type="text/javascript" src="/lib/jscalendar/lang/calendar-zh.js"></script>
+<script language="JavaScript" type="text/javascript" src="/lib/jscalendar/js/calendar-setup_stripped.js"></script>
+
+<script type="text/javascript">
+	calendar = Calendar.setup({
+        flat     	   :    "calendar_container",   // ID of the parent element
+        flatCallback   :	dateChanged,			// callback function
+        //eventName    :	"focus",
+        showsTime      :    false,
+		showOthers     :	true,
+        timeFormat     :    "24",
+		date		   :	new Date(<%= @date.year %>, <%= @date.month - 1 %>, <%= @date.mday %>)
+    });
+	
+	function dateChanged(calendar) {
+		// Beware that this function is called even if the end-user only
+		// changed the month/year.  In order to determine if a date was
+		// clicked you can use the dateClicked property of the calendar:
+		if (calendar.dateClicked) {
+			// OK, a date was clicked, redirect to /yyyy/mm/dd/index.php
+			var y = calendar.date.getFullYear();
+			var m = calendar.date.getMonth() + 1;     // integer, 0..11
+			var d = calendar.date.getDate();      // integer, 1..31
+			var y_str = y.toString();
+			var m_str = m < 10 ? "0" + m : m.toString();
+			var d_str = d < 10 ? "0" + d : d.toString();
+			var day_str = y_str + m_str + d_str;
+			window.location = "/activities/day/" + day_str;
+		}
+	}
+</script>
+
+

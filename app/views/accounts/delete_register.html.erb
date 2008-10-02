@@ -1,0 +1,38 @@
+<% community_page_title("注册删除") %>
+
+<div class="float_r community_container_r">
+	<div class="community_title">
+		还想加入我们 ~~~
+	</div>
+	<div class="community_block">
+		<p>
+			<a href="/accounts/login_form">已经注册,请登录</a>
+		</p>
+		<p>
+			<a href="/accounts/new">还没有帐号,快速注册</a>
+		</p>
+	</div>
+</div>
+
+<div class="community_container_l">
+	<h2>注册删除</h2>
+	
+	<div class="community_block_narrow">
+
+		<br />
+		<br />
+		
+		<% if @deleted %>
+			<p>
+				帐号已被成功删除
+			</p>
+		<% else %>
+			<p>
+				删除帐号失败
+			</p>
+		<% end %>
+	</div>
+</div>
+
+<div class="clear"></div>
+

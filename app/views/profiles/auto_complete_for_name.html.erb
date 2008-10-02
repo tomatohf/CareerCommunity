@@ -1,0 +1,20 @@
+<% @threshold ||= 15 %>
+<% too_many = @names.size > @threshold %>
+
+<ul>
+    <% (too_many ? @threshold : @names.size).times do |i| %>
+        <li>
+            <span class="select"><%= h(@names[i]) %></span>
+        </li>
+    <% end %>
+</ul>
+
+<% if too_many %>
+	<div style="border-top: dashed 1px #A3988C">
+		<i>
+			仅显示了前 <%= @threshold %> 条匹配结果
+			<br />
+			输入更多以缩小匹配结果的范围 ...
+		</i>
+	</div>
+<% end %>

@@ -1,0 +1,20 @@
+if @saved
+  
+	page.insert_html :bottom,
+          					"edu_profile_list",
+                    :partial => "edu_profile",
+                    :object => @edu_profile
+
+	page.hide @edu_profile_entry_id
+	page.visual_effect :appear, @edu_profile_entry_id
+  
+  page.replace_html "add_message", "<p class='info_msg'>" + flash[:info_msg] + "</p>"
+  page.call "clear_add_form"
+  
+else
+  
+  page.replace_html "add_message", "<p class='error_msg'>" + flash[:error_msg] + "</p>"
+  
+end
+
+

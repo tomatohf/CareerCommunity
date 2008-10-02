@@ -1,0 +1,33 @@
+<% community_page_title("用户注册") %>
+
+<div class="float_r community_container_r">
+	<div class="community_title">
+		注册和登录都很简单 ~~~
+	</div>
+	<div class="community_block">
+		<p>注册只需两步 ... 填写 email 和密码，和从邮箱中点击验证链接</p>
+		<p>使用 记住我 来避免每次都要填写用户名和密码登录，或者从邮箱中的验证链接直接登录</p>
+	</div>
+</div>
+
+<div class="community_container_l">
+	<h2>快速注册</h2>
+	
+	<p>
+		<a href="/accounts/login_form">已经注册, 请登录</a>
+	</p>
+	<br />
+
+	<div class="community_block_narrow">
+		<% if @account.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@account) %>
+			</p>
+		<% end %>
+
+		<%= render :partial => "register_form", :locals => {:account => @account, :input_size => 30} %>
+	</div>
+</div>
+
+<div class="clear"></div>
+

@@ -1,0 +1,78 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的朋友" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r friend_container_r">
+	<% if @edit %>
+		<!--
+		<div class="community_block">
+			<a href="#"><h2>寻找朋友</h2></a>
+			<a href="#"><h2>邀请朋友加入</h2></a>
+		</div>
+		-->
+	<% else %>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		</div>	
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+	<% end %>
+	
+	<div class="community_block">
+		<a href="/friends/<%= @edit ? "be_list_edit" : "be_list" %>/<%= @owner_id %>">» 谁把 <%= owner_name %> 加为朋友了</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/<%= @edit ? "both_list_edit" : "both_list" %>/<%= @owner_id %>">» <%= owner_name %> 的伙伴</a>
+		<div class="form_info_l">
+			互相将对方加为了朋友
+		</div>
+	</div>
+</div>
+
+<div class="friend_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		<b>
+			<%= @friends.size %>
+		</b>
+		个朋友
+	</div>
+	
+	<% if flash[:max_friend_count] %>
+		<p class="error_msg">朋友数目超过上限
+			(
+			<b>
+				<%= flash[:max_friend_count] %>
+			</b>
+			)
+		</p>
+	<% end %>
+	
+	<% if @edit %>
+		<% form_tag "", :method => :delete, :id => "delete_friend_form" do %>
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_friend(friend_id) {
+				if(confirm("确定要将其从我的朋友中删除么 ?")) {
+					del_form = document.getElementById("delete_friend_form");
+					del_form.action = "/friends/" + friend_id;
+					del_form.submit();
+				}
+			}
+		</script>
+	<% end %>
+
+	<div class="community_block overflow_hidden">
+		<%= float_list(@friends, "account_nick_pic", :account_nick_pic, {:can_del => @edit}, 7) %>
+	</div>
+</div>

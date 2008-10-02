@@ -1,0 +1,78 @@
+<% type_name = h(@type_name) %>
+<% pluralized_post_type = @post_type.pluralize %>
+
+<% page_title = "#{@type_label} #{type_name} 的新话题" %>
+<% community_page_title(page_title) %>
+
+<div class="blog_container">
+	<div class="community_block float_r">
+		<a href="/<%= pluralized_post_type %>/<%= @type_id %>">
+			<img src="<%= face_img_src(@type_image) %>" border="0" /></a>
+	</div>
+
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<br />
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @post.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@post) %>
+			</p>
+		<% end %>
+		
+		<div class="div_form">
+			<% form_tag "/#{@post_type}/posts", :method => :post do %>
+			
+				<div>
+					<label for="title">
+				        标题(<span style="color: red;">*</span>)
+				    </label>
+				</div>
+				<div>
+					<input type="text" id="title" name="title" class="text_field" size="75" value="<%= h(@post.title) %>" />
+				</div>
+				
+				<div>
+					<label for="content">
+				        内容(<span style="color: red;">*</span>)
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="#" onclick="remove_rich_editor('content'); return false;">使用 普通编辑框</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="#" onclick="add_rich_editor('content'); return false;">使用 高级编辑器</a>
+				    </label>
+				</div>
+				<div>
+					<textarea id="content" name="content" class="text_field" cols="75" rows="15"><%= @post.content %></textarea>
+				</div>
+				
+				<br />
+				
+				<div>
+					<input type="hidden" name="type_id" value="<%= @type_id %>" />
+					<%= submit_tag "发表", :class => "button", :disabled => @account_limited %>
+					&nbsp;&nbsp;&nbsp;
+					<a href="/<%= pluralized_post_type %>/<%= @type_id %>" onclick="if(!confirm('当前正在编辑的内容将全部丢失, 确定返回么 ?')){ return false; }">返回<%= @type_label %> <%= type_name %></a>
+				</div>
+			
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+
+
+<script language="JavaScript" type="text/javascript" src="/lib/tiny_mce/tiny_mce.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="/javascripts/tinymce.js"></script>
+
+

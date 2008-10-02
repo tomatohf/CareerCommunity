@@ -1,0 +1,111 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "活动 #{activity_title} 希望报名者填写的资料" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+	</div>
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow">
+		<table cellpadding="0" cellspacing="20" class="main_part_w">
+			<% form_tag "/activities/#{@activity_id}/join", :method => :post do %>
+				<% if @check_gender %>
+				<tr>
+					<td>
+						<label for="gender">
+			                <b>
+								性别:
+			                </b>
+			            </label>
+					</td>
+					<td>
+						<select name="gender" id="gender" class="dropdown_list">
+							<option value=""<%= " selected=\"selected\"" if @basic_profile.gender.nil? %>></option>
+							<option value="true"<%= " selected=\"selected\"" if @basic_profile.gender == true %>>男 - ♂</option>
+							<option value="false"<%= " selected=\"selected\"" if @basic_profile.gender == false %>>女 - ♀</option>
+						</select>
+					</td>
+				</tr>
+				<% end %>
+				
+				<% if @check_birthday %>
+				<tr>
+					<td>
+						<label for="birthday">
+			                <b>
+								生日:
+			                </b>
+			            </label>
+					</td>
+					<td class="dropdown_list">
+						<select name="birthday_year" id="birthday" class="dropdown_list">
+							<option value=""></option>
+							<% 1949.upto(2010) do |i| %>
+								<option value="<%= i %>"<%= " selected=\"selected\"" if @basic_profile.birthday && @basic_profile.birthday.year == i %>><%= i %></option>
+							<% end %>
+						</select>
+						&nbsp;
+						年
+						&nbsp;
+						<select name="birthday_month" id="birthday_month" class="dropdown_list">
+							<option value=""></option>
+							<% 12.times do |i| %>
+								<% m = i + 1 %>
+								<option value="<%= m %>"<%= " selected=\"selected\"" if @basic_profile.birthday && @basic_profile.birthday.month == m %>><%= m %></option>
+							<% end %>
+						</select>
+						&nbsp;
+						月
+						&nbsp;
+						<select name="birthday_date" id="birthday_date" class="dropdown_list">
+							<option value=""></option>
+							<% 31.times do |i| %>
+								<% d = i + 1 %>
+								<option value="<%= d %>"<%= " selected=\"selected\"" if @basic_profile.birthday && @basic_profile.birthday.mday == d %>><%= d %></option>
+							<% end %>
+						</select>
+						&nbsp;
+						日
+					</td>
+				</tr>
+				<% end %>
+				
+				<% if @check_mobile %>
+				<tr>
+					<td>
+						<label for="mobile">
+			                <b>
+								手机:
+			                </b>
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="mobile" name="mobile" class="text_field" size="30" value="<%= @contact_profile && h(@contact_profile.mobile) %>" />
+					</td>
+					<td></td>
+				</tr>
+				<% end %>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= submit_tag "报名参加", :class => "button", :disabled => @account_limited %>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+</div>

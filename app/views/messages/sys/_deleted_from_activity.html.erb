@@ -1,0 +1,15 @@
+<table cellpadding="0" cellspacing="5" class="main_part_w">
+	<tr>
+		<td style="width: 50px">
+			<a href="/activities/<%= activity_id %>">
+				<img src="<%= face_img_src(activity_image) %>" border="0" /></a>
+		</td>
+		
+		<td>
+			你被从参加活动
+			<a href="/activities/<%= activity_id %>"><%= h(activity_title) %></a>
+			的成员中删除
+		</td>
+	</tr>
+</table>
+

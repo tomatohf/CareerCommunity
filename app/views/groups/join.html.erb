@@ -1,0 +1,29 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "加入圈子 #{group_name}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+	</div>
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<p class="info_msg">
+		加入圈子的申请已经成功提交, 管理员批准后就可以成为圈子的成员了
+	</p>
+	
+	<p>
+		圈子 <%= group_name %> 需要经过管理员批准后才可以加入 ...
+	</p>
+</div
+

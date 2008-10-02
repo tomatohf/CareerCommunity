@@ -1,0 +1,26 @@
+<tr id="edu_profile_<%= edu_profile.id %>">
+	<th class="table_header" scope="row">
+		<%= Education.find(edu_profile.education_id) %>
+	</th>
+	
+	<td>
+		<%= edu_profile.enter_year %>
+	</td>
+	
+	<td class="profile_edu_name">
+		<%= h(edu_profile.edu_name) %>
+	</td>
+	
+	<td>
+		<%= h(edu_profile.major) %>
+	</td>
+	
+	<td align="center">
+		<% form_tag "", :method => :post, :id => "on_edu_profile_del_form_#{edu_profile.id}" do %>
+			<input type="hidden" name="edu_profile_id" value="<%= edu_profile.id %>" />
+		<% end %>
+		<a href="#" onclick="on_edu_profile_del_submit('on_edu_profile_del_form_<%= edu_profile.id %>', 'deleting_indicator_<%= edu_profile.id %>', 'delete_icon_<%= edu_profile.id %>');return false;">
+			<img src="/images/delete_small.gif" id="delete_icon_<%= edu_profile.id %>" border="0" title="删除" alt="删除" /></a>
+		<img src="/images/loading_small.gif" id="deleting_indicator_<%= edu_profile.id %>" style="display: none" />
+	</td>
+</tr>

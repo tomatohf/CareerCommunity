@@ -1,0 +1,49 @@
+<% blog_show_url = "/blogs/#{"show_edit/" if edit}#{owner_blog.id}" %>
+
+<% blog_content = Hpricot(owner_blog.content || "").inner_text || "" %>
+<% blog_content = sanitize_tinymce(blog_content) %>
+
+<% comment_count = BlogComment.get_count(owner_blog.id) %>
+
+<div class="owner_blog">
+	<div>
+		<a href="<%= blog_show_url %>" class="owner_blog_title">
+			<%= h(owner_blog.title) %>
+		</a>
+	</div>
+	
+	<% form_tag "/blogs/#{owner_blog.id}", :method => :delete, :id => "blog_delete_form_#{owner_blog.id}" do %>
+	<% end %>
+	
+	<div class="form_info_s">
+		<%= owner_name unless edit %>
+		发表于
+		<%= format_datetime(owner_blog.created_at) %>
+	</div>
+	
+	<div class="owner_blog_content">
+		<img src="/images/index/blog_icon.png" border="0" />
+		&nbsp;
+		<%= truncate(blog_content, 500) %>
+	</div>
+	
+	<div class="form_info_s owner_blog_action_bar">
+		<a href="<%= blog_show_url %>">完整阅读</a>
+		<!--
+		<a href="#">标签</a>
+		-->
+		<a href="<%= blog_show_url %>#comment_list">
+			评论(<%= comment_count %>)</a>
+		<% if edit %>
+			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('blog_delete_form_<%= owner_blog.id %>').submit();}; return false;">删除</a>
+			<a href="/blogs/<%= owner_blog.id %>/edit">修改</a>
+		<% end %>
+		
+		最后更新于
+		<%= format_datetime(owner_blog.updated_at) %>
+	</div>
+	
+	<div>
+		<%= thin_hr %>
+	</div>
+</div>

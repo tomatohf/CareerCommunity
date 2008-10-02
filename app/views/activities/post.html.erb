@@ -1,0 +1,87 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "活动 #{activity_title} 的全部讨论话题" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	<div class="community_title">
+		活动 ~~~
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+	</div>
+
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+	
+	<!--
+	<div class="community_title">
+		订阅活动讨论 ~~~
+	</div>
+	
+	<div class="community_block">
+
+	</div>
+	-->
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @activity_posts.total_entries + @top_activity_posts.size %></b>
+		个讨论话题
+	</div>
+
+	<% if @top_activity_posts.size > 0 %>
+		<div class="community_title">
+			置顶的话题 ~~~
+		</div>
+		
+		<div class="community_block">
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<thead>
+					<tr>
+						<td width="52%">话题</td>
+						<td width="6%" align="right">评论</td>
+						<td width="19%" align="right">发起人</td>
+						<td width="23%" align="right">最后参与</td>
+					</tr>
+				</thead>
+				<tbody>
+					<%= render :partial => "activity_post", :collection => @top_activity_posts %>
+				</tbody>
+			</table>
+		</div>
+	<% end %>
+	
+	<div class="community_title">
+		所有话题 ~~~
+	</div>
+	
+	<div class="community_block">
+		<table cellpadding="0" cellspacing="5" class="main_part_w">
+			<thead>
+				<tr>
+					<td width="52%">话题</td>
+					<td width="6%" align="right">评论</td>
+					<td width="19%" align="right">发起人</td>
+					<td width="23%" align="right">最后参与</td>
+				</tr>
+			</thead>
+			<tbody>
+				<%= render :partial => "activity_post", :collection => @activity_posts %>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@activity_posts) %>
+	</div>
+</div>
+

@@ -1,0 +1,60 @@
+<% community_page_title("消息对话") %>
+
+<div class="float_r friend_container_r">
+	<div class="community_block">
+		<a href="/messages">返回 我的消息</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="#message_reply">回复消息</a>
+	</div>
+</div>
+
+<div class="friend_container_l">
+	<h2>消息对话</h2>
+	
+	<div class="community_block_narrow form_info_s">
+		对话中包含
+		<b>
+			<%= @messages.size %>
+		</b>
+		条消息
+	</div>
+	
+	<%= render :partial => "msg_nav_bar", :locals => {:account_id => @account_id, :unread_inbox_count => @unread_inbox_count, :unread_sys_count => @unread_sys_count} %>
+	
+	<div class="community_block">
+		<%= render(:partial => "thread_message", :collection => @messages) %>
+	</div>
+	
+	<%
+		# clear unread ...
+
+		need_save_msg = []
+		@messages.each { |message| need_save_msg << message if message.kind_of?(Message) && (!message.has_read) }
+
+		if need_save_msg.size > 0
+			Message.transaction {
+				need_save_msg.each do |msg|
+					msg.update_attribute("has_read", true)
+				end
+			}
+		end
+	%>
+	
+	<div class="community_block_narrow">
+		<a id="message_reply">回复消息 »</a>
+		<% form_tag "/messages/create_reply/#{@reply_to_id}", :method => :post, :onsubmit => "if(document.getElementById('message_content').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写消息内容 ...'); return false; }" do %>
+			<textarea id="message_content" name="message_content" class="text_field" cols="50" rows="5"></textarea>
+			
+			<div class="form_info_l">1000 字以内</div>
+			
+			<div class="community_block">
+				<input type="hidden" name="receiver_id" value="<%= @other_id %>" />
+				<input type="submit" value="发送回复消息" class="button" />
+			</div>
+		<% end %>
+	</div>
+	
+</div>
+

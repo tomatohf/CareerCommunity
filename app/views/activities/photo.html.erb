@@ -1,0 +1,43 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "活动 #{activity_title} 的照片" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<a href="/activities/<%= @activity_id %>">
+		<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+</div>
+	
+<div class="album_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @activity_photos.total_entries %></b>
+		张活动照片,
+		<a href="/activities/<%= @activity_id %>">
+			返回活动 <%= activity_title %></a>
+	</div>
+	
+	<div class="community_block">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="overflow_hidden ">
+		<%= float_list(@activity_photos, "/linked_photos/linked_photo", :linked_photo, {}, 6) %>
+	</div>
+	
+	<div class="community_block clear_l">
+		<%= paging_buttons(@activity_photos) %>
+	</div>
+
+</div>
+
+
+
+<link rel="stylesheet" href="/lib/lightbox/css/lightbox.css" type="text/css" media="screen"></link>
+
+<script language="JavaScript" src="/lib/protopack/protoculous-packer.js"></script>
+<script language="JavaScript" src="/lib/lightbox/js/lightbox.js"></script>
+
+

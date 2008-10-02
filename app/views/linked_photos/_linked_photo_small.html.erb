@@ -1,0 +1,7 @@
+<% photo = linked_photo_small.photo %>
+
+<div class="linked_photo_small">
+	<a href="/photos/<%= photo.id %>" title="<%= photo.title %>" target="_blank">
+		<img src="<%= photo.image.url(:thumb_80) %>" border="0" /></a>
+</div>
+

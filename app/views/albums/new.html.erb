@@ -1,0 +1,66 @@
+<% community_page_title("创建一个自己的新相册") %>
+
+<div class="float_r album_container_r">
+	<div class="community_block">
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+
+	<div class="community_title">
+	
+	</div>
+	
+	<div class="community_block">
+		
+	</div>
+</div>
+
+<div class="album_container_l">
+	<h2>创建一个自己的新相册</h2>
+	
+	<br />
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @album.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@album) %>
+			</p>
+		<% end %>
+		
+		<div class="div_form">
+			<% form_tag "/albums", :method => :post do %>
+			
+				<div>
+					<label for="album_name">
+				        相册名称(<span style="color: red;">*</span>)
+				    </label>
+				</div>
+				<div>
+					<input type="text" id="album_name" name="album_name" class="text_field" size="30" value="<%= h(@album.name) %>" />
+				</div>
+				
+				<div>
+					<label for="album_description">
+		                相册描述
+		            </label>
+					&nbsp;&nbsp;&nbsp;
+					<span class="form_info_s">(1000 字以内)</span>
+				</div>
+				<div>
+					<textarea id="album_description" name="album_description" class="text_field" cols="30" rows="5"><%= h(@album.description) %></textarea>
+				</div>
+				
+				<div>
+					<%= submit_tag "创建相册", :class => "button", :disabled => @account_limited %>
+					&nbsp;&nbsp;&nbsp;
+					<a href="/albums">返回我的相册列表</a>
+				</div>
+			
+			<% end %>
+		</div>
+		
+	</div>
+</div>

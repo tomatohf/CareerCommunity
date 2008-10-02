@@ -1,0 +1,30 @@
+<%
+	account_id = thread_message.sender_id
+	account_nick_pic = Account.get_nick_and_pic(account_id)
+%>
+
+<div class="<%= (thread_message.kind_of?(Message) && (!thread_message.has_read)) ? "unread_message_container" : "message_container" %>">
+	<div class="message_content">
+		<a href="/spaces/show/<%= account_id %>">
+			<img class="float_l" src="<%= face_img_src(account_nick_pic[1]) %>" border="0" /></a>
+
+		<div class="form_info_s">
+			<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+				<%= h(account_nick_pic[0]) %></a>
+			发送消息说:
+		</div>
+		
+		<div style="text-indent: 20px;">
+			<%= h(thread_message.content) %>
+		</div>
+	</div>
+		
+	<div class="message_info form_info_s">
+		<%= format_datetime(thread_message.created_at) %>
+	</div>
+</div>
+
+<div class="community_block_narrow">
+	<%= thin_hr %>
+</div>
+

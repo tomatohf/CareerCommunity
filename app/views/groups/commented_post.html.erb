@@ -1,0 +1,71 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 评论的圈子讨论话题" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	<% if @edit %>
+		<div class="community_block">
+			<a href="/spaces/show_edit/<%= @owner_id %>">我的空间</a>
+		</div>
+	<% else %>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		</div>
+	<% end %>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/created_post/<%= @owner_id %>"><%= owner_name %> 发起的圈子话题</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/recent/<%= @owner_id %>">
+			返回 <%= owner_name %> 的圈子近况
+		</a>
+	</div>
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @commented_posts.total_entries %></b>
+		个讨论话题
+	</div>
+
+	<div class="community_block">
+		<table cellpadding="0" cellspacing="5" class="main_part_w">
+			<thead>
+				<tr>
+					<td width="52%">话题</td>
+					<td width="6%" align="right">评论</td>
+					<td width="19%" align="right">发起人</td>
+					<td width="23%" align="right">最后参与</td>
+				</tr>
+			</thead>
+			<tbody>
+				<%= render :partial => "group_post", :collection => @commented_posts, :locals => {:hide_top => true} %>
+			</tbody>
+		</table>
+		<% unless @commented_posts.size > 0 %>
+			<div class="form_info_l">
+				还没有讨论话题 ...
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@commented_posts) %>
+	</div>
+</div>
+

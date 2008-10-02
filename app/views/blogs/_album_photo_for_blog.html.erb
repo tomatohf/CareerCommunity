@@ -1,0 +1,16 @@
+<div class="album_photo_for_blog_container">
+	<div class="album_photo_for_blog">
+		<% photo_title = escape_javascript(album_photo_for_blog.title) %>
+		<a href="#" title="点击插入该照片" onclick="insert_photo('<%= album_photo_for_blog.image.url(:thumb_200) %>', '<%= photo_title %>');">
+			<img src="<%= album_photo_for_blog.image.url(:thumb_80) %>" border="0" /></a>
+	</div>
+	
+	<div class="album_photo_for_blog_actions">
+		<a href="#" title="点击插入该照片的大版" onclick="insert_photo('<%= album_photo_for_blog.image.url(:normal) %>', '<%= photo_title %>');">
+			大</a>
+		<a href="#" title="点击插入该照片的中版" onclick="insert_photo('<%= album_photo_for_blog.image.url(:thumb_200) %>', '<%= photo_title %>');">
+			中</a>
+		<a href="#" title="点击插入该照片的小版" onclick="insert_photo('<%= album_photo_for_blog.image.url(:thumb_80) %>', '<%= photo_title %>');">
+			小</a>
+	</div>
+</div>

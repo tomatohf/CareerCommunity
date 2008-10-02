@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>从相册中插入照片</title>
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	<script type="text/javascript" src="js/albumphoto.js"></script>
+	<script type="text/javascript" src="/lib/protopack/protoculous-effects-packer.js"></script>
+	<script type="text/javascript" src="/javascripts/photo_selector.js"></script>
+	<link href="css/albumphoto.css" rel="stylesheet" type="text/css" />
+	<base target="_self" />
+</head>
+<body id="albumphoto" style="display: none">
+	
+	<div id="photo_selector_container_id">
+		<img src="/images/loading_small.gif" id="loading_indicator" />
+		正在载入相册列表 ...
+	</div>
+
+</body> 
+</html>
+
+<script language="JavaScript">
+	function insert_photo(src, title) {
+		AlbumPhoto.insertPhotoAndClose(src, title);
+	}
+	
+	new Ajax.Request(
+        "/albums/photo_selector",
+        {
+        	asynchronous:true,
+            evalScripts:false,
+            //onComplete:function(request){},
+            //onLoading:function(request){},
+			method:"get",
+            parameters:"container_id=photo_selector_container_id&photo_list_template=/blogs/album_photo_list_for_blog"
+        }
+    );
+</script>
+	

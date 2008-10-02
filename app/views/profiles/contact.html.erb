@@ -1,0 +1,172 @@
+<% community_page_title("更新联系信息") %>
+
+<div class="float_r profile_container_r">
+	<%= render :partial => "common/edit_navigation", :locals => {:account_checked => @account_checked} %>
+</div>
+
+<div class="profile_container_l">
+	<h2>我的资料 - 联系信息</h2>
+	
+	<%= render :partial => "edit_profile_nav_bar" %>
+	
+	<br />
+	
+	<div class="community_block_narrow">
+
+		<% if @profile.errors.size > 0 %>
+		    <p class="error_msg">
+				<%= list_model_validate_errors(@profile) %>
+			</p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		
+		<% form_for @profile, :url => "", :html => { :method => :post } do |f| %>
+			<table cellpadding="0" cellspacing="10" class="main_part_w">
+				<tr>
+					<td>
+		                email
+					</td>
+					<td>
+						<b><%= @email %></b>
+					</td>
+					<td>
+						仅自己可见(<a href="#">修改</a>)
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><a class="form_info_l" href="#">修改 email</a></td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td colspan="3">
+						<%= draw_hor_line("400px") %>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="msn">
+			                MSN
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="msn" name="msn" class="text_field" size="30" value="<%= h(@profile.msn) %>" />
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="gtalk">
+			                gTalk
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="gtalk" name="gtalk" class="text_field" size="30" value="<%= h(@profile.gtalk) %>" />
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="qq">
+			                QQ
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="qq" name="qq" class="text_field" size="30" value="<%= h(@profile.qq) %>" />
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="skype">
+			                Skype
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="skype" name="skype" class="text_field" size="30" value="<%= h(@profile.skype) %>" />
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td colspan="3">
+						<%= draw_hor_line("400px") %>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="mobile">
+			                手机
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="mobile" name="mobile" class="text_field" size="30" value="<%= h(@profile.mobile) %>" />
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="phone">
+			                电话
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="phone" name="phone" class="text_field" size="30" value="<%= h(@profile.phone) %>" />
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td colspan="3">
+						<%= draw_hor_line("400px") %>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="address">
+			                地址
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="address" name="address" class="text_field" size="30" value="<%= h(@profile.address) %>" />
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="website">
+			                个人网址
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="website" name="website" class="text_field" size="30" value="<%= h(@profile.website) %>" />
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= f.submit "保存联系信息", :class => "button", :disabled => @account_limited %>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+</div>
+

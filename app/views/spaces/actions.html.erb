@@ -1,0 +1,50 @@
+<% owner_name = h(@account_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的动态" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r profile_container_r">
+	<div class="community_block">
+		<a href="/spaces/show/<%= @account_id %>">
+			<img src="<%= face_img_src(@account_nick_pic[1]) %>" border="0" /></a>
+	</div>
+	<div class="community_block">
+		<a href="/spaces/show/<%= @account_id %>" class="account_nick_link">
+			<%= owner_name %></a>
+	</div>
+	
+	<div class="community_title">
+		动态分类 ~~~
+	</div>
+	<div class="community_block">
+		<a href="/spaces/actions/<%= @account_id %>">显示所有动态</a>
+	</div>
+	<% AccountAction::Action_Types.each do |key, value| %>
+		<div class="community_block">
+				<a href="/spaces/actions/<%= @account_id %>/<%= key %>"<%= " class=\"link_selected\"" if key == @action_type %> >
+					<%= value %>
+				</a>
+		</div>
+	<% end %>
+</div>
+
+<div class="profile_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b>
+			<%= @account_actions.total_entries %>
+		</b>
+		条
+	</div>
+	
+	<div class="community_block">
+		<%= render(:partial => "account_action", :collection => @account_actions, :locals => {:owner_id => @account_id, :owner_nick => @account_nick_pic[0], :owner_pic_url => @account_nick_pic[1]}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@account_actions) %>
+	</div>
+</div>
+

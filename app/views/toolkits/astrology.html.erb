@@ -1,0 +1,54 @@
+<% community_page_title("星座信息") %>
+
+<div class="float_r community_container_r">
+	<div class="community_title">
+		试试其他小工具 ~~~
+	</div>
+	<div class="community_block">
+		<p>
+			<a href="/toolkits/astrology">查询星座</a>
+		</p>
+		<p>
+			<a href="/toolkits/password_strength">检测密码强度</a>
+		</p>
+	</div>
+</div>
+
+<div class="community_container_l">
+	<h2>星座信息</h2>
+	
+	<div class="community_block_narrow">
+
+		<br />
+		
+		<% if @astrology %>
+		
+			<h3><%= @astrology.name %></h3>
+			<div>
+				<% s_d = @astrology.s_d %>
+				<% e_d = @astrology.e_d %>
+				<%= "#{s_d.month}月#{s_d.mday}日   ~   #{e_d.month}月#{e_d.mday}日" %>
+			</div>
+			
+			<p><%= @astrology.d %></p>
+
+			<p><%= @astrology.p %></p>
+
+			<p><%= @astrology.e %></p>
+			
+		<% else %>
+			<p class="error_msg">
+				<%= flash[:error_msg] %>
+			</p>
+		<% end %>
+		
+		<br />
+		<br />
+		
+		<div>
+			<%= render :partial => "astrology_form" %>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>

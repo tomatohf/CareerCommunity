@@ -1,0 +1,130 @@
+<% album_photos = @album.get_photos %>
+<% h_album_name = h(@album.name) %>
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的相册: #{h_album_name}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<a class="browser_album_link" href="<%= @album.get_cover_photo_img_src(:big) %>" rel="lightbox[album]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 &lt;br /&gt; <%= h_album_name %> 的封面照片 &lt;br /&gt;">
+		浏览相册中的照片<img src="/images/album_browser.png" border="0" /></a>
+</div>
+	
+<div class="album_container">
+	<h2><%= page_title %></h2>
+	
+	<% if @edit %>
+		<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 520px;", :class => "community_block" do %>
+			<div class="action_bar">
+				<a href="/albums/new">创建一个新相册</a>
+				<a href="/albums/<%= @album.id %>/upload">添加照片</a>
+				<a href="/albums/<%= @album.id %>/edit">修改相册名称与描述</a>
+				<a href="/albums/<%= @album.id %>/edit">删除相册</a>
+				<a href="/albums">返回我的相册列表</a>
+			</div>
+		<% end %>
+		<br />
+	<% end %>
+	
+	<div class="community_block_narrow">
+		<img id="cover_photo" src="<%= @album.get_cover_photo_img_src(:thumb_80) %>" border="0" />
+		&nbsp;&nbsp;&nbsp;
+		包含
+		<b><%= album_photos.size %></b>
+		张照片, 
+		<% if @edit %>
+			<%= owner_name %>
+		<% else %>
+			<a href="/spaces/show/<%= @album.account_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		<% end %>
+		在
+		<i><%= format_date(@album.created_at) %></i>
+		创建
+		<% unless @edit %>
+			&nbsp;
+			<a href="/spaces/show/<%= @album.account_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+			&nbsp;
+			,
+			<a href="/albums/list/<%= @album.account_id %>">返回<%= owner_name %>的相册列表</a>
+		<% end %>
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		<%= simple_format(h(@album.description)) %>
+	</div>
+	
+	<div class="community_block_narrow">
+
+		<div id="error_msg" style="display: none"></div>
+		<div id="info_msg" style="display: none"></div>
+
+	</div>
+	
+	<div class="float_r main_part_w community_block">
+		<%= render(:partial => "album_photo", :collection => album_photos, :locals => {:edit => @edit}) %>
+	</div>
+	
+	<div class="community_block_narrow clear_r">
+
+	</div>
+
+</div>
+
+
+
+<link rel="stylesheet" href="/lib/lightbox/css/lightbox.css" type="text/css" media="screen"></link>
+
+<script language="JavaScript" src="/lib/protopack/protoculous-packer.js"></script>
+<script language="JavaScript" src="/lib/lightbox/js/lightbox.js"></script>
+
+<% if @edit %>
+	<script language="JavaScript">
+		function set_as_account_face(photo_id){
+			var indicator_id = "setting_indicator_" + photo_id;
+			var link_id = "setting_account_face_link_" + photo_id;
+			Element.show(indicator_id);
+			Element.hide(link_id);
+			
+			new Ajax.Request(
+	            "/profiles/<%= @album.account_id %>/pic",
+	            {
+	            	asynchronous:true,
+	                evalScripts:true,
+	                onComplete:function(request){
+						Element.show(link_id);
+						Element.hide(indicator_id);
+					},
+	                //onLoading:function(request){},
+					method:"post",
+	                parameters:"photo_id=" + photo_id + "&authenticity_token=" + encodeURIComponent("<%= form_authenticity_token %>")
+	            }
+	        );
+		}
+		
+		function set_as_album_cover(photo_id){
+			var indicator_id = "setting_indicator_" + photo_id;
+			var link_id = "setting_album_cover_link_" + photo_id;
+			Element.show(indicator_id);
+			Element.hide(link_id);
+			
+			new Ajax.Request(
+	            "/albums/<%= @album.id %>",
+	            {
+	            	asynchronous:true,
+	                evalScripts:true,
+	                onComplete:function(request){
+						Element.show(link_id);
+						Element.hide(indicator_id);
+					},
+	                //onLoading:function(request){},
+					method:"put",
+	                parameters:"album_cover_photo_id=" + photo_id + "&authenticity_token=" + encodeURIComponent("<%= form_authenticity_token %>")
+	            }
+	        );
+		}
+	</script>
+<% end %>
+
+

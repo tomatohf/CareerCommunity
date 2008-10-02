@@ -1,0 +1,442 @@
+<% activity_status = @activity.get_status %>
+<% activity_title = h(@activity.get_title) %>
+
+<% community_page_title(activity_title) %>
+
+<div class="float_r blog_container_r">
+	
+	<% if @group %>
+		<div class="community_title">
+			圈子内活动 ~~~
+		</div>
+
+		<div class="community_block align_c">
+			<div>
+				<a href="/groups/<%= @group.id %>">
+					<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+			</div>
+			<div>
+				<a href="/groups/<%= @group.id %>" class="group_name_link">
+					<%= h(@group.name) %></a>
+			</div>
+		</div>
+	<% else %>
+		<div class="community_title">
+			全局的活动 ~~~
+		</div>
+	<% end %>
+	
+	<div class="community_title">
+		活动状态 ~~~
+	</div>
+
+	<div class="community_block activity_status">
+		<%= activity_status[1] %>
+	</div>
+	
+	<% if activity_status[0] <= Activity::Status::Registering[0] %>
+		<% if @is_member %>	
+			<% unless @is_master %>
+				<div class="community_block_narrow">
+					<%= thin_hr %>
+				</div>
+				
+				<div class="community_block align_c">
+					<% form_tag "/activities/#{@activity_id}/quit", :method => :post, :onsubmit => "if(!confirm('确定要退出这个活动么 ?')){ return false; }" do %>
+						<input type="submit" value="退出这个活动" class="button" />
+					<% end %>
+				</div>
+			<% end %>
+		<% else %>
+			<div class="community_block_narrow">
+				<%= thin_hr %>
+			</div>
+			
+			<% unless @beyond_limit %>
+				<div class="community_block align_c">
+					<% form_tag "/activities/#{@activity_id}/check_profile", :method => :post do %>
+						<input type="submit" value="报名参加这个活动" class="button" />
+					<% end %>
+				</div>
+			<% else %>
+				<div class="community_block activity_status">
+					报名人数已满
+				</div>
+			<% end %>
+		<% end %>
+	<% end %>
+	
+	<% if @can_add_interest %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+		
+		<div class="community_block align_c">
+			<% form_tag "/activities/#{@activity_id}/add_interest", :method => :post do %>
+				<input type="submit" value="对活动感兴趣" class="button" />
+			<% end %>
+		</div>
+	<% end %>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+		
+	<% if @is_master %>
+		<% if activity_status[0] <= Activity::Status::Ongoing[0] %>
+			<div class="community_block">
+				<a href="/activities/<%= @activity_id %>/edit">修改活动的信息</a>
+			</div>
+			
+			<div class="community_block">
+				<a href="/activities/<%= @activity_id %>/edit_image">设置活动的图标</a>
+			</div>
+		<% end %>
+		
+		<% if activity_status[0] <= Activity::Status::Registering[0] %>
+			<div class="community_block">
+				<a href="/activities/invite/<%= @activity_id %>">邀请朋友参加活动</a>
+			</div>
+		<% end %>
+		
+		<% if activity_status[0] <= Activity::Status::Registered[0] %>
+			<div class="community_block">
+				<a href="/activities/unapproved/<%= @activity_id %>">处理报名参加活动的申请</a>
+			</div>
+			
+			<div class="community_block">
+				<a href="/activities/members_edit/<%= @activity_id %>">
+					<img src="/images/groups/members_small.gif" border="0" />
+					管理报名参加活动的成员</a>
+			</div>
+		<% else %>
+			<div class="community_block">
+				<a href="/activities/members/<%= @activity_id %>">
+					<img src="/images/groups/members_small.gif" border="0" />
+					浏览报名参加活动的成员</a>
+			</div>
+		<% end %>
+	<% else %>
+		<div class="community_block">
+			<a href="/activities/members/<%= @activity_id %>">
+				<img src="/images/groups/members_small.gif" border="0" />
+				浏览报名参加活动的成员</a>
+		</div>
+	<% end %>
+	
+	<div class="community_block">
+		<a href="/activities/interest/<%= @activity_id %>">
+			<img src="/images/activities/interest_small.png" border="0" />
+			浏览对活动感兴趣的成员</a>
+	</div>
+	
+	<% if activity_status[0] >= Activity::Status::Ongoing[0] %>
+		<div class="community_block">
+			<a href="/activities/<%= @is_master ? "absent_edit" : "absent" %>/<%= @activity_id %>">
+				<img src="/images/activities/edit_absent_small.png" border="0" />
+				<%= @is_master ? "编辑" : "查看" %>活动的缺席成员</a>
+		</div>
+	<% end %>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activity/posts/compose/<%= @activity_id %>">
+			<img src="/images/groups/add_post_small.png" border="0" />
+			发起新的讨论话题</a>
+	</div>
+	
+	<% if @is_member %>
+		<div class="community_block">
+			<a href="/activity/linked_photos/select/<%= @activity_id %>">
+				<img src="/images/activities/new_photo_small.gif" border="0" />
+				添加新的活动照片</a>
+		</div>
+	<% end %>
+	
+	
+	
+	<div class="community_title clear_l">
+		发起的其他活动 ~~~
+	</div>
+	
+	<div class="community_block">
+		<% @created_activities.each do |a| %>
+			<div>
+				»
+				<a href="/activities/<%= a.id %>" class="account_nick_link">
+					<%= h(a.get_title) %>
+				</a>
+				<span class="activity_info_label">
+					(<%= a.get_status[1] %>-<%= a.in_group && a.in_group > 0 ? "圈内活动" : "全局活动" %>)
+				</span>
+			</div>
+		<% end %>
+		<div>
+			<a class="float_r" href="/activities/list_create/<%= @creator_id %>">(查看全部)</a>
+		</div>
+	</div>
+	
+	<!--
+	<div class="community_title clear_l">
+		订阅活动讨论 ~~~
+	</div>
+	
+	<div class="community_block">
+		
+	</div>
+	-->
+	
+</div>
+
+<div class="blog_container_l">
+	<h2><%= activity_title %></h2>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="info_section_expand" href="#" onclick="collapse_section('info_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="info_section_collapse" href="#" onclick="expand_section('info_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<span class="float_r">
+				<a href="/spaces/show/<%= @creator_id %>" class="account_nick_link"><%= h(@creator_nick_pic[0]) %></a> 于 <%= format_date(@activity.created_at) %> 发起
+				&nbsp;&nbsp;&nbsp;
+			</span>
+			
+			<img class="float_l" src="/images/activities/info_small.png" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<b>
+				活动信息
+			</b>
+		</div>
+		
+		<div id="info_section">
+			<table cellpadding="0" cellspacing="10" class="main_part_w">
+				<tr>
+					<td align="left" valign="top">
+						<div class="community_block">
+							<span class="activity_info_label">开始时间:</span>
+							<%= format_activity_time(@activity.begin_at) %>
+							
+							<br />
+							
+							<span class="activity_info_label">结束时间:</span>
+							<%= format_activity_time(@activity.end_at) %>
+							
+							<br />
+							
+							<span class="activity_info_label">地点:</span>
+							<%= h(@activity.place) %>
+							
+							<br />
+							
+							<span class="activity_info_label">报名截止时间:</span>
+							<%= @activity.application_deadline ? format_activity_time(@activity.application_deadline) : "活动开始前" %>
+							
+							<br />
+							
+							<span class="activity_info_label">人数限制:</span>
+							<%= (@activity.member_limit && @activity.member_limit > 0) ? @activity.member_limit : "无" %>
+							
+							<br />
+							
+							<span class="activity_info_label">人均费用:</span>
+							<%= @activity.cost || "无" %>
+							
+							<% contact = @activity.get_setting[:contact] %>
+							<% if contact && contact != "" %>
+								<br />
+								
+								<span class="activity_info_label">联系方法:</span>
+								<%= h(contact) %>
+							<% end %>
+						</div>
+					</td>
+					
+					<td align="left" valign="middle" style="width: 200px;">
+						<% face_image_url = @activity_image || "" %>
+						<% if face_image_url.include?("thumb_48") %>
+							<img src="<%= face_image_url.gsub("thumb_48", "thumb_200") %>" border="0" />
+						<% else %>
+							<img src="<%= face_img_src(face_image_url) %>" border="0" />
+						<% end %>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	
+	<div>
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="desc_section_expand" href="#" onclick="collapse_section('desc_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="desc_section_collapse" href="#" onclick="expand_section('desc_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<% if @is_master && activity_status[0] <= Activity::Status::Ongoing[0] %>
+				<span class="float_r">
+					<a href="/activities/<%= @activity_id %>/edit#edit_activity_desc">编辑活动的描述</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			<% end %>
+			
+			<img class="float_l" src="/images/activities/desc_small.png" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<b>
+				活动描述
+			</b>
+		</div>
+		
+		<div id="desc_section">
+			<%= sanitize_tinymce(@activity.get_setting[:desc]) %>
+		</div>
+	</div>
+	
+	
+	<div class="community_title">
+		最新活动照片 ~~~
+	</div>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="photo_section_expand" href="#" onclick="collapse_section('photo_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="photo_section_collapse" href="#" onclick="expand_section('photo_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<% if @is_member %>
+				<span class="float_r">
+					<a href="/activity/linked_photos/select/<%= @activity_id %>">添加新的活动照片</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			<% end %>
+			
+			<img class="float_l" src="/images/activities/photo_small.png" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<a href="/activities/photo/<%= @activity_id %>">全部活动照片</a>
+		</div>
+		
+		<div id="photo_section">
+			<%= float_list(@activity_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 6) %>
+		</div>
+	</div>
+	
+	
+	<div class="community_title clear_l">
+		最近活动讨论 ~~~
+	</div>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="post_section_expand" href="#" onclick="collapse_section('post_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="post_section_collapse" href="#" onclick="expand_section('post_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<span class="float_r">
+				<a href="/activity/posts/compose/<%= @activity_id %>">发起新的讨论话题</a>
+				&nbsp;&nbsp;&nbsp;
+			</span>
+			
+			<img class="float_l" src="/images/groups/post_small.png" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<a href="/activities/post/<%= @activity_id %>">全部活动讨论</a>
+		</div>
+		
+		<div id="post_section" class="community_block">
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<thead>
+					<tr>
+						<td width="52%">话题</td>
+						<td width="6%" align="right">评论</td>
+						<td width="19%" align="right">发起人</td>
+						<td width="23%" align="right">最后参与</td>
+					</tr>
+				</thead>
+				<tbody>
+					<%= render :partial => "activity_post", :collection => @top_activity_posts %>
+					<%= render :partial => "activity_post", :collection => @activity_posts %>
+				</tbody>
+			</table>
+			<% unless @top_activity_posts.size + @activity_posts.size > 0 %>
+				<div class="form_info_l">
+					还没有讨论话题 ...
+				</div>
+			<% end %>
+		</div>
+	</div>
+	
+	
+	<div class="community_title">
+		最新加入成员 ~~~
+	</div>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="join_section_expand" href="#" onclick="collapse_section('join_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="join_section_collapse" href="#" onclick="expand_section('join_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<span class="float_r">
+				<a href="/activities/members/<%= @activity_id %>">全部报名参加活动的成员</a>
+				&nbsp;&nbsp;&nbsp;
+			</span>
+			
+			<img class="float_l" src="/images/groups/members_small.gif" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<b>
+				报名参加这个活动的成员
+			</b>
+		</div>
+		
+		<div id="join_section">
+			<%= float_list(@members, "member", :member, {}, 7) %>
+		</div>
+	</div>
+	
+	<div class="community_block clear_l">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="interest_section_expand" href="#" onclick="collapse_section('interest_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="interest_section_collapse" href="#" onclick="expand_section('interest_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<span class="float_r">
+				<a href="/activities/interest/<%= @activity_id %>">全部对活动感兴趣的成员</a>
+				&nbsp;&nbsp;&nbsp;
+			</span>
+			
+			<img class="float_l" src="/images/activities/interest_small.png" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<b>
+				对这个活动感兴趣的成员
+			</b>
+		</div>
+		
+		<div id="interest_section">
+			<%= float_list(@interest_accounts, "member", :member, {}, 7) %>
+		</div>
+	</div>
+	
+</div>
+
+
+
+<script language="JavaScript">
+	function expand_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "";
+		document.getElementById(expand_icon).style.display = "";
+		document.getElementById(collapse_icon).style.display = "none";
+	}
+	
+	function collapse_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "none";
+		document.getElementById(expand_icon).style.display = "none";
+		document.getElementById(collapse_icon).style.display = "";
+	}
+</script>

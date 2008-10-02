@@ -1,0 +1,241 @@
+<% community_page_title("更新基本信息") %>
+
+<div class="float_r profile_container_r">
+	<%= render :partial => "common/edit_navigation", :locals => {:account_checked => @account_checked} %>
+</div>
+
+<div class="profile_container_l">
+	<h2>我的资料 - 基本信息</h2>
+	
+	<script language="JavaScript" src="/lib/jquery/jquery-pack.js"></script>
+	
+	<% form_tag "/toolkits/astrology", :id => "astrology_query_form", :target => "_blank", :method => :post do %>
+		<input type="hidden" name="month" id="month" />
+		<input type="hidden" name="date" id="date" />
+	<% end %>
+	<script language="JavaScript">
+		function submit_astrology_query_form() {
+			$("#month").val($("#birthday_month").val());
+			$("#date").val($("#birthday_date").val());
+			
+			$("#astrology_query_form").submit();
+		}
+		
+		
+		provinces_cities = <%= @js_provinces_cities %>;
+		
+		function on_province_changed(type, province_id){
+			var city_select = document.getElementById(type + "_city");
+			if(province_id && province_id != ""){
+				city_select.style.display = "";
+				
+				// clear the options
+				city_select.options.length = 0;
+				// add the empty option firstly
+				var empty_option = new Option("", "");
+				empty_option.selected = true;
+				city_select.options.add(empty_option);
+				
+				var cities = provinces_cities[province_id.toString()];
+				for(var i = 0; i < cities.length; i++){
+					var city_info = cities[i];
+					var option = new Option(city_info[1], city_info[0]);
+					city_select.options.add(option);
+				}
+			}
+			else{
+				city_select.style.display = "none";
+				// clear the options
+				city_select.options.length = 0;
+			}
+		}
+		
+		$(document).ready(function() {
+			// bind event handlers
+			$("#astrology_query_link").click(function() {
+				submit_astrology_query_form();
+			});
+			
+			$("#location").change(function() {
+				on_province_changed("location", $(this).val());
+			});
+			
+			$("#hometown").change(function() {
+				on_province_changed("hometown", $(this).val());
+			});
+			
+			
+			on_province_changed("location", "<%= @profile.province_id %>");
+			var location_city_select = document.getElementById("location_city");
+			for(var i = 0; i < location_city_select.options.length; i++){
+				var option = location_city_select.options[i];
+				if(option.value == "<%= @profile.city_id %>"){
+					option.selected = true;
+					break;
+				}
+			}
+			
+			
+			
+			on_province_changed("hometown", "<%= @profile.hometown_province_id %>");
+			var hometown_city_select = document.getElementById("hometown_city");
+			for(var i = 0; i < hometown_city_select.options.length; i++){
+				var option = hometown_city_select.options[i];
+				if(option.value == "<%= @profile.hometown_city_id %>"){
+					option.selected = true;
+					break;
+				}
+			}
+		});
+	</script>
+	
+	<%= render :partial => "edit_profile_nav_bar" %>
+	
+	<br />
+	
+	<div class="community_block_narrow">
+
+		<% if @profile.errors.size > 0 %>
+		    <p class="error_msg">
+				<%= list_model_validate_errors(@profile) %>
+			</p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		
+		<% form_for @profile, :url => "", :html => { :method => :post } do |f| %>
+			<table cellpadding="0" cellspacing="10" class="main_part_w">
+				<tr>
+					<td>
+						<label for="real_name">
+			                真实姓名
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="real_name" name="real_name" class="text_field" size="30" value="<%= h(@profile.real_name) %>" />
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">输入你的真实姓名, 帮助你的朋友找到你</div></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="gender">
+			                性别
+			            </label>
+					</td>
+					<td>
+						<select name="gender" id="gender" class="dropdown_list">
+							<option value=""<%= " selected=\"selected\"" if @profile.gender.nil? %>></option>
+							<option value="true"<%= " selected=\"selected\"" if @profile.gender == true %>>男 - ♂</option>
+							<option value="false"<%= " selected=\"selected\"" if @profile.gender == false %>>女 - ♀</option>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="birthday">
+			                生日
+			            </label>
+					</td>
+					<td class="dropdown_list">
+						<select name="birthday_year" id="birthday" class="dropdown_list">
+							<option value=""></option>
+							<% 1949.upto(2010) do |i| %>
+								<option value="<%= i %>"<%= " selected=\"selected\"" if @profile.birthday && @profile.birthday.year == i %>><%= i %></option>
+							<% end %>
+						</select>
+						&nbsp;
+						年
+						&nbsp;
+						<select name="birthday_month" id="birthday_month" class="dropdown_list">
+							<option value=""></option>
+							<% 12.times do |i| %>
+								<% m = i + 1 %>
+								<option value="<%= m %>"<%= " selected=\"selected\"" if @profile.birthday && @profile.birthday.month == m %>><%= m %></option>
+							<% end %>
+						</select>
+						&nbsp;
+						月
+						&nbsp;
+						<select name="birthday_date" id="birthday_date" class="dropdown_list">
+							<option value=""></option>
+							<% 31.times do |i| %>
+								<% d = i + 1 %>
+								<option value="<%= d %>"<%= " selected=\"selected\"" if @profile.birthday && @profile.birthday.mday == d %>><%= d %></option>
+							<% end %>
+						</select>
+						&nbsp;
+						日
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><a class="form_info_l" href="#" id="astrology_query_link">看看我是什么星座?</a></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="location">
+			                城市
+			            </label>
+					</td>
+					<td>
+						<select name="location_province" id="location" class="dropdown_list">
+							<%= province_select_options(@provinces, @profile.province_id) %>
+						</select>
+						&nbsp;
+						<select name="location_city" id="location_city" class="dropdown_list">
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="hometown">
+			                家乡
+			            </label>
+					</td>
+					<td>
+						<select name="hometown_province" id="hometown" class="dropdown_list">
+							<%= province_select_options(@provinces, @profile.hometown_province_id) %>
+						</select>
+						&nbsp;
+						<select name="hometown_city" id="hometown_city" class="dropdown_list">
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="qmd">
+			                签名档
+			            </label>
+					</td>
+					<td>
+						<textarea id="qmd" name="qmd" class="text_field" cols="30"><%= h(@profile.qmd) %></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">300 字以内</div></td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= f.submit "保存基本信息", :class => "button", :disabled => @account_limited %>
+					</td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+</div>
+

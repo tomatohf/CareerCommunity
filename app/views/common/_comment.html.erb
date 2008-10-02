@@ -1,0 +1,43 @@
+<% can_del &&= true %>
+
+<% account_id = comment.account.id %>
+<% account_nick = comment.account.get_nick %>
+<% account_pic_url = comment.account.get_profile_pic_url %>
+
+<% # since the accounts and their pic_profile have been got from database, %>
+<% # let's cache them in order to reuse them %>
+<% # maybe putting these codes here smells not so good %>
+<% # just from performance's perspective to avoid double loop of the comments %>
+<% Account.set_account_nick_pic_cache(comment.account_id, account_nick, account_pic_url, comment.account.email) %>
+
+<div class="comment_container">
+	<div class="comment_title">
+		<% if can_del %>
+			<a class="float_r" title="删除" href="#" onclick="delete_comment(<%= comment.id %>); return false;">
+				<img src="/images/delete_small.gif" border="0" /></a>
+		<% end %>
+		
+		<b>
+			<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+				<%= account_nick %></a>
+		</b>
+		在
+		<%= format_datetime(comment.created_at) %>
+		<a id="comment_<%= comment.id %>">说</a>
+		:
+		
+	</div>
+	
+	<div class="comment_content">
+		<a href="/spaces/show/<%= account_id %>">
+			<img class="float_l" src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+		<%= simple_format(h(comment.content)) %>
+	</div>
+	
+	<div class="comment_info form_info_s">
+		最后更新于
+		<i>
+			<%= format_datetime(comment.updated_at) %>
+		</i>
+	</div>
+</div>

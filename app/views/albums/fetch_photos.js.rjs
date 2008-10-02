@@ -1,0 +1,4 @@
+page.replace_html @target_container_id, :partial => @photo_list_template, :locals => {:album => @album, :photos => @photos}
+
+page.hide @target_container_id
+page.call "photo_selector.display_fetched_album_photos", @target_container_id

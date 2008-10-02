@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+		<% page_title = yield(:page_title) %>
+        <title><%= "#{page_title} - " if page_title && page_title != "" %>乔布圈</title>
+        <%= stylesheet_link_tag "site" %>
+    </head>
+    <body>
+    	
+		<%= render :partial => "common/top_bar" %>
+		
+        <div class="page_container">
+			<div class="head_container">
+				<table cellpadding="0" cellspacing="0" class="main_part_w">
+					<tr>
+						<td valign="top" align="center" class="logo_container">
+							<a href="/community">
+								<img src="/images/index/qiaobuquan.png" border="0" alt="乔布圈" />
+							</a>
+							<br />
+							我的行业求职伙伴圈
+						</td>
+						<td>
+							<div class="main_nav">
+								<table cellpadding="0" cellspacing="0" class="main_part_w">
+									<tr>
+										<td class="main_nav_content">
+											<a href="/community">首页</a>
+											<a href="/spaces">我的空间</a>
+											<a href="/groups">圈子</a>
+											<a href="/friends">伙伴</a>
+											<a href="/messages">消息<span id="unread_msg_count"></span></a>
+											<a href="/toolkits">工具箱</a>
+										</td>
+										<td class="main_nav_sub_content">
+											<a href="/profiles">编辑我的资料</a>
+											|
+											<a href="/accounts/login_form">登录</a>
+											<a href="/accounts/new">注册</a>
+											<a href="/accounts/logout">退出</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="sub_nav">
+								<table cellpadding="0" cellspacing="0" class="main_part_w">
+									<tr>
+										<td style="width: 60%; color: #80807F" align="left">
+										</td>
+										<td align="right">
+											<% form_tag "/community/search", :method => :get do %>
+												<select name="scope" class="dropdown_list">
+													<option value="all">全部</option>
+													<option value="account">成员</option>
+													<option value="group">圈子</option>
+													<option value="activity">活动</option>
+													<option value="blog">博客</option>
+													<!--
+													<option value="qa">问答</option>
+													<option value="vote">投票</option>
+													<option value="recruit">招聘信息</option>
+													-->
+													<!--
+													<option value="idea">想法</option>
+													<option value="share">分享</option>
+													-->
+												</select>
+												<input type="text" name="query" class="text_field search_input" size="20" />
+												<input type="submit" value="搜索" class="button" />
+											<% end %>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div>
+				<div class="float_l" id="func_list_container">
+					<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FAFFE7" do %>
+						<ul id="func_list">
+							<li style="list-style-image: url(/images/index/calendar_icon.png);"><a href="/activities">活动</a></li>
+							<li style="list-style-image: url(/images/index/pic_icon.png);"><a href="/albums">照片</a></li>
+							<li style="list-style-image: url(/images/index/blog_icon.png);"><a href="/blogs">博客</a></li>
+							<!--
+							<li style="list-style-image: url(/images/index/qa_icon.png);"><a href="#">问答</a></li>
+							<li style="list-style-image: url(/images/index/vote_icon.png);"><a href="#">投票</a></li>
+							<li style="list-style-image: url(/images/index/recruit_icon.png);"><a href="#">招聘信息</a></li>
+							-->
+							<!--
+							<li style="list-style-image: url(/images/index/idea_icon.png);"><a href="#">想法</a></li>
+							<li style="list-style-image: url(/images/index/learn_icon.png);"><a href="#">学习</a></li>
+							<li style="list-style-image: url(/images/index/share_icon.png);"><a href="#">分享</a></li>
+							<li style="list-style-image: url(/images/index/label_icon.png);"><a href="#">标签</a></li>
+							-->
+						</ul>
+					<% end %>
+				</div>
+				<div class="content_body">
+					<%= yield %>
+				</div>
+				<div class="clear"></div>
+			</div>
+        </div>
+		
+		<%= render :partial => "common/bottom_bar" %>
+		
+    </body>
+</html>
+
+
+
+<script id="interval_loader" src="/community/interval" language="JavaScript" type="text/javascript"></script>
+<script language="JavaScript" type="text/javascript">
+	function refresh_interval_loader(){
+		var interval_loader_element = document.getElementById("interval_loader");
+		var interval_loader_parent = interval_loader_element.parentNode;
+		interval_loader_parent.removeChild(interval_loader_element);
+
+		var new_interval_loader_element = document.createElement("script");
+        new_interval_loader_element.type = "text/javascript";
+        new_interval_loader_element.src = "/community/interval/" + (new Date()).getTime();
+		new_interval_loader_element.id = "interval_loader";
+
+		interval_loader_parent.appendChild(new_interval_loader_element);
+	}
+</script>
+

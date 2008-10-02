@@ -1,0 +1,21 @@
+<%
+	account = master_selector.account
+	account_id = account.id
+	account_nick = account.get_nick
+	account_pic_url = account.get_profile_pic_url
+	
+	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
+
+	account_name = h(account_nick)
+%>
+
+<div class="friend_nick_pic">
+	<div>
+		<a href="#" onclick="update_master(<%= account_id %>, '<%= account_name %>')" title="把圈主转让给 <%= account_name %>">
+			<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+	</div>
+	<div>
+		<a href="#" onclick="update_master(<%= account_id %>, '<%= account_name %>')" title="把圈主转让给 <%= account_name %>" class="account_nick_link">
+			<%= account_name %></a>
+	</div>	
+</div>

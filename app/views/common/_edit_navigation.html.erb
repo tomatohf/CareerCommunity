@@ -1,0 +1,41 @@
+<div class="community_block">
+	<%= unchecked_alert(account_checked && true) %>
+</div>
+
+<div class="community_title">
+	编辑帐号信息与详细资料 ~~~
+</div>
+<div class="community_block">
+	<div>
+		<a href="/accounts">帐号信息</a>
+		<ul>
+			<li><a href="/accounts">修改昵称</a></li>
+			<li><a href="/accounts">修改密码</a></li>
+		</ul>
+	</div>
+	
+	<div>
+		<a href="/profiles/<%= session[:account_id] %>/basic">我的资料</a>
+		<ul>
+			<li><a href="/profiles/<%= session[:account_id] %>/basic">基本信息</a></li>
+			<li><a href="/profiles/<%= session[:account_id] %>/contact">联系信息</a></li>
+			<li><a href="/profiles/<%= session[:account_id] %>/hobby">兴趣爱好</a></li>
+			<li><a href="/profiles/<%= session[:account_id] %>/educations">教育背景</a></li>
+			<li><a href="/profiles/<%= session[:account_id] %>/jobs">职业经历</a></li>
+			<li><a href="/profiles/<%= session[:account_id] %>/pic">照片头像</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="community_title">
+	修改选项和隐私设置 ~~~
+</div>
+<div class="community_block">
+	<div>
+		<a href="#">选项设置</a>
+	</div>
+	
+	<div>
+		<a href="#">隐私设置</a>
+	</div>
+</div>

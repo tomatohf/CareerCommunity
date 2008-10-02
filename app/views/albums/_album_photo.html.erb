@@ -1,0 +1,33 @@
+<% comment_count = PhotoComment.get_count(album_photo.id) %>
+
+<div class="album_photo_item">
+	
+	<div class="album_photo_img">
+		<% photo_show_url = "/photos/#{"show_edit/" if edit}#{album_photo.id}" %>
+		<a href="<%= photo_show_url %>" title="<%= album_photo.title %>">
+			<img src="<%= album_photo.image.url(:thumb_120) %>" border="0" alt="<%= album_photo.title %>" /></a>
+	</div>
+	
+	<% if edit %>
+		<div class="album_photo_info">
+			<a id="setting_album_cover_link_<%= album_photo.id %>" href="#" onclick="set_as_album_cover(<%= album_photo.id %>); return false;">
+				设为封面</a>
+			<a id="setting_account_face_link_<%= album_photo.id %>" href="#" onclick="set_as_account_face(<%= album_photo.id %>); return false;">
+				设为头像</a>
+			<img id="setting_indicator_<%= album_photo.id %>" src="/images/loading_small.gif" style="display: none; position: absolute" />
+		</div>
+		<div class="album_photo_info">
+			<a href="#">删除</a>
+			<a target="_blank" href="/photos/<%= album_photo.id %>/edit">编辑描述</a>
+		</div>
+	<% end %>
+	
+	<div class="album_photo_info">
+		<a target="_blank" href="<%= photo_show_url %>#comment_list">评论(<%= comment_count %>)</a>
+		<!--
+		<a href="#">标签</a>
+		-->
+		<a rel="lightbox[album]" href="<%= album_photo.image.url(:big) %>" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='<%= photo_show_url %>'&gt;查看&lt;/a&gt; &lt;br /&gt; <%= album_photo.title %> &lt;br /&gt;">浏览</a>
+	</div>
+
+</div>

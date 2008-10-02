@@ -1,0 +1,100 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "报名参加活动 #{activity_title} 的申请" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+			
+	</div>
+
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/members_edit/<%= @activity_id %>">返回管理参加活动的成员</a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		
+		<div>
+			点击
+			<a title="批准加入活动" href="#">
+				<img src="/images/groups/approve_small.png" border="0" /></a>
+			批准
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			
+			点击
+			<a title="拒绝" href="#">
+				<img src="/images/groups/reject_small.png" border="0" /></a>
+			拒绝
+		</div>
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		点击
+		<a title="查看其活动出席/缺席情况的统计" href="#">
+			<img src="/images/activities/edit_absent_small.png" border="0" /></a>
+		查看网友的出席/缺席活动的情况的统计
+	</div>
+	
+	
+	<div class="community_title">
+		申请报名参加活动 ~~~
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @unapproved_members.total_entries %></b>
+		人正在等待被批准参加
+	</div>
+	
+	<div class="community_block overflow_hidden">
+		<%= float_list(@unapproved_members, "member", :member, {:can_approve_reject => true}, 6) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@unapproved_members) %>
+	</div>
+	
+</div>
+
+<% form_tag "/activities/#{@activity_id}/approve_member", :method => :post, :id => "approve_member_form" do %>
+	<input type="hidden" id="approve_member_id" name="approve_member_id" />
+<% end %>
+
+<% form_tag "/activities/#{@activity_id}/reject_member", :method => :post, :id => "reject_member_form" do %>
+	<input type="hidden" id="reject_member_id" name="reject_member_id" />
+<% end %>
+
+<script language="JavaScript">
+	function approve_member(account_id) {
+		if(confirm("确定要批准其参加活动么 ?")) {
+			var approve_form = document.getElementById("approve_member_form");
+			document.getElementById("approve_member_id").value = account_id;
+			approve_form.submit();
+		}
+	}
+	
+	function reject_member(account_id) {
+		if(confirm("确定拒绝其参加活动么 ?")) {
+			var reject_form = document.getElementById("reject_member_form");
+			document.getElementById("reject_member_id").value = account_id;
+			reject_form.submit();
+		}
+	}
+</script>
+

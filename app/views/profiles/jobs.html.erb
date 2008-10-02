@@ -1,0 +1,225 @@
+<% community_page_title("更新职业经历") %>
+
+<div class="float_r profile_container_r">
+	<%= render :partial => "common/edit_navigation", :locals => {:account_checked => @account_checked} %>
+</div>
+
+<div class="profile_container_l">
+	<h2>我的资料 - 职业经历</h2>
+	
+	<script language="JavaScript" src="/lib/protopack/protoculous-packer.js"></script>
+
+	<script language="JavaScript">
+		function clear_add_form(){
+			$("job_name").value = "";
+			$("profession_id").value = "";
+			$("enter_year").value = "";
+			$("enter_month").value = "";
+			$("dept").value = "";
+			$("position_title").value = "";
+			$("description").value = "";
+		}
+		
+		function on_job_profile_submit(job_profile_form){
+			$("add_job_profile_btn").disabled = true;
+			Element.show("adding_indicator");
+			
+			new Ajax.Request(
+	            "/profiles/<%= session[:account_id] %>/jobs_add",
+	            {
+                	asynchronous:true,
+	                evalScripts:true,
+	                onComplete:function(request){
+						$("add_job_profile_btn").disabled = <%= @account_limited %>;
+						Element.hide("adding_indicator");
+						Element.remove("no_item_msg");
+					},
+	                //onLoading:function(request){},
+	                parameters:Form.serialize(job_profile_form)
+                }
+	        );
+
+		}
+		
+		function on_job_profile_del_submit(job_profile_del_form_id, indicator_id, delete_icon_id){
+			if(confirm("确定要删除么 ?")){
+				Element.show(indicator_id);
+				Element.hide(delete_icon_id);
+				
+				new Ajax.Request(
+		            "/profiles/jobs_del",
+		            {
+	                	asynchronous:true,
+		                evalScripts:true,
+		                onComplete:function(request){
+							Element.hide(indicator_id);
+							Element.show(delete_icon_id);
+						},
+		                //onLoading:function(request){},
+		                parameters:Form.serialize($(job_profile_del_form_id))
+	                }
+		        );
+			}
+		}
+	</script>
+	
+	<%= render :partial => "edit_profile_nav_bar" %>
+	
+	<br />
+	
+	<div class="community_block">
+		
+		<span id="del_message"></span>
+
+		<table cellpadding="0" cellspacing="10" class="main_part_w">
+			<thead>
+				<tr class="table_header">
+					<th width="17%" scope="col">入职时间</th>
+					<th width="75%" scope="col">详细信息</th>
+					<th width="8%" scope="col">删除</th>
+				</tr>
+			</thead>
+			<tbody id="job_profile_list">
+				<%= render :partial => "job_profile", :collection => @profile %>
+			</tbody>
+		</table>
+		<% unless @profile.size > 0 %>
+			<p class="form_info_l" id="no_item_msg">
+				尚未添加任何职业经历信息 ...
+			</p>
+		<% end %>
+		
+		<%= draw_hor_line("500px") %>
+		<br />
+		
+		<span id="add_message"></span>
+		
+		<% form_tag "", :method => :post, :onsubmit => "on_job_profile_submit(this);return false;" do %>
+			<table cellpadding="0" cellspacing="10" class="main_part_w">
+				<tr>
+					<td>
+						<label for="job_name">
+			                公司或者职业经历名称(<span style="color: red;">*</span>)
+			            </label>
+					</td>
+					<td style="height: 30px">
+						<input type="text" id="job_name" name="job_name" class="text_field" size="30" />
+						&nbsp;
+						<img src="/images/loading_small.gif" id="operating_indicator" style="display: none;" />
+						<div id="job_name_auto_complete" class="auto_complete" style="display: none;" />
+						<script language="JavaScript">
+							var job_name_autocompleter = new Ajax.Autocompleter(
+								"job_name", 
+								"job_name_auto_complete", 
+								"/profiles/auto_complete_for_job_name", 
+								{
+									indicator:"operating_indicator", 
+									select:"select"
+								}
+							);
+							
+							// to fix the firefox Chinese input method issue
+							// firefox can not triggle keypress event when using Chinese input method
+							Event.observe($("job_name"), "keyup", job_name_autocompleter.onKeyPress.bindAsEventListener(job_name_autocompleter));
+						</script>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">例如: "IBM" 或者 "奥运会志愿者"</div></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="profession_id">
+			                所在行业
+			            </label>
+					</td>
+					<td>
+						<select name="profession_id" id="profession_id" class="dropdown_list">
+							<option value=""></option>
+							<% @profession_kinds.each_index do |index| %>
+								<% id = index + 1 %>
+								<option value="<%= id %>"><%= @profession_kinds[index] %></option>
+							<% end %>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="enter_year">
+			                入职时间
+			            </label>
+					</td>
+					<td>
+						<select name="enter_year" id="enter_year" class="dropdown_list">
+							<option value=""></option>
+							<% 1978.upto(2040) do |i| %>
+								<option value="<%= i %>"><%= i %></option>
+							<% end %>
+						</select>
+						&nbsp;
+						年
+						&nbsp;
+						<select name="enter_month" id="enter_month" class="dropdown_list">
+							<option value=""></option>
+							<% 1.upto(12) do |i| %>
+								<option value="<%= i %>"><%= i %></option>
+							<% end %>
+						</select>
+						&nbsp;
+						月
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="dept">
+			                所在部门
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="dept" name="dept" class="text_field" size="30" value="" />
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="position_title">
+			                职位
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="position_title" name="position_title" class="text_field" size="30" value="" />
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="description">
+			                具体描述
+			            </label>
+					</td>
+					<td>
+						<textarea id="description" name="description" class="text_field" cols="30"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">输入承担的职责及取得的成就(1000 字以内)</div></td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= submit_tag "添加职业经历", :id => "add_job_profile_btn", :class => "button", :disabled => @account_limited %>
+						&nbsp;&nbsp;&nbsp;
+						<img src="/images/loading_small.gif" id="adding_indicator" style="display: none" />
+					</td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+</div>
+

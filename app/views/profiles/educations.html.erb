@@ -1,0 +1,179 @@
+<% community_page_title("更新教育背景") %>
+
+<div class="float_r profile_container_r">
+	<%= render :partial => "common/edit_navigation", :locals => {:account_checked => @account_checked} %>
+</div>
+
+<div class="profile_container_l">
+	<h2>我的资料 - 教育背景</h2>
+	
+	<script language="JavaScript" src="/lib/protopack/protoculous-packer.js"></script>
+
+	<script language="JavaScript">
+		function clear_add_form(){
+			$("edu_name").value = "";
+			$("education_id").value = "1";
+			$("enter_year").value = "";
+			$("major").value = "";
+		}
+		
+		function on_edu_profile_submit(edu_profile_form){
+			$("add_edu_profile_btn").disabled = true;
+			Element.show("adding_indicator");
+			
+			new Ajax.Request(
+	            "/profiles/<%= session[:account_id] %>/educations_add",
+	            {
+                	asynchronous:true,
+	                evalScripts:true,
+	                onComplete:function(request){
+						$("add_edu_profile_btn").disabled = <%= @account_limited %>;
+						Element.hide("adding_indicator");
+						Element.remove("no_item_msg");
+					},
+	                //onLoading:function(request){},
+	                parameters:Form.serialize(edu_profile_form)
+                }
+	        );
+
+		}
+		
+		function on_edu_profile_del_submit(edu_profile_del_form_id, indicator_id, delete_icon_id){
+			if(confirm("确定要删除么 ?")){
+				Element.show(indicator_id);
+				Element.hide(delete_icon_id);
+				
+				new Ajax.Request(
+		            "/profiles/educations_del",
+		            {
+	                	asynchronous:true,
+		                evalScripts:true,
+		                onComplete:function(request){
+							Element.hide(indicator_id);
+							Element.show(delete_icon_id);
+						},
+		                //onLoading:function(request){},
+		                parameters:Form.serialize($(edu_profile_del_form_id))
+	                }
+		        );
+			}
+		}
+	</script>
+	
+	<%= render :partial => "edit_profile_nav_bar" %>
+	
+	<br />
+	
+	<div class="community_block">
+		
+		<span id="del_message"></span>
+
+		<table cellpadding="0" cellspacing="10" class="main_part_w">
+			<thead>
+				<tr class="table_header">
+					<td width="15%"></td>
+					<th width="7%" scope="col">入学</th>
+					<th width="45%" scope="col">学校或者教育培训名称</th>
+					<th width="25%" scope="col">专业或者班级</th>
+					<th width="8%" scope="col">删除</th>
+				</tr>
+			</thead>
+			<tbody id="edu_profile_list">
+				<%= render :partial => "edu_profile", :collection => @profile %>
+			</tbody>
+		</table>
+		<% unless @profile.size > 0 %>
+			<p class="form_info_l" id="no_item_msg">
+				尚未添加任何教育背景信息 ...
+			</p>
+		<% end %>
+		
+		<%= draw_hor_line("500px") %>
+		<br />
+		
+		<span id="add_message"></span>
+		
+		<% form_tag "", :method => :post, :onsubmit => "on_edu_profile_submit(this);return false;" do %>
+			<table cellpadding="0" cellspacing="10" class="main_part_w">
+				<tr>
+					<td>
+						<label for="edu_name">
+			                学校或者教育培训名称(<span style="color: red;">*</span>)
+			            </label>
+					</td>
+					<td style="height: 30px">
+						<input type="text" id="edu_name" name="edu_name" class="text_field" size="30" />
+						&nbsp;
+						<img src="/images/loading_small.gif" id="operating_indicator" style="display: none;" />
+						<div id="edu_name_auto_complete" class="auto_complete" style="display: none;" />
+						<script language="JavaScript">
+							var edu_name_autocompleter = new Ajax.Autocompleter(
+								"edu_name", 
+								"edu_name_auto_complete", 
+								"/profiles/auto_complete_for_edu_name", 
+								{
+									indicator:"operating_indicator", 
+									select:"select"
+								}
+							);
+							
+							// to fix the firefox Chinese input method issue
+							// firefox can not triggle keypress event when using Chinese input method
+							Event.observe($("edu_name"), "keyup", edu_name_autocompleter.onKeyPress.bindAsEventListener(edu_name_autocompleter));
+						</script>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">例如: "上海交通大学" 或者 "注册会计师(CPA)"</div></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="education_id">
+			                学历 和 入学年份
+			            </label>
+					</td>
+					<td>
+						<select name="education_id" id="education_id" class="dropdown_list">
+							<% @education_levels.each_index do |index| %>
+								<% id = index + 1 %>
+								<option value="<%= id %>"><%= @education_levels[index] %></option>
+							<% end %>
+						</select>
+						&nbsp;&nbsp;&nbsp;
+						<select name="enter_year" id="enter_year" class="dropdown_list">
+							<option value=""></option>
+							<% 1978.upto(2040) do |i| %>
+								<option value="<%= i %>"><%= i %></option>
+							<% end %>
+						</select>
+						&nbsp;
+						年
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="major">
+			                所在专业或班级名称
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="major" name="major" class="text_field" size="30" value="" />
+					</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= submit_tag "添加教育背景", :id => "add_edu_profile_btn", :class => "button", :disabled => @account_limited %>
+						&nbsp;&nbsp;&nbsp;
+						<img src="/images/loading_small.gif" id="adding_indicator" style="display: none" />
+					</td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+</div>
+

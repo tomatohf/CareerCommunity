@@ -1,0 +1,5 @@
+<div class="album_photo_for_face">
+	<% img_src = album_photo_for_face.image.url(:thumb_48) %>
+	<a href="#current_pic_label" title="点击设为头像" onclick="on_photo_selected(<%= album_photo_for_face.id %>, '<%= img_src %>');">
+		<img src="<%= img_src %>" border="0" /></a>
+</div>

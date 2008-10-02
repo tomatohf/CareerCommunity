@@ -1,0 +1,29 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "退出圈子 #{group_name}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+	</div>
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<p class="error_msg">
+		圈主无法退出圈子
+	</p>
+	
+	<p>
+		请先 <a href="/groups/<%= @group_id %>/edit_master">转让圈主</a> 给其他圈子成员后, 再退出圈子 ...
+	</p>
+</div
+

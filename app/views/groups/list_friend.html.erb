@@ -1,0 +1,79 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的朋友的圈子近况" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r friend_container_r">
+	<% if @edit %>
+		<div class="community_block">
+			<a href="/spaces/show_edit/<%= @owner_id %>">我的空间</a>
+		</div>
+	<% else %>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		</div>
+	<% end %>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<% unless @edit %>
+		<div class="community_block">
+			<a href="/groups/list/<%= @owner_id %>">
+				<%= owner_name %> 参加的圈子
+			</a>
+		</div>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+	<% end %>
+	
+	
+	<div class="community_title">
+		去朋友列表 ~~~
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/<%= @edit? "list_edit" : "list" %>/<%= @owner_id %>">» <%= owner_name %> 的朋友</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/<%= @edit? "be_list_edit" : "be_list" %>/<%= @owner_id %>">» 谁把 <%= owner_name %> 加为朋友了</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/<%= @edit? "both_list_edit" : "both_list" %>/<%= @owner_id %>">» <%= owner_name %> 的伙伴</a>
+		<div class="form_info_l">
+			互相将对方加为了朋友
+		</div>
+	</div>
+	
+</div>
+
+<div class="friend_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+		<% if @edit %>
+			<%= render :partial => "group_list_nav_bar" %>
+			
+			<br />
+		<% end %>
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		看哪位朋友的圈子近况
+	</div>
+	
+	<div class="community_block overflow_hidden">
+		<%= float_list(@friends, "friend_selector", :friend_selector, {}, 7) %>
+	</div>
+	
+</div>
+

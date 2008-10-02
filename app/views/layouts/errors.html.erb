@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+        <title>出错啦 - 乔布圈</title>
+		
+		<style>
+			body {
+				font-family: Arial,Helvetica,sans-serif;
+				font-size: 90%;
+				line-height: 150%;
+			
+				margin: 150px auto;
+				max-width: 500px;
+
+				padding: 0px;
+			}
+			
+			.container {
+				padding: 10px
+			}
+		</style>
+    </head>
+    <body>
+    	
+		<p>
+			<a href="/community">
+				<img src="/images/index/qiaobuquan.png" border="0" alt="乔布圈" />
+			</a>
+		</p>
+
+    	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8" do %>
+			<div class="container">
+				<%= yield %>
+			</div>
+		<% end %>
+
+    </body>
+</html>

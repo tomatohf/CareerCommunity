@@ -1,0 +1,121 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{h(@blog.title)}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	<div class="community_title">
+		<%= owner_name %> 的博客 ~~~
+	</div>
+	
+	<% if @edit %>
+		<div class="community_block">
+			<a href="/blogs/new"><h2>+ 写新文章</h2></a>
+		</div>
+	<% else %>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @blog.account_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @blog.account_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		</div>
+	<% end %>
+
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+
+	<div class="community_block">
+		<a href="/blogs/list/<%= @blog.account_id %>">返回 <%= owner_name %> 的博客列表</a>
+	</div>
+	
+	
+	<!--
+	<div class="community_title">
+		订阅 (RSS/Feed) ~~~
+	</div>
+	
+	<div class="community_block">
+		
+	</div>
+	-->
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	<% form_tag "/blogs/#{@blog.id}", :method => :delete, :id => "blog_delete_form" do %>
+	<% end %>
+	
+	<div class="community_block form_info_s">
+		发表于
+		<%= format_datetime(@blog.created_at) %>
+	</div>
+	
+	<div>
+		<%= sanitize_tinymce(@blog.content) %>
+	</div>
+	
+	<div class="community_block form_info_s">
+		最后更新于
+		<%= format_datetime(@blog.updated_at) %>
+	</div>
+	
+	<% if @edit %>
+		<div class="community_block_narrow">
+			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('blog_delete_form').submit();}; return false;">删除</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="/blogs/<%= @blog.id %>/edit">修改</a>
+		</div>
+	<% end %>
+	
+	<div class="community_title">
+		共有
+		<b>
+			<%= @blog_comments.total_entries %>
+		</b>
+		条<a id="comment_list">评论</a> ~~~
+	</div>
+	
+	<% if @edit %>
+		<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
+			<input type="hidden" name="e" value="<%= true if @edit %>" />
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_comment(comment_id) {
+				if(confirm("确定要删除评论么 ?")) {
+					del_form = document.getElementById("delete_comment_form");
+					del_form.action = "/blogs/delete_comment/" + comment_id;
+					del_form.submit();
+				}
+			}
+		</script>
+	<% end %>
+	
+	<div class="community_block_narrow align_r">
+		<a href="#comment_new">添加评论</a>
+	</div>
+
+	<div class="community_block">
+		<%= render(:partial => "/common/comment", :collection => @blog_comments, :locals => {:can_del => @edit}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@blog_comments) %>
+	</div>
+	
+	<div class="community_block_narrow">
+		<a id="comment_new">添加评论 »</a>
+		<% form_tag "/blogs/#{@blog.id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('blog_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
+			<textarea id="blog_comment" name="blog_comment" class="text_field" cols="50" rows="5"></textarea>
+			
+			<div>
+				<input type="hidden" name="e" value="<%= true if @edit %>" />
+				<input type="submit" value="发表评论" class="button" />
+			</div>
+		<% end %>
+	</div>
+</div>

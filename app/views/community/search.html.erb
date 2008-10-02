@@ -1,0 +1,110 @@
+<% community_page_title("搜索乔布圈") %>
+
+<div class="float_r blog_container_r">
+	<div class="community_title">
+		其他搜索范围 ~~~
+	</div>
+
+	<%
+		search_scopes = {
+			:all => "全部",
+			:account => "成员",
+			:group => "圈子",
+			:activity => "活动",
+			:blog => "博客"
+			# ,
+			# :qa => "问答",
+			# :vote => "投票",
+			# :recruit => "招聘信息"
+		}
+	%>
+	<div class="community_block">
+		<ul>
+			<% search_scopes.each do |key, value| %>
+				<li>
+					<a href="#" onclick="submit_search_form('<%= key %>'); return false;"<%= " class=\"link_selected\"" if @scope == key.to_s %>>
+						<%= value %></a>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+	
+</div>
+
+<div class="blog_container_l">
+	<h2>搜索乔布圈</h2>
+	
+	<div class="community_block">
+		<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :class => "community_block align_c" do %>
+			<% form_tag "/community/search", :method => :get, :id => "search_form" do %>
+				<select name="scope" class="dropdown_list" id="scope_select">
+					<option value="all"<%= " selected=\"selected\"" if @scope == "all" %>>全部</option>
+					<option value="account"<%= " selected=\"selected\"" if @scope == "account" %>>成员</option>
+					<option value="group"<%= " selected=\"selected\"" if @scope == "group" %>>圈子</option>
+					<option value="activity"<%= " selected=\"selected\"" if @scope == "activity" %>>活动</option>
+					<option value="blog"<%= " selected=\"selected\"" if @scope == "blog" %>>博客</option>
+					<!--
+					<option value="qa"<%= " selected=\"selected\"" if @scope == "qa" %>>问答</option>
+					<option value="vote"<%= " selected=\"selected\"" if @scope == "vote" %>>投票</option>
+					<option value="recruit"<%= " selected=\"selected\"" if @scope == "recruit" %>>招聘信息</option>
+					-->
+					<!--
+					<option value="idea"<%= " selected=\"selected\"" if @scope == "idea" %>>想法</option>
+					<option value="share"<%= " selected=\"selected\"" if @scope == "share" %>>分享</option>
+					-->
+				</select>
+				<input type="text" name="query" id="query_input" class="text_field search_input" size="35" value="<%= @query %>" />
+				<input type="submit" value="搜索" class="button" />
+				
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="#">帮助</a>
+			<% end %>
+		<% end %>
+	</div>
+
+	<div class="community_block">
+		<% @results.each do |blog| %>
+			<div>
+				<div>
+					<h2>
+						<a href="/blogs/<%= blog.id %>">
+							<%= blog.title %>
+						</a>
+					</h2>
+				</div>
+				
+				<div>
+					<%= format_datetime(blog.created_at) %>
+				</div>
+				
+				<div>
+					<%= blog.content %>
+				</div>
+			</div>
+		
+			<div>
+				<hr />
+			</div>
+		<% end %>
+	</div>
+	
+</div>
+
+
+
+<script language="JavaScript" type="text/javascript">
+	function submit_search_form(scope){
+		var scope_form = document.getElementById("search_form");
+		var scope_select = document.getElementById("scope_select");
+		for(var i = 0; i < scope_select.options.length; i++){
+			var option = scope_select.options[i];
+			if(option.value == scope){
+				option.selected = true;
+				break;
+			}
+		}
+		document.getElementById("query_input").value = "<%= @query %>";
+		scope_form.submit();
+	}
+</script>
+

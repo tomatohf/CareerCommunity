@@ -1,0 +1,72 @@
+<% community_page_title("我收到的通知") %>
+
+<div class="float_r friend_container_r">
+	
+	<div class="community_title">
+		去我的朋友列表 ~~~
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/list_edit/<%= @account_id %>">» 我的朋友</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/be_list_edit/<%= @account_id %>">» 谁把我加为朋友了</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/both_list_edit/<%= @account_id %>">» 我的伙伴</a>
+		<div class="form_info_l">
+			互相将对方加为了朋友
+		</div>
+	</div>
+</div>
+
+<div class="friend_container_l">
+	<h2>我收到的通知</h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共收到
+		<b>
+			<%= @messages.total_entries %>
+		</b>
+		条通知
+	</div>
+	
+	<%= render :partial => "msg_nav_bar", :locals => {:account_id => @account_id, :selected => 3, :unread_inbox_count => @unread_inbox_count, :unread_sys_count => @unread_sys_count} %>
+	
+	
+	<div class="community_block">
+		<% need_save_msg_id = [] %>
+		
+		<% @messages.each do |message| %>
+			<div class="<%= message.has_read ? "account_action_item" : "unread_account_action_item" %>">
+				<div>
+					<%= eval(message.msg_text(message.account_id)) %>
+				</div>
+				
+				<div class="form_info_s account_action_datetime">
+					<%= format_datetime(message.created_at) %>
+				</div>
+			</div>
+			
+			<% need_save_msg_id << message.id unless message.has_read %>
+		<% end %>
+		
+		<%
+			# clear unread ...
+
+			need_save_msg_size = need_save_msg_id.size
+			if need_save_msg_size > 0
+				SysMessage.update_all(["has_read = ?", true], ["id in (?)", need_save_msg_id])
+				SysMessage.decrease_unread_count_cache(@account_id, need_save_msg_size)
+			end
+		%>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@messages) %>
+	</div>
+	
+</div>
+

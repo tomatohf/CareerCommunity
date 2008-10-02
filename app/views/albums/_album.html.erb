@@ -1,0 +1,28 @@
+<div class="album_item">
+	<div class="album_img">
+		<% album_show_url = "/albums/#{"show_edit/" if edit}#{album.id}" %>
+		<a href="<%= album_show_url %>">
+			<img src="<%= album.get_cover_photo_img_src_and_set_cache(:thumb_200) %>" border="0" /></a>
+	</div>
+	
+	<div class="album_title">
+		<a href="<%= album_show_url %>">
+			<%= h(album.name) %></a>
+	</div>
+	
+	<div class="album_info">
+		<div class="form_info_s">
+			<%= truncate(h(album.description), 40) %>
+		</div>
+		<div class="form_info_s">
+			<i><%= format_date(album.created_at) %></i>
+			创建
+		</div>
+		
+		<% if edit %>
+			<a href="/albums/<%= album.id %>/upload">添加照片</a>
+			<a href="/albums/<%= album.id %>/edit">删除</a>
+			<a href="/albums/<%= album.id %>/edit">修改</a>
+		<% end %>
+	</div>
+</div>

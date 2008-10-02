@@ -1,0 +1,266 @@
+<% owner_name = @edit ? "我" : h(@account_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的详细资料" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r profile_container_r">
+	<div class="community_block">
+		<a href="/spaces/<%= @edit ? "resume_edit" : "resume" %>/<%= @account_id %>"><%= owner_name %> 的简历</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/spaces/<%= @edit ? "show_edit" : "show" %>/<%= @account_id %>"><%= owner_name %> 的空间</a>
+	</div>
+</div>
+
+<div class="profile_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+		<a href="/spaces/<%= @edit ? "show_edit" : "show" %>/<%= @account_id %>">
+			<img src="<%= face_img_src(@account_nick_pic[1]) %>" border="0" /></a>
+	</div>
+	<div class="community_block">
+		<a href="/spaces/<%= @edit ? "show_edit" : "show" %>/<%= @account_id %>" class="account_nick_link">
+			<%= h(@account_nick_pic[0]) %></a>
+	</div>
+
+	<div class="community_title">
+		基本信息 ~~~
+	</div>
+	<div class="community_block">
+		<% if @edit %>
+			<a href="/profiles/<%= @account_id %>/basic">编辑我的基本信息</a>
+		<% end %>
+		
+		<% if @basic_profile %>
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<tr>
+					<td style="width: 100px"></td>
+					<td></td>
+				</tr>
+				<% if @basic_profile.real_name && @basic_profile.real_name != "" %>
+					<tr>
+						<td>
+			                真实姓名:
+						</td>
+						<td>
+							<%= h(@basic_profile.real_name) %>
+						</td>
+					</tr>
+				<% end %>
+				
+				<% unless @basic_profile.gender.nil? %>
+					<tr>
+						<td>
+			                性别:
+						</td>
+						<td>
+							<%= @basic_profile.gender ? "男" : "女" %>
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @basic_profile.birthday %>
+					<tr>
+						<td>
+			                生日:
+						</td>
+						<td>
+							<%= format_date(@basic_profile.birthday) %>
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @province_name || @city_name %>
+					<tr>
+						<td>
+			                所在城市:
+						</td>
+						<td>
+							<%= @province_name %> &nbsp; <%= @city_name %>
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @hometown_province_name || @hometown_city_name %>
+					<tr>
+						<td>
+			                家乡:
+						</td>
+						<td>
+							<%= @hometown_province_name %> &nbsp; <%= @hometown_city_name %>
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @basic_profile.qmd && @basic_profile.qmd != "" %>
+					<tr>
+						<td>
+			                签名档:
+						</td>
+						<td>
+							<%= simple_format(h(@basic_profile.qmd)) %>
+						</td>
+					</tr>
+				<% end %>
+			</table>
+		<% end %>
+	</div>
+	
+	
+	
+	<div class="community_title">
+		联系信息 ~~~
+	</div>
+	<div class="community_block">
+		<% if @edit %>
+			<a href="/profiles/<%= @account_id %>/contact">编辑我的联系信息</a>
+		<% end %>
+		
+		<% if @contact_profile %>
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<tr>
+					<td style="width: 100px"></td>
+					<td></td>
+				</tr>
+				<% if @contact_profile.msn && @contact_profile.msn != "" %>
+					<tr>
+						<td>
+			                MSN
+						</td>
+						<td>
+							**********
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @contact_profile.gtalk && @contact_profile.gtalk != "" %>
+					<tr>
+						<td>
+			                gTalk
+						</td>
+						<td>
+							**********
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @contact_profile.qq && @contact_profile.qq != "" %>
+					<tr>
+						<td>
+			                QQ
+						</td>
+						<td>
+							**********
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @contact_profile.skype && @contact_profile.skype != "" %>
+					<tr>
+						<td>
+			                Skype
+						</td>
+						<td>
+							**********
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @contact_profile.mobile && @contact_profile.mobile != "" %>
+					<tr>
+						<td>
+			                手机:
+						</td>
+						<td>
+							***********
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @contact_profile.phone && @contact_profile.phone != "" %>
+					<tr>
+						<td>
+			                电话:
+						</td>
+						<td>
+							************
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @contact_profile.address && @contact_profile.address != "" %>
+					<tr>
+						<td>
+			                地址:
+						</td>
+						<td>
+							**********************
+						</td>
+					</tr>
+				<% end %>
+				
+				<% if @contact_profile.website && @contact_profile.website != "" %>
+					<tr>
+						<td>
+			                个人网址:
+						</td>
+						<td>
+							<%= h(@contact_profile.website) %>
+						</td>
+					</tr>
+				<% end %>
+			</table>
+		<% end %>
+	</div>
+	
+	
+	
+	<div class="community_title">
+		兴趣爱好 ~~~
+	</div>
+	<div class="community_block">
+		<% if @edit %>
+			<a href="/profiles/<%= @account_id %>/hobby">编辑我的兴趣爱好</a>
+		<% end %>
+		
+		<% if @hobby_profile %>
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<tr>
+					<td style="width: 100px"></td>
+					<td></td>
+				</tr>
+				
+				<% [
+					["自我介绍", "intro"],
+					["兴趣", "interest"],
+					["喜欢的音乐", "music"],
+					["喜欢的电影", "movie"],
+					["喜欢的动漫", "cartoon"],
+					["喜欢的游戏", "game"],
+					["喜欢的运动", "sport"],
+					["喜欢的书籍", "book"],
+					["喜欢的言语", "words"],
+					["喜欢的食物", "food"],
+					["喜欢的偶像", "idol"],
+					["喜欢的车", "car"],
+					["喜欢的地方", "place"]
+					].each do |hobby| %>
+					
+					<% hobby_value = @hobby_profile.send(hobby[1]) %>
+					<% if hobby_value && hobby_value != "" %>
+						<tr>
+							<td>
+				                <%= hobby[0] %>:
+							</td>
+							<td>
+								<%= simple_format(h(hobby_value)) %>
+							</td>
+						</tr>
+					<% end %>
+				<% end %>
+			</table>
+		<% end %>
+	</div>
+</div>

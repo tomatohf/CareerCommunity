@@ -1,0 +1,142 @@
+<% type_name = h(@type_name) %>
+<% pluralized_post_type = @post_type.pluralize %>
+<% poster_name = h(@poster_nick_pic[0]) %>
+
+<% page_title = "#{h(@post.title)}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	<div class="community_title">
+		<%= @type_label %> ~~~
+	</div>
+	
+	<div class="community_block">
+		<a href="/<%= pluralized_post_type %>/<%= @type_id %>">
+			<img src="<%= face_img_src(@type_image) %>" border="0" /></a>
+	</div>
+
+	<div class="community_block">
+		<a href="/<%= pluralized_post_type %>/<%= @type_id %>">返回<%= @type_label %> <%= type_name %></a>
+	</div>
+	
+	<% if @access.include?(:member) %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+	
+		<div class="community_block">
+			<a href="/group/posts/compose/<%= @type_id %>">
+				<img src="/images/groups/add_post_small.png" border="0" />
+				发表新的讨论话题</a>
+		</div>
+	<% end %>
+	
+	<div class="community_title">
+		发起的其他话题 ~~~
+	</div>
+
+	<div class="community_block">
+		<% @other_posts.each do |op| %>
+			<div>
+				» <a href="/<%= @post_type %>/posts/<%= op.id %>" class="account_nick_link"><%= h(op.title) %></a>
+			</div>
+			<div style="height: 10px;"></div>
+		<% end %>
+	</div>
+	
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block form_info_s">
+		<a href="/spaces/show/<%= @post.account_id %>">
+			<img src="<%= face_img_src(@poster_nick_pic[1]) %>" border="0" /></a>
+		&nbsp;&nbsp;&nbsp;
+		<a href="/spaces/show/<%= @post.account_id %>" class="account_nick_link">
+			<%= poster_name %></a>
+		&nbsp;&nbsp;&nbsp;
+		发表于
+		<%= format_datetime(@post.created_at) %>
+	</div>
+	
+	<div style="margin-top: 10px;">
+		<%= sanitize_tinymce(@post.content) %>
+	</div>
+	
+	<div class="community_block form_info_s">
+		最后更新于
+		<%= format_datetime(@post.updated_at) %>
+	</div>
+	
+	<% if @access.include?(:admin) %>
+		<% form_tag "/#{@post_type}/posts/#{@post_id}", :method => :delete, :id => "post_delete_form" do %>
+		<% end %>
+		
+		<% top_action = @post.top ? "untop" : "top" %>
+		<% form_tag "/#{@post_type}/posts/#{@post_id}/#{top_action}", :method => :post, :id => "adjust_top_form" do %>
+		<% end %>
+	
+		<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_comment(comment_id) {
+				if(confirm("确定要删除么 ?")) {
+					del_form = document.getElementById("delete_comment_form");
+					del_form.action = "/<%= @post_type %>/posts/" + comment_id + "/delete_comment";
+					del_form.submit();
+				}
+			}
+		</script>
+	<% end %>
+	
+	<div class="community_block_narrow">
+		<% if @access.include?(:author) %>
+			<a href="/<%= @post_type %>/posts/<%= @post_id %>/edit">修改</a>
+		<% end %>
+		
+		<% if @access.include?(:admin) %>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('post_delete_form').submit();}; return false;">删除</a>
+
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#" onclick="document.getElementById('adjust_top_form').submit(); return false;"><%= @post.top ? "取消置顶" : "置顶" %></a>
+		<% end %>
+	</div>
+	
+	<div class="community_title">
+		共有
+		<b>
+			<%= @comments.total_entries %>
+		</b>
+		条<a id="comment_list">评论</a> ~~~
+	</div>
+	
+	<% if @access.include?(:member) %>
+		<div class="community_block_narrow align_r">
+			<a href="#comment_new">添加评论</a>
+		</div>
+	<% end %>
+	
+	<div class="community_block">
+		<%= render(:partial => "/common/comment", :collection => @comments, :locals => {:can_del => @access.include?(:admin)}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@comments) %>
+	</div>
+	
+	<% if @access.include?(:member) %>
+		<div class="community_block_narrow">
+			<a id="comment_new">添加评论 »</a>
+			<% form_tag "/#{@post_type}/posts/#{@post_id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('post_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
+				<textarea id="post_comment" name="post_comment" class="text_field" cols="50" rows="5"></textarea>
+				
+				<div>
+					<input type="submit" value="发表评论" class="button" />
+				</div>
+			<% end %>
+		</div>
+	<% end %>
+</div>

@@ -1,0 +1,37 @@
+<%
+	receiver_id = out_message.receiver_id
+	receiver_nick = out_message.receiver.get_nick
+	receiver_pic_url = out_message.receiver.get_profile_pic_url
+	Account.set_account_nick_pic_cache(receiver_id, receiver_nick, receiver_pic_url, out_message.receiver.email)
+
+	reply_to_id = out_message.reply_to_id
+%>
+
+<div class="message_container">
+	<div class="message_content">
+		<a href="/spaces/show/<%= receiver_id %>">
+			<img class="float_l" src="<%= face_img_src(receiver_pic_url) %>" border="0" /></a>
+		<%= truncate(h(out_message.content), 200) %>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="/messages/thread/<%= out_message.sender_id %>/<%= receiver_id %>/<%= reply_to_id %>">展开</a>
+	</div>
+		
+	<div class="message_info form_info_s">
+		<span class="float_r">
+			<a href="#" onclick="delete_out_message(<%= out_message.id %>); return false;">删除</a>
+			&nbsp;&nbsp;
+			<a href="/messages/thread/<%= out_message.sender_id %>/<%= receiver_id %>/<%= reply_to_id %>">查看消息和回复</a>
+			&nbsp;&nbsp;
+			<%= format_datetime(out_message.created_at) %>
+		</span>
+	
+		发送给
+		<a href="/spaces/show/<%= receiver_id %>" class="account_nick_link">
+			<%= h(receiver_nick) %></a>
+	</div>
+</div>
+
+<div class="community_block_narrow">
+	<%= thin_hr %>
+</div>
+

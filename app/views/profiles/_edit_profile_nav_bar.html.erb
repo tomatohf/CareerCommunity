@@ -1,0 +1,15 @@
+<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8" do %>
+	<div class="profile_edit_section_nav">
+		<% [
+			["basic", "基本信息"],
+			["contact", "联系信息"],
+			["hobby", "兴趣爱好"],
+			["educations", "教育背景"],
+			["jobs", "职业经历"],
+			["pic", "照片头像"]
+			].each do |p| %>
+				<a href="/profiles/<%= session[:account_id] %>/<%= p[0] %>"<%= "class=\"link_selected\"" if p[0] == action_name %>><%= p[1] %></a>
+		<% end %>
+		<a target="_blank" href="/spaces/resume_edit/<%= session[:account_id] %>">生成简历</a>
+	</div>
+<% end %>

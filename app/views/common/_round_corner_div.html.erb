@@ -1,0 +1,72 @@
+<% content ||= "" %>
+<% border_color = attr.delete(:border_color) %>
+<% bg_color = attr.delete(:bg_color) %>
+<% attr[:id] ||= "#{border_color}_#{bg_color}".gsub("#", "") %>
+
+<% round_corner1 = "rc1_#{attr[:id]}" %>
+<% round_corner2 = "rc2_#{attr[:id]}" %>
+<% round_corner3 = "rc3_#{attr[:id]}" %>
+<% round_corner_content = "rcc_#{attr[:id]}" %>
+
+<% root_div_attr = attr.to_a.collect{|k_v| "#{k_v[0]}=\"#{k_v[1]}\"" }.join(" ") %>
+
+<div <%= root_div_attr %>>
+	
+	<style>
+		.<%= round_corner1 %> {
+			background: <%= border_color %> none repeat scroll 0%;
+			border-left: 1px solid <%= border_color %>;
+			border-right: 1px solid <%= border_color %>;
+			height: 1px;
+			margin: 0pt 2px;
+			overflow: hidden;
+		}
+		
+		.<%= round_corner2 %> {
+			background: <%= border_color %> none repeat scroll 0%;
+			border-left: 1px solid <%= border_color %>;
+			border-right: 1px solid <%= border_color %>;
+			height: 1px;
+			margin: 0pt 1px;
+			overflow: hidden;
+		}
+		
+		.<%= round_corner3 %> {
+			background: <%= bg_color %> none repeat scroll 0%;
+			border-left: 1px solid <%= border_color %>;
+			border-right: 1px solid <%= border_color %>;
+			height: 1px;
+			overflow: hidden;
+		}
+		
+		.<%= round_corner_content %> {
+			background-color: <%= bg_color %>;
+			border-left: 1px solid <%= border_color %>;
+			border-right: 1px solid <%= border_color %>;
+		}
+	</style>
+	
+	<div class="<%= round_corner1 %>"></div>
+	
+	<div class="<%= round_corner2 %>">
+		<div class="<%= round_corner3 %>"></div>
+	</div>
+	
+	<div class="<%= round_corner3 %>">
+		<div class="<%= round_corner3 %>"></div>
+	</div>
+	
+	<div class="<%= round_corner_content %>">
+		<%= content %>
+	</div>
+	
+	<div class="<%= round_corner3 %>">
+		<div class="<%= round_corner3 %>"></div>
+	</div>
+	
+	<div class="<%= round_corner2 %>">
+		<div class="<%= round_corner3 %>"></div>
+	</div>
+	
+	<div class="<%= round_corner1 %>"></div>
+</div>

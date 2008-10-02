@@ -1,0 +1,18 @@
+<div class="linked_photo_for_select">
+	<table cellpadding="0" cellspacing="0" class="main_part_w">
+		<tr>
+			<td>
+				<a href="#" onclick="var checked = $('photo_id_<%= photo_for_select.id %>').checked; $('photo_id_<%= photo_for_select.id %>').checked = !checked; return false;">
+					<img src="<%= photo_for_select.image.url(:thumb_48) %>" border="0" /></a>
+			</td>
+			
+			<td>
+				<div class="ext_link_small">
+					<a href="/photos/<%= photo_for_select.id %>" target="_blank" title="查看照片">
+						<img src="/images/ext_link_small.gif" border="0" /></a>
+				</div>
+				<input type="checkbox" id="photo_id_<%= photo_for_select.id %>" name="photo_ids[]" value="<%= photo_for_select.id %>" />
+			</td>
+		</tr>
+	</table>
+</div>

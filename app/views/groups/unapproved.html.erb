@@ -1,0 +1,97 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "加入圈子 #{group_name} 的申请" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+			
+	</div>
+
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/members_edit/<%= @group_id %>">返回管理圈子成员</a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		点击
+		<a title="批准加入圈子" href="#">
+			<img src="/images/groups/approve_small.png" border="0" /></a>
+		批准
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+		点击
+		<a title="拒绝" href="#">
+			<img src="/images/groups/reject_small.png" border="0" /></a>
+		拒绝
+	</div>
+	
+	<% if false %>
+	<br />
+	<div class="community_block_narrow">
+		<% form_tag "/groups/#{@group_id}/approve_all", :method => :post, :onsubmit => "if(!confirm('确定要一次性批准全部加入圈子的申请么 ?')){ return false; }" do %>
+			或者
+			<input type="submit" value="一次性批准全部申请" class="button" />
+		<% end %>
+	</div>
+	<% end %>
+	
+	
+	<div class="community_title">
+		申请加入圈子 ~~~
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @unapproved_members.total_entries %></b>
+		人正在等待被批准加入
+	</div>
+	
+	<div class="community_block overflow_hidden">
+		<%= float_list(@unapproved_members, "member", :member, {:can_approve_reject => true}, 6) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@unapproved_members) %>
+	</div>
+	
+</div>
+
+<% form_tag "/groups/#{@group_id}/approve_member", :method => :post, :id => "approve_member_form" do %>
+	<input type="hidden" id="approve_member_id" name="approve_member_id" />
+<% end %>
+
+<% form_tag "/groups/#{@group_id}/reject_member", :method => :post, :id => "reject_member_form" do %>
+	<input type="hidden" id="reject_member_id" name="reject_member_id" />
+<% end %>
+
+<script language="JavaScript">
+	function approve_member(account_id) {
+		if(confirm("确定要批准其加入圈子么 ?")) {
+			var approve_form = document.getElementById("approve_member_form");
+			document.getElementById("approve_member_id").value = account_id;
+			approve_form.submit();
+		}
+	}
+	
+	function reject_member(account_id) {
+		if(confirm("确定拒绝其加入圈子么 ?")) {
+			var reject_form = document.getElementById("reject_member_form");
+			document.getElementById("reject_member_id").value = account_id;
+			reject_form.submit();
+		}
+	}
+</script>
+

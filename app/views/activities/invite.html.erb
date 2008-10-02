@@ -1,0 +1,76 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "邀请朋友参加活动 #{activity_title}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+			
+	</div>
+
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/members_edit/<%= @activity_id %>">管理参加活动的成员</a>
+	</div>
+	
+	
+	<div class="community_title">
+		尚未接受的邀请 ~~~
+	</div>
+	
+	<div>
+		<%= float_list(@unaccepted_members, "member", :member, {}, 3) %>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_l">
+		勾选右边的复选框来选中你想邀请的朋友
+	</div>
+	
+	<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+	<% end %>
+	<% if flash[:message] %>
+	    <p class="info_msg"><%= flash[:message] %></p>
+	<% end %>
+	
+	
+	<div class="community_title">
+		选择想邀请的朋友 ~~~
+	</div>
+	
+	<% form_tag "/activities/#{@activity_id}/invite_member", :method => :post do %>
+		<div class="community_block overflow_hidden">
+			<%= float_list(@friends, "/groups/friend", :friend, {}, 6) %>
+		</div>
+		
+		<div class="community_block">
+			<label for="invitation_words">
+				邀请的话 
+				<span class="form_info_s">
+					(100 字以内)
+				</span> :
+			</label>
+		</div>
+		
+		<div class="community_block">
+			<textarea id="invitation_words" name="invitation_words" class="text_field" cols="30" rows="3"></textarea>
+		</div>
+		
+		<div class="community_block">
+			<input type="submit" value="发送邀请" class="button"<%= " disabled=\"true\"" if @account_limited %> />
+		</div>
+	<% end %>
+	
+</div>
+

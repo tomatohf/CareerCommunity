@@ -1,0 +1,105 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "活动 #{activity_title} 的缺席成员" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+	</div>
+			
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+	<div class="community_title">
+		缺席活动的成员 ~~~
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		有
+		<b><%= @absent_members.size %></b>
+		名成员缺席活动
+	</div>
+	
+	<div>
+		<%= float_list(@absent_members, "member", :member, {:can_del_absent => @is_master}, 3) %>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<% if @is_master %>
+		<div class="community_block_narrow form_info_s">
+			点击
+			<a title="设为缺席活动" href="#">
+				<img src="/images/activities/absent_small.png" border="0" /></a>
+			将活动成员添加到缺席活动成员列表
+		</div>
+		<div class="community_block_narrow form_info_s">
+			点击
+			<a title="设为出席活动" href="#">
+				<img src="/images/activities/attend_small.png" border="0" /></a>
+			将活动成员添加到出席活动成员列表
+		</div>
+	<% end %>
+	<div class="community_block_narrow form_info_s">
+		点击
+		<a title="查看其活动出席/缺席情况的统计" href="#">
+			<img src="/images/activities/edit_absent_small.png" border="0" /></a>
+		查看网友的出席/缺席活动的情况的统计
+	</div>
+	
+	
+	<div class="community_title">
+		出席活动的成员 ~~~
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		有
+		<b><%= @attend_members.total_entries %></b>
+		名成员出席活动
+	</div>
+	
+	<div class="community_block overflow_hidden">
+		<%= float_list(@attend_members, "member", :member, {:can_add_absent => @is_master}, 6) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@attend_members) %>
+	</div>
+	
+</div>
+
+<% if @is_master %>
+	<% form_tag "/activities/#{@activity_id}/add_absent", :method => :post, :id => "add_absent_form" do %>
+		<input type="hidden" id="add_absent_id" name="add_absent_id" />
+	<% end %>
+	
+	<% form_tag "/activities/#{@activity_id}/del_absent", :method => :post, :id => "delete_absent_form" do %>
+		<input type="hidden" id="del_absent_id" name="del_absent_id" />
+	<% end %>
+	
+	<script language="JavaScript">
+		function add_absent(account_id) {
+			if(confirm("确定其缺席活动了么 ?")) {
+				var add_form = document.getElementById("add_absent_form");
+				document.getElementById("add_absent_id").value = account_id;
+				add_form.submit();
+			}
+		}
+		
+		function del_absent(account_id) {
+			if(confirm("确定其出席活动了么 ?")) {
+				var del_form = document.getElementById("delete_absent_form");
+				document.getElementById("del_absent_id").value = account_id;
+				del_form.submit();
+			}
+		}
+	</script>
+<% end %>
+

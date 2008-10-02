@@ -1,0 +1,275 @@
+<% page_title = "#{h(@group.name)}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	<div class="community_block align_c">
+		<% face_image_url = @group_image || "" %>
+		<% if face_image_url.include?("thumb_48") %>
+			<img src="<%= face_image_url.gsub("thumb_48", "thumb_200") %>" border="0" />
+		<% else %>
+			<img src="<%= face_img_src(face_image_url) %>" border="0" />
+		<% end %>
+	</div>
+	
+	
+	
+	<% if @relationship == "master" || @relationship == "admin" %>
+		<div class="community_block">
+			<a href="/groups/<%= @group_id %>/edit">修改圈子的设置</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="/groups/<%= @group_id %>/edit_image">设置圈子的图标</a>
+		</div>
+		<div class="community_block">
+			<a href="/groups/invite/<%= @group_id %>">邀请朋友加入圈子</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="/groups/unapproved/<%= @group_id %>">处理加入圈子的申请</a>
+		</div>
+		<div class="community_block">
+			<a href="/groups/members_edit/<%= @group_id %>">
+				<img src="/images/groups/members_small.gif" border="0" />
+				管理圈子成员</a>
+			<% if @relationship == "master" %>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/groups/members_master/<%= @group_id %>">
+					<img src="/images/groups/admin_icon.png" border="0" />
+					设置圈子的管理员</a>
+			<% end %>
+		</div>
+		
+	<% else %>
+		<div class="community_block">
+			<a href="/groups/members/<%= @group_id %>">
+				<img src="/images/groups/members_small.gif" border="0" />
+				浏览所有成员</a>
+		</div>
+	<% end %>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<% if @relationship == "not_member" || @relationship == "logout" %>
+		<div class="community_block align_c">
+			<% form_tag "/groups/#{@group_id}/join", :method => :post do %>
+				<input type="submit" value="加入这个圈子" class="button" />
+			<% end %>
+		</div>
+	<% else %>
+		<div class="community_block">
+			<a href="/group/posts/compose/<%= @group_id %>">
+				<img src="/images/groups/add_post_small.png" border="0" />
+				发起新的讨论话题</a>
+		</div>
+		
+		<% form_tag "/activities/new_in_groups", :method => :post, :id => "new_group_activity_form" do %>
+			<input type="hidden" name="in_group_id[]" value="<%= @group_id %>" />
+		<% end %>
+		<div class="community_block">
+			<a href="#" onclick="document.getElementById('new_group_activity_form').submit(); return false;">
+				<img src="/images/activities/new_activity_in_group_small.gif" border="0" />
+				发起新的圈内活动</a>
+		</div>
+		
+		<div class="community_block">
+			<a href="/group/linked_photos/select/<%= @group_id %>">
+				<img src="/images/activities/new_photo_small.gif" border="0" />
+				添加新的圈子照片</a>
+		</div>
+	<% end %>
+	
+	<% if @relationship == "member" || @relationship == "admin" %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+	
+		<div class="community_block align_c">
+			<% form_tag "/groups/#{@group_id}/quit", :method => :post, :onsubmit => "if(!confirm('确定要退出这个圈子么 ?')){ return false; }" do %>
+				<input type="submit" value="退出这个圈子" class="button" />
+			<% end %>
+		</div>
+	<% end %>
+	
+	
+	
+	<div class="community_title">
+		新加入成员 ~~~
+	</div>
+	
+	<div>
+		<%= float_list(@new_members, "new_member", :new_member, {}, 3) %>
+	</div>
+	
+	
+	<!--
+	<div class="community_title clear_l">
+		订阅圈子讨论 ~~~
+	</div>
+	
+	<div class="community_block">
+
+	</div>
+	-->
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		<%= h(@group.desc) %>
+	</div>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="notice_section_expand" href="#" onclick="collapse_section('notice_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="notice_section_collapse" href="#" onclick="expand_section('notice_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<span class="float_r">
+				圈子创建于 <%= format_date(@group.created_at) %>
+				&nbsp;&nbsp;&nbsp;
+			</span>
+			
+			<img class="float_l" src="/images/groups/notice_small.png" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<b>
+				圈子公告
+			</b>
+		</div>
+		
+		<div id="notice_section" class="community_block_narrow">
+			<%= simple_format(h(@group_setting[:notice])) %>
+		</div>
+	</div>
+	
+	
+	<div class="community_title">
+		最近圈内讨论 ~~~
+	</div>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="post_section_expand" href="#" onclick="collapse_section('post_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="post_section_collapse" href="#" onclick="expand_section('post_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<% unless @relationship == "not_member" || @relationship == "logout" %>
+				<span class="float_r">
+					<a href="/group/posts/compose/<%= @group_id %>">发起新的讨论话题</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			<% end %>
+			
+			<img class="float_l" src="/images/groups/post_small.png" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<a href="/groups/post/<%= @group_id %>">全部圈内讨论</a>
+		</div>
+		
+		<div id="post_section" class="community_block">
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<thead>
+					<tr>
+						<td width="51%">话题</td>
+						<td width="6%" align="right">评论</td>
+						<td width="18%" align="right">发起人</td>
+						<td width="25%" align="right">最后参与</td>
+					</tr>
+				</thead>
+				<tbody>
+					<%= render :partial => "group_post", :collection => @top_group_posts %>
+					<%= render :partial => "group_post", :collection => @group_posts %>
+				</tbody>
+			</table>
+			<% unless @top_group_posts.size + @group_posts.size > 0 %>
+				<div class="form_info_l">
+					还没有讨论话题 ...
+				</div>
+			<% end %>
+		</div>
+	</div>
+	
+	
+	<div class="community_title">
+		最近圈内活动 ~~~
+	</div>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="activity_section_expand" href="#" onclick="collapse_section('activity_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="activity_section_collapse" href="#" onclick="expand_section('activity_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<% unless @relationship == "not_member" || @relationship == "logout" %>
+				<span class="float_r">
+					<a href="#" onclick="document.getElementById('new_group_activity_form').submit(); return false;">
+						发起新的圈内活动</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			<% end %>
+			
+			<img class="float_l" src="/images/activities/calendar_small.gif" border="0" width="20" height="20" />
+			&nbsp;&nbsp;&nbsp;
+			<a href="/groups/activity/<%= @group_id %>">全部圈内活动</a>
+		</div>
+	</div>
+	<div id="activity_section">
+		<%= float_list(@group_activities, "activity_small", :activity_small, {}, 2) %>
+	</div>
+	<div class="community_block clear_l">
+	</div>
+	
+	
+	<div class="community_title">
+		最新圈子照片 ~~~
+	</div>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="photo_section_expand" href="#" onclick="collapse_section('photo_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="photo_section_collapse" href="#" onclick="expand_section('photo_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<% unless @relationship == "not_member" || @relationship == "logout" %>
+				<span class="float_r">
+					<a href="/group/linked_photos/select/<%= @group_id %>">
+						添加新的圈子照片</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			<% end %>
+			
+			<img class="float_l" src="/images/activities/photo_small.png" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<a href="/groups/photo/<%= @group_id %>">全部圈子照片</a>
+		</div>
+		
+		<div id="photo_section">
+			<%= float_list(@group_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
+		</div>
+	</div>
+	<div class="community_block clear_l">
+	</div>
+	
+</div>
+
+
+
+<script language="JavaScript">
+	function expand_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "";
+		document.getElementById(expand_icon).style.display = "";
+		document.getElementById(collapse_icon).style.display = "none";
+	}
+	
+	function collapse_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "none";
+		document.getElementById(expand_icon).style.display = "none";
+		document.getElementById(collapse_icon).style.display = "";
+	}
+</script>
+

@@ -1,0 +1,80 @@
+<% community_page_title("更新照片头像") %>
+
+<div class="float_r profile_container_r">
+	<%= render :partial => "common/edit_navigation", :locals => {:account_checked => @account_checked} %>
+</div>
+
+<div class="profile_container_l">
+	<h2>我的资料 - 照片头像</h2>
+	
+	<%= render :partial => "edit_profile_nav_bar" %>
+	
+	<div class="community_title">
+		从相册中选择一张照片作为头像 ~~~
+	</div>
+	
+	<div class="community_block_narrow">
+
+		<div id="error_msg" style="display: none"></div>
+		<div id="info_msg" style="display: none"></div>
+
+	</div>
+	
+	<div class="community_block_narrow">
+		<% form_for @profile, :url => "", :html => { :method => :post, :onsubmit => "on_pic_profile_submit(this);return false;" } do |f| %>
+			<a id="current_pic_label">当前头像:</a>
+			<div class="pic_profile_current_pic_photo">
+				<img id="current_pic" src="<%= face_img_src(@profile.pic_url) %>" border="0" />
+				<input id="photo_id" name="photo_id" type="hidden" value="<%= @profile.photo_id %>" />
+			</div>
+			
+			<p class="form_info_l">
+				选定一个相册, 然后从照片列表中选择你想用作头像的照片
+			</p>
+			
+			<%= f.submit "保存头像", :class => "button", :id => "save_pic_button", :disabled => "true" %>
+			&nbsp;&nbsp;&nbsp;
+			<img src="/images/loading_small.gif" id="saving_indicator" style="display: none" />
+			&nbsp;&nbsp;&nbsp;
+			或者, 先去 <a href="/albums">相册</a> 上传想用作头像的照片
+		<% end %>
+	</div>
+	
+	<br />
+	
+	<div class="community_block_narrow">
+		<%= render :partial => "albums/photo_selector", :locals => {:albums => @albums, :photo_list_template => "/profiles/album_photo_list_for_face"} %>
+	</div>
+</div>
+
+<script language="JavaScript" src="/lib/protopack/protoculous-effects-packer.js"></script>
+<script type="text/javascript" src="/javascripts/photo_selector.js"></script>
+
+<script language="JavaScript">
+	function on_photo_selected(photo_id, img_src){
+		$("photo_id").value = photo_id;
+		$("current_pic").src = img_src;
+		$("save_pic_button").disabled = <%= @account_limited.to_s %>;
+	}
+	
+	function on_pic_profile_submit(pic_profile_form){
+		$("save_pic_button").disabled = true;
+		Element.show("saving_indicator");
+		
+		new Ajax.Request(
+            "/profiles/<%= session[:account_id] %>/pic",
+            {
+            	asynchronous:true,
+                evalScripts:true,
+                onComplete:function(request){
+					Element.hide("saving_indicator");
+				},
+                //onLoading:function(request){},
+				method:"post",
+                parameters:Form.serialize(pic_profile_form)
+            }
+        );
+
+	}
+</script>
+

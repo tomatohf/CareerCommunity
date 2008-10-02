@@ -1,0 +1,38 @@
+<% hide_top &&= true %>
+
+<% comment_count = GroupPostComment.get_count(group_post.id) %>
+
+<tr>
+	<td style="border-bottom: dashed 1px #DDDDDD;">
+		<% unless hide_top %>
+			<% if group_post.top %>
+				<b>
+					[置顶]
+				</b>
+				&nbsp;
+			<% end %>
+		<% else %>
+			[<a href="/groups/<%= group_post.group_id %>" class="account_nick_link">
+				<%= h(group_post.group.name) %></a>]
+		<% end %>
+		
+		<% group_post_title = h(group_post.title) %>
+		<a href="/group/posts/<%= group_post.id %>" title="<%= group_post_title %>" class="account_nick_link">
+			<%= truncate(group_post_title) %></a>
+	</td>
+	
+	<td align="right">
+		<a href="/group/posts/<%= group_post.id %>#comment_list" class="account_nick_link">
+			<%= comment_count %></a>
+	</td>
+	
+	<td align="right">
+		<a href="/spaces/show/<%= group_post.account_id %>" class="account_nick_link">
+			<%= h(group_post.account.get_nick) %></a>
+	</td>
+	
+	<td align="right" class="form_info_s">
+		<%= format_datetime(group_post.responded_at || group_post.created_at) %>
+	</td>
+</tr>
+

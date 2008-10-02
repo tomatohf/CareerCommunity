@@ -1,0 +1,37 @@
+<% community_page_title("用户登录") %>
+
+<div class="float_r community_container_r">
+	<div class="community_title">
+		还没有帐号 ~~~
+	</div>
+	<div class="community_block">
+		<a href="/accounts/new">快速注册</a>
+	</div>
+	
+	<div class="community_title">
+		忘记了密码 ~~~
+	</div>
+	<div class="community_block">
+		<a href="/accounts/forgot_password">找回密码</a>
+	</div>
+</div>
+
+<div class="community_container_l">
+	<h2>登录乔布圈</h2>
+	
+	<div class="community_block_narrow">
+
+		<br />
+		
+		<% if flash[:message] %>
+			<p class="error_msg">
+			    <%= flash[:message] %>
+			</p>
+		<% end %>
+
+		<%= render :partial => "login_form", :locals => {:email => @email, :input_size => 30} %>
+	</div>
+</div>
+
+<div class="clear"></div>
+

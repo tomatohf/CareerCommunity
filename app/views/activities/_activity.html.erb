@@ -1,0 +1,75 @@
+<% can_del &&= true %>
+
+<%
+	activity = activity.activity unless activity.kind_of?(Activity)
+	activity_id = activity.id
+	activity_image = activity.get_image_url
+
+	Activity.set_activity_with_image_cache(activity_id, activity, activity_image)
+%>
+
+<div>
+	<table cellpadding="0" cellspacing="10" class="main_part_w">
+		<tr>
+			<td align="center" valign="middle" style="width: 120px;">
+				<% face_image_url = activity_image || "" %>
+				<% face_image_url.gsub!("thumb_48", "thumb_120") if face_image_url.include?("thumb_48") %>
+				<a href="/activities/<%= activity.id %>">
+					<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>
+			</td>
+			
+			<td align="left" valign="top">
+				<% if can_del %>
+					<a class="float_r" title="删除" href="#" onclick="delete_interest(<%= activity_id %>); return false;">
+						<img src="/images/delete_small.gif" border="0" /></a>
+				<% end %>
+				<div>
+					<span class="activity_info_label">
+						(<%= activity.get_status[1] %>)
+					</span>
+					<span class="activity_title">
+						<a href="/activities/<%= activity.id %>">
+							<%= h(activity.get_title) %>
+						</a>
+					</span>
+				</div>
+					
+				<div>
+					<%= format_activity_time(activity.begin_at) %>
+					--
+					<%= format_activity_time(activity.end_at) %>
+					
+					<br />
+					
+					<span class="activity_info_label">地点:</span>
+					<%= h(activity.place) %>
+					
+					<br />
+					
+					<span class="activity_info_label">报名截止时间:</span>
+					<%= activity.application_deadline ? format_activity_time(activity.application_deadline) : "活动开始前" %>
+					
+					<br />
+					
+					<%= activity.in_group && activity.in_group > 0 ? "圈内活动" : "全局活动" %>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span class="activity_info_label">人数限制:</span>
+					<%= (activity.member_limit && activity.member_limit > 0) ? activity.member_limit : "无" %>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span class="activity_info_label">人均费用:</span>
+					<%= activity.cost || "无" %>
+					
+					<% contact = activity.get_setting[:contact] %>
+					<% if contact && contact != "" %>
+						<br />
+						
+						<span class="activity_info_label">联系方法:</span>
+						<%= h(contact) %>
+					<% end %>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
+	<%= draw_hor_line("450px") %>
+</div>

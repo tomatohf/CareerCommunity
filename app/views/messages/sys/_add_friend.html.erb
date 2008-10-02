@@ -1,0 +1,28 @@
+<table cellpadding="0" cellspacing="5" class="main_part_w">
+	<tr>
+		<td>
+			<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+				<%= h(account_nick) %></a>
+			将你加为了朋友, 并关注你
+
+				<% if not_friend %>
+					<div class="community_block">
+						<% form_tag "/friends", :method => :post do %>
+							<input type="hidden" name="friend" value="<%= account_id %>" />
+							<input type="submit" value="也将对方加为我的朋友" class="button" />
+						<% end %>
+					</div>
+				<% else %>
+					<div class="community_block form_info_s">
+						
+					</div>
+				<% end %>
+		</td>
+		
+		<td style="width: 50px">
+			<a href="/spaces/show/<%= account_id %>">
+				<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+		</td>
+	</tr>
+</table>
+

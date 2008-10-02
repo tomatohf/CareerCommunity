@@ -1,0 +1,64 @@
+<% type_name = h(@type_name) %>
+<% pluralized_linked_photo_type = @linked_photo_type.pluralize %>
+
+<% page_title = "添加 #{@type_label} #{type_name} 的照片" %>
+<% community_page_title(page_title) %>
+
+<div class="album_container">
+	<div class="community_block float_r">
+		<a href="/<%= pluralized_linked_photo_type %>/<%= @type_id %>">
+			<img src="<%= face_img_src(@type_image) %>" border="0" /></a>
+	</div>
+	
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		从相册中选择要添加到 <%= @type_label %>
+		<a href="/<%= pluralized_linked_photo_type %>/<%= @type_id %>">
+			<%= type_name %></a>
+		的照片
+	</div>
+	
+	<div class="community_block" id="photo_selector_container">
+		<img src="/images/loading_small.gif" />
+		正在加载 相册 ...
+	</div>
+</div>
+
+<script language="JavaScript" src="/lib/protopack/protoculous-effects-packer.js"></script>
+<script type="text/javascript" src="/javascripts/photo_selector.js"></script>
+
+<script language="JavaScript">
+	new Ajax.Updater(
+        "photo_selector_container",
+        "/<%= @linked_photo_type %>/linked_photos/photo_selector_for_linked_photo",
+        {
+            asynchronous:true,
+            evalScripts:true,
+			method: "get"
+        }
+    );
+	
+	function submit_create_link_form(album_id){
+		create_link_form = $("create_link_form_" + album_id);
+		create_link_form.action = "/<%= @linked_photo_type %>/linked_photos/<%= @type_id %>/create_link";
+		create_link_form.submit();
+	}
+	
+	function select_all(album_id){
+		create_link_form = $("create_link_form_" + album_id);
+		checkboxes = create_link_form.getInputs("checkbox", "photo_ids[]");
+		for(var i=0; i<checkboxes.length; i++){
+			checkboxes[i].checked = true;
+		}
+	}
+	
+	function unselect_all(album_id){
+		create_link_form = $("create_link_form_" + album_id);
+		checkboxes = create_link_form.getInputs("checkbox", "photo_ids[]");
+		for(var i=0; i<checkboxes.length; i++){
+			checkboxes[i].checked = false;
+		}
+	}
+</script>
+

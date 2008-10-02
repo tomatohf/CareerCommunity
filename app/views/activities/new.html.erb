@@ -1,0 +1,289 @@
+<% activity_type = (@in_groups && @in_groups.size > 0) ? "圈内" : "全局" %>
+
+<% page_title = "发起一个新的#{activity_type}活动" %>
+<% community_page_title(page_title) %>
+
+<div class="blog_container">
+	<h2><%= page_title %></h2>
+	
+	<div>
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @activity.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@activity) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/activities", :method => :post do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<% if @in_groups && @in_groups.size > 0 %>
+						<tr>
+							<td>
+								<label>
+							        活动所在圈子
+									:
+							    </label>
+							</td>
+							<td>
+								<%= render :partial => "activity_group", :collection => @in_groups %>
+							</td>
+						</tr>
+					<% end %>
+					
+					<tr>
+						<td style="width: 100px">
+							<label for="activity_title">
+						        活动标题(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="activity_title" name="activity_title" class="text_field" size="50" value="<%= h(@activity.get_title) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="activity_place">
+						        活动地点(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="activity_place" name="activity_place" class="text_field" size="50" value="<%= h(@activity.place) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="activity_begin_at">
+						        活动时间(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							从
+							&nbsp;
+							<input type="text" id="activity_begin_at" name="activity_begin_at" class="text_field" size="15" value="<%= format_calendar_datetime(@activity.begin_at) %>" autocomplete="off" />
+							<a href="#" onclick="document.getElementById('activity_begin_at').onclick(); return false;">
+								<img src="/images/activities/calendar_small.gif" title="选择活动开始时间" border="0" /></a>
+							
+							&nbsp;
+		
+							到
+							&nbsp;
+							<input type="text" id="activity_end_at" name="activity_end_at" class="text_field" size="15" value="<%= format_calendar_datetime(@activity.end_at) %>" autocomplete="off" />
+							<a href="#" onclick="document.getElementById('activity_end_at').onclick(); return false;">
+								<img src="/images/activities/calendar_small.gif" title="选择活动结束时间" border="0" /></a>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="activity_application_deadline">
+						        报名截止时间
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="activity_application_deadline" name="activity_application_deadline" class="text_field" size="15" value="<%= format_calendar_datetime(@activity.application_deadline) %>" autocomplete="off" />
+							<a href="#" onclick="document.getElementById('activity_application_deadline').onclick(); return false;">
+								<img src="/images/activities/calendar_small.gif" title="选择报名截止时间" border="0" /></a>
+								
+							&nbsp;
+							<span class="form_info_l">
+								如果报名需要提前截止, 填写截止时间
+							</span>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="activity_member_limit">
+						        人数限制
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="activity_member_limit" name="activity_member_limit" class="text_field" size="10" value="<%= h(@activity.member_limit) %>" />
+							
+							&nbsp;
+							<span class="form_info_l">
+								留空或者输入 0 表示没有人数限制
+							</span>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="activity_cost">
+						        人均费用
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="activity_cost" name="activity_cost" class="text_field" size="15" value="<%= h(@activity.cost) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="activity_contact">
+						        联系方法
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="activity_contact" name="activity_contact" class="text_field" size="50" value="<%= h(@activity.get_setting[:contact]) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="activity_desc">
+				                活动描述
+								:
+				            </label>
+						</td>
+						<td>
+							<a href="#" onclick="remove_rich_editor('activity_desc'); return false;">使用 普通编辑框</a>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="#" onclick="add_rich_editor('activity_desc'); return false;">使用 高级编辑器</a>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<textarea id="activity_desc" name="activity_desc" class="text_field" cols="30" rows="3"><%= @activity.get_setting[:desc] %></textarea>
+						</td>
+					</tr>
+		
+		
+					<tr>
+						<td>
+							活动访问权限
+							:
+						</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= check_box_tag :need_approve, value = "true", @activity.get_setting[:need_approve] %>
+				            <label for="need_approve">
+				                报名参加活动需要得到批准
+				            </label>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							希望报名者填写
+							:
+						</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= check_box_tag :check_mobile, value = "true", @activity.get_setting[:check_mobile] %>
+				            <label for="check_mobile">
+				                手机
+				            </label>
+						</td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= check_box_tag :check_gender, value = "true", @activity.get_setting[:check_gender] %>
+				            <label for="check_gender">
+				                性别
+				            </label>
+						</td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= check_box_tag :check_birthday, value = "true", @activity.get_setting[:check_birthday] %>
+				            <label for="check_birthday">
+				                生日
+				            </label>
+						</td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "发起活动", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/activities">返回活动列表</a>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/activities/recent/<%= session[:account_id] %>">返回我的活动近况</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+
+
+<script language="JavaScript" type="text/javascript" src="/lib/tiny_mce/tiny_mce.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="/javascripts/tinymce.js"></script>
+
+
+<link rel="stylesheet" href="/lib/jscalendar/css/calendar-brown.css" type="text/css" media="screen"></link>
+
+<script language="JavaScript" type="text/javascript" src="/lib/jscalendar/js/calendar_stripped.js"></script>
+<script language="JavaScript" type="text/javascript" src="/lib/jscalendar/lang/calendar-zh.js"></script>
+<script language="JavaScript" type="text/javascript" src="/lib/jscalendar/js/calendar-setup_stripped.js"></script>
+
+<script language="JavaScript" type="text/javascript">
+	var now = new Date();
+	var year = now.getFullYear();
+	var year_range = [year, year + 1];
+	
+    Calendar.setup({
+        inputField     :    "activity_begin_at",   // id of the input field
+        ifFormat       :    "%Y-%m-%d %H:%M",       // format of the input field
+        //eventName      :	"focus",
+        showsTime      :    true,
+		range          :	year_range,
+		showOthers     :	true,
+        timeFormat     :    "24"
+    });
+    Calendar.setup({
+        inputField     :    "activity_end_at",
+        ifFormat       :    "%Y-%m-%d %H:%M",
+		//eventName      :	"focus",
+        showsTime      :    true,
+		range          :	year_range,
+		showOthers     :	true,
+        timeFormat     :    "24"
+    });
+	Calendar.setup({
+        inputField     :    "activity_application_deadline",
+        ifFormat       :    "%Y-%m-%d %H:%M",
+		//eventName      :	"focus",
+        showsTime      :    true,
+		range          :	year_range,
+		showOthers     :	true,
+        timeFormat     :    "24"
+    });
+</script>

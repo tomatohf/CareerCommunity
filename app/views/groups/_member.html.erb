@@ -1,0 +1,48 @@
+<% can_del &&= true %>
+
+<% can_plus_admin &&= true %>
+<% can_minus_admin &&= true %>
+
+<% can_approve_reject &&= true %>
+
+<%
+	account_id = member.account.id
+	account_nick = member.account.get_nick
+	account_pic_url = member.account.get_profile_pic_url
+	
+	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, member.account.email)
+%>
+
+<div class="friend_nick_pic">
+	<div>
+		<a href="/spaces/show/<%= account_id %>">
+			<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+	</div>
+	<div>
+		<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+			<%= h(account_nick) %></a>
+			
+		<% if can_del %>
+			<a title="从圈子中删除" href="#" onclick="delete_member(<%= account_id %>)">
+				<img src="/images/delete_small.gif" width="12" height="12" border="0" /></a>
+		<% end %>
+		
+		<% if can_plus_admin %>
+			<a title="升级为管理员" href="#" onclick="plus_admin(<%= account_id %>)">
+				<img src="/images/groups/plus_small.png" width="12" height="12" border="0" /></a>
+		<% end %>
+		
+		<% if can_minus_admin %>
+			<a title="降为普通成员" href="#" onclick="minus_admin(<%= account_id %>)">
+				<img src="/images/groups/minus_small.png" width="12" height="12" border="0" /></a>
+		<% end %>
+		
+		<% if can_approve_reject %>
+			<a title="批准加入圈子" href="#" onclick="approve_member(<%= account_id %>)">
+				<img src="/images/groups/approve_small.png" width="12" height="12" border="0" /></a>
+			<a title="拒绝" href="#" onclick="reject_member(<%= account_id %>)">
+				<img src="/images/groups/reject_small.png" width="12" height="12" border="0" /></a>
+		<% end %>
+	</div>	
+</div>
+

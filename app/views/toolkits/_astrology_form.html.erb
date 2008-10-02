@@ -1,0 +1,40 @@
+<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FAFFE7" do %>
+	<div class="toolkit_box">
+		<% form_tag "/toolkits/astrology", :method => :post do %>
+			<label for="month">月:</label>
+			<select id="month" name="month" class="dropdown_list">
+				<% 12.times do |i| %>
+					<% m = i + 1 %>
+					<option value="<%= m %>"><%= m %></option>
+				<% end %>
+			</select>
+			
+			<label for="date">日:</label>
+			<select id="date" name="date" class="dropdown_list">
+				<% 31.times do |i| %>
+					<% d = i + 1 %>
+					<option value="<%= d %>"><%= d %></option>
+				<% end %>
+			</select>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="submit" value="按生日查询星座" class="button" />
+		<% end %>
+		
+		<br />
+		<%= draw_hor_line("300px") %>
+		<br />
+		
+		<% form_tag "/toolkits/astrology", :method => :post do %>
+			<label for="a_name">星座名称:</label>
+			<select id="a_name" name="a_name" class="dropdown_list">
+				<% Astrology.all.each do |a| %>
+					<option value="<%= a.name %>"><%= a.name %></option>
+				<% end %>
+			</select>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="submit" value="按名称查询星座" class="button" />
+		<% end %>
+	</div>
+<% end %>

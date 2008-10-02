@@ -1,0 +1,155 @@
+<% page_title = "添加照片到相册 #{h(@album.name)}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r album_container_r">
+	<div class="community_block">
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<div class="community_title">
+		高级上传功能 ~~~
+	</div>
+	
+	<div class="community_block">
+		厌烦了这种麻烦的 简单上传功能 ?
+		<br />
+		<h2>
+			试试
+			<a href="/albums/<%= @album.id %>/upload">高级上传功能</a>
+		</h2>
+		注意: 使用 高级上传功能 需要已安装 Flash Player 9.0.28 或更高的版本
+		<br />
+		你可以到 <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" target="_blank">Adobe 官方网站</a> 安装最新版本的 Flash Player
+	</div>
+	
+	<div class="community_title">
+		获取 Flash 播放器 ~~~
+	</div>
+	
+	<div class="community_block">
+		<a href="http://www.adobe.com/go/getflashplayer" target="_blank">
+			<img src="/images/get_flash_player.gif" border="0" alt="获取 Adobe Flash 播放器" /></a>
+	</div>
+	
+	<div class="community_title">
+		返回我的相册瞧瞧 ~~~
+	</div>
+	
+	<div class="community_block">
+		<a href="/albums/show_edit/<%= @album.id %>"><%= h(@album.name) %></a>
+		<br />
+		<br />
+		<a href="/albums">我的相册列表</a>
+	</div>
+	
+	<div class="community_title">
+		或者新建一个 ~~~
+	</div>
+
+	<div class="community_block">
+		<a href="/albums/new">创建一个新相册</a>
+	</div>
+</div>
+
+<div class="album_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow">
+		<img id="cover_photo" src="<%= @album.get_cover_photo_img_src(:thumb_80) %>" border="0" />
+	</div>
+	
+	<div class="community_title">
+		上传新的照片 ~~~
+	</div>
+	
+	<p class="form_info_l">
+		你可以上传 JPG, JPEG, GIF, PNG 或 BMP 格式的图片, 每个文件大小可以到 <b>3 M</b>
+	</p>
+	
+	<div class="community_block_narrow">
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+	
+		<% form_tag "/albums/#{@album.id}/create_photo_simple", :method => :post, :multipart => true do %>
+			<table cellpadding="0" cellspacing="15">
+				<thead>
+					<tr class="table_header">
+						<td></td>
+						<th scope="col">选择图片文件</th>
+						<th scope="col">照片描述</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr>
+						<td>
+							<label for="image_title1">
+								1.
+							</label>
+						</td>
+						<td>
+							<input type="file" name="image_file1" id="image_file1" />
+						</td>
+						<td>
+							<input type="text" name="image_title1" id="image_title1" class="text_field" size="30" value="" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="image_title2">
+								2.
+							</label>
+						</td>
+						<td>
+							<input type="file" name="image_file2" id="image_file2" />
+						</td>
+						<td>
+							<input type="text" name="image_title2" id="image_title2" class="text_field" size="30" value="" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="image_title3">
+								3.
+							</label>
+						</td>
+						<td>
+							<input type="file" name="image_file3" id="image_file3" />
+						</td>
+						<td>
+							<input type="text" name="image_title3" id="image_title3" class="text_field" size="30" value="" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td>
+							<input type="hidden" name="image_count" value="3" />
+							<input type="submit" value="上传照片" class="button"<%= %q{ disabled="disabled"} if @account_limited %> />
+						</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		<% end %>
+	</div>
+	
+	<br />
+	<br />
+	
+	<div class="community_title">
+		相册 <%= h(@album.name) %> 中已有的照片 ~~~
+	</div>
+	
+	<!-- overflow: hidden; is used to make IE wrap the float photo div list ... -->
+	<div class="community_block" style="overflow: hidden;">
+		<%= render(:partial => "uploaded_photo", :collection => @album.get_photos) %>
+	</div>
+</div>
+

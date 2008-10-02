@@ -1,0 +1,127 @@
+<% owner_name = h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的活动出席/缺席情况的统计" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	<div class="community_block">
+		<a href="/spaces/show/<%= @owner_id %>">
+			<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+	</div>
+	<div class="community_block">
+		<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
+			<%= owner_name %></a>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/recent/<%= @owner_id %>"><%= owner_name %> 的活动近况</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/list_join/<%= @owner_id %>">所有 <%= owner_name %> 报名参加的活动</a>
+	</div>
+	
+	<div class="community_title">
+		最近未缺席的活动 ~~~
+	</div>
+	
+	<div class="community_block_narrow">
+		<a href="/activities/list_attend/<%= @owner_id %>">全部未缺席的活动</a>
+	</div>
+
+	<div class="community_block">
+		<%= render(:partial => "activity_small", :collection => @attend_activity_members) %>
+	</div>
+		
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_title">
+		活动缺席率 ~~~
+	</div>
+	
+	<% total_count = @attend_count + @absent_count %>
+	<% if total_count > 0 %>
+		<div class="community_block">
+			共报名参加了
+			<b>
+				<%= total_count %>
+			</b>
+			次活动,
+			其中缺席了
+			<b>
+				<%= @absent_count %>
+			</b>
+			次活动,
+			活动的
+			<b>缺席率</b>
+			为
+			<b>
+				<% absent_rate = @absent_count.to_f / total_count %>
+				<%= "#{absent_rate.round(4) * 100.0}%" %>
+			</b>
+		</div>
+		
+		<div class="community_block">
+			<table cellspacing="1" style="height: 25px ; width: 500px ; border: solid 1px #A3988C">
+				<tr>
+					<% red_width = (500.0 * absent_rate).round %>
+					<% if red_width > 0 %>
+					<td style="background-color: red; width: <%= red_width %>px" title="缺席活动<%= @absent_count %>次"></td>
+					<% end %>
+					<td style="background-color: green; width: <%= 500 - red_width %>px" title="未缺席活动<%= @attend_count %>次"></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="community_block">
+			<table cellspacing="5" style="height: 25px ;">
+				<tr>
+					<td style="background-color: red; width: 25px"></td>
+					<td>
+						: 缺席活动
+						(<%= @absent_count %>)
+					</td>
+					
+					<td style="width: 50px"></td>
+					
+					<td style="background-color: green; width: 25px"></td>
+					<td>
+						: 未缺席活动
+						(<%= @attend_count %>)
+					</td>
+				</tr>
+			</table>
+		</div>
+	
+	<% else %>
+	
+		<div class="community_block">
+			<p class="form_info_l">
+				还没有报名参加过活动 ...
+			</p>
+		</div>
+		
+	<% end %>
+	
+	
+	<div class="community_title">
+		最近缺席的活动 ~~~
+	</div>
+	
+	<div class="community_block_narrow">
+		<a href="/activities/list_absent/<%= @owner_id %>">全部缺席的活动</a>
+	</div>
+	
+	<div class="community_block">
+		<%= render(:partial => "activity", :collection => @absent_activity_members) %>
+	</div>
+	
+</div>
+

@@ -1,0 +1,37 @@
+<% community_page_title("注册确认") %>
+
+<div class="float_r community_container_r">
+	<div class="community_title">
+		通过注册确认邮件直接登录 ~~~
+	</div>
+	<div class="community_block">
+		<% if @checked %>
+			已成功登录
+		<% else %>
+			尚未登录
+		<% end %>
+	</div>
+</div>
+
+<div class="community_container_l">
+	<h2>注册确认</h2>
+	
+	<div class="community_block_narrow">
+
+		<br />
+		<br />
+		
+		<% if @checked %>
+			<p>
+				你的帐号和 email 地址已被成功验证
+			</p>
+		<% else %>
+			<p>
+				帐号和 email 地址验证失败
+			</p>
+		<% end %>
+	</div>
+</div>
+
+<div class="clear"></div>
+

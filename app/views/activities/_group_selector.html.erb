@@ -1,0 +1,26 @@
+<%
+	multiple &&= true
+
+	group = group_selector.group
+	group_id = group.id
+	group_name = group.name
+	group_image = group.get_image_url
+
+	Group.set_group_with_image_cache(group_id, group, group_image)
+%>
+
+<div class="group_name_img">
+	<div>
+		<a href="#" onclick="select_single_group(<%= group_id %>)">
+			<img src="<%= face_img_src(group_image) %>" border="0" /></a>
+		
+		<% if multiple %>
+			<input type="checkbox" name="in_group_id[]" value="<%= group_id %>" />
+		<% end %>
+	</div>
+	<div>
+		<a href="#" onclick="select_single_group(<%= group_id %>)" class="group_name_link">
+			<%= h(group_name) %></a>
+	</div>
+</div>
+

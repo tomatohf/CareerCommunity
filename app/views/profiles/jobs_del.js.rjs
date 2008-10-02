@@ -1,0 +1,6 @@
+page.visual_effect :fade, @job_profile_entry_id, :duration => 1
+page.delay(1) do
+  page.remove @job_profile_entry_id
+end
+
+page.replace_html "del_message", ""

@@ -1,0 +1,39 @@
+<% community_page_title("全部圈子") %>
+
+<div class="float_r friend_container_r">
+	
+	<div class="community_block">
+		<a href="/groups/new">
+			<img src="/images/groups/new_group_small.gif" border="0" />
+			创建一个圈子</a>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups">返回我的圈子</a>
+	</div>
+	
+</div>
+
+<div class="friend_container_l">
+	<h2>全部圈子</h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @groups.total_entries %></b>
+		个圈子
+	</div>
+	
+	<div class="community_block overflow_hidden">
+		<%= float_list(@groups, "group_name_img", :group_name_img, {:show_icon => false}, 7) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@groups) %>
+	</div>
+	
+</div>
+

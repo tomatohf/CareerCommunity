@@ -1,0 +1,152 @@
+<% h_album_name = h(@album.name) %>
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的相册 #{h_album_name}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r photo_container_r">
+	<% unless @edit %>
+		<div class="community_title">
+			相册的主人 ~~~
+		</div>
+		
+		<div class="community_block">
+			<a href="/spaces/show/<%= @photo.account_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @photo.account_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		</div>
+	<% end %>
+	
+	<div class="community_block">
+		<a href="/albums<%= "/show_edit" if @edit %>/<%= @album.id %>">返回相册 - <%= h_album_name %></a>
+	</div>
+
+	<div class="community_block">
+		<a href="<%= @edit ? "/albums" : "/albums/list/#{@photo.account_id}" %>">返回 <%= owner_name %> 的相册列表</a>
+	</div>
+	
+	<div class="community_title">
+		同一相册内 ~~~
+	</div>
+	
+	<div class="community_block">
+		第 <%= @photo_position %> 张 / 共 <%= @album_photos_count %> 张
+	</div>
+	
+	<div class="community_block align_c">
+		<a href="/photos<%= "/show_edit" if @edit %>/<%= @pre_photo.id %>">
+			<img src="<%= @pre_photo.image.url(:thumb_120) %>" title="<%= @pre_photo.title %>" border="0" /></a>
+		<br />
+		<a href="/photos<%= "/show_edit" if @edit %>/<%= @pre_photo.id %>">« 上一张</a>
+	</div>
+	
+	<div class="community_block align_c">
+		<a href="/photos<%= "/show_edit" if @edit %>/<%= @next_photo.id %>">
+			<img src="<%= @next_photo.image.url(:thumb_120) %>" title="<%= @next_photo.title %>" border="0" /></a>
+		<br />
+		<a href="/photos<%= "/show_edit" if @edit %>/<%= @next_photo.id %>">下一张 »</a>
+		<br />
+	</div>
+</div>
+
+<div class="photo_container_l">
+	<h2><%= page_title %></h2>
+	
+	<% form_tag "/albums/#{@album.id}", :id => "set_as_album_cover_form", :target => "_blank", :method => :put do %>
+		<input type="hidden" name="c" value="true" />
+		<input type="hidden" name="album_cover_photo_id" value="<%= @photo.id %>" />
+	<% end %>
+	
+	<% form_tag "/profiles/#{@photo.account_id}/pic", :id => "set_as_account_face_form", :target => "_blank", :method => :post do %>
+		<input type="hidden" name="photo_id" value="<%= @photo.id %>" />
+	<% end %>
+	
+	<div>
+		<a target="_blank" href="<%= @photo.image.url %>">
+			<img src="/images/show_big.gif" border="0" alt="原图" title="原图" /></a>
+	</div>
+			
+	<div class="community_block photo_view_container">
+		<div class="photo_view">
+			<a href="/photos<%= "/show_edit" if @edit %>/<%= @next_photo.id %>">
+				<img src="<%= @photo.image.url(:normal) %>" border="0" title="点击查看下一张" /></a>
+		</div>
+	
+		<div class="community_block_narrow">
+			<%= simple_format(h(@photo.title)) %>
+			
+			<div class="photo_view_actions_container">
+				<% if @edit %>
+					<a href="/photos/<%= @photo.id %>/edit">修改照片描述</a>
+				<% end %>
+			</div>
+
+			<div class="form_info_s">
+				<%= format_date(@photo.created_at) %>  创建
+			</div>
+		</div>
+	</div>
+	
+	<% if @edit %>
+		<div class="community_block">
+			<a href="#">删除照片</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#" onclick="document.getElementById('set_as_album_cover_form').submit(); return false;">设为相册封面</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#" onclick="document.getElementById('set_as_account_face_form').submit(); return false;">设为我的头像</a>
+		</div>
+	<% end %>
+	
+	<div class="community_title">
+		共有
+		<b>
+			<%= @photo_comments.total_entries %>
+		</b>
+		条<a id="comment_list">评论</a> ~~~
+	</div>
+	
+	<% if @edit %>
+		<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
+			<input type="hidden" name="e" value="<%= true if @edit %>" />
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_comment(comment_id) {
+				if(confirm("确定要删除评论么 ?")) {
+					del_form = document.getElementById("delete_comment_form");
+					del_form.action = "/photos/delete_comment/" + comment_id;
+					del_form.submit();
+				}
+			}
+		</script>
+	<% end %>
+	
+	<div class="community_block_narrow align_r">
+		<a href="#comment_new">添加评论</a>
+	</div>
+	
+	<div class="community_block">
+		<%= render(:partial => "/common/comment", :collection => @photo_comments, :locals => {:can_del => @edit}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@photo_comments) %>
+	</div>
+
+	<div class="community_block_narrow">
+		<a id="comment_new">添加评论 »</a>
+		<% form_tag "/photos/#{@photo.id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('photo_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
+			<textarea id="photo_comment" name="photo_comment" class="text_field" cols="50" rows="5"></textarea>
+			
+			<div>
+				<input type="hidden" name="e" value="<%= true if @edit %>" />
+				<input type="submit" value="发表评论" class="button" />
+			</div>
+		<% end %>
+	</div>
+
+</div>
+

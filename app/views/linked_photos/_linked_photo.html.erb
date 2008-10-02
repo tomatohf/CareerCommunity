@@ -1,0 +1,24 @@
+<% account = linked_photo.account %>
+<% photo = linked_photo.photo %>
+
+<% comment_count = PhotoComment.get_count(photo.id) %>
+<div class="linked_photo">
+	<div class="align_c">
+		<a href="<%= photo.image.url(:big) %>" rel="lightbox[activity]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='/photos/<%= photo.id %>'&gt;查看/评论&lt;/a&gt; &lt;br /&gt; <%= photo.title %> &lt;br /&gt;">
+			<img src="<%= photo.image.url(:thumb_120) %>" border="0" /></a>
+	</div>
+	
+	<div class="form_info_s" style="margin-top: 5px;">
+		来自
+		<a href="/spaces/show/<%= account.id %>" class="account_nick_link" target="_blank">
+			<%= h(account.get_nick) %></a>
+		的
+		<a href="/albums/<%= photo.album_id %>" class="account_nick_link" target="_blank">
+			相册</a>
+	</div>
+	
+	<div>
+		<a target="_blank" href="/photos/<%= photo.id %>#comment_list" class="account_nick_link">评论(<%= comment_count %>)</a>
+	</div>
+</div>
+

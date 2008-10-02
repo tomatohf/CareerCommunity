@@ -1,0 +1,62 @@
+<% community_page_title("我发出的消息") %>
+
+<div class="float_r friend_container_r">
+	
+	<div class="community_title">
+		去我的朋友列表 ~~~
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/list_edit/<%= @account_id %>">» 我的朋友</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/be_list_edit/<%= @account_id %>">» 谁把我加为朋友了</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/both_list_edit/<%= @account_id %>">» 我的伙伴</a>
+		<div class="form_info_l">
+			互相将对方加为了朋友
+		</div>
+	</div>
+</div>
+
+<div class="friend_container_l">
+	<h2>我发出的消息</h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共发出
+		<b>
+			<%= @messages.total_entries %>
+		</b>
+		条消息
+	</div>
+	
+	<%= render :partial => "msg_nav_bar", :locals => {:account_id => @account_id, :selected => 2, :unread_inbox_count => @unread_inbox_count, :unread_sys_count => @unread_sys_count} %>
+	
+	
+	<% form_tag "", :method => :delete, :id => "delete_out_message_form" do %>
+		<input type="hidden" name="d_s" value="true" />
+	<% end %>
+	
+	<script language="JavaScript">
+		function delete_out_message(msg_id) {
+			if(confirm("确定要删除消息么 ?")) {
+				del_form = document.getElementById("delete_out_message_form");
+				del_form.action = "/messages/" + msg_id;
+				del_form.submit();
+			}
+		}
+	</script>
+	
+	<div class="community_block">
+		<%= render(:partial => "out_message", :collection => @messages) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@messages) %>
+	</div>
+	
+</div>
+

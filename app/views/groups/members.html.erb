@@ -1,0 +1,166 @@
+<% group_name = h(@group.name) %>
+
+<%
+	page_title = "圈子 #{group_name} 的成员"
+	page_title = "管理圈子 #{group_name} 的成员" if @is_admin
+	page_title = "设置圈子 #{group_name} 的管理员" if @is_master
+%>
+
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+			
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	
+	<% if @is_master %>
+		<div class="community_block">
+			<a href="/groups/<%= @group_id %>/edit_master">» 转让圈主身份给其他管理员</a>
+		</div>
+		<div class="community_block">
+			<a href="/groups/members_edit/<%= @group_id %>">» 管理圈子成员</a>
+		</div>
+	<% end %>
+	
+	<% if @is_admin %>
+		<div class="community_block">
+			<a href="/groups/unapproved/<%= @group_id %>">» 处理加入圈子的申请</a>
+		</div>
+		<div class="community_block">
+			<a href="/groups/invite/<%= @group_id %>">» 邀请朋友加入圈子</a>
+		</div>
+	<% end %>
+	
+	
+	<div class="community_title">
+		圈主 ~~~
+	</div>
+	
+	<div class="community_block">
+		<div>
+			<a href="/spaces/show/<%= @master_id %>">
+				<img src="<%= face_img_src(@master_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div>
+			<a href="/spaces/show/<%= @master_id %>" class="account_nick_link">
+				<%= h(@master_nick_pic[0]) %></a>
+		</div>
+	</div>
+	
+	<div class="community_title">
+		管理员 ~~~
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		有
+		<b><%= @admin_members.size %></b>
+		名管理员
+	</div>
+	
+	<div>
+		<%= float_list(@admin_members, "member", :member, {:can_minus_admin => @is_master}, 3) %>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<% if @is_admin %>
+		<div class="community_block_narrow form_info_s">
+			点击
+			<a title="从圈子中删除" href="#">
+				<img src="/images/delete_small.gif" border="0" /></a>
+			将成员从圈子中删除
+		</div>
+	<% end %>
+	
+	<% if @is_master %>
+		<div class="community_block_narrow form_info_s">
+			点击
+			<a title="升级为管理员" href="#">
+				<img src="/images/groups/plus_small.png" border="0" /></a>
+			将普通成员升级为圈子的管理员
+		</div>
+		<div class="community_block_narrow form_info_s">
+			点击
+			<a title="降为普通成员" href="#">
+				<img src="/images/groups/minus_small.png" border="0" /></a>
+			将圈子的管理员降为普通成员
+		</div>
+		<div class="community_block_narrow form_info_s">
+			注意: 除圈主外, 最多只能再设置
+			<b>10</b>
+			名管理员
+		</div>
+	<% end %>
+	
+	
+	<div class="community_title">
+		成员 ~~~
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @members.total_entries %></b>
+		名普通成员
+	</div>
+	
+	<div class="community_block overflow_hidden">
+		<%= float_list(@members, "member", :member, {:can_del => @is_admin, :can_plus_admin => @is_master}, 6) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@members) %>
+	</div>
+	
+</div>
+
+<% if @is_admin %>
+	<% form_tag "/groups/#{@group_id}/del_member", :method => :post, :id => "delete_member_form" do %>
+		<input type="hidden" id="del_member_id" name="del_member_id" />
+	<% end %>
+	
+	<script language="JavaScript">
+		function delete_member(account_id) {
+			if(confirm("确定要将其从圈子中删除么 ?")) {
+				var del_form = document.getElementById("delete_member_form");
+				document.getElementById("del_member_id").value = account_id;
+				del_form.submit();
+			}
+		}
+	</script>
+<% end %>
+
+<% if @is_master %>
+	<% form_tag "/groups/#{@group_id}/add_admin", :method => :post, :id => "add_admin_form" do %>
+		<input type="hidden" id="add_admin_id" name="add_admin_id" />
+	<% end %>
+	
+	<% form_tag "/groups/#{@group_id}/del_admin", :method => :post, :id => "delete_admin_form" do %>
+		<input type="hidden" id="del_admin_id" name="del_admin_id" />
+	<% end %>
+	
+	<script language="JavaScript">
+		function plus_admin(account_id) {
+			if(confirm("确定要将其升级为管理员么 ?")) {
+				var add_form = document.getElementById("add_admin_form");
+				document.getElementById("add_admin_id").value = account_id;
+				add_form.submit();
+			}
+		}
+		
+		function minus_admin(account_id) {
+			if(confirm("确定要将其降为普通成员么 ?")) {
+				var del_form = document.getElementById("delete_admin_form");
+				document.getElementById("del_admin_id").value = account_id;
+				del_form.submit();
+			}
+		}
+	</script>
+<% end %>
+

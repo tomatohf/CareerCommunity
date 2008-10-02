@@ -1,0 +1,150 @@
+<% group_name = h(@old_group_name || @group.name) %>
+
+<% page_title = "修改圈子 #{group_name} 的设置" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+	</div>
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+		
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @group.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@group) %>
+			</p>
+		<% end %>
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		
+		<div>
+			<table cellpadding="0" cellspacing="10" class="main_part_w">
+				<% form_tag "/groups/#{@group_id}", :method => :put do %>
+				<tr>
+					<td style="width: 80px">
+						<label for="group_name">
+					        圈子名称(<span style="color: red;">*</span>)
+							:
+					    </label>
+						<br />
+						<span class="form_info_s">15 个字符内</span>
+					</td>
+					<td>
+						<input type="text" id="group_name" name="group_name" class="text_field" size="30" value="<%= h(@group.name) %>" />
+					</td>
+				</tr>
+				
+				<tr>
+					<td valign="top">
+						<label for="group_desc">
+			                圈子描述
+							:
+			            </label>
+						<br />
+						<span class="form_info_s">(1000 字以内)</span>
+					</td>
+					<td>
+						<textarea id="group_desc" name="group_desc" class="text_field" cols="30" rows="3"><%= h(@group.desc) %></textarea>
+					</td>
+				</tr>
+				
+				<tr>
+					<td valign="top">
+						<label for="group_notice">
+			                圈子公告
+							:
+			            </label>
+					</td>
+					<td>
+						<textarea id="group_notice" name="group_notice" class="text_field" cols="30" rows="5"><%= h(@group.get_setting[:notice]) %></textarea>
+					</td>
+				</tr>
+				
+				<% if session[:account_id] < 2 %>
+					<% # only the first registered user can see this option %>
+					<% # it should be only Tomato %>
+					<tr>
+						<td>
+							<label for="custom_key">
+						        custom key
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="custom_key" name="custom_key" class="text_field" size="30" value="<%= @group.get_setting[:custom_key] %>" />
+						</td>
+					</tr>
+				<% end %>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= submit_tag "更新圈子设置", :class => "button", :disabled => @account_limited %>
+					</td>
+				</tr>
+				
+				<% end %>
+				
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= draw_hor_line("250px") %>
+					</td>
+				</tr>
+				
+				
+				<% form_tag "/groups/#{@group_id}/update_access", :method => :post do %>
+				<tr>
+					<td>
+						圈子访问权限
+						:
+					</td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= check_box_tag :need_approve, value = "true", @group.get_setting[:need_approve] %>
+			            <label for="need_approve">
+			                加入圈子需要管理员批准
+			            </label>
+					</td>
+				</tr>
+				<% if false %>
+				<tr>
+					<td></td>
+					<td class="form_info_l">
+						如果 取消 加入圈子需要管理员批准, 所有待处理的加入圈子申请都将全部自动被批准
+					</td>
+				</tr>
+				<% end %>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= submit_tag "更新圈子访问权限", :class => "button", :disabled => @account_limited %>
+					</td>
+				</tr>
+				<% end %>
+				
+			</table>
+		</div>
+	</div>
+</div>

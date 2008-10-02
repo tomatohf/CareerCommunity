@@ -1,0 +1,75 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 参加的活动" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<% if @edit %>
+		<div class="community_block">
+			<a href="/spaces/show_edit/<%= @owner_id %>">我的空间</a>
+		</div>
+	<% else %>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		</div>
+	<% end %>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/<%= @edit ? "list_notbegin_join_edit" : "list_notbegin_join" %>/<%= @owner_id %>">所有 <%= owner_name %> 参加的尚未开始的活动</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/<%= @edit ? "list_create_edit" : "list_create" %>/<%= @owner_id %>">所有 <%= owner_name %> 发起的活动</a>
+	</div>
+
+	<div class="community_block">
+		<a href="/activities/<%= @edit ? "list_interest_edit" : "list_interest" %>/<%= @owner_id %>">所有 <%= owner_name %> 感兴趣的活动</a>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/recent/<%= @owner_id %>">
+			<%= owner_name %> 的活动近况
+		</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/<%= @edit ? "list_friend_edit" : "list_friend" %>/<%= @owner_id %>">
+			<%= owner_name %> 的朋友的活动近况
+		</a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共参加了
+		<b><%= @activities.total_entries %></b>
+		个活动
+	</div>
+	
+	<div class="community_block overflow_hidden">
+		<%= render(:partial => "activity", :collection => @activities) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@activities) %>
+	</div>
+	
+</div>
+

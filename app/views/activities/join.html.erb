@@ -1,0 +1,60 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "报名参加活动 #{activity_title}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+	</div>
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+	<% if @group %>
+		<div class="community_title">
+			圈子内活动 ~~~
+		</div>
+		
+		<div class="community_block align_c">
+			<a href="/groups/<%= @group.id %>">
+				<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/groups/<%= @group.id %>">
+				去圈子 <%= h(@group.name) %></a>
+		</div>
+	<% end %>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<% if @group %>
+		<p class="error_msg">
+			无法报名参加活动 <%= activity_title %>
+		</p>
+		
+		<p>
+			活动
+			<a href="/activities/<%= @activity_id %>">
+				<%= activity_title %></a>
+			是圈子
+			<a href="/groups/<%= @group.id %>">
+				<%= h(@group.name) %></a>
+			的圈内活动, 加入圈子后才能报名参加这个活动
+		</p>
+	<% else %>
+		<p class="info_msg">
+			报名参加活动的申请已经成功提交, 得到批准后就可以参加了
+		</p>
+		
+		<p>
+			活动 <%= activity_title %> 需要得到批准后才可以参加 ...
+		</p>
+	<% end %>
+</div
+

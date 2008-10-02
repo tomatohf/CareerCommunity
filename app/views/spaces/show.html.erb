@@ -1,0 +1,333 @@
+<% owner_name = @edit ? "我" : h(@account_nick_pic[0]) %>
+
+<% page_title = "#{h(@account_nick_pic[0])}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r community_container_r">
+	<div class="community_block align_c">
+		<% face_image_url = @account_nick_pic[1] || "" %>
+		<% if face_image_url.include?("thumb_48") %>
+			<img src="<%= face_image_url.gsub("thumb_48", "thumb_200") %>" border="0" />
+		<% else %>
+			<img src="<%= face_img_src(face_image_url) %>" border="0" />
+		<% end %>
+	</div>
+	
+	<% if @basic_profile %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+		
+		<div class="community_block">
+			<% if @basic_profile.real_name && @basic_profile.real_name != "" %>
+				真实姓名:
+				<%= h(@basic_profile.real_name) %>
+				&nbsp;&nbsp;&nbsp;
+			<% end %>
+			
+			<% unless @basic_profile.gender.nil? %>
+				性别:
+				<%= @basic_profile.gender ? "男" : "女" %>
+				&nbsp;&nbsp;&nbsp;
+			<% end %>
+			
+			<% if @province_name || @city_name %>
+				所在城市:
+				<%= @province_name %> &nbsp; <%= @city_name %>
+			<% end %>
+		</div>
+		<div class="community_block">
+			<% if @basic_profile.birthday %>
+				生日:
+				<%= format_date(@basic_profile.birthday) %>
+				&nbsp;&nbsp;&nbsp;
+				
+				星座:
+				<%= Astrology.find_by_date(@basic_profile.birthday.month, @basic_profile.birthday.mday).name %>
+				&nbsp;&nbsp;&nbsp;
+			<% end %>
+			
+			<% if @hometown_province_name || @hometown_city_name %>
+				家乡:
+				<%= @hometown_province_name %> &nbsp; <%= @hometown_city_name %>
+			<% end %>
+		</div>
+		
+		<div class="community_block_narrow">
+			<hr size="1" style="color: #EEEEEE" />
+		</div>
+	<% end %>
+	
+	<div class="community_block align_c">
+		<a href="/spaces/<%= @edit ? "resume_edit" : "resume" %>/<%= @account_id %>">查看简历</a>
+		&nbsp;&nbsp;&nbsp;
+		<a href="/spaces/<%= @edit ? "profile_edit" : "profile" %>/<%= @account_id %>">详细资料</a>
+		&nbsp;&nbsp;&nbsp;
+		<a href="#comment_new">留个言吧</a>
+		<% unless @edit %>
+			&nbsp;&nbsp;&nbsp;
+			<a href="/messages/compose/<%= @account_id %>">发送消息</a>
+		<% end %>
+	</div>
+	<% unless @edit %>
+		<% if @relationship == "not_friend" || @relationship == "logout" %>
+			<div class="community_block align_c">
+				<% form_tag "/friends", :method => :post do %>
+					<input type="hidden" name="friend" value="<%= @account_id %>" />
+					<input type="submit" value="加为我的朋友" class="button" />
+				<% end %>
+			</div>
+		<% end %>
+		
+		<% if @relationship == "friend" %>
+			<div class="community_block align_c">
+				<% form_tag "/friends/#{@account_id}", :method => :delete, :onsubmit => "if(!confirm('确定要将其从我的朋友中删除么 ?')){ return false; }" do %>
+					<input type="submit" value="从我的朋友中删除" class="button" />
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>
+	
+	<div class="community_title">
+		<%= owner_name %> 的朋友 ~~~
+	</div>
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="friend_section_expand" href="#" onclick="collapse_section('friend_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="friend_section_collapse" href="#" onclick="expand_section('friend_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			
+			<a href="/friends/<%= @edit ? "list_edit" : "list" %>/<%= @account_id %>">所有朋友</a>
+		</div>
+		
+		<div id="friend_section">
+			<div>
+				<%= float_list(@friends, "/friends/account_nick_pic", :account_nick_pic, {:can_del => false}, 3) %>
+			</div>
+		</div>
+	</div>
+	
+	<div class="community_title clear_l">
+		<%= owner_name %> 参加的圈子 ~~~
+	</div>
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="group_section_expand" href="#" onclick="collapse_section('group_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="group_section_collapse" href="#" onclick="expand_section('group_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			
+			<a href="/groups/<%= @edit ? "list_edit" : "list" %>/<%= @account_id %>">所有参加的圈子</a>
+		</div>
+		
+		<div id="group_section">
+			<%= float_list(@group_members, "/groups/group_name_img", :group_name_img, {:show_icon => true, :owner_name => owner_name}, 3) %>
+		</div>
+	</div>
+</div>
+
+<div class="community_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div>
+		<table cellpadding="0" cellspacing="0" class="main_part_w">
+			<tr>
+				<td style="width: 50px;" align="left" valign="top">
+					<img src="<%= face_img_src(face_image_url) %>" border="0" />
+				</td>
+				
+				<td style="width: 60px;" align="center" valign="top">
+					<img src="/images/chat_small_left.png" border="0" />
+				</td>
+				
+				<td align="left" valign="top">
+					<% if @basic_profile && @basic_profile.qmd && @basic_profile.qmd != "" %>
+						<%= h(@basic_profile.qmd) %>
+					<% else %>
+						<span class="form_info_s">
+							<%= owner_name %> 还没有签名档 ... 
+						</span>
+					<% end %>
+					
+					<% if @edit %>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="/profiles/<%= session[:account_id] %>/basic">编辑签名档</a>
+					<% end %>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="community_title">
+		<%= @edit ? "我的朋友" : owner_name %> 最近的动态 ~~~
+	</div>
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="action_section_expand" href="#" onclick="collapse_section('action_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="action_section_collapse" href="#" onclick="expand_section('action_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			
+			<a href="/spaces/<%= "friend_" if @edit %>actions/<%= @account_id %>">所有<%= "朋友的" if @edit %>动态</a>
+		</div>
+		
+		<div id="action_section">
+			<%= render(
+				:partial => "account_action",
+				:collection => @account_actions,
+				:locals => {
+					:owner_id => @edit ? nil : @account_id,
+					:owner_nick => @edit ? nil : @account_nick_pic[0],
+					:owner_pic_url => @edit ? nil : @account_nick_pic[1]
+				}
+			)%>
+		</div>
+	</div>
+	
+	<div class="community_title">
+		<%= owner_name %> 的活动 ~~~
+	</div>
+	<div class="community_block">
+		<a href="/activities/attend_stat/<%= @account_id %>">
+			查看 <%= owner_name %> 出席/缺席活动的情况的统计
+		</a>
+	</div>
+	<div>
+		<table cellpadding="0" cellspacing="0" class="main_part_w">
+			<tr>
+				<td style="width: 50%" valign="top">
+					<div class="community_block">
+						<div class="space_section_title">
+							<a class="float_r" title="收起" id="join_activity_section_expand" href="#" onclick="collapse_section('join_activity_section'); return false;">
+								<img src="/images/expand.png" border="0" /></a>
+							<a class="float_r" title="展开" id="join_activity_section_collapse" href="#" onclick="expand_section('join_activity_section'); return false;" style="display: none">
+								<img src="/images/collapse.png" border="0" /></a>
+							<span class="float_r">
+								<a href="/activities/<%= @edit ? "list_join_edit" : "list_join" %>/<%= @account_id %>">所有参加的活动</a>
+								&nbsp;&nbsp;&nbsp;
+							</span>
+							
+							<b>
+								参加的活动
+							</b>
+						</div>
+						
+						<div id="join_activity_section">
+							<%= render(:partial => "/activities/activity_small", :collection => @activity_members) %>
+						</div>
+					</div>
+				</td>
+				
+				<td style="width: 50%" valign="top">
+					<div class="community_block">
+						<div class="space_section_title">
+							<a class="float_r" title="收起" id="interest_activity_section_expand" href="#" onclick="collapse_section('interest_activity_section'); return false;">
+								<img src="/images/expand.png" border="0" /></a>
+							<a class="float_r" title="展开" id="interest_activity_section_collapse" href="#" onclick="expand_section('interest_activity_section'); return false;" style="display: none">
+								<img src="/images/collapse.png" border="0" /></a>
+							<span class="float_r">
+								<a href="/activities/<%= @edit ? "list_interest_edit" : "list_interest" %>/<%= @account_id %>">所有感兴趣的活动</a>
+								&nbsp;&nbsp;&nbsp;
+							</span>
+							
+							<b>
+								感兴趣的活动
+							</b>
+						</div>
+						
+						<div id="interest_activity_section">
+							<%= render(:partial => "/activities/activity_small", :collection => @activity_interests) %>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	
+	<div class="community_title">
+		<%= owner_name %> 的照片 ~~~
+	</div>
+	<div class="community_block">
+		照片啊照片 ...
+	</div>
+	
+	<div class="community_title">
+		<%= owner_name %> 的博客 ~~~
+	</div>
+	<div class="community_block">
+		博客啊博客 ...
+	</div>
+	
+	<div class="community_title">
+		<%= owner_name %> 的留言板 ~~~
+	</div>
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="wall_section_expand" href="#" onclick="collapse_section('wall_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="wall_section_collapse" href="#" onclick="expand_section('wall_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			
+			<a href="/spaces/<%= @edit ? "wall_edit" : "wall" %>/<%= @account_id %>">到留言板查看所有留言</a>
+		</div>
+		
+		<div id="wall_section">
+			<div>
+				<%= render(:partial => "/common/comment", :collection => @space_comments, :locals => {:can_del => @edit}) %>
+			</div>
+			
+			<div class="community_block_narrow">
+				<a id="comment_new">添加留言 »</a>
+				<% form_tag "/spaces/create_comment/#{@account_id}", :method => :post, :onsubmit => "if(document.getElementById('space_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
+					<textarea id="space_comment" name="space_comment" class="text_field" cols="50" rows="5"></textarea>
+					
+					<div>
+						<input type="hidden" name="e" value="<%= true if @edit %>" />
+						<input type="submit" value="发表留言" class="button" />
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<% if @edit %>
+	<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
+		<input type="hidden" name="e" value="<%= true if @edit %>" />
+	<% end %>
+	
+	<script language="JavaScript">
+		function delete_comment(comment_id) {
+			if(confirm("确定要删除留言么 ?")) {
+				del_form = document.getElementById("delete_comment_form");
+				del_form.action = "/spaces/delete_comment/" + comment_id;
+				del_form.submit();
+			}
+		}
+	</script>
+<% end %>
+
+<script language="JavaScript">
+	function expand_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "";
+		document.getElementById(expand_icon).style.display = "";
+		document.getElementById(collapse_icon).style.display = "none";
+	}
+	
+	function collapse_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "none";
+		document.getElementById(expand_icon).style.display = "none";
+		document.getElementById(collapse_icon).style.display = "";
+	}
+</script>
+	
+	

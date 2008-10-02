@@ -1,0 +1,16 @@
+<% can_del &&= true %>
+
+<div class="friend_nick_pic">
+	<div>
+		<a href="/spaces/show/<%= account_nick_pic[3] %>">
+			<img src="<%= face_img_src(account_nick_pic[1]) %>" border="0" /></a>
+	</div>
+	<div>
+		<a href="/spaces/show/<%= account_nick_pic[3] %>" class="account_nick_link">
+			<%= h(account_nick_pic[0]) %></a>
+		<% if can_del %>
+			<a title="删除" href="#" onclick="delete_friend(<%= account_nick_pic[3] %>)">
+				<img src="/images/delete_small.gif" width="12" height="12" border="0" /></a>
+		<% end %>
+	</div>	
+</div>

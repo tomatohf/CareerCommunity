@@ -1,0 +1,16 @@
+<div>
+	<% if photos.size > 0 %>
+	
+		<div class="form_info_s">
+			包含 <b><%= photos.size %></b> 张照片
+		</div>
+		<%= render(:partial => "/profiles/album_photo_for_face", :collection => photos) %>
+	
+	<% else %>
+	
+		<div>
+			相册中还没有照片 ... 现在就去 <a href="/albums/<%= album.id %>/upload">添加照片</a> 吧
+		</div>
+	
+	<% end %>
+</div>

@@ -1,0 +1,24 @@
+if flash[:message]
+  page.replace_html :info_msg, "<div class=\"info_msg\">" + flash[:message] + "</div>"
+  page.show :info_msg
+  page.delay(3) do
+    page.visual_effect :fade, "info_msg"
+  end
+else
+  page.replace_html :info_msg, ""
+  page.hide :info_msg
+end
+
+
+if flash[:error_msg]
+  page.replace_html :error_msg, "<div class=\"error_msg\">" + flash[:error_msg] + "</div>"
+  page.show :error_msg
+  
+  page.delay(3) do
+    page.visual_effect :fade, "error_msg"
+  end
+else
+  page.replace_html :error_msg, ""
+  page.hide :error_msg
+end
+

@@ -1,0 +1,250 @@
+﻿限制加入圈子个数？ - like 限制朋友个数的实现
+
+缩短 并 调整 tiny_mce 的宽度？？？
+
+
+
+Deploying a Rails app with Thinking Sphinx
+http://www.updrift.com/article/deploying-a-rails-app-with-thinking-sphinx
+
+
+
+消息数目缓存有问题,当展开消息中刷新时 ~
+
+首页登录小窗口 加 记住我
+
+IE 6 上面的宽度有问题 .....
+
+显示搜索结果的相关度
+
+缓存 object 的问题
+
+简单的用户设置功能
+	是否显示手机号啊电话啊之类的
+	圈子输入手机号那是不是必须要显示呢？
+
+
+相册的删除功能
+照片的删除功能
+
+
+解散活动
+解散圈子
+
+
+删除活动和圈子的照片
+
+
+首页和我的空间 页面的未完成部分
+
+
+
+Ruby Patch of the GC for Rails
+
+
+
+HR交流圈子:
+	自定义用户属性，金币
+	
+	自定义界面，静态首页
+	
+	博客文章分类
+	
+	
+	
+
+
+profiles: request.post? 影响 action cache
+community/index: session[:nick] 影响 action cache
+album.photos: 缓存清除的规则是不是太粗鲁了 ???
+
+好友动态 & 系统消息
+	显示的时候 用户查询的 N+1 问题
+	
+博客的 最新文章列表 和 最新评论列表
+
+分页:
+	好友列表
+	相册列表
+
+圈子功能
+	邀请发送 email ... ???
+	在圈子页面上 接受或拒绝加入圈子的邀请
+
+
+
+Voting
+	给 VoteClient.swf 搜身 - 减小 SWF 文件大小
+
+	
+
+
+Flash 做个很炫很酷的照片演示，并且可支持离开网站使用
+读取在线图片的 -> http://www.51flash.cn/?p=383
+嵌入图片，使用 Ming ... and Ming-Ruby ?
+http://www.libming.org/
+http://madscientist.jp/~ikegami/ruby/ming/
+
+
+
+用户的profile
+	积分 - 积分当钱用？
+		等级？
+		头衔？
+	货币 - 用来买课程，我们会赠送
+
+
+照片 和 博客 的 tag  功能
+
+个人 profile 和 相册的 隐私设置
+
+不登录可以看到所有内容，但是要操作就必须登录
+
+
+
+
+
+
+
+
+
+sql注入 检测工具
+
+图片加水印
+http://www.javaeye.com/topic/107055
+
+批量修改照片页面
+
+SWFUpload 上传大小超过 3M 的文件, server 端会抛错, client 端会一直等待 ...
+
+添加对 从确认邮件登录 的介绍，而可以是一张页面，最好是一些 inline 的 tip
+贡献相册或照片的 tip 解释
+
+工具箱里搞点 性格测验一类的东西
+放 Flash 游戏
+
+修改 email 地址
+
+强大的隐私设置
+
+出错页面
+
+所有的删除功能都必须非常的小心，确保相关的东西都妥善处理
+
+网站 favicon
+
+网站缓存
+为出错页面做页面级别缓存, controller => errors
+我的空间页面一定要 cache 啊 ......
+
+更快的模板？
+Tenjin - http://www.kuwata-lab.com/tenjin/
+
+
+======
+
+Denpendencies:
+	Hpricot
+	RMagic (ImageMagic)
+	memcache-client
+	paperclip
+	mime-types
+	mislav-will_paginate (gem install mislav-will_paginate --source http://gems.github.com/)
+	select_with_include
+	freelancing-god-thinking-sphinx (gem install freelancing-god-thinking-sphinx --source http://gems.github.com)
+	-----
+	
+======
+
+
+======
+
+respond_to do |wants|
+	wants.text
+	wants.html
+	wants.js
+	wants.ics
+	wants.xml
+	wants.rss
+	wants.atom
+	wants.yaml
+end
+
+def rescue_action(exception)
+	exception.is_a?(ActiveRecord::RecordInvalid) ? render_invalid_record(exception.record)
+end
+
+def render_invalid_record(record)
+	@invalid_record = record
+	respond_to do |format|
+		format.html do
+			render :action => (record.new_record? ? "new" : "edit")
+		end
+		
+		format.js do
+			render :update do |page|
+				page.alert @invalid_record.errors.full_messages.join("\n")
+			end
+		end
+	end
+end
+
+======
+
+
+======文件下载======
+response.headers['Content-Type'] = @attachment.content_type  
+response.headers['Content-Disposition'] = "attachment; filename=\"#{URI.encode(@attachment.filename)}\""   
+response.headers['Content-Length'] = @attachment.size  
+response.headers["X-LIGHTTPD-send-file"] = @attachment.public_filename  
+render :nothing => true
+
+-----
+
+module ActionController # fix rails X-sendfile bug!  
+  class CgiResponse  
+    def set_content_length!  
+      @headers["Content-Length"] = @body.size unless @body.respond_to?(:call) || @headers["X-LIGHTTPD-send-file"]  
+    end  
+  end  
+end
+================
+
+
+======全文检索======
+
+http://www.javaeye.com/topic/200065
+
+http://www.javaeye.com/topic/203122
+
+==================
+
+
+======显示用户是否在线======
+		一个非常有用的功能，在application全局的角度获取不同用户的session信息
+		
+		程序代码 程序代码
+		
+		@user=CGI::Session::ActiveRecordStore::Session.find_by_session_id(@session_id).data[:user]
+		
+		
+		http://webonrails.com/2006/12/08/accessing-session-data-using-session_id/
+		
+		看看那些用户在线
+		程序代码 程序代码
+		
+		def who_is_online
+		  @whos_online = Array.new()
+		  onlines = CGI::Session::ActiveRecordStore::Session.find( :all, :conditions => [ 'updated_at = ?',  Time.now() - 10.minutes ] )
+		  onlines.each do |online|
+		    id = Marshal.load( Base64.decode64( online.data ) )
+		    @whos_online << id[ :member_id ]
+		  end
+		  return @whos_online
+		end
+		
+		
+		http://matt-beedle.com/2006/12/13/rails-how-to-find-out-who-is-online/ 
+======显示用户是否在线======
+
+

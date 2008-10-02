@@ -1,0 +1,156 @@
+<% community_page_title("创建一个新的圈子") %>
+
+<div class="float_r group_container_r">
+	<div class="community_block">
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<div class="community_title">
+		创建圈子的权限 ~~~
+	</div>
+	
+	<% can_create_remain = @can_count - @created_group_count %>
+	<div class="community_block form_info_s">
+		你一共拥有
+		<b>
+			<%= @can_count %>
+		</b>
+		个创建圈子的权限
+		
+		<br />
+		
+		你已经创建了
+		<b>
+			<%= @created_group_count %>
+		</b>
+		个圈子
+		
+		<br />
+		
+		还可以再创建
+		<b>
+			<%= can_create_remain %>
+		</b>
+		个圈子
+	</div>
+	
+	<div class="community_block">
+		参加过培训课程可获得 <b>3</b> 个创建圈子的权限
+	</div>
+	
+	<div class="community_block">
+		注册时间超过半年可获得 <b>1</b> 个创建圈子的权限
+	</div>
+
+</div>
+
+<div class="group_container_l">
+	<h2>创建一个新的圈子</h2>
+	
+	<div class="community_block_narrow">
+		<% if can_create_remain > 0 %>
+	
+			<% if flash[:error_msg] %>
+				<p class="error_msg"><%= flash[:error_msg] %></p>
+			<% end %>
+			<% if @group.errors.size > 0 %>
+				<p class="error_msg">
+					<%= list_model_validate_errors(@group) %>
+				</p>
+			<% end %>
+			
+			<div>
+				<% form_tag "/groups", :method => :post do %>
+				
+					<table cellpadding="0" cellspacing="10" class="main_part_w">
+						<tr>
+							<td style="width: 80px"></td>
+							<td></td>
+						</tr>
+						
+						<tr>
+							<td>
+								<label for="group_name">
+							        圈子名称(<span style="color: red;">*</span>)
+									:
+							    </label>
+								<br />
+								<span class="form_info_s">15 个字符内</span>
+							</td>
+							<td>
+								<input type="text" id="group_name" name="group_name" class="text_field" size="30" value="<%= h(@group.name) %>" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td valign="top">
+								<label for="group_desc">
+					                圈子描述
+									:
+					            </label>
+								<br />
+								<span class="form_info_s">(1000 字以内)</span>
+							</td>
+							<td>
+								<textarea id="group_desc" name="group_desc" class="text_field" cols="30" rows="3"><%= h(@group.desc) %></textarea>
+							</td>
+						</tr>
+						
+						<% if session[:account_id] < 2 %>
+							<% # only the first registered user can see this option %>
+							<% # it should be only Tomato %>
+							<tr>
+								<td>
+									<label for="custom_key">
+								        custom key
+										:
+								    </label>
+								</td>
+								<td>
+									<input type="text" id="custom_key" name="custom_key" class="text_field" size="30" value="<%= @group.get_setting[:custom_key] %>" />
+								</td>
+							</tr>
+						<% end %>
+						
+						<tr>
+							<td>
+								圈子访问权限
+								:
+							</td>
+							<td></td>
+						</tr>
+						
+						<tr>
+							<td></td>
+							<td>
+								<%= check_box_tag :need_approve, value = "true", @group.get_setting[:need_approve] %>
+					            <label for="need_approve">
+					                加入圈子需要管理员批准
+					            </label>
+							</td>
+						</tr>
+						
+						<tr>
+							<td></td>
+							<td>
+								<%= submit_tag "创建圈子", :class => "button", :disabled => @account_limited %>
+								&nbsp;&nbsp;&nbsp;
+								<a href="/groups/list_edit/<%= @account_id %>">返回我的圈子列表</a>
+								&nbsp;&nbsp;&nbsp;
+								<a href="/groups/recent/<%= @account_id %>">返回我的圈子近况</a>
+							</td>
+						</tr>
+					</table>
+				<% end %>
+			</div>
+		<% else %>
+			<p>
+				<img src="/images/warning_small.png" border="0" alt="警告" title="警告" />
+				没有创建圈子的权限 ...
+			</p>
+			<a href="/groups/list_edit/<%= @account_id %>">返回我参加的圈子列表</a>
+			&nbsp;&nbsp;&nbsp;
+			<a href="/groups/recent/<%= @account_id %>">返回我的圈子近况</a>
+		<% end %>
+	</div>
+</div>

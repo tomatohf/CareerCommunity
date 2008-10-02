@@ -1,0 +1,129 @@
+<% community_page_title("更新帐号信息") %>
+
+<div class="float_r community_container_r">
+	<%= render :partial => "common/edit_navigation", :locals => {:account_checked => @account.checked} %>
+</div>
+
+<div class="community_container_l">
+	<h2>帐号信息</h2>
+	
+	<% form_tag "/toolkits/password_strength", :id => "password_strength_form", :target => "_blank", :method => :post do %>
+		<input type="hidden" name="password" id="password" />
+	<% end %>
+	<script language="JavaScript">
+		function submit_password_strength_form() {
+			var password = document.getElementById("account_password").value;
+			
+			document.getElementById("password").value = password;
+			
+			document.getElementById("password_strength_form").submit();
+		}
+	</script>
+	
+	<br />
+	
+	<div class="community_block_narrow">
+
+		<% if @account.errors.size > 0 %>
+			<p class="error_msg"><%= list_model_validate_errors(@account) %></p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg">
+		    	<%= flash[:error_msg] %>
+			</p>
+		<% end %>
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		
+		<table cellpadding="0" cellspacing="0" class="main_part_w">
+			<% form_for @account, :url => "/accounts/#{session[:account_id]}", :html => { :method => :put } do |f| %>
+				<tr>
+					<td>
+						<label for="account_nick">
+			                昵称
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="account_nick" name="account_nick" class="text_field" size="30" value="<%= h(@account.get_nick(false)) %>" />
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">输入你想使用的新昵称</div></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">不能包含 空格</div></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">15 个字符以内</div></td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= f.submit "更新", :class => "button", :disabled => @account.limited? %>
+					</td>
+				</tr>
+			<% end %>
+			
+				<tr>
+					<td colspan="2" style="height: 50px"></td>
+				</tr>
+		
+			<% form_for @account, :url => "/accounts/#{session[:account_id]}/update_password", :html => { :method => :post } do |f| %>
+				<tr>
+					<td>
+						<label for="current_password">
+			                当前密码
+			            </label>
+					</td>
+					<td>
+						<input type="password" id="current_password" name="current_password" class="text_field" size="30" />
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">输入你当前使用的密码</div></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">忘记密码? <a href="/accounts/forgot_password">找回密码</a></div></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="account_password">
+			                新密码(<span style="color: red;">*</span>)
+			            </label>
+					</td>
+					<td>
+						<input type="password" id="account_password" name="account_password" class="text_field" size="30" />
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><div class="form_info_l">输入你想使用的新密码</div></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><a class="form_info_l" href="#" onclick="submit_password_strength_form();return false;">检测一下我要使用的新密码的强度?</a></td>
+				</tr>
+				
+				<tr>
+					<td colspan="2" style="height: 10px"></td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= f.submit "更新密码", :class => "button", :disabled => @account.limited? %>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+</div>
+

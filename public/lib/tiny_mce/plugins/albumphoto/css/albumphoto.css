@@ -1,0 +1,28 @@
+.form_info_s {
+	color: #B3ABA2;
+}
+
+.album_photo_for_blog_container {
+	float: left;
+	margin: 0px 5px 10px 5px;
+}
+
+.album_photo_for_blog {
+	border: 1px dotted #C2E3EF;
+	padding: 3px;
+	width: 80px;
+	height: 80px;
+	text-align: center;
+}
+
+.album_photo_for_blog_actions {
+	word-spacing: 5px;
+}
+
+.album_photo_for_blog_actions a {
+	text-decoration: none;
+}
+
+.album_photo_for_blog_actions a:hover {
+	text-decoration: underline;
+}

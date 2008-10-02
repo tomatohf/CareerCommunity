@@ -1,0 +1,115 @@
+<% h_album_name = h(@album.name) %>
+
+<% page_title = "修改相册 #{@old_name || h_album_name}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r album_container_r">
+	<div class="community_block">
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+
+	<div class="community_title">
+	
+	</div>
+	
+	<div class="community_block">
+		
+	</div>
+</div>
+
+<div class="album_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow">
+		
+		<% if flash[:message] %>
+			<p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @album.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@album) %>
+			</p>
+		<% end %>
+		
+		<div class="div_form">
+			<% form_for @album, :url => "/albums/#{@album.id}", :html => { :method => :put } do |f| %>
+			
+				<div>
+					<label for="album_name">
+				        相册名称(<span style="color: red;">*</span>)
+				    </label>
+				</div>
+				<div>
+					<input type="text" id="album_name" name="album_name" class="text_field" size="30" value="<%= h_album_name %>" />
+				</div>
+				
+				<div>
+					<label for="album_description">
+		                相册描述
+		            </label>
+					&nbsp;&nbsp;&nbsp;
+					<span class="form_info_s">(1000 字以内)</span>
+				</div>
+				<div>
+					<textarea id="album_description" name="album_description" class="text_field" cols="30" rows="5"><%= h(@album.description) %></textarea>
+				</div>
+				
+				<div>
+		        	<a id="cover_photo_field">封面照片</a>
+				</div>
+				<div>
+					<input type="hidden" id="album_cover_photo_id" name="album_cover_photo_id" value="<%= h(@album.cover_photo_id) %>" />
+					<table>
+						<tr>
+							<td>
+								<div class="edit_album_cover_photo">
+									<img id="cover_photo" src="<%= @album.get_cover_photo_img_src(:thumb_80, @cover_photo) %>" border="0" />
+								</div>
+							</td>
+							
+							<td>
+								<span class="form_info_l">
+									从 <a href="#photos_list">下面</a> 的照片列表中选择你想用作封面的照片
+								</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<script type="text/javascript" language="JavaScript">
+					function change_album_cover_photo_id(photo_id, thumb_path){
+						document.getElementById("album_cover_photo_id").value = photo_id + "";
+						document.getElementById("cover_photo").src = thumb_path;
+					}
+				</script>
+				
+				<div>
+					<%= f.submit "保存相册信息", :class => "button", :disabled => @account_limited %>
+					&nbsp;&nbsp;&nbsp;
+					返回 -
+					<a href="/albums/show_edit/<%= @album.id %>"><%= h_album_name %></a>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="/albums">我的相册列表</a>
+				</div>
+			
+			<% end %>
+		</div>
+		
+	</div>
+	
+	<div class="community_title">
+		<a id="photos_list">选择相册 <%= h_album_name %> 的封面照片 ~~~</a>
+	</div>
+	
+	<div class="form_info_l">
+		点击你想用作相册 <%= h_album_name %> 的封面的照片，然后 保存相册信息
+	</div>
+	
+	<!-- overflow: hidden; is used to make IE wrap the float photo div list ... -->
+	<div class="community_block" style="overflow: hidden;">
+		<%= render(:partial => "edit_album_photo", :collection => @album.get_photos) %>
+	</div>
+</div>

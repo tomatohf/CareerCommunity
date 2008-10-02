@@ -1,0 +1,234 @@
+<% owner_name = @edit ? "我" : h(@account_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的简历" %>
+<% community_page_title(page_title) %>
+
+<div class="profile_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="float_r">
+		<% if @edit %>
+			<% [
+				["basic", "基本信息"],
+				["contact", "联系信息"],
+				["hobby", "兴趣爱好"],
+				["educations", "教育背景"],
+				["jobs", "职业经历"],
+				["pic", "照片头像"]
+				].each do |p| %>
+					<a href="/profiles/<%= session[:account_id] %>/<%= p[0] %>">修改<%= p[1] %></a>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<% end %>
+		<% end %>
+		<a href="/spaces/<%= @edit ? "show_edit" : "show" %>/<%= @account_id %>"><%= owner_name %> 的空间</a>
+	</div>
+	
+	<div class="resume_container clear_r">
+		<div class="resume_title">
+			基本信息
+		</div>
+		<div class="resume_block">
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<tr>
+					<td style="width: 8%;" align="center" valign="top">
+						<% face_image_url = @account_nick_pic[1] || "" %>
+						<img src="<%= face_img_src(face_image_url) %>" border="0" />
+					</td>
+					
+					<td style="width: 30%;" align="center" valign="top">
+						<table cellpadding="0" cellspacing="5" class="main_part_w">
+							<tr>
+								<td style="width: 30%;" align="right" valign="top">姓名 :</td>
+								<td style="width: 70%;" align="left" valign="top"><%= @basic_profile && h(@basic_profile.real_name) %></td>
+							</tr>
+							
+							<tr>
+								<td style="width: 30%;" align="right" valign="top">性别 :</td>
+								<td style="width: 70%;" align="left" valign="top"><%= @basic_profile && (@basic_profile.gender.nil? ? "" : (@basic_profile.gender == true ? "男" : "女")) %></td>
+							</tr>
+							
+							<tr>
+								<td style="width: 30%;" align="right" valign="top">出生日期 :</td>
+								<td style="width: 70%;" align="left" valign="top"><%= @basic_profile && format_date(@basic_profile.birthday) %></td>
+							</tr>
+							
+							<tr>
+								<td style="width: 30%;" align="right" valign="top">居住地 :</td>
+								<td style="width: 70%;" align="left" valign="top"><%= @province_name %> &nbsp; <%= @city_name %></td>
+							</tr>
+						</table>
+					</td>
+					
+					<td style="width: 42%;" align="center" valign="top">
+						<table cellpadding="0" cellspacing="5" class="main_part_w">
+							<tr>
+								<td style="width: 30%;" align="right" valign="top">电子邮件 :</td>
+								<td style="width: 70%;" align="left" valign="top"><%= @account_nick_pic[2] %></td>
+							</tr>
+							
+							<tr>
+								<td style="width: 30%;" align="right" valign="top">电话 :</td>
+								<td style="width: 70%;" align="left" valign="top"><%= @contact_profile && @contact_profile.phone %></td>
+							</tr>
+							
+							<tr>
+								<td style="width: 30%;" align="right" valign="top">手机 :</td>
+								<td style="width: 70%;" align="left" valign="top"><%= @contact_profile && @contact_profile.mobile %></td>
+							</tr>
+							
+							<tr>
+								<td style="width: 30%;" align="right" valign="top">地址 :</td>
+								<td style="width: 70%;" align="left" valign="top"><%= @contact_profile && @contact_profile.address %></td>
+							</tr>
+							
+							<tr>
+								<td style="width: 30%;" align="right" valign="top">个人网址 :</td>
+								<td style="width: 70%;" align="left" valign="top"><%= @contact_profile && @contact_profile.website %></td>
+							</tr>
+						</table>
+					</td>
+					
+					<td style="width: 20%;" align="center" valign="top">
+						<div class="resume_photo">
+							<% if face_image_url.include?("thumb_48") %>
+								<img src="<%= face_image_url.gsub("thumb_48", "thumb_120") %>" border="0" />
+							<% end %>
+						</div>
+						<%= h(@account_nick_pic[0]) %>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="resume_title">
+			自我介绍
+		</div>
+		<div class="resume_block">
+			<%= h(@hobby_profile && @hobby_profile.intro) %>
+		</div>
+		
+		<div class="resume_title">
+			职业经历
+		</div>
+		<div class="resume_block">
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<tr>
+					<td style="width: 15%"></td>
+					<td style="width: 85%"></td>
+				</tr>
+				<% @job_profiles.each do |job_profile| %>
+					<tr>
+						<td>
+							<%= job_profile.enter_year || "某" %>
+							年
+							<%= job_profile.enter_month || "某" %>
+							月 :
+						</td>
+						
+						<td>
+							<b>
+								<%= h(job_profile.job_name) %>
+							</b>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							行业 :
+						</td>
+						
+						<td>
+							<%= Profession.find(job_profile.profession_id) %>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							部门 :
+						</td>
+						
+						<td>
+							<%= h(job_profile.dept) %>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							职位 :
+						</td>
+						
+						<td>
+							<%= h(job_profile.position_title) %>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							描述 :
+						</td>
+						
+						<td>
+							<%= simple_format(h(job_profile.description)) %>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<%= thin_hr %>
+						</td>
+					</tr>
+				<% end %>
+			</table>
+		</div>
+		
+		<div class="resume_title">
+			教育背景
+		</div>
+		<div class="resume_block">
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<tr>
+					<td style="width: 6%"></td>
+					<td style="width: 44%"></td>
+					<td style="width: 40%"></td>
+					<td style="width: 10%"></td>
+				</tr>
+				<% @edu_profiles.each do |edu_profile| %>
+					<tr>
+						<td>
+							<%= edu_profile.enter_year %>
+						</td>
+						
+						<td>
+							<b>
+								<%= h(edu_profile.edu_name) %>
+							</b>
+						</td>
+						
+						<td>
+							<%= h(edu_profile.major) %>
+						</td>
+						
+						<td>
+							<%= Education.find(edu_profile.education_id) %>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="4">
+							<hr size="1" style="color: #EEEEEE" />
+						</td>
+					</tr>
+				<% end %>
+			</table>
+		</div>
+		
+		<div class="resume_title">
+			附加信息
+		</div>
+		<div class="resume_block">
+			<%= h(@hobby_profile && @hobby_profile.interest) %>
+		</div>
+	</div>
+	
+</div>	
+

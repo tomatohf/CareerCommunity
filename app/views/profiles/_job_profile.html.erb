@@ -1,0 +1,64 @@
+<tr id="job_profile_<%= job_profile.id %>">
+	<th class="table_header" scope="row">
+		<%= job_profile.enter_year || "某" %>
+		年
+		<%= job_profile.enter_month || "某" %>
+		月
+	</th>
+	
+	<td>
+		<table cellpadding="0" cellspacing="5" class="main_part_w">
+			<tr>
+				<th width="15%" class="table_header">名称</th>
+				<td width="85%" class="profile_job_name">
+					<%= h(job_profile.job_name) %>
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="table_header" scope="row">
+					部门
+				</th>
+				<td>
+					<%= h(job_profile.dept) %>
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="table_header" scope="row">
+					职位
+				</th>
+				<td>
+					<%= h(job_profile.position_title) %>
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="table_header" scope="row">
+					行业
+				</th>
+				<td>
+					<%= Profession.find(job_profile.profession_id) %>
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="table_header" scope="row">
+					描述
+				</th>
+				<td>
+					<%= simple_format(h(job_profile.description)) %>
+				</td>
+			</tr>
+		</table>
+	</td>
+	
+	<td align="center">
+		<% form_tag "", :method => :post, :id => "on_job_profile_del_form_#{job_profile.id}" do %>
+			<input type="hidden" name="job_profile_id" value="<%= job_profile.id %>" />
+		<% end %>
+		<a href="#" onclick="on_job_profile_del_submit('on_job_profile_del_form_<%= job_profile.id %>', 'deleting_indicator_<%= job_profile.id %>', 'delete_icon_<%= job_profile.id %>');return false;">
+			<img src="/images/delete_small.gif" id="delete_icon_<%= job_profile.id %>" border="0" title="删除" alt="删除" /></a>
+		<img src="/images/loading_small.gif" id="deleting_indicator_<%= job_profile.id %>" style="display: none" />
+	</td>
+</tr>

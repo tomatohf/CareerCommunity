@@ -1,0 +1,41 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的相册列表" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<% if @edit %>
+		<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 130px;" do %>
+			<div class="action_bar">
+				<a href="/albums/new">创建一个新相册</a>
+			</div>
+		<% end %>
+	<% else %>
+		<a href="/spaces/show/<%= @owner_id %>">
+			<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+	<% end %>
+</div>
+	
+<div class="album_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		<% if @edit %>
+			<%= owner_name %>
+		<% else %>
+			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		<% end %>
+		有
+		<b><%= @albums.size %></b>
+		个相册
+	</div>
+
+	<div class="float_r main_part_w community_block">
+		<%= float_list(@albums, "album", :album, {:edit => @edit}, 3) %>
+	</div>
+	
+	<div class="community_block_narrow clear_r">
+
+	</div>
+</div>
