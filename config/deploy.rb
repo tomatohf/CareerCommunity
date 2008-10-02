@@ -1,5 +1,5 @@
 set :application, "CareerCommunity"
-set :repository,  "tomato@qiaobutang.com:~/projects/repo/CareerCommunity.git"
+set :repository,  "ssh://tomato@qiaobutang.com/~/projects/repo/CareerCommunity.git"
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
@@ -18,6 +18,8 @@ role :db,  "qiaobutang.com", :primary => true
 
 set :user, "tomato"
 set :password, "!t0m@t0#"
+
+default_run_options[:pty] = true 
 
 set :scm_passphrase, "!t0m@t0#"
 
