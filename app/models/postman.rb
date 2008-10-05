@@ -1,15 +1,15 @@
 class Postman < ActionMailer::Base
   
+  def self.source
+    "乔布堂"
+  end
+  
   def self.from
-    "noreply@qiaobutang.com"
+    "#{source} <noreply@qiaobutang.com>"
   end
   
   def self.host
     "qiaobutang.com"
-  end
-  
-  def self.source
-    "乔布堂"
   end
   
   # this method is only for test uasage
