@@ -1,12 +1,17 @@
 development:
   mem_limit: 512M
   charset_type: zh_cn.utf-8
-  charset_dictpath: Users/tomato/Dev/sphinx/coreseek_fulltext_2.5.source/dict
+  charset_dictpath: /Users/tomato/Dev/git/projects/CareerCommunity/db/sphinx/dict
+  searchd_file_path: /Users/tomato/Dev/git/projects/CareerCommunity/db/sphinx/development
 
 test:
   mem_limit: 512M
   charset_type: zh_cn.utf-8
+  charset_dictpath: /Users/tomato/Dev/git/projects/CareerCommunity/db/sphinx/dict
+  searchd_file_path: /Users/tomato/Dev/git/projects/CareerCommunity/db/sphinx/test
 
 production:
   mem_limit: 512M
   charset_type: zh_cn.utf-8
+  charset_dictpath: /home/tomato/websites/app/CareerCommunity/shared/sphinx/dict
+  searchd_file_path: /home/tomato/websites/app/CareerCommunity/shared/sphinx/production
