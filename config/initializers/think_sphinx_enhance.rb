@@ -37,6 +37,7 @@ module ThinkingSphinx
 
     def to_config(index, database_conf, charset_type)
       config = original_to_config(index, database_conf, charset_type)
+      config.gsub!("#", "\\#")
       
       insert_value_by_tomato(config, "sql_query_pre = SET NAMES utf8\n") if charset_type =~ /utf-8/
     end
