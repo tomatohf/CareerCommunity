@@ -1,0 +1,30 @@
+<% blog = result %>
+
+<% account = blog.account %>
+<% account_id = account.id %>
+<% account_nick = account.get_nick %>
+<% account_pic_url = account.get_profile_pic_url %>
+
+<% Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email) %>
+
+<div>
+	<div>
+		<h2>
+			<a href="/blogs/<%= blog.id %>">
+				<%= blog.title %>
+			</a>
+		</h2>
+	</div>
+	
+	<div>
+		<%= format_datetime(blog.created_at) %>
+	</div>
+	
+	<div>
+		<%= h blog.content %>
+	</div>
+</div>
+
+<div>
+	<hr />
+</div>
