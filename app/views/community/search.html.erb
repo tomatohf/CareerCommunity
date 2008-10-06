@@ -63,28 +63,8 @@
 	</div>
 
 	<div class="community_block">
-		<% @results.each do |blog| %>
-			<div>
-				<div>
-					<h2>
-						<a href="/blogs/<%= blog.id %>">
-							<%= blog.title %>
-						</a>
-					</h2>
-				</div>
-				
-				<div>
-					<%= format_datetime(blog.created_at) %>
-				</div>
-				
-				<div>
-					<%= blog.content %>
-				</div>
-			</div>
-		
-			<div>
-				<hr />
-			</div>
+		<% @results.each do |result| %>
+			<%= render :partial => "#{result.class.name.downcase}_search_result", :locals => {:result => result} %>
 		<% end %>
 	</div>
 	

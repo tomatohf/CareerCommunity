@@ -89,7 +89,20 @@ class CommunityController < ApplicationController
     # NEED TO handle raised errors
     # NEED TO handle pagination
     
-    blogs = Blog.search(query)
+    blogs = Blog.search(
+      query,
+      :field_weights => {
+        :title => 8,
+        :content => 6,
+        :comments_content => 4,
+        :account_nick => 2,
+        :comments_account_nick => 1
+      },
+      # :match_mode => :any,
+      :order => "@relevance DESC, created_at DESC",
+      :include => [:account => [:profile_pic]]
+    )
+    
     
     
     blogs
