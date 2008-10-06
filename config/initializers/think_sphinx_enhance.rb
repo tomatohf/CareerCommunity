@@ -30,4 +30,21 @@ module ThinkingSphinx
     
   end
   
+  # to fix the "sql_query_pre = SET NAMES utf8" issue
+  class Index
+    
+    alias original_to_config to_config
+
+    def to_config(index, database_conf, charset_type)
+      config = original_to_config(index, database_conf, charset_type)
+      
+      insert_value_by_tomato(config, "sql_query_pre = SET NAMES utf8\n") if charset_type =~ /utf-8/
+    end
+
+    def insert_value_by_tomato(config, value, before = "}")
+      config.gsub(before, "#{value}\n#{before}")
+    end
+    
+  end
+  
 end

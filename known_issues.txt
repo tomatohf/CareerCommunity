@@ -4,11 +4,6 @@
 
 
 
-Deploying a Rails app with Thinking Sphinx
-http://www.updrift.com/article/deploying-a-rails-app-with-thinking-sphinx
-
-
-
 消息数目缓存有问题,当展开消息中刷新时 ~
 
 首页登录小窗口 加 记住我

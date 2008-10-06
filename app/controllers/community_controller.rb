@@ -13,7 +13,7 @@ class CommunityController < ApplicationController
   end
   
   def welcome
-    @new_accounts = Account.find(
+    @new_accounts = Account.enabled.unlimited.find(
       :all,
       :limit => New_Account_Size,
       :include => [:profile_pic],
