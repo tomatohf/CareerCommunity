@@ -64,7 +64,7 @@
 
 	<div class="community_block">
 		<% @results.each do |result| %>
-			<%= render :partial => "#{result.class.name.downcase}_search_result", :locals => {:result => result} %>
+			<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result} %>
 		<% end %>
 	</div>
 	
