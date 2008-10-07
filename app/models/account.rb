@@ -1,5 +1,52 @@
 class Account < ActiveRecord::Base
   
+  define_index do
+    # fields
+    indexes :email, :nick
+    
+    # basic profile
+    # gender, two p_id and two city_id
+    indexes profile_basic.real_name, :as => :basic_real_name
+    indexes profile_basic.qmd, :as => :basic_qmd
+    
+    # exclude contact profile, for personal info privacy
+    
+    # hobby profile
+    indexes profile_hobby.intro, :as => :hobby_intro
+    indexes profile_hobby.interest, :as => :hobby_interest
+    indexes profile_hobby.music, :as => :hobby_music
+    indexes profile_hobby.movie, :as => :hobby_movie
+    indexes profile_hobby.cartoon, :as => :hobby_cartoon
+    indexes profile_hobby.game, :as => :hobby_game
+    indexes profile_hobby.sport, :as => :hobby_sport
+    indexes profile_hobby.book, :as => :hobby_book
+    indexes profile_hobby.words, :as => :hobby_words
+    indexes profile_hobby.food, :as => :hobby_food
+    indexes profile_hobby.idol, :as => :hobby_idol
+    indexes profile_hobby.car, :as => :hobby_car
+    indexes profile_hobby.place, :as => :hobby_place
+    
+    # education profile
+    # education_id
+    indexes profile_educations.edu_name, :as => :edu_name
+    indexes profile_educations.major, :as => :edu_major
+    
+    # job profile
+    # profession_id
+    indexes profile_jobs.job_name, :as => :job_name
+    indexes profile_jobs.dept, :as => :job_dept
+    indexes profile_jobs.position_title, :as => :job_position_title
+    indexes profile_jobs.description, :as => :job_description
+
+    # attributes
+    has :created_at, :updated_at, :checked, :active, :enabled
+    
+    set_property :delta => true
+    
+    # set_property :field_weights => {:field => number}
+  end
+  
+  
   include CareerCommunity::Util
   
   def self.email_regexp

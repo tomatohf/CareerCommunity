@@ -53,7 +53,7 @@
 					<option value="share"<%= " selected=\"selected\"" if @scope == "share" %>>分享</option>
 					-->
 				</select>
-				<input type="text" name="query" id="query_input" class="text_field search_input" size="35" value="<%= @query %>" />
+				<input type="text" name="query" id="query_input" class="text_field search_input" size="35" value="<%= h(@query) %>" />
 				<input type="submit" value="搜索" class="button" />
 				
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -98,7 +98,7 @@
 				break;
 			}
 		}
-		document.getElementById("query_input").value = "<%= @query %>";
+		document.getElementById("query_input").value = "<%= h(@query) %>";
 		scope_form.submit();
 	}
 </script>
