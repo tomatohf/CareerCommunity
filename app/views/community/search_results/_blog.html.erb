@@ -11,7 +11,7 @@
 <%
 	excerpts = build_excerpts(
 		riddle_client,
-		[h(blog.title), sanitize_tinymce(extract_text(blog.content))],
+		[h(blog.title), sanitize_tinymce(extract_text(blog.content)), h(account_nick)],
 		query,
 		"blog_core"
 	)
@@ -33,7 +33,7 @@
 					</div>
 					<div class="community_block">
 						<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
-							<%= h(account_nick) %></a>
+							<%= excerpts[2] %></a>
 					</div>
 				</div>
 			</td>
