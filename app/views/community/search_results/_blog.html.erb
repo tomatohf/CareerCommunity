@@ -7,24 +7,56 @@
 
 <% Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email) %>
 
-<div>
-	<div>
-		<h2>
-			<a href="/blogs/<%= blog.id %>">
-				<%= blog.title %>
-			</a>
-		</h2>
-	</div>
-	
-	<div>
-		<%= format_datetime(blog.created_at) %>
-	</div>
-	
-	<div>
-		<%= h blog.content %>
-	</div>
-</div>
+
+<% blog_content = Hpricot(blog.content || "").inner_text || "" %>
+<% blog_content = sanitize_tinymce(blog_content) %>
+
+<% comment_count = BlogComment.get_count(blog.id) %>
 
 <div>
-	<hr />
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 90px">
+				<div class="align_c">
+					<div class="community_block">
+						<a href="/spaces/show/<%= account_id %>">
+							<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+					</div>
+					<div class="community_block">
+						<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+							<%= h(account_nick) %></a>
+					</div>
+				</div>
+			</td>
+			
+			<td valign="top">
+				<div class="search_result_title">
+					<a href="/blogs/<%= blog.id %>" class="account_nick_link">
+						<%= h(blog.title) %></a>
+				</div>
+				
+				<div class="search_result_body">
+					<img src="/images/index/blog_icon.png" border="0" />
+					&nbsp;
+					<%= truncate(blog_content, 100) %>
+				</div>
+				
+				<div class="form_info_s search_result_info">
+					<a href="/blogs/<%= blog.id %>#comment_list" class="account_nick_link">
+						评论(<%= comment_count %>)</a>
+						
+					|
+						
+					发表于
+					<%= format_datetime(blog.created_at) %>
+					
+					|
+						
+					最后更新于
+					<%= format_datetime(blog.updated_at) %>
+				</div>
+			</td>
+		</tr>
+	</table>
 </div>
+

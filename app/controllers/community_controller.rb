@@ -4,6 +4,8 @@ class CommunityController < ApplicationController
   New_Action_Size = 15
   New_Activity_Size = 10
   
+  Search_Result_Page_Size = 10
+  
   before_filter :check_login_for_community_index, :only => [:index]
   
   def index
@@ -43,7 +45,9 @@ class CommunityController < ApplicationController
     
     @scope = "all" unless self.respond_to?("search_#{@scope}", true)
     
-    @results = self.send("search_#{@scope}", @query)
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @results = self.send("search_#{@scope}", @query, page, Search_Result_Page_Size)
 
   end
   
@@ -80,17 +84,18 @@ class CommunityController < ApplicationController
     jump_to("/community/welcome") unless has_login?
   end
   
-  def search_all(query)
-
+  def search_all(query, page, per_page)
+    
   end
   
-  def search_blog(query)
+  def search_blog(query, page, per_page)
     
     # NEED TO handle raised errors
-    # NEED TO handle pagination
     
     blogs = Blog.search(
       query,
+      :page => page,
+      :per_page => per_page,
       :field_weights => {
         :title => 8,
         :content => 6,
@@ -98,7 +103,7 @@ class CommunityController < ApplicationController
         :account_nick => 2,
         :comments_account_nick => 1
       },
-      # :match_mode => :any,
+      :match_mode => :extended,
       :order => "@relevance DESC, created_at DESC",
       :include => [:account => [:profile_pic]]
     )

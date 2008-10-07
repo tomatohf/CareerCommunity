@@ -898,5 +898,19 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	border: 1px dotted #C2E3EF;
 }
 
+.search_result_title {
+	font-size: 14px;
+}
+
+.search_result_body {
+	padding: 2px;
+	margin: 5px 0px;
+}
+
+.search_result_info {
+	text-align: right;
+	word-spacing: 5px;
+}
+
 
 

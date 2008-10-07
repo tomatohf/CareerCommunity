@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   
-  map.connect "/community/search/:scope/:query", :controller => "community", :action => "search"
+  # map.connect "/community/search/:scope/:query", :controller => "community", :action => "search"
     
   map.resources :accounts, :collection => {
   

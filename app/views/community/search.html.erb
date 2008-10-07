@@ -57,15 +57,30 @@
 				<input type="submit" value="搜索" class="button" />
 				
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="#">帮助</a>
+				<a href="/community/search_help">帮助</a>
 			<% end %>
 		<% end %>
+	</div>
+
+	<div class="community_block_narrow form_info_s">
+		<b>
+			<%= @results.total_entries %>
+		</b>
+		条
 	</div>
 
 	<div class="community_block">
 		<% @results.each do |result| %>
 			<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result} %>
+			
+			<div style="padding: 0px 25px">
+				<%= thin_hr %>
+			</div>
 		<% end %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@results) %>
 	</div>
 	
 </div>

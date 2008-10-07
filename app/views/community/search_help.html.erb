@@ -1,0 +1,69 @@
+<% community_page_title("如何使用乔布圈搜索") %>
+
+<div class="float_r blog_container_r">
+	<div class="community_title">
+	</div>
+
+	<div class="community_block">
+		
+	</div>
+</div>
+
+<div class="blog_container_l">
+	<h2>如何使用乔布圈搜索</h2>
+	
+	<div class="community_block">
+		
+		<!-- ######################################################### -->
+		
+		<p>
+			The following special operators can be used:
+		</p>
+		<div>
+			<ul type="disc">
+				<li>operator OR: <pre>hello | world</pre></li>
+				<li>operator NOT:
+		<pre>hello -world
+hello !world
+		</pre></li><li>field search operator: <pre>@title hello @body world</pre></li><li>phrase search operator: <pre>"hello world"</pre></li><li>proximity search operator: <pre>"hello world"~10</pre></li><li>quorum matching operator: <pre>"the world is a wonderful place"/3</pre></li></ul></div><p>
+
+		Here's an example query which uses most of these operators:
+		</p>
+		<div><a name="ex-extended-query"></a><p><b>Example&nbsp;6.&nbsp;Extended query example</b></p><div><pre>"hello world" @title "example program"~5 @body python -(php|perl)
+		</pre></div></div>
+		<p>
+		There always is implicit AND operator, so "hello world" means that
+		both "hello" and "world" must be present in matching document.
+		</p><p>
+		OR operator precedence is higher than AND, so "looking for cat | dog | mouse"
+		means "looking for ( cat | dog | mouse )" and <span><em>not</em></span>
+		"(looking for cat) | dog | mouse".
+		</p><p>
+		Proximity distance is specified in words, adjusted for word count, and
+		applies to all words within quotes. For instance, "cat dog mouse"~5 query
+		means that there must be less than 8-word span which contains all 3 words,
+		ie. "CAT aaa bbb ccc DOG eee fff MOUSE" document will <span><em>not</em></span>
+
+		match this query, because this span is exactly 8 words long.
+		</p><p>
+		Quorum matching operator introduces a kind of fuzzy matching.
+		It will only match those documents that pass a given threshold of given words.
+		The example above ("the world is a wonderful place"/3) will match all documents
+		that have at least 3 of the 6 specified words.
+		</p><p>
+		Nested brackets, as in queries like
+		</p><pre>aaa | ( bbb ccc | ( ddd eee ) )
+		</pre><p>
+		are not allowed yet, but this will be fixed.
+		</p><p>
+		Negation (ie. operator NOT) is only allowed on top level and not within
+		brackets (ie. groups). This isn't going to change, because supporting nested
+		negations would make phrase ranking implementation way too complicated.
+		</p>
+		
+		<!-- ######################################################### -->
+		
+	</div>
+	
+</div>
+
