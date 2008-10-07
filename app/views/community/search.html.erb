@@ -71,7 +71,7 @@
 
 	<div class="community_block">
 		<% @results.each do |result| %>
-			<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result} %>
+			<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => get_riddle_client} %>
 			
 			<div style="padding: 0px 25px">
 				<%= thin_hr %>

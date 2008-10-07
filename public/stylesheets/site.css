@@ -912,5 +912,10 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	word-spacing: 5px;
 }
 
+.search_match {
+	color: #CC0033;
+	font-weight: bold;
+}
+
 
 

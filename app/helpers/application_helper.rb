@@ -103,5 +103,28 @@ module ApplicationHelper
   def community_page_title(page_title)
     content_for(:page_title) { page_title }
   end
+
+  def extract_text(text)
+    Hpricot(text || "").inner_text || ""
+  end
+
+  def get_riddle_client()
+    ThinkingSphinx::Search.get_client(:match_mode => CommunityController::Search_Match_Mode)
+  end
+  
+  def build_excerpts(riddle_client, docs, words, index)
+    riddle_client.excerpts(
+  		:docs => docs,
+  		:words => words,
+  		:index => index,
+  		:before_match => %Q{<span class="search_match">},
+  		:after_match => "</span>",
+  		#:chunk_separator => ’ &8230; ’,
+  		:limit => 260,
+  		:around => 5,
+  		:exact_phrase => false,
+  		:single_passage => true
+  	)
+  end
   
 end

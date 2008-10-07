@@ -6,6 +6,8 @@ class CommunityController < ApplicationController
   
   Search_Result_Page_Size = 10
   
+  Search_Match_Mode = :extended
+  
   before_filter :check_login_for_community_index, :only => [:index]
   
   def index
@@ -48,7 +50,7 @@ class CommunityController < ApplicationController
     page = params[:page]
     page = 1 unless page =~ /\d+/
     @results = self.send("search_#{@scope}", @query, page, Search_Result_Page_Size)
-
+    
   end
   
   
@@ -90,7 +92,7 @@ class CommunityController < ApplicationController
   
   def search_blog(query, page, per_page)
     
-    # NEED TO handle raised errors
+    # NEED TO handle raised errors ???
     
     blogs = Blog.search(
       query,
@@ -103,12 +105,10 @@ class CommunityController < ApplicationController
         :account_nick => 2,
         :comments_account_nick => 1
       },
-      :match_mode => :extended,
+      :match_mode => Search_Match_Mode,
       :order => "@relevance DESC, created_at DESC",
       :include => [:account => [:profile_pic]]
     )
-    
-    
     
     blogs
   end

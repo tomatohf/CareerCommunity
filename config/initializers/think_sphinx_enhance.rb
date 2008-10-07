@@ -48,4 +48,14 @@ module ThinkingSphinx
     
   end
   
+  # to public the riddle client object
+  class Search
+    class << self
+      def get_client(*args)
+        options = args.extract_options!
+        client  = client_from_options options
+      end
+    end
+  end
+  
 end
