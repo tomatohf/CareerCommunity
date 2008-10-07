@@ -1,0 +1,103 @@
+<% account = result %>
+
+<% account_id = account.id %>
+<% account_nick = account.get_nick %>
+<% account_pic_url = account.get_profile_pic_url %>
+
+<% Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email) %>
+
+
+<% basic_profile = account.profile_basic %>
+<% hobby_profile = account.profile_hobby %>
+
+
+<%
+	excerpts = build_excerpts(
+		riddle_client,
+		[
+			h(account_nick),
+			h(account.email),
+			h(basic_profile && basic_profile.real_name),
+			h(basic_profile && basic_profile.province && basic_profile.province.name),
+			h(basic_profile && basic_profile.city && basic_profile.city.name),
+			h(basic_profile && basic_profile.hometown_province && basic_profile.hometown_province.name),
+			h(basic_profile && basic_profile.hometown_city && basic_profile.hometown_city.name),
+			[
+				h(basic_profile && basic_profile.qmd),
+				h(hobby_profile && hobby_profile.intro),
+				h(hobby_profile && hobby_profile.interest),
+				h(hobby_profile && hobby_profile.music),
+				h(hobby_profile && hobby_profile.movie),
+				h(hobby_profile && hobby_profile.cartoon),
+				h(hobby_profile && hobby_profile.game),
+				h(hobby_profile && hobby_profile.sport),
+				h(hobby_profile && hobby_profile.book),
+				h(hobby_profile && hobby_profile.words),
+				h(hobby_profile && hobby_profile.food),
+				h(hobby_profile && hobby_profile.idol),
+				h(hobby_profile && hobby_profile.car),
+				h(hobby_profile && hobby_profile.place)
+			].delete_if { |text| text.nil? || text == "" }.join(" ... ")
+		],
+		query,
+		"account_core"
+	)
+%>
+
+
+<div>
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 90px">
+				<div class="align_c">
+					<div class="community_block">
+						<a href="/spaces/show/<%= account_id %>">
+							<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+					</div>
+					<div class="community_block">
+						<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+							<%= excerpts[0] %></a>
+					</div>
+				</div>
+			</td>
+			
+			<td valign="top">
+				<div>
+					<div>
+						<%# seems sphinx excerpts will always return empty string instead of nil %>
+						<% if excerpts[2] != "" %>
+							真实姓名:
+							<%= excerpts[2] %>
+							&nbsp;&nbsp;&nbsp;
+						<% end %>
+
+						<% if excerpts[3] != "" || excerpts[4] != "" %>
+							所在城市:
+							<%= excerpts[3] %> &nbsp; <%= excerpts[4] %>
+							&nbsp;&nbsp;&nbsp;
+						<% end %>
+						
+						<% if excerpts[5] != "" || excerpts[6] != "" %>
+							家乡:
+							<%= excerpts[5] %> &nbsp; <%= excerpts[6] %>
+						<% end %>
+					</div>
+					
+					<div style="color: #6B6B6B">
+						<%= excerpts[7] %>
+					</div>
+				</div>
+				
+				<div class="form_info_s search_result_info">
+					<%= excerpts[1].gsub("@", " [at] ") %>
+					
+					|
+					
+					加入时间
+					<%= format_datetime(account.created_at) %>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+

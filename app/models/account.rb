@@ -8,6 +8,10 @@ class Account < ActiveRecord::Base
     # gender, two p_id and two city_id
     indexes profile_basic.real_name, :as => :basic_real_name
     indexes profile_basic.qmd, :as => :basic_qmd
+    indexes profile_basic.province.name, :as => :basic_province_name
+    indexes profile_basic.city.name, :as => :basic_city_name
+    indexes profile_basic.hometown_province.name, :as => :basic_hometown_province_name
+    indexes profile_basic.hometown_city.name, :as => :basic_hometown_city_name
     
     # exclude contact profile, for personal info privacy
     

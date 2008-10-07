@@ -90,11 +90,61 @@ class CommunityController < ApplicationController
     
   end
   
+  def search_account(query, page, per_page)
+    Account.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :field_weights => {
+        :email => 15,
+        :nick => 20,
+        
+        :basic_real_name => 10,
+        :basic_qmd => 5,
+        :basic_province_name => 15,
+        :basic_city_name => 15,
+        :basic_hometown_province_name => 15,
+        :basic_hometown_city_name => 15,
+        
+        :hobby_intro => 5,
+        :hobby_interest => 5,
+        :hobby_music => 5,
+        :hobby_movie => 5,
+        :hobby_cartoon => 5,
+        :hobby_game => 5,
+        :hobby_sport => 5,
+        :hobby_book => 5,
+        :hobby_words => 5,
+        :hobby_food => 5,
+        :hobby_idol => 5,
+        :hobby_car => 5,
+        :hobby_place => 5,
+        
+        :edu_name => 10,
+        :edu_major => 5,
+        
+        :job_name => 10,
+        :job_dept => 5,
+        :job_position_title => 5,
+        :job_description => 5
+      },
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, created_at DESC",
+      :include => [
+        :profile_pic,
+        :profile_hobby,
+        {:profile_basic => [:province, :city, :hometown_province, :hometown_city]}
+      ],
+      :with => {
+        :checked => 1,
+        :active => 1,
+        :enabled => 1
+      }
+    )
+  end
+  
   def search_blog(query, page, per_page)
-    
-    # NEED TO handle raised errors ???
-    
-    blogs = Blog.search(
+    Blog.search(
       query,
       :page => page,
       :per_page => per_page,
@@ -109,8 +159,6 @@ class CommunityController < ApplicationController
       :order => "@relevance DESC, created_at DESC",
       :include => [:account => [:profile_pic]]
     )
-    
-    blogs
   end
 
 end

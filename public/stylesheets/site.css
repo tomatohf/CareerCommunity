@@ -169,7 +169,7 @@ div.auto_complete ul li {
 }
 
 .main_nav {
-	font-size: 18px;
+	font-size: 16px;
 	margin-bottom: 2px;
 	word-spacing: 20px;
 }
@@ -305,7 +305,7 @@ select.dropdown_list, .dropdown_list select {
 
 .community_title {
 	color: #EE9966;
-	font-size: 16px;
+	font-size: 14px;
 	margin: 20px 0px 5px;
 	height: 25px;
 }
