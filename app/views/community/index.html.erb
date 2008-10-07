@@ -3,7 +3,7 @@
 <div class="float_r community_container_r">
 	<% unless @has_login %>
 		<div class="community_title">
-			迅速加入我们 ~~~
+			迅速加入我们 ...
 		</div>
 		<script language="JavaScript">
 			function show_register_form(){
@@ -31,7 +31,7 @@
 		<% end %>
 	<% else %>
 		<div class="community_title">
-			谁新加入了我们 ~~~
+			谁新加入了我们 ...
 		</div>
 		<div class="community_block">
 			<%= float_list(@new_accounts, "account", :account, {}, 3) %>
@@ -42,7 +42,7 @@
 	
 
 	<div class="community_title">
-		大家在做些什么 ~~~
+		大家在做些什么 ...
 	</div>
 	<div class="community_block">
 		<%= render(:partial => "action", :collection => @new_actions)%>
@@ -85,7 +85,7 @@
 	<% end %>
 	
 	<div class="community_title">
-		最新活动 ~~~
+		最新活动 ...
 	</div>
 	<div>
 		<%= float_list(@new_activities, "activity", :activity, {}, 2) %>
@@ -96,7 +96,7 @@
 
 	
 	<div class="community_title">
-		圈子博客照片 ~~~
+		圈子博客照片 ...
 	</div>
 	<div class="community_block">
 		热门圈子<br />
@@ -107,7 +107,7 @@
 	</div>
 	
 	<div class="community_title">
-		想法评论和话 ~~~
+		想法评论和话 ...
 	</div>
 	<div class="community_block">
 		博客<br />
