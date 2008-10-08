@@ -1,4 +1,8 @@
-class Profession < CareerCommunity::ReadonlyModel
+class Profession < ActiveRecord::Base
+  
+  def self.find(id)
+    id ? id.to_s == "all" ? @@all : @@all[id-1] : ""
+  end
 
   @@all = [
           "计算机硬件", # 1

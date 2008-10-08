@@ -1,4 +1,8 @@
-class Education < CareerCommunity::ReadonlyModel
+class Education < ActiveRecord::Base
+  
+  def self.find(id)
+    id ? id.to_s == "all" ? @@all : @@all[id-1] : ""
+  end
 
   @@all = [
           "其它", # 1
