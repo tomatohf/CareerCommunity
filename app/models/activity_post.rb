@@ -1,5 +1,21 @@
 class ActivityPost < ActiveRecord::Base
   
+  define_index do
+    # fields
+    indexes :title, :content
+    indexes account.nick, :as => :account_nick
+    indexes activity.title, :as => :activity_title
+    indexes comments.content, :as => :comments_content
+    indexes comments.account.nick, :as => :comments_account_nick
+
+    # attributes
+    has :created_at, :updated_at, :responded_at
+    
+    set_property :delta => true
+    
+    # set_property :field_weights => {:field => number}
+  end
+  
   include CareerCommunity::AccountBelongings
   
   has_many :comments, :class_name => "ActivityPostComment", :foreign_key => "activity_post_id", :dependent => :destroy

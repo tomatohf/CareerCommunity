@@ -123,7 +123,7 @@ module ApplicationHelper
   		:limit => 260,
   		:around => 5,
   		:exact_phrase => false,
-  		:single_passage => true
+  		:single_passage => false
   	)
   end
   

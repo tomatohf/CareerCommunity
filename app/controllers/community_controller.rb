@@ -92,6 +92,52 @@ class CommunityController < ApplicationController
     
   end
   
+  def search_activity_post(query, page, per_page)
+    ActivityPost.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, responded_at DESC",
+      :field_weights => {
+        :title => 8,
+        :content => 6,
+        :comments_content => 4,
+        :account_nick => 2,
+        :activity_title => 2,
+        :comments_account_nick => 1
+      },
+      :include => [
+        :activity,
+        {:account => [:profile_pic]},
+        
+      ]
+    )
+  end
+  
+  def search_group_post(query, page, per_page)
+    GroupPost.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, responded_at DESC",
+      :field_weights => {
+        :title => 8,
+        :content => 6,
+        :comments_content => 4,
+        :account_nick => 2,
+        :group_name => 2,
+        :comments_account_nick => 1
+      },
+      :include => [
+        :group,
+        {:account => [:profile_pic]},
+        
+      ]
+    )
+  end
+  
   def search_activity(query, page, per_page)
     Activity.search(
       query,

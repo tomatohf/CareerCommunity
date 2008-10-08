@@ -12,7 +12,7 @@
 	activity_setting = activity.get_setting
 	excerpts = build_excerpts(
 		riddle_client,
-		[h(activity.title), sanitize_tinymce(extract_text(activity_setting[:desc])), h(activity.place), h(activity_setting[:contact]), h(activity.master.get_nick)],
+		[h(activity.get_title), sanitize_tinymce(extract_text(activity_setting[:desc])), h(activity.place), h(activity_setting[:contact]), h(activity.master.get_nick)],
 		query,
 		"activity_core"
 	)

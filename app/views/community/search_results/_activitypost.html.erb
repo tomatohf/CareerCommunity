@@ -1,0 +1,69 @@
+<% activity_post = result %>
+
+<% account = activity_post.account %>
+<% account_id = account.id %>
+<% account_nick = account.get_nick %>
+<% account_pic_url = account.get_profile_pic_url %>
+
+<% Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email) %>
+
+
+<%
+	excerpts = build_excerpts(
+		riddle_client,
+		[h(activity_post.title), sanitize_tinymce(extract_text(activity_post.content)), h(account_nick), h(activity_post.activity.get_title)],
+		query,
+		"activity_post_core"
+	)
+%>
+
+<% comment_count = ActivityPostComment.get_count(activity_post.id) %>
+
+<div>
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 90px">
+				<div class="align_c">
+					<div class="community_block">
+						<a href="/spaces/show/<%= account_id %>">
+							<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+					</div>
+					<div class="community_block">
+						<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+							<%= excerpts[2] %></a>
+					</div>
+				</div>
+			</td>
+			
+			<td valign="top">
+				<div class="search_result_title">
+					<a href="/activity/posts/<%= activity_post.id %>" class="account_nick_link">
+						<%= excerpts[0] %></a>
+				</div>
+				
+				<div class="search_result_body">
+					<%= excerpts[1] %>
+				</div>
+				
+				<div class="form_info_s search_result_info">
+					<div>
+						<a href="/activity/posts/<%= activity_post.id %>#comment_list" class="account_nick_link">
+							回帖(<%= comment_count %>)</a>
+
+						|
+
+						最后参与
+						<%= format_datetime(activity_post.responded_at) %>
+					</div>
+					
+					<div>
+						所在活动
+						<a href="/activities/<%= activity_post.activity.id %>" class="account_nick_link">
+							<%= excerpts[3] %></a>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
