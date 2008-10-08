@@ -42,14 +42,16 @@ class CommunityController < ApplicationController
   end
   
   def search
-    @scope = params[:scope]
-    @query = params[:query]
+    @scope = params[:scope] && params[:scope].strip
+    @query = params[:query] && params[:query].strip
     
-    @scope = "all" unless self.respond_to?("search_#{@scope}", true)
+    if @query && @query != ""
+      @scope = "all" unless self.respond_to?("search_#{@scope}", true)
     
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    @results = self.send("search_#{@scope}", @query, page, Search_Result_Page_Size)
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @results = self.send("search_#{@scope}", @query, page, Search_Result_Page_Size)
+    end
     
   end
   
