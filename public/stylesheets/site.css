@@ -132,6 +132,10 @@ div.auto_complete ul li {
 .main_part_w {
 	width: 100%;
 }
+/* ie6 fixed */
+*html .main_part_w {
+	width: 98%;
+}
 
 .float_l {
 	float: left;
@@ -401,6 +405,10 @@ select.dropdown_list, .dropdown_list select {
 
 .toolkit_box {
 	padding: 15px;
+}
+/* ie6 fixed */
+*html .toolkit_box {
+	padding: 0px 15px;
 }
 
 th.table_header, .table_header th {
