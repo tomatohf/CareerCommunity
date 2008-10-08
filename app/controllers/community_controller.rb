@@ -6,6 +6,8 @@ class CommunityController < ApplicationController
   
   Search_Result_Page_Size = 10
   
+  Search_All_Result_Page_Size = 5
+  
   Search_Match_Mode = :extended
   
   before_filter :check_login_for_community_index, :only => [:index]
@@ -89,7 +91,10 @@ class CommunityController < ApplicationController
   end
   
   def search_all(query, page, per_page)
-    
+    @activities = search_activity(query, 1, Search_All_Result_Page_Size)
+    @activity_posts = search_activity_post(query, 1, Search_All_Result_Page_Size)
+    @groups = search_group(query, 1, Search_All_Result_Page_Size)
+    @group_posts = search_group_post(query, 1, Search_All_Result_Page_Size)
   end
   
   def search_activity_post(query, page, per_page)
@@ -109,8 +114,7 @@ class CommunityController < ApplicationController
       },
       :include => [
         :activity,
-        {:account => [:profile_pic]},
-        
+        {:account => [:profile_pic]}
       ]
     )
   end
@@ -132,8 +136,7 @@ class CommunityController < ApplicationController
       },
       :include => [
         :group,
-        {:account => [:profile_pic]},
-        
+        {:account => [:profile_pic]}
       ]
     )
   end

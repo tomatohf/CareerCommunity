@@ -66,27 +66,98 @@
 		<% end %>
 	</div>
 
-	<div class="community_block_narrow form_info_s">
-		<b>
-			<%= @results ? @results.total_entries : 0 %>
-		</b>
-		条
-	</div>
+	<% if @scope == "all" %>
+		
+		<script language="JavaScript">
+			function expand_section(div_id) {
+				var expand_icon = div_id + "_expand";
+				var collapse_icon = div_id + "_collapse";
 
-	<% if @results %>
-		<div class="community_block">
-			<% @results.each do |result| %>
-				<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => get_riddle_client} %>
-			
-				<div style="padding: 0px 25px">
-					<%= thin_hr %>
+				document.getElementById(div_id).style.display = "";
+				document.getElementById(expand_icon).style.display = "";
+				document.getElementById(collapse_icon).style.display = "none";
+			}
+
+			function collapse_section(div_id) {
+				var expand_icon = div_id + "_expand";
+				var collapse_icon = div_id + "_collapse";
+
+				document.getElementById(div_id).style.display = "none";
+				document.getElementById(expand_icon).style.display = "none";
+				document.getElementById(collapse_icon).style.display = "";
+			}
+		</script>
+		
+		<%
+			all_scope_items = {
+				:activity => "活动",
+				:activity_post => "活动话题",
+				:group => "圈子",
+				:group_post => "圈子话题"
+				# ,
+				# :vote => "投票",
+				# :recruit => "招聘信息"
+			}
+		%>
+		<% all_scope_items.each do |key, value| %>
+			<% item_results = eval("@#{key.to_s.pluralize}") %>
+			<% if item_results && item_results.total_entries > 0 %>
+				<div class="community_block">
+					<div>
+						<a class="float_r" title="收起" id="<%= key %>_section_expand" href="#" onclick="collapse_section('<%= key %>_section'); return false;">
+							<img src="/images/expand.png" border="0" /></a>
+						<a class="float_r" title="展开" id="<%= key %>_section_collapse" href="#" onclick="expand_section('<%= key %>_section'); return false;" style="display: none">
+							<img src="/images/collapse.png" border="0" /></a>
+
+						<span class="float_r">
+							<a href="#" onclick="submit_search_form('<%= key %>'); return false;">
+								搜索更多 <%= value %></a>
+							&nbsp;&nbsp;&nbsp;
+						</span>
+
+						<b>
+							<%= value %>
+						</b>
+					</div>
+
+					<div id="<%= key %>_section">
+						<% item_results.each do |result| %>
+							<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => get_riddle_client} %>
+
+							<div style="padding: 0px 25px">
+								<%= thin_hr %>
+							</div>
+						<% end %>
+					</div>
 				</div>
 			<% end %>
-		</div>
+		<% end %>
+		
+	<% else %>
 	
-		<div class="community_block">
-			<%= paging_buttons(@results) %>
+		<div class="community_block_narrow form_info_s">
+			<b>
+				<%= @results ? @results.total_entries : 0 %>
+			</b>
+			条
 		</div>
+
+		<% if @results %>
+			<div class="community_block">
+				<% @results.each do |result| %>
+					<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => get_riddle_client} %>
+			
+					<div style="padding: 0px 25px">
+						<%= thin_hr %>
+					</div>
+				<% end %>
+			</div>
+	
+			<div class="community_block">
+				<%= paging_buttons(@results) %>
+			</div>
+		<% end %>
+	
 	<% end %>
 	
 </div>
