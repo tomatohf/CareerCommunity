@@ -1,0 +1,64 @@
+<% activity = result %>
+
+<%
+	activity_id = activity.id
+	activity_image = activity.get_image_url
+
+	Activity.set_activity_with_image_cache(activity_id, activity, activity_image)
+%>
+
+
+<%
+	activity_setting = activity.get_setting
+	excerpts = build_excerpts(
+		riddle_client,
+		[h(activity.title), sanitize_tinymce(extract_text(activity_setting[:desc])), h(activity.place), h(activity_setting[:contact]), h(activity.master.get_nick)],
+		query,
+		"activity_core"
+	)
+%>
+
+
+<div>
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 60px">
+				<div class="align_c community_block">
+					<a href="/activities/<%= activity_id %>">
+						<img src="<%= face_img_src(activity_image) %>" border="0" /></a>
+				</div>
+			</td>
+			
+			<td valign="top">
+				<div class="search_result_title">
+					<a href="/activities/<%= activity_id %>" class="account_nick_link">
+						<%= excerpts[0] %></a>
+				</div>
+				
+				<div class="search_result_body">
+					<div>
+						<%= excerpts[1] %>
+					</div>
+					<div>
+						<%= excerpts[2] %>
+					</div>
+					<div>
+						<%= excerpts[3] %>
+					</div>
+				</div>
+				
+				<div class="form_info_s search_result_info">
+					发起于
+					<%= format_datetime(activity.created_at) %>
+					
+					|
+					
+					负责人:
+					<a href="/spaces/show/<%= activity.master_id %>" class="account_nick_link">
+						<%= excerpts[4] %></a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+

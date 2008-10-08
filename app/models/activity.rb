@@ -1,5 +1,18 @@
 class Activity < ActiveRecord::Base
   
+  define_index do
+    # fields
+    indexes :title, :place, :setting
+    indexes master.nick, :as => :master_nick
+
+    # attributes
+    has :created_at, :updated_at, :cost, :member_limit
+    
+    set_property :delta => true
+    
+    # set_property :field_weights => {:field => number}
+  end
+  
   has_many :members, :class_name => "ActivityMember", :foreign_key => "activity_id", :dependent => :destroy
   
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"

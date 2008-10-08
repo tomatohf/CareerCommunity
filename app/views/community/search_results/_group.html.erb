@@ -1,0 +1,61 @@
+<% group = result %>
+
+<%
+	group_id = group.id
+	group_name = group.name
+	group_image = group.get_image_url
+
+	Group.set_group_with_image_cache(group_id, group, group_image)
+%>
+
+
+<%
+	excerpts = build_excerpts(
+		riddle_client,
+		[h(group_name), h(group.desc), h(group.get_setting[:notice]), h(group.master.get_nick)],
+		query,
+		"group_core"
+	)
+%>
+
+
+<div>
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 60px">
+				<div class="align_c community_block">
+					<a href="/groups/<%= group_id %>">
+						<img src="<%= face_img_src(group_image) %>" border="0" /></a>
+				</div>
+			</td>
+			
+			<td valign="top">
+				<div class="search_result_title">
+					<a href="/groups/<%= group_id %>" class="account_nick_link">
+						<%= excerpts[0] %></a>
+				</div>
+				
+				<div class="search_result_body">
+					<div>
+						<%= excerpts[1] %>
+					</div>
+					<div>
+						<%= excerpts[2] %>
+					</div>
+				</div>
+				
+				<div class="form_info_s search_result_info">
+					创建于
+					<%= format_datetime(group.created_at) %>
+					
+					|
+					
+					圈主:
+					<a href="/spaces/show/<%= group.master_id %>" class="account_nick_link">
+						<%= excerpts[3] %></a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+

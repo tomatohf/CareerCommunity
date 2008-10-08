@@ -1,5 +1,18 @@
 class Group < ActiveRecord::Base
   
+  define_index do
+    # fields
+    indexes :name, :desc, :setting
+    indexes master.nick, :as => :master_nick
+
+    # attributes
+    has :created_at, :updated_at
+    
+    set_property :delta => true
+    
+    # set_property :field_weights => {:field => number}
+  end
+  
   has_many :members, :class_name => "GroupMember", :foreign_key => "group_id", :dependent => :destroy
   
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"

@@ -92,11 +92,47 @@ class CommunityController < ApplicationController
     
   end
   
+  def search_activity(query, page, per_page)
+    Activity.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, created_at DESC",
+      :field_weights => {
+        :title => 8,
+        :place => 4,
+        :setting => 6,
+        :master_nick => 1
+      },
+      :include => [:image, :master]
+    )
+  end
+  
+  def search_group(query, page, per_page)
+    Group.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, created_at DESC",
+      :field_weights => {
+        :name => 10,
+        :desc => 6,
+        :setting => 4,
+        :master_nick => 1
+      },
+      :include => [:image, :master]
+    )
+  end
+  
   def search_account(query, page, per_page)
     Account.search(
       query,
       :page => page,
       :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, created_at DESC",
       :field_weights => {
         :email => 15,
         :nick => 20,
@@ -130,8 +166,6 @@ class CommunityController < ApplicationController
         :job_position_title => 5,
         :job_description => 5
       },
-      :match_mode => Search_Match_Mode,
-      :order => "@relevance DESC, created_at DESC",
       :include => [
         :profile_pic,
         :profile_hobby,
@@ -150,6 +184,8 @@ class CommunityController < ApplicationController
       query,
       :page => page,
       :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, created_at DESC",
       :field_weights => {
         :title => 8,
         :content => 6,
@@ -157,8 +193,6 @@ class CommunityController < ApplicationController
         :account_nick => 2,
         :comments_account_nick => 1
       },
-      :match_mode => Search_Match_Mode,
-      :order => "@relevance DESC, created_at DESC",
       :include => [:account => [:profile_pic]]
     )
   end
