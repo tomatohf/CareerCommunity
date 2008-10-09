@@ -50,6 +50,7 @@ body {
 .menu_bar a.menu_selected {
 	background-color: #FF9900;
 	color: #FFFFFF;
+	font-weight: bold;
 }
 
 .index_contailer_l {
@@ -94,10 +95,11 @@ body {
 	background-color: #EAEAEA;
 	padding-left: 5px;
 	height: 25px;
+	font-weight: bold;
 }
 
 .index_container_l_section_content {
-	padding: 10px;
+	padding: 5px;
 }
 
 .seek_job_form {
@@ -131,5 +133,88 @@ body {
 	border-width: 1px;
 	border-color: #A3988C;
 	cursor: pointer;
+}
+
+.coach_right_column {
+	float: right;
+	width: 200px;
+	
+	border-left: 1px dotted #EAEAEA;
+}
+
+.coach_container {
+	margin-right: 200px;
+}
+
+.coach_container_l {
+	float: left;
+	width: 150px;
+}
+
+.coach_container_r {
+	margin-left: 150px;
+}
+
+.coach_menus {
+	margin: 5px 20px 5px 10px;
+}
+
+.coach_menus div {
+	padding-left: 10px;
+}
+
+.coach_menus a {
+	display: block;
+	text-decoration: none;
+	font-size: 12px;
+	color: #000000;
+}
+
+.coach_menus div {
+	background-color: #EAEAEA;
+	margin-top: 3px;
+}
+
+.coach_menus div.coach_menu_top {
+	background-color: #FF9900;
+	margin-top: 0px;
+}
+
+.coach_menus div.coach_menu_top a {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+.coach_menus div.coach_menu_selected {
+	background-color: #F8F8F8;
+}
+
+.coach_menus div.coach_menu_selected a {
+	color: #FF9900;
+}
+
+.coach_related_link_title {
+	margin-top: 30px;
+	margin-left: 20px;
+}
+
+.coach_related_link_content li {
+	list-style-type: disc;
+}
+
+.coach_block {
+	margin: 0px 10px 0px 5px;
+	margin-bottom: 15px;
+}
+
+.course_info_table {
+	width: 420px;
+	margin-top: 10px;
+	text-align: left;
+	font-size: 10px;
+}
+
+.course_info_table th, .course_info_table td {
+	background-color: #E5F5FF;
 }
 

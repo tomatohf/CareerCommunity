@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+		<% page_title = yield(:page_title) %>
+        <title><%= "#{page_title} - " if page_title && page_title != "" %>乔布教练 - 乔布堂</title>
+        <%= stylesheet_link_tag "site", "qiaobutang" %>
+    </head>
+    <body>
+	
+	    <%= render :partial => "common/top_bar" %>
+
+
+		<div id="root_container">
+			<%= render :partial => "common/main_menus", :locals => {:selected_index => 2} %>
+			
+			
+			<div>
+				<div class="coach_right_column">
+					<div class="index_title_small">
+						<li>相关活动</li>
+					</div>
+					<div style="height: 50px;">
+						
+					</div>
+					
+					<div class="index_title_small">
+						<li>相关乔布圈</li>
+					</div>
+					<div style="height: 50px;">
+						
+					</div>
+					
+					<div class="index_title_small">
+						<li>乔布教练在你身边</li>
+					</div>
+					<div style="height: 50px;">
+						
+					</div>
+					
+					<div class="index_title_small">
+						<li>行业研究报告</li>
+					</div>
+					<div style="height: 50px;">
+						
+					</div>
+				</div>
+				
+				<div class="coach_container">
+					<div class="coach_container_l">
+						<div class="coach_menus">
+							<div class="coach_menu_top">
+								<a href="/coach">
+									乔布教练</a>
+							</div>
+							<%
+								menus = [
+									["industry", "医药行业"],
+									["", "顾问团队"],
+									["register_notice", "报名须知"],
+									["", "常见问题"]
+								]
+							%>
+							<% menus.each do |menu| %>
+								<div
+									<% if action_name == menu[0] %>
+									class="coach_menu_selected"
+									<% else %>
+									onmouseover="this.className='coach_menu_selected'"
+									onmouseout="this.className=''"
+									<% end %>
+									>
+									<a href="/coach/<%= menu[0] %>">
+										<%= menu[1] %></a>
+								</div>
+							<% end %>
+						</div>
+						
+						<div class="coach_related_link_title">
+							相关链接
+						</div>
+						<div class="coach_related_link_content">
+							<ul>
+								<li>
+									10月培训课程
+								</li>
+								
+								<li>
+									其他培训机构
+								</li>
+							</ul>
+						</div>
+					</div>
+					
+					<div class="coach_container_r">
+						<%= yield %>
+					</div>
+				</div>
+			</div>
+			
+			<div class="clear"></div>
+		</div>
+		
+		<%= render :partial => "common/bottom_bar" %>
+	
+	
+	
+		<script type="text/javascript">
+			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+			</script>
+			<script type="text/javascript">
+			var pageTracker = _gat._getTracker("UA-5887424-1");
+		pageTracker._trackPageview();
+		</script>
+    </body>
+</html>
