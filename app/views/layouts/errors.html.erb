@@ -3,13 +3,10 @@
     <head>
         <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
         <title>出错啦 - 乔布圈</title>
+		<%= stylesheet_link_tag "site" %>
 		
 		<style>
-			body {
-				font-family: Arial,Helvetica,sans-serif;
-				font-size: 90%;
-				line-height: 150%;
-			
+			#root_container {
 				margin: 150px auto;
 				max-width: 500px;
 
@@ -22,18 +19,24 @@
 		</style>
     </head>
     <body>
+	
+		<%= render :partial => "common/top_bar" %>
     	
-		<p>
-			<a href="/community">
-				<img src="/images/index/qiaobuquan.png" border="0" alt="乔布圈" />
-			</a>
-		</p>
+		<div id="root_container">
+			<p>
+				<a href="/community">
+					<img src="/images/index/qiaobuquan.png" border="0" alt="乔布圈" />
+				</a>
+			</p>
 
-    	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8" do %>
-			<div class="container">
-				<%= yield %>
-			</div>
-		<% end %>
+	    	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8" do %>
+				<div class="container">
+					<%= yield %>
+				</div>
+			<% end %>
+		</div>
+		
+		<%= render :partial => "common/bottom_bar" %>
 
 		
 		

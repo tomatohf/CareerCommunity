@@ -4,6 +4,11 @@
 
 
 
+出错页面, 返回 status code 500
+为出错页面做页面级别缓存, controller => errors
+路由失败, 找不到页面的出错, 返回 status code 404
+
+
 server 上的 tinymce 有问题
 	无法添加链接
 
@@ -122,14 +127,9 @@ SWFUpload 上传大小超过 3M 的文件, server 端会抛错, client 端会一
 
 强大的隐私设置
 
-出错页面
-
 所有的删除功能都必须非常的小心，确保相关的东西都妥善处理
 
-网站 favicon
-
 网站缓存
-为出错页面做页面级别缓存, controller => errors
 我的空间页面一定要 cache 啊 ......
 
 更快的模板？

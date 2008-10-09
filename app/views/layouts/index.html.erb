@@ -3,12 +3,21 @@
     <head>
         <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
         <title>乔布堂</title>
-        <%= stylesheet_link_tag "site" %>
+        <%= stylesheet_link_tag "site", "qiaobutang" %>
     </head>
     <body>
-	    <div>
-	        <%= yield %>
-	    </div>
+	
+	    <%= render :partial => "common/top_bar" %>
+
+
+		<div id="root_container">
+			<%= render :partial => "common/main_menus" %>
+			
+			
+			<%= yield %>
+		</div>
+		
+		<%= render :partial => "common/bottom_bar" %>
 	
 	
 	

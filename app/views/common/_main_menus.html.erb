@@ -1,0 +1,51 @@
+<% selected_index ||= 0 %>
+
+<div id="main_menus_container">
+	<div>
+		<div class="float_l">
+			<a href="http://qiaobutang.com">
+				<img src="/images/real_index/qiaobutang.png?fsdafasfsd" border ="0" alt="乔布堂" title="乔布堂" /></a>
+		</div>
+
+		<div class="float_r">
+			<div class="form_info_s contact_info">
+				T: (86 21) 6381-5200
+				<br />
+				E: service@qiaobutang.com
+			</div>
+		</div>
+	</div>
+	
+	<div class="clear menu_bar">
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				
+				<%
+					menus = [
+						["/", "首页"],
+						["#", "乔布哲学"],
+						["#", "乔布教练"],
+						["#", "死磕乔布"],
+						["/community", "乔布圈"]
+					]
+				%>
+				<% menus.each_index do |i| %>
+					<% menu = menus[i] %>
+					<td class="gap"></td>
+					<td>
+						<a href="<%= menu[0] %>"
+							<% if i == selected_index %>
+							class="menu_selected"
+							<% else %>
+							onmouseover="this.className='menu_selected'"
+							onmouseout="this.className=''"
+							<% end %>
+							>
+							<%= menu[1] %></a>
+					</td>
+				<% end %>
+				
+			</tr>
+		</table>
+	</div>
+</div>

@@ -1,5 +1,118 @@
-<a href="/company">公司</a>
-|
-<a href="/courses">课程</a>
-|
-<a href="/community">社区</a>
+<div class="index_contailer_l">
+	
+	<div class="index_post">
+		<img src="/images/real_index/index_post.png" />
+	</div>
+	
+	<div class="orange_bar">
+		<table border="0" cellspacing="5" cellpadding="0">
+			<tr>
+				<td>
+					话花花话花花话花花话花花话花花
+				</td>
+				
+				<td>
+					话花花话花花话花花话花花话花花
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="index_container_l_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#EAEAEA", :style => "margin: 8px 5px;" do %>
+			<div class="seek_job_form">
+				<div>
+					<% form_tag "", :method => :post do %>
+						<img class="float_l" src="/images/real_index/seek_job_icon.png" border="0" alt="死磕乔布" />
+						&nbsp;&nbsp;&nbsp;
+					
+						<input type="text" id="words" name="words" class="text_field" style="width: 75%" />
+
+						&nbsp;&nbsp;&nbsp;
+						<input type="submit" value="死磕乔布" class="index_button" />
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="index_container_l_block">
+		<table cellpadding="0" cellspacing="5" border="0" style="width: 100%">
+			<tr>
+				<td style="width: 50%">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								<img class="float_l" src="/images/real_index/qiaobuquan_icon.png" border="0" />
+								&nbsp;&nbsp;&nbsp;
+								乔布圈
+							</div>
+							
+							<div class="index_container_l_section_content">
+								圈子：为自己搭建职场内外的朋友圈子
+								<br />
+								活动：查看、参加、发起活动
+								<br />
+								测评：
+								<br />
+								问答：
+							</div>
+							
+						</div>
+					<% end %>
+				</td>
+				
+				<td style="width: 50%">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								<img class="float_l" src="/images/real_index/hot_news_icon.png" border="0" />
+								&nbsp;&nbsp;&nbsp;
+								乔布热
+							</div>
+
+							<div class="index_container_l_section_content">
+								讲座：10.08  上师大职业生涯规划讲座
+								<br />
+								讲座：10.15  中医药大学讲座
+								<br />
+								手册：《医药行业信息手册》
+								<br />
+								课程：10月课程安排
+							</div>
+							
+						</div>
+					<% end %>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+</div>
+
+<div class="index_container_r">
+	
+	<div class="index_title_small">
+		<li>乔布堂海报栏</li>
+	</div>
+	
+	<% @display_activity_posts.each do |ap| %>
+		<div class="index_block">
+			<div>
+				<a href="<%= ap[2] %>">
+					<%= ap[0] %></a>
+			</div>
+			<div class="align_c">
+				<a href="<%= ap[2] %>">
+					<img src="<%= ap[1] %>" border="0" alt="<%= ap[0] %>" title="<%= ap[0] %>" /></a>
+			</div>
+			<div>
+				<%= thin_hr %>
+			</div>
+		</div>
+	<% end %>
+	
+</div>
+
+<div class="clear"></div>
+
