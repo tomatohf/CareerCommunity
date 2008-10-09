@@ -114,12 +114,23 @@
 		
 		<%= render :partial => "common/bottom_bar" %>
 		
+		
+		
+		<script type="text/javascript">
+			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+			</script>
+			<script type="text/javascript">
+			var pageTracker = _gat._getTracker("UA-5887424-1");
+			pageTracker._trackPageview();
+		</script>
     </body>
 </html>
 
 
 
 <script id="interval_loader" src="/community/interval" language="JavaScript" type="text/javascript"></script>
+
 <script language="JavaScript" type="text/javascript">
 	function refresh_interval_loader(){
 		var interval_loader_element = document.getElementById("interval_loader");
@@ -134,4 +145,5 @@
 		interval_loader_parent.appendChild(new_interval_loader_element);
 	}
 </script>
+
 
