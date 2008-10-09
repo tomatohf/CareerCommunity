@@ -15,7 +15,7 @@ class AccountsController < ApplicationController
   end
   
   def create
-    email = params[:account_email]
+    email = params[:account_email] && params[:account_email].strip
     password = params[:account_password]
     nick = params[:account_nick]
     

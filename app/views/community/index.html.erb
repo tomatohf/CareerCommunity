@@ -18,14 +18,14 @@
 		</script>
 		<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8" do %>
 			<div class="community_block">
-				<div id="index_register_form">
+				<div id="index_register_form" style="display: none">
 					<%= render :partial => "accounts/register_form", :locals => {:simple => true} %>
 					<a href="#" onclick="javascript: show_login_form();return false;">已注册 请登录</a>
 				</div>
 					
-				<div id="index_login_form" style="display: none">
-					<%= render :partial => "accounts/login_form", :locals => {:simple => true} %>
-					<a href="#" onclick="javascript: show_register_form();return false;">我要注册</a>
+				<div id="index_login_form">
+					<%= render :partial => "accounts/login_form", :locals => {:simple => true, :once => true, :input_size => 30} %>
+					<a href="#" onclick="javascript: show_register_form();return false;">» 我要注册</a>
 				</div>
 			</div>
 		<% end %>

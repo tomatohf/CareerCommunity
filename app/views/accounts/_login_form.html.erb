@@ -24,18 +24,21 @@
 			<input type="password" id="password" name="password" class="text_field" size="<%= input_size %>" />
 		</div>
 		
-		<% unless simple %>
 		<div>
 			<%= check_box_tag :autologin, value = "true", !once %>
             <label for="autologin">
                 记住我
             </label>
 		</div>
-		<% end %>
 
 		<div>
 	        <%= submit_tag "登录", :class => "button" %>
-			<span class="form_info_s">(或者 从注册验证邮件登录)</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<% unless simple %>
+				<span class="form_info_s">(或者 从注册验证邮件登录)</span>
+			<% else %>
+				(<a href="/accounts/forgot_password">忘记密码了</a>)
+			<% end %>
 	    </div>
 	<% end %>
 </div>
