@@ -124,6 +124,30 @@
 	            }
 	        );
 		}
+		
+		function delete_album_photo(photo_id){
+			if(confirm('确定要删除么 ?')){
+				var indicator_id = "deleting_indicator_" + photo_id;
+				var link_id = "delete_album_photo_link_" + photo_id;
+				Element.show(indicator_id);
+				Element.hide(link_id);
+			
+				new Ajax.Request(
+		            "/photos/" + photo_id,
+		            {
+		            	asynchronous:true,
+		                evalScripts:true,
+		                onComplete:function(request){
+							Element.show(link_id);
+							Element.hide(indicator_id);
+						},
+		                //onLoading:function(request){},
+						method:"delete",
+		                parameters:"authenticity_token=" + encodeURIComponent("<%= form_authenticity_token %>")
+		            }
+		        );
+			}
+		}
 	</script>
 <% end %>
 

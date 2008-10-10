@@ -71,10 +71,11 @@ class PhotosController < ApplicationController
   
   def destroy
     album_id = @photo.album_id
+    photo_id = @photo.id
     
     @photo.destroy
     
-    jump_to("/albums/show_edit/#{album_id}")
+    request.xhr? ? (@album_photo_id = "album_photo_#{photo_id}") : jump_to("/albums/show_edit/#{album_id}")
   end
   
   def create_comment

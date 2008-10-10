@@ -1,6 +1,6 @@
 <% comment_count = PhotoComment.get_count(album_photo.id) %>
 
-<div class="album_photo_item">
+<div class="album_photo_item" id="album_photo_<%= album_photo.id %>">
 	
 	<div class="album_photo_img">
 		<% photo_show_url = "/photos/#{"show_edit/" if edit}#{album_photo.id}" %>
@@ -17,8 +17,11 @@
 			<img id="setting_indicator_<%= album_photo.id %>" src="/images/loading_small.gif" style="display: none; position: absolute" />
 		</div>
 		<div class="album_photo_info">
-			<a href="#">删除</a>
+			<a id="delete_album_photo_link_<%= album_photo.id %>" href="#" onclick="delete_album_photo(<%= album_photo.id %>); return false;">删除</a>
+			
 			<a target="_blank" href="/photos/<%= album_photo.id %>/edit">编辑描述</a>
+			
+			<img id="deleting_indicator_<%= album_photo.id %>" src="/images/loading_small.gif" style="display: none; position: absolute" />
 		</div>
 	<% end %>
 	
