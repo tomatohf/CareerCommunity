@@ -18,9 +18,25 @@ class Photo < ActiveRecord::Base
   
   
   after_destroy { |photo|
-    # TODO - delete the photo related image files ...
-    # photo.delete_image_file
+    # clean album cover photo
+    Album.clear_album_cover_photo_cache(photo.album_id)
     
+    # clean account pic 
+    PicProfile.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |pp|
+      Account.clear_account_nick_pic_cache(pp.account_id)
+    end
+    
+    # clean group image
+    GroupImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |gi|
+      Group.clear_group_with_image_cache(gi.group_id)
+    end
+    
+    # clean activity image
+    ActivityImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |ai|
+      Activity.clear_activity_with_image_cache(ai.activity_id)
+    end
+    
+    # clean the album photos
     Album.clear_album_photos_cache(photo.album_id)
   }
   
@@ -63,7 +79,5 @@ class Photo < ActiveRecord::Base
     data.content_type = MIME::Types.type_for(data.original_filename).to_s if data
     self.image = data
   end
-  
-  private
   
 end

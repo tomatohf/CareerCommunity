@@ -65,6 +65,10 @@ class Group < ActiveRecord::Base
   require_dependency "group_member"
   def self.get_group_with_image(group_id)
     g_i = Cache.get("#{CKP_group_with_img}_#{group_id}".to_sym)
+    
+    # check to avoid that the deleted photo image files are still cached
+    # g_i = nil if g_i && g_i[1] && (!Pathname.new("#{RAILS_ROOT}/public#{g_i[1]}").exist?)
+    
     unless g_i
       group = self.find(group_id)
       group_image_url = group.get_image_url

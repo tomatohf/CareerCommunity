@@ -68,8 +68,7 @@ module ApplicationHelper
   end
   
   def face_img_src(src)
-    src = nil if src == ""
-    src || "/images/default_face.png"
+    (src && (src != "") && Pathname.new("#{RAILS_ROOT}/public#{src}").exist?) ? src : "/images/default_face.png"
   end
   
   def paging_buttons(collection)

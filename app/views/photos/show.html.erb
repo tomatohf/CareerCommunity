@@ -64,6 +64,9 @@
 		<input type="hidden" name="photo_id" value="<%= @photo.id %>" />
 	<% end %>
 	
+	<% form_tag "/photos/#{@photo.id}", :method => :delete, :id => "photo_delete_form" do %>
+	<% end %>
+	
 	<div>
 		<a target="_blank" href="<%= @photo.image.url %>">
 			<img src="/images/show_big.gif" border="0" alt="原图" title="原图" /></a>
@@ -92,7 +95,7 @@
 	
 	<% if @edit %>
 		<div class="community_block">
-			<a href="#">删除照片</a>
+			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('photo_delete_form').submit();}; return false;">删除照片</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="#" onclick="document.getElementById('set_as_album_cover_form').submit(); return false;">设为相册封面</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

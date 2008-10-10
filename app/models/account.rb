@@ -203,18 +203,12 @@ class Account < ActiveRecord::Base
     self.profile_pic && self.profile_pic.pic_url
   end
   
-  def get_nick_and_pic
-    n_p = Cache.get("#{CKP_nick_pic}_#{self.id}".to_sym)
-    unless n_p
-      n_p = [self.get_nick, self.get_profile_pic_url, self.email]
-      
-      Cache.set("#{CKP_nick_pic}_#{self.id}".to_sym, n_p, Cache_TTL)
-    end
-    n_p
-  end
-  
   def self.get_nick_and_pic(account_id)
     n_p = Cache.get("#{CKP_nick_pic}_#{account_id}".to_sym)
+    
+    # check to avoid that the deleted photo image files are still cached
+    # n_p = nil if n_p && n_p[1] && (!Pathname.new("#{RAILS_ROOT}/public#{n_p[1]}").exist?)
+    
     unless n_p
       account = Account.find(account_id)
       n_p = [account.get_nick, account.get_profile_pic_url, account.email]

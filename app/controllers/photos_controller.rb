@@ -3,9 +3,9 @@ class PhotosController < ApplicationController
   Comment_Page_Size = 100
   
   layout "community"
-  before_filter :check_login, :only => [:show_edit, :edit, :update, :create_comment, :delete_comment]
-  before_filter :check_limited, :only => [:update, :create_comment, :delete_comment]
-  before_filter :check_photo_access, :only => [:edit, :update]
+  before_filter :check_login, :only => [:show_edit, :edit, :update, :create_comment, :delete_comment, :destroy]
+  before_filter :check_limited, :only => [:update, :create_comment, :delete_comment, :destroy]
+  before_filter :check_photo_access, :only => [:edit, :update, :destroy]
   before_filter :check_show_edit_for_photo, :only => [:show_edit]
   
   before_filter :check_comment_owner, :only => [:delete_comment]
@@ -67,6 +67,14 @@ class PhotosController < ApplicationController
     end
     
     render :action => "edit"
+  end
+  
+  def destroy
+    album_id = @photo.album_id
+    
+    @photo.destroy
+    
+    jump_to("/albums/show_edit/#{album_id}")
   end
   
   def create_comment

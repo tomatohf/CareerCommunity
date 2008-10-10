@@ -66,6 +66,10 @@ class Activity < ActiveRecord::Base
   require_dependency "activity_interest"
   def self.get_activity_with_image(activity_id)
     a_i = Cache.get("#{CKP_activity_with_img}_#{activity_id}".to_sym)
+    
+    # check to avoid that the deleted photo image files are still cached
+    # a_i = nil if a_i && a_i[1] && (!Pathname.new("#{RAILS_ROOT}/public#{a_i[1]}").exist?)
+    
     unless a_i
       activity = self.find(activity_id)
       activity_image = activity.get_image_url
