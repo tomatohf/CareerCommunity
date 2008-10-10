@@ -53,3 +53,30 @@
 <script language="JavaScript" src="/lib/lightbox/js/lightbox.js"></script>
 
 
+<script language="JavaScript">
+	function delete_linked_photo(linked_photo_id){
+		if(confirm('确定要删除么 ?')){
+			var indicator_id = "deleting_indicator_" + linked_photo_id;
+			var link_id = "delete_linked_photo_link_" + linked_photo_id;
+			Element.show(indicator_id);
+			Element.hide(link_id);
+	
+			new Ajax.Request(
+	            "/group/linked_photos/destroy_link/" + linked_photo_id,
+	            {
+	            	asynchronous:true,
+	                evalScripts:true,
+	                onComplete:function(request){
+						Element.show(link_id);
+						Element.hide(indicator_id);
+					},
+	                //onLoading:function(request){},
+					method:"post",
+	                parameters:"authenticity_token=" + encodeURIComponent("<%= form_authenticity_token %>")
+	            }
+	        );
+		}
+	}
+</script>
+
+
