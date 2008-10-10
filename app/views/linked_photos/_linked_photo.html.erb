@@ -1,8 +1,12 @@
+<% is_admin &&= true %>
+<% can_del = is_admin || (linked_photo.account_id == session[:account_id]) %>
+
 <% account = linked_photo.account %>
 <% photo = linked_photo.photo %>
 
-<% comment_count = PhotoComment.get_count(photo.id) %>
-<div class="linked_photo">
+<% comment_count = PhotoComment.get_count(photo.id) %>
+
+<div class="linked_photo" id="linked_photo_<%= linked_photo.id %>">
 	<div class="align_c">
 		<a href="<%= photo.image.url(:big) %>" rel="lightbox[activity]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='/photos/<%= photo.id %>'&gt;查看/评论&lt;/a&gt; &lt;br /&gt; <%= photo.title %> &lt;br /&gt;">
 			<img src="<%= photo.image.url(:thumb_120) %>" border="0" /></a>
@@ -17,7 +21,12 @@
 			相册</a>
 	</div>
 	
-	<div>
+	<div class="align_c">
+		<% if can_del %>
+			<a class="account_nick_link" id="delete_linked_photo_link_<%= linked_photo.id %>" href="#" onclick="delete_linked_photo(<%= linked_photo.id %>); return false;">删除</a>
+			<img id="deleting_indicator_<%= linked_photo.id %>" src="/images/loading_small.gif" style="display: none;" />
+			&nbsp;&nbsp;
+		<% end %>
 		<a target="_blank" href="/photos/<%= photo.id %>#comment_list" class="account_nick_link">评论(<%= comment_count %>)</a>
 	</div>
 </div>

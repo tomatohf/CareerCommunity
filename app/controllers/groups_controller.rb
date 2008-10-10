@@ -292,6 +292,8 @@ class GroupsController < ApplicationController
     @group_id = params[:id]
     @group, @group_image = Group.get_group_with_image(@group_id)
     
+    @is_admin = GroupMember.is_group_admin(@group_id, session[:account_id])
+    
     page = params[:page]
     page = 1 unless page =~ /\d+/
     @group_photos = GroupPhoto.paginate(

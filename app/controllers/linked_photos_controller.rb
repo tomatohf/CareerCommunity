@@ -4,10 +4,11 @@ class LinkedPhotosController < ApplicationController
   
   before_filter :prepare_linked_photo_type
   
-  before_filter :check_login, :only => [:select, :photo_selector_for_linked_photo, :create_link]
-  before_filter :check_limited, :only => [:create_link]
+  before_filter :check_login, :only => [:select, :photo_selector_for_linked_photo, :create_link, :destroy_link]
+  before_filter :check_limited, :only => [:create_link, :destroy_link]
   
   before_filter :check_create_link_access, :only => [:select, :create_link]
+  before_filter :check_destroy_link_access, :only => [:destroy_link]
   
   
   
@@ -59,6 +60,14 @@ class LinkedPhotosController < ApplicationController
     jump_to("/#{@linked_photo_type.pluralize}/photo/#{@type_id}")
   end
   
+  def destroy_link
+    linked_photo_id = @linked_photo.id
+    
+    @linked_photo.destroy
+    
+    request.xhr? ? (@linked_photo_id = "linked_photo_#{linked_photo_id}") : jump_to("/#{@linked_photo_type.pluralize}/photo/#{@type_id}")
+  end
+  
   
   private
   
@@ -78,6 +87,18 @@ class LinkedPhotosController < ApplicationController
     account_id = session[:account_id]
     
     jump_to("/errors/forbidden") unless @type_handler.check_create_link_access(@type_id, account_id)
+  end
+  
+  def check_destroy_link_access
+    linked_photo_id = params[:id] && params[:id].strip
+    @type_handler = get_type_handler(@linked_photo_type)
+    
+    @linked_photo = @type_handler.get_link_class.find(linked_photo_id)
+    @type_id = @linked_photo.send(@type_handler.get_type_id)
+    
+    account_id = session[:account_id]
+    
+    jump_to("/errors/forbidden") unless (@linked_photo.account_id == account_id || @type_handler.check_destroy_link_access(@type_id, account_id))
   end
   
   
@@ -122,6 +143,10 @@ class LinkedPhotosController < ApplicationController
       def check_create_link_access(type_id, account_id)
         ActivityMember.is_activity_member(type_id, account_id)
       end
+
+      def check_destroy_link_access(type_id, account_id)
+        ::Activity.get_activity_with_image(type_id)[0].master_id == account_id
+      end
     end
     
     
@@ -137,6 +162,10 @@ class LinkedPhotosController < ApplicationController
       
       def check_create_link_access(type_id, account_id)
         GroupMember.is_group_member(type_id, account_id)
+      end
+
+      def check_destroy_link_access(type_id, account_id)
+        GroupMember.is_group_admin(type_id, account_id)
       end
     end
     

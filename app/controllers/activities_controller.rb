@@ -597,6 +597,8 @@ class ActivitiesController < ApplicationController
     @activity_id = params[:id]
     @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
     
+    @is_admin = @activity.master_id == session[:account_id]
+    
     page = params[:page]
     page = 1 unless page =~ /\d+/
     @activity_photos = ActivityPhoto.paginate(

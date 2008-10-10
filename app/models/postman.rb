@@ -9,7 +9,7 @@ class Postman < ActionMailer::Base
   end
   
   def self.host
-    "qiaobutang.com"
+    "http://qiaobutang.com"
   end
   
   # this method is only for test uasage
