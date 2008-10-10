@@ -5,6 +5,10 @@
 		<% page_title = yield(:page_title) %>
         <title><%= "#{page_title} - " if page_title && page_title != "" %>乔布教练 - 乔布堂</title>
         <%= stylesheet_link_tag "site", "qiaobutang" %>
+
+		<!--[if lt IE 7]>
+		<script src="/lib/ie7/IE7.js" type="text/javascript"></script>
+		<![endif]-->
     </head>
     <body>
 	
@@ -56,9 +60,9 @@
 							<%
 								menus = [
 									["industry", "医药行业"],
-									["", "顾问团队"],
+									["#", "顾问团队"],
 									["register_notice", "报名须知"],
-									["", "常见问题"]
+									["#", "常见问题"]
 								]
 							%>
 							<% menus.each do |menu| %>

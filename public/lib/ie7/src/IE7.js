@@ -2182,7 +2182,7 @@ IE7.loaded = true;
   }
   // PNG = new RegExp(rescape(typeof IE7_PNG_SUFFIX == "string" ? IE7_PNG_SUFFIX : "-trans.png") + "$", "i");
   // modified by Tomato
-  PNG = new RegExp(rescape(typeof IE7_PNG_SUFFIX == "string" ? IE7_PNG_SUFFIX : "buquan.png") + "$", "i");
+  PNG = new RegExp(rescape(typeof IE7_PNG_SUFFIX == "string" ? IE7_PNG_SUFFIX : "_logo.png") + "$", "i");
 
   // frequently used references
   body = document.body;
