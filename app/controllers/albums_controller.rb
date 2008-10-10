@@ -2,9 +2,13 @@ class AlbumsController < ApplicationController
   
   layout "community"
   before_filter :check_current_account, :only => [:index]
-  before_filter :check_login, :only => [:list_edit, :show_edit, :new, :create, :edit, :update, :upload, :upload_simple, :create_photo_simple, :photo_selector, :fetch_photos]
-  before_filter :check_limited, :only => [:update, :create, :create_photo_simple]
-  before_filter :check_album_access, :only => [:upload, :upload_simple, :create_photo_simple, :fetch_photos]
+  before_filter :check_login, :only => [:list_edit, :show_edit, :new, :create,
+                                        :edit, :update, :upload, :upload_simple,
+                                        :create_photo_simple, :photo_selector,
+                                        :fetch_photos, :destroy]
+  before_filter :check_limited, :only => [:update, :create, :create_photo_simple, :destroy]
+  before_filter :check_album_access, :only => [:upload, :upload_simple,
+                                              :create_photo_simple, :fetch_photos, :destroy]
   before_filter :check_album_access_full, :only => [:edit, :update]
   
   before_filter :check_list_edit_for_album, :only => [:list_edit]
@@ -78,6 +82,19 @@ class AlbumsController < ApplicationController
     end
       
     render(:action => "edit")
+  end
+  
+  def destroy
+    photo_count = Photo.count(:conditions => ["album_id = ?", @album.id])
+    if photo_count > 0
+      # can NOT delete album
+      flash[:error_msg] = "删除相册失败... 相册中还包含 #{photo_count} 张照片, 只能删除不包含照片的空相册"
+    else
+      @album.destroy
+      flash[:message] = "已成功删除相册"
+    end
+    
+    jump_to("/albums/list_edit/#{session[:account_id]}")
   end
   
   # ! login required !

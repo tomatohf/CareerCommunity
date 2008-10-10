@@ -21,7 +21,7 @@
 		
 		<% if edit %>
 			<a href="/albums/<%= album.id %>/upload">添加照片</a>
-			<a href="/albums/<%= album.id %>/edit">删除</a>
+			<a href="#" onclick="delete_album(<%= album.id %>); return false;">删除</a>
 			<a href="/albums/<%= album.id %>/edit">修改</a>
 		<% end %>
 	</div>

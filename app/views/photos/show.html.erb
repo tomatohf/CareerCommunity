@@ -55,16 +55,18 @@
 <div class="photo_container_l">
 	<h2><%= page_title %></h2>
 	
-	<% form_tag "/albums/#{@album.id}", :id => "set_as_album_cover_form", :target => "_blank", :method => :put do %>
-		<input type="hidden" name="c" value="true" />
-		<input type="hidden" name="album_cover_photo_id" value="<%= @photo.id %>" />
-	<% end %>
+	<% if @edit %>
+		<% form_tag "/albums/#{@album.id}", :id => "set_as_album_cover_form", :target => "_blank", :method => :put do %>
+			<input type="hidden" name="c" value="true" />
+			<input type="hidden" name="album_cover_photo_id" value="<%= @photo.id %>" />
+		<% end %>
 	
-	<% form_tag "/profiles/#{@photo.account_id}/pic", :id => "set_as_account_face_form", :target => "_blank", :method => :post do %>
-		<input type="hidden" name="photo_id" value="<%= @photo.id %>" />
-	<% end %>
+		<% form_tag "/profiles/#{@photo.account_id}/pic", :id => "set_as_account_face_form", :target => "_blank", :method => :post do %>
+			<input type="hidden" name="photo_id" value="<%= @photo.id %>" />
+		<% end %>
 	
-	<% form_tag "/photos/#{@photo.id}", :method => :delete, :id => "photo_delete_form" do %>
+		<% form_tag "/photos/#{@photo.id}", :method => :delete, :id => "photo_delete_form" do %>
+		<% end %>
 	<% end %>
 	
 	<div>

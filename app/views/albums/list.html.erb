@@ -19,6 +19,16 @@
 <div class="album_container">
 	<h2><%= page_title %></h2>
 	
+	<div class="community_block_narrow">
+		
+		<% if flash[:message] %>
+			<p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+	</div>
+	
 	<div class="community_block_narrow form_info_s">
 		<% if @edit %>
 			<%= owner_name %>
@@ -39,3 +49,21 @@
 
 	</div>
 </div>
+
+
+
+<% if @edit %>
+	<% form_tag "", :method => :delete, :id => "album_delete_form" do %>
+	<% end %>
+
+	<script language="JavaScript">
+		function delete_album(album_id){
+			if(confirm('确定要删除么 ?')){
+				var delete_form = document.getElementById("album_delete_form");
+				delete_form.action = "/albums/" + album_id;
+				delete_form.submit();
+			}
+		}
+	</script>
+<% end %>
+	
