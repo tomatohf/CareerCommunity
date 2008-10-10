@@ -8,6 +8,7 @@ class SpacesController < ApplicationController
   Space_Group_Num = 15
   Space_Action_Num = 10
   Space_Activity_Num = 6
+  Space_Photo_Num = 10
   
   layout "community"
   before_filter :check_current_account, :only => [:index]
@@ -137,6 +138,13 @@ class SpacesController < ApplicationController
       :limit => Space_Activity_Num,
       :conditions => ["account_id = ?", @account_id],
       :include => [:activity => [:image]],
+      :order => "created_at DESC"
+    )
+    
+    @photos = Photo.find(
+      :all,
+      :limit => Space_Photo_Num,
+      :conditions => ["account_id = ?", @account_id],
       :order => "created_at DESC"
     )
   end

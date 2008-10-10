@@ -753,6 +753,14 @@ a.owner_blog_title:hover {
 	text-align: center;
 }
 
+.space_photo {
+	float: left;
+	margin: 10px 5px;
+	padding: 2px;
+	width: 80px;
+	border: 1px dotted #C2E3EF;
+}
+
 .friend_container_l {
 	margin-left: 150px;
 	margin-right: 150px;

@@ -250,8 +250,19 @@
 		<%= owner_name %> 的照片 ...
 	</div>
 	<div class="community_block">
-		照片啊照片 ...
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="photo_section_expand" href="#" onclick="collapse_section('photo_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="photo_section_collapse" href="#" onclick="expand_section('photo_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			
+			<a href="/albums/<%= @edit ? "list_edit" : "list" %>/<%= @account_id %>">所有相册</a>
+		</div>
 	</div>
+	<div id="photo_section">
+		<%= float_list(@photos, "photo", :photo, {}, 5) %>
+	</div>
+	<div class="clear_l" />
 	
 	<div class="community_title">
 		<%= owner_name %> 的博客 ...
