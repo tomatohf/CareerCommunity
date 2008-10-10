@@ -9,6 +9,7 @@ class SpacesController < ApplicationController
   Space_Action_Num = 10
   Space_Activity_Num = 6
   Space_Photo_Num = 10
+  Space_Blog_Num = 5
   
   layout "community"
   before_filter :check_current_account, :only => [:index]
@@ -147,6 +148,14 @@ class SpacesController < ApplicationController
       :conditions => ["account_id = ?", @account_id],
       :order => "created_at DESC"
     )
+    
+    @blogs = Blog.find(
+      :all,
+      :limit => Space_Blog_Num,
+      :conditions => ["account_id = ?", @account_id],
+      :order => "created_at DESC"
+    )
+    
   end
   
   def show_edit

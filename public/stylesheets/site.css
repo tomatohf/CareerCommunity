@@ -761,6 +761,15 @@ a.owner_blog_title:hover {
 	border: 1px dotted #C2E3EF;
 }
 
+.space_blog {
+	margin-bottom: 15px;
+	padding: 0px 5px;
+}
+
+.space_blog a {
+	font-size: 14px;
+}
+
 .friend_container_l {
 	margin-left: 150px;
 	margin-right: 150px;

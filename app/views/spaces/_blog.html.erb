@@ -1,0 +1,23 @@
+<% blog_show_url = "/blogs/#{"show_edit/" if edit}#{blog.id}" %>
+
+<% blog_content = extract_text(blog.content) %>
+<% blog_content = sanitize_tinymce(blog_content) %>
+
+<div class="space_blog">
+	<div>
+		<a href="<%= blog_show_url %>" class="account_nick_link">
+			<%= h(blog.title) %>
+		</a>
+	</div>
+	
+	<div>
+		<img src="/images/index/blog_icon.png" border="0" />
+		&nbsp;
+		<%= truncate(blog_content, 150) %>
+	</div>
+
+		<div class="form_info_s align_r">
+			发表于
+			<%= format_datetime(blog.created_at) %>
+		</div>
+</div>
