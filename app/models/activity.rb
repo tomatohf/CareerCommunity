@@ -14,6 +14,7 @@ class Activity < ActiveRecord::Base
   end
   
   has_many :members, :class_name => "ActivityMember", :foreign_key => "activity_id", :dependent => :destroy
+  has_many :interests, :class_name => "ActivityInterest", :foreign_key => "activity_id", :dependent => :destroy
   
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"
   belongs_to :master, :class_name => "Account", :foreign_key => "master_id"
@@ -21,6 +22,7 @@ class Activity < ActiveRecord::Base
   has_one :image, :class_name => "ActivityImage", :foreign_key => "activity_id", :dependent => :destroy
   
   has_many :photos, :class_name => "ActivityPhoto", :foreign_key => "activity_id", :dependent => :destroy
+  has_many :posts, :class_name => "ActivityPost", :foreign_key => "activity_id", :dependent => :destroy
   
   
   validates_presence_of :creator_id, :master_id
