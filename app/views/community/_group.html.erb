@@ -1,0 +1,19 @@
+<%
+	group_id = group.id
+	group_name = group.name
+	group_image = group.get_image_url
+
+	Group.set_group_with_image_cache(group_id, group, group_image)
+%>
+
+<div class="community_index_group">
+	<div>
+		<a href="/groups/<%= group_id %>">
+			<img src="<%= face_img_src(group_image) %>" border="0" /></a>
+	</div>
+	<div>
+		<a href="/groups/<%= group_id %>" class="group_name_link">
+			<%= h(group_name) %></a>
+	</div>
+</div>
+

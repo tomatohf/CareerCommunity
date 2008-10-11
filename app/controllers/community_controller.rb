@@ -3,6 +3,11 @@ class CommunityController < ApplicationController
   New_Account_Size = 9
   New_Action_Size = 15
   New_Activity_Size = 10
+  New_Activity_Post_Size = 5
+  New_Group_Size = 6
+  New_Group_Post_Size = 5
+  New_Photo_Size = 10
+  New_Blog_Size = 5
   
   Search_Result_Page_Size = 10
   
@@ -37,6 +42,37 @@ class CommunityController < ApplicationController
       :all,
       :limit => New_Activity_Size,
       :include => [:image],
+      :order => "created_at DESC"
+    )
+    
+    @new_activity_posts = ActivityPost.find(
+      :all,
+      :limit => New_Activity_Post_Size,
+      :order => "created_at DESC"
+    )
+    
+    @new_groups = Group.find(
+      :all, 
+      :limit => New_Group_Size,
+      :include => [:image],
+      :order => "created_at DESC"
+    )
+
+    @new_group_posts = GroupPost.find(
+      :all,
+      :limit => New_Group_Post_Size,
+      :order => "created_at DESC"
+    )
+    
+    @new_photos = Photo.find(
+      :all,
+      :limit => New_Photo_Size,
+      :order => "created_at DESC"
+    )
+    
+    @new_blogs = Blog.find(
+      :all,
+      :limit => New_Blog_Size,
       :order => "created_at DESC"
     )
     

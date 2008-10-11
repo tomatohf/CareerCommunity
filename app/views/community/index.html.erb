@@ -84,6 +84,7 @@
 		<h2>欢迎回来 <%= h(session[:nick]) %></h2>
 	<% end %>
 	
+	
 	<div class="community_title">
 		最新活动 ...
 	</div>
@@ -92,29 +93,47 @@
 	</div>
 	<div class="clear_l">
 	</div>
-
-
+	
 	
 	<div class="community_title">
-		圈子博客照片 ...
+		最新活动话题 ...
 	</div>
 	<div class="community_block">
-		热门圈子<br />
-		照片<br />
-		活动<br />
-		博客<br />
-		......
+		<%= render(:partial => "/spaces/blog", :collection => @new_activity_posts, :locals => {:edit => false}) %>
 	</div>
 	
+
 	<div class="community_title">
-		想法评论和话 ...
+		最新圈子 ...
+	</div>
+	<div>
+		<%= float_list(@new_groups, "group", :group, {}, 6) %>
+	</div>
+	<div class="clear_l">
+	</div>
+	
+	
+	<div class="community_title">
+		最新圈内话题 ...
 	</div>
 	<div class="community_block">
-		博客<br />
-		用户评论<br />
-		想法<br />
-		会员们的话<br />
-		......
+		<%= render(:partial => "/spaces/blog", :collection => @new_group_posts, :locals => {:edit => false}) %>
+	</div>
+	
+	
+	<div class="community_title">
+		最新照片 ...
+	</div>
+	<div>
+		<%= float_list(@new_photos, "/spaces/photo", :photo, {:edit => false}, 5) %>
+	</div>
+	
+	
+	<div class="community_title">
+		最新博客 ...
+	</div>
+	<div class="community_block">
+		<%= render(:partial => "/spaces/blog", :collection => @new_blogs, :locals => {:edit => false}) %>
 	</div>
 	
 </div>
