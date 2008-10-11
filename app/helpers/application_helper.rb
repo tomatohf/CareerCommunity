@@ -96,7 +96,7 @@ module ApplicationHelper
   end
   
   def sanitize_tinymce(html)
-    sanitize(html, :attributes => %w(style src href))
+    sanitize(html, :attributes => %w(style src href border title))
   end
   
   def community_page_title(page_title)

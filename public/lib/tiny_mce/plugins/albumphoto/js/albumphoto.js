@@ -11,7 +11,8 @@ var AlbumPhoto = {
 
 		tinymce.extend(args, {
 			src : photo_src,
-			title : photo_title
+			title : photo_title,
+			border : 0
 		});
 
 		el = ed.selection.getNode();

@@ -4,8 +4,9 @@ tinyMCE.init(
 		mode : "textareas",
 		theme : "advanced",
 		plugins : "albumphoto,safari,inlinepopups,insertdatetime,emotions,preview,searchreplace,contextmenu,paste,fullscreen,xhtmlxtras",
-		relative_urls : false,
 		language : "ch",
+		relative_urls : false,
+		remove_script_host : false,
 	
 		// Theme options
 		theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,formatselect,fontselect,fontsizeselect,|,justifyleft,justifycenter,justifyright,|,forecolor,backcolor,|,bullist,numlist,|,outdent,indent,blockquote",
