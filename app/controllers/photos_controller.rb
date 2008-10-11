@@ -3,9 +3,11 @@ class PhotosController < ApplicationController
   Comment_Page_Size = 100
   
   layout "community"
-  before_filter :check_login, :only => [:show_edit, :edit, :update, :create_comment, :delete_comment, :destroy]
-  before_filter :check_limited, :only => [:update, :create_comment, :delete_comment, :destroy]
-  before_filter :check_photo_access, :only => [:edit, :update, :destroy]
+  before_filter :check_login, :only => [:show_edit, :edit, :update, :create_comment, :delete_comment,
+                                        :destroy, :move_to_other_album]
+  before_filter :check_limited, :only => [:update, :create_comment, :delete_comment, :destroy,
+                                          :move_to_other_album]
+  before_filter :check_photo_access, :only => [:edit, :update, :destroy, :move_to_other_album]
   before_filter :check_show_edit_for_photo, :only => [:show_edit]
   
   before_filter :check_comment_owner, :only => [:delete_comment]
@@ -45,6 +47,9 @@ class PhotosController < ApplicationController
       :include => [:account => [:profile_pic]],
       :order => "created_at ASC"
     )
+    
+    
+    @albums = Album.get_all_names_by_account_id(@album.account_id) if @edit
   end
   
   def show_edit
@@ -101,6 +106,50 @@ class PhotosController < ApplicationController
     @photo_comment.destroy
     
     jump_to("/photos#{"/show_edit" if params[:e] == "true"}/#{@photo_comment.photo_id}")
+  end
+  
+  def move_to_other_album
+    album_id = params[:album] && params[:album].strip
+    
+    old_album_id = @photo.album_id
+    old_url = @photo.image.url
+
+    # whether need to move
+    unless old_album_id.to_s == album_id
+      
+      # check if own the album
+      @owned_album_ids = Album.get_all_names_by_account_id(@photo.account_id).collect { |album| album[0].to_s }
+      if @owned_album_ids.include?(album_id)
+        Photo.transaction do
+          @photo.album_id = album_id
+          if @photo.save
+            # move the photo image files
+            old_path = Pathname.new("#{RAILS_ROOT}/public#{old_url}").parent.to_s
+            new_path_obj = Pathname.new("#{RAILS_ROOT}/public#{@photo.image.url}").parent
+            new_path_parent_path = new_path_obj.parent.to_s
+            # create target parent directory
+            FileUtils.mkdir_p(new_path_parent_path)
+            # remove existing target
+            new_path = new_path_obj.to_s
+            FileUtils.rm_rf(new_path)
+            FileUtils.mv(old_path, new_path)
+            
+            # clean the cover photo of the moved photo's album if needed
+            old_album = Album.find(old_album_id)
+            if old_album.cover_photo_id == @photo.id
+              old_album.cover_photo_id = nil
+              Album.clear_album_cover_photo_cache(old_album_id) if old_album.save
+            end
+            
+            # clean the photos cache of the moved photo's album
+            Album.clear_album_photos_cache(old_album_id)
+          end
+        end
+      end
+      
+    end
+    
+    jump_to("/photos/show_edit/#{@photo.id}")    
   end
   
   

@@ -35,6 +35,9 @@ require "thinking_sphinx"
 
 require "RMagick"
 
+require "pathname"
+require "fileutils"
+
 ##################################################
 ### END
 ##################################################

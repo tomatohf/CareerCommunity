@@ -65,7 +65,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/photos/show_edit/:id/comment/:page", :controller => "photos", :action => "show_edit", :id => /\d+/, :page => /\d+/
   map.connect "/photos/:id/comment/:page", :controller => "photos", :action => "show", :id => /\d+/, :page => /\d+/
   map.resources :photos, :member => {
-    :create_comment => :post
+    :create_comment => :post,
+    
+    :move_to_other_album => :post
   }
   
   

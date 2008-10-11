@@ -103,6 +103,19 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="#" onclick="document.getElementById('set_as_account_face_form').submit(); return false;">设为我的头像</a>
 		</div>
+		<div class="community_block align_r">
+			<% form_tag "/photos/#{@photo.id}/move_to_other_album", :method => :post do %>
+				把照片移动到其他相册:
+				&nbsp;
+				<select name="album" class="dropdown_list">
+					<% @albums.each do |album| %>
+						<option value="<%= album[0] %>"<%= " selected=\"selected\"" if album[0] == @photo.album_id %>><%= h(album[1]) %></option>
+					<% end %>
+				</select>
+				&nbsp;
+				<input type="submit" value="移动" class="button" />
+			<% end %>
+		</div>
 	<% end %>
 	
 	<div class="community_title">
