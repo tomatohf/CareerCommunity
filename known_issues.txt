@@ -3,12 +3,6 @@
 缩短 并 调整 tiny_mce 的宽度？？？
 
 
-
-出错页面, 返回 status code 500
-为出错页面做页面级别缓存, controller => errors
-路由失败, 找不到页面的出错, 返回 status code 404
-
-
 server 上的 tinymce 有问题
 	无法添加链接
 
