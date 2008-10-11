@@ -93,6 +93,10 @@
 			</div>
 		<% end %>
 		
+		<div class="community_block">
+			<a href="/activities/members_info/<%= @activity_id %>">统计报名参加活动成员的信息</a>
+		</div>
+		
 		<% if activity_status[0] <= Activity::Status::Registering[0] %>
 			<div class="community_block">
 				<a href="/activities/invite/<%= @activity_id %>">邀请朋友参加活动</a>

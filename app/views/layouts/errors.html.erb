@@ -7,7 +7,7 @@
 		
 		<style>
 			#root_container {
-				margin: 150px auto;
+				margin: 100px auto;
 				max-width: 500px;
 
 				padding: 0px;
@@ -27,17 +27,27 @@
 		<%= render :partial => "common/top_bar" %>
     	
 		<div id="root_container">
+			<p class="float_r">
+				<img src="/images/error_jiong.jpg" border="0" alt="囧" />
+			</p>
+			
 			<p>
 				<a href="/community">
 					<img src="/images/index/qiaobuquan_logo.png" border="0" alt="乔布圈" />
 				</a>
 			</p>
+			
+			<div class="clear_r"></div>
 
 	    	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8" do %>
 				<div class="container">
 					<%= yield %>
 				</div>
 			<% end %>
+			
+			<p>
+				去 <a href="http://qiaobutang.com/groups/1">强力纠错小组</a> 反馈一下这个问题吧
+			</p>
 		</div>
 		
 		<%= render :partial => "common/bottom_bar" %>

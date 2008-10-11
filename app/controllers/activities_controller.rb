@@ -5,6 +5,7 @@ class ActivitiesController < ApplicationController
   Photo_List_Size = 30
   Member_Page_Size = 30
   Unapprove_Page_Size = 30
+  Members_Info_Page_Size = 100
   
   Activity_Recent_List_Size = 6
   Post_Recent_List_Size = 15
@@ -26,7 +27,8 @@ class ActivitiesController < ApplicationController
                                         :members_edit, :del_member, :unapproved,
                                         :approve_member, :reject_member, :invite, :invite_member,
                                         :absent_edit, :add_absent, :del_absent,
-                                        :add_interest, :del_interest, :photo_selector_for_activity_image]
+                                        :add_interest, :del_interest, :photo_selector_for_activity_image,
+                                        :members_info]
   before_filter :check_limited, :only => [:create, :update_image, :join, :quit,
                                           :edit, :update, :update_desc, :update_access, :del_member,
                                           :approve_member, :reject_member, :invite_member,
@@ -42,7 +44,8 @@ class ActivitiesController < ApplicationController
                                                   :members_edit, :del_member, :unapproved,
                                                   :approve_member, :reject_member,
                                                   :invite, :invite_member,
-                                                  :absent_edit, :add_absent, :del_absent]
+                                                  :absent_edit, :add_absent, :del_absent,
+                                                  :members_info]
                                                   
   before_filter :check_activity_status_registering, :only => [:check_profile, :join, :quit,
                                                               :invite, :invite_member]
@@ -1113,6 +1116,30 @@ class ActivitiesController < ApplicationController
     end
     
     jump_to("/activities/invite/#{@activity_id}")
+  end
+  
+  def members_info
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    
+    activity_setting = @activity.get_setting
+    @check_mobile = activity_setting[:check_mobile]
+    @check_gender = activity_setting[:check_gender]
+    @check_birthday = activity_setting[:check_birthday]
+    
+    @include_basic_profile = @check_gender || @check_birthday
+    
+    include_items = [:profile_pic]
+    include_items << :profile_basic if @include_basic_profile
+    include_items << :profile_contact if @check_mobile
+    
+    @members = ActivityMember.agreed.paginate(
+      :page => page,
+      :per_page => Members_Info_Page_Size,
+      :conditions => ["activity_id = ?", @activity_id],
+      :include => [:account => include_items],
+      :order => "join_at ASC"
+    )
   end
   
   

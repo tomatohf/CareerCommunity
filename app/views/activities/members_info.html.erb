@@ -1,0 +1,67 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "报名参加活动 #{activity_title} 的成员信息" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+			
+	</div>
+
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/members_edit/<%= @activity_id %>">返回管理参加活动的成员</a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+		<table border="0" cellpadding="0" cellspacing="5" class="main_part_w">
+			<thead>
+				<tr class="table_header">
+					<td style="width: 50px"></td>
+					<td style="width: 80px"></td>
+					
+					<% if @check_mobile %>
+						<th align="center" style="width: 80px">手机</th>
+					<% end %>
+					
+					<% if @include_basic_profile %>
+						<th align="center" style="width: 60px">真实姓名</th>
+						
+						<% if @check_gender %>
+							<th align="center" style="width: 30px">性别</th>
+						<% end %>
+						
+						<% if @check_birthday %>
+							<th align="center" style="width: 120px">生日</th>
+						<% end %>
+					<% end %>
+					
+					<td style="width: 20px"></td>
+					
+					<td style="width: 60px"></td>
+				</tr>
+			</thead>
+			<tbody>
+				<%= render :partial => "member_info", :collection => @members, :locals => {:check_mobile => @check_mobile, :check_gender => @check_gender, :check_birthday => @check_birthday} %>
+			</tbody>
+		</table>
+	</div>
+	
+</div>
+
+
+<script language="JavaScript">
+
+</script>
+

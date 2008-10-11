@@ -99,7 +99,7 @@
 		最新活动话题 ...
 	</div>
 	<div class="community_block">
-		<%= render(:partial => "/spaces/blog", :collection => @new_activity_posts, :locals => {:edit => false}) %>
+		<%= render(:partial => "activity_post", :collection => @new_activity_posts) %>
 	</div>
 	
 
@@ -117,7 +117,7 @@
 		最新圈内话题 ...
 	</div>
 	<div class="community_block">
-		<%= render(:partial => "/spaces/blog", :collection => @new_group_posts, :locals => {:edit => false}) %>
+		<%= render(:partial => "group_post", :collection => @new_group_posts) %>
 	</div>
 	
 	

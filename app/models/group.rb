@@ -63,6 +63,7 @@ class Group < ActiveRecord::Base
   end
   
   require_dependency "group_member"
+  require_dependency "group_post"
   def self.get_group_with_image(group_id)
     g_i = Cache.get("#{CKP_group_with_img}_#{group_id}".to_sym)
     

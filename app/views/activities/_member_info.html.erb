@@ -1,0 +1,66 @@
+<%
+	account = member_info.account
+	
+	account_id = account.id
+	account_nick = account.get_nick
+	account_pic_url = account.get_profile_pic_url
+
+	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
+%>
+
+<% include_basic_profile = check_gender || check_birthday %>
+
+<tr>
+	<td>
+		<a href="/spaces/show/<%= account_id %>" target="_blank">
+			<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+	</td>
+	
+	<td>
+		<a href="/spaces/show/<%= account_id %>" class="account_nick_link" target="_blank">
+			<%= h(account_nick) %></a>
+	</td>
+	
+	<% if check_mobile %>
+		<% contact_profile = account.profile_contact %>
+		<td>
+			<%= h(contact_profile && contact_profile.mobile) %>
+		</td>
+	<% end %>
+	
+	<% if include_basic_profile %>
+		<% basic_profile = account.profile_basic %>
+		<td>
+			<%= h(basic_profile && basic_profile.real_name) %>
+		</td>
+		
+		<% if check_gender %>
+			<td align="center">
+				<%= basic_profile && (basic_profile.gender ? "男 ♂" : "女 ♀") %>
+			</td>
+		<% end %>
+		
+		<% if check_birthday %>
+			<td align="center">
+				<% birthday = basic_profile && basic_profile.birthday %>
+				<% if birthday %>
+					<%= format_date(birthday) %>
+					&nbsp;
+					<%= Astrology.find_by_date(birthday.month, birthday.mday).name %>
+				<% end %>
+			</td>
+		<% end %>
+	<% end %>
+	
+	<td align="center">
+		<a href="/activities/attend_stat/<%= account_id %>" title="查看其活动出席/缺席情况的统计" target="_blank">
+			<img src="/images/activities/edit_absent_small.png" border="0" width="16" height="14" /></a>
+	</td>
+	
+	<td align="center">
+		<a href="/spaces/profile/<%= account_id %>" target="_blank">
+			详细资料</a>
+	</td>
+</tr>
+
+

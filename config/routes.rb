@@ -187,6 +187,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/activities/day/:date", :controller => "activities", :action => "day", :date => /\d\d\d\d\d\d\d\d/
   map.connect "/activities/day/:date/:page", :controller => "activities", :action => "day", :date => /\d\d\d\d\d\d\d\d/, :page => /\d+/
   map.connect "/activities/unapproved/:id/:page", :controller => "activities", :action => "unapproved", :id => /\d+/, :page => /\d+/
+  map.connect "/activities/members_info/:id/:page", :controller => "activities", :action => "members_info", :id => /\d+/, :page => /\d+/
   map.resources :activities, :member => {
     :edit_image => :get,
     :update_image => :post,

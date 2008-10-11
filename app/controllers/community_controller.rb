@@ -48,6 +48,7 @@ class CommunityController < ApplicationController
     @new_activity_posts = ActivityPost.find(
       :all,
       :limit => New_Activity_Post_Size,
+      :include => [:activity => [:image]],
       :order => "created_at DESC"
     )
     
@@ -61,6 +62,7 @@ class CommunityController < ApplicationController
     @new_group_posts = GroupPost.find(
       :all,
       :limit => New_Group_Post_Size,
+      :include => [:group => [:image]],
       :order => "created_at DESC"
     )
     

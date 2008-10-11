@@ -64,6 +64,7 @@ class Activity < ActiveRecord::Base
   
   require_dependency "activity_member"
   require_dependency "activity_interest"
+  require_dependency "activity_post"
   def self.get_activity_with_image(activity_id)
     a_i = Cache.get("#{CKP_activity_with_img}_#{activity_id}".to_sym)
     
