@@ -3,13 +3,9 @@
 缩短 并 调整 tiny_mce 的宽度？？？
 
 
-check if resolved:  tiny mce 的 链接路径问题
 
 解散活动
 解散圈子
-
-
-选择照片的时候,上传新照片
 
 
 

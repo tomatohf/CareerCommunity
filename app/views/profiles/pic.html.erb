@@ -42,8 +42,9 @@
 	
 	<br />
 	
-	<div class="community_block_narrow">
-		<%= render :partial => "albums/photo_selector", :locals => {:albums => @albums, :photo_list_template => "/profiles/album_photo_list_for_face"} %>
+	<div class="community_block_narrow" id="photo_selector_container">
+		<img src="/images/loading_small.gif" />
+		正在加载 相册 ...
 	</div>
 </div>
 
@@ -51,6 +52,16 @@
 <script type="text/javascript" src="/javascripts/photo_selector.js"></script>
 
 <script language="JavaScript">
+	new Ajax.Updater(
+        "photo_selector_container",
+        "/profiles/photo_selector_for_pic_profile",
+        {
+            asynchronous:true,
+            evalScripts:true,
+			method: "get"
+        }
+    );
+
 	function on_photo_selected(photo_id, img_src){
 		$("photo_id").value = photo_id;
 		$("current_pic").src = img_src;

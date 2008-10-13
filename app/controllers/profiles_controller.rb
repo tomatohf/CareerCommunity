@@ -4,6 +4,7 @@ class ProfilesController < ApplicationController
   before_filter :check_current_account, :only => [:index, :new, :edit, :show]
   before_filter :check_login_for_profile, :only => [:basic, :contact, :hobby, :educations, :jobs, :pic]
   before_filter :check_login, :check_limited, :only => [:educations_add, :educations_del, :jobs_add, :jobs_del]
+  before_filter :check_login, :only => [:photo_selector_for_pic_profile]
   before_filter :check_limited_for_profile, :only => [:basic, :contact, :hobby, :pic]
   
   skip_before_filter :verify_authenticity_token, :only => [:auto_complete_for_edu_name, :auto_complete_for_job_name]
@@ -245,10 +246,6 @@ class ProfilesController < ApplicationController
   def pic
     @profile ||= PicProfile.new(:account_id => session[:account_id])
     
-    unless request.xhr?
-      @albums = Album.get_all_names_by_account_id(session[:account_id])
-    end
-    
     if request.post?
       # ! unlimited required !
       
@@ -272,6 +269,11 @@ class ProfilesController < ApplicationController
       end
     end
     
+  end
+
+  def photo_selector_for_pic_profile
+    albums = Album.get_all_names_by_account_id(session[:account_id])
+    render :partial => "albums/photo_selector", :locals => {:albums => albums, :photo_list_template => "/profiles/album_photo_list_for_face"}
   end
   
   

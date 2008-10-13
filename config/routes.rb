@@ -28,6 +28,8 @@ ActionController::Routing::Routes.draw do |map|
     :educations_del => :post,
     :auto_complete_for_edu_name => :post,
     
+    :photo_selector_for_pic_profile => :get,
+    
     :jobs_del => :post,
     :auto_complete_for_job_name => :post
     
@@ -58,6 +60,8 @@ ActionController::Routing::Routes.draw do |map|
     :fetch_photos => :get
     
   }, :collection => {
+    :create_photo_from_photo_selector => :post,
+    
     :photo_selector => :get
   }
   

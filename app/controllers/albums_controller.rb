@@ -5,10 +5,10 @@ class AlbumsController < ApplicationController
   before_filter :check_login, :only => [:list_edit, :show_edit, :new, :create,
                                         :edit, :update, :upload, :upload_simple,
                                         :create_photo_simple, :photo_selector,
-                                        :fetch_photos, :destroy]
-  before_filter :check_limited, :only => [:update, :create, :create_photo_simple, :destroy]
+                                        :fetch_photos, :destroy, :create_photo_from_photo_selector]
+  before_filter :check_limited, :only => [:update, :create, :create_photo_simple, :destroy, :create_photo_from_photo_selector]
   before_filter :check_album_access, :only => [:upload, :upload_simple,
-                                              :create_photo_simple, :fetch_photos, :destroy]
+                                              :create_photo_simple, :fetch_photos, :destroy, :create_photo_from_photo_selector]
   before_filter :check_album_access_full, :only => [:edit, :update]
   
   before_filter :check_list_edit_for_album, :only => [:list_edit]
@@ -173,10 +173,27 @@ class AlbumsController < ApplicationController
     render(:action => "upload_simple")
   end
   
+  def create_photo_from_photo_selector
+    uploaded_file = params[:image_file]
+    if uploaded_file && uploaded_file != ""
+      photo = Photo.new(:album_id => @album.id, :account_id => session[:account_id])
+      photo.image = uploaded_file
+      photo.save
+    end
+    
+    render :text => %Q!
+    
+      <script language="JavaScript">
+        window.history.back();
+      </script>
+      
+    !, :layout => false
+  end
+  
   def photo_selector
     @photo_list_template = params[:photo_list_template]
     @albums = Album.get_all_names_by_account_id(session[:account_id])
-    @width = params[:width]
+    # @width = params[:width]
     
     if request.xhr?
       @container_id = params[:container_id]

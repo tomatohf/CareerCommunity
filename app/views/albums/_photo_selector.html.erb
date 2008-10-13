@@ -22,7 +22,7 @@
 						</div>
 					<% end %>
 				<% else %>
-					还没有相册 ... 现在就去 <a href="/albums">相册</a>, 立刻 <a href="/albums/new">创建一个</a> 吧
+					还没有相册 ... 现在就去 <a href="/albums" target="_blank">相册</a>, 立刻 <a href="/albums/new" target="_blank">创建一个</a> 吧
 				<% end %>
 			</div>
 		</td>
@@ -36,4 +36,21 @@
 		</td>
 	</tr>
 </table>
+
+<div style="margin-left: 5px; margin-top: 10px;">
+	上传新照片到相册:
+	<div>
+		<% form_tag "/albums/create_photo_from_photo_selector", :method => :post, :multipart => true do %>
+			<select name="id" class="dropdown_list">
+				<% albums.each do |album| %>
+					<option value="<%= album[0] %>"><%= h(album[1]) %></option>
+				<% end %>
+			</select>
+			&nbsp;
+			<input type="file" name="image_file" />
+			&nbsp;
+			<input type="submit" value="上传" class="button" />
+		<% end %>
+	</div>
+</div>
 
