@@ -4,8 +4,10 @@
 <div class="float_r group_container_r">
 	<div class="community_block align_c">
 		<% face_image_url = @group_image || "" %>
-		<% if face_image_url.include?("thumb_48") %>
-			<img src="<%= face_image_url.gsub("thumb_48", "thumb_200") %>" border="0" />
+		<% face_image_url = face_image_url.gsub("thumb_48", "thumb_200") if face_image_url.include?("thumb_48") %>
+		<% if @relationship == "master" || @relationship == "admin" %>
+			<a href="/groups/<%= @group_id %>/edit_image">
+				<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>
 		<% else %>
 			<img src="<%= face_img_src(face_image_url) %>" border="0" />
 		<% end %>

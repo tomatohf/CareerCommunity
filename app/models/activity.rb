@@ -61,7 +61,21 @@ class Activity < ActiveRecord::Base
   
   
   def get_image_url
-    self.image && self.image.pic_url
+    pic_url = self.image && self.image.pic_url
+    
+    unless Pathname.new("#{RAILS_ROOT}/public#{pic_url}").exist?
+      pic_url = nil
+      photo_id = self.self.image.photo_id
+      if photo_id
+        photo = Photo.find(photo_id)
+        pic_url = photo.image.url(:thumb_48)
+        self.self.image.pic_url = pic_url
+        self.self.image.save
+      else
+        self.self.image.destroy
+      end
+    end
+    pic_url
   end
   
   require_dependency "activity_member"

@@ -91,7 +91,9 @@
 					<td style="width: 20%;" align="center" valign="top">
 						<div class="resume_photo">
 							<% if face_image_url.include?("thumb_48") %>
-								<img src="<%= face_image_url.gsub("thumb_48", "thumb_120") %>" border="0" />
+								<img src="<%= face_img_src(face_image_url.gsub("thumb_48", "thumb_120")) %>" border="0" />
+							<% else %>
+								<img src="<%= face_img_src(face_image_url) %>" border="0" />
 							<% end %>
 						</div>
 						<%= h(@account_nick_pic[0]) %>

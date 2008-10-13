@@ -125,7 +125,8 @@ class PhotosController < ApplicationController
           if @photo.save
             # move the photo image files
             old_path = Pathname.new("#{RAILS_ROOT}/public#{old_url}").parent.to_s
-            new_path_obj = Pathname.new("#{RAILS_ROOT}/public#{@photo.image.url}").parent
+            new_image_url = @photo.image.url(:thumb_48)
+            new_path_obj = Pathname.new("#{RAILS_ROOT}/public#{new_image_url}").parent
             new_path_parent_path = new_path_obj.parent.to_s
             # create target parent directory
             FileUtils.mkdir_p(new_path_parent_path)
@@ -143,6 +144,25 @@ class PhotosController < ApplicationController
             
             # clean the photos cache of the moved photo's album
             Album.clear_album_photos_cache(old_album_id)
+            
+            
+            # clean account pic 
+            PicProfile.find(:all, :conditions => ["photo_id = ?", @photo.id]).each do |pp|
+              Account.update_account_nick_pic_cache(pp.account_id, :pic => new_image_url)
+            end
+            PicProfile.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", @photo.id])
+
+            # clean group image
+            GroupImage.find(:all, :conditions => ["photo_id = ?", @photo.id]).each do |gi|
+              Group.update_group_with_image_cache(gi.group_id, :group_img => new_image_url)
+            end
+            GroupImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", @photo.id])
+
+            # clean activity image
+            ActivityImage.find(:all, :conditions => ["photo_id = ?", @photo.id]).each do |ai|
+              Activity.update_activity_with_image_cache(ai.activity_id, :activity_img => new_image_url)
+            end
+            ActivityImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", @photo.id])
           end
         end
       end

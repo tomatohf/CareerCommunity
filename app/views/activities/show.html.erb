@@ -261,12 +261,12 @@
 					
 					<td align="left" valign="middle" style="width: 200px;">
 						<% face_image_url = @activity_image || "" %>
-						<% face_image_src_value = face_image_url.include?("thumb_48") ? face_image_url.gsub("thumb_48", "thumb_200") : face_img_src(face_image_url) %>
+						<% face_image_url = face_image_url.gsub("thumb_48", "thumb_200") if face_image_url.include?("thumb_48") %>
 						<% if @is_master && activity_status[0] <= Activity::Status::Ongoing[0] %>
 							<a href="/activities/<%= @activity_id %>/edit_image">
-								<img src="<%= face_image_src_value %>" border="0" /></a>
+								<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>
 						<% else %>
-							<img src="<%= face_image_src_value %>" border="0" />
+							<img src="<%= face_img_src(face_image_url) %>" border="0" />
 						<% end %>
 					</td>
 				</tr>

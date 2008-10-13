@@ -7,7 +7,7 @@
 	<div class="community_block align_c">
 		<% face_image_url = @account_nick_pic[1] || "" %>
 		<% if face_image_url.include?("thumb_48") %>
-			<img src="<%= face_image_url.gsub("thumb_48", "thumb_200") %>" border="0" />
+			<img src="<%= face_img_src(face_image_url.gsub("thumb_48", "thumb_200")) %>" border="0" />
 		<% else %>
 			<img src="<%= face_img_src(face_image_url) %>" border="0" />
 		<% end %>
