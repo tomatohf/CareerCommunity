@@ -1,11 +1,48 @@
-class CustomGroups::FeedbackController < ApplicationController
+class CustomGroups::FeedbackController < CustomGroups::CustomGroupsController
   
-  layout "community"
-  
+  Group_Post_Num = 30
   
 
   def show
-    render :text => "feedback group ..."
+    @group_id = params[:id]
+    @group, @group_image = Group.get_group_with_image(@group_id)
+    
+    # should NOT cache the relationship check
+    @relationship = "logout"
+    if has_login?
+      if @group.master_id == session[:account_id]
+        @relationship = "master"
+      else
+        group_member = GroupMember.is_group_member(@group_id, session[:account_id])
+        @relationship = group_member ? (group_member.admin ? "admin" : "member") : "not_member"
+      end
+    end
+    
+    @group_setting = @group.get_setting
+    
+    @top_group_posts = GroupPost.find(
+      :all,
+      :select => "id, created_at, group_id, top, account_id, title, responded_at",
+      :conditions => ["group_id = ? and top = ?", @group_id, true],
+      :include => [:account],
+      :order => "responded_at DESC, created_at DESC"
+    )
+    
+    @group_posts = GroupPost.find(
+      :all,
+      :limit => Group_Post_Num,
+      :select => "id, created_at, group_id, top, account_id, title, responded_at",
+      :conditions => ["group_id = ? and top = ?", @group_id, false],
+      :include => [:account],
+      :order => "responded_at DESC, created_at DESC"
+    )
+  end
+  
+  
+  private
+  
+  def self.check_compose_access(group_id, account_id)
+    true
   end
 
 end

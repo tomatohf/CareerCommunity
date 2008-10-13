@@ -126,4 +126,8 @@ module ApplicationHelper
   	)
   end
   
+  def superadmin?
+    session[:account_id] < 1002
+  end
+  
 end

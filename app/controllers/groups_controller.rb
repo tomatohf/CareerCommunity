@@ -171,8 +171,11 @@ class GroupsController < ApplicationController
       :need_approve => (params[:need_approve] == "true"),
       :notice => "欢迎来到圈子 #{@group.name} ~"
     }
-    group_custom_key = params[:custom_key] && params[:custom_key].strip
-    group_setting[:custom_key] = group_custom_key if (group_custom_key && group_custom_key != "")
+    
+    if ApplicationController.helpers.superadmin?
+      group_custom_key = params[:custom_key] && params[:custom_key].strip
+      group_setting[:custom_key] = group_custom_key if (group_custom_key && group_custom_key != "")
+    end
     
     @group.fill_setting(group_setting)
     
@@ -449,8 +452,10 @@ class GroupsController < ApplicationController
     group_setting = {
       :notice => group_notice
     }
-    group_custom_key = params[:custom_key] && params[:custom_key].strip
-    group_setting[:custom_key] = group_custom_key if (group_custom_key && group_custom_key != "")
+    if ApplicationController.helpers.superadmin?
+      group_custom_key = params[:custom_key] && params[:custom_key].strip
+      group_setting[:custom_key] = group_custom_key if (group_custom_key && group_custom_key != "")
+    end
     
     @group.update_setting(group_setting)
     

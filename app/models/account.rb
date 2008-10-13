@@ -179,7 +179,7 @@ class Account < ActiveRecord::Base
   def can_create_group_count
     count = 0
     
-    if self.id < 1002
+    if false
       # TODO - update the "has paid user" check logic
       
       # has paid user can create three groups
@@ -191,8 +191,7 @@ class Account < ActiveRecord::Base
       end
     end
     
-    if self.id < 1002
-      # it should be Tomato
+    if has_ownership?
       count += 1000
     end
     
@@ -235,6 +234,12 @@ class Account < ActiveRecord::Base
   
   def self.clear_account_nick_pic_cache(account_id)
     Cache.delete("#{CKP_nick_pic}_#{account_id}".to_sym)
+  end
+  
+  def has_ownership?
+    # it should be Tomato or Kai
+    
+    self.id == 1001 || self.id == 1004
   end
   
 end

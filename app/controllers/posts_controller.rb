@@ -303,7 +303,7 @@ class PostsController < ApplicationController
       end
       
       def check_compose_access(type_id, account_id)
-        GroupMember.is_group_member(type_id, account_id)
+        get_group_self_check_compose_access_result(type_id, account_id) || GroupMember.is_group_member(type_id, account_id)
       end
       
       def check_create_access(type_id, account_id)
@@ -338,7 +338,25 @@ class PostsController < ApplicationController
           end
           access << :author if (poster_id == current_account_id)
         end
+        
+        # to append access for check_compose_access
+        access << :member if (!access.include?(:member)) && get_group_self_check_compose_access_result(type_id, current_account_id)
+        
         access
+      end
+      
+      def get_group_self_check_compose_access_result(group_id, account_id)
+        group = ::Group.get_group_with_image(group_id)[0]
+        custom_key = group.get_setting[:custom_key]
+        custom_group = custom_key && ::Group::Custom_Groups[custom_key]
+        
+        compose_access = false
+        if custom_group && (custom_group != "")
+          custom_group = "CustomGroups::#{custom_group.camelize}Controller".constantize
+          compose_access = custom_group.check_compose_access(group_id, account_id) if custom_group.respond_to?(:check_compose_access)
+        end
+        
+        compose_access
       end
     end
     
