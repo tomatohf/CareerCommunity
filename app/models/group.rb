@@ -63,14 +63,14 @@ class Group < ActiveRecord::Base
     
     unless Pathname.new("#{RAILS_ROOT}/public#{pic_url}").exist?
       pic_url = nil
-      photo_id = self.self.image.photo_id
+      photo_id = self.image.photo_id
       if photo_id
         photo = Photo.find(photo_id)
         pic_url = photo.image.url(:thumb_48)
-        self.self.image.pic_url = pic_url
-        self.self.image.save
+        self.image.pic_url = pic_url
+        self.image.save
       else
-        self.self.image.destroy
+        self.image.destroy
       end
     end
     pic_url

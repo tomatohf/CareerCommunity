@@ -75,7 +75,7 @@
 					</td>
 				</tr>
 				
-				<% if superadmin? %>
+				<% if superadmin?(session[:account_id]) %>
 					<% # only the first registered user can see this option %>
 					<% # it should be only Tomato %>
 					<tr>

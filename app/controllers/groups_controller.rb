@@ -172,7 +172,7 @@ class GroupsController < ApplicationController
       :notice => "欢迎来到圈子 #{@group.name} ~"
     }
     
-    if ApplicationController.helpers.superadmin?
+    if ApplicationController.helpers.superadmin?(session[:account_id])
       group_custom_key = params[:custom_key] && params[:custom_key].strip
       group_setting[:custom_key] = group_custom_key if (group_custom_key && group_custom_key != "")
     end
@@ -452,7 +452,7 @@ class GroupsController < ApplicationController
     group_setting = {
       :notice => group_notice
     }
-    if ApplicationController.helpers.superadmin?
+    if ApplicationController.helpers.superadmin?(session[:account_id])
       group_custom_key = params[:custom_key] && params[:custom_key].strip
       group_setting[:custom_key] = group_custom_key if (group_custom_key && group_custom_key != "")
     end
