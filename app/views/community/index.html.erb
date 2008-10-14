@@ -52,6 +52,7 @@
 <div class="community_container_l">
 	<% unless @has_login %>
 		<h2>欢迎来到 乔布圈</h2>
+		<!--
 		<div class="community_block">
 			<table class="main_part_w" border="1">
 				<tr>
@@ -80,6 +81,7 @@
 				</tr>
 			</table>
 		</div>
+		-->
 	<% else %>
 		<h2>欢迎回来 <%= h(session[:nick]) %></h2>
 	<% end %>

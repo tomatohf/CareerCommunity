@@ -1,0 +1,69 @@
+class CreateRecruitments < ActiveRecord::Migration
+  def self.up
+    
+    # recruitments table
+    create_table :recruitments, :force => true do |t|
+
+      t.column :title, :string
+      t.column :content, :text # HTML ...
+      
+      t.column :publish_time, :datetime # the time when this message is published
+      t.column :location, :string
+      t.column :type, :string
+      
+      t.column :source_name, :string
+      t.column :source_link, :string
+      
+      t.column :active, :boolean, :default => true
+
+      t.column :created_at, :datetime # the time when this message is added to our database
+      t.column :updated_at, :datetime
+      
+      # who adds this message
+      # if collect automatically, set the value to -1
+      t.column :account_id, :integer
+      
+    end
+    add_index :recruitments, :publish_time
+    add_index :recruitments, :location
+    add_index :recruitments, :type
+    add_index :recruitments, :source_link
+    add_index :recruitments, :active
+    add_index :recruitments, :created_at
+    add_index :recruitments, :updated_at
+    # reserve first 1000 ID
+    ActiveRecord::Base.connection.execute("INSERT INTO recruitments (id) VALUES (1000)")
+    ActiveRecord::Base.connection.execute("DELETE FROM recruitments WHERE id = 1000")
+    
+    
+    
+    # recruitment_tags table
+    create_table :recruitment_tags, :force => true do |t|
+      t.column :name, :string
+    end
+    add_index :recruitment_tags, :name
+    # reserve first 1000 ID
+    ActiveRecord::Base.connection.execute("INSERT INTO recruitment_tags (id) VALUES (1000)")
+    ActiveRecord::Base.connection.execute("DELETE FROM recruitment_tags WHERE id = 1000")
+
+    # recruitments_recruitment_tags table
+    # create the relationship table
+    # it should be ":id => false", but not necessary ... reserve id column in case ... (any reason ?) ...
+    create_table :recruitments_recruitment_tags, :force => true do |t|
+      t.column :recruitment_id, :integer
+      t.column :recruitment_tag_id, :integer
+    end
+    add_index :recruitments_recruitment_tags, :recruitment_id
+    add_index :recruitments_recruitment_tags, :recruitment_tag_id
+    # reserve first 1000 ID
+    ActiveRecord::Base.connection.execute("INSERT INTO recruitments_recruitment_tags (id) VALUES (1000)")
+    ActiveRecord::Base.connection.execute("DELETE FROM recruitments_recruitment_tags WHERE id = 1000")
+    
+  end
+
+  def self.down
+    drop_table :recruitments_recruitment_tags
+    drop_table :recruitment_tags
+    drop_table :recruitments
+  end
+end

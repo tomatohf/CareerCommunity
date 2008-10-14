@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 7) do
+ActiveRecord::Schema.define(:version => 8) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -537,6 +537,42 @@ ActiveRecord::Schema.define(:version => 7) do
   end
 
   add_index "provinces", ["delta"], :name => "index_provinces_on_delta"
+
+  create_table "recruitment_tags", :force => true do |t|
+    t.string "name"
+  end
+
+  add_index "recruitment_tags", ["name"], :name => "index_recruitment_tags_on_name"
+
+  create_table "recruitments", :force => true do |t|
+    t.string   "title"
+    t.text     "content"
+    t.datetime "publish_time"
+    t.string   "location"
+    t.string   "type"
+    t.string   "source_name"
+    t.string   "source_link"
+    t.boolean  "active",                     :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",   :limit => 11
+  end
+
+  add_index "recruitments", ["publish_time"], :name => "index_recruitments_on_publish_time"
+  add_index "recruitments", ["location"], :name => "index_recruitments_on_location"
+  add_index "recruitments", ["type"], :name => "index_recruitments_on_type"
+  add_index "recruitments", ["source_link"], :name => "index_recruitments_on_source_link"
+  add_index "recruitments", ["active"], :name => "index_recruitments_on_active"
+  add_index "recruitments", ["created_at"], :name => "index_recruitments_on_created_at"
+  add_index "recruitments", ["updated_at"], :name => "index_recruitments_on_updated_at"
+
+  create_table "recruitments_recruitment_tags", :force => true do |t|
+    t.integer "recruitment_id",     :limit => 11
+    t.integer "recruitment_tag_id", :limit => 11
+  end
+
+  add_index "recruitments_recruitment_tags", ["recruitment_id"], :name => "index_recruitments_recruitment_tags_on_recruitment_id"
+  add_index "recruitments_recruitment_tags", ["recruitment_tag_id"], :name => "index_recruitments_recruitment_tags_on_recruitment_tag_id"
 
   create_table "roles", :force => true do |t|
     t.string   "name"

@@ -38,6 +38,8 @@ require "RMagick"
 require "pathname"
 require "fileutils"
 
+require "iconv"
+
 ##################################################
 ### END
 ##################################################
@@ -50,8 +52,10 @@ require "fileutils"
 ### require lib files
 ##################################################
 
-require "util"
-require "noisy_image"
+require_dependency "util"
+require_dependency "noisy_image"
+
+require_dependency "recruitment_vendors/base"
 
 ##################################################
 ### END
