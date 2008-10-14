@@ -52,10 +52,10 @@ require "iconv"
 ### require lib files
 ##################################################
 
-require_dependency "util"
-require_dependency "noisy_image"
+require "util"
+require "noisy_image"
 
-require_dependency "recruitment_vendors/base"
+require "recruitment_vendors/base"
 
 ##################################################
 ### END

@@ -28,14 +28,9 @@ module RecruitmentVendor
       "http://hiall.com.cn/hiall_home/m.php?name=hr&mo_catid=3"
     end
     
-    # how many pages will be checked to retrieve new links
-    def page_count
-      1
-    end
-    
-    def urls(link)
+    def urls(link, start_page = 1, page_count = 1)
       u = []
-      1.upto(page_count) { |page|
+      start_page.upto(start_page + page_count - 1) { |page|
         u << "#{link}&page=#{page}"
       }
       u
@@ -70,7 +65,7 @@ module RecruitmentVendor
     
     
     
-    def get_new_links
+    def get_new_links(start_page = 1, page_count = 1)
       new_links = {}
       [
         [list_url_fulltime, "全职"],
@@ -81,13 +76,14 @@ module RecruitmentVendor
         init_values = { :type => item[1] }
         link = item[0]
         new_links.merge!(
-          urls(link).collect { |url|
+          urls(link, start_page, page_count).collect { |url|
             get_hiall_new_links(url)
           }.flatten.to_hash_keys{
             init_values
           }
         )
       }
+      
       new_links
     end
     
@@ -158,15 +154,15 @@ module RecruitmentVendor
       
       return [] if doc.nil?
       
-      list_xpath = "//div[@class='models-articlelist']"
+      list_xpath = "//div[@class='models-articlelist no_top_bg']"
       lists = doc.search(list_xpath)
       
-      return [] if lists.size < 2
+      return [] if lists.size < 1
       
       p_xpath = "/div[@class='models-article']/div[@class='models-articlelistinfo']/p[@class='title']"
       
       # just collect the second list
-      paragraphs = lists[1].search(p_xpath)
+      paragraphs = lists[0].search(p_xpath)
       paragraphs.collect{ |p|
         p.search("//a").collect{|a| 
           href = a["href"].strip

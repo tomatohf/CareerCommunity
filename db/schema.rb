@@ -549,18 +549,18 @@ ActiveRecord::Schema.define(:version => 8) do
     t.text     "content"
     t.datetime "publish_time"
     t.string   "location"
-    t.string   "type"
+    t.string   "recruitment_type"
     t.string   "source_name"
     t.string   "source_link"
-    t.boolean  "active",                     :default => true
+    t.boolean  "active",                         :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "account_id",   :limit => 11
+    t.integer  "account_id",       :limit => 11
   end
 
   add_index "recruitments", ["publish_time"], :name => "index_recruitments_on_publish_time"
   add_index "recruitments", ["location"], :name => "index_recruitments_on_location"
-  add_index "recruitments", ["type"], :name => "index_recruitments_on_type"
+  add_index "recruitments", ["recruitment_type"], :name => "index_recruitments_on_type"
   add_index "recruitments", ["source_link"], :name => "index_recruitments_on_source_link"
   add_index "recruitments", ["active"], :name => "index_recruitments_on_active"
   add_index "recruitments", ["created_at"], :name => "index_recruitments_on_created_at"

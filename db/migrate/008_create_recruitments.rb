@@ -9,7 +9,7 @@ class CreateRecruitments < ActiveRecord::Migration
       
       t.column :publish_time, :datetime # the time when this message is published
       t.column :location, :string
-      t.column :type, :string
+      t.column :recruitment_type, :string
       
       t.column :source_name, :string
       t.column :source_link, :string
@@ -26,7 +26,7 @@ class CreateRecruitments < ActiveRecord::Migration
     end
     add_index :recruitments, :publish_time
     add_index :recruitments, :location
-    add_index :recruitments, :type
+    add_index :recruitments, :recruitment_type
     add_index :recruitments, :source_link
     add_index :recruitments, :active
     add_index :recruitments, :created_at

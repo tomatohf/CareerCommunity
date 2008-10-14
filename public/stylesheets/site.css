@@ -161,6 +161,18 @@ div.auto_complete ul li {
 	background-color: yellow;
 }
 
+.tag_cloud {
+	line-height: 250%;
+}
+
+.tag_cloud a {
+	text-decoration: none;
+}
+
+.tag_cloud a:hover {
+	text-decoration: underline;
+}
+
 
 
 
@@ -951,6 +963,29 @@ a.account_nick_link:hover, a.group_name_link:hover {
 .search_match {
 	color: #CC0033;
 	font-weight: bold;
+}
+
+.recruitment_container_l {
+	margin-left: 150px;
+	margin-right: 280px;
+	padding: 0px 40px 0px 20px;
+}
+
+.recruitment_container_r {
+	width: 280px;
+}
+
+.recruitment_title {
+	font-size: 14px;
+}
+
+.recruitment_content {
+	padding: 0px 20px;
+	color: #6B6B6B;
+}
+
+.recruitment_info {
+	
 }
 
 

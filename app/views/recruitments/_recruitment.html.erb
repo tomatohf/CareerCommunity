@@ -1,0 +1,33 @@
+<% content = extract_text(recruitment.content) %>
+<% content = sanitize_tinymce(content) %>
+
+<div>
+	<div class="recruitment_title">
+		<% if recruitment.recruitment_type && recruitment.recruitment_type != "" %>
+			[<a href="#" class="account_nick_link"><%= h(recruitment.recruitment_type) %></a>]
+		<% end %>
+		<% if recruitment.location && recruitment.location != "" %>
+			[<a href="#" class="account_nick_link"><%= h(recruitment.location) %></a>]
+		<% end %>
+		<a href="<%= recruitment.source_link %>" target="_blank" class="account_nick_link">
+			<%= h(recruitment.title) %></a>
+	</div>
+	
+	<div class="align_r">
+		所有标签 ... ~~~
+		|
+		信息来源: <%= recruitment.source_name %>
+		|
+		发布时间: <%= format_date(recruitment.publish_time) %>
+	</div>
+	
+	<div class="recruitment_content">
+		<%= truncate(content, 100) %>
+	</div>
+	
+	<div class="recruitment_info align_r">
+		<a href="/recruitments/<%= recruitment.id %>">信息快照</a>
+	</div>
+</div>
+
+

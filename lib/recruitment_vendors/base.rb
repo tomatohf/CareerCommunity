@@ -111,9 +111,10 @@ module RecruitmentVendor
     
     # method get_new_links should return a hash containing all *new* links, from which we should fetch information
     # method build_recruitment method return a Recruitment model object by the information got from the link
-    def collect_new_messages
-      gotten_new_links = get_new_links
-      non_existing_links = gotten_new_links - Recruitment.find(:all, :conditions => ["source_link in (?)", gotten_new_links]).collect { |r| r.source_link }
+    def collect_new_messages(start_page = 1, page_count = 1)
+      gotten_new_links = get_new_links(start_page, page_count)
+      existing_links = Recruitment.find(:all, :conditions => ["source_link in (?)", gotten_new_links.keys]).collect { |r| r.source_link }
+      non_existing_links = gotten_new_links.delete_if { |key, value| existing_links.include?(key) }
       
       non_existing_links.to_a.collect { |link_info| get_recruitment(link_info[0], link_info[1]) }.compact
     end

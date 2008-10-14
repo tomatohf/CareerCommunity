@@ -130,4 +130,44 @@ module ApplicationHelper
     account_id < 1002
   end
   
+  def tag_cloud_font_styling (total, lowest, highest, options={})
+    return nil if total.nil? || highest.nil? || lowest.nil?
+
+    # options
+    maxf = options[:max_font_size] || 20
+    minf = options[:min_font_size] || 10
+    maxc = options[:max_color] || [ 0, 0, 0 ]
+    minc = options[:min_color] || [ 156, 156, 156 ]
+    hide_sizes = options[:hide_sizes]
+    hide_colours = options[:hide_colours]
+
+    # function to work out rgb values
+    def rgb_color(a, b, i, x)
+      return nil if i <= 1 || x <= 1
+      if a > b
+        a-(Math.log(i)*(a-b)/Math.log(x)).floor
+      else
+        (Math.log(i)*(b-a)/Math.log(x)+a).floor
+      end
+    end
+
+    # work out colors
+    c = []
+    (0..2).each { |i| c << rgb_color( minc[i], maxc[i], total, highest ) || nil }
+    colors = c.compact.empty? ? minc.join(',') : c.join(',')
+
+    # work out the font size
+    spread = highest.to_f - lowest.to_f
+    spread = 1.to_f if spread <= 0
+    fontspread = maxf.to_f - minf.to_f
+    fontstep = spread / fontspread
+    size = ( minf + ( total.to_f / fontstep ) ).to_i
+    size = maxf if size > maxf
+
+    # display the results
+    size_txt = "font-size:#{ size.to_s }px;" unless hide_sizes
+    color_txt = "color:rgb(#{ colors });" unless hide_colours
+    return [ size_txt, color_txt ].join
+  end
+  
 end
