@@ -1,17 +1,7 @@
-<% page_title = "最新招聘信息" %>
+<% page_title = "招聘信息#{@catalog_name}: #{@catalog_value}" %>
 <% community_page_title(page_title) %>
 
 <div class="float_r recruitment_container_r">
-	
-	<!--
-	<div class="community_block align_c">
-		<h2>
-			<a href="#">
-				+ 发布招聘信息
-			</a>
-		</h2>
-	</div>
-	-->
 	
 	<div class="community_title">
 		所有标签 ...
@@ -25,17 +15,17 @@
 
 <div class="recruitment_container_l">
 	<h2><%= page_title %></h2>
-	
+		
 	<div class="community_block_narrow form_info_s">
-		共有
+		有
 		<b><%= @recruitments.total_entries %></b>
 		条信息
 	</div>
-	
+
 	<div class="community_block">
 		<%= render(:partial => "recruitment", :collection => @recruitments) %>
 	</div>
-	
+
 	<div class="community_block">
 		<%= paging_buttons(@recruitments) %>
 	</div>

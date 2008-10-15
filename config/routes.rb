@@ -241,8 +241,12 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/:linked_photo_type/linked_photos/:action/:id", :controller => "linked_photos"
   
   
-  map.connect "/recruitments/:page", :controller => "recruitments", :action => "index", :page => /\d+/
+  map.connect "/recruitments/p/:page", :controller => "recruitments", :action => "index", :page => /\d+/
   map.resources :recruitments, :collection => {
+    
+    :tag => :get,
+    :location => :get,
+    :recruitment_type => :get
     
   }, :member => {
     

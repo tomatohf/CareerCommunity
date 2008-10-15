@@ -1,11 +1,25 @@
 class RecruitmentTag < ActiveRecord::Base
   
-  has_and_belongs_to_many :recruitments, :foreign_key => ":recruitment_id", :join_table => "recruitments_recruitment_tags"
+  has_and_belongs_to_many :recruitments,
+                          :foreign_key => "recruitment_tag_id",
+                          :association_foreign_key => "recruitment_id",
+                          :join_table => "recruitments_recruitment_tags",
+                          :order => "publish_time DESC"
 
   # ---
 
   validates_presence_of :name
   validates_uniqueness_of :name
+  
+  CKP_top_tags = :recruitment_top_tags
+  
+  after_destroy { |tag|
+    self.clear_top_tags_cache
+  }
+  
+  after_save { |tag|
+    self.clear_top_tags_cache
+  }
   
   
   
@@ -22,6 +36,21 @@ class RecruitmentTag < ActiveRecord::Base
     query << " order by #{options[:order]}" if options[:order] != nil
     query << " limit #{options[:limit]}" if options[:limit] != nil
     tags = self.find_by_sql(query)
+  end
+  
+  def self.get_top_tags
+    tags = Cache.get(CKP_top_tags)
+    unless tags
+      tag_objects = tags(:order => "count DESC", :limit => 100)
+      tags = tag_objects.collect { |tag_obj| [tag_obj.id, tag_obj.name, tag_obj.count.to_i] }
+      
+      Cache.set(CKP_top_tags, tags, Cache_TTL)
+    end
+    tags
+  end
+  
+  def self.clear_top_tags_cache
+    Cache.delete(CKP_top_tags)
   end
   
   

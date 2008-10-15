@@ -539,7 +539,8 @@ ActiveRecord::Schema.define(:version => 8) do
   add_index "provinces", ["delta"], :name => "index_provinces_on_delta"
 
   create_table "recruitment_tags", :force => true do |t|
-    t.string "name"
+    t.string  "name"
+    t.boolean "delta"
   end
 
   add_index "recruitment_tags", ["name"], :name => "index_recruitment_tags_on_name"
@@ -556,17 +557,18 @@ ActiveRecord::Schema.define(:version => 8) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "account_id",       :limit => 11
+    t.boolean  "delta"
   end
 
   add_index "recruitments", ["publish_time"], :name => "index_recruitments_on_publish_time"
   add_index "recruitments", ["location"], :name => "index_recruitments_on_location"
-  add_index "recruitments", ["recruitment_type"], :name => "index_recruitments_on_type"
+  add_index "recruitments", ["recruitment_type"], :name => "index_recruitments_on_recruitment_type"
   add_index "recruitments", ["source_link"], :name => "index_recruitments_on_source_link"
   add_index "recruitments", ["active"], :name => "index_recruitments_on_active"
   add_index "recruitments", ["created_at"], :name => "index_recruitments_on_created_at"
   add_index "recruitments", ["updated_at"], :name => "index_recruitments_on_updated_at"
 
-  create_table "recruitments_recruitment_tags", :force => true do |t|
+  create_table "recruitments_recruitment_tags", :id => false, :force => true do |t|
     t.integer "recruitment_id",     :limit => 11
     t.integer "recruitment_tag_id", :limit => 11
   end

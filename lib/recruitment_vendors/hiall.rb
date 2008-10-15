@@ -73,7 +73,7 @@ module RecruitmentVendor
         # [list_url_lecture, "宣讲会"], # disable to retrieve lecture messages
         [list_url_parttime, "兼职"]
       ].each{ |item|
-        init_values = { :type => item[1] }
+        init_values = { :recruitment_type => item[1] }
         link = item[0]
         new_links.merge!(
           urls(link, start_page, page_count).collect { |url|
@@ -143,6 +143,7 @@ module RecruitmentVendor
       r.source_link = link
       
       # tags
+      tag_text.uniq!
       tag_text.each { |tag| r.recruitment_tags << RecruitmentTag.get_tag(tag) }
       
       r

@@ -1,6 +1,9 @@
 class Recruitment < ActiveRecord::Base
   
-  has_and_belongs_to_many :recruitment_tags, :foreign_key => "recruitment_tag_id", :join_table => "recruitments_recruitment_tags"
+  has_and_belongs_to_many :recruitment_tags,
+                          :foreign_key => "recruitment_id",
+                          :association_foreign_key => "recruitment_tag_id",
+                          :join_table => "recruitments_recruitment_tags"
   
   
   
@@ -20,6 +23,17 @@ class Recruitment < ActiveRecord::Base
   
   def self.save_new_messages(start_page = 1, page_count = 1)
     self.collect_new_messages(start_page, page_count).values.flatten.each { |message| message.save }
+  end
+  
+  
+  def self.paginate_by_catalog(page, per_page, catalog_name, catalog_value)
+    self.paginate(
+      :page => page,
+      :per_page => per_page,
+      :conditions => ["#{catalog_name} = ?", catalog_value],
+      :order => "publish_time DESC",
+      :include => [:recruitment_tags]
+    )
   end
   
   

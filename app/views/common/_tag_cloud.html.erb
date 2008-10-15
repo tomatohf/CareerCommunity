@@ -1,20 +1,19 @@
 <div class="tag_cloud">
 	<% if tags.size > 0 %>
 
-		<% min_tag_count = tags[0].count.to_i %>
+		<% min_tag_count = tags[0][2] %>
 		<% max_tag_count = min_tag_count %>
 		
 		<% tags.each do |t| %>
-			<% t_count = t.count.to_i %>
+			<% t_count = t[2] %>
 			<% min_tag_count = t_count if min_tag_count > t_count %>
 			<% max_tag_count = t_count if max_tag_count < t_count %>
 		<% end %>
 
 		<% tags.each do |tag| %>
-			<% tag_text = "#{h(tag.name)} (#{tag.count.to_i})" %>
-			<a title="<%= tag_text %>" style="<%= tag_cloud_font_styling(tag.count.to_i, min_tag_count, max_tag_count) %>" href="#">
-				<%= tag_text %>
-			</a>
+			<% tag_text = "#{h(tag[1])} (#{tag[2]})" %>
+			<a title="<%= tag_text %>" style="<%= tag_cloud_font_styling(tag[2], min_tag_count, max_tag_count) %>" href="<%= link_method.call(tag) %>">
+				<%= tag_text %></a>
 			&nbsp;
 		<% end %>
 	
@@ -24,3 +23,5 @@
 	
 	<% end %>
 </div>
+
+

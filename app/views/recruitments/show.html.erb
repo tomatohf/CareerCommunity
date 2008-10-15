@@ -1,0 +1,67 @@
+<% page_title = h(@recruitment.title) %>
+<% community_page_title(page_title) %>
+
+<div class="float_r recruitment_container_r">
+	
+	<div class="community_title">
+		标签 ...
+	</div>
+	
+	<div class="community_block">
+		<% tags = @recruitment.recruitment_tags %>
+		<% if tags.size > 0 %>
+			<div class="recruitment_tags">
+				<% tags.each do |tag|%>
+					<a href="/recruitments/tag?name=<%= h(tag.name) %>" class="account_nick_link"><%= h(tag.name) %></a>
+				<% end %>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="community_title">
+		所有标签 ...
+	</div>
+	
+	<div class="community_block">
+		<%= render(:partial => "recruitment_tag_cloud") %>
+	</div>
+	
+</div>
+
+<div class="recruitment_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block align_r">
+		类型:
+		<a href="/recruitments/recruitment_type?name=<%= h(@recruitment.recruitment_type) %>" class="account_nick_link"><%= h(@recruitment.recruitment_type) %></a>
+		
+		&nbsp;
+		|
+		&nbsp;
+		
+		地区:
+		<a href="/recruitments/location?name=<%= h(@recruitment.location) %>" class="account_nick_link"><%= h(@recruitment.location) %></a>
+		
+		&nbsp;
+		|
+		&nbsp;
+		
+		发布时间:
+		<%= format_date(@recruitment.publish_time) %>
+	</div>
+	
+	<div class="community_block">
+		<%= sanitize_tinymce(@recruitment.content) %>
+	</div>
+	
+	<div class="community_block">
+		<%= draw_hor_line("400px") %>
+	</div>
+	
+	<div class="community_block align_r form_info_s">
+		信息来源:
+		<a href="<%= @recruitment.source_link %>"><%= @recruitment.source_link %></a>
+	</div>
+	
+</div>
+

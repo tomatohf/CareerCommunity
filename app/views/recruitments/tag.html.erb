@@ -1,0 +1,44 @@
+<% page_title = "招聘信息标签: #{@tag_name}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r recruitment_container_r">
+	
+	<div class="community_title">
+		所有标签 ...
+	</div>
+	
+	<div class="community_block">
+		<%= render(:partial => "recruitment_tag_cloud") %>
+	</div>
+	
+</div>
+
+<div class="recruitment_container_l">
+	<h2><%= page_title %></h2>
+	
+	<% if @new_record %>
+	
+		<div class="community_block">
+			没有相关记录 ...
+		</div>
+	
+	<% else %>
+	
+		<div class="community_block_narrow form_info_s">
+			有
+			<b><%= @recruitments.total_entries %></b>
+			条信息
+		</div>
+	
+		<div class="community_block">
+			<%= render(:partial => "recruitment", :collection => @recruitments) %>
+		</div>
+	
+		<div class="community_block">
+			<%= paging_buttons(@recruitments) %>
+		</div>
+	
+	<% end %>
+	
+</div>
+

@@ -1,0 +1,2 @@
+<%= render(:partial => "/common/tag_cloud", :locals => {:tags => RecruitmentTag.get_top_tags, :link_method => Proc.new { |tag| "/recruitments/tag?name=#{h(tag[1])}" }}) %>
+

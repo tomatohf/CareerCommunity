@@ -23,6 +23,11 @@ class CreateRecruitments < ActiveRecord::Migration
       # if collect automatically, set the value to -1
       t.column :account_id, :integer
       
+      
+      
+      # enable sphinx delta index
+      t.column :delta, :boolean
+      
     end
     add_index :recruitments, :publish_time
     add_index :recruitments, :location
@@ -40,6 +45,11 @@ class CreateRecruitments < ActiveRecord::Migration
     # recruitment_tags table
     create_table :recruitment_tags, :force => true do |t|
       t.column :name, :string
+      
+      
+      
+      # enable sphinx delta index
+      t.column :delta, :boolean
     end
     add_index :recruitment_tags, :name
     # reserve first 1000 ID
@@ -48,16 +58,12 @@ class CreateRecruitments < ActiveRecord::Migration
 
     # recruitments_recruitment_tags table
     # create the relationship table
-    # it should be ":id => false", but not necessary ... reserve id column in case ... (any reason ?) ...
-    create_table :recruitments_recruitment_tags, :force => true do |t|
+    create_table :recruitments_recruitment_tags, :id => false, :force => true do |t|
       t.column :recruitment_id, :integer
       t.column :recruitment_tag_id, :integer
     end
     add_index :recruitments_recruitment_tags, :recruitment_id
     add_index :recruitments_recruitment_tags, :recruitment_tag_id
-    # reserve first 1000 ID
-    ActiveRecord::Base.connection.execute("INSERT INTO recruitments_recruitment_tags (id) VALUES (1000)")
-    ActiveRecord::Base.connection.execute("DELETE FROM recruitments_recruitment_tags WHERE id = 1000")
     
   end
 
