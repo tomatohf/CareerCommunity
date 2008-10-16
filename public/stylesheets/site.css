@@ -961,7 +961,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .search_match {
-	color: #CC0033;
+	background-color: #FFFF00;
 	font-weight: bold;
 }
 

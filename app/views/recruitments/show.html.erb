@@ -46,19 +46,23 @@
 	<h2><%= page_title %></h2>
 	
 	<div class="community_block align_r">
-		类型:
-		<a href="/recruitments/recruitment_type?name=<%= h(@recruitment.recruitment_type) %>" class="account_nick_link"><%= h(@recruitment.recruitment_type) %></a>
+		<% if @recruitment.recruitment_type && @recruitment.recruitment_type != "" %>
+			类型:
+			<a href="/recruitments/recruitment_type?name=<%= h(@recruitment.recruitment_type) %>" class="account_nick_link"><%= h(@recruitment.recruitment_type) %></a>
 		
-		&nbsp;
-		|
-		&nbsp;
+			&nbsp;
+			|
+			&nbsp;
+		<% end %>
 		
-		地区:
-		<a href="/recruitments/location?name=<%= h(@recruitment.location) %>" class="account_nick_link"><%= h(@recruitment.location) %></a>
+		<% if @recruitment.location && @recruitment.location != "" %>
+			地区:
+			<a href="/recruitments/location?name=<%= h(@recruitment.location) %>" class="account_nick_link"><%= h(@recruitment.location) %></a>
 		
-		&nbsp;
-		|
-		&nbsp;
+			&nbsp;
+			|
+			&nbsp;
+		<% end %>
 		
 		发布时间:
 		<%= format_date(@recruitment.publish_time) %>
@@ -74,7 +78,7 @@
 	
 	<div class="community_block align_r form_info_s">
 		信息来源:
-		<a href="<%= @recruitment.source_link %>"><%= @recruitment.source_link %></a>
+		<a href="<%= @recruitment.source_link %>" target="_blank"><%= @recruitment.source_link %></a>
 	</div>
 	
 </div>

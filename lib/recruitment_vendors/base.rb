@@ -2,12 +2,13 @@ module RecruitmentVendor
   
   @@vendors = {
     # "file_name_without_rb" => "class name"
-    "hiall" => "Hiall"
+    "hiall" => "Hiall",
+    "utomorrow" => "Utomorrow"
   }
   
   
   def self.vendor_classess
-    @@vendors.values.collect{|value| "RecruitmentVendor::#{value}" }
+    @@vendors.values.collect { |value| "RecruitmentVendor::#{value}" }
   end
   
   module Base
@@ -16,8 +17,8 @@ module RecruitmentVendor
       self.class.to_s
     end
     
-    def get_doc_from_url!(url, handle = true)
-      ic = Iconv.new("UTF-8//IGNORE", "GBK//IGNORE")
+    def get_doc_from_url!(url, handle, document_encoding = "GBK")
+      ic = Iconv.new("UTF-8//IGNORE", "#{document_encoding}//IGNORE")
       page = open(url)
       page_content = ic.iconv(page.read)
       doc = Hpricot(page_content)
@@ -32,9 +33,9 @@ module RecruitmentVendor
       doc
     end
 
-    def get_doc_from_url(url, handle = true)
+    def get_doc_from_url(url, handle, document_encoding = "GBK")
       begin
-        doc = get_doc_from_url!(url, handle)
+        doc = get_doc_from_url!(url, handle, document_encoding)
       rescue
         doc = nil
       end

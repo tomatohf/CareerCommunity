@@ -113,7 +113,7 @@ module RecruitmentVendor
     end
     
     def build_recruitment(link, init_values = {})
-      doc = get_doc_from_url(link)
+      doc = get_doc_from_url(link, true)
       
       return nil if doc.nil?
       
@@ -136,7 +136,7 @@ module RecruitmentVendor
       p_elements = content_div.search("/p")
       p_elements.select { |p|
         p_inner_html = p.inner_html
-        p_inner_html.size < 300 && p_inner_html =~ info_exp
+        p_inner_html && p_inner_html.size < 300 && p_inner_html =~ info_exp
       }.each{ |p|
         p.search("/a").each { |a| tag_text << a.inner_html }
         p.search("").remove
@@ -188,7 +188,6 @@ module RecruitmentVendor
       
       p_xpath = "/div[@class='models-article']/div[@class='models-articlelistinfo']/p[@class='title']"
       
-      # just collect the second list
       paragraphs = lists[0].search(p_xpath)
       paragraphs.collect{ |p|
         p.search("//a").collect{|a| 
@@ -203,3 +202,5 @@ module RecruitmentVendor
   end
   
 end
+
+

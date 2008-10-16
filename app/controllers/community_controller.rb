@@ -133,6 +133,25 @@ class CommunityController < ApplicationController
     @activity_posts = search_activity_post(query, 1, Search_All_Result_Page_Size)
     @groups = search_group(query, 1, Search_All_Result_Page_Size)
     @group_posts = search_group_post(query, 1, Search_All_Result_Page_Size)
+    @recruitments = search_recruitment(query, 1, Search_All_Result_Page_Size)
+  end
+  
+  def search_recruitment(query, page, per_page)
+    Recruitment.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, publish_time DESC",
+      :field_weights => {
+        :title => 8,
+        :content => 8,
+        :location => 6,
+        :recruitment_type => 6,
+        :recruitment_tags_name => 8
+      },
+      :include => [:recruitment_tags]
+    )
   end
   
   def search_activity_post(query, page, per_page)

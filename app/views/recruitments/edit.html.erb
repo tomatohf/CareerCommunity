@@ -1,0 +1,102 @@
+<% community_page_title("编辑招聘信息") %>
+
+<div class="blog_container">
+	<h2>编辑招聘信息</h2>
+	
+	<div class="community_block">
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<br />
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @recruitment.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@recruitment) %>
+			</p>
+		<% end %>
+		
+		<div class="div_form">
+			<% form_tag "/recruitments/#{@recruitment_id}", :method => :put do %>
+			
+				<div>
+					<label for="recruitment_title">
+				        标题(<span style="color: red;">*</span>)
+				    </label>
+				</div>
+				<div>
+					<input type="text" id="recruitment_title" name="recruitment_title" class="text_field" size="75" value="<%= h(@recruitment.title) %>" />
+				</div>
+				
+				<div>
+					<label for="recruitment_source_link">
+				        来源链接(<span style="color: red;">*</span>)
+				    </label>
+				</div>
+				<div>
+					<input type="text" id="recruitment_source_link" name="recruitment_source_link" class="text_field" size="60" value="<%= h(@recruitment.source_link) %>" />
+					
+					&nbsp;&nbsp;&nbsp;
+					<label for="recruitment_source_name">
+				        来源名称
+				    </label>
+					<input type="text" id="recruitment_source_name" name="recruitment_source_name" class="text_field" size="15" value="<%= h(@recruitment.source_name) %>" />
+				</div>
+				<div class="form_info_l">
+					或者相关链接. 请输入完整的网址链接.
+				</div>
+				
+				
+				<div>
+					<label for="recruitment_type">
+				        类型
+				    </label>
+					<input type="text" id="recruitment_type" name="recruitment_type" class="text_field" size="30" value="<%= h(@recruitment.recruitment_type) %>" />
+					
+					&nbsp;&nbsp;&nbsp;
+					
+					<label for="recruitment_location">
+				        地区
+				    </label>
+					<input type="text" id="recruitment_location" name="recruitment_location" class="text_field" size="30" value="<%= h(@recruitment.location) %>" />
+				</div>
+				
+				
+				<div>
+					<label for="recruitment_content">
+				        内容(<span style="color: red;">*</span>)
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="#" onclick="remove_rich_editor('recruitment_content'); return false;">使用 普通编辑框</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="#" onclick="add_rich_editor('recruitment_content'); return false;">使用 高级编辑器</a>
+				    </label>
+				</div>
+				<div>
+					<textarea id="recruitment_content" name="recruitment_content" class="text_field" cols="75" rows="15"><%= @recruitment.content %></textarea>
+				</div>
+				
+				<br />
+				
+				<div>
+					<%= submit_tag "更新招聘信息", :class => "button", :disabled => @account_limited %>
+					&nbsp;&nbsp;&nbsp;
+					<a href="/recruitments/<%= @recruitment_id %>">返回这条招聘信息</a>
+				</div>
+			
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+
+
+<script language="JavaScript" type="text/javascript" src="/lib/tiny_mce/tiny_mce.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="/javascripts/tinymce.js"></script>
+
+

@@ -20,6 +20,8 @@ class RecruitmentsController < ApplicationController
       :order => "publish_time DESC"
     )
     
+    @recruitment_types = Recruitment.get_types
+    @recruitment_locations = Recruitment.get_locations
   end
   
   def show
@@ -74,20 +76,38 @@ class RecruitmentsController < ApplicationController
   end
   
   
-  def new
-    
-  end
+  # def new
+  #   @recruitment = Recruitment.new
+  # end
   
-  def create
+  # def create
+  #   @recruitment = Recruitment.new(:account_id => session[:account_id])
     
-  end
+  # end
   
   def edit
     
   end
   
   def update
+    @recruitment.title = params[:recruitment_title] && params[:recruitment_title].strip
+    @recruitment.content = params[:recruitment_content] && params[:recruitment_content].strip
     
+    @recruitment.source_name = params[:recruitment_source_name] && params[:recruitment_source_name].strip
+    @recruitment.source_link = params[:recruitment_source_link] && params[:recruitment_source_link].strip
+    
+    @recruitment.source_link += "/" if @recruitment.source_link[-1, 1] != "/"
+    
+    @recruitment.recruitment_type = params[:recruitment_type] && params[:recruitment_type].strip
+    @recruitment.location = params[:recruitment_location] && params[:recruitment_location].strip
+    
+    if @recruitment.save
+      return jump_to("/recruitments/#{@recruitment.id}")
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+
+    render :action => "edit"
   end
   
   def destroy

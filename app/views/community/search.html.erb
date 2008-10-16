@@ -13,11 +13,11 @@
 			:group_post => "圈子话题",
 			:activity => "活动",
 			:activity_post => "活动话题",
+			:recruitment => "招聘信息",
 			:blog => "博客"
 			# ,
 			# :qa => "问答",
 			# :vote => "投票",
-			# :recruit => "招聘信息"
 		}
 	%>
 	<div class="community_block">
@@ -46,11 +46,11 @@
 					<option value="group_post"<%= " selected=\"selected\"" if @scope == "group_post" %>>圈子话题</option>
 					<option value="activity"<%= " selected=\"selected\"" if @scope == "activity" %>>活动</option>
 					<option value="activity_post"<%= " selected=\"selected\"" if @scope == "activity_post" %>>活动话题</option>
+					<option value="recruitment"<%= " selected=\"selected\"" if @scope == "recruitment" %>>招聘信息</option>
 					<option value="blog"<%= " selected=\"selected\"" if @scope == "blog" %>>博客</option>
 					<!--
 					<option value="qa"<%= " selected=\"selected\"" if @scope == "qa" %>>问答</option>
 					<option value="vote"<%= " selected=\"selected\"" if @scope == "vote" %>>投票</option>
-					<option value="recruit"<%= " selected=\"selected\"" if @scope == "recruit" %>>招聘信息</option>
 					-->
 					<!--
 					<option value="idea"<%= " selected=\"selected\"" if @scope == "idea" %>>想法</option>
@@ -93,10 +93,10 @@
 				:activity => "活动",
 				:activity_post => "活动话题",
 				:group => "圈子",
-				:group_post => "圈子话题"
+				:group_post => "圈子话题",
+				:recruitment => "招聘信息"
 				# ,
 				# :vote => "投票",
-				# :recruit => "招聘信息"
 			}
 		%>
 		<% all_scope_items.each do |key, value| %>

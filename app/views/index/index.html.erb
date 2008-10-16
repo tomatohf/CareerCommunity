@@ -24,11 +24,14 @@
 		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#EAEAEA", :style => "margin: 8px 5px;" do %>
 			<div class="seek_job_form">
 				<div>
-					<% form_tag "", :method => :post do %>
+					<% form_tag "/community/search", :method => :get, :target => "_blank" do %>
 						<img class="float_l" src="/images/real_index/seek_job_icon.png" border="0" alt="死磕乔布" />
 						&nbsp;&nbsp;&nbsp;
+						找招聘信息:
+						&nbsp;&nbsp;&nbsp;
 					
-						<input type="text" id="words" name="words" class="text_field" style="width: 70%" />
+						<input type="text" name="query" class="text_field" style="width: 50%" />
+						<input type="hidden" name="scope" value="recruitment" />
 
 						&nbsp;&nbsp;&nbsp;
 						<input type="submit" value="死磕乔布" class="index_button" />

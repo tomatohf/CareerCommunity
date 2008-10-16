@@ -43,7 +43,7 @@ class RecruitmentTag < ActiveRecord::Base
   def self.get_top_tags
     tags = Cache.get(CKP_top_tags)
     unless tags
-      tag_objects = tags(:order => "count DESC", :limit => 100)
+      tag_objects = tags(:order => "count DESC", :limit => 200)
       tags = tag_objects.collect { |tag_obj| [tag_obj.id, tag_obj.name, tag_obj.count.to_i] }
       
       Cache.set(CKP_top_tags, tags, Cache_TTL)

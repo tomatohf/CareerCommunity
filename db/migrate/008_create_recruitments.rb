@@ -36,6 +36,7 @@ class CreateRecruitments < ActiveRecord::Migration
     add_index :recruitments, :active
     add_index :recruitments, :created_at
     add_index :recruitments, :updated_at
+    add_index :recruitments, :delta
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO recruitments (id) VALUES (1000)")
     ActiveRecord::Base.connection.execute("DELETE FROM recruitments WHERE id = 1000")
@@ -52,6 +53,7 @@ class CreateRecruitments < ActiveRecord::Migration
       t.column :delta, :boolean
     end
     add_index :recruitment_tags, :name
+    add_index :recruitment_tags, :delta
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO recruitment_tags (id) VALUES (1000)")
     ActiveRecord::Base.connection.execute("DELETE FROM recruitment_tags WHERE id = 1000")
