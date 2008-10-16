@@ -3,15 +3,14 @@ class RecruitmentsController < ApplicationController
   Recruitment_List_Size = 25
   
   layout "community"
-  before_filter :check_login, :only => []
-  before_filter :check_limited, :only => []
+  before_filter :check_login, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :check_limited, :only => [:create, :update, :destroy]
+  
+  before_filter :check_edit_access, :only => [:edit, :update, :destroy]
   
   
   
-  def index
-    #load "recruitment_vendors/base.rb"
-    #load "recruitment_vendors/hiall.rb"
-    
+  def index  
     page = params[:page]
     page = 1 unless page =~ /\d+/
     @recruitments = Recruitment.paginate(
@@ -26,6 +25,8 @@ class RecruitmentsController < ApplicationController
   def show
     @recruitment_id = params[:id]
     @recruitment = Recruitment.find(@recruitment_id, :include => [:recruitment_tags])
+    
+    @can_edit = has_login? && has_edit_access(@recruitment)
   end
   
   def tag
@@ -73,6 +74,42 @@ class RecruitmentsController < ApplicationController
   end
   
   
+  def new
+    
+  end
+  
+  def create
+    
+  end
+  
+  def edit
+    
+  end
+  
+  def update
+    
+  end
+  
+  def destroy
+    @recruitment.recruitment_tags.clear
+    @recruitment.destroy
+    
+    jump_to("/recruitments")
+  end
+  
+  
+  private
+  
+  def has_edit_access(recruitment)
+    ApplicationController.helpers.general_admin?(session[:account_id]) || (recruitment.account_id == session[:account_id])
+  end
+  
+  def check_edit_access
+    @recruitment_id = params[:id]
+    @recruitment = Recruitment.find(@recruitment_id)
+    
+    jump_to("/errors/forbidden") unless has_edit_access(@recruitment)
+  end
   
 end
 

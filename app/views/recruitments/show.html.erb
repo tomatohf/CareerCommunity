@@ -3,6 +3,20 @@
 
 <div class="float_r recruitment_container_r">
 	
+	<% if @can_edit %>
+		<div class="community_block">
+			<% form_tag "/recruitments/#{@recruitment_id}", :method => :delete, :id => "delete_recruitment_form" do %>
+			<% end %>
+			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('delete_recruitment_form').submit();}; return false;">删除信息</a>
+			
+			&nbsp;
+			|
+			&nbsp;
+
+			<a href="/recruitments/<%= @recruitment_id %>/edit">编辑快照</a>
+		</div>
+	<% end %>
+	
 	<div class="community_title">
 		标签 ...
 	</div>

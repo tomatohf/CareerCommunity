@@ -3,7 +3,9 @@ class Recruitment < ActiveRecord::Base
   has_and_belongs_to_many :recruitment_tags,
                           :foreign_key => "recruitment_id",
                           :association_foreign_key => "recruitment_tag_id",
-                          :join_table => "recruitments_recruitment_tags"
+                          :join_table => "recruitments_recruitment_tags",
+                          :after_add => Proc.new { |r, rt| RecruitmentTag.clear_top_tags_cache },
+                          :after_remove => Proc.new { |r, rt| RecruitmentTag.clear_top_tags_cache }
   
   
   
@@ -22,7 +24,7 @@ class Recruitment < ActiveRecord::Base
   end
   
   def self.save_new_messages(start_page = 1, page_count = 1)
-    self.collect_new_messages(start_page, page_count).values.flatten.each { |message| message.save }
+    RecruitmentVendor.vendor_classess.each { |vendor| eval(vendor).instance.save_new_messages(start_page, page_count) }
   end
   
   

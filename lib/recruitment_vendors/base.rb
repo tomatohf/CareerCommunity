@@ -113,8 +113,8 @@ module RecruitmentVendor
     # method build_recruitment method return a Recruitment model object by the information got from the link
     def collect_new_messages(start_page = 1, page_count = 1)
       gotten_new_links = get_new_links(start_page, page_count)
-      existing_links = Recruitment.find(:all, :conditions => ["source_link in (?)", gotten_new_links.keys]).collect { |r| r.source_link }
-      non_existing_links = gotten_new_links.delete_if { |key, value| existing_links.include?(key) }
+      
+      non_existing_links = remove_existing_links(gotten_new_links)
       
       non_existing_links.to_a.collect { |link_info| get_recruitment(link_info[0], link_info[1]) }.compact
     end
@@ -142,9 +142,14 @@ module RecruitmentVendor
       # return the recruitment model object
       recruitment
     end
+
+    def save_new_messages(start_page = 1, page_count = 1)
+      self.collect_new_messages(start_page, page_count).values.flatten.each { |message| message.save }
+    end
     
     def remove_existing_links(links)
-      
+      existing_links = Recruitment.find(:all, :conditions => ["source_link in (?)", links.keys]).collect { |r| r.source_link }
+      links.delete_if { |key, value| existing_links.include?(key) }
     end
     
     def filter_match_rules_applicable?(recruitment)

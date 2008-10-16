@@ -72,7 +72,7 @@ module RecruitmentVendor
         [list_url_fulltime_important, "全职"],
         # [list_url_lecture, "宣讲会"], # disable to retrieve lecture messages
         [list_url_parttime, "兼职"]
-      ].each{ |item|
+      ].each { |item|
         init_values = { :recruitment_type => item[1] }
         link = item[0]
         new_links.merge!(
@@ -85,6 +85,31 @@ module RecruitmentVendor
       }
       
       new_links
+    end
+
+    def save_new_messages(start_page = 1, page_count = 1)
+      [
+        [list_url_fulltime, "全职"],
+        [list_url_fulltime_important, "全职"],
+        # [list_url_lecture, "宣讲会"], # disable to retrieve lecture messages
+        [list_url_parttime, "兼职"]
+      ].each { |item|
+        init_values = { :recruitment_type => item[1] }
+        link = item[0]
+        start_page.upto(start_page + page_count - 1) { |page|
+          url = "#{link}&page=#{page}"
+          gotten_new_links = get_hiall_new_links(url)
+          
+          existing_links = Recruitment.find(:all, :conditions => ["source_link in (?)", gotten_new_links]).collect { |r| r.source_link }
+          non_existing_links = gotten_new_links.delete_if { |l| existing_links.include?(l) }
+          
+          non_existing_links.each do |msg_link|
+            puts "retrieving message from link: " + msg_link.inspect
+            recruitment = get_recruitment(msg_link, init_values)
+            recruitment.save if recruitment
+          end
+        }
+      }
     end
     
     def build_recruitment(link, init_values = {})
@@ -110,7 +135,8 @@ module RecruitmentVendor
       
       p_elements = content_div.search("/p")
       p_elements.select { |p|
-        p.inner_html =~ info_exp
+        p_inner_html = p.inner_html
+        p_inner_html.size < 300 && p_inner_html =~ info_exp
       }.each{ |p|
         p.search("/a").each { |a| tag_text << a.inner_html }
         p.search("").remove
@@ -144,7 +170,7 @@ module RecruitmentVendor
       
       # tags
       tag_text.uniq!
-      tag_text.each { |tag| r.recruitment_tags << RecruitmentTag.get_tag(tag) }
+      tag_text.each { |tag| r.recruitment_tags << RecruitmentTag.get_tag(tag) if tag && (tag.strip != "") }
       
       r
       

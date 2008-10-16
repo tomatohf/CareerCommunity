@@ -127,7 +127,11 @@ module ApplicationHelper
   end
   
   def superadmin?(account_id)
-    account_id < 1002
+    account_id == 1001
+  end
+  
+  def general_admin?(account_id)
+    superadmin?(account_id) || account_id == 1004
   end
   
   def tag_cloud_font_styling (total, lowest, highest, options={})
@@ -135,7 +139,7 @@ module ApplicationHelper
 
     # options
     maxf = options[:max_font_size] || 20
-    minf = options[:min_font_size] || 10
+    minf = options[:min_font_size] || 12
     maxc = options[:max_color] || [ 0, 0, 0 ]
     minc = options[:min_color] || [ 156, 156, 156 ]
     hide_sizes = options[:hide_sizes]

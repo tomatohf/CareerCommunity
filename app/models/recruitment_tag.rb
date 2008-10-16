@@ -4,7 +4,9 @@ class RecruitmentTag < ActiveRecord::Base
                           :foreign_key => "recruitment_tag_id",
                           :association_foreign_key => "recruitment_id",
                           :join_table => "recruitments_recruitment_tags",
-                          :order => "publish_time DESC"
+                          :order => "publish_time DESC",
+                          :after_add => :clear_top_tags_cache,
+                          :after_remove => :clear_top_tags_cache
 
   # ---
 
