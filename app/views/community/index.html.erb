@@ -88,34 +88,47 @@
 	
 	
 	<div class="community_title">
+		<a href="/recruitments" class="more_part">« 更多招聘信息</a>
+		最新招聘信息 ...
+	</div>
+	<div class="community_block">
+		<%= render(:partial => "recruitment", :collection => @new_recruitments) %>
+	</div>
+	
+	
+	<div class="community_title">
+		<a href="/activities/all" class="more_part">« 更多活动</a>
 		最新活动 ...
 	</div>
-	<div>
-		<%= float_list(@new_activities, "activity", :activity, {}, 2) %>
+	<div style="margin-top: 10px;">
+		<%= float_list(@new_activities, "activity", :activity, {}, 5) %>
 	</div>
 	<div class="clear_l">
 	</div>
 	
 	
 	<div class="community_title">
+		<a href="/groups/all" class="more_part">« 全部圈子</a>
+		最新圈子 ...
+	</div>
+	<div style="margin-top: 10px;">
+		<%= float_list(@new_groups, "group", :group, {}, 6) %>
+	</div>
+	<div class="clear_l">
+	</div>
+
+
+	<div class="community_title">
+		<a href="/activities/recent_index" class="more_part">« 去我的活动近况</a>
 		最新活动话题 ...
 	</div>
 	<div class="community_block">
 		<%= render(:partial => "activity_post", :collection => @new_activity_posts) %>
 	</div>
-	
+
 
 	<div class="community_title">
-		最新圈子 ...
-	</div>
-	<div>
-		<%= float_list(@new_groups, "group", :group, {}, 6) %>
-	</div>
-	<div class="clear_l">
-	</div>
-	
-	
-	<div class="community_title">
+		<a href="/groups" class="more_part">« 去我的圈子近况</a>
 		最新圈内话题 ...
 	</div>
 	<div class="community_block">
@@ -124,14 +137,7 @@
 	
 	
 	<div class="community_title">
-		最新照片 ...
-	</div>
-	<div>
-		<%= float_list(@new_photos, "/spaces/photo", :photo, {:edit => false}, 5) %>
-	</div>
-	
-	
-	<div class="community_title">
+		<a href="/blogs" class="more_part">« 去我的博客</a>
 		最新博客 ...
 	</div>
 	<div class="community_block">

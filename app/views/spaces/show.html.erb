@@ -179,7 +179,9 @@
 				:locals => {
 					:owner_id => @edit ? nil : @account_id,
 					:owner_nick => @edit ? nil : @account_nick_pic[0],
-					:owner_pic_url => @edit ? nil : @account_nick_pic[1]
+					:owner_pic_url => @edit ? nil : @account_nick_pic[1],
+					
+					:save_space => false
 				}
 			)%>
 		</div>

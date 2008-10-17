@@ -322,8 +322,12 @@ select.dropdown_list, .dropdown_list select {
 .community_title {
 	color: #EE9966;
 	font-size: 14px;
-	margin: 20px 0px 5px;
-	height: 25px;
+	margin-top: 20px;
+}
+
+.community_title a.more_part {
+	float: right;
+	font-size: 12px;
 }
 
 .community_block {
@@ -911,8 +915,17 @@ a.account_nick_link:hover, a.group_name_link:hover {
 
 .community_index_activity {
 	float: left;
-	margin: 5px;
-	width: 235px;
+	margin: 0px;
+	text-align: center;
+	width: 95px;
+}
+
+.community_index_activity .image_part {
+	height: 80px;
+}
+
+.community_index_activity .text_part {
+	margin-top: 10px;
 }
 
 .linked_photo_for_select {

@@ -42,9 +42,9 @@ class AccountAction < ActiveRecord::Base
     self.send("#{type_id}_type")
   end
   
-  def action_text(operator)
+  def action_text(operator, save_space = false)
     type_obj = get_type_obj(self.action_type)
-    type_obj.action_text(type_obj.parse_raw_data(self.raw_data), %Q!["#{operator[0]}", "#{operator[1]}", #{operator[2]}]!)
+    type_obj.action_text(type_obj.parse_raw_data(self.raw_data), %Q!["#{operator[0]}", "#{operator[1]}", #{operator[2]}]!, save_space)
   end
   
   
@@ -64,7 +64,7 @@ class AccountAction < ActiveRecord::Base
     end
     
     class AddSpaceComment < Base
-      def action_text(data, operator)
+      def action_text(data, operator, save_space)
         owner_id = data[:owner_id]
         comment_id = data[:comment_id]
         comment_content = data[:comment_content]
@@ -80,14 +80,16 @@ class AccountAction < ActiveRecord::Base
             :comment_id => #{comment_id},
             :comment_content => "#{comment_content}",
             :owner_nick => "#{owner_nick}",
-            :owner_pic_url => "#{owner_pic_url}"
+            :owner_pic_url => "#{owner_pic_url}",
+            
+            :save_space => #{save_space.inspect}
           })
         !
       end
     end
     
     class AddFriend < Base
-      def action_text(data, operator)
+      def action_text(data, operator, save_space)
         friend_id = data[:friend_id]
         friend_nick_pic = Account.get_nick_and_pic(friend_id)
         friend_nick = friend_nick_pic[0]
@@ -98,14 +100,16 @@ class AccountAction < ActiveRecord::Base
             :operator => #{operator},
             :friend_id => #{friend_id},
             :friend_nick => "#{friend_nick}",
-            :friend_pic_url => "#{friend_pic_url}"
+            :friend_pic_url => "#{friend_pic_url}",
+            
+            :save_space => #{save_space.inspect}
           })
         !
       end
     end
     
     class JoinGroup < Base
-      def action_text(data, operator)
+      def action_text(data, operator, save_space)
         group_id = data[:group_id]
         group, group_image = Group.get_group_with_image(group_id)
         
@@ -114,14 +118,16 @@ class AccountAction < ActiveRecord::Base
             :operator => #{operator},
             :group_id => #{group_id},
             :group_name => "#{group.name}",
-            :group_image => "#{group_image}"
+            :group_image => "#{group_image}",
+            
+            :save_space => #{save_space.inspect}
           })
         !
       end
     end
     
     class JoinActivity < Base
-      def action_text(data, operator)
+      def action_text(data, operator, save_space)
         activity_id = data[:activity_id]
         activity, activity_image = Activity.get_activity_with_image(activity_id)
         
@@ -130,7 +136,9 @@ class AccountAction < ActiveRecord::Base
             :operator => #{operator},
             :activity_id => #{activity_id},
             :activity_title => "#{activity.get_title}",
-            :activity_image => "#{activity_image}"
+            :activity_image => "#{activity_image}",
+            
+            :save_space => #{save_space.inspect}
           })
         !
       end

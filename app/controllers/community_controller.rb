@@ -2,11 +2,11 @@ class CommunityController < ApplicationController
   
   New_Account_Size = 9
   New_Action_Size = 15
-  New_Activity_Size = 10
-  New_Activity_Post_Size = 5
+  New_Recruitment_Size = 5
+  New_Activity_Size = 5
   New_Group_Size = 6
+  New_Activity_Post_Size = 5
   New_Group_Post_Size = 5
-  New_Photo_Size = 10
   New_Blog_Size = 5
   
   Search_Result_Page_Size = 10
@@ -38,9 +38,26 @@ class CommunityController < ApplicationController
       :order => "created_at DESC"
     )
     
+    @new_recruitments = Recruitment.find(
+      :all,
+      :limit => New_Recruitment_Size,
+      :conditions => ["recruitment_type = ? and location = ? and source_name = ?", "全职", "上海", "Hiall"],
+      :include => [:recruitment_tags],
+      :order => "publish_time DESC"
+    )
+    
     @new_activities = Activity.find(
       :all,
       :limit => New_Activity_Size,
+      :select => "activities.id, activities.title, activity_images.pic_url",
+      :joins => "INNER JOIN activity_images ON 
+                  activity_images.activity_id = activities.id",
+      :order => "created_at DESC"
+    )
+
+    @new_groups = Group.find(
+      :all, 
+      :limit => New_Group_Size,
       :include => [:image],
       :order => "created_at DESC"
     )
@@ -48,27 +65,12 @@ class CommunityController < ApplicationController
     @new_activity_posts = ActivityPost.find(
       :all,
       :limit => New_Activity_Post_Size,
-      :include => [:activity => [:image]],
-      :order => "created_at DESC"
-    )
-    
-    @new_groups = Group.find(
-      :all, 
-      :limit => New_Group_Size,
-      :include => [:image],
       :order => "created_at DESC"
     )
 
     @new_group_posts = GroupPost.find(
       :all,
       :limit => New_Group_Post_Size,
-      :include => [:group => [:image]],
-      :order => "created_at DESC"
-    )
-    
-    @new_photos = Photo.find(
-      :all,
-      :limit => New_Photo_Size,
       :order => "created_at DESC"
     )
     

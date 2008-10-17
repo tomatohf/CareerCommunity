@@ -1,54 +1,26 @@
-<%
-	group = group_post.group
-	group_id = group.id
-	group_name = group.name
-	group_image = group.get_image_url
-
-	Group.set_group_with_image_cache(group_id, group, group_image)
-%>
-
 <% post_content = extract_text(group_post.content) %>
 <% post_content = sanitize_tinymce(post_content) %>
 
 <% comment_count = GroupPostComment.get_count(group_post.id) %>
 
 <div>
-	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
-		<tr>
-			<td valign="top" style="width: 90px">
-				<div class="align_c">
-					<div class="community_block">
-						<a href="/groups/<%= group_id %>">
-							<img src="<%= face_img_src(group_image) %>" border="0" /></a>
-					</div>
-					<div class="community_block">
-						<a href="/groups/<%= group_id %>" class="group_name_link">
-							<%= h(group.name) %></a>
-					</div>
-				</div>
-			</td>
+	<div class="community_index_post_title">
+		<a href="/group/posts/<%= group_post.id %>" class="account_nick_link">
+			<%= h(group_post.title) %></a>
+	</div>
+	
+	<div>
+		<%= truncate(post_content, 100) %>
+	</div>
+	
+	<div class="form_info_s align_r">
+		<a href="/group/posts/<%= group_post.id %>#comment_list" class="account_nick_link">
+			回帖(<%= comment_count %>)</a>
+		
+		|
 			
-			<td valign="top">
-				<div class="community_index_post_title">
-					<a href="/group/posts/<%= group_post.id %>" class="account_nick_link">
-						<%= h(group_post.title) %></a>
-				</div>
-				
-				<div>
-					<%= truncate(post_content, 100) %>
-				</div>
-				
-				<div class="form_info_s align_r">
-					<a href="/group/posts/<%= group_post.id %>#comment_list" class="account_nick_link">
-						回帖(<%= comment_count %>)</a>
-					
-					|
-						
-					发表于
-					<%= format_datetime(group_post.created_at) %>
-				</div>
-			</td>
-		</tr>
-	</table>
+		发表于
+		<%= format_datetime(group_post.created_at) %>
+	</div>
 </div>
 

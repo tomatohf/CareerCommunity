@@ -1,0 +1,19 @@
+<div>
+	<% tags = recruitment.recruitment_tags %>
+	<% if tags.size > 0 %>
+		(
+		<% tags[0..2].each do |tag|%>
+			<a href="/recruitments/tag?name=<%= h(tag.name) %>" class="account_nick_link"><%= h(tag.name) %></a>
+		<% end %>
+		)
+	<% end %>
+	<a href="/recruitments/<%= recruitment.id %>" class="account_nick_link">
+		<%= h(recruitment.title) %></a>
+	&nbsp;
+	<span class="form_info_s">
+		<%= format_date(recruitment.publish_time) %>
+	</span>
+		
+		
+	<%= draw_hor_line("400px", "1px", "#DDDDDD") %>
+</div>

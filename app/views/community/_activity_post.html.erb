@@ -1,54 +1,26 @@
-<%
-	activity = activity_post.activity
-	activity_id = activity.id
-	activity_title = activity.get_title
-	activity_image = activity.get_image_url
-
-	Activity.set_activity_with_image_cache(activity_id, activity, activity_image)
-%>
-
 <% post_content = extract_text(activity_post.content) %>
 <% post_content = sanitize_tinymce(post_content) %>
 
 <% comment_count = ActivityPostComment.get_count(activity_post.id) %>
 
 <div>
-	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
-		<tr>
-			<td valign="top" style="width: 90px">
-				<div class="align_c">
-					<div class="community_block">
-						<a href="/activities/<%= activity_id %>">
-							<img src="<%= face_img_src(activity_image) %>" border="0" /></a>
-					</div>
-					<div class="community_block">
-						<a href="/activities/<%= activity_id %>" class="account_nick_link">
-							<%= truncate(h(activity_title), 20) %></a>
-					</div>
-				</div>
-			</td>
+	<div class="community_index_post_title">
+		<a href="/activity/posts/<%= activity_post.id %>" class="account_nick_link">
+			<%= h(activity_post.title) %></a>
+	</div>
+	
+	<div>
+		<%= truncate(post_content, 100) %>
+	</div>
+	
+	<div class="form_info_s align_r">
+		<a href="/activity/posts/<%= activity_post.id %>#comment_list" class="account_nick_link">
+			回帖(<%= comment_count %>)</a>
+		
+		|
 			
-			<td valign="top">
-				<div class="community_index_post_title">
-					<a href="/activity/posts/<%= activity_post.id %>" class="account_nick_link">
-						<%= h(activity_post.title) %></a>
-				</div>
-				
-				<div>
-					<%= truncate(post_content, 100) %>
-				</div>
-				
-				<div class="form_info_s align_r">
-					<a href="/activity/posts/<%= activity_post.id %>#comment_list" class="account_nick_link">
-						回帖(<%= comment_count %>)</a>
-					
-					|
-						
-					发表于
-					<%= format_datetime(activity_post.created_at) %>
-				</div>
-			</td>
-		</tr>
-	</table>
+		发表于
+		<%= format_datetime(activity_post.created_at) %>
+	</div>
 </div>
 

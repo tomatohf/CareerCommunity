@@ -42,10 +42,6 @@
 	</div>
 	
 	<div class="community_block">
-		<a href="/groups/all">全部圈子</a>
-	</div>
-	
-	<div class="community_block">
 		<a href="/groups/<%= @edit ? "list_friend_edit" : "list_friend" %>/<%= @owner_id %>">
 			<%= owner_name %> 的朋友的圈子近况
 		</a>
@@ -77,6 +73,10 @@
 
 <div class="group_container_l">
 	<h2><%= page_title %></h2>
+	
+	<a href="/groups/all" style="font-size: 14px; padding-right: 20px;" class="account_nick_link float_r">
+		<img src="/images/groups/all_group_small.png" border="0" />
+		查看全部的圈子</a>
 	
 	<div class="community_title">
 		最近讨论话题 ...

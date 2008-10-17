@@ -1,26 +1,14 @@
-<%
-	activity_id = activity.id
-	activity_image = activity.get_image_url
-
-	Activity.set_activity_with_image_cache(activity_id, activity, activity_image)
-%>
-
 <div class="community_index_activity">
-	<table cellpadding="0" cellspacing="5" class="main_part_w">
-		<tr>
-			<td align="center" valign="middle" style="width: 48px;">
-				<a href="/activities/<%= activity.id %>">
-					<img src="<%= face_img_src(activity_image) %>" border="0" /></a>
-			</td>
-			
-			<td align="left" valign="top">
-				<a href="/activities/<%= activity.id %>" class="account_nick_link">
-					<%= h(activity.get_title) %>
-				</a>
-				<span class="activity_info_label">
-					(<%= activity.get_status[1] %>-<%= activity.in_group && activity.in_group > 0 ? "圈内活动" : "全局活动" %>)
-				</span>
-			</td>
-		</tr>
-	</table>
+	<div class="image_part">
+		<% face_image_url = activity.pic_url || "" %>
+		<% face_image_url.gsub!("thumb_48", "thumb_80") if face_image_url.include?("thumb_48") %>
+		<a href="/activities/<%= activity.id %>">
+			<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>
+	</div>
+	<div class="text_part">
+		<a href="/activities/<%= activity.id %>" class="account_nick_link">
+			<%= truncate(h(activity.get_title), 20) %></a>
+	</div>
 </div>
+
+

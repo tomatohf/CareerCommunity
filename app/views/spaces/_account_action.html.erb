@@ -1,3 +1,5 @@
+<% save_space &&= true %>
+
 <%
 	if owner_id
 		account_id = owner_id
@@ -14,7 +16,7 @@
 
 <div class="account_action_item">
 	<div>
-		<%= eval(account_action.action_text([account_nick, account_pic_url, account_id])) %>
+		<%= eval(account_action.action_text([account_nick, account_pic_url, account_id], save_space)) %>
 	</div>
 	
 	<div class="form_info_s account_action_datetime">
