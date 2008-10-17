@@ -75,9 +75,25 @@
 	</div>
 			
 	<div class="community_block photo_view_container">
+		<div class="align_r">
+			<a href="/photos<%= "/show_edit" if @edit %>/<%= @pre_photo.id %>">« 上一张</a>
+			&nbsp;
+			-
+			&nbsp;
+			<a href="/photos<%= "/show_edit" if @edit %>/<%= @next_photo.id %>">下一张 »</a>
+		</div>
+			
 		<div class="photo_view">
 			<a href="/photos<%= "/show_edit" if @edit %>/<%= @next_photo.id %>">
 				<img src="<%= @photo.image.url(:normal) %>" border="0" title="点击查看下一张" /></a>
+		</div>
+		
+		<div class="align_r">
+			<a href="/photos<%= "/show_edit" if @edit %>/<%= @pre_photo.id %>">« 上一张</a>
+			&nbsp;
+			-
+			&nbsp;
+			<a href="/photos<%= "/show_edit" if @edit %>/<%= @next_photo.id %>">下一张 »</a>
 		</div>
 	
 		<div class="community_block_narrow">

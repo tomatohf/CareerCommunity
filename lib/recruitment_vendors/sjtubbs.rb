@@ -37,7 +37,7 @@ module RecruitmentVendor
         # to find out current page number
         first_page = nil
         first_page_doc = get_doc_from_url!(link, false)
-        page_a_list = first_page_doc.search("a[@href^=bbstdoc?board=JobInfo&page=]")
+        page_a_list = first_page_doc.search("a[@href^=bbstdoc?board=]")
         if page_a_list.size > 0
           last_page_a = page_a_list[0]
           numbers = last_page_a[:href].scan(/\d+/)
