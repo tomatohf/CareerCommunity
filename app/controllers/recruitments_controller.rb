@@ -19,9 +19,6 @@ class RecruitmentsController < ApplicationController
       :include => [:recruitment_tags],
       :order => "publish_time DESC"
     )
-    
-    @recruitment_types = Recruitment.get_types
-    @recruitment_locations = Recruitment.get_locations
   end
   
   def show

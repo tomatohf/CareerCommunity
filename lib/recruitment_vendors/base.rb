@@ -3,7 +3,8 @@ module RecruitmentVendor
   @@vendors = {
     # "file_name_without_rb" => "class name"
     "hiall" => "Hiall",
-    "utomorrow" => "Utomorrow"
+    "utomorrow" => "Utomorrow",
+    "sjtubbs" => "Sjtubbs"
   }
   
   
@@ -19,7 +20,10 @@ module RecruitmentVendor
     
     def get_doc_from_url!(url, handle, document_encoding = "GBK")
       ic = Iconv.new("UTF-8//IGNORE", "#{document_encoding}//IGNORE")
-      page = open(url)
+      page = open(
+        url,        
+        "User-Agent" => "Mozilla"
+      )
       page_content = ic.iconv(page.read)
       doc = Hpricot(page_content)
       

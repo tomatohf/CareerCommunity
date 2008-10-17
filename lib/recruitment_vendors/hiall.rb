@@ -189,7 +189,7 @@ module RecruitmentVendor
       p_xpath = "/div[@class='models-article']/div[@class='models-articlelistinfo']/p[@class='title']"
       
       paragraphs = lists[0].search(p_xpath)
-      paragraphs.collect{ |p|
+      paragraphs.collect { |p|
         p.search("//a").collect{|a| 
           href = a["href"].strip
           href += "/" if href[-1, 1] != "/"

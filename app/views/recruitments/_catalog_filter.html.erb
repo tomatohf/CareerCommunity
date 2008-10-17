@@ -1,0 +1,29 @@
+<div class="community_block">
+	<% form_tag "/recruitments/recruitment_type", :method => :get do %>
+		按现有类型查看:
+		&nbsp;
+		<select name="name" class="dropdown_list">
+			<% Recruitment.get_types.each do |t| %>
+				<% type_name = h(t) %>
+				<option value="<%= type_name %>"><%= type_name %></option>
+			<% end %>
+		</select>
+		&nbsp;
+		<input type="submit" class="button" value="查看" />
+	<% end %>
+</div>
+
+<div class="community_block">
+	<% form_tag "/recruitments/location", :method => :get do %>
+		按现有地区查看:
+		&nbsp;
+		<select name="name" class="dropdown_list">
+			<% Recruitment.get_locations.each do |l| %>
+				<% location_name = h(l) %>
+				<option value="<%= location_name %>"><%= location_name %></option>
+			<% end %>
+		</select>
+		&nbsp;
+		<input type="submit" class="button" value="查看" />
+	<% end %>
+</div>

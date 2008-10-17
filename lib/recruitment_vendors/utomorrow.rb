@@ -89,7 +89,7 @@ module RecruitmentVendor
           non_existing_links.each do |msg_link_info|
             puts "retrieving message from link: " + msg_link_info[0].inspect
             recruitment = get_recruitment(msg_link_info[0], init_values.merge(msg_link_info[1]))
-            recruitment.save! if recruitment
+            recruitment.save if recruitment
           end
         }
       }
@@ -111,7 +111,7 @@ module RecruitmentVendor
     end
     
     def construct_recruitment_from_url_job(doc, recruitment)
-      recruitment_content = "无"
+      recruitment_content = nil
       
       tds_with_strong = doc.search("//td[strong]")
       tds_with_strong.each { |td|
@@ -122,13 +122,16 @@ module RecruitmentVendor
         end
       }
       
-      recruitment.content = recruitment_content
-      
-      recruitment
+      if recruitment_content && recruitment_content != ""
+        recruitment.content = recruitment_content
+        recruitment
+      else
+        nil
+      end
     end
     
     def construct_recruitment_from_url_bbs(doc, recruitment)
-      recruitment_content = "无"
+      recruitment_content = nil
       
       content_closest_parent_div_list = doc.search("//div[@id^=postmessage_]")
       if content_closest_parent_div_list.size > 0
@@ -138,9 +141,12 @@ module RecruitmentVendor
         end
       end
       
-      recruitment.content = recruitment_content
-      
-      recruitment
+      if recruitment_content && recruitment_content != ""
+        recruitment.content = recruitment_content
+        recruitment
+      else
+        nil
+      end
     end
     
     def get_utomorrow_new_links(url)
@@ -182,7 +188,7 @@ module RecruitmentVendor
         init_values = {
           :title => title_a.inner_html,
           :location => location_td.inner_html,
-          :recruitment_type => type_td.inner_html,
+          :recruitment_type => type_td.inner_html.gsub("实习", "兼职").gsub("家教", "兼职"),
           :publish_time => publish_time_td.inner_html
         }
         
