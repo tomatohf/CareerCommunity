@@ -1,26 +1,29 @@
-<% post_content = extract_text(group_post.content) %>
-<% post_content = sanitize_tinymce(post_content) %>
-
 <% comment_count = GroupPostComment.get_count(group_post.id) %>
 
-<div>
-	<div class="community_index_post_title">
+<div class="community_index_post">
+	<div>
 		<a href="/group/posts/<%= group_post.id %>" class="account_nick_link">
 			<%= h(group_post.title) %></a>
-	</div>
-	
-	<div>
-		<%= truncate(post_content, 100) %>
-	</div>
-	
-	<div class="form_info_s align_r">
-		<a href="/group/posts/<%= group_post.id %>#comment_list" class="account_nick_link">
-			回帖(<%= comment_count %>)</a>
-		
-		|
 			
-		发表于
-		<%= format_datetime(group_post.created_at) %>
+		&nbsp;&nbsp;
+		
+		<span class="form_info_s">
+			来自:
+			<% account = group_post.account %>
+			<a href="/spaces/show/<%= account.id%>" class="account_nick_link">
+				<%= h(account.get_nick) %></a>
+			
+			|
+			
+			<a href="/group/posts/<%= group_post.id %>#comment_list" class="account_nick_link">
+				回帖(<%= comment_count %>)</a>
+
+			|
+
+			<%= format_date(group_post.created_at) %>
+		</span>
 	</div>
+	
+	<%= draw_hor_line("400px", "1px", "#DDDDDD") %>
 </div>
 

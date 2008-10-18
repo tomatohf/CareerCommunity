@@ -73,9 +73,9 @@ module RecruitmentVendor
     def save_new_messages(start_page = 1, page_count = 1)
       [
         [list_url_job, {}],
-        [list_url_bbs_fulltiime, {:recruitment_type => "全职"}],
         [list_url_bbs_parttiime, {:recruitment_type => "兼职"}],
-        [list_url_bbs_intern, {:recruitment_type => "兼职"}]
+        [list_url_bbs_intern, {:recruitment_type => "兼职"}],
+        [list_url_bbs_fulltiime, {:recruitment_type => "全职"}]
       ].each { |item|
         init_values = item[1]
         link = item[0]

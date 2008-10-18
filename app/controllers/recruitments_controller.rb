@@ -1,6 +1,6 @@
 class RecruitmentsController < ApplicationController
   
-  Recruitment_List_Size = 25
+  Recruitment_List_Size = 30
   
   layout "community"
   before_filter :check_login, :only => [:new, :create, :edit, :update, :destroy]

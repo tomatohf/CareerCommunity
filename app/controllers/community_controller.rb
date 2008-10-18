@@ -29,7 +29,7 @@ class CommunityController < ApplicationController
       :limit => New_Account_Size,
       :include => [:profile_pic],
       :order => "created_at DESC"
-    )
+    ) if @has_login
     
     @new_actions = AccountAction.find(
       :all,
@@ -41,6 +41,7 @@ class CommunityController < ApplicationController
     @new_recruitments = Recruitment.find(
       :all,
       :limit => New_Recruitment_Size,
+      :select => "id, title, publish_time",
       :conditions => ["recruitment_type = ? and location = ? and source_name = ?", "全职", "上海", "Hiall"],
       :include => [:recruitment_tags],
       :order => "publish_time DESC"
@@ -65,12 +66,16 @@ class CommunityController < ApplicationController
     @new_activity_posts = ActivityPost.find(
       :all,
       :limit => New_Activity_Post_Size,
+      :select => "id, title, created_at, account_id",
+      :include => [:account],
       :order => "created_at DESC"
     )
 
     @new_group_posts = GroupPost.find(
       :all,
       :limit => New_Group_Post_Size,
+      :select => "id, title, created_at, account_id",
+      :include => [:account],
       :order => "created_at DESC"
     )
     
