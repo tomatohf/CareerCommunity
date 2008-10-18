@@ -1,0 +1,15 @@
+<div class="tab">
+	<ul>
+		<%
+			[
+				["company", "公司介绍"],
+				["website", "招聘网站"],
+				["campus", "校园宣讲"],
+				["recruitment", "招聘信息"]
+			].each do |i|
+		%>
+			<li><a href="/seekjob/<%= action_name %>/<%= i[0] %>"<%= %Q! class="selected"! if i[0] == perspective %>><%= i[1] %></a></li>
+		<% end %>
+	</ul>
+</div>
+

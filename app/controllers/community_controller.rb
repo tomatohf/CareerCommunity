@@ -5,8 +5,8 @@ class CommunityController < ApplicationController
   New_Recruitment_Size = 5
   New_Activity_Size = 5
   New_Group_Size = 6
-  New_Activity_Post_Size = 5
-  New_Group_Post_Size = 5
+  New_Activity_Post_Size = 8
+  New_Group_Post_Size = 8
   New_Blog_Size = 5
   
   Search_Result_Page_Size = 10

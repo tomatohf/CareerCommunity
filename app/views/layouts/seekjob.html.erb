@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 		<% page_title = yield(:page_title) %>
-        <title><%= "#{page_title} - " if page_title && page_title != "" %>乔布教练 - 乔布堂</title>
+        <title><%= "#{page_title} - " if page_title && page_title != "" %>Seek Job - 乔布堂</title>
         <%= stylesheet_link_tag "site", "qiaobutang" %>
 
 		<!--[if lt IE 7]>
@@ -16,34 +16,13 @@
 
 
 		<div id="root_container">
-			<%= render :partial => "common/main_menus", :locals => {:selected_index => 2} %>
+			<%= render :partial => "common/main_menus", :locals => {:selected_index => 3} %>
 			
 			
 			<div>
 				<div class="coach_right_column">
 					<div class="index_title_small">
-						<li>相关活动</li>
-					</div>
-					<div style="height: 50px;">
-						
-					</div>
-					
-					<div class="index_title_small">
-						<li>相关乔布圈</li>
-					</div>
-					<div style="height: 50px;">
-						
-					</div>
-					
-					<div class="index_title_small">
-						<li>乔布教练在你身边</li>
-					</div>
-					<div style="height: 50px;">
-						
-					</div>
-					
-					<div class="index_title_small">
-						<li>行业研究报告</li>
+						<li>合作公司</li>
 					</div>
 					<div style="height: 50px;">
 						
@@ -54,16 +33,13 @@
 					<div class="coach_container_l">
 						<div class="coach_menus">
 							<div class="coach_menu_top">
-								<a href="/coach">
-									乔布教练</a>
+								<a href="/seekjob">
+									死磕乔布</a>
 							</div>
 							<%
 								menus = [
-									["pharmaceutical", "医药行业"],
-									#["#", "顾问团队"],
-									["register_notice", "报名须知"]
+									["pharmaceutical", "医药行业"]
 									#,
-									#["#", "常见问题"]
 								]
 							%>
 							<% menus.each do |menu| %>
@@ -75,7 +51,7 @@
 									onmouseout="this.className=''"
 									<% end %>
 									>
-									<a href="/coach/<%= menu[0] %>">
+									<a href="/seekjob/<%= menu[0] %>">
 										<%= menu[1] %></a>
 								</div>
 							<% end %>

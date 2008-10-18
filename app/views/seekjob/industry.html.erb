@@ -1,0 +1,24 @@
+<% community_page_title(@industry_name) %>
+
+<div>
+	<a href="/">
+		乔布堂</a>
+	»
+	<a href="/seekjob">
+		死磕乔布</a>
+	»
+	<a href="/seekjob/<%= action_name %>">
+		<%= @industry_name %></a>
+</div>
+
+<div class="coach_block">
+	<img src="/images/seekjob/seekjob_index_post.jpg" />
+</div>
+
+<div class="coach_block">
+	<%= render(:partial => "perspectives", :locals => {:perspective => @perspective}) %>
+</div>
+
+<%= render(:partial => "/seekjob/#{action_name}/#{@perspective}") %>
+
+

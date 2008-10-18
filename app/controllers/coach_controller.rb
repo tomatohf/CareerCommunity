@@ -4,7 +4,7 @@ class CoachController < ApplicationController
     
   end
 
-  def industry
+  def pharmaceutical
 
   end
   
