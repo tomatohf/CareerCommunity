@@ -24,30 +24,36 @@
 					<div class="index_title_small">
 						<li>相关活动</li>
 					</div>
-					<div style="height: 50px;">
-						
-					</div>
+					<%
+						[
+							["上海中医药大学讲座", "1006/1035/thumb_48_1035.jpg", "/activities/1003"],
+							[%Q!“望闻问切 把脉职场”成功求职的10个关键!, "1006/1032/thumb_48_1032.jpg", "/activities/1002"]
+						].each do |item|
+					%>
+						<div class="index_block">
+							<div class="align_c">
+								<a href="<%= item[2] %>">
+									<img src="http://qiaobutang.com/system/files/photos_images/<%= item[1] %>" border="0" alt="<%= item[0] %>" title="<%= item[0] %>" style="border: 1px dotted #C2E3EF;" /></a>
+							</div>
+						</div>
+					<% end %>
+					<br />
 					
 					<div class="index_title_small">
 						<li>相关乔布圈</li>
 					</div>
-					<div style="height: 50px;">
-						
-					</div>
-					
-					<div class="index_title_small">
-						<li>乔布教练在你身边</li>
-					</div>
-					<div style="height: 50px;">
-						
-					</div>
-					
-					<div class="index_title_small">
-						<li>行业研究报告</li>
-					</div>
-					<div style="height: 50px;">
-						
-					</div>
+					<%
+						[
+							["职言职语", "1002/1040/thumb_48_1040.jpg", "/groups/2"]
+						].each do |item|
+					%>
+						<div class="index_block">
+							<div class="align_c">
+								<a href="<%= item[2] %>">
+									<img src="http://qiaobutang.com/system/files/photos_images/<%= item[1] %>" border="0" alt="<%= item[0] %>" title="<%= item[0] %>" style="border: 1px dotted #C2E3EF;" /></a>
+							</div>
+						</div>
+					<% end %>
 				</div>
 				
 				<div class="coach_container">
@@ -82,18 +88,10 @@
 						</div>
 						
 						<div class="coach_related_link_title">
-							相关链接
+							11月课程安排
 						</div>
-						<div class="coach_related_link_content">
-							<ul>
-								<li>
-									10月培训课程
-								</li>
-								
-								<li>
-									其他培训机构
-								</li>
-							</ul>
+						<div>
+							
 						</div>
 					</div>
 					

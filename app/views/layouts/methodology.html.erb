@@ -24,8 +24,59 @@
 					<div class="index_title_small">
 						<li>大师语录</li>
 					</div>
-					<div style="height: 50px;">
-						
+					
+					<div class="methodology_right_block">
+						<div style="text-indent: 25px;">
+							没有思索的人生是没有意义的人生.
+						</div>
+						<div class="align_r">
+							-- 苏格拉底
+						</div>
+					</div>
+					
+					<div class="methodology_right_block">
+						<div style="text-indent: 25px;">
+							充满思索的人生是不轻松的人生.
+						</div>
+						<div class="align_r">
+							-- 罗伯特.弗尔甘
+						</div>
+					</div>
+					
+					<div class="methodology_right_block">
+						<div style="text-indent: 25px;">
+							凭借经验, 至少我知道: 如果一个人满怀自信, 朝着梦想的方向前进, 努力追求想像中的生活, 就会在不经意之间取得成功.
+						</div>
+						<div class="align_r">
+							-- 梭罗
+						</div>
+					</div>
+					
+					<div class="methodology_right_block">
+						<div style="text-indent: 25px;">
+							你们是一群笨蛋. 你们做的琐碎的事情令别人不屑一顾. 你们不愿花时间研究自己感兴趣的公司, 为何不找出愿意为之工作的人并追随他们呢?
+						</div>
+						<div class="align_r">
+							-- 阿尔伯特.夏皮罗
+						</div>
+					</div>
+					
+					<div class="methodology_right_block">
+						<div style="text-indent: 25px;">
+							别在意 "我能在那儿得到什么", 去找你最想做的工作.
+						</div>
+						<div class="align_r">
+							-- 戴维.梅斯特
+						</div>
+					</div>
+					
+					<div class="methodology_right_block">
+						<div style="text-indent: 25px;">
+							给你找麻烦的不是那些你未知的东西, 而是那些你确信无疑但事实上并不是那么回事的东西.
+						</div>
+						<div class="align_r">
+							-- 马克.吐温
+						</div>
 					</div>
 				</div>
 				
@@ -38,8 +89,17 @@
 							</div>
 							<%
 								menus = [
-									#["link url", "菜单名"]
-									#,
+									["s1", "1. 特性-因素理论"],
+									["s2", "2. Holland 的职业类型理论"],
+									["s3", "3. Roe 的职业选择理论和心理动力理论"],
+									["s4", "4. 社会学习理论"],
+									["s5", "5. 职业发展的认知理论"],
+									["s6", "6. 个体构念理论"],
+									["s7", "7. 完整生活计划"],
+									["s8", "8. 职业决策理论"],
+									["s9", "9. 偶然论的选择理论"],
+									["s10", "10. 社会学理论和经济学理论"],
+									["s11", "11. 整合理论--综合论"]
 								]
 							%>
 							<% menus.each do |menu| %>
@@ -50,26 +110,12 @@
 									onmouseover="this.className='coach_menu_selected'"
 									onmouseout="this.className=''"
 									<% end %>
+									style="padding-right: 3px;"
 									>
-									<a href="/coach/<%= menu[0] %>">
+									<a href="#<%= menu[0] %>">
 										<%= menu[1] %></a>
 								</div>
 							<% end %>
-						</div>
-						
-						<div class="coach_related_link_title">
-							相关链接
-						</div>
-						<div class="coach_related_link_content">
-							<ul>
-								<li>
-									10月培训课程
-								</li>
-								
-								<li>
-									其他培训机构
-								</li>
-							</ul>
 						</div>
 					</div>
 					

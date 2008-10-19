@@ -44,7 +44,7 @@
 	<div class="index_container_l_block">
 		<table cellpadding="0" cellspacing="5" border="0" style="width: 100%">
 			<tr>
-				<td style="width: 50%">
+				<td valign="top" style="width: 50%">
 					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
 						<div class="index_container_l_section">
 							<div class="index_container_l_section_title">
@@ -54,20 +54,16 @@
 							</div>
 							
 							<div class="index_container_l_section_content">
-								圈子：为自己搭建职场内外的朋友圈子
+								圈子: <a href="/groups/2">职言职语</a>
 								<br />
-								活动：查看、参加、发起活动
-								<br />
-								测评：
-								<br />
-								问答：
+								信息: <a href="/recruitments">最新招聘信息</a>
 							</div>
 							
 						</div>
 					<% end %>
 				</td>
 				
-				<td style="width: 50%">
+				<td valign="top" style="width: 50%">
 					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
 						<div class="index_container_l_section">
 							<div class="index_container_l_section_title">
@@ -77,13 +73,9 @@
 							</div>
 
 							<div class="index_container_l_section_content">
-								讲座：10.08  上师大职业生涯规划讲座
+								讲座: <a href="/activities/1003">10.20 中医药大学讲座</a>
 								<br />
-								讲座：10.15  中医药大学讲座
-								<br />
-								手册：《医药行业信息手册》
-								<br />
-								课程：10月课程安排
+								课程: <a href="/coach">11月课程安排</a>
 							</div>
 							
 						</div>
@@ -101,15 +93,20 @@
 		<li>乔布堂海报栏</li>
 	</div>
 	
-	<% @display_activity_posts.each do |ap| %>
+	<%
+		[
+			[" 上海中医药大学讲座", "1006/1035/thumb_120_1035.jpg", "/activities/1003"],
+			["望闻问切 把脉职场 - 成功求职的10个关键！", "1006/1032/thumb_120_1032.jpg", "/activities/1002"]
+		].each do |item|
+	%>
 		<div class="index_block">
 			<div>
-				<a href="<%= ap[2] %>">
-					<%= ap[0] %></a>
+				<a href="<%= item[2] %>">
+					<%= item[0] %></a>
 			</div>
 			<div class="align_c">
-				<a href="<%= ap[2] %>">
-					<img src="<%= ap[1] %>" border="0" alt="<%= ap[0] %>" title="<%= ap[0] %>" /></a>
+				<a href="<%= item[2] %>">
+					<img src="http://qiaobutang.com/system/files/photos_images/<%= item[1] %>" border="0" alt="<%= item[0] %>" title="<%= item[0] %>" style="border: 1px dotted #C2E3EF;" /></a>
 			</div>
 			<div>
 				<%= thin_hr %>

@@ -69,7 +69,7 @@ class GroupsController < ApplicationController
     @group_posts = GroupPost.find(
       :all,
       :limit => Post_Recent_List_Size,
-      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.top, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.nick",
+      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.top, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.nick, accounts.email",
       :conditions => ["group_id in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
       :include => [:account, :group],
       :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
