@@ -1,10 +1,14 @@
+<% show_account &&= true %>
+
 <% blog_show_url = "/blogs/#{"show_edit/" if edit}#{blog.id}" %>
 
 <% blog_content = extract_text(blog.content) %>
 <% blog_content = sanitize_tinymce(blog_content) %>
 
+<% comment_count = BlogComment.get_count(blog.id) %>
+
 <div class="space_blog">
-	<div>
+	<div class="space_blog_title">
 		<a href="<%= blog_show_url %>" class="account_nick_link">
 			<%= h(blog.title) %>
 		</a>
@@ -16,8 +20,25 @@
 		<%= truncate(blog_content, 150) %>
 	</div>
 
-		<div class="form_info_s align_r">
-			发表于
-			<%= format_datetime(blog.created_at) %>
-		</div>
+	<div class="form_info_s align_r">
+		<% if show_account %>
+			来自:
+			<a  href="/spaces/show/<%= blog.account.id %>" class="account_nick_link">
+				<%= h(blog.account.get_nick) %></a>
+				
+			&nbsp;
+			|
+			&nbsp;
+		<% end %>
+		
+		<a href="<%= blog_show_url %>#comment_list">
+			评论(<%= comment_count %>)</a>
+			
+		&nbsp;
+		|
+		&nbsp;
+		
+		发表于
+		<%= format_datetime(blog.created_at) %>
+	</div>
 </div>

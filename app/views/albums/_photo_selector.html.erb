@@ -40,8 +40,8 @@
 <div style="margin-left: 5px; margin-top: 10px;">
 	上传新照片到相册:
 	<div>
-		<% form_tag "/albums/create_photo_from_photo_selector", :method => :post, :multipart => true do %>
-			<select name="id" class="dropdown_list">
+		<% form_tag "/albums/create_photo_from_photo_selector", :method => :post, :multipart => true, :onsubmit => "if(document.getElementById('album_id_in_photo_selector').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请选择一个相册 ...'); return false; }" do %>
+			<select id="album_id_in_photo_selector" name="id" class="dropdown_list">
 				<% albums.each do |album| %>
 					<option value="<%= album[0] %>"><%= h(album[1]) %></option>
 				<% end %>

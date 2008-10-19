@@ -82,6 +82,7 @@ class CommunityController < ApplicationController
     @new_blogs = Blog.find(
       :all,
       :limit => New_Blog_Size,
+      :include => [:account],
       :order => "created_at DESC"
     )
     
