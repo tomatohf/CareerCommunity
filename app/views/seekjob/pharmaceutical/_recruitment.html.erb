@@ -1,0 +1,48 @@
+<div class="coach_block">
+	<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+		<div class="index_container_l_section">
+			<div class="index_container_l_section_title">
+				<span style="float: right;">
+					<a href="/recruitments" target="_blank">更多招聘信息</a>
+					&nbsp;
+				</span>
+				最新乔布圈内招聘信息 »
+			</div>
+
+			<div class="index_container_l_section_content">
+				<%= render(:partial => "/seekjob/recruitment_msg", :collection => @recruitments) %>
+			</div>
+			
+		</div>
+	<% end %>
+</div>
+
+<div class="coach_block">
+	<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+		<div class="index_container_l_section">
+			<div class="index_container_l_section_title">
+				<span style="float: right;">
+					<a href="#" onclick="document.getElementById('seekjob_query').value = '医药 | 医疗 | 制药 | 医 | 药'; document.getElementById('seekjob_form').submit(); return false;">搜索医药行业</a>
+					&nbsp;
+				</span>
+				搜索乔布圈内招聘信息 »
+			</div>
+
+			<div class="index_container_l_section_content" style="padding: 10px 1px;">
+				<% form_tag "/community/search", :method => :get, :id => "seekjob_form", :target => "_blank" do %>
+					<img class="float_l" src="/images/real_index/seek_job_icon.png" border="0" alt="死磕乔布" />
+					&nbsp;&nbsp;&nbsp;
+				
+					<input type="text", id="seekjob_query" name="query" class="text_field" style="width: 50%" />
+					<input type="hidden" name="scope" value="recruitment" />
+
+					&nbsp;&nbsp;&nbsp;
+					<input type="submit" value="死磕 - Seek" class="index_button" />
+				<% end %>
+			</div>
+			
+		</div>
+	<% end %>
+</div>
+
+

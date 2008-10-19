@@ -42,7 +42,7 @@ class CommunityController < ApplicationController
       :all,
       :limit => New_Recruitment_Size,
       :select => "id, title, publish_time",
-      :conditions => ["recruitment_type = ? and location = ? and source_name = ?", "全职", "上海", "Hiall"],
+      :conditions => ["location = ? and source_name = ?", "上海", "Hiall"],
       :include => [:recruitment_tags],
       :order => "publish_time DESC"
     )
