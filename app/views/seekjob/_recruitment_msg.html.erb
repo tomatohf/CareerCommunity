@@ -1,0 +1,11 @@
+<div>
+	<a href="/recruitments/<%= recruitment_msg.id %>" class="account_nick_link" target="_blank">
+		<%= h(recruitment_msg.title) %></a>
+	&nbsp;
+	<span class="form_info_s">
+		<%= format_date(recruitment_msg.publish_time) %>
+	</span>
+		
+		
+	<%= draw_hor_line("400px", "1px", "#DDDDDD") %>
+</div>

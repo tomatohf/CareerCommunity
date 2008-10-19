@@ -1,0 +1,55 @@
+<div class="coach_block">
+	<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+		<div class="index_container_l_section">
+			<div class="index_container_l_section_title">
+				世界医药公司排名20强 »
+			</div>
+
+			<div class="index_container_l_section_content">
+				<table border="0" cellspacing="15" cellpadding="0">
+					<tr>
+						<th>位次</th>
+						<th>公司名称</th>
+						<th>中文名称</th>
+						<th>国别</th>
+						<th>营收 (百万美元)</th>
+					</tr>
+					
+					<%
+						[
+							%w{1 Pfizer 辉瑞 美国 $45,083},
+							[2, "GlaxoSmithKline", "葛兰素史克", "英国", "$37,003"],
+							%w{3 Sanofi-Aventis 赛诺菲-安万特 法国 $35,643},
+							%w{4 AstraZeneca 阿斯利康 英国 $25,741},
+							%w{5 Novartis 诺华 瑞士 $23,532},
+							%w{6 Merck 默沙东(默克) 美国 $23,425},
+							[7, "Johnson & Johnson", "强生", "美国", "$23,267"],
+							%w{8 Roche 罗氏 瑞士 $19,300},
+							%w{9 Wyeth 惠氏 美国 $15,683},
+							[10, "Eli Lilly & Co.", "礼来", "美国", "$14,816"],
+							[11, "Bristol-Myers Squibb", "百时美施贵宝", "美国", "$13,861"],
+							[12, "Abbott Laboratories", "雅培", "美国", "$12,395"],
+							%w{13 Schering-Plough 先灵葆雅 美国 $10,461},
+							%w{14 Boehringer-Ingelheim 勃林格殷格翰 德国 $10,440},
+							%w{15 Takeda 武田 日本 $9,793},
+							[16, "Bayer AG", "拜耳", "德国", "$8,518"],
+							%w{17 Astellas 安斯泰来 日本 $7,862},
+							%w{18 Daiichi-Sankyo 第一制药 日本 $7,166},
+							%w{19 Eisai 卫材 日本 $5,589},
+							[20, "Merck KgA", "默克KGa", "德国", "$4,674"]
+						].each do |row|
+					%>
+						<tr>
+							<td><%= row[0] %></td>
+							<td><%= row[1] %></td>
+							<td><%= row[2] %></td>
+							<td><%= row[3] %></td>
+							<td align="right"><%= row[4] %></td>
+						</tr>
+					<% end %>
+				</table>
+			</div>
+			
+		</div>
+	<% end %>
+</div>
