@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 8) do
+ActiveRecord::Schema.define(:version => 9) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -638,5 +638,91 @@ ActiveRecord::Schema.define(:version => 8) do
 
   add_index "timezones", ["name"], :name => "index_timezones_on_name"
   add_index "timezones", ["delta"], :name => "index_timezones_on_delta"
+
+  create_table "vote_categories", :force => true do |t|
+    t.string  "name"
+    t.boolean "delta"
+  end
+
+  add_index "vote_categories", ["name"], :name => "index_vote_categories_on_name"
+  add_index "vote_categories", ["delta"], :name => "index_vote_categories_on_delta"
+
+  create_table "vote_comments", :force => true do |t|
+    t.integer  "vote_topic_id", :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",    :limit => 11
+    t.string   "content",       :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "vote_comments", ["vote_topic_id"], :name => "index_vote_comments_on_vote_topic_id"
+  add_index "vote_comments", ["account_id"], :name => "index_vote_comments_on_account_id"
+  add_index "vote_comments", ["created_at"], :name => "index_vote_comments_on_created_at"
+  add_index "vote_comments", ["delta"], :name => "index_vote_comments_on_delta"
+
+  create_table "vote_images", :force => true do |t|
+    t.integer  "vote_topic_id", :limit => 11
+    t.datetime "updated_at"
+    t.integer  "photo_id",      :limit => 11
+    t.string   "pic_url"
+    t.boolean  "delta"
+  end
+
+  add_index "vote_images", ["vote_topic_id"], :name => "index_vote_images_on_vote_topic_id"
+  add_index "vote_images", ["photo_id"], :name => "index_vote_images_on_photo_id"
+  add_index "vote_images", ["delta"], :name => "index_vote_images_on_delta"
+
+  create_table "vote_options", :force => true do |t|
+    t.datetime "created_at"
+    t.integer  "account_id",    :limit => 11
+    t.integer  "vote_topic_id", :limit => 11
+    t.string   "title"
+    t.string   "color",         :limit => 7
+    t.boolean  "delta"
+  end
+
+  add_index "vote_options", ["created_at"], :name => "index_vote_options_on_created_at"
+  add_index "vote_options", ["account_id"], :name => "index_vote_options_on_account_id"
+  add_index "vote_options", ["vote_topic_id"], :name => "index_vote_options_on_vote_topic_id"
+  add_index "vote_options", ["color"], :name => "index_vote_options_on_color"
+  add_index "vote_options", ["delta"], :name => "index_vote_options_on_delta"
+
+  create_table "vote_records", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id", :limit => 11
+    t.integer  "topic_id",   :limit => 11
+    t.integer  "option_id",  :limit => 11
+    t.string   "voter_ip",   :limit => 40
+    t.boolean  "delta"
+  end
+
+  add_index "vote_records", ["created_at"], :name => "index_vote_records_on_created_at"
+  add_index "vote_records", ["updated_at"], :name => "index_vote_records_on_updated_at"
+  add_index "vote_records", ["account_id"], :name => "index_vote_records_on_account_id"
+  add_index "vote_records", ["topic_id"], :name => "index_vote_records_on_topic_id"
+  add_index "vote_records", ["option_id"], :name => "index_vote_records_on_option_id"
+  add_index "vote_records", ["delta"], :name => "index_vote_records_on_delta"
+
+  create_table "vote_topics", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "title"
+    t.string   "desc",             :limit => 1000
+    t.integer  "account_id",       :limit => 11
+    t.integer  "category_id",      :limit => 11
+    t.boolean  "multiple",                         :default => false
+    t.boolean  "allow_add_option",                 :default => false
+    t.integer  "group_id",         :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "vote_topics", ["created_at"], :name => "index_vote_topics_on_created_at"
+  add_index "vote_topics", ["account_id"], :name => "index_vote_topics_on_account_id"
+  add_index "vote_topics", ["category_id"], :name => "index_vote_topics_on_category_id"
+  add_index "vote_topics", ["multiple"], :name => "index_vote_topics_on_multiple"
+  add_index "vote_topics", ["allow_add_option"], :name => "index_vote_topics_on_allow_add_option"
+  add_index "vote_topics", ["delta"], :name => "index_vote_topics_on_delta"
 
 end

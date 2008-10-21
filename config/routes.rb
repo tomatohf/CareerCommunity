@@ -251,6 +251,16 @@ ActionController::Routing::Routes.draw do |map|
   }, :member => {
     
   }
+  
+  
+  map.resources :votes, :collection => {
+    
+    :latest => :get,
+    :hotest => :get
+    
+  }, :member => {
+    
+  }
 
   
   
