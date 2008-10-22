@@ -17,11 +17,9 @@ role :db,  "qiaobutang.com", :primary => true
 
 
 set :user, "tomato"
-set :password, "!t0m@t0#"
 
 default_run_options[:pty] = true 
 
-set :scm_passphrase, "!t0m@t0#"
 
 # set :git_shallow_clone, 1
 # set :deploy_via, :remote_cache
