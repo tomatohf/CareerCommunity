@@ -31,7 +31,7 @@ class CreateVotes < ActiveRecord::Migration
       t.column :multiple, :boolean, :default => false
       t.column :allow_add_option, :boolean, :default => false
       
-      t.column :group_id, :integer
+      t.column :group_id, :integer, :default => 0
       # = 0 -> overall vote topic
       # > 0 -> single group vote topic, it's the group id
       
@@ -97,8 +97,8 @@ class CreateVotes < ActiveRecord::Migration
       
       t.column :account_id, :integer
       
-      t.column :topic_id, :integer
-      t.column :option_id, :integer
+      t.column :vote_topic_id, :integer
+      t.column :vote_option_id, :integer
       
       t.column :voter_ip, :string, :limit => 40
       # to be compatible with IPv6, IP v6 will have 39 chars
@@ -110,8 +110,9 @@ class CreateVotes < ActiveRecord::Migration
     add_index :vote_records, :created_at
     add_index :vote_records, :updated_at
     add_index :vote_records, :account_id
-    add_index :vote_records, :topic_id
-    add_index :vote_records, :option_id
+    add_index :vote_records, :vote_topic_id
+    add_index :vote_records, :vote_option_id
+    add_index :vote_records, :voter_ip
     add_index :vote_records, :delta
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO vote_records (id) VALUES (1000)")
@@ -141,6 +142,7 @@ class CreateVotes < ActiveRecord::Migration
     
     
     [
+      "其它",
       "征求意见",
       "纯属搞笑",
       "诚心调查",

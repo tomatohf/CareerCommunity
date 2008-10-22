@@ -6,10 +6,17 @@
 <div class="float_r community_container_r">
 	<div class="community_block align_c">
 		<% face_image_url = @account_nick_pic[1] || "" %>
-		<% if face_image_url.include?("thumb_48") %>
-			<img src="<%= face_img_src(face_image_url.gsub("thumb_48", "thumb_200")) %>" border="0" />
+		<% big_face_image_url = face_image_url.gsub("thumb_48", "thumb_200") if face_image_url.include?("thumb_48") %>
+		
+		<% if @edit %>
+			<a href="/profiles/<%= @account_id %>/pic" title="更改头像">
+				<img src="<%= face_img_src(big_face_image_url) %>" border="0" /></a>
+			<div>
+				<a href="/profiles/<%= @account_id %>/pic">
+					更改头像</a>
+			</div>
 		<% else %>
-			<img src="<%= face_img_src(face_image_url) %>" border="0" />
+			<img src="<%= face_img_src(big_face_image_url) %>" border="0" />
 		<% end %>
 	</div>
 	
@@ -134,7 +141,12 @@
 		<table cellpadding="0" cellspacing="0" class="main_part_w">
 			<tr>
 				<td style="width: 50px;" align="left" valign="top">
-					<img src="<%= face_img_src(face_image_url) %>" border="0" />
+					<% if @edit %>
+						<a href="/profiles/<%= @account_id %>/pic" title="更改头像">
+							<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>
+					<% else %>
+						<img src="<%= face_img_src(face_image_url) %>" border="0" />
+					<% end %>
 				</td>
 				
 				<td style="width: 60px;" align="center" valign="top">

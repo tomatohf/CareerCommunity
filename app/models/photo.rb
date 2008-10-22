@@ -36,6 +36,11 @@ class Photo < ActiveRecord::Base
       Activity.clear_activity_with_image_cache(ai.activity_id)
     end
     
+    # clean vote topic image
+    VoteImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |vi|
+      VoteTopic.clear_vote_topic_with_image_cache(vi.vote_topic_id)
+    end
+    
     # clean the album photos
     Album.clear_album_photos_cache(photo.album_id)
   }

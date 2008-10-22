@@ -1,0 +1,121 @@
+<%= chart :column %>
+  <%= component :axis_category %>
+    skip: 4
+    #font: system
+    font: Arial
+    bold: true
+    size: 11
+    color: 000000
+    alpha: 100
+    orientation: diagonal_up
+    
+  <%= component :axis_value %>
+    steps: 5
+    #separator: |
+    #font: system
+    show_min: false
+    bold: true
+    size: 9
+    color: 000000
+    alpha: 100
+    #orientation: diagonal_up
+
+  <%= component :axis_ticks %>
+    value_ticks: false
+    category_ticks: true
+    position: centered
+  
+  <%= component :chart_border %>
+    #top_thickness:    1
+    #bottom_thickness: 1
+    #left_thickness:   1
+    #right_thickness:  1 
+    
+  <%= component :chart_grid_h %>
+    thickness: 1
+    #alpha: 20
+    color: 000000
+    type: dashed
+
+  <%= component :chart_grid_v %>
+    thickness: 1
+    color: 000000
+    #alpha: 20
+    type: dashed
+    
+  <%= component :chart_pref %>
+    rotation_x: 30
+    rotation_y: 30
+    line_tickness: 10
+    point_shape: none
+    fill_shape: false
+            
+  <%= component :chart_rect %>
+    #positive_color: ffffff      
+    #positive_alpha: 35
+    #negative_color: ff0000
+    #negative_alpha: 10
+    #x:
+    #y:
+    #height:
+    #width:
+
+  <%= component :chart_transition %>
+    type: drop
+    order: category
+    #order: series
+    duration: 1
+    delay: 0
+
+  <%= component :chart_value %>
+    position: cursor
+    #position: cursor
+    color: 000000
+    size: 9
+    #alpha: 50
+    #as_percentage: false
+     
+  <%= component :legend_label %>
+    #layout: vertical
+    bullet: circle
+    #font: system
+    font: Arial
+    bold: true
+    #size: 9
+    
+  <%= component :legend_rect %>
+    margin: 5
+    fill_alpha: 0
+    x: -1000
+    y: -1000
+    
+  <%= component :legend_transition %>
+    type: scale
+    delay: 0
+    duration: 1
+  
+  <%= component :series_gap %>
+    #bar_gap:
+    #set_gap:
+
+  <%= component :series_switch %>
+    switch: true
+    
+  <%= component :series_color %>
+    colors: <%= @options[:colors] %>
+    
+  <%= component :draw %>   
+    components:
+      - <%= drawing :text %>
+        transition: zoom
+        #delay: <%= @options[:delay_count] %>
+        delay: 0.5
+        duration: 0.5
+        bold: true
+        rotation: -30
+        color: 657F5C
+        alpha: 50
+        size: 20
+        x: 30
+        y: 100
+        text: votingchina.com

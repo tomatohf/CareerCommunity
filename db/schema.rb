@@ -691,18 +691,19 @@ ActiveRecord::Schema.define(:version => 9) do
   create_table "vote_records", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "account_id", :limit => 11
-    t.integer  "topic_id",   :limit => 11
-    t.integer  "option_id",  :limit => 11
-    t.string   "voter_ip",   :limit => 40
+    t.integer  "account_id",     :limit => 11
+    t.integer  "vote_topic_id",  :limit => 11
+    t.integer  "vote_option_id", :limit => 11
+    t.string   "voter_ip",       :limit => 40
     t.boolean  "delta"
   end
 
   add_index "vote_records", ["created_at"], :name => "index_vote_records_on_created_at"
   add_index "vote_records", ["updated_at"], :name => "index_vote_records_on_updated_at"
   add_index "vote_records", ["account_id"], :name => "index_vote_records_on_account_id"
-  add_index "vote_records", ["topic_id"], :name => "index_vote_records_on_topic_id"
-  add_index "vote_records", ["option_id"], :name => "index_vote_records_on_option_id"
+  add_index "vote_records", ["vote_topic_id"], :name => "index_vote_records_on_vote_topic_id"
+  add_index "vote_records", ["vote_option_id"], :name => "index_vote_records_on_vote_option_id"
+  add_index "vote_records", ["voter_ip"], :name => "index_vote_records_on_voter_ip"
   add_index "vote_records", ["delta"], :name => "index_vote_records_on_delta"
 
   create_table "vote_topics", :force => true do |t|
@@ -714,7 +715,7 @@ ActiveRecord::Schema.define(:version => 9) do
     t.integer  "category_id",      :limit => 11
     t.boolean  "multiple",                         :default => false
     t.boolean  "allow_add_option",                 :default => false
-    t.integer  "group_id",         :limit => 11
+    t.integer  "group_id",         :limit => 11,   :default => 0
     t.boolean  "delta"
   end
 

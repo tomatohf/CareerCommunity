@@ -329,8 +329,6 @@ class PostsController < ApplicationController
       def get_access(current_account_id, poster_id, type_id)
         access = []
         if current_account_id
-          access << :login
-          
           group_member = GroupMember.is_group_member(type_id, current_account_id)
           if group_member
             access << :member
@@ -399,10 +397,10 @@ class PostsController < ApplicationController
       
       def get_access(current_account_id, poster_id, type_id)
         access = []
+        
+        access << :member # everyone can add post in activity
+        
         if current_account_id
-          access << :login
-          
-          access << :member # if ActivityMember.is_activity_member(type_id, current_account_id)
           access << :admin if ::Activity.get_activity_with_image(type_id)[0].master_id == current_account_id
           access << :author if (poster_id == current_account_id)
         end

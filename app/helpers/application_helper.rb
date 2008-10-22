@@ -174,4 +174,17 @@ module ApplicationHelper
     return [ size_txt, color_txt ].join
   end
   
+  def get_random_init_color
+    colors = []
+    6.times { colors << rand(16) }
+    colors.map! do |n|
+      if n >= 10
+        ["A", "B", "C", "D", "E", "F"][n-10]
+      else
+        n.to_s
+      end
+    end
+    colors.join
+  end
+  
 end

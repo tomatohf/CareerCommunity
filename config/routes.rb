@@ -253,12 +253,22 @@ ActionController::Routing::Routes.draw do |map|
   }
   
   
+  map.connect "/votes/latest/:page", :controller => "votes", :action => "latest", :page => /\d+/
+  map.connect "/votes/hotest/:page", :controller => "votes", :action => "hotest", :page => /\d+/
+  map.connect "/votes/category/:id/:page", :controller => "votes", :action => "category", :id => /\d+/, :page => /\d+/
   map.resources :votes, :collection => {
     
     :latest => :get,
-    :hotest => :get
+    :hotest => :get,
+    
+    :new_in_group => :post,
+    
+    :photo_selector_for_vote_image => :get
     
   }, :member => {
+    
+    :edit_image => :get,
+    :update_image => :post
     
   }
 

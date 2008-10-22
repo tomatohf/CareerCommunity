@@ -122,7 +122,7 @@ module RecruitmentVendor
         end
       }
       
-      if recruitment_content && recruitment_content != ""
+      if recruitment_content && recruitment_content != "" && recruitment_content.size > 300
         recruitment.content = recruitment_content
         recruitment
       else
@@ -141,7 +141,7 @@ module RecruitmentVendor
         end
       end
       
-      if recruitment_content && recruitment_content != ""
+      if recruitment_content && recruitment_content != "" && recruitment_content.size > 300
         recruitment.content = recruitment_content
         recruitment
       else

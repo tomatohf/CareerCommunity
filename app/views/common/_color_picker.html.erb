@@ -1,0 +1,292 @@
+<% args_string = "" %>
+<% if args %>
+    <% if args.size > 0 %>
+        <% args_string = "," + args.join(",") %>
+    <% end %>
+<% end %>
+
+<style>
+    td.colorchart {
+       width: <%= cell_size %>px;
+       height: <%= cell_size %>px;
+    }
+</style>
+
+<table style="background-color: rgb(68, 68, 68);" cellpadding="0" cellspacing="1">
+	<tbody>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(51, 0, 0);" onclick="<%= click_handler %>('330000'<%= args_string %>)" title="330000"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 51, 0);" onclick="<%= click_handler %>('333300'<%= args_string %>)" title="333300"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 102, 0);" onclick="<%= click_handler %>('336600'<%= args_string %>)" title="336600"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 153, 0);" onclick="<%= click_handler %>('339900'<%= args_string %>)" title="339900"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 204, 0);" onclick="<%= click_handler %>('33CC00'<%= args_string %>)" title="33CC00"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 255, 0);" onclick="<%= click_handler %>('33FF00'<%= args_string %>)" title="33FF00"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 255, 0);" onclick="<%= click_handler %>('66FF00'<%= args_string %>)" title="66FF00"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 204, 0);" onclick="<%= click_handler %>('66CC00'<%= args_string %>)" title="66CC00"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 153, 0);" onclick="<%= click_handler %>('669900'<%= args_string %>)" title="669900"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 102, 0);" onclick="<%= click_handler %>('666600'<%= args_string %>)" title="666600"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 51, 0);" onclick="<%= click_handler %>('663300'<%= args_string %>)" title="663300"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 0, 0);" onclick="<%= click_handler %>('660000'<%= args_string %>)" title="660000"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 0, 0);" onclick="<%= click_handler %>('FF0000'<%= args_string %>)" title="FF0000"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 51, 0);" onclick="<%= click_handler %>('FF3300'<%= args_string %>)" title="FF3300"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 102, 0);" onclick="<%= click_handler %>('FF6600'<%= args_string %>)" title="FF6600"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 153, 0);" onclick="<%= click_handler %>('FF9900'<%= args_string %>)" title="FF9900"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 204, 0);" onclick="<%= click_handler %>('FFCC00'<%= args_string %>)" title="FFCC00"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 255, 0);" onclick="<%= click_handler %>('FFFF00'<%= args_string %>)" title="FFFF00"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(51, 0, 51);" onclick="<%= click_handler %>('330033'<%= args_string %>)" title="330033"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 51, 51);" onclick="<%= click_handler %>('333333'<%= args_string %>)" title="333333"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 102, 51);" onclick="<%= click_handler %>('336633'<%= args_string %>)" title="336633"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 153, 51);" onclick="<%= click_handler %>('339933'<%= args_string %>)" title="339933"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 204, 51);" onclick="<%= click_handler %>('33CC33'<%= args_string %>)" title="33CC33"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 255, 51);" onclick="<%= click_handler %>('33FF33'<%= args_string %>)" title="33FF33"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 255, 51);" onclick="<%= click_handler %>('66FF33'<%= args_string %>)" title="66FF33"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 204, 51);" onclick="<%= click_handler %>('66CC33'<%= args_string %>)" title="66CC33"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 153, 51);" onclick="<%= click_handler %>('669933'<%= args_string %>)" title="669933"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 102, 51);" onclick="<%= click_handler %>('666633'<%= args_string %>)" title="666633"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 51, 51);" onclick="<%= click_handler %>('663333'<%= args_string %>)" title="663333"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 0, 51);" onclick="<%= click_handler %>('660033'<%= args_string %>)" title="660033"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 0, 51);" onclick="<%= click_handler %>('FF0033'<%= args_string %>)" title="FF0033"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 51, 51);" onclick="<%= click_handler %>('FF3333'<%= args_string %>)" title="FF3333"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 102, 51);" onclick="<%= click_handler %>('FF6633'<%= args_string %>)" title="FF6633"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 153, 51);" onclick="<%= click_handler %>('FF9933'<%= args_string %>)" title="FF9933"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 204, 51);" onclick="<%= click_handler %>('FFCC33'<%= args_string %>)" title="FFCC33"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 255, 51);" onclick="<%= click_handler %>('FFFF33'<%= args_string %>)" title="FFFF33"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(51, 0, 102);" onclick="<%= click_handler %>('330066'<%= args_string %>)" title="330066"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 51, 102);" onclick="<%= click_handler %>('333366'<%= args_string %>)" title="333366"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 102, 102);" onclick="<%= click_handler %>('336666'<%= args_string %>)" title="336666"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 153, 102);" onclick="<%= click_handler %>('339966'<%= args_string %>)" title="339966"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 204, 102);" onclick="<%= click_handler %>('33CC66'<%= args_string %>)" title="33CC66"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 255, 102);" onclick="<%= click_handler %>('33FF66'<%= args_string %>)" title="33FF66"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 255, 102);" onclick="<%= click_handler %>('66FF66'<%= args_string %>)" title="66FF66"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 204, 102);" onclick="<%= click_handler %>('66CC66'<%= args_string %>)" title="66CC66"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 153, 102);" onclick="<%= click_handler %>('669966'<%= args_string %>)" title="669966"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 102, 102);" onclick="<%= click_handler %>('666666'<%= args_string %>)" title="666666"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 51, 102);" onclick="<%= click_handler %>('663366'<%= args_string %>)" title="663366"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 0, 102);" onclick="<%= click_handler %>('660066'<%= args_string %>)" title="660066"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 0, 102);" onclick="<%= click_handler %>('FF0066'<%= args_string %>)" title="FF0066"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 51, 102);" onclick="<%= click_handler %>('FF3366'<%= args_string %>)" title="FF3366"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 102, 102);" onclick="<%= click_handler %>('FF6666'<%= args_string %>)" title="FF6666"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 153, 102);" onclick="<%= click_handler %>('FF9966'<%= args_string %>)" title="FF9966"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 204, 102);" onclick="<%= click_handler %>('FFCC66'<%= args_string %>)" title="FFCC66"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 255, 102);" onclick="<%= click_handler %>('FFFF66'<%= args_string %>)" title="FFFF66"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(51, 0, 153);" onclick="<%= click_handler %>('330099'<%= args_string %>)" title="330099"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 51, 153);" onclick="<%= click_handler %>('333399'<%= args_string %>)" title="333399"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 102, 153);" onclick="<%= click_handler %>('336699'<%= args_string %>)" title="336699"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 153, 153);" onclick="<%= click_handler %>('339999'<%= args_string %>)" title="339999"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 204, 153);" onclick="<%= click_handler %>('33CC99'<%= args_string %>)" title="33CC99"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 255, 153);" onclick="<%= click_handler %>('33FF99'<%= args_string %>)" title="33FF99"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 255, 153);" onclick="<%= click_handler %>('66FF99'<%= args_string %>)" title="66FF99"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 204, 153);" onclick="<%= click_handler %>('66CC99'<%= args_string %>)" title="66CC99"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 153, 153);" onclick="<%= click_handler %>('669999'<%= args_string %>)" title="669999"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 102, 153);" onclick="<%= click_handler %>('666699'<%= args_string %>)" title="666699"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 51, 153);" onclick="<%= click_handler %>('663399'<%= args_string %>)" title="663399"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 0, 153);" onclick="<%= click_handler %>('660099'<%= args_string %>)" title="660099"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 0, 153);" onclick="<%= click_handler %>('FF0099'<%= args_string %>)" title="FF0099"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 51, 153);" onclick="<%= click_handler %>('FF3399'<%= args_string %>)" title="FF3399"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 102, 153);" onclick="<%= click_handler %>('FF6699'<%= args_string %>)" title="FF6699"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 153, 153);" onclick="<%= click_handler %>('FF9999'<%= args_string %>)" title="FF9999"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 204, 153);" onclick="<%= click_handler %>('FFCC99'<%= args_string %>)" title="FFCC99"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 255, 153);" onclick="<%= click_handler %>('FFFF99'<%= args_string %>)" title="FFFF99"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(51, 0, 204);" onclick="<%= click_handler %>('3300CC'<%= args_string %>)" title="3300CC"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 51, 204);" onclick="<%= click_handler %>('3333CC'<%= args_string %>)" title="3333CC"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 102, 204);" onclick="<%= click_handler %>('3366CC'<%= args_string %>)" title="3366CC"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 153, 204);" onclick="<%= click_handler %>('3399CC'<%= args_string %>)" title="3399CC"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 204, 204);" onclick="<%= click_handler %>('33CCCC'<%= args_string %>)" title="33CCCC"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 255, 204);" onclick="<%= click_handler %>('33FFCC'<%= args_string %>)" title="33FFCC"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 255, 204);" onclick="<%= click_handler %>('66FFCC'<%= args_string %>)" title="66FFCC"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 204, 204);" onclick="<%= click_handler %>('66CCCC'<%= args_string %>)" title="66CCCC"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 153, 204);" onclick="<%= click_handler %>('6699CC'<%= args_string %>)" title="6699CC"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 102, 204);" onclick="<%= click_handler %>('6666CC'<%= args_string %>)" title="6666CC"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 51, 204);" onclick="<%= click_handler %>('6633CC'<%= args_string %>)" title="6633CC"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 0, 204);" onclick="<%= click_handler %>('6600CC'<%= args_string %>)" title="6600CC"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 0, 204);" onclick="<%= click_handler %>('FF00CC'<%= args_string %>)" title="FF00CC"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 51, 204);" onclick="<%= click_handler %>('FF33CC'<%= args_string %>)" title="FF33CC"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 102, 204);" onclick="<%= click_handler %>('FF66CC'<%= args_string %>)" title="FF66CC"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 153, 204);" onclick="<%= click_handler %>('FF99CC'<%= args_string %>)" title="FF99CC"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 204, 204);" onclick="<%= click_handler %>('FFCCCC'<%= args_string %>)" title="FFCCCC"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 255, 204);" onclick="<%= click_handler %>('FFFFCC'<%= args_string %>)" title="FFFFCC"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(51, 0, 255);" onclick="<%= click_handler %>('3300FF'<%= args_string %>)" title="3300FF"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 51, 255);" onclick="<%= click_handler %>('3333FF'<%= args_string %>)" title="3333FF"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 102, 255);" onclick="<%= click_handler %>('3366FF'<%= args_string %>)" title="3366FF"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 153, 255);" onclick="<%= click_handler %>('3399FF'<%= args_string %>)" title="3399FF"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 204, 255);" onclick="<%= click_handler %>('33CCFF'<%= args_string %>)" title="33CCFF"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 255, 255);" onclick="<%= click_handler %>('33FFFF'<%= args_string %>)" title="33FFFF"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 255, 255);" onclick="<%= click_handler %>('66FFFF'<%= args_string %>)" title="66FFFF"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 204, 255);" onclick="<%= click_handler %>('66CCFF'<%= args_string %>)" title="66CCFF"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 153, 255);" onclick="<%= click_handler %>('6699FF'<%= args_string %>)" title="6699FF"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 102, 255);" onclick="<%= click_handler %>('6666FF'<%= args_string %>)" title="6666FF"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 51, 255);" onclick="<%= click_handler %>('6633FF'<%= args_string %>)" title="6633FF"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 0, 255);" onclick="<%= click_handler %>('6600FF'<%= args_string %>)" title="6600FF"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 0, 255);" onclick="<%= click_handler %>('FF00FF'<%= args_string %>)" title="FF00FF"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 51, 255);" onclick="<%= click_handler %>('FF33FF'<%= args_string %>)" title="FF33FF"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 102, 255);" onclick="<%= click_handler %>('FF66FF'<%= args_string %>)" title="FF66FF"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 153, 255);" onclick="<%= click_handler %>('FF99FF'<%= args_string %>)" title="FF99FF"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 204, 255);" onclick="<%= click_handler %>('FFCCFF'<%= args_string %>)" title="FFCCFF"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 255, 255);" onclick="<%= click_handler %>('FFFFFF'<%= args_string %>)" title="FFFFFF"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(0, 0, 255);" onclick="<%= click_handler %>('0000FF'<%= args_string %>)" title="0000FF"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 51, 255);" onclick="<%= click_handler %>('0033FF'<%= args_string %>)" title="0033FF"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 102, 255);" onclick="<%= click_handler %>('0066FF'<%= args_string %>)" title="0066FF"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 153, 255);" onclick="<%= click_handler %>('0099FF'<%= args_string %>)" title="0099FF"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 204, 255);" onclick="<%= click_handler %>('00CCFF'<%= args_string %>)" title="00CCFF"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 255, 255);" onclick="<%= click_handler %>('00FFFF'<%= args_string %>)" title="00FFFF"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 255, 255);" onclick="<%= click_handler %>('99FFFF'<%= args_string %>)" title="99FFFF"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 204, 255);" onclick="<%= click_handler %>('99CCFF'<%= args_string %>)" title="99CCFF"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 153, 255);" onclick="<%= click_handler %>('9999FF'<%= args_string %>)" title="9999FF"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 102, 255);" onclick="<%= click_handler %>('9966FF'<%= args_string %>)" title="9966FF"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 51, 255);" onclick="<%= click_handler %>('9933FF'<%= args_string %>)" title="9933FF"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 0, 255);" onclick="<%= click_handler %>('9900FF'<%= args_string %>)" title="9900FF"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 0, 255);" onclick="<%= click_handler %>('CC00FF'<%= args_string %>)" title="CC00FF"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 51, 255);" onclick="<%= click_handler %>('CC33FF'<%= args_string %>)" title="CC33FF"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 102, 255);" onclick="<%= click_handler %>('CC66FF'<%= args_string %>)" title="CC66FF"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 153, 255);" onclick="<%= click_handler %>('CC99FF'<%= args_string %>)" title="CC99FF"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 204, 255);" onclick="<%= click_handler %>('CCCCFF'<%= args_string %>)" title="CCCCFF"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 255, 255);" onclick="<%= click_handler %>('CCFFFF'<%= args_string %>)" title="CCFFFF"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(0, 0, 204);" onclick="<%= click_handler %>('0000CC'<%= args_string %>)" title="0000CC"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 51, 204);" onclick="<%= click_handler %>('0033CC'<%= args_string %>)" title="0033CC"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 102, 204);" onclick="<%= click_handler %>('0066CC'<%= args_string %>)" title="0066CC"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 153, 204);" onclick="<%= click_handler %>('0099CC'<%= args_string %>)" title="0099CC"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 204, 204);" onclick="<%= click_handler %>('00CCCC'<%= args_string %>)" title="00CCCC"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 255, 204);" onclick="<%= click_handler %>('00FFCC'<%= args_string %>)" title="00FFCC"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 255, 204);" onclick="<%= click_handler %>('99FFCC'<%= args_string %>)" title="99FFCC"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 204, 204);" onclick="<%= click_handler %>('99CCCC'<%= args_string %>)" title="99CCCC"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 153, 204);" onclick="<%= click_handler %>('9999CC'<%= args_string %>)" title="9999CC"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 102, 204);" onclick="<%= click_handler %>('9966CC'<%= args_string %>)" title="9966CC"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 51, 204);" onclick="<%= click_handler %>('9933CC'<%= args_string %>)" title="9933CC"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 0, 204);" onclick="<%= click_handler %>('9900CC'<%= args_string %>)" title="9900CC"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 0, 204);" onclick="<%= click_handler %>('CC00CC'<%= args_string %>)" title="CC00CC"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 51, 204);" onclick="<%= click_handler %>('CC33CC'<%= args_string %>)" title="CC33CC"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 102, 204);" onclick="<%= click_handler %>('CC66CC'<%= args_string %>)" title="CC66CC"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 153, 204);" onclick="<%= click_handler %>('CC99CC'<%= args_string %>)" title="CC99CC"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 204, 204);" onclick="<%= click_handler %>('CCCCCC'<%= args_string %>)" title="CCCCCC"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 255, 204);" onclick="<%= click_handler %>('CCFFCC'<%= args_string %>)" title="CCFFCC"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(0, 0, 153);" onclick="<%= click_handler %>('000099'<%= args_string %>)" title="000099"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 51, 153);" onclick="<%= click_handler %>('003399'<%= args_string %>)" title="003399"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 102, 153);" onclick="<%= click_handler %>('006699'<%= args_string %>)" title="006699"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 153, 153);" onclick="<%= click_handler %>('009999'<%= args_string %>)" title="009999"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 204, 153);" onclick="<%= click_handler %>('00CC99'<%= args_string %>)" title="00CC99"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 255, 153);" onclick="<%= click_handler %>('00FF99'<%= args_string %>)" title="00FF99"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 255, 153);" onclick="<%= click_handler %>('99FF99'<%= args_string %>)" title="99FF99"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 204, 153);" onclick="<%= click_handler %>('99CC99'<%= args_string %>)" title="99CC99"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 153, 153);" onclick="<%= click_handler %>('999999'<%= args_string %>)" title="999999"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 102, 153);" onclick="<%= click_handler %>('996699'<%= args_string %>)" title="996699"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 51, 153);" onclick="<%= click_handler %>('993399'<%= args_string %>)" title="993399"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 0, 153);" onclick="<%= click_handler %>('990099'<%= args_string %>)" title="990099"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 0, 153);" onclick="<%= click_handler %>('CC0099'<%= args_string %>)" title="CC0099"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 51, 153);" onclick="<%= click_handler %>('CC3399'<%= args_string %>)" title="CC3399"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 102, 153);" onclick="<%= click_handler %>('CC6699'<%= args_string %>)" title="CC6699"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 153, 153);" onclick="<%= click_handler %>('CC9999'<%= args_string %>)" title="CC9999"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 204, 153);" onclick="<%= click_handler %>('CCCC99'<%= args_string %>)" title="CCCC99"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 255, 153);" onclick="<%= click_handler %>('CCFF99'<%= args_string %>)" title="CCFF99"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(0, 0, 102);" onclick="<%= click_handler %>('000066'<%= args_string %>)" title="000066"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 51, 102);" onclick="<%= click_handler %>('003366'<%= args_string %>)" title="003366"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 102, 102);" onclick="<%= click_handler %>('006666'<%= args_string %>)" title="006666"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 153, 102);" onclick="<%= click_handler %>('009966'<%= args_string %>)" title="009966"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 204, 102);" onclick="<%= click_handler %>('00CC66'<%= args_string %>)" title="00CC66"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 255, 102);" onclick="<%= click_handler %>('00FF66'<%= args_string %>)" title="00FF66"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 255, 102);" onclick="<%= click_handler %>('99FF66'<%= args_string %>)" title="99FF66"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 204, 102);" onclick="<%= click_handler %>('99CC66'<%= args_string %>)" title="99CC66"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 153, 102);" onclick="<%= click_handler %>('999966'<%= args_string %>)" title="999966"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 102, 102);" onclick="<%= click_handler %>('996666'<%= args_string %>)" title="996666"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 51, 102);" onclick="<%= click_handler %>('993366'<%= args_string %>)" title="993366"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 0, 102);" onclick="<%= click_handler %>('990066'<%= args_string %>)" title="990066"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 0, 102);" onclick="<%= click_handler %>('CC0066'<%= args_string %>)" title="CC0066"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 51, 102);" onclick="<%= click_handler %>('CC3366'<%= args_string %>)" title="CC3366"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 102, 102);" onclick="<%= click_handler %>('CC6666'<%= args_string %>)" title="CC6666"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 153, 102);" onclick="<%= click_handler %>('CC9966'<%= args_string %>)" title="CC9966"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 204, 102);" onclick="<%= click_handler %>('CCCC66'<%= args_string %>)" title="CCCC66"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 255, 102);" onclick="<%= click_handler %>('CCFF66'<%= args_string %>)" title="CCFF66"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(0, 0, 51);" onclick="<%= click_handler %>('000033'<%= args_string %>)" title="000033"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 51, 51);" onclick="<%= click_handler %>('003333'<%= args_string %>)" title="003333"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 102, 51);" onclick="<%= click_handler %>('006633'<%= args_string %>)" title="006633"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 153, 51);" onclick="<%= click_handler %>('009933'<%= args_string %>)" title="009933"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 204, 51);" onclick="<%= click_handler %>('00CC33'<%= args_string %>)" title="00CC33"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 255, 51);" onclick="<%= click_handler %>('00FF33'<%= args_string %>)" title="00FF33"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 255, 51);" onclick="<%= click_handler %>('99FF33'<%= args_string %>)" title="99FF33"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 204, 51);" onclick="<%= click_handler %>('99CC33'<%= args_string %>)" title="99CC33"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 153, 51);" onclick="<%= click_handler %>('999933'<%= args_string %>)" title="999933"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 102, 51);" onclick="<%= click_handler %>('996633'<%= args_string %>)" title="996633"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 51, 51);" onclick="<%= click_handler %>('993333'<%= args_string %>)" title="993333"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 0, 51);" onclick="<%= click_handler %>('990033'<%= args_string %>)" title="990033"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 0, 51);" onclick="<%= click_handler %>('CC0033'<%= args_string %>)" title="CC0033"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 51, 51);" onclick="<%= click_handler %>('CC3333'<%= args_string %>)" title="CC3333"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 102, 51);" onclick="<%= click_handler %>('CC6633'<%= args_string %>)" title="CC6633"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 153, 51);" onclick="<%= click_handler %>('CC9933'<%= args_string %>)" title="CC9933"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 204, 51);" onclick="<%= click_handler %>('CCCC33'<%= args_string %>)" title="CCCC33"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 255, 51);" onclick="<%= click_handler %>('CCFF33'<%= args_string %>)" title="CCFF33"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(0, 0, 0);" onclick="<%= click_handler %>('000000'<%= args_string %>)" title="000000"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 51, 0);" onclick="<%= click_handler %>('003300'<%= args_string %>)" title="003300"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 102, 0);" onclick="<%= click_handler %>('006600'<%= args_string %>)" title="006600"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 153, 0);" onclick="<%= click_handler %>('009900'<%= args_string %>)" title="009900"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 204, 0);" onclick="<%= click_handler %>('00CC00'<%= args_string %>)" title="00CC00"></td>
+		    <td class="colorchart" style="background-color: rgb(0, 255, 0);" onclick="<%= click_handler %>('00FF00'<%= args_string %>)" title="00FF00"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 255, 0);" onclick="<%= click_handler %>('99FF00'<%= args_string %>)" title="99FF00"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 204, 0);" onclick="<%= click_handler %>('99CC00'<%= args_string %>)" title="99CC00"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 153, 0);" onclick="<%= click_handler %>('999900'<%= args_string %>)" title="999900"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 102, 0);" onclick="<%= click_handler %>('996600'<%= args_string %>)" title="996600"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 51, 0);" onclick="<%= click_handler %>('993300'<%= args_string %>)" title="993300"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 0, 0);" onclick="<%= click_handler %>('990000'<%= args_string %>)" title="990000"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 0, 0);" onclick="<%= click_handler %>('CC0000'<%= args_string %>)" title="CC0000"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 51, 0);" onclick="<%= click_handler %>('CC3300'<%= args_string %>)" title="CC3300"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 102, 0);" onclick="<%= click_handler %>('CC6600'<%= args_string %>)" title="CC6600"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 153, 0);" onclick="<%= click_handler %>('CC9900'<%= args_string %>)" title="CC9900"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 204, 0);" onclick="<%= click_handler %>('CCCC00'<%= args_string %>)" title="CCCC00"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 255, 0);" onclick="<%= click_handler %>('CCFF00'<%= args_string %>)" title="CCFF00"></td>
+		</tr>
+
+		<tr>
+		    <td class="colorchart" style="background-color: rgb(0, 0, 0);" onclick="<%= click_handler %>('000000'<%= args_string %>)" title="000000"></td>
+		    <td class="colorchart" style="background-color: rgb(17, 17, 17);" onclick="<%= click_handler %>('111111'<%= args_string %>)" title="111111"></td>
+		    <td class="colorchart" style="background-color: rgb(34, 34, 34);" onclick="<%= click_handler %>('222222'<%= args_string %>)" title="222222"></td>
+		    <td class="colorchart" style="background-color: rgb(51, 51, 51);" onclick="<%= click_handler %>('333333'<%= args_string %>)" title="333333"></td>
+		    <td class="colorchart" style="background-color: rgb(68, 68, 68);" onclick="<%= click_handler %>('444444'<%= args_string %>)" title="444444"></td>
+		    <td class="colorchart" style="background-color: rgb(85, 85, 85);" onclick="<%= click_handler %>('555555'<%= args_string %>)" title="555555"></td>
+		    <td class="colorchart" style="background-color: rgb(102, 102, 102);" onclick="<%= click_handler %>('666666'<%= args_string %>)" title="666666"></td>
+		    <td class="colorchart" style="background-color: rgb(119, 119, 119);" onclick="<%= click_handler %>('777777'<%= args_string %>)" title="777777"></td>
+		    <td class="colorchart" style="background-color: rgb(136, 136, 136);" onclick="<%= click_handler %>('888888'<%= args_string %>)" title="888888"></td>
+		    <td class="colorchart" style="background-color: rgb(153, 153, 153);" onclick="<%= click_handler %>('999999'<%= args_string %>)" title="999999"></td>
+		    <td class="colorchart" style="background-color: rgb(170, 170, 170);" onclick="<%= click_handler %>('AAAAAA'<%= args_string %>)" title="AAAAAA"></td>
+		    <td class="colorchart" style="background-color: rgb(187, 187, 187);" onclick="<%= click_handler %>('BBBBBB'<%= args_string %>)" title="BBBBBB"></td>
+		    <td class="colorchart" style="background-color: rgb(204, 204, 204);" onclick="<%= click_handler %>('CCCCCC'<%= args_string %>)" title="CCCCCC"></td>
+		    <td class="colorchart" style="background-color: rgb(221, 221, 221);" onclick="<%= click_handler %>('DDDDDD'<%= args_string %>)" title="DDDDDD"></td>
+		    <td class="colorchart" style="background-color: rgb(238, 238, 238);" onclick="<%= click_handler %>('EEEEEE'<%= args_string %>)" title="EEEEEE"></td>
+		    <td class="colorchart" style="background-color: rgb(255, 255, 255);" onclick="<%= click_handler %>('FFFFFF'<%= args_string %>)" title="FFFFFF"></td>
+		    <td class="colorchart" style="background-color: rgb(68, 68, 68);"></td>
+		    <td class="colorchart" style="background-color: rgb(68, 68, 68);"></td>
+		</tr>
+
+	</tbody>
+</table>

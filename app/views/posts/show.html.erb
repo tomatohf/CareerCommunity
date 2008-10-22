@@ -29,6 +29,14 @@
 				<img src="/images/groups/add_post_small.png" border="0" />
 				发表新的讨论话题</a>
 		</div>
+		
+	<% elsif @post_type == "group" %>
+		<div class="community_block">
+			<% form_tag "/groups/#{@type_id}/join", :method => :post do %>
+				<input type="submit" value="加入圈子" class="button" />
+				后参与话题讨论
+			<% end %>
+		</div>
 	<% end %>
 	
 	<div class="community_title">
@@ -60,7 +68,7 @@
 		<%= format_datetime(@post.created_at) %>
 	</div>
 	
-	<div style="margin-top: 10px;">
+	<div style="margin-top: 10px;" class="tinymce_content">
 		<%= sanitize_tinymce(@post.content) %>
 	</div>
 	
@@ -116,6 +124,13 @@
 	<% if @access.include?(:member) %>
 		<div class="community_block_narrow align_r">
 			<a href="#comment_new">添加评论</a>
+		</div>
+	<% elsif @post_type == "group" %>
+		<div class="community_block align_r">
+			<% form_tag "/groups/#{@type_id}/join", :method => :post do %>
+				<input type="submit" value="加入圈子" class="button" />
+				后添加评论
+			<% end %>
 		</div>
 	<% end %>
 	

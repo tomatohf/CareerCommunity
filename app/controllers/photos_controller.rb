@@ -163,6 +163,12 @@ class PhotosController < ApplicationController
               Activity.update_activity_with_image_cache(ai.activity_id, :activity_img => new_image_url)
             end
             ActivityImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", @photo.id])
+            
+            # clean vote topic image
+            VoteImage.find(:all, :conditions => ["photo_id = ?", @photo.id]).each do |vi|
+              VoteTopic.update_vote_topic_with_image_cache(vi.vote_topic_id, :vote_img => new_image_url)
+            end
+            VoteImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", @photo.id])
           end
         end
       end

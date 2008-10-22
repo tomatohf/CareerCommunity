@@ -17,11 +17,11 @@ class Album < ActiveRecord::Base
   CKP_account_albums = :account_albums
   
   after_destroy { |album|
-    Album.clear_account_albums_cache(album.account_id)
+    self.clear_account_albums_cache(album.account_id)
   }
   
   after_save { |album|
-    Album.clear_account_albums_cache(album.account_id)
+    self.clear_account_albums_cache(album.account_id)
   }
   
   

@@ -1,0 +1,54 @@
+<% community_page_title("发起圈子内投票话题") %>
+
+<div class="float_r friend_container_r">
+	<div class="community_block">
+		<a href="/spaces/show_edit/<%= @account_id %>">我的空间</a>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_title">
+		去我的圈子 ...
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/recent/<%= @account_id %>">» 我的圈子近况</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/list_edit/<%= @account_id %>">» 我参加的圈子</a>
+	</div>
+	
+</div>
+
+<div class="friend_container_l">
+	<h2>发起圈子内投票话题</h2>
+	
+	<% if flash[:error_msg] %>
+		<p class="community_block_narrow error_msg"><%= flash[:error_msg] %></p>
+	<% end %>
+	
+	<div class="community_block_narrow form_info_s">
+		选择投票话题所在的圈子
+	</div>
+
+	<div class="community_block overflow_hidden">
+		<%= float_list(@group_members, "/activities/group_selector", :group_selector, {:multiple => false}, 7) %>
+	</div>
+	
+	<% form_tag "/votes/new_in_group", :method => :post, :id => "single_group_form" do %>
+		<input type="hidden" id="single_group_id" name="group_id" />
+	<% end %>
+	
+	<script language="JavaScript" type="text/javascript">
+		function select_single_group(group_id) {
+			document.getElementById("single_group_id").value = group_id;
+			document.getElementById("single_group_form").submit();
+		}
+	</script>
+	
+</div>
+

@@ -1,0 +1,192 @@
+<% vote_type = @group_with_image ? "圈内" : "全局" %>
+
+<% page_title = "发起一个新的#{vote_type}投票话题" %>
+<% community_page_title(page_title) %>
+
+<div class="blog_container">
+	<h2><%= page_title %></h2>
+	
+	<div>
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @vote_topic.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@vote_topic) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/votes", :method => :post do %>
+			
+				<% if @group_with_image %>
+					<% group = @group_with_image[0] %>
+					<% group_image = @group_with_image[1] %>
+					<div class="float_r">
+						投票所在圈子:
+						<div class="align_c" style="width: 80px;">
+							<div>
+								<a href="/groups/<%= group.id %>" target="_blank">
+									<img src="<%= face_img_src(group_image) %>" border="0" /></a>
+							</div>
+							<div>
+								<a href="/groups/<%= group.id %>" target="_blank" class="group_name_link">
+									<%= h(group.name) %></a>
+							</div>
+							<input type="hidden" name="group_id" value="<%= group.id %>" />
+						</div>
+					</div>
+				<% end %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td style="width: 75px">
+							<label for="vote_topic_title">
+						        投票标题(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="vote_topic_title" name="vote_topic_title" class="text_field" size="50" value="<%= h(@vote_topic.title) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="vote_topic_desc">
+						        投票描述
+								:
+						    </label>
+						</td>
+						<td>
+							<textarea id="vote_topic_desc" name="vote_topic_desc" class="text_field" cols="40" rows="3"><%= h(@vote_topic.desc) %></textarea>
+						</td>
+					</tr>
+					
+					
+					<% 4.times do |i| %>
+						<tbody id="vote_option_section_<%= i+1 %>" style="<%= %Q!display: none;! if i > 0 %>">
+							<% 5.times do |j| %>
+								<% index = i*5+(j+1) %>
+								<tr>
+									<td>
+										<label for="vote_option_<%= index %>">
+									        选项
+											<%= index %>
+											:
+									    </label>
+									</td>
+									<td>
+										<table cellpadding="0" cellspacing="0">
+											<tr>
+												<td>
+													<input type="text" id="vote_option_<%= index %>" name="vote_option_<%= index %>" class="text_field" size="40" value="<%= @option_titles["vote_option_#{index}".to_sym] %>" />
+												</td>
+												
+												<td>&nbsp;&nbsp;&nbsp;</td>
+												
+												<td>
+													<%= render(:partial => "color_picker_field", :locals => {:option_id => "vote_option_#{index}", :cell_size => 10, :color_value => @option_colors["vote_option_#{index}_color_field".to_sym]}) %>
+												</td>
+												
+												<td>&nbsp;&nbsp;&nbsp;</td>
+												
+												<td>
+													<% if j == 4 && i < 3 %>
+														&nbsp;
+														<a href="#" onclick="document.getElementById('vote_option_section_<%= (i+1)+1 %>').style.display = ''; this.style.display = 'none'; return false;">+增加更多选项</a>
+													<% end %>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							<% end %>
+						</tbody>
+					<% end %>
+					
+					
+					<tr>
+						<td>
+							<label for="vote_topic_multiple">
+						        选项类型(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<select name="vote_topic_multiple" id="vote_topic_multiple" class="dropdown_list">
+								<option value="false"<%= " selected=\"selected\"" if @vote_topic.multiple.nil? || @vote_topic.multiple == false %>>单选   &nbsp;&nbsp;</option>
+								<option value="true"<%= " selected=\"selected\"" if @vote_topic.multiple == true %>>多选   &nbsp;&nbsp;</option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<label for="vote_topic_allow_add_option">
+								允许其他人添加新选项
+								:
+							</label>
+							<%= check_box_tag :vote_topic_allow_add_option, value = "true", @vote_topic.allow_add_option %>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label>
+						        分类(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<% VoteCategory.get_all_categories.each do |category| %>
+								<input type="radio" value="<%= category[0] %>" name="vote_topic_category_id" id="vote_topic_category_id_<%= category[0] %>"<%= %Q! checked="checked"! if @vote_topic.category_id == category[0] %> />
+
+								<label for="vote_topic_category_id_<%= category[0] %>">
+									<%= category[1] %>
+								</label>
+								&nbsp;&nbsp;
+							<% end %>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "发起投票", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/votes">返回投票话题列表</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+
+<script language="JavaScript">
+	function toggle_color_picker(color_picker_id) {
+		var color_picker = document.getElementById(color_picker_id);
+		var display = "none";
+		if(color_picker.style.display == "none") {
+			display = '';
+		}
+		color_picker.style.display = display;
+	}
+	
+	function on_option_color_selected(color, color_picker_text_field_id, color_picker_text_view_id, color_picker_id){
+        document.getElementById(color_picker_text_field_id).value = color;
+        document.getElementById(color_picker_text_view_id).style.backgroundColor = "#" + color;
+		document.getElementById(color_picker_id).style.display = "none";
+    }
+</script>
+
+
