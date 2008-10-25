@@ -40,6 +40,9 @@
 							onmouseover="this.className='menu_selected'"
 							onmouseout="this.className=''"
 							<% end %>
+							<% if menu[0] == "/community" %>
+							target="_blank"
+							<% end %>
 							>
 							<%= menu[1] %></a>
 					</td>

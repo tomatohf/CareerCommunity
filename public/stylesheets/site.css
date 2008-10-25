@@ -1008,7 +1008,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 
 .vote_container {
 	margin-left: 150px;
-	padding: 0px 20px;
+	padding: 0px 0px 0px 10px;
 }
 
 .tinymce_content {
@@ -1017,6 +1017,53 @@ a.account_nick_link:hover, a.group_name_link:hover {
 
 .tinymce_content p {
 	margin: 5px;
+}
+
+.vote_topic_item {
+	margin-bottom: 25px;
+}
+
+.vote_topic_preview_result_title {
+	padding: 0px 10px;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.vote_topic_preview_result_action {
+	padding: 0px 5px;
+	margin-bottom: 15px;
+	
+	word-spacing: 15px;
+}
+
+.vote_topic_item_text_part {
+	border-bottom: 1px dashed #CCCCCC;
+	padding-left: 5px;
+	padding-right: 3px;
+}
+
+.vote_topic_list_item_normal_bg {
+    background-color: #FFFFFF;
+    border-width: 1px;
+    border-color: #FFFFFF;
+    border-style: solid;
+}
+
+.vote_topic_list_item_over_bg {
+    background-color: #FFF5E8;
+    border-width: 1px;
+    border-color: #F0E0CF;
+    border-style: solid;
+}
+
+.vote_container_l {
+	margin-left: 150px;
+	margin-right: 300px;
+	padding: 0px 20px;
+}
+
+.vote_container_r {
+	width: 300px;
 }
 
 

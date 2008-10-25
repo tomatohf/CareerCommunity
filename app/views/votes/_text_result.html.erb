@@ -1,0 +1,75 @@
+<%
+	group_id = vote_topic.group_id || 0
+	group, group_image = Group.get_group_with_image(group_id) if group_id > 0
+	
+	has_login = session[:account_id] && session[:account_id] > 0
+	
+	not_group_member = has_login && group && (!GroupMember.is_group_member(group.id, session[:account_id]))
+	
+	voted = VoteRecord.get_voted_records(vote_topic.id, session[:account_id]).size > 0
+	
+	can_vote = has_login && (!not_group_member) && (!voted)
+%>
+
+<% multiple = vote_topic.multiple %>
+
+<% form_tag "/votes/#{vote_topic.id}/vote_to_option", :method => :post do %>
+	<table cellpadding="0" cellspacing="0" class="main_part_w">
+
+		<% option_info.each do |o_i| %>
+		    <tr>
+		        <% if show_legend_color %>
+			        <td align="center" valign="middle">
+			            <div style="width: 10px; height: 10px; background-color: #<%= o_i[:color] %>"></div>
+			        </td>
+		        <% end %>
+
+		        <td align="left" valign="middle">
+					<label for="select_option_<%= o_i[:option][0] %>">
+			            &nbsp;
+			            <%= o_i[:index] %>:
+			            &nbsp;
+			            <%= h(o_i[:title]) %>
+					</label>
+		        </td>
+	
+		        <% count = o_i[:count] %>
+		        <td align="right" valign="middle">
+		            <%= count %>
+		        </td>
+		        <td align="right" valign="middle">
+		            <%= total_count > 0 ? "#{(count * 100 / total_count.to_f).round}%" : "0%" %>
+		        </td>
+	
+				<% if can_vote %>
+					<td align="right" style="width: 30px;">
+						<input type="<%= multiple ? "checkbox" : "radio" %>" name="option_ids[]" id="select_option_<%= o_i[:option][0] %>" value="<%= o_i[:option][0] %>" />
+					</td>
+				<% end %>
+		    </tr>
+		<% end %>
+	
+	</table>
+	
+	<div class="align_r">
+		<% if can_vote %>
+			<input type="submit" class="button" value="我来投一票" />
+		<% end %>
+	</div>
+<% end %>
+
+<% unless can_vote %>
+	<div class="align_r form_info_s">
+		<% if (!has_login) %>
+			<a href="/accounts/login_form">登录</a> 后参与投票
+		<% elsif not_group_member %>
+			只有圈子成员可以参加此圈内投票
+		<% elsif voted %>
+			<% form_tag "/votes/#{vote_topic.id}/clear_vote_record", :method => :post, :id => "clear_vote_#{vote_topic.id}_record_form" do %>
+				已经投过票了, <a href="#" onclick="if(confirm('确定要重新投票么 ?')) { document.getElementById('clear_vote_<%= vote_topic.id %>_record_form').submit(); }; return false;">我要改变主意</a>
+			<% end %>
+		<% end %>
+	</div>
+<% end %>
+
+

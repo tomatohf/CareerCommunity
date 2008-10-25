@@ -13,6 +13,8 @@ class Activity < ActiveRecord::Base
     # set_property :field_weights => {:field => number}
   end
   
+  include CareerCommunity::Util
+  
   has_many :members, :class_name => "ActivityMember", :foreign_key => "activity_id", :dependent => :destroy
   has_many :interests, :class_name => "ActivityInterest", :foreign_key => "activity_id", :dependent => :destroy
   
@@ -90,8 +92,7 @@ class Activity < ActiveRecord::Base
     unless a_i
       activity = self.find(activity_id)
       activity_image = activity.get_image_url
-      activity.clear_association
-      a_i = [activity, activity_image]
+      a_i = [activity.clear_association, activity_image]
       
       Cache.set("#{CKP_activity_with_img}_#{activity_id}".to_sym, a_i, Cache_TTL)
     end
@@ -103,8 +104,7 @@ class Activity < ActiveRecord::Base
     if a_i
       if updates.key?(:activity)
         activity = updates[:activity]
-        activity.clear_association
-        a_i[0] = activity
+        a_i[0] = activity.clear_association
       end
       a_i[1] = updates[:activity_img] if updates.key?(:activity_img)
       Cache.set("#{CKP_activity_with_img}_#{activity_id}".to_sym, a_i, Cache_TTL)
@@ -112,8 +112,7 @@ class Activity < ActiveRecord::Base
   end
   
   def self.set_activity_with_image_cache(activity_id, activity, activity_img_url)
-    activity.clear_association
-    a_i = [activity, activity_img_url]
+    a_i = [activity.clear_association, activity_img_url]
     Cache.set("#{CKP_activity_with_img}_#{activity_id}".to_sym, a_i, Cache_TTL)
   end
   
@@ -168,7 +167,10 @@ class Activity < ActiveRecord::Base
   end
   
   def clear_association
-    self.clear_association_cache
+    copy = deep_copy(self)
+    copy.clear_association_cache
+    copy.clear_aggregation_cache
+    copy
   end
   
   

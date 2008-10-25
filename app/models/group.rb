@@ -13,6 +13,8 @@ class Group < ActiveRecord::Base
     # set_property :field_weights => {:field => number}
   end
   
+  include CareerCommunity::Util
+  
   has_many :members, :class_name => "GroupMember", :foreign_key => "group_id", :dependent => :destroy
   
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"
@@ -87,8 +89,7 @@ class Group < ActiveRecord::Base
     unless g_i
       group = self.find(group_id)
       group_image_url = group.get_image_url
-      group.clear_association
-      g_i = [group, group_image_url]
+      g_i = [group.clear_association, group_image_url]
       
       Cache.set("#{CKP_group_with_img}_#{group_id}".to_sym, g_i, Cache_TTL)
     end
@@ -100,8 +101,7 @@ class Group < ActiveRecord::Base
     if g_i
       if updates.key?(:group)
         group = updates[:group]
-        group.clear_association
-        g_i[0] = group
+        g_i[0] = group.clear_association
       end
       g_i[1] = updates[:group_img] if updates.key?(:group_img)
       Cache.set("#{CKP_group_with_img}_#{group_id}".to_sym, g_i, Cache_TTL)
@@ -109,8 +109,7 @@ class Group < ActiveRecord::Base
   end
   
   def self.set_group_with_image_cache(group_id, group, group_img_url)
-    group.clear_association
-    g_i = [group, group_img_url]
+    g_i = [group.clear_association, group_img_url]
     Cache.set("#{CKP_group_with_img}_#{group_id}".to_sym, g_i, Cache_TTL)
   end
   
@@ -164,7 +163,10 @@ class Group < ActiveRecord::Base
   end
   
   def clear_association
-    self.clear_association_cache
+    copy = deep_copy(self)
+    copy.clear_association_cache
+    copy.clear_aggregation_cache
+    copy
   end
   
   

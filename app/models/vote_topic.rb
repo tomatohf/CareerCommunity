@@ -1,7 +1,11 @@
 class VoteTopic < ActiveRecord::Base
   
+  include CareerCommunity::Util
+  
   has_many :options, :class_name => "VoteOption", :foreign_key => "vote_topic_id", :dependent => :destroy
   has_many :records, :class_name => "VoteRecord", :foreign_key => "vote_topic_id", :dependent => :destroy
+  
+  has_many :comments, :class_name => "VoteComment", :foreign_key => "vote_topic_id", :dependent => :destroy
   
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   
@@ -46,8 +50,7 @@ class VoteTopic < ActiveRecord::Base
     unless v_i
       vote_topic = self.find(vote_topic_id)
       vote_image = vote_topic.get_image_url
-      vote_topic.clear_association
-      v_i = [vote_topic, vote_image]
+      v_i = [vote_topic.clear_association, vote_image]
       
       Cache.set("#{CKP_vote_topic_with_img}_#{vote_topic_id}".to_sym, v_i, Cache_TTL)
     end
@@ -59,8 +62,7 @@ class VoteTopic < ActiveRecord::Base
     if v_i
       if updates.key?(:vote_topic)
         vote_topic = updates[:vote_topic]
-        vote_topic.clear_association
-        v_i[0] = vote_topic
+        v_i[0] = vote_topic.clear_association
       end
       v_i[1] = updates[:vote_img] if updates.key?(:vote_img)
       Cache.set("#{CKP_vote_topic_with_img}_#{vote_topic_id}".to_sym, v_i, Cache_TTL)
@@ -68,8 +70,7 @@ class VoteTopic < ActiveRecord::Base
   end
   
   def self.set_vote_topic_with_image_cache(vote_topic_id, vote_topic, vote_img_url)
-    vote_topic.clear_association
-    v_i = [vote_topic, vote_img_url]
+    v_i = [vote_topic.clear_association, vote_img_url]
     Cache.set("#{CKP_vote_topic_with_img}_#{vote_topic_id}".to_sym, v_i, Cache_TTL)
   end
   
@@ -78,9 +79,18 @@ class VoteTopic < ActiveRecord::Base
   end
   
   
+  def calculate_chart_height(height_of_one_option = 25)
+    h = height_of_one_option * (VoteOption.get_vote_topic_options(self.id).size)
+    h < 150 ? 150 : h
+  end
+  
+  
   
   def clear_association
-    self.clear_association_cache
+    copy = deep_copy(self)
+    copy.clear_association_cache
+    copy.clear_aggregation_cache
+    copy
   end
   
 end

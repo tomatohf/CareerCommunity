@@ -18,6 +18,10 @@ module CareerCommunity
     
     private
     
+    def deep_copy(ar)
+      Marshal::load(Marshal.dump(ar))
+    end
+    
     def truncate_text(text, len, append = "...")
       return "" if text.nil?
       text.chars.length > len ? text.chars[0...(len - append.chars.length)] + append : text

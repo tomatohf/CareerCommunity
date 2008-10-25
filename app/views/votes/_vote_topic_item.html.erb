@@ -1,0 +1,48 @@
+<%
+	vote_topic_id = vote_topic_item.id
+	vote_image = vote_topic_item.get_image_url
+
+	VoteTopic.set_vote_topic_with_image_cache(vote_topic_id, vote_topic_item, vote_image)
+%>
+
+<%
+	category_id = vote_topic_item.category_id
+	category_name = VoteCategory.get_category(category_id)
+%>
+
+<div class="vote_topic_item">
+	<table cellpadding="0" cellspacing="0" class="main_part_w">
+		<tr>
+		    <td valign="top" style="width: 60px">
+				<div class="align_c community_block" onclick="preview_topic('<%= vote_topic_id %>');" onmouseover="mouse_over_topic_list_item(<%= vote_topic_id %>)" onmouseout="mouse_out_topic_list_item(<%= vote_topic_id %>)" style="cursor: pointer;">
+					<img src="<%= face_img_src(vote_image) %>" border="0" />
+				</div>
+			</td>
+			
+		    <td valign="top" id="<%= "list_item_text_content_#{vote_topic_id}" %>" class="vote_topic_list_item_normal_bg">
+		        <div class="vote_topic_item_text_part">
+		            <div>
+	                    <a href="/votes/<%= vote_topic_id %>" class="account_nick_link">
+							<%= h(vote_topic_item.title) %></a>
+	                    &nbsp;&nbsp;
+	                    [<a href="/votes/category/<%= category_id %>" class="account_nick_link"><%= category_name %></a>]
+		            </div>
+
+					<div class="align_r form_info_s">
+						<a href="#" onclick="preview_topic('<%= vote_topic_id %>'); return false;" onmouseover="mouse_over_topic_list_item(<%= vote_topic_id %>)" onmouseout="mouse_out_topic_list_item(<%= vote_topic_id %>)">预览</a>
+						<img id="topic_preview_indicator_<%= vote_topic_id %>" src="/images/loading_small.gif" style="display: none;" />
+					</div>
+		
+					<div class="align_r form_info_s">
+						来自
+						<a href="/spaces/show/<%= vote_topic_item.account.id %>" class="account_nick_link">
+							<%= h(vote_topic_item.account.get_nick) %></a>
+	                    &nbsp;&nbsp;
+	                    <%= format_datetime(vote_topic_item.created_at) %>
+					</div>
+		        </div>
+		    </td>
+		</tr>
+	</table>
+</div>
+

@@ -268,9 +268,19 @@ ActionController::Routing::Routes.draw do |map|
   }, :member => {
     
     :edit_image => :get,
-    :update_image => :post
+    :update_image => :post,
+    
+    :create_comment => :post,
+    :delete_comment => :post,
+    
+    :vote_to_option => :post,
+    
+    :clear_vote_record => :post
     
   }
+  map.connect "/votes/:id/comment/:page", :controller => "votes", :action => "show", :id => /\d+/, :page => /\d+/
+  map.connect "/votes/:id/:chart_type", :controller => "votes", :action => "show", :id => /\d+/
+  map.connect "/votes/:id/:chart_type/comment/:page", :controller => "votes", :action => "show", :id => /\d+/, :page => /\d+/
 
   
   

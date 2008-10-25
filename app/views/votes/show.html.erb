@@ -1,0 +1,191 @@
+<% vote_topic_title = h(@vote_topic.title)%>
+
+<% community_page_title(vote_topic_title) %>
+
+<div class="float_r vote_container_r">
+	
+	<div class="community_block align_c">
+		<% vote_image_url = @vote_image || "" %>
+		<% vote_image_url = vote_image_url.gsub("thumb_48", "thumb_200") if vote_image_url.include?("thumb_48") %>
+		<% if @edit %>
+			<a href="/votes/<%= @vote_topic_id %>/edit_image">
+				<img src="<%= face_img_src(vote_image_url) %>" border="0" /></a>
+		<% else %>
+			<img src="<%= face_img_src(vote_image_url) %>" border="0" />
+		<% end %>
+	</div>
+
+	<% if @edit %>
+		<div class="community_block align_c">
+			<a href="/votes/<%= @vote_topic_id %>/edit">修改投票的设置</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="/votes/<%= @vote_topic_id %>/edit_image">设置投票的图标</a>
+		</div>
+		
+		<div class="community_block align_c">
+			<a href="#">删除这个投票</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#">添加新的选项</a>
+		</div>
+	<% end %>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block align_c">
+		<a href="#">查看交叉分析</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="#">查看投票构成</a>
+		<% if @vote_topic.allow_add_option %>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#">添加新的选项</a>
+		<% end %>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<div class="community_block float_r" style="margin: 0px 10px;">
+			<a href="/spaces/show/<%= @account_id %>">
+				<img src="<%= face_img_src(@account_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		
+		<div class="form_info_s">
+			<div>
+				<a href="/spaces/show/<%= @account_id %>">
+					<%= h(@account_nick_pic[0]) %></a>
+				发起的<%= "全局" unless @group %>投票
+			</div>
+			
+			<div>
+				已有
+				<b>
+					<%= @voter_count %></b>
+				人参与
+			</div>
+			
+			<div>
+				发起于 <%= format_datetime(@vote_topic.created_at) %>
+			</div>
+		</div>
+	</div>
+	
+	<% if @group %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+		
+		<div class="community_block float_r" style="margin: 0px 10px;">
+			<a href="/groups/<%= @group.id %>">
+				<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+		</div>
+		
+		<div>
+			<div class="form_info_s">
+				圈子 <a href="/groups/<%= @group.id %>"><%= h(@group.name) %></a> 的圈内投票
+			</div>
+			
+			<div class="form_info_l">
+				只有圈子的成员可以参加投票
+			</div>
+		</div>
+	<% end %>
+	
+	<div class="community_block_narrow clear_r">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_title clear_l">
+		发起的其它投票 ...
+	</div>
+	
+	<div class="community_block">
+		
+	</div>
+	
+</div>
+
+<div class="vote_container_l">
+	<h2><%= vote_topic_title %></h2>
+	
+	<div class="form_info_s">
+		<%= h(@vote_topic.desc) %>
+	</div>
+	
+	<div>
+		<% option_info, total_count, show_legend_color = get_text_result_info_for_vote(@vote_topic_id) %>
+		<%= render :partial => "text_result", :locals => {:option_info => option_info, :total_count => total_count, :show_legend_color => show_legend_color, :vote_topic => @vote_topic} %>
+	</div>
+	
+	<div class="align_c">
+		<a name="result_chart"></a>
+		<div>
+		    <%= ziya_chart("/votes/refresh_vote_result/#{@vote_topic_id}?chart_type=#{@chart_type}&token=#{Time.now.to_i}", :width => 500, :height => @vote_topic.calculate_chart_height) %>
+		</div>
+		<div>
+		    <a href="/votes/<%= @vote_topic_id %>/bar_h#result_chart">
+		        <img src="/images/votes/chart_icons/bar.png" alt="柱状图[横]" title="柱状图[横]" border="0" /></a>
+
+		    <a href="/votes/<%= @vote_topic_id %>/pie#result_chart">
+				<img src="/images/votes/chart_icons/pie.png" alt="饼状图" title="饼状图" border="0" /></a>
+
+	    	<a href="/votes/<%= @vote_topic_id %>/pie_3d#result_chart">
+	        	<img src="/images/votes/chart_icons/pie_3d.png" alt="饼状图[3D]" title="饼状图[3D]" border="0" /></a>
+		</div>
+	</div>
+	
+	
+	
+	<div class="community_title">
+		共有
+		<b>
+			<%= @vote_comments.total_entries %>
+		</b>
+		条<a id="comment_list">评论</a> ...
+	</div>
+	
+	<% if @edit %>
+		<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_comment(comment_id) {
+				if(confirm("确定要删除评论么 ?")) {
+					del_form = document.getElementById("delete_comment_form");
+					del_form.action = "/votes/" + comment_id + "/delete_comment";
+					del_form.submit();
+				}
+			}
+		</script>
+	<% end %>
+	
+	<div class="community_block_narrow align_r">
+		<a href="#comment_new">添加评论</a>
+	</div>
+
+	<div class="community_block">
+		<%= render(:partial => "/common/comment", :collection => @vote_comments, :locals => {:can_del => @edit}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@vote_comments) %>
+	</div>
+	
+	<div class="community_block_narrow">
+		<a id="comment_new">添加评论 »</a>
+		<% form_tag "/votes/#{@vote_topic_id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('vote_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
+			<textarea id="vote_comment" name="vote_comment" class="text_field" cols="50" rows="5"></textarea>
+			
+			<div>
+				<input type="submit" value="发表评论" class="button" />
+			</div>
+		<% end %>
+	</div>
+	
+</div>
+
+
+

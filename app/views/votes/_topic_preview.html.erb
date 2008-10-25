@@ -1,0 +1,46 @@
+<% chart_type ||= "" %>
+
+<div title="<%= h(vote_topic.desc) %>">
+	<div class="align_c vote_topic_preview_result_title">
+		<%= h(vote_topic.title) %>
+	</div>
+	
+    <div class="align_r vote_topic_preview_result_action">
+		<% voter_count = VoteRecord.get_voter_count(vote_topic.id) %>
+		参与(<%= voter_count %>)
+	
+		<% comment_count = VoteComment.get_count(vote_topic.id) %>
+		<a href="/votes/<%= vote_topic.id %>#comment_list">
+			评论(<%= comment_count %>)</a>
+		
+		<a href="#">交叉分析»</a>
+	</div>
+	
+	<div>
+		<% option_info, total_count, show_legend_color = get_text_result_info_for_vote(vote_topic.id) %>
+		<%= render :partial => "text_result", :locals => {:option_info => option_info, :total_count => total_count, :show_legend_color => show_legend_color, :vote_topic => vote_topic} %>
+	</div>
+	
+	<div class="align_c">
+		<div>
+		    <%= ziya_chart("/votes/refresh_vote_result/#{vote_topic.id}?chart_type=#{chart_type}&token=#{Time.now.to_i}", :width => 350, :height => vote_topic.calculate_chart_height) %>
+			<input type="hidden" id="topic_preview_current_chart_type" value="<%= chart_type %>" />
+		</div>
+		<div>
+		    <a href="#" onclick="preview_topic(<%= vote_topic.id %>, 'bar_h'); return false;">
+		        <img src="/images/votes/chart_icons/bar.png" alt="柱状图[横]" title="柱状图[横]" border="0" /></a>
+
+		    <a href="#" onclick="preview_topic(<%= vote_topic.id %>, 'pie'); return false;">
+				<img src="/images/votes/chart_icons/pie.png" alt="饼状图" title="饼状图" border="0" /></a>
+
+	    	<a href="#" onclick="preview_topic(<%= vote_topic.id %>, 'pie_3d'); return false;">
+	        	<img src="/images/votes/chart_icons/pie_3d.png" alt="饼状图[3D]" title="饼状图[3D]" border="0" /></a>
+
+
+			&nbsp;
+			<a href="#" onclick="preview_topic(<%= vote_topic.id %>, $('topic_preview_current_chart_type').value); return false;">
+	        	刷新</a>
+		</div>
+	</div>
+</div>
+

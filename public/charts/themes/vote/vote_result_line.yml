@@ -112,10 +112,10 @@
         delay: 0.5
         duration: 0.5
         bold: true
-        rotation: -30
+        rotation: -15
         color: 657F5C
         alpha: 50
         size: 20
-        x: 30
+        x: 75
         y: 100
-        text: votingchina.com
+        text: qiaobutang.com
