@@ -115,6 +115,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/groups/unapproved/:id/:page", :controller => "groups", :action => "unapproved", :id => /\d+/, :page => /\d+/
   map.connect "/groups/post/:id/:page", :controller => "groups", :action => "post", :id => /\d+/, :page => /\d+/
   map.connect "/groups/activity/:id/:page", :controller => "groups", :action => "activity", :id => /\d+/, :page => /\d+/
+  map.connect "/groups/vote/:id/:page", :controller => "groups", :action => "vote", :id => /\d+/, :page => /\d+/
   map.connect "/groups/photo/:id/:page", :controller => "groups", :action => "photo", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_post/:id/:page", :controller => "groups", :action => "all_post", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_activity/:id/:page", :controller => "groups", :action => "all_activity", :id => /\d+/, :page => /\d+/

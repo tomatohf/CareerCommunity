@@ -66,10 +66,19 @@
 		<% form_tag "/activities/new_in_groups", :method => :post, :id => "new_group_activity_form" do %>
 			<input type="hidden" name="in_group_id[]" value="<%= @group_id %>" />
 		<% end %>
+		<% form_tag "/votes/new_in_group", :method => :post, :id => "new_group_vote_topic_form" do %>
+			<input type="hidden" name="group_id" value="<%= @group_id %>" />
+		<% end %>
 		<div class="community_block">
 			<a href="#" onclick="document.getElementById('new_group_activity_form').submit(); return false;">
 				<img src="/images/activities/new_activity_in_group_small.gif" border="0" />
 				发起新的圈内活动</a>
+		</div>
+		
+		<div class="community_block">
+			<a href="#" onclick="document.getElementById('new_group_vote_topic_form').submit(); return false;">
+				<img src="/images/votes/new_vote_topic_small.gif" border="0" />
+				发起新的圈内投票</a>
 		</div>
 		
 		<div class="community_block">
@@ -216,8 +225,48 @@
 	</div>
 	<div id="activity_section">
 		<%= float_list(@group_activities, "activity_small", :activity_small, {}, 2) %>
+		<% unless @group_activities.size > 0 %>
+			<div class="form_info_l">
+				还没有圈内活动 ...
+			</div>
+		<% end %>
 	</div>
 	<div class="community_block clear_l">
+	</div>
+	
+	
+	<div class="community_title">
+		最新圈内投票 ...
+	</div>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="vote_section_expand" href="#" onclick="collapse_section('vote_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="vote_section_collapse" href="#" onclick="expand_section('vote_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<% unless @relationship == "not_member" || @relationship == "logout" %>
+				<span class="float_r">
+					<a href="#" onclick="document.getElementById('new_group_vote_topic_form').submit(); return false;">
+						发起新的圈内投票</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			<% end %>
+			
+			<img class="float_l" src="/images/groups/vote_small.gif" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<a href="/groups/vote/<%= @group_id %>">全部圈内投票</a>
+		</div>
+		
+		<div id="vote_section" class="community_block">
+			<%= render :partial => "vote_topic_small", :collection => @group_vote_topics %>
+			
+			<% unless @group_vote_topics.size > 0 %>
+				<div class="form_info_l">
+					还没有圈内投票 ...
+				</div>
+			<% end %>
+		</div>
 	</div>
 	
 	
@@ -246,6 +295,11 @@
 		
 		<div id="photo_section">
 			<%= float_list(@group_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
+			<% unless @group_activities.size > 0 %>
+				<div class="form_info_l">
+					还没有圈子照片 ...
+				</div>
+			<% end %>
 		</div>
 	</div>
 	<div class="community_block clear_l">

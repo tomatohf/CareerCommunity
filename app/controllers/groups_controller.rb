@@ -5,6 +5,7 @@ class GroupsController < ApplicationController
   Group_List_Size = 49
   Post_List_Size = 50
   Activity_List_Size = 15
+  Vote_List_Size = 6
   Photo_List_Size = 30
   
   Group_Recent_List_Size = 24
@@ -15,6 +16,7 @@ class GroupsController < ApplicationController
   New_Member_Num = 9
   Group_Post_Num = 20
   Group_Activity_Num = 10
+  Group_Vote_Num = 10
   Group_Photo_Num = 15
   
   Group_Admin_Max_Count = 11
@@ -242,6 +244,14 @@ class GroupsController < ApplicationController
       :order => "begin_at DESC"
     )
     
+    @group_vote_topics = VoteTopic.find(
+      :all,
+      :limit => Group_Vote_Num,
+      :conditions => ["group_id = ?", @group_id],
+      :include => [:image, :account],
+      :order => "created_at DESC"
+    )
+    
     @group_photos = GroupPhoto.find(
       :all,
       :limit => Group_Photo_Num,
@@ -288,6 +298,21 @@ class GroupsController < ApplicationController
       :conditions => ["in_group = ?", @group_id],
       :include => [:image],
       :order => "begin_at DESC"
+    )
+  end
+  
+  def vote
+    @group_id = params[:id]
+    @group, @group_image = Group.get_group_with_image(@group_id)
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @vote_topics = VoteTopic.paginate(
+      :page => page,
+      :per_page => Vote_List_Size,
+      :conditions => ["group_id = ?", @group_id],
+      :include => [:image, :account],
+      :order => "created_at DESC"
     )
   end
   
