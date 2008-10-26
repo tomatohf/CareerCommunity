@@ -15,7 +15,9 @@ class AccountAction < ActiveRecord::Base
     "add_space_comment" => "添加留言",
     "add_friend" => "添加朋友",
     "join_group" => "加入圈子",
-    "join_activity" => "参加活动"
+    "join_activity" => "参加活动",
+    "create_vote_topic" => "发起投票",
+    "join_vote_topic" => "参与投票"
   }
   
   Action_Types.keys.each do |t|
@@ -137,6 +139,42 @@ class AccountAction < ActiveRecord::Base
             :activity_id => #{activity_id},
             :activity_title => "#{activity.get_title}",
             :activity_image => "#{activity_image}",
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class CreateVoteTopic < Base
+      def action_text(data, operator, save_space)
+        vote_topic_id = data[:vote_topic_id]
+        vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+        
+        %Q!
+          render(:partial => "/spaces/actions/create_vote_topic", :locals => {
+            :operator => #{operator},
+            :vote_topic_id => #{vote_topic_id},
+            :vote_topic_title => "#{vote_topic.title}",
+            :vote_image => "#{vote_image}",
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class JoinVoteTopic < Base
+      def action_text(data, operator, save_space)
+        vote_topic_id = data[:vote_topic_id]
+        vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+        
+        %Q!
+          render(:partial => "/spaces/actions/join_vote_topic", :locals => {
+            :operator => #{operator},
+            :vote_topic_id => #{vote_topic_id},
+            :vote_topic_title => "#{vote_topic.title}",
+            :vote_image => "#{vote_image}",
             
             :save_space => #{save_space.inspect}
           })

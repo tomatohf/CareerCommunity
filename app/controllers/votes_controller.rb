@@ -166,6 +166,11 @@ class VotesController < ApplicationController
         vote_option.save
       end
       
+      # record account action
+      AccountAction.create_new(session[:account_id], "create_vote_topic", {
+        :vote_topic_id => @vote_topic.id
+      })
+      
       return render(:action => "edit_image")
     else
       flash.now[:error_msg] = "操作失败, 再试一次吧"
@@ -290,6 +295,7 @@ class VotesController < ApplicationController
           
           vote_option_ids = VoteOption.get_vote_topic_options(vote_topic_id).collect { |o| o[0].to_s }
           
+          has_record_saved = false
           to_be_saved_ids.each do |option_id|
             if vote_option_ids.include?(option_id)
               vote_record = VoteRecord.new(
@@ -298,9 +304,15 @@ class VotesController < ApplicationController
                 :vote_option_id => option_id,
                 :voter_ip => request.remote_ip
               )
-              vote_record.save
+              has_record_saved ||= vote_record.save
             end
           end
+          
+          # record account action
+          AccountAction.create_new(session[:account_id], "join_vote_topic", {
+            :vote_topic_id => vote_topic_id,
+            :voter_ip => request.remote_ip
+          }) if has_record_saved
           
         end
         
