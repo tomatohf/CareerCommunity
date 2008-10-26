@@ -29,7 +29,22 @@
 		            </div>
 
 					<div class="align_r form_info_s">
+						<% if vote_topic_item.group_id && vote_topic_item.group_id > 0 %>
+							<% group = Group.get_group_with_image(vote_topic_item.group_id)[0] %>
+							<% group_name = h(group.name) %>
+							圈内投票
+							(
+								<a href="/groups/<%= group.id %>" style="color: #B3ABA2;">
+									<%= group_name %></a>
+							)
+						<% else %>
+							全局投票
+						<% end %>
+						
+						&nbsp;&nbsp;
+						
 						<a href="#" onclick="preview_topic('<%= vote_topic_id %>'); return false;" onmouseover="mouse_over_topic_list_item(<%= vote_topic_id %>)" onmouseout="mouse_out_topic_list_item(<%= vote_topic_id %>)">预览</a>
+						
 						<img id="topic_preview_indicator_<%= vote_topic_id %>" src="/images/loading_small.gif" style="display: none;" />
 					</div>
 		
