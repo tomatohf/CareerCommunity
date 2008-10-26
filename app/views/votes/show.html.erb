@@ -100,12 +100,13 @@
 		<%= thin_hr %>
 	</div>
 	
-	<div class="community_title clear_l">
+	<br />
+	<div class="community_title">
 		发起的其它投票 ...
 	</div>
 	
 	<div class="community_block">
-		
+		<%= render :partial => "vote_topic_small", :collection => @created_vote_topics, :locals => {:hide_sep_line => true} %>
 	</div>
 	
 </div>

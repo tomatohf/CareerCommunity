@@ -6,6 +6,8 @@ class VotesController < ApplicationController
   
   Vote_Option_Limit = 20
   
+  Created_Topic_List_Size = 10
+  
   layout "community"
   before_filter :check_login, :only => [:new, :new_in_group, :vote_groups, :create,
                                         :edit_image, :update_image,
@@ -49,6 +51,24 @@ class VotesController < ApplicationController
     @page_title = "最热投票话题"
     
     latest
+  end
+  
+  def list
+    @account_id = params[:id]
+    
+    @edit = session[:account_id].to_s == @account_id
+    
+    @account_nick_pic = Account.get_nick_and_pic(@account_id) unless @edit
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @vote_topics = VoteTopic.paginate(
+      :page => page,
+      :per_page => Topic_List_Size,
+      :conditions => ["account_id = ?", @account_id],
+      :include => [:image, :account],
+      :order => "created_at DESC"
+    )
   end
   
   def category
@@ -235,6 +255,13 @@ class VotesController < ApplicationController
       :total_entries => VoteComment.get_count(@vote_topic.id),
       :include => [:account => [:profile_pic]],
       :order => "created_at ASC"
+    )
+    
+    @created_vote_topics = VoteTopic.find(
+      :all,
+      :limit => Created_Topic_List_Size,
+      :conditions => ["account_id = ?", @vote_topic.account_id],
+      :order => "created_at DESC"
     )
   end
   

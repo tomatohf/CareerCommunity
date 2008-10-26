@@ -229,6 +229,12 @@
 						
 						<div id="join_activity_section">
 							<%= render(:partial => "/activities/activity_small", :collection => @activity_members) %>
+							
+							<% unless @activity_members.size > 0 %>
+								<div class="form_info_l">
+									还没有参加过活动 ...
+								</div>
+							<% end %>
 						</div>
 					</div>
 				</td>
@@ -252,11 +258,41 @@
 						
 						<div id="interest_activity_section">
 							<%= render(:partial => "/activities/activity_small", :collection => @activity_interests) %>
+							
+							<% unless @activity_interests.size > 0 %>
+								<div class="form_info_l">
+									还没有感兴趣的活动 ...
+								</div>
+							<% end %>
 						</div>
 					</div>
 				</td>
 			</tr>
 		</table>
+	</div>
+	
+	
+	<div class="community_title">
+		<%= owner_name %> 发起的投票 ...
+	</div>
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="vote_section_expand" href="#" onclick="collapse_section('vote_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="vote_section_collapse" href="#" onclick="expand_section('vote_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			
+			<a href="/votes/list/<%= @account_id %>">所有发起的投票</a>
+		</div>
+	</div>
+	<div id="vote_section" class="community_block">
+		<%= render :partial => "/votes/vote_topic_small", :collection => @vote_topics %>
+		
+		<% unless @vote_topics.size > 0 %>
+			<div class="form_info_l">
+				还没有发起过投票 ...
+			</div>
+		<% end %>
 	</div>
 	
 	
@@ -275,6 +311,12 @@
 	</div>
 	<div id="photo_section">
 		<%= float_list(@photos, "photo", :photo, {:edit => @edit}, 5) %>
+		
+		<% unless @photos.size > 0 %>
+			<div class="form_info_l">
+				还没有上传过照片 ...
+			</div>
+		<% end %>
 	</div>
 	<div class="clear_l" />
 	
@@ -293,6 +335,12 @@
 		
 		<div id="blog_section" class="community_block">
 			<%= render(:partial => "blog", :collection => @blogs, :locals => {:edit => @edit}) %>
+			
+			<% unless @blogs.size > 0 %>
+				<div class="form_info_l">
+					还没有写过博客 ...
+				</div>
+			<% end %>
 		</div>
 	</div>
 	

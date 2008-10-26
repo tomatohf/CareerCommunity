@@ -84,6 +84,14 @@ class GroupsController < ApplicationController
       :include => [:image],
       :order => "begin_at DESC"
     )
+
+    @group_vote_topics = VoteTopic.find(
+      :all,
+      :limit => Group_Vote_Num,
+      :conditions => ["group_id in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
+      :include => [:account],
+      :order => "created_at DESC"
+    )
     
     @group_photos = GroupPhoto.find(
       :all,
@@ -248,7 +256,7 @@ class GroupsController < ApplicationController
       :all,
       :limit => Group_Vote_Num,
       :conditions => ["group_id = ?", @group_id],
-      :include => [:image, :account],
+      :include => [:account],
       :order => "created_at DESC"
     )
     
@@ -367,6 +375,24 @@ class GroupsController < ApplicationController
       :conditions => ["in_group in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
       :include => [:image],
       :order => "begin_at DESC"
+    )
+  end
+  
+  def all_vote
+    @owner_id = params[:id]
+    
+    @edit = session[:account_id].to_s == @owner_id
+    
+    @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @vote_topics = VoteTopic.paginate(
+      :page => page,
+      :per_page => Vote_List_Size,
+      :conditions => ["group_id in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
+      :include => [:image, :account],
+      :order => "created_at DESC"
     )
   end
   

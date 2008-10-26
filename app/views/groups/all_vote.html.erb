@@ -1,0 +1,35 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 参加的圈子的全部圈子投票" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<% unless @edit %>
+		<a href="/spaces/show/<%= @owner_id %>">
+			<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+	<% end %>
+</div>
+
+<div class="vote_container">
+	<h2><%= page_title %></h2>
+
+	<div class="community_block_narrow form_info_s">
+		<b><%= @vote_topics.total_entries %></b>
+		个投票话题.
+		
+		&nbsp;&nbsp;&nbsp;
+		<a href="/spaces/show/<%= @owner_id %>">
+			去 <%= owner_name %> 的空间</a>
+		
+		&nbsp;&nbsp;&nbsp;
+		<a href="/groups/recent/<%= @owner_id %>">
+			返回 <%= owner_name %> 的圈子近况</a>
+	</div>
+	<br />
+	
+	
+	<%= render(:partial => "/votes/topic_preview_list", :locals => {:vote_topics => @vote_topics}) %>
+	
+</div>
+
+

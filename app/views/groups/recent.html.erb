@@ -122,26 +122,61 @@
 		</div>
 	</div>
 	
+	
+	<div class="community_title">
+		最近圈子活动 ...
+	</div>
+	
 	<div class="community_block">
 		<div class="space_section_title">
 			<a class="float_r" title="收起" id="activity_section_expand" href="#" onclick="collapse_section('activity_section'); return false;">
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="activity_section_collapse" href="#" onclick="expand_section('activity_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<span class="float_r">
-				<a href="/activities">浏览其他现有的活动</a>
-				&nbsp;&nbsp;&nbsp;
-			</span>
 			
 			<img class="float_l" src="/images/activities/calendar_small.gif" border="0" width="20" height="20" />
 			&nbsp;&nbsp;&nbsp;
-			<a href="/groups/all_activity/<%= @owner_id %>">参加的圈子的全部圈内活动</a>
+			<a href="/groups/all_activity/<%= @owner_id %>">参加的圈子的全部圈子活动</a>
 		</div>
 	</div>
 	<div id="activity_section">
 		<%= float_list(@group_activities, "activity_small", :activity_small, {}, 2) %>
+		
+		<% unless @group_activities.size > 0 %>
+			<div class="form_info_l">
+				还没有圈子活动 ...
+			</div>
+		<% end %>
 	</div>
 	<div class="clear_l">
+	</div>
+	
+	
+	<div class="community_title">
+		最新圈子投票 ...
+	</div>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="vote_section_expand" href="#" onclick="collapse_section('vote_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="vote_section_collapse" href="#" onclick="expand_section('vote_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			
+			<img class="float_l" src="/images/groups/vote_small.gif" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<a href="/groups/all_vote/<%= @owner_id %>">参加的圈子的全部圈子投票</a>
+		</div>
+		
+		<div id="vote_section" class="community_block">
+			<%= render :partial => "vote_topic_small", :collection => @group_vote_topics %>
+			
+			<% unless @group_vote_topics.size > 0 %>
+				<div class="form_info_l">
+					还没有圈内投票 ...
+				</div>
+			<% end %>
+		</div>
 	</div>
 	
 	
@@ -163,6 +198,12 @@
 		
 		<div id="photo_section" class="community_block">
 			<%= float_list(@group_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
+			
+			<% unless @group_photos.size > 0 %>
+				<div class="form_info_l">
+					还没有圈子照片 ...
+				</div>
+			<% end %>
 		</div>
 	</div>
 	<div class="clear_l">

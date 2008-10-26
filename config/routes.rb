@@ -119,6 +119,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/groups/photo/:id/:page", :controller => "groups", :action => "photo", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_post/:id/:page", :controller => "groups", :action => "all_post", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_activity/:id/:page", :controller => "groups", :action => "all_activity", :id => /\d+/, :page => /\d+/
+  map.connect "/groups/all_vote/:id/:page", :controller => "groups", :action => "all_vote", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_photo/:id/:page", :controller => "groups", :action => "all_photo", :id => /\d+/, :page => /\d+/
   map.connect "/groups/created_post/:id/:page", :controller => "groups", :action => "created_post", :id => /\d+/, :page => /\d+/
   map.connect "/groups/commented_post/:id/:page", :controller => "groups", :action => "commented_post", :id => /\d+/, :page => /\d+/
@@ -257,6 +258,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/votes/latest/:page", :controller => "votes", :action => "latest", :page => /\d+/
   map.connect "/votes/hotest/:page", :controller => "votes", :action => "hotest", :page => /\d+/
   map.connect "/votes/category/:id/:page", :controller => "votes", :action => "category", :id => /\d+/, :page => /\d+/
+  map.connect "/votes/list/:id/:page", :controller => "votes", :action => "list", :id => /\d+/, :page => /\d+/
   map.resources :votes, :collection => {
     
     :latest => :get,

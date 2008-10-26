@@ -7,7 +7,8 @@ class SpacesController < ApplicationController
   Space_Friend_Num = 30
   Space_Group_Num = 15
   Space_Action_Num = 10
-  Space_Activity_Num = 6
+  Space_Activity_Num = 5
+  Space_Vote_Num = 10
   Space_Photo_Num = 10
   Space_Blog_Num = 5
   
@@ -139,6 +140,13 @@ class SpacesController < ApplicationController
       :limit => Space_Activity_Num,
       :conditions => ["account_id = ?", @account_id],
       :include => [:activity => [:image]],
+      :order => "created_at DESC"
+    )
+    
+    @vote_topics = VoteTopic.find(
+      :all,
+      :limit => Space_Vote_Num,
+      :conditions => ["account_id = ?", @account_id],
       :order => "created_at DESC"
     )
     

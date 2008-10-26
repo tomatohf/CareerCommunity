@@ -1,17 +1,10 @@
-<%
-	vote_topic_id = vote_topic_small.id
-	vote_image = vote_topic_small.get_image_url
+<% voter_count = VoteRecord.get_voter_count(vote_topic_small.id) %>
 
-	VoteTopic.set_vote_topic_with_image_cache(vote_topic_id, vote_topic_small, vote_image)
-%>
-
-<% voter_count = VoteRecord.get_voter_count(vote_topic_id) %>
-
-<% comment_count = VoteComment.get_count(vote_topic_id) %>
+<% comment_count = VoteComment.get_count(vote_topic_small.id) %>
 
 <div>
 	<div>
-		<a href="/votes/<%= vote_topic_id %>" class="account_nick_link">
+		<a href="/votes/<%= vote_topic_small.id %>" class="account_nick_link">
 			<%= h(vote_topic_small.title) %></a>	
 		&nbsp;&nbsp;
 		[<a href="/votes/category/<%= vote_topic_small.category_id %>" class="account_nick_link"><%= VoteCategory.get_category(vote_topic_small.category_id) %></a>]
@@ -31,7 +24,7 @@
 
 			|
 
-			<a href="/votes/<%= vote_topic_id %>#comment_list">
+			<a href="/votes/<%= vote_topic_small.id %>#comment_list">
 				评论(<%= comment_count %>)</a>
 
 			|
