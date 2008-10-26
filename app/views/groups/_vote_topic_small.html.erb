@@ -1,0 +1,46 @@
+<%
+	vote_topic_id = vote_topic_small.id
+	vote_image = vote_topic_small.get_image_url
+
+	VoteTopic.set_vote_topic_with_image_cache(vote_topic_id, vote_topic_small, vote_image)
+%>
+
+<% voter_count = VoteRecord.get_voter_count(vote_topic_id) %>
+
+<% comment_count = VoteComment.get_count(vote_topic_id) %>
+
+<div>
+	<div>
+		<a href="/votes/<%= vote_topic_id %>" class="account_nick_link">
+			<%= h(vote_topic_small.title) %></a>	
+		&nbsp;&nbsp;
+		[<a href="/votes/category/<%= vote_topic_small.category_id %>" class="account_nick_link"><%= VoteCategory.get_category(vote_topic_small.category_id) %></a>]
+
+		&nbsp;&nbsp;
+
+		<span class="form_info_s">
+			由
+			<% account = vote_topic_small.account %>
+			<a href="/spaces/show/<%= account.id%>" class="account_nick_link">
+				<%= h(account.get_nick) %></a>
+			发起
+
+			|
+			
+			参与(<%= voter_count %>)
+
+			|
+
+			<a href="/votes/<%= vote_topic_id %>#comment_list">
+				评论(<%= comment_count %>)</a>
+
+			|
+
+			<%= format_date(vote_topic_small.created_at) %>
+		</span>
+	</div>
+
+	<%= draw_hor_line("450px", "1px", "#DDDDDD") %>
+</div>
+
+

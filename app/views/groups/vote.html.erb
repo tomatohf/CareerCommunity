@@ -1,0 +1,113 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "圈子 #{group_name} 的全部圈内投票" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<a href="/groups/<%= @group_id %>">
+		<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+</div>
+
+<div class="vote_container">
+	<h2><%= page_title %></h2>
+
+	<div class="community_block_narrow form_info_s">
+		<b><%= @vote_topics.total_entries %></b>
+		个投票话题.
+		&nbsp;&nbsp;&nbsp;
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	<br />
+	
+	
+	<div>
+		
+		<table cellpadding="0" cellspacing="0" class="main_part_w">
+		    <tbody>
+		        <tr>
+					<td align="left" valign="top">
+		                <%= render :partial => "/votes/vote_topic_item", :collection => @vote_topics %>
+			        </td>
+			
+					<td style="width: 30px;"></td>
+			
+			        <td align="center" valign="top" style="width: 350px;">
+			            <div id="topic_preview_container">
+			                
+			            </div>
+			       </td>
+				</tr>
+		    </tbody>
+		</table>
+		
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@vote_topics) %>
+	</div>
+	
+</div>
+
+
+<script language="JavaScript" src="/lib/protopack/prototype-packer.js"></script>
+
+<script language="JavaScript">
+
+	CURRENT_LIST_ITEM_TOPIC_ID = null;
+	
+	function mouse_over_topic_list_item(topic_id){
+		if(CURRENT_LIST_ITEM_TOPIC_ID != topic_id){
+			$("list_item_text_content_" + topic_id).className = "vote_topic_list_item_over_bg";
+		}
+	}
+	
+	function mouse_out_topic_list_item(topic_id){
+		if(CURRENT_LIST_ITEM_TOPIC_ID != topic_id){
+			$("list_item_text_content_" + topic_id).className = "vote_topic_list_item_normal_bg";
+		}
+	}
+	
+	function set_current_list_item(topic_id){
+        if(CURRENT_LIST_ITEM_TOPIC_ID != null){
+            $("list_item_text_content_" + CURRENT_LIST_ITEM_TOPIC_ID).className = "vote_topic_list_item_normal_bg";
+        }
+        
+        CURRENT_LIST_ITEM_TOPIC_ID = topic_id;
+        
+        if(CURRENT_LIST_ITEM_TOPIC_ID != null){
+            $("list_item_text_content_" + CURRENT_LIST_ITEM_TOPIC_ID).className = "vote_topic_list_item_over_bg";
+        }
+    }
+
+    function preview_topic(topic_id, chart_type){
+		if(CURRENT_LIST_ITEM_TOPIC_ID == topic_id && chart_type == null) {
+			return;
+		}
+		
+		var indicator_id = "topic_preview_indicator_" + topic_id
+		Element.show(indicator_id);
+		new Ajax.Updater("topic_preview_container",
+							"/votes/preview_topic/" + topic_id,
+            {
+                asynchronous:true,
+                evalScripts:true,
+				onComplete:function(request) {
+					Element.hide(indicator_id);
+				},
+				parameters: "chart_type=" + chart_type,
+                method:"get"
+            }
+        );
+        
+        set_current_list_item(topic_id);
+    }
+
+</script>
+
+<% if @vote_topics.size > 0 %>
+	<script language="JavaScript">
+		preview_topic(<%= @vote_topics[0].id %>);
+	</script>
+<% end %>
+
+
