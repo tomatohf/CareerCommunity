@@ -1,0 +1,112 @@
+<% vote_topic_title = h(@vote_topic.title) %>
+
+<% page_title = "修改投票 #{vote_topic_title} 的设置" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r profile_container_r">
+	<div class="community_block">
+		<a href="/votes/<%= @vote_topic_id %>">
+			<img src="<%= face_img_src(@vote_image) %>" border="0" /></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/votes/<%= @vote_topic_id %>">返回投票 <%= vote_topic_title %></a>
+	</div>
+</div>
+
+<div class="profile_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @vote_topic.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@vote_topic) %>
+			</p>
+		<% end %>
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/votes/#{@vote_topic_id}", :method => :put do %>
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+				
+					<tr>
+						<td style="width: 75px">
+							<label for="vote_topic_multiple">
+						        选项类型(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<select name="vote_topic_multiple" id="vote_topic_multiple" class="dropdown_list">
+								<option value="false"<%= " selected=\"selected\"" if @vote_topic.multiple.nil? || @vote_topic.multiple == false %>>单选   &nbsp;&nbsp;</option>
+								<option value="true"<%= " selected=\"selected\"" if @vote_topic.multiple == true %>>多选   &nbsp;&nbsp;</option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<label for="vote_topic_allow_add_option">
+								允许其他人添加新选项
+								:
+							</label>
+							<%= check_box_tag :vote_topic_allow_add_option, value = "true", @vote_topic.allow_add_option %>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<label for="vote_topic_allow_clear_record">
+								允许投票者重新投票
+								:
+							</label>
+							<%= check_box_tag :vote_topic_allow_clear_record, value = "true", @vote_topic.allow_clear_record %>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label>
+						        分类(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<% VoteCategory.get_all_categories.each do |category| %>
+								<input type="radio" value="<%= category[0] %>" name="vote_topic_category_id" id="vote_topic_category_id_<%= category[0] %>"<%= %Q! checked="checked"! if @vote_topic.category_id == category[0] %> />
+
+								<label for="vote_topic_category_id_<%= category[0] %>">
+									<%= category[1] %>
+								</label>
+								&nbsp;
+							<% end %>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "更新投票设置", :class => "button", :disabled => @account_limited %>
+						</td>
+					</tr>
+				
+				</table>
+			<% end %>
+		</div>
+	</div>
+	
+</div>
+

@@ -22,8 +22,10 @@
 			<a href="/votes/<%= @vote_topic_id %>/edit_image">设置投票的图标</a>
 		</div>
 		
+		<% form_tag "/votes/#{@vote_topic_id}", :method => :delete, :id => "vote_topic_delete_form" do %>
+		<% end %>
 		<div class="community_block align_c">
-			<a href="#">删除这个投票</a>
+			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('vote_topic_delete_form').submit();}; return false;">删除这个投票</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="#">添加新的选项</a>
 		</div>
@@ -109,6 +111,14 @@
 </div>
 
 <div class="vote_container_l">
+	<span class="float_r form_info_s">
+		分类:
+		[
+			<a href="/votes/category/<%= @vote_topic.category_id %>">
+				<%= VoteCategory.get_category(@vote_topic.category_id) %></a>
+		]
+	</span>
+		
 	<h2><%= vote_topic_title %></h2>
 	
 	<div class="form_info_s">

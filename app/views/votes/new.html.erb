@@ -137,6 +137,16 @@
 					</tr>
 					
 					<tr>
+						<td colspan="2">
+							<label for="vote_topic_allow_clear_record">
+								允许投票者重新投票
+								:
+							</label>
+							<%= check_box_tag :vote_topic_allow_clear_record, value = "true", @vote_topic.allow_clear_record %>
+						</td>
+					</tr>
+					
+					<tr>
 						<td>
 							<label>
 						        分类(<span style="color: red;">*</span>)

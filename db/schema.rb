@@ -710,13 +710,14 @@ ActiveRecord::Schema.define(:version => 9) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title"
-    t.string   "desc",             :limit => 1000
-    t.integer  "account_id",       :limit => 11
-    t.integer  "category_id",      :limit => 11
-    t.boolean  "multiple",                         :default => false
-    t.boolean  "allow_add_option",                 :default => false
-    t.integer  "group_id",         :limit => 11,   :default => 0
+    t.string   "desc",               :limit => 1000
+    t.integer  "account_id",         :limit => 11
+    t.integer  "category_id",        :limit => 11
+    t.boolean  "multiple",                           :default => false
+    t.boolean  "allow_add_option",                   :default => false
+    t.integer  "group_id",           :limit => 11,   :default => 0
     t.boolean  "delta"
+    t.boolean  "allow_clear_record",                 :default => false
   end
 
   add_index "vote_topics", ["created_at"], :name => "index_vote_topics_on_created_at"

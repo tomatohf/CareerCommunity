@@ -8,7 +8,9 @@
 解散圈子
 
 
-new recruitment vendors - 2
+new recruitment vendors - 3
+
+Rails atom helper ?
 
 
 Vote client 变为仅显示投票结果 和 参加投票的 link

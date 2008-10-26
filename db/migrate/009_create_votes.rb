@@ -30,6 +30,7 @@ class CreateVotes < ActiveRecord::Migration
       
       t.column :multiple, :boolean, :default => false
       t.column :allow_add_option, :boolean, :default => false
+      t.column :allow_clear_record, :boolean, :default => false
       
       t.column :group_id, :integer, :default => 0
       # = 0 -> overall vote topic

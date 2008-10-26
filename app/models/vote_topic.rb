@@ -2,8 +2,8 @@ class VoteTopic < ActiveRecord::Base
   
   include CareerCommunity::Util
   
-  has_many :options, :class_name => "VoteOption", :foreign_key => "vote_topic_id", :dependent => :destroy
   has_many :records, :class_name => "VoteRecord", :foreign_key => "vote_topic_id", :dependent => :destroy
+  has_many :options, :class_name => "VoteOption", :foreign_key => "vote_topic_id", :dependent => :destroy
   
   has_many :comments, :class_name => "VoteComment", :foreign_key => "vote_topic_id", :dependent => :destroy
   
@@ -23,6 +23,10 @@ class VoteTopic < ActiveRecord::Base
   
   
   CKP_vote_topic_with_img = :vote_topic_with_img
+  
+  after_destroy { |vote_topic|
+    self.clear_vote_with_image_cache(vote_topic.id)
+  }
   
   
   

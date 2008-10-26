@@ -12,8 +12,8 @@
 		<% comment_count = VoteComment.get_count(vote_topic.id) %>
 		<a href="/votes/<%= vote_topic.id %>#comment_list">
 			评论(<%= comment_count %>)</a>
-		
-		<a href="#">交叉分析»</a>
+			
+		<a href="/votes/<%= vote_topic.id %>">进入»</a>
 	</div>
 	
 	<div>

@@ -8,13 +8,13 @@ class VotesController < ApplicationController
   before_filter :check_login, :only => [:new, :new_in_group, :vote_groups, :create,
                                         :edit_image, :update_image,
                                         :create_comment, :delete_comment, :vote_to_option,
-                                        :clear_vote_record]
+                                        :clear_vote_record, :edit, :update, :destroy]
   before_filter :check_limited, :only => [:create, :update_image, :create_comment, :delete_comment,
-                                          :vote_to_option, :clear_vote_record]
+                                          :vote_to_option, :clear_vote_record, :update, :destroy]
   
   before_filter :check_vote_groups_account, :only => [:vote_groups]
   
-  before_filter :check_vote_topic_owner, :only => [:edit_image, :update_image]
+  before_filter :check_vote_topic_owner, :only => [:edit_image, :update_image, :edit, :update, :destroy]
   
   before_filter :check_comment_owner, :only => [:delete_comment]
   
@@ -106,8 +106,9 @@ class VotesController < ApplicationController
     @vote_topic.desc = params[:vote_topic_desc] && params[:vote_topic_desc].strip
     
     @vote_topic.category_id = params[:vote_topic_category_id]
-    @vote_topic.allow_add_option = (params[:vote_topic_allow_add_option] == "true")
     @vote_topic.multiple = (params[:vote_topic_multiple] == "true")
+    @vote_topic.allow_add_option = (params[:vote_topic_allow_add_option] == "true")
+    @vote_topic.allow_clear_record = (params[:vote_topic_allow_clear_record] == "true")
     
     # collect vote options
     @option_titles = {}
@@ -281,12 +282,40 @@ class VotesController < ApplicationController
   def clear_vote_record
     vote_topic_id = params[:id]
     
+    vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+    
     VoteRecord.find(
       :all,
       :conditions => ["vote_topic_id = ? and account_id = ?", vote_topic_id, session[:account_id]]
-    ).each { |record| record.destroy }
+    ).each { |record| record.destroy } if vote_topic.allow_clear_record
     
     jump_to("/votes/#{vote_topic_id}")
+  end
+  
+  def edit
+    
+  end
+  
+  def update
+    @vote_topic.category_id = params[:vote_topic_category_id]
+    @vote_topic.multiple = (params[:vote_topic_multiple] == "true")
+    @vote_topic.allow_add_option = (params[:vote_topic_allow_add_option] == "true")
+    @vote_topic.allow_clear_record = (params[:vote_topic_allow_clear_record] == "true")
+    
+    if @vote_topic.save
+      VoteTopic.update_vote_topic_with_image_cache(@vote_topic_id, :vote_topic => @vote_topic)
+      flash.now[:message] = "投票设置已成功修改"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+    
+    render(:action => "edit")
+  end
+  
+  def destroy
+    @vote_topic.destroy
+    
+    jump_to("/votes")
   end
   
   
