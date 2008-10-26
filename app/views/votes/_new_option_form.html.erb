@@ -1,0 +1,42 @@
+<div class="community_block_narrow form_info_s">
+	已经有
+	<b><%= options_size %></b>
+	个选项了,
+	最多可以有
+	<%= option_number_limit %>
+	个选项
+</div>
+
+<% if options_size < option_number_limit %>
+	<div class="community_block">
+		<% form_tag "/votes/#{vote_topic_id}/create_new_option", :method => :post do %>
+			<table cellpadding="0" cellspacing="15">
+				<tr>
+					<td>
+						新选项:
+					</td>
+				
+					<td>
+						<input type="text" id="new_vote_option" name="new_vote_option" class="text_field" size="40" value="" />
+					</td>
+			
+					<td>
+						<%= render(:partial => "color_picker_field", :locals => {:option_id => "new_vote_option", :cell_size => 10, :color_value => nil}) %>
+					</td>
+				</tr>
+			
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" class="button" value="添加" />
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+<% else %>
+	<div class="form_info_l">
+		已达到选项数目上限, 无法继续添加新选项 ...
+	</div>
+<% end %>

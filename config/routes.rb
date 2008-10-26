@@ -270,6 +270,11 @@ ActionController::Routing::Routes.draw do |map|
     :edit_image => :get,
     :update_image => :post,
     
+    :edit_option => :get,
+    :create_new_option => :post,
+    :add_new_option => :get,
+    :delete_others_option => :post,
+    
     :create_comment => :post,
     :delete_comment => :post,
     

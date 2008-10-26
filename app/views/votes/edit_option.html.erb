@@ -1,0 +1,116 @@
+<% vote_topic_title = h(@vote_topic.title) %>
+
+<% page_title = "管理投票 #{vote_topic_title} 的选项" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r profile_container_r">
+	<div class="community_block">
+		<a href="/votes/<%= @vote_topic_id %>">
+			<img src="<%= face_img_src(@vote_image) %>" border="0" /></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/votes/<%= @vote_topic_id %>">返回投票 <%= vote_topic_title %></a>
+	</div>
+	
+	
+	<div class="community_title">
+		我自己添加的选项 ...
+	</div>
+	
+	<div class="community_block">
+		<table cellpadding="0" cellspacing="10">
+			<% @options.each do |option| %>
+				<% if option[3] == @owner_id %>
+					<tr>
+						<td>
+							<td align="center" valign="middle">
+					            <div style="width: 10px; height: 10px; background-color: #<%= option[2] || get_random_init_color %>"></div>
+					        </td>
+						</td>
+					
+						<td>
+							<%= h(option[1]) %>
+						</td>
+					</tr>
+				<% end %>
+			<% end %>
+		</table>
+	</div>
+</div>
+
+<div class="profile_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_title">
+		添加新的选项 ...
+	</div>
+	
+	<%= render(:partial => "new_option_form", :locals => {:options_size => @options.size, :option_number_limit => @option_number_limit, :vote_topic_id => @vote_topic_id}) %>
+	
+	
+	<div class="community_title">
+		删除其他人添加的选项 ...
+	</div>
+	
+	<div class="community_block">
+		<table cellpadding="0" cellspacing="10">
+			<% @options.each do |option| %>
+				<% if option[3] != @owner_id %>
+					<tr>
+						<td>
+							<td align="center" valign="middle">
+					            <div style="width: 10px; height: 10px; background-color: #<%= option[2] || get_random_init_color %>"></div>
+					        </td>
+						</td>
+					
+						<td>
+							<%= h(option[1]) %>
+							&nbsp;&nbsp;
+							(
+								<a href="/spaces/show/<%= option[3] %>" target="_blank">
+									查看添加者</a>
+							)
+						</td>
+					
+						<td style="width: 50px;" align="right">
+							<a href="#" onclick="delete_option(<%= option[0] %>); return false;">删除</a>
+						</td>
+					</tr>
+				<% end %>
+			<% end %>
+		</table>
+	</div>
+	
+	<% form_tag "/votes/#{@vote_topic_id}/delete_others_option", :method => :post, :id => "delete_option_form" do %>
+		<input type="hidden" name="option_id" id="to_be_deleted_option" value="0" />
+	<% end %>
+	
+</div>
+
+
+
+<script language="JavaScript">
+	function toggle_color_picker(color_picker_id) {
+		var color_picker = document.getElementById(color_picker_id);
+		var display = "none";
+		if(color_picker.style.display == "none") {
+			display = '';
+		}
+		color_picker.style.display = display;
+	}
+	
+	function on_option_color_selected(color, color_picker_text_field_id, color_picker_text_view_id, color_picker_id){
+        document.getElementById(color_picker_text_field_id).value = color;
+        document.getElementById(color_picker_text_view_id).style.backgroundColor = "#" + color;
+		document.getElementById(color_picker_id).style.display = "none";
+    }
+
+	function delete_option(option_id) {
+		if(confirm("确定要删除这个选项么 ?")) {
+			document.getElementById("to_be_deleted_option").value = option_id;
+			document.getElementById("delete_option_form").submit();
+		}
+	}
+</script>
+

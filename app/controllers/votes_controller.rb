@@ -4,17 +4,23 @@ class VotesController < ApplicationController
   
   Comment_Page_Size = 100
   
+  Vote_Option_Limit = 20
+  
   layout "community"
   before_filter :check_login, :only => [:new, :new_in_group, :vote_groups, :create,
                                         :edit_image, :update_image,
                                         :create_comment, :delete_comment, :vote_to_option,
-                                        :clear_vote_record, :edit, :update, :destroy]
+                                        :clear_vote_record, :edit, :update, :destroy,
+                                        :edit_option, :create_new_option, :add_new_option,
+                                        :delete_others_option]
   before_filter :check_limited, :only => [:create, :update_image, :create_comment, :delete_comment,
-                                          :vote_to_option, :clear_vote_record, :update, :destroy]
+                                          :vote_to_option, :clear_vote_record, :update, :destroy,
+                                          :create_new_option, :delete_others_option]
   
   before_filter :check_vote_groups_account, :only => [:vote_groups]
   
-  before_filter :check_vote_topic_owner, :only => [:edit_image, :update_image, :edit, :update, :destroy]
+  before_filter :check_vote_topic_owner, :only => [:edit_image, :update_image, :edit, :update,
+                                                  :destroy, :edit_option, :delete_others_option]
   
   before_filter :check_comment_owner, :only => [:delete_comment]
   
@@ -113,7 +119,7 @@ class VotesController < ApplicationController
     # collect vote options
     @option_titles = {}
     @option_colors = {}
-    1.upto(20) { |i|
+    1.upto(Vote_Option_Limit) { |i|
       @option_titles["vote_option_#{i}".to_sym] = params["vote_option_#{i}".to_sym]
       @option_colors["vote_option_#{i}_color_field".to_sym] = params["vote_option_#{i}_color_field".to_sym]
     }
@@ -316,6 +322,65 @@ class VotesController < ApplicationController
     @vote_topic.destroy
     
     jump_to("/votes")
+  end
+  
+  def edit_option
+    @options = VoteOption.get_vote_topic_options(@vote_topic_id)
+    @option_number_limit = Vote_Option_Limit
+    @owner_id = @vote_topic.account_id
+  end
+  
+  def create_new_option
+    vote_topic_id = params[:id]
+    vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+    
+    if (vote_topic.account_id == session[:account_id]) || vote_topic.allow_add_option
+      # valid to add new option
+      
+      new_vote_option = params[:new_vote_option] && params[:new_vote_option].strip
+      new_vote_option_color = params[:new_vote_option_color_field]
+      
+      if new_vote_option && new_vote_option != ""
+        if VoteOption.get_vote_topic_options(vote_topic_id).size < Vote_Option_Limit
+          vote_option = VoteOption.new(
+            :account_id => session[:account_id],
+            :vote_topic_id => vote_topic_id,
+            :title => new_vote_option,
+            :color => new_vote_option_color
+          )
+          vote_option.save
+        end
+      end
+    end
+    
+    jump_to("/votes/#{vote_topic_id}")
+  end
+  
+  def add_new_option
+    @vote_topic_id = params[:id]
+    @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
+    
+    if @vote_topic.allow_add_option
+      @option_number_limit = Vote_Option_Limit
+      @options_size = VoteOption.get_vote_topic_options(@vote_topic_id).size
+    else
+      jump_to("/votes/#{@vote_topic_id}")
+    end
+  end
+  
+  def delete_others_option
+    option_id = params[:option_id]
+    
+    options = VoteOption.get_vote_topic_options(@vote_topic_id)
+    
+    to_be_deleted_options = options.select { |o| o[0].to_s == option_id }
+    
+    if to_be_deleted_options.size > 0
+      to_be_deleted_option = to_be_deleted_options[0]
+      VoteOption.destroy(to_be_deleted_option[0]) if to_be_deleted_option[3] != @vote_topic.account_id
+    end
+    
+    jump_to("/votes/#{@vote_topic_id}/edit_option")
   end
   
   
