@@ -59,6 +59,12 @@ class BlogsController < ApplicationController
     @blog.content = params[:blog_content] && params[:blog_content].strip
     
     if @blog.save
+      # record account action
+      AccountAction.create_new(session[:account_id], "add_blog", {
+        :blog_id => @blog.id,
+        :blog_title => @blog.title
+      })
+      
       jump_to("/blogs/show_edit/#{@blog.id}")
     else
       flash.now[:error_msg] = "操作失败, 再试一次吧"
