@@ -97,11 +97,24 @@
 		</div>
 	
 		<div class="community_block_narrow">
+			<a name="photo_title_section"></a>
 			<%= simple_format(h(@photo.title)) %>
 			
 			<div class="photo_view_actions_container">
 				<% if @edit %>
-					<a href="/photos/<%= @photo.id %>/edit">修改照片描述</a>
+					<a href="/photos/<%= @photo.id %>/edit" onclick="document.getElementById('photo_title_update_form').style.display = ''; return false;">修改照片描述</a>
+					
+					<div id="photo_title_update_form" style="display: none;">
+						<% form_tag "/photos/#{@photo.id}/update_photo_title", :method => :post do %>
+							<textarea name="photo_title" class="text_field" cols="50" rows="5"><%= h(@photo.title) %></textarea>
+
+							<div>
+								<input type="submit" value="修改" class="button" />
+								&nbsp;&nbsp;
+								<a href="#" onclick="document.getElementById('photo_title_update_form').style.display = 'none'; return false;">暂时不修改了</a>
+							</div>
+						<% end %>
+					</div>
 				<% end %>
 			</div>
 

@@ -1,0 +1,97 @@
+<% vote_topic = result %>
+
+<%
+	vote_topic_id = vote_topic.id
+	vote_image = vote_topic.get_image_url
+
+	VoteTopic.set_vote_topic_with_image_cache(vote_topic_id, vote_topic, vote_image)
+%>
+
+<%
+	vote_options = vote_topic.options
+	
+	VoteOption.set_vote_topic_options_cache(vote_topic_id, vote_options)
+	
+	option_titles = vote_options.collect { |vo| h(vo.title) }
+%>
+
+
+<%
+	account = vote_topic.account
+	account_id = account.id
+	account_nick = h(account.get_nick)
+	
+	category_name = VoteCategory.get_category(vote_topic.category_id)
+	
+	excerpts = build_excerpts(
+		riddle_client,
+		[h(vote_topic.title), h(vote_topic.desc), category_name, account_nick] + option_titles,
+		query,
+		"vote_topic_core"
+	)
+%>
+
+
+<div>
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 60px">
+				<div class="align_c community_block">
+					<a href="/votes/<%= vote_topic_id %>">
+						<img src="<%= face_img_src(vote_image) %>" border="0" /></a>
+				</div>
+			</td>
+			
+			<td valign="top">
+				<div class="search_result_title">
+					<a href="/votes/<%= vote_topic_id %>" class="account_nick_link">
+						<%= excerpts[0] %></a>
+				</div>
+				
+				<div class="search_result_body">
+					<div class="form_info_s">
+						<%= excerpts[1] %>
+					</div>
+					<div>
+						<table cellpadding="0" cellspacing="0">
+							<% 4.upto(20) do |i| %>
+								<% ot = excerpts[i] %>
+								<% if ot && ot != "" %>
+									<tr>
+										<td>
+											<td align="center" valign="middle">
+									            <input type="<%= vote_topic.multiple ? "checkbox" : "radio" %>" disabled="disabled" />
+									        </td>
+										</td>
+
+										<td>
+											<%= ot %>
+										</td>
+									</tr>
+								<% else %>
+									<% break %>
+								<% end %>
+							<% end %>
+						</table>
+					</div>
+				</div>
+				
+				<div class="form_info_s search_result_info">
+					由
+					<a href="/spaces/show/<%= vote_topic.account_id %>" class="account_nick_link">
+						<%= excerpts[3] %></a>
+					发起于
+					<%= format_datetime(vote_topic.created_at) %>
+					
+					|
+					
+					分类:
+					<a href="/votes/category/<%= vote_topic.category_id %>">
+						<%= excerpts[2] %></a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+

@@ -17,4 +17,12 @@ class Autologin < ActiveRecord::Base
     self.find(:first, :conditions => ["account_id = ?", account_id])
   end
   
+  def self.clear_expired_records
+    self.delete_all(["expire_time < ?", Time.now])
+  end
+  
+  def self.delete_record(session_id, account_id)
+    self.delete_all(["session_id = ? and account_id = ?", session_id, account_id])
+  end
+  
 end

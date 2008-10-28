@@ -44,7 +44,8 @@ class ApplicationController < ActionController::Base
       autologin.save
     else
       remove_autologin_cookies
-      Autologin.delete_by_account(account_id)
+      # Autologin.delete_by_account(account_id)
+      autologin.destroy if autologin
     end
   end
   

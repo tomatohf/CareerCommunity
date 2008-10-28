@@ -39,6 +39,14 @@ class VoteOption < ActiveRecord::Base
     v_o
   end
   
+  def self.set_vote_topic_options_cache(vote_topic_id, options)
+    v_o = options.collect do |option|
+      [option.id, option.title, option.color, option.account_id, option.vote_topic_id]
+    end
+    
+    Cache.set("#{CKP_topic_options}_#{vote_topic_id}".to_sym, v_o, Cache_TTL)
+  end
+  
   def self.clear_vote_topic_options_cache(vote_topic_id)
     Cache.delete("#{CKP_topic_options}_#{vote_topic_id}".to_sym)
   end

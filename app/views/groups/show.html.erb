@@ -295,7 +295,7 @@
 		
 		<div id="photo_section">
 			<%= float_list(@group_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
-			<% unless @group_activities.size > 0 %>
+			<% unless @group_photos.size > 0 %>
 				<div class="form_info_l">
 					还没有圈子照片 ...
 				</div>

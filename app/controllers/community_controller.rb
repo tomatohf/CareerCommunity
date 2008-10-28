@@ -142,6 +142,27 @@ class CommunityController < ApplicationController
     @groups = search_group(query, 1, Search_All_Result_Page_Size)
     @group_posts = search_group_post(query, 1, Search_All_Result_Page_Size)
     @recruitments = search_recruitment(query, 1, Search_All_Result_Page_Size)
+    @votes = search_vote(query, 1, Search_All_Result_Page_Size)
+  end
+  
+  def search_vote(query, page, per_page)
+    VoteTopic.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, created_at DESC",
+      :field_weights => {
+        :title => 8,
+        :desc => 6,
+        :options_title => 6,
+        :comments_content => 2,
+        :account_nick => 2,
+        :category_name => 1,
+        :comments_account_nick => 1
+      },
+      :include => [:image, :account, :options]
+    )
   end
   
   def search_recruitment(query, page, per_page)

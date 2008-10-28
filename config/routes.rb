@@ -71,7 +71,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :photos, :member => {
     :create_comment => :post,
     
-    :move_to_other_album => :post
+    :move_to_other_album => :post,
+    
+    :update_photo_title => :post
   }
   
   

@@ -1,5 +1,22 @@
 class VoteTopic < ActiveRecord::Base
   
+  define_index do
+    # fields
+    indexes :title, :desc
+    indexes category.name, :as => :category_name
+    indexes account.nick, :as => :account_nick
+    indexes options.title, :as => :options_title
+    indexes comments.content, :as => :comments_content
+    indexes comments.account.nick, :as => :comments_account_nick
+
+    # attributes
+    has :created_at, :updated_at, :multiple, :allow_add_option, :allow_clear_record
+    
+    set_property :delta => true
+    
+    # set_property :field_weights => {:field => number}
+  end
+  
   include CareerCommunity::Util
   
   has_many :records, :class_name => "VoteRecord", :foreign_key => "vote_topic_id", :dependent => :destroy
@@ -8,6 +25,7 @@ class VoteTopic < ActiveRecord::Base
   has_many :comments, :class_name => "VoteComment", :foreign_key => "vote_topic_id", :dependent => :destroy
   
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
+  belongs_to :category, :class_name => "VoteCategory", :foreign_key => "category_id"
   
   has_one :image, :class_name => "VoteImage", :foreign_key => "vote_topic_id", :dependent => :destroy
   

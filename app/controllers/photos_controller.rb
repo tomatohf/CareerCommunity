@@ -4,10 +4,10 @@ class PhotosController < ApplicationController
   
   layout "community"
   before_filter :check_login, :only => [:show_edit, :edit, :update, :create_comment, :delete_comment,
-                                        :destroy, :move_to_other_album]
+                                        :destroy, :move_to_other_album, :update_photo_title]
   before_filter :check_limited, :only => [:update, :create_comment, :delete_comment, :destroy,
-                                          :move_to_other_album]
-  before_filter :check_photo_access, :only => [:edit, :update, :destroy, :move_to_other_album]
+                                          :move_to_other_album, :update_photo_title]
+  before_filter :check_photo_access, :only => [:edit, :update, :destroy, :move_to_other_album, :update_photo_title]
   before_filter :check_show_edit_for_photo, :only => [:show_edit]
   
   before_filter :check_comment_owner, :only => [:delete_comment]
@@ -72,6 +72,14 @@ class PhotosController < ApplicationController
     end
     
     render :action => "edit"
+  end
+  
+  def update_photo_title
+    @photo.title = params[:photo_title]
+    
+    @photo.save
+    
+    jump_to("/photos/show_edit/#{@photo.id}#photo_title_section")
   end
   
   def destroy

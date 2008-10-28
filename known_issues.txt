@@ -7,7 +7,6 @@
 解散活动
 解散圈子
 
-搜索投票
 投票交叉分析, 投票构成
 投票评论显示评论者选择的选项的颜色
 
@@ -17,9 +16,6 @@ highlight 活动日历上有活动的日子
 new recruitment vendors - 3
 
 Rails atom helper ?
-
-
-Vote client 变为仅显示投票结果 和 参加投票的 link
 
 
 服务器 上的 log 清理
@@ -72,6 +68,9 @@ Flash 做个很炫很酷的照片演示，并且可支持离开网站使用
 嵌入图片，使用 Ming ... and Ming-Ruby ?
 http://www.libming.org/
 http://madscientist.jp/~ikegami/ruby/ming/
+
+
+Vote client ???
 
 
 

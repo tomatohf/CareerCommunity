@@ -167,14 +167,24 @@ class AccountsController < ApplicationController
     account_id = account.id
     expire_time = 30.days.from_now
     
+    old_cookies_s = cookies[:s]
+    old_cookies_a = cookies[:a]
+    
     cookies[:s] = { :value => session_id, :expires => expire_time }
     cookies[:a] = { :value => account_id.to_s, :expires => expire_time }
     
-    autologin = Autologin.get_by_account_id(account_id) || Autologin.new
+    # autologin = Autologin.get_by_account_id(account_id) || Autologin.new
+    autologin = Autologin.new
     autologin.session_id = session_id
     autologin.account_id = account_id
     autologin.expire_time = expire_time
-    autologin.save
+    if autologin.save
+      # clear old cookies related autologin records
+      Autologin.delete_record(old_cookies_s, old_cookies_a) if old_cookies_s && old_cookies_a
+    end
+    
+    # clear expired autologin records
+    Autologin.clear_expired_records
   end
   
 end
