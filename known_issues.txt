@@ -11,11 +11,12 @@
 投票评论显示评论者选择的选项的颜色
 
 
+Rails atom feed helper
+
+
 highlight 活动日历上有活动的日子
 
 new recruitment vendors - 3
-
-Rails atom helper ?
 
 
 服务器 上的 log 清理

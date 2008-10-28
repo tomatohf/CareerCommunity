@@ -180,7 +180,7 @@
 	</div>
 
 	<div class="community_block">
-		<%= render(:partial => "/common/comment", :collection => @vote_comments, :locals => {:can_del => @edit}) %>
+		<%= render(:partial => "vote_comment", :collection => @vote_comments, :locals => {:can_del => @edit, :voted_records => @voted_records}) %>
 	</div>
 	
 	<div class="community_block">

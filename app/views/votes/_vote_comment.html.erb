@@ -1,0 +1,77 @@
+<% can_del &&= true %>
+
+<% account_id = vote_comment.account.id %>
+<% account_nick = vote_comment.account.get_nick %>
+<% account_pic_url = vote_comment.account.get_profile_pic_url %>
+
+<% # since the accounts and their pic_profile have been got from database, %>
+<% # let's cache them in order to reuse them %>
+<% # maybe putting these codes here smells not so good %>
+<% # just from performance's perspective to avoid double loop of the comments %>
+<% Account.set_account_nick_pic_cache(vote_comment.account_id, account_nick, account_pic_url, vote_comment.account.email) %>
+
+<%
+	comment_voted_records = voted_records[vote_comment.account_id]
+	VoteRecord.set_voted_records_cache(vote_comment.vote_topic_id, vote_comment.account_id, comment_voted_records) if comment_voted_records && comment_voted_records.size> 0
+%>
+
+<%
+	option_info = {}
+	VoteOption.get_vote_topic_options(vote_comment.vote_topic_id).each do |option|
+		option_info[option[0]] = option
+	end
+%>
+
+<div class="comment_container">
+	<div class="comment_title">
+		<% if can_del %>
+			<a class="float_r" title="删除" href="#" onclick="delete_comment(<%= vote_comment.id %>); return false;">
+				<img src="/images/delete_small.gif" border="0" /></a>
+		<% end %>
+		
+		<b>
+			<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+				<%= account_nick %></a>
+		</b>
+		在
+		<%= format_datetime(vote_comment.created_at) %>
+		<a id="comment_<%= vote_comment.id %>">说</a>
+		:
+		
+	</div>
+	
+	<div class="comment_content">
+		<a href="/spaces/show/<%= account_id %>">
+			<img class="float_l" src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+			
+		<% if comment_voted_records && comment_voted_records.size> 0 %>
+			<div>
+				<table cellpadding="0" cellspacing="0">
+					<tr>
+						<td class="form_info_s">
+							所投选项:
+						</td>
+						<% comment_voted_records.each do |r| %>
+							<% color = option_info[r.vote_option_id][2] %>
+							<% if color && color != "" %>
+								<td style="width: 5px;"></td>
+								<td>
+									<div title="<%= h(option_info[r.vote_option_id][1]) %>" style="width: 10px; height: 10px; background-color: #<%= color %>"></div>
+								</td>
+							<% end %>
+						<% end %>
+					</tr>
+				</table>
+			</div>
+		<% end %>
+		
+		<%= simple_format(h(vote_comment.content)) %>
+	</div>
+	
+	<div class="comment_info form_info_s">
+		最后更新于
+		<i>
+			<%= format_datetime(vote_comment.updated_at) %>
+		</i>
+	</div>
+</div>

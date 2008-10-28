@@ -43,6 +43,14 @@ class VoteRecord < ActiveRecord::Base
     vr
   end
   
+  def self.set_voted_records_cache(topic_id, account_id, records)
+    vr = records.collect do |record|
+      [record.vote_option_id, record.voter_ip]
+    end
+    
+    Cache.set("#{CKP_voted_records}_#{topic_id}_#{account_id}".to_sym, vr, Cache_TTL)
+  end
+  
   def self.clear_voted_records_cache(topic_id, account_id)
     Cache.delete("#{CKP_voted_records}_#{topic_id}_#{account_id}".to_sym)
   end

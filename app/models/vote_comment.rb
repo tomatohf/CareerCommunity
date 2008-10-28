@@ -2,6 +2,7 @@ class VoteComment < ActiveRecord::Base
   
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :vote_topic, :class_name => "VoteTopic", :foreign_key => "vote_topic_id"
+        
 
   # ---
 

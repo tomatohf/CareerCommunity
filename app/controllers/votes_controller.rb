@@ -262,6 +262,18 @@ class VotesController < ApplicationController
       :order => "created_at ASC"
     )
     
+    @voted_records = {}
+    related_account_ids = []
+    @vote_comments.each { |vc|
+      comment_account_id = vc.account_id
+      related_account_ids << comment_account_id
+      @voted_records[comment_account_id] = []
+    }
+    related_records = VoteRecord.find(:all, :conditions => ["vote_topic_id = ? and account_id in (?)", @vote_topic_id, related_account_ids])
+    related_records.each { |rr|
+      @voted_records[rr.account_id] << rr
+    }
+    
     @created_vote_topics = VoteTopic.find(
       :all,
       :limit => Created_Topic_List_Size,
@@ -304,7 +316,9 @@ class VotesController < ApplicationController
                 :vote_option_id => option_id,
                 :voter_ip => request.remote_ip
               )
-              has_record_saved ||= vote_record.save
+              vote_record_saved = vote_record.save
+              
+              has_record_saved ||= vote_record_saved
             end
           end
           
