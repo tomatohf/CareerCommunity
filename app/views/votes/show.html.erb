@@ -35,11 +35,10 @@
 		<%= thin_hr %>
 	</div>
 	
-	<!--
 	<div class="community_block align_c">
 		<a href="#">查看交叉分析</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="#">查看投票构成</a>
+		<a href="/votes/constituent/<%= @vote_topic_id %>">查看投票构成</a>
 		<% if (!@edit) && @vote_topic.allow_add_option %>
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="/votes/<%= @vote_topic_id %>/add_new_option">添加新的选项</a>
@@ -49,7 +48,6 @@
 	<div class="community_block_narrow">
 		<%= thin_hr %>
 	</div>
-	-->
 	
 	<div class="community_block">
 		<div class="community_block float_r" style="margin: 0px 10px;">
@@ -139,13 +137,13 @@
 		    <%= ziya_chart("/votes/refresh_vote_result/#{@vote_topic_id}?chart_type=#{@chart_type}&token=#{Time.now.to_i}", :width => 500, :height => @vote_topic.calculate_chart_height) %>
 		</div>
 		<div>
-		    <a href="/votes/<%= @vote_topic_id %>/bar_h#result_chart">
+		    <a href="/votes/<%= @vote_topic_id %>/bar_h/comment/<%= @page %>#result_chart">
 		        <img src="/images/votes/chart_icons/bar.png" alt="柱状图[横]" title="柱状图[横]" border="0" /></a>
 
-		    <a href="/votes/<%= @vote_topic_id %>/pie#result_chart">
+		    <a href="/votes/<%= @vote_topic_id %>/pie/comment/<%= @page %>#result_chart">
 				<img src="/images/votes/chart_icons/pie.png" alt="饼状图" title="饼状图" border="0" /></a>
 
-	    	<a href="/votes/<%= @vote_topic_id %>/pie_3d#result_chart">
+	    	<a href="/votes/<%= @vote_topic_id %>/pie_3d/comment/<%= @page %>#result_chart">
 	        	<img src="/images/votes/chart_icons/pie_3d.png" alt="饼状图[3D]" title="饼状图[3D]" border="0" /></a>
 		</div>
 	</div>

@@ -3,7 +3,8 @@
 		<td>
 			<a href="/spaces/show/<%= operator[2] %>" class="account_nick_link">
 				<%= h(operator[0]) %></a>
-			加入了圈子
+			<%= creator_id == operator[2] ? "创建" : "加入" %>
+			了圈子
 			<a href="/groups/<%= group_id %>"><%= h(group_name) %></a>
 		</td>
 		

@@ -6,7 +6,7 @@
 		</td>
 		
 		<td>
-			<% form_tag "/activities/#{activity_id}/check_profile", :method => :post do %>
+			<% form_tag "/activities/#{activity_id}/check_profile", :method => :post, :target => :_blank do %>
 
 				<a href="/spaces/show/<%= inviter_id %>" class="account_nick_link">
 					<%= h(inviter_nick) %></a>

@@ -252,10 +252,10 @@ class VotesController < ApplicationController
     group_id = @vote_topic.group_id || 0
     @group, @group_image = Group.get_group_with_image(group_id) if group_id > 0
     
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
+    @page = params[:page]
+    @page = 1 unless @page =~ /\d+/
     @vote_comments = @vote_topic.comments.paginate(
-      :page => page,
+      :page => @page,
       :per_page => Comment_Page_Size,
       :total_entries => VoteComment.get_count(@vote_topic.id),
       :include => [:account => [:profile_pic]],
@@ -434,6 +434,13 @@ class VotesController < ApplicationController
     end
     
     jump_to("/votes/#{@vote_topic_id}/edit_option")
+  end
+  
+  def constituent
+    @vote_topic_id = params[:id]
+    @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
+    
+    
   end
   
   

@@ -16,6 +16,8 @@ class Photo < ActiveRecord::Base
   has_many :activity_photos, :class_name => "ActivityPhoto", :foreign_key => "photo_id", :dependent => :destroy
   has_many :group_photos, :class_name => "GroupPhoto", :foreign_key => "photo_id", :dependent => :destroy
   
+  has_one :vote_image, :class_name => "VoteImage", :foreign_key => "photo_id", :dependent => :destroy
+  
   
   after_destroy { |photo|
     # clean album cover photo
@@ -66,7 +68,7 @@ class Photo < ActiveRecord::Base
 
   validates_attachment_presence :image, :message => "请选择 图片文件"
   validates_attachment_content_type :image, :content_type => [
-    "image/jpeg", "image/gif", "image/png", "image/bmp"
+    "image/jpg", "image/jpeg", "image/gif", "image/png", "image/bmp"
   ], :message => "只能上传 JPG, JPEG, GIF, PNG 或 BMP 格式的图片"
   validates_attachment_size :image, :less_than => 3.megabyte, :message => "每个图片文件大小不能超过 3M"
   # to avoid displaying internal errors

@@ -131,7 +131,7 @@ module ApplicationHelper
   end
   
   def general_admin?(account_id)
-    superadmin?(account_id) || account_id == 1004
+    superadmin?(account_id) || account_id == 1004 || account_id == 1002
   end
   
   def tag_cloud_font_styling (total, lowest, highest, options={})

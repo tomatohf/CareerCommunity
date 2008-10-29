@@ -122,6 +122,7 @@ class AccountAction < ActiveRecord::Base
             :group_id => #{group_id},
             :group_name => "#{group.name}",
             :group_image => "#{group_image}",
+            :creator_id => #{group.creator_id},
             
             :save_space => #{save_space.inspect}
           })
@@ -140,6 +141,7 @@ class AccountAction < ActiveRecord::Base
             :activity_id => #{activity_id},
             :activity_title => "#{activity.get_title}",
             :activity_image => "#{activity_image}",
+            :creator_id => #{activity.creator_id},
             
             :save_space => #{save_space.inspect}
           })

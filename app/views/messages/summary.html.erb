@@ -1,0 +1,66 @@
+<% community_page_title("我的消息") %>
+
+<div class="float_r friend_container_r">
+	
+	<div class="community_title">
+		发送消息 ...
+	</div>
+	
+	<div class="community_block">
+		<a href="/messages/choose_friend/<%= @account_id %>">给我的朋友发消息</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/messages/choose_be_friend/<%= @account_id %>">给加我为朋友的人发消息</a>
+	</div>
+	
+	<div class="community_title">
+		去我的朋友列表 ...
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/list_edit/<%= @account_id %>">» 我的朋友</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/be_list_edit/<%= @account_id %>">» 谁把我加为朋友了</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/friends/both_list_edit/<%= @account_id %>">» 我的伙伴</a>
+		<div class="form_info_l">
+			互相将对方加为了朋友
+		</div>
+	</div>
+</div>
+
+<div class="friend_container_l">
+	<h2>我的消息</h2>
+	
+	<div class="community_block_narrow">
+		<table class="message_summary" cellspacing="1" cellpadding="5" border="0" align="left">
+			<tr>
+				<td>
+					收到的消息:
+					&nbsp;
+					<a href="/messages/inbox/<%= @account_id %>" class="account_nick_link"<%= %Q! style="color: #CC0033"! if @unread_inbox_count > 0 %>>
+						<%= @unread_inbox_count %>条新<a>
+				</td>
+				
+				<td>
+					系统通知:
+					&nbsp;
+					<a href="/messages/sys/<%= @account_id %>" class="account_nick_link"<%= %Q! style="color: #CC0033"! if @unread_sys_count > 0 %>>
+						<%= @unread_sys_count %>条新<a>
+				</td>
+				
+				<td align="center">
+					<a href="/messages/outbox/<%= @account_id %>" class="account_nick_link">
+						发出的消息<a>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+</div>
+

@@ -7,7 +7,7 @@
 
 				<% if not_friend %>
 					<div class="community_block">
-						<% form_tag "/friends", :method => :post do %>
+						<% form_tag "/friends", :method => :post, :target => :_blank do %>
 							<input type="hidden" name="friend" value="<%= account_id %>" />
 							<input type="submit" value="也将对方加为我的朋友" class="button" />
 						<% end %>

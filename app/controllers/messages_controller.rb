@@ -4,15 +4,23 @@ class MessagesController < ApplicationController
   
   layout "community"
   before_filter :check_current_account, :only => [:index]
-  before_filter :check_login, :only => [:inbox, :outbox, :sys, :thread, :compose, :create, :destroy, :choose_friend, :choose_be_friend, :create_reply]
+  before_filter :check_login, :only => [:inbox, :outbox, :sys, :thread, :compose, :create, :destroy,
+                                        :choose_friend, :choose_be_friend, :create_reply,
+                                        :summary]
   before_filter :check_limited, :only => [:create, :destroy, :create_reply]
   
-  before_filter :check_message_access, :only => [:inbox, :outbox, :sys, :thread, :choose_friend, :choose_be_friend]
-  before_filter :count_unread, :only => [:inbox, :outbox, :sys, :thread]
+  before_filter :check_message_access, :only => [:inbox, :outbox, :sys, :thread,
+                                                  :choose_friend, :choose_be_friend,
+                                                  :summary]
+  before_filter :count_unread, :only => [:inbox, :outbox, :sys, :thread, :summary]
   
   # ! current account needed !
   def index
-    jump_to("/messages/inbox/#{session[:account_id]}")
+    jump_to("/messages/summary/#{session[:account_id]}")
+  end
+  
+  def summary
+    @account_id = params[:id]
   end
   
   def thread

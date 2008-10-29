@@ -2,6 +2,8 @@
 
 <div class="float_r friend_container_r">
 	
+	<%= render :partial => "msg_nav_bar", :locals => {:account_id => @account_id, :selected => 1, :unread_inbox_count => @unread_inbox_count, :unread_sys_count => @unread_sys_count} %>
+	
 	<div class="community_title">
 		去我的朋友列表 ...
 	</div>
@@ -32,8 +34,6 @@
 		</b>
 		条消息
 	</div>
-	
-	<%= render :partial => "msg_nav_bar", :locals => {:account_id => @account_id, :selected => 1, :unread_inbox_count => @unread_inbox_count, :unread_sys_count => @unread_sys_count} %>
 	
 	
 	<% form_tag "", :method => :delete, :id => "delete_in_message_form" do %>

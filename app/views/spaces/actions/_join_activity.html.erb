@@ -3,7 +3,8 @@
 		<td>
 			<a href="/spaces/show/<%= operator[2] %>" class="account_nick_link">
 				<%= h(operator[0]) %></a>
-			参加了活动
+			<%= creator_id == operator[2] ? "发起" : "参加" %>
+			了活动
 			<a href="/activities/<%= activity_id %>"><%= h(activity_title) %></a>
 		</td>
 		

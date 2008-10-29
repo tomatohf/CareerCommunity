@@ -181,13 +181,19 @@ class AlbumsController < ApplicationController
       photo.save
     end
     
-    render :text => %Q!
+    uri = params[:uri]
     
-      <script language="JavaScript">
-        window.history.back();
-      </script>
+    if uri && uri != ""
+      jump_to(uri)
+    else
+      render :text => %Q!
+    
+        <script language="JavaScript">
+          window.history.back();
+        </script>
       
-    !, :layout => false
+      !, :layout => false
+    end
   end
   
   def photo_selector

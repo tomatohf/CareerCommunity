@@ -8,6 +8,8 @@
 	<div class="community_block">
 		<a href="#message_reply">回复消息</a>
 	</div>
+	
+	<%= render :partial => "msg_nav_bar", :locals => {:account_id => @account_id, :unread_inbox_count => @unread_inbox_count, :unread_sys_count => @unread_sys_count} %>
 </div>
 
 <div class="friend_container_l">
@@ -21,8 +23,7 @@
 		条消息
 	</div>
 	
-	<%= render :partial => "msg_nav_bar", :locals => {:account_id => @account_id, :unread_inbox_count => @unread_inbox_count, :unread_sys_count => @unread_sys_count} %>
-	
+
 	<div class="community_block">
 		<%= render(:partial => "thread_message", :collection => @messages) %>
 	</div>

@@ -2,13 +2,34 @@
 <% unread_inbox_count ||= 0 %>
 <% unread_sys_count ||= 0 %>
 
-<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :class => "community_block_narrow" do %>
-	<div class="action_bar">
-		<a href="/messages/inbox/<%= account_id %>"<%= " class=\"link_selected\"" if selected == 1 %>>我收到的信息<%= "(#{unread_inbox_count})" if unread_inbox_count > 0 %></a>
-		<a href="/messages/outbox/<%= account_id %>"<%= " class=\"link_selected\"" if selected == 2 %>>我发出的信息</a>
-		<a href="/messages/sys/<%= account_id %>"<%= " class=\"link_selected\"" if selected == 3 %>>通知<%= "(#{unread_sys_count})" if unread_sys_count > 0 %></a>
-		|
-		<a href="/messages/choose_friend/<%= account_id %>">给我的朋友发消息</a>
-		<a href="/messages/choose_be_friend/<%= account_id %>">给加我为朋友的人发消息</a>
-	</div>
-<% end %>
+
+<div class="community_title">
+	我的消息 ...
+</div>
+
+<div class="community_block">
+	<a href="/messages/inbox/<%= account_id %>"<%= " class=\"link_selected\"" if selected == 1 %>>收到的信息<%= "(#{unread_inbox_count})" if unread_inbox_count > 0 %></a>
+</div>
+
+<div class="community_block">
+	<a href="/messages/outbox/<%= account_id %>"<%= " class=\"link_selected\"" if selected == 2 %>>发出的信息</a>
+</div>
+
+<div class="community_block">
+	<a href="/messages/sys/<%= account_id %>"<%= " class=\"link_selected\"" if selected == 3 %>>系统通知<%= "(#{unread_sys_count})" if unread_sys_count > 0 %></a>
+</div>
+
+
+<div class="community_title">
+	发送消息 ...
+</div>
+
+<div class="community_block">
+	<a href="/messages/choose_friend/<%= @account_id %>">给我的朋友发消息</a>
+</div>
+
+<div class="community_block">
+	<a href="/messages/choose_be_friend/<%= @account_id %>">给加我为朋友的人发消息</a>
+</div>
+
+
