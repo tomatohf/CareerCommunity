@@ -43,6 +43,18 @@ var photo_selector = {
 		if(photo_selector.CURRENT_SHOW_CONTAINER_ID == container_id) {
 			Effect.Appear($(container_id));
 		}
+	},
+	
+	refresh_album_of_uploaded_photo : function(album_id, photo_list_template) {
+		$("image_file_in_photo_selector").clear();
+		
+		var container = $("photo_selector_container_" + album_id);
+		children = container.childElements();
+		for(var i = 0; i < children.length; i++) {
+			children[0].remove();
+		}
+		
+		photo_selector.show_album_photos(album_id, photo_list_template);
 	}
 	
 }

@@ -174,26 +174,22 @@ class AlbumsController < ApplicationController
   end
   
   def create_photo_from_photo_selector
+    photo_saved = false
+    
     uploaded_file = params[:image_file]
     if uploaded_file && uploaded_file != ""
       photo = Photo.new(:album_id => @album.id, :account_id => session[:account_id])
       photo.image = uploaded_file
-      photo.save
+      photo_saved = photo.save
     end
     
-    uri = params[:uri]
+    render :text => %Q!
+  
+      <script language="JavaScript">
+        parent.photo_selector.refresh_album_of_uploaded_photo(#{@album.id}, "#{params[:photo_list_template]}")
+      </script>
     
-    if uri && uri != ""
-      jump_to(uri)
-    else
-      render :text => %Q!
-    
-        <script language="JavaScript">
-          window.history.back();
-        </script>
-      
-      !, :layout => false
-    end
+    !, :layout => false if photo_saved
   end
   
   def photo_selector

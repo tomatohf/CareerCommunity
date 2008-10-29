@@ -40,18 +40,20 @@
 <div style="margin-left: 5px; margin-top: 10px;">
 	上传新照片到相册:
 	<div>
-		<% form_tag "/albums/create_photo_from_photo_selector", :method => :post, :multipart => true, :onsubmit => "if(document.getElementById('album_id_in_photo_selector').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请选择一个相册 ...'); return false; }" do %>
+		<% form_tag "/albums/create_photo_from_photo_selector", :method => :post, :multipart => true, :onsubmit => "if(document.getElementById('album_id_in_photo_selector').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请选择一个相册 ...'); return false; }", :target => "photo_selector_uploader" do %>
 			<select id="album_id_in_photo_selector" name="id" class="dropdown_list">
 				<% albums.each do |album| %>
 					<option value="<%= album[0] %>"><%= h(album[1]) %></option>
 				<% end %>
 			</select>
 			&nbsp;
-			<input type="file" name="image_file" />
-			<input type="hidden" name="uri" value="<%= uri %>" />
+			<input type="file" name="image_file" id="image_file_in_photo_selector" />
+			<input type="hidden" name="photo_list_template" value="<%= photo_list_template %>" />
 			&nbsp;
 			<input type="submit" value="上传" class="button" />
 		<% end %>
 	</div>
+	
+	<iframe name="photo_selector_uploader" id="photo_selector_uploader" style="display:none"></iframe>
 </div>
 
