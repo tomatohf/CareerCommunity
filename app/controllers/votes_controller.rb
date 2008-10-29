@@ -436,13 +436,6 @@ class VotesController < ApplicationController
     jump_to("/votes/#{@vote_topic_id}/edit_option")
   end
   
-  def constituent
-    @vote_topic_id = params[:id]
-    @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
-    
-    
-  end
-  
   
   #==========
   
@@ -528,16 +521,16 @@ class VotesController < ApplicationController
     build_graph_generally(chart_type, categories, series, colors)
   end
   
-  def build_graph_for_refresh_vote_constituent_result(topic_id, chart_type, count_function, use_index)
-    categories, series = VoteRecord.send(count_function, topic_id)
-    colors = []
-    categories_index = []
-    categories.size.times do |i|
-      categories_index << (i+65).chr
-      colors << ApplicationController.helpers.get_random_init_color
-    end
-    build_graph_generally(chart_type, use_index ? categories_index : categories, series, colors)
-  end
+#  def build_graph_for_refresh_vote_constituent_result(topic_id, chart_type, count_function, use_index)
+#    categories, series = VoteRecord.send(count_function, topic_id)
+#    colors = []
+#    categories_index = []
+#    categories.size.times do |i|
+#      categories_index << (i+65).chr
+#      colors << ApplicationController.helpers.get_random_init_color
+#    end
+#    build_graph_generally(chart_type, use_index ? categories_index : categories, series, colors)
+#  end
   
   def build_graph_generally(chart_type, categories, series, colors)
     graph  = get_graph(chart_type)

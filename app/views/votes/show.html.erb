@@ -35,19 +35,15 @@
 		<%= thin_hr %>
 	</div>
 	
-	<div class="community_block align_c">
-		<a href="#">查看交叉分析</a>
-		&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="/votes/constituent/<%= @vote_topic_id %>">查看投票构成</a>
-		<% if (!@edit) && @vote_topic.allow_add_option %>
-			&nbsp;&nbsp;&nbsp;&nbsp;
+	<% if (!@edit) && @vote_topic.allow_add_option %>
+		<div class="community_block align_c">
 			<a href="/votes/<%= @vote_topic_id %>/add_new_option">添加新的选项</a>
-		<% end %>
-	</div>
+		</div>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+	<% end %>
 	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
 	
 	<div class="community_block">
 		<div class="community_block float_r" style="margin: 0px 10px;">
@@ -107,6 +103,10 @@
 	
 	<div class="community_block">
 		<%= render :partial => "vote_topic_small", :collection => @created_vote_topics, :locals => {:hide_sep_line => true} %>
+	</div>
+	
+	<div class="align_r">
+		<a href="/votes/list/<%= @account_id %>">(查看全部)</a>
 	</div>
 	
 </div>
