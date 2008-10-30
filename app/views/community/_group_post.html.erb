@@ -1,6 +1,6 @@
 <% comment_count = GroupPostComment.get_count(group_post.id) %>
 
-<div class="community_index_post">
+<div class="community_index_post" style="border-bottom: 1px #B2B2B2 dashed">
 	<div>
 		<a href="/group/posts/<%= group_post.id %>" class="account_nick_link">
 			<%= h(group_post.title) %></a>
@@ -23,7 +23,5 @@
 			<%= format_date(group_post.created_at) %>
 		</span>
 	</div>
-	
-	<%= draw_hor_line("400px", "1px", "#DDDDDD") %>
 </div>
 

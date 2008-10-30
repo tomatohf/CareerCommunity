@@ -19,9 +19,28 @@
 <div class="group_container_l">
 	<h2><%= page_title %></h2>
 	
+	<div class="form_info_l">
+		注意: 活动负责人将能够查看到你填写的如下资料
+	</div>
+	
 	<div class="community_block_narrow">
 		<table cellpadding="0" cellspacing="20" class="main_part_w">
 			<% form_tag "/activities/#{@activity_id}/join", :method => :post do %>
+				<% if @check_real_name %>
+				<tr>
+					<td>
+						<label for="real_name">
+			                <b>
+								真实姓名:
+			                </b>
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="real_name" name="real_name" class="text_field" size="30" value="<%= @basic_profile && h(@basic_profile.real_name) %>" />
+					</td>
+				</tr>
+				<% end %>
+				
 				<% if @check_gender %>
 				<tr>
 					<td>
@@ -95,7 +114,6 @@
 					<td>
 						<input type="text" id="mobile" name="mobile" class="text_field" size="30" value="<%= @contact_profile && h(@contact_profile.mobile) %>" />
 					</td>
-					<td></td>
 				</tr>
 				<% end %>
 				

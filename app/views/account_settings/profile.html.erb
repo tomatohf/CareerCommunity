@@ -1,0 +1,133 @@
+<% community_page_title("用户设置") %>
+
+<% options = [["any", "任何人"], ["login", "已登录的会员"], ["friend", "我的朋友"], ["both_friend", "我的伙伴 (互相加为朋友)"]] %>
+
+<div class="float_r profile_container_r">
+	<%= render :partial => "account_setting_nav", :locals => {:account_checked => @account_checked} %>
+</div>
+
+<div class="profile_container_l">
+	<h2>用户设置 - 资料可见性</h2>
+	
+	<div class="community_block_narrow form_info_s">
+		设定哪些人可以查看我的资料
+	</div>
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @account_setting.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@activity) %>
+			</p>
+		<% end %>
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		
+	</div>
+	
+	<div class="community_block">
+		<table cellpadding="0" cellspacing="20" class="main_part_w">
+			<% form_tag "/account_settings/set_profile/#{session[:account_id]}", :method => :post do %>
+				<tr>
+					<td style="width: 100px;">
+						<label for="profile_basic_visible">
+			                <b>
+								查看我的基本信息:
+			                </b>
+			            </label>
+					</td>
+					<td>
+						<select name="profile_basic_visible" id="profile_basic_visible" class="dropdown_list">
+							<% options.each do |option| %>
+								<option value="<%= option[0] %>"<%= " selected=\"selected\"" if @profile_basic_visible == option[0] %>><%= option[1] %></option>
+							<% end %>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td class="form_info_l">
+						不包括
+						<b>签名档</b>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="profile_contact_visible">
+			                <b>
+								查看我的联系信息:
+			                </b>
+			            </label>
+					</td>
+					<td>
+						<select name="profile_contact_visible" id="profile_contact_visible" class="dropdown_list">
+							<% options.each do |option| %>
+								<option value="<%= option[0] %>"<%= " selected=\"selected\"" if @profile_contact_visible == option[0] %>><%= option[1] %></option>
+							<% end %>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="profile_hobby_visible">
+			                <b>
+								查看我的兴趣爱好:
+			                </b>
+			            </label>
+					</td>
+					<td>
+						<select name="profile_hobby_visible" id="profile_hobby_visible" class="dropdown_list">
+							<% options.each do |option| %>
+								<option value="<%= option[0] %>"<%= " selected=\"selected\"" if @profile_hobby_visible == option[0] %>><%= option[1] %></option>
+							<% end %>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="profile_resume_visible">
+			                <b>
+								查看我的简历:
+			                </b>
+			            </label>
+					</td>
+					<td>
+						<select name="profile_resume_visible" id="profile_resume_visible" class="dropdown_list">
+							<% options.each do |option| %>
+								<option value="<%= option[0] %>"<%= " selected=\"selected\"" if @profile_resume_visible == option[0] %>><%= option[1] %></option>
+							<% end %>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td class="form_info_l">
+						注意: 根据资料生成的简历中包含了部分
+						<b>基本信息</b>,
+						<b>联系信息</b>
+						和
+						<b>兴趣爱好</b>
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= submit_tag "设置", :class => "button", :disabled => @account_limited %>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+</div>
+

@@ -1075,5 +1075,15 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	width: 300px;
 }
 
+.account_setting_container_l {
+	margin-left: 150px;
+	margin-right: 250px;
+	padding: 0px 20px
+}
+
+.account_setting_container_r {
+	width: 220px;
+}
+
 
 

@@ -30,9 +30,11 @@
 	
 	<% if include_basic_profile %>
 		<% basic_profile = account.profile_basic %>
-		<td>
-			<%= h(basic_profile && basic_profile.real_name) %>
-		</td>
+		<% if check_real_name %>
+			<td>
+				<%= h(basic_profile && basic_profile.real_name) %>
+			</td>
+		<% end %>
 		
 		<% if check_gender %>
 			<td align="center">

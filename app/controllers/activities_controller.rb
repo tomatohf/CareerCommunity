@@ -452,6 +452,7 @@ class ActivitiesController < ApplicationController
       :need_approve => (params[:need_approve] == "true"),
 
       :check_mobile => (params[:check_mobile] == "true"),
+      :check_real_name => (params[:check_real_name] == "true"),
       :check_gender => (params[:check_gender] == "true"),
       :check_birthday => (params[:check_birthday] == "true"),
       
@@ -641,9 +642,10 @@ class ActivitiesController < ApplicationController
     # check if need to check profile
     activity_setting = @activity.get_setting
     @check_mobile = activity_setting[:check_mobile]
+    @check_real_name = activity_setting[:check_real_name]
     @check_gender = activity_setting[:check_gender]
     @check_birthday = activity_setting[:check_birthday]
-    if (!@check_mobile) && (!@check_gender) && (!@check_birthday)
+    if (!@check_mobile) && (!@check_real_name) && (!@check_gender) && (!@check_birthday)
       join
       render(:action => "join") unless (@performed_render || @performed_redirect)
       return
@@ -658,7 +660,7 @@ class ActivitiesController < ApplicationController
       end
     end
     
-    @basic_profile = (BasicProfile.get_by_account(session[:account_id]) || BasicProfile.new) if @check_gender || @check_birthday
+    @basic_profile = (BasicProfile.get_by_account(session[:account_id]) || BasicProfile.new) if @check_real_name || @check_gender || @check_birthday
     @contact_profile = ContactProfile.get_by_account(session[:account_id]) if @check_mobile
   end
   
@@ -668,6 +670,7 @@ class ActivitiesController < ApplicationController
 
     
     # save profile if needed
+    real_name = params[:real_name] && params[:real_name].strip
     gender = params[:gender] && params[:gender].strip
     gender = nil if gender == ""
     birthday_year = params[:birthday_year]
@@ -678,7 +681,7 @@ class ActivitiesController < ApplicationController
     rescue
       birthday = nil
     end
-    if gender || birthday
+    if (real_name && real_name != "") || gender || birthday
       basic_profile = BasicProfile.get_by_account(session[:account_id]) || BasicProfile.new(:account_id => session[:account_id])
       if gender
         basic_profile.gender = case gender
@@ -691,6 +694,7 @@ class ActivitiesController < ApplicationController
         end
       end
       basic_profile.birthday = birthday if birthday
+      basic_profile.real_name = real_name
       basic_profile.save
     end
     mobile = params[:mobile] && params[:mobile].strip
@@ -827,6 +831,7 @@ class ActivitiesController < ApplicationController
       :need_approve => (params[:need_approve] == "true"),
 
       :check_mobile => (params[:check_mobile] == "true"),
+      :check_real_name => (params[:check_real_name] == "true"),
       :check_gender => (params[:check_gender] == "true"),
       :check_birthday => (params[:check_birthday] == "true")
     }
@@ -1125,10 +1130,11 @@ class ActivitiesController < ApplicationController
     
     activity_setting = @activity.get_setting
     @check_mobile = activity_setting[:check_mobile]
+    @check_real_name = activity_setting[:check_real_name]
     @check_gender = activity_setting[:check_gender]
     @check_birthday = activity_setting[:check_birthday]
     
-    @include_basic_profile = @check_gender || @check_birthday
+    @include_basic_profile = @check_real_name || @check_gender || @check_birthday
     
     include_items = [:profile_pic]
     include_items << :profile_basic if @include_basic_profile

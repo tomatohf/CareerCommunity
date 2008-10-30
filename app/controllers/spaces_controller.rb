@@ -29,17 +29,36 @@ class SpacesController < ApplicationController
     @account_id = params[:id]
     @account_nick_pic = Account.get_nick_and_pic(@account_id)
     
-    # get required profiles
-    @basic_profile = BasicProfile.get_by_account(@account_id)
-    @contact_profile = ContactProfile.get_by_account(@account_id)
-    @hobby_profile = HobbyProfile.get_by_account(@account_id)
-    @job_profiles = JobProfile.get_all_by_account(@account_id, :order => "enter_year DESC, enter_month DESC")
-    @edu_profiles = EducationProfile.get_all_by_account(@account_id, :order => "education_id DESC, enter_year DESC")
+    @resume_visible = true
+    unless @edit
+      account_setting = AccountSetting.get_account_setting(@account_id)
+      @profile_resume_visible = account_setting.get_setting_value(:profile_resume_visible)
+      
+      case @profile_resume_visible
+        when "any"
+          @resume_visible = true
+        when "login"
+          @resume_visible = has_login?
+        when "friend"
+          @resume_visible = has_login? && Friend.is_friend(@account_id, session[:account_id])
+        when "both_friend"
+          @resume_visible = has_login? && Friend.is_friend(@account_id, session[:account_id]) && Friend.is_be_friend(@account_id, session[:account_id])
+      end
+    end
     
-    if @basic_profile
-      all_provinces_cities_cache = Province.get_all_provinces_cities
-      @province_name = Province.get_name(@basic_profile.province_id, all_provinces_cities_cache)
-      @city_name = City.get_name(@basic_profile.city_id, all_provinces_cities_cache)
+    if @resume_visible
+      # get required profiles
+      @basic_profile = BasicProfile.get_by_account(@account_id)
+      @contact_profile = ContactProfile.get_by_account(@account_id)
+      @hobby_profile = HobbyProfile.get_by_account(@account_id)
+      @job_profiles = JobProfile.get_all_by_account(@account_id, :order => "enter_year DESC, enter_month DESC")
+      @edu_profiles = EducationProfile.get_all_by_account(@account_id, :order => "education_id DESC, enter_year DESC")
+    
+      if @basic_profile
+        all_provinces_cities_cache = Province.get_all_provinces_cities
+        @province_name = Province.get_name(@basic_profile.province_id, all_provinces_cities_cache)
+        @city_name = City.get_name(@basic_profile.city_id, all_provinces_cities_cache)
+      end
     end
   end
   
@@ -64,14 +83,33 @@ class SpacesController < ApplicationController
     end
     
     
-    @basic_profile = BasicProfile.get_by_account(@account_id)
-    if @basic_profile
-      all_provinces_cities_cache = Province.get_all_provinces_cities
-      @province_name = Province.get_name(@basic_profile.province_id, all_provinces_cities_cache)
-      @city_name = City.get_name(@basic_profile.city_id, all_provinces_cities_cache)
+    @basic_profile_visible = true
+    unless @edit
+      account_setting = AccountSetting.get_account_setting(@account_id)
+      @profile_basic_visible = account_setting.get_setting_value(:profile_basic_visible)
       
-      @hometown_province_name = Province.get_name(@basic_profile.hometown_province_id, all_provinces_cities_cache)
-      @hometown_city_name = City.get_name(@basic_profile.hometown_city_id, all_provinces_cities_cache)
+      case @profile_basic_visible
+        when "any"
+          @basic_profile_visible = true
+        when "login"
+          @basic_profile_visible = has_login?
+        when "friend"
+          @basic_profile_visible = has_login? && Friend.is_friend(@account_id, session[:account_id])
+        when "both_friend"
+          @basic_profile_visible = has_login? && Friend.is_friend(@account_id, session[:account_id]) && @relationship == "friend"
+      end
+    end
+    
+    if @basic_profile_visible
+      @basic_profile = BasicProfile.get_by_account(@account_id)
+      if @basic_profile
+        all_provinces_cities_cache = Province.get_all_provinces_cities
+        @province_name = Province.get_name(@basic_profile.province_id, all_provinces_cities_cache)
+        @city_name = City.get_name(@basic_profile.city_id, all_provinces_cities_cache)
+      
+        @hometown_province_name = Province.get_name(@basic_profile.hometown_province_id, all_provinces_cities_cache)
+        @hometown_city_name = City.get_name(@basic_profile.hometown_city_id, all_provinces_cities_cache)
+      end
     end
     
     
@@ -176,9 +214,56 @@ class SpacesController < ApplicationController
     @account_id = params[:id]
     @account_nick_pic = Account.get_nick_and_pic(@account_id)
     
-    @basic_profile = BasicProfile.get_by_account(@account_id)
-    @contact_profile = ContactProfile.get_by_account(@account_id)
-    @hobby_profile = HobbyProfile.get_by_account(@account_id)
+    @basic_profile_visible = true
+    @contact_profile_visible = true
+    @hobby_profile_visible = true
+    unless @edit
+      account_setting = AccountSetting.get_account_setting(@account_id)
+      @profile_basic_visible = account_setting.get_setting_value(:profile_basic_visible)
+      @profile_contact_visible = account_setting.get_setting_value(:profile_contact_visible)
+      @profile_hobby_visible = account_setting.get_setting_value(:profile_hobby_visible)
+      
+      check_login = has_login?
+      check_friend = Friend.is_friend(@account_id, session[:account_id]) if check_login && (@profile_basic_visible == "friend" || @profile_contact_visible == "friend" || @profile_hobby_visible == "friend")
+      check_be_friend = Friend.is_be_friend(@account_id, session[:account_id]) if check_login && check_friend && (@profile_basic_visible == "both_friend" || @profile_contact_visible == "both_friend" || @profile_hobby_visible == "both_friend")
+      
+      case @profile_basic_visible
+        when "any"
+          @basic_profile_visible = true
+        when "login"
+          @basic_profile_visible = check_login
+        when "friend"
+          @basic_profile_visible = has_login? && check_friend
+        when "both_friend"
+          @basic_profile_visible = has_login? && check_friend && check_be_friend
+      end
+      
+      case @profile_contact_visible
+        when "any"
+          @contact_profile_visible = true
+        when "login"
+          @contact_profile_visible = check_login
+        when "friend"
+          @contact_profile_visible = has_login? && check_friend
+        when "both_friend"
+          @contact_profile_visible = has_login? && check_friend && check_be_friend
+      end
+      
+      case @profile_hobby_visible
+        when "any"
+          @hobby_profile_visible = true
+        when "login"
+          @hobby_profile_visible = check_login
+        when "friend"
+          @hobby_profile_visible = has_login? && check_friend
+        when "both_friend"
+          @hobby_profile_visible = has_login? && check_friend && check_be_friend
+      end
+    end
+    
+    @basic_profile = BasicProfile.get_by_account(@account_id) if @basic_profile_visible
+    @contact_profile = ContactProfile.get_by_account(@account_id) if @contact_profile_visible
+    @hobby_profile = HobbyProfile.get_by_account(@account_id) if @hobby_profile_visible
     
     if @basic_profile
       all_provinces_cities_cache = Province.get_all_provinces_cities

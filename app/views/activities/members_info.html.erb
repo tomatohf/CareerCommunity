@@ -36,7 +36,9 @@
 					<% end %>
 					
 					<% if @include_basic_profile %>
-						<th align="center" style="width: 60px">真实姓名</th>
+						<% if @check_real_name %>
+							<th align="center" style="width: 60px">真实姓名</th>
+						<% end %>
 						
 						<% if @check_gender %>
 							<th align="center" style="width: 30px">性别</th>
@@ -53,7 +55,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%= render :partial => "member_info", :collection => @members, :locals => {:check_mobile => @check_mobile, :check_gender => @check_gender, :check_birthday => @check_birthday} %>
+				<%= render :partial => "member_info", :collection => @members, :locals => {:check_mobile => @check_mobile, :check_real_name => @check_real_name, :check_gender => @check_gender, :check_birthday => @check_birthday} %>
 			</tbody>
 		</table>
 	</div>

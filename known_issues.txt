@@ -3,8 +3,11 @@
 
 用户资料的 可见性 设置
 
+使用附件
+
 new recruitment vendors - 3
 guolairen
+顺便优化一些招聘信息
 
 用户是否在线
 

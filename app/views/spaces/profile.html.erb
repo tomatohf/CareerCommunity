@@ -29,6 +29,20 @@
 		基本信息 ...
 	</div>
 	<div class="community_block">
+		<% unless @basic_profile_visible %>
+			根据 <%= owner_name %> 的设置, 只有
+			<%= case @profile_basic_visible 
+					when "login"
+						"已登录的会员"
+					when "friend"
+						"#{owner_name} 的朋友"
+					when "both_friend"
+						"#{owner_name} 的伙伴(互相加为朋友)"
+				end
+			%>
+			才能查看 <%= owner_name %> 的基本信息
+		<% end %>
+		
 		<% if @edit %>
 			<a href="/profiles/<%= @account_id %>/basic">编辑我的基本信息</a>
 		<% end %>
@@ -114,6 +128,20 @@
 		联系信息 ...
 	</div>
 	<div class="community_block">
+		<% unless @contact_profile_visible %>
+			根据 <%= owner_name %> 的设置, 只有
+			<%= case @profile_contact_visible 
+					when "login"
+						"已登录的会员"
+					when "friend"
+						"#{owner_name} 的朋友"
+					when "both_friend"
+						"#{owner_name} 的伙伴(互相加为朋友)"
+				end
+			%>
+			才能查看 <%= owner_name %> 的联系信息
+		<% end %>
+		
 		<% if @edit %>
 			<a href="/profiles/<%= @account_id %>/contact">编辑我的联系信息</a>
 		<% end %>
@@ -130,7 +158,7 @@
 			                MSN
 						</td>
 						<td>
-							**********
+							<%= h(@contact_profile.msn) %>
 						</td>
 					</tr>
 				<% end %>
@@ -141,7 +169,7 @@
 			                gTalk
 						</td>
 						<td>
-							**********
+							<%= h(@contact_profile.gtalk) %>
 						</td>
 					</tr>
 				<% end %>
@@ -152,7 +180,7 @@
 			                QQ
 						</td>
 						<td>
-							**********
+							<%= h(@contact_profile.qq) %>
 						</td>
 					</tr>
 				<% end %>
@@ -163,7 +191,7 @@
 			                Skype
 						</td>
 						<td>
-							**********
+							<%= h(@contact_profile.skype) %>
 						</td>
 					</tr>
 				<% end %>
@@ -174,7 +202,7 @@
 			                手机:
 						</td>
 						<td>
-							***********
+							<%= h(@contact_profile.mobile) %>
 						</td>
 					</tr>
 				<% end %>
@@ -185,7 +213,7 @@
 			                电话:
 						</td>
 						<td>
-							************
+							<%= h(@contact_profile.phone) %>
 						</td>
 					</tr>
 				<% end %>
@@ -196,7 +224,7 @@
 			                地址:
 						</td>
 						<td>
-							**********************
+							<%= h(@contact_profile.address) %>
 						</td>
 					</tr>
 				<% end %>
@@ -221,6 +249,20 @@
 		兴趣爱好 ...
 	</div>
 	<div class="community_block">
+		<% unless @hobby_profile_visible %>
+			根据 <%= owner_name %> 的设置, 只有
+			<%= case @profile_hobby_visible 
+					when "login"
+						"已登录的会员"
+					when "friend"
+						"#{owner_name} 的朋友"
+					when "both_friend"
+						"#{owner_name} 的伙伴(互相加为朋友)"
+				end
+			%>
+			才能查看 <%= owner_name %> 的兴趣爱好
+		<% end %>
+		
 		<% if @edit %>
 			<a href="/profiles/<%= @account_id %>/hobby">编辑我的兴趣爱好</a>
 		<% end %>

@@ -268,6 +268,16 @@
 					<tr>
 						<td></td>
 						<td>
+							<%= check_box_tag :check_real_name, value = "true", @activity.get_setting[:check_real_name] %>
+				            <label for="check_real_name">
+				                真实姓名
+				            </label>
+						</td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td>
 							<%= check_box_tag :check_gender, value = "true", @activity.get_setting[:check_gender] %>
 				            <label for="check_gender">
 				                性别
