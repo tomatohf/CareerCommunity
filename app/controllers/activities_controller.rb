@@ -28,11 +28,12 @@ class ActivitiesController < ApplicationController
                                         :approve_member, :reject_member, :invite, :invite_member,
                                         :absent_edit, :add_absent, :del_absent,
                                         :add_interest, :del_interest, :photo_selector_for_activity_image,
-                                        :members_info]
+                                        :members_info, :cancel, :recover]
   before_filter :check_limited, :only => [:create, :update_image, :join, :quit,
                                           :edit, :update, :update_desc, :update_access, :del_member,
                                           :approve_member, :reject_member, :invite_member,
-                                          :add_absent, :del_absent, :add_interest, :del_interest]
+                                          :add_absent, :del_absent, :add_interest, :del_interest,
+                                          :cancel, :recover]
 
   before_filter :check_edit_for_activity, :only => [:list_join_edit, :list_create_edit,
                                                     :list_interest_edit, :list_notbegin_join_edit]
@@ -45,13 +46,13 @@ class ActivitiesController < ApplicationController
                                                   :approve_member, :reject_member,
                                                   :invite, :invite_member,
                                                   :absent_edit, :add_absent, :del_absent,
-                                                  :members_info]
+                                                  :members_info, :cancel, :recover]
                                                   
   before_filter :check_activity_status_registering, :only => [:check_profile, :join, :quit,
                                                               :invite, :invite_member]
   before_filter :check_activity_status_registered, :only => [:unapproved, :members_edit]
-  before_filter :check_activity_status_ongoing, :only => [:edit_image, :update_image,
-                                                          :edit, :update, :update_desc, :update_access]
+#  before_filter :check_activity_status_ongoing, :only => [:edit_image, :update_image,
+#                                                          :edit, :update, :update_desc, :update_access]
 
   before_filter :check_activity_update_absent, :only => [:absent, :absent_edit, :add_absent, :del_absent]
   
@@ -91,7 +92,7 @@ class ActivitiesController < ApplicationController
     @join_activity_posts = ActivityPost.find(
       :all,
       :limit => Post_Recent_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, accounts.nick",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.nick",
       :conditions => ["activity_id in (select activity_id from activity_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
@@ -100,7 +101,7 @@ class ActivitiesController < ApplicationController
     @interest_activity_posts = ActivityPost.find(
       :all,
       :limit => Post_Recent_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, accounts.nick",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.nick",
       :conditions => ["activity_id in (select activity_id from activity_interests where account_id = ?)", @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
@@ -145,7 +146,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.paginate(
+    @activities = Activity.uncancelled.paginate(
       :page => page,
       :per_page => Activity_List_Size,
       :conditions => ["creator_id = ?", @owner_id],
@@ -241,7 +242,7 @@ class ActivitiesController < ApplicationController
     @created_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, accounts.nick",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.nick",
       :conditions => ["account_id = ?", @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
@@ -260,7 +261,7 @@ class ActivitiesController < ApplicationController
     @commented_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, accounts.nick",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.nick",
       :conditions => ["activity_posts.id in (select activity_post_id from activity_post_comments where account_id = ?)", @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
@@ -281,7 +282,7 @@ class ActivitiesController < ApplicationController
     @all_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, accounts.nick",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.nick",
       :conditions => ["activity_id in (select activity_id from activity_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
@@ -304,7 +305,7 @@ class ActivitiesController < ApplicationController
     @all_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, accounts.nick",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.nick",
       :conditions => ["activity_id in (select activity_id from activity_interests where account_id = ?)", @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
@@ -318,7 +319,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.paginate(
+    @activities = Activity.uncancelled.paginate(
       :page => page,
       :per_page => Activity_List_Size,
       :include => [:image],
@@ -333,7 +334,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.paginate_list_by_begin_at(@date, 1.days.since(@date), page, Activity_List_Size)
+    @activities = Activity.uncancelled.paginate_list_by_begin_at(@date, 1.days.since(@date), page, Activity_List_Size)
     
     render(:action => "day")
   end
@@ -343,7 +344,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.paginate_list_by_begin_at(@date, 1.weeks.since(@date), page, Activity_List_Size)
+    @activities = Activity.uncancelled.paginate_list_by_begin_at(@date, 1.weeks.since(@date), page, Activity_List_Size)
     
     render(:action => "day")
   end
@@ -353,7 +354,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.paginate_list_by_begin_at(@date, 1.months.since(@date), page, Activity_List_Size)
+    @activities = Activity.uncancelled.paginate_list_by_begin_at(@date, 1.months.since(@date), page, Activity_List_Size)
     
     render(:action => "day")
   end
@@ -363,7 +364,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.paginate_list_by_begin_at(@date, 6.months.since(@date), page, Activity_List_Size)
+    @activities = Activity.uncancelled.paginate_list_by_begin_at(@date, 6.months.since(@date), page, Activity_List_Size)
     
     render(:action => "day")
   end
@@ -373,7 +374,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.paginate_list_by_begin_at(@date, 1.days.since(@date), page, Activity_List_Size)
+    @activities = Activity.uncancelled.paginate_list_by_begin_at(@date, 1.days.since(@date), page, Activity_List_Size)
     
     render(:action => "day")
   end
@@ -539,10 +540,10 @@ class ActivitiesController < ApplicationController
       :order => "responded_at DESC, created_at DESC"
     )
     
-    @created_activities = Activity.find(
+    @created_activities = Activity.uncancelled.find(
       :all,
       :limit => Same_Creator_Activity_Num,
-      :select => "id, created_at, creator_id, title, begin_at, end_at, application_deadline, in_group",
+      :select => "id, created_at, creator_id, title, cancelled, begin_at, end_at, application_deadline, in_group",
       :conditions => ["creator_id = ?", @creator_id],
       :order => "created_at DESC"
     )
@@ -625,7 +626,7 @@ class ActivitiesController < ApplicationController
     @all_photos = ActivityPhoto.paginate(
       :page => page,
       :per_page => Photo_List_Size,
-      :select => "activity_photos.id, activity_photos.created_at, activity_photos.activity_id, activity_photos.account_id, activity_photos.photo_id, activities.title, accounts.nick, photos.*",
+      :select => "activity_photos.id, activity_photos.created_at, activity_photos.activity_id, activity_photos.account_id, activity_photos.photo_id, activities.title, activities.cancelled, accounts.nick, photos.*",
       :conditions => ["activity_id in (select activity_id from activity_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
       :include => [:photo, :account, :activity],
       :order => "activity_photos.created_at DESC"
@@ -1142,18 +1143,32 @@ class ActivitiesController < ApplicationController
     )
   end
   
-  def destroy
-    if ApplicationController.helpers.superadmin?(session[:account_id])
-      # only super admin can destroy an activity
-      
-      activity_id = params[:id]
-      activity = Activity.find(activity_id)
-      
-      activity.destroy
-    end
+  def cancel
+    @activity.cancelled = true
+    Activity.update_activity_with_image_cache(@activity_id, :activity => @activity) if @activity.save
     
-    jump_to("/activities")
+    jump_to("/activities/#{@activity_id}")
   end
+  
+  def recover
+    @activity.cancelled = false
+    Activity.update_activity_with_image_cache(@activity_id, :activity => @activity) if @activity.save
+    
+    jump_to("/activities/#{@activity_id}")
+  end
+  
+#  def destroy
+#    if ApplicationController.helpers.superadmin?(session[:account_id])
+#      # only super admin can destroy an activity
+#      
+#      activity_id = params[:id]
+#      activity = Activity.find(activity_id)
+#      
+#      activity.destroy
+#    end
+#    
+#    jump_to("/activities")
+#  end
   
   
   

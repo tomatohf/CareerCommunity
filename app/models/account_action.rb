@@ -133,15 +133,30 @@ class AccountAction < ActiveRecord::Base
     class JoinActivity < Base
       def action_text(data, operator, save_space)
         activity_id = data[:activity_id]
-        activity, activity_image = Activity.get_activity_with_image(activity_id)
+        begin
+          activity, activity_image = Activity.get_activity_with_image(activity_id)
+          
+          activity_title = activity.get_title
+          activity_creator_id = activity.creator_id
+        rescue
+          activity_title ||= ""
+          
+          # the creator_id will be -1 if the activity does not exist
+          activity_creator_id ||= -1
+          
+        end
+        
+        activity_deleted = activity.nil?
+        
         
         %Q!
           render(:partial => "/spaces/actions/join_activity", :locals => {
             :operator => #{operator},
             :activity_id => #{activity_id},
-            :activity_title => "#{activity.get_title}",
+            :activity_title => "#{activity_title}",
             :activity_image => "#{activity_image}",
-            :creator_id => #{activity.creator_id},
+            :creator_id => #{activity_creator_id},
+            :activity_deleted => #{activity_deleted},
             
             :save_space => #{save_space.inspect}
           })

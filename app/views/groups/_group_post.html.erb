@@ -12,8 +12,7 @@
 				&nbsp;
 			<% end %>
 		<% else %>
-			[<a href="/groups/<%= group_post.group_id %>" class="account_nick_link">
-				<%= h(group_post.group.name) %></a>]
+			[<a href="/groups/<%= group_post.group_id %>" class="account_nick_link"><%= h(group_post.group.name) %></a>]
 		<% end %>
 		
 		<% group_post_title = h(group_post.title) %>

@@ -58,6 +58,9 @@ class Activity < ActiveRecord::Base
   
   
   
+  named_scope :uncancelled, :conditions => { :cancelled => false }
+  
+  
   CKP_activity_with_img = :activity_with_img
   
   after_destroy { |activity|
@@ -140,7 +143,7 @@ class Activity < ActiveRecord::Base
   end
   
   def self.paginate_list_by_begin_at(first, last, page, per_page)
-    Activity.paginate(
+    Activity.uncancelled.paginate(
       :page => page,
       :per_page => per_page,
       :conditions => ["begin_at > ? and begin_at < ?", first, last],
@@ -150,6 +153,8 @@ class Activity < ActiveRecord::Base
   end
   
   def get_title(show_status = false)
+    return "[该活动已取消]" if self.cancelled
+    
     the_title = title
     the_title = "(#{self.get_status[1]}) " + the_title if show_status
     the_title

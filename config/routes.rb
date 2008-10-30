@@ -222,7 +222,10 @@ ActionController::Routing::Routes.draw do |map|
     
     :del_interest => :post,
     
-    :check_profile => :any
+    :check_profile => :any,
+    
+    :cancel => :post,
+    :recover => :post
     
   }, :collection => {
     :new_in_groups => :post,

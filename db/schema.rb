@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 9) do
+ActiveRecord::Schema.define(:version => 10) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(:version => 9) do
     t.integer  "in_group",             :limit => 11
     t.text     "setting"
     t.boolean  "delta"
+    t.boolean  "cancelled",                                                         :default => false
   end
 
   add_index "activities", ["created_at"], :name => "index_activities_on_created_at"
@@ -410,6 +411,7 @@ ActiveRecord::Schema.define(:version => 9) do
     t.string   "desc",       :limit => 1000
     t.text     "setting"
     t.boolean  "delta"
+    t.boolean  "dismissed",                  :default => false
   end
 
   add_index "groups", ["created_at"], :name => "index_groups_on_created_at"

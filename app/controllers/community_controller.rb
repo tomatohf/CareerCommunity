@@ -47,10 +47,10 @@ class CommunityController < ApplicationController
       :order => "publish_time DESC"
     )
     
-    @new_activities = Activity.find(
+    @new_activities = Activity.uncancelled.find(
       :all,
       :limit => New_Activity_Size,
-      :select => "activities.id, activities.title, activity_images.pic_url",
+      :select => "activities.id, activities.title, activities.cancelled, activity_images.pic_url",
       :joins => "INNER JOIN activity_images ON 
                   activity_images.activity_id = activities.id",
       :order => "created_at DESC"

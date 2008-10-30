@@ -83,7 +83,7 @@
 	</div>
 		
 	<% if @is_master %>
-		<% if activity_status[0] <= Activity::Status::Ongoing[0] %>
+		<%# if activity_status[0] <= Activity::Status::Ongoing[0] %>
 			<div class="community_block">
 				<a href="/activities/<%= @activity_id %>/edit">修改活动的信息</a>
 			</div>
@@ -91,7 +91,7 @@
 			<div class="community_block">
 				<a href="/activities/<%= @activity_id %>/edit_image">设置活动的图标</a>
 			</div>
-		<% end %>
+		<%# end %>
 		
 		<div class="community_block">
 			<a href="/activities/members_info/<%= @activity_id %>">统计报名参加活动成员的信息</a>
@@ -196,14 +196,31 @@
 </div>
 
 <div class="blog_container_l">
-	<% if superadmin?(session[:account_id]) %>
-		<% form_tag "/activities/#{@activity_id}", :method => :delete, :id => "activity_delete_form" do %>
+	<% if @is_master %>
+		<% unless @activity.cancelled %>
+			<% form_tag "/activities/#{@activity_id}/cancel", :method => :post, :onsubmit => "if(!confirm('确定要取消这个活动么 ?')){ return false; }" do %>
+				<input type="submit" value="取消这个活动" class="float_r button" />
+			<% end %>
 		<% end %>
-		<a class="float_r" title="删除活动数据" href="#" onclick="if(confirm('确定要删除这个活动的数据么 ?')){document.getElementById('activity_delete_form').submit();}; return false;">
-			<img src="/images/delete_small.gif" border="0" /></a>
 	<% end %>
 		
 	<h2><%= activity_title %></h2>
+	
+	<% if @activity.cancelled %>
+		<div class="community_block_narrow form_info_s">
+			<%= h(@activity.title) %>
+		</div>
+		
+		<% if @is_master %>
+			<div class="community_block align_c">
+				<% if @activity.cancelled %>
+					<% form_tag "/activities/#{@activity_id}/recover", :method => :post, :onsubmit => "if(!confirm('确定要恢复这个活动么 ?')){ return false; }", :id => "recover_activity_form" do %>
+						<input type="submit" value="我决定还是要恢复这个活动" class="button" />
+					<% end %>
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>
 	
 	<div class="community_block">
 		<div class="space_section_title">

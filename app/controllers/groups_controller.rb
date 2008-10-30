@@ -77,7 +77,7 @@ class GroupsController < ApplicationController
       :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
     )
     
-    @group_activities = Activity.find(
+    @group_activities = Activity.uncancelled.find(
       :all,
       :limit => Activity_Recent_List_Size,
       :conditions => ["in_group in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
@@ -244,7 +244,7 @@ class GroupsController < ApplicationController
       :order => "responded_at DESC, created_at DESC"
     )
     
-    @group_activities = Activity.find(
+    @group_activities = Activity.uncancelled.find(
       :all,
       :limit => Group_Activity_Num,
       :conditions => ["in_group = ?", @group_id],
@@ -300,7 +300,7 @@ class GroupsController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @group_activities = Activity.paginate(
+    @group_activities = Activity.uncancelled.paginate(
       :page => page,
       :per_page => Activity_List_Size,
       :conditions => ["in_group = ?", @group_id],
@@ -369,7 +369,7 @@ class GroupsController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @all_activitie = Activity.paginate(
+    @all_activitie = Activity.uncancelled.paginate(
       :page => page,
       :per_page => Activity_List_Size,
       :conditions => ["in_group in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],

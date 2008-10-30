@@ -5,10 +5,15 @@
 				<%= h(operator[0]) %></a>
 			<%= creator_id == operator[2] ? "发起" : "参加" %>
 			了活动
-			<a href="/activities/<%= activity_id %>"><%= h(activity_title) %></a>
+			<% if activity_deleted %>
+				&nbsp;&nbsp;
+				[已被删除]
+			<% else %>
+				<a href="/activities/<%= activity_id %>"><%= h(activity_title) %></a>
+			<% end %>
 		</td>
 		
-		<% unless save_space %>
+		<% unless activity_deleted || save_space %>
 			<td style="width: 50px">
 				<a href="/activities/<%= activity_id %>">
 					<img src="<%= face_img_src(activity_image) %>" border="0" /></a>
