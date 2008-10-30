@@ -1,19 +1,10 @@
-﻿限制加入圈子个数？ - like 限制朋友个数的实现
-
-缩短 并 调整 tiny_mce 的宽度？？？
-
-
-
-解散活动
-解散圈子
-
-
-图片上传问题
+﻿图片上传问题
 
 
 用户资料的 可见性 设置
 
 new recruitment vendors - 3
+guolairen
 
 用户是否在线
 
@@ -93,9 +84,6 @@ Vote client ???
 
 个人 profile 和 相册的 隐私设置
 
-不登录可以看到所有内容，但是要操作就必须登录
-
-
 
 
 
@@ -160,28 +148,7 @@ respond_to do |wants|
 	wants.rss
 	wants.atom
 	wants.yaml
-end
-
-def rescue_action(exception)
-	exception.is_a?(ActiveRecord::RecordInvalid) ? render_invalid_record(exception.record)
-end
-
-def render_invalid_record(record)
-	@invalid_record = record
-	respond_to do |format|
-		format.html do
-			render :action => (record.new_record? ? "new" : "edit")
-		end
-		
-		format.js do
-			render :update do |page|
-				page.alert @invalid_record.errors.full_messages.join("\n")
-			end
-		end
-	end
-end
-
-======
+ends
 
 
 ======文件下载======

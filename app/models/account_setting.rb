@@ -11,15 +11,24 @@ class AccountSetting < ActiveRecord::Base
   
   
   @@default_values = {
-                      # :name => "value"
-                    }
+    
+  }
   def self.default_value(name)
     @@default_values[name]
   end
   
   
-  def setting_hash
-    {}
+  def get_setting
+    ((self.setting && self.setting != "") && eval(self.setting)) || {}
+  end
+  
+  def fill_setting(hash_setting)
+    self.setting = hash_setting.inspect
+  end
+  
+  def update_setting(hash_setting)
+    new_setting = self.get_setting.merge(hash_setting)
+    self.fill_setting(new_setting)
   end
 
 end

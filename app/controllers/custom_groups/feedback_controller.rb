@@ -2,6 +2,8 @@ class CustomGroups::FeedbackController < CustomGroups::CustomGroupsController
   
   Group_Post_Num = 30
   
+  Group_Vote_Num = 20
+  
 
   def show
     @group_id = params[:id]
@@ -35,6 +37,14 @@ class CustomGroups::FeedbackController < CustomGroups::CustomGroupsController
       :conditions => ["group_id = ? and top = ?", @group_id, false],
       :include => [:account],
       :order => "responded_at DESC, created_at DESC"
+    )
+    
+    @group_vote_topics = VoteTopic.find(
+      :all,
+      :limit => Group_Vote_Num,
+      :conditions => ["group_id = ?", @group_id],
+      :include => [:account],
+      :order => "created_at DESC"
     )
   end
   
