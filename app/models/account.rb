@@ -251,9 +251,7 @@ class Account < ActiveRecord::Base
   end
   
   def has_ownership?
-    # it should be Tomato or Kai
-    
-    self.id == 1001 || self.id == 1004
+    ApplicationController.helpers.general_admin?(self.id)
   end
   
 end

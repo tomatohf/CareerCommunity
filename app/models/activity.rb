@@ -60,6 +60,10 @@ class Activity < ActiveRecord::Base
   
   CKP_activity_with_img = :activity_with_img
   
+  after_destroy { |activity|
+    self.clear_activity_with_image_cache(activity.id)
+  }
+  
   
   
   def get_image_url

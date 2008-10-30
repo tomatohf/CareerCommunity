@@ -1142,6 +1142,19 @@ class ActivitiesController < ApplicationController
     )
   end
   
+  def destroy
+    if ApplicationController.helpers.superadmin?(session[:account_id])
+      # only super admin can destroy an activity
+      
+      activity_id = params[:id]
+      activity = Activity.find(activity_id)
+      
+      activity.destroy
+    end
+    
+    jump_to("/activities")
+  end
+  
   
   
   private

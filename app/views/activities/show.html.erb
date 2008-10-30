@@ -196,6 +196,13 @@
 </div>
 
 <div class="blog_container_l">
+	<% if superadmin?(session[:account_id]) %>
+		<% form_tag "/activities/#{@activity_id}", :method => :delete, :id => "activity_delete_form" do %>
+		<% end %>
+		<a class="float_r" title="删除活动数据" href="#" onclick="if(confirm('确定要删除这个活动的数据么 ?')){document.getElementById('activity_delete_form').submit();}; return false;">
+			<img src="/images/delete_small.gif" border="0" /></a>
+	<% end %>
+		
 	<h2><%= activity_title %></h2>
 	
 	<div class="community_block">

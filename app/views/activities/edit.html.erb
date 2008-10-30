@@ -12,6 +12,9 @@
 	</div>
 	
 	<div class="community_block_narrow">
+		<div class="align_r">
+			<a href="/activities/<%= @activity.id %>">返回活动 <%= activity_title %></a>
+		</div>
 
 		<% if flash[:error_msg] %>
 			<p class="error_msg"><%= flash[:error_msg] %></p>
@@ -26,8 +29,6 @@
 		<% end %>
 		
 		<div>
-			<a href="/activities/<%= @activity.id %>" class="float_r">返回活动 <%= activity_title %></a>
-			
 			<table cellpadding="0" cellspacing="10" class="main_part_w">
 				<% form_tag "/activities/#{@activity_id}", :method => :put do %>
 					<% if @in_groups && @in_groups.size > 0 %>

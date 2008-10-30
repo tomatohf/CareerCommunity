@@ -127,11 +127,16 @@ module ApplicationHelper
   end
   
   def superadmin?(account_id)
+    # it should be Tomato
+    
     account_id == 1001
   end
   
   def general_admin?(account_id)
-    superadmin?(account_id) || account_id == 1004 || account_id == 1002
+    # 1002 - MaXiao
+    # 1004 - Kai
+    
+    superadmin?(account_id) || account_id == 1002 || account_id == 1004
   end
   
   def tag_cloud_font_styling (total, lowest, highest, options={})
