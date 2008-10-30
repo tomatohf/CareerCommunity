@@ -68,7 +68,10 @@ class Photo < ActiveRecord::Base
 
   validates_attachment_presence :image, :message => "请选择 图片文件"
   validates_attachment_content_type :image, :content_type => [
-    "image/jpg", "image/jpeg", "image/gif", "image/png", "image/bmp"
+    "image/jpg", "image/jpeg", "image/gif", "image/png", "image/bmp",
+    
+    # to be compatible with IE ...
+    "image/pjpeg", "image/x-png"
   ], :message => "只能上传 JPG, JPEG, GIF, PNG 或 BMP 格式的图片"
   validates_attachment_size :image, :less_than => 3.megabyte, :message => "每个图片文件大小不能超过 3M"
   # to avoid displaying internal errors
