@@ -304,7 +304,9 @@ class CommunityController < ApplicationController
         :profile_pic,
         :profile_hobby,
         :profile_basic,
-        :setting
+        :setting,
+        :friends,
+        :be_friends
       ],
       :with => {
         :checked => 1,

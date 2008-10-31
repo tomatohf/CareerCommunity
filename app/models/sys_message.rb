@@ -143,7 +143,7 @@ class SysMessage < ActiveRecord::Base
         account_nick = account_nick_pic[0]
         account_pic_url = account_nick_pic[1]
         
-        not_friend = Friend.is_friend(owner_id, account_id).nil?
+        not_friend = !Friend.is_friend(owner_id, account_id)
         
         %Q!
           render(:partial => "/messages/sys/add_friend", :locals => {

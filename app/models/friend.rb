@@ -11,12 +11,77 @@ class Friend < ActiveRecord::Base
   
   
   
+  after_destroy { |friend|
+    self.clear_account_friend_ids_cache(friend.account_id)
+    
+    self.clear_account_be_friend_ids_cache(friend.friend_id)
+  }
+  
+  after_save { |friend|
+    self.clear_account_friend_ids_cache(friend.account_id)
+    
+    self.clear_account_be_friend_ids_cache(friend.friend_id)
+  }
+  
+  
+  CKP_account_friend_ids = :account_friend_ids
+  CKP_account_be_friend_ids = :account_be_friend_ids
+  
+  
+  
+  def self.get_account_friend_ids(account_id)
+    a_f_id = Cache.get("#{CKP_account_friend_ids}_#{account_id}".to_sym)
+    
+    unless a_f_id
+      a_f_id = self.get_all_by_account(account_id).collect { |f| f.friend_id }
+      
+      Cache.set("#{CKP_account_friend_ids}_#{account_id}".to_sym, a_f_id, Cache_TTL)
+    end
+    a_f_id
+  end
+  
+  def self.set_account_friend_ids_cache(account_id, friends)
+    a_f_id = friends.collect { |f| f.friend_id }
+    
+    Cache.set("#{CKP_account_friend_ids}_#{account_id}".to_sym, a_f_id, Cache_TTL)
+  end
+  
+  def self.clear_account_friend_ids_cache(account_id)
+    Cache.delete("#{CKP_account_friend_ids}_#{account_id}".to_sym)
+  end
+  
+  
+  def self.get_account_be_friend_ids(account_id)
+    a_b_f_id = Cache.get("#{CKP_account_be_friend_ids}_#{account_id}".to_sym)
+    
+    unless a_b_f_id
+      a_b_f_id = self.get_all_by_friend(account_id).collect { |f| f.account_id }
+      
+      Cache.set("#{CKP_account_be_friend_ids}_#{account_id}".to_sym, a_b_f_id, Cache_TTL)
+    end
+    a_b_f_id
+  end
+  
+  def self.set_account_be_friend_ids_cache(account_id, be_friends)
+    a_b_f_id = be_friends.collect { |f| f.account_id }
+    
+    Cache.set("#{CKP_account_be_friend_ids}_#{account_id}".to_sym, a_b_f_id, Cache_TTL)
+  end
+  
+  def self.clear_account_be_friend_ids_cache(account_id)
+    Cache.delete("#{CKP_account_be_friend_ids}_#{account_id}".to_sym)
+  end
+  
+  
+  
   def self.is_friend(a_id, f_id)
-    self.find(:first, :conditions => ["account_id = ? and friend_id = ?", a_id, f_id])
+    friend_ids = self.get_account_friend_ids(a_id)
+    friend_ids.include?(f_id.to_i)
   end
   
   def self.is_be_friend(a_id, f_id)
-    self.find(:first, :conditions => ["account_id = ? and friend_id = ?", f_id, a_id])
+    be_friend_ids = self.get_account_be_friend_ids(a_id)
+    be_friend_ids.include?(f_id.to_i)
   end
   
   def self.get_all_by_friend(friend_id, args = {})

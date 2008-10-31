@@ -10,16 +10,27 @@
 <% AccountSetting.set_account_setting_cache(account_id, account_setting) %>
 
 <%
+	friends = account.friends
+	Friend.set_account_friend_ids_cache(account_id, friends)
+	
+	be_friends = account.be_friends
+	Friend.set_account_be_friend_ids_cache(account_id, be_friends)
+%>
+
+
+<%
 	basic_profile_visible = true
 	hobby_profile_visible = true
 
-	unless account_id == session[:account_id]
+	edit = (account_id == session[:account_id])
+	
+	unless edit
 		profile_basic_visible = account_setting.get_setting_value(:profile_basic_visible)
 		profile_hobby_visible = account_setting.get_setting_value(:profile_hobby_visible)
 
 		check_login = session[:account_id] && session[:account_id] > 0 && session[:email]
-		check_friend = Friend.is_friend(account_id, session[:account_id]) if check_login && (profile_basic_visible == "friend" || profile_hobby_visible == "friend")
-		check_be_friend = Friend.is_be_friend(account_id, session[:account_id]) if check_login && check_friend && (profile_basic_visible == "both_friend" || profile_hobby_visible == "both_friend")
+		check_friend = Friend.is_friend(account_id, session[:account_id])
+		check_be_friend = Friend.is_be_friend(account_id, session[:account_id])
 
 		case profile_basic_visible
 			when "any"
@@ -146,10 +157,40 @@
 					</div>
 				</div>
 				
+				<% unless basic_profile_visible && hobby_profile_visible %>
+					<div class="form_info_s">
+						<i>(按照其资料可见性设置, 部分资料被隐藏 ... )</i>
+					</div>
+				<% end %>
+				
+				
+				<% unless check_be_friend || edit %>
+					<div class="align_r">
+						<% form_tag "/friends", :method => :post do %>
+							<input type="hidden" name="friend" value="<%= account_id %>" />
+							<input type="submit" value="加为我的朋友" class="button" />
+						<% end %>
+					</div>
+				<% end %>
+				
+				
 				<div class="form_info_s search_result_info">
+					<% if check_friend %>
+						我在其朋友列表中
+						
+						|
+					<% end %>
+					
+					<% if check_be_friend %>
+						是我的朋友
+						
+						|
+					<% end %>
+					
 					加入时间
 					<%= format_datetime(account.created_at) %>
 				</div>
+
 			</td>
 		</tr>
 	</table>

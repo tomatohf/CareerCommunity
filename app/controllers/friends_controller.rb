@@ -50,7 +50,9 @@ class FriendsController < ApplicationController
   
   def destroy
     friend_id = params[:id]
-    Friend.delete_all(["account_id = #{session[:account_id]} and friend_id = ?", friend_id])
+    Friend.find(:all, :conditions => ["account_id = #{session[:account_id]} and friend_id = ?", friend_id]).each do |f|
+      f.destroy
+    end
     
     jump_to("/friends/list_edit/#{session[:account_id]}")
   end
