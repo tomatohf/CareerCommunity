@@ -6,9 +6,67 @@
 
 <% Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email) %>
 
+<% account_setting = account.setting %>
+<% AccountSetting.set_account_setting_cache(account_id, account_setting) %>
 
-<% basic_profile = account.profile_basic %>
-<% hobby_profile = account.profile_hobby %>
+<%
+	basic_profile_visible = true
+	hobby_profile_visible = true
+
+	unless account_id == session[:account_id]
+		profile_basic_visible = account_setting.get_setting_value(:profile_basic_visible)
+		profile_hobby_visible = account_setting.get_setting_value(:profile_hobby_visible)
+
+		check_login = session[:account_id] && session[:account_id] > 0 && session[:email]
+		check_friend = Friend.is_friend(account_id, session[:account_id]) if check_login && (profile_basic_visible == "friend" || profile_hobby_visible == "friend")
+		check_be_friend = Friend.is_be_friend(account_id, session[:account_id]) if check_login && check_friend && (profile_basic_visible == "both_friend" || profile_hobby_visible == "both_friend")
+
+		case profile_basic_visible
+			when "any"
+			  basic_profile_visible = true
+			when "login"
+			  basic_profile_visible = check_login
+			when "friend"
+			  basic_profile_visible = check_login && check_friend
+			when "both_friend"
+			  basic_profile_visible = check_login && check_friend && check_be_friend
+		end
+
+		case profile_hobby_visible
+			when "any"
+			  hobby_profile_visible = true
+			when "login"
+			  hobby_profile_visible = check_login
+			when "friend"
+			  hobby_profile_visible = check_login && check_friend
+			when "both_friend"
+			  hobby_profile_visible = check_login && check_friend && check_be_friend
+		end
+	end
+
+	basic_profile = basic_profile_visible ? account.profile_basic : nil
+	hobby_profile = hobby_profile_visible ? account.profile_hobby : nil
+%>
+
+<%
+	province_name = ""
+	city_name = ""
+
+	hometown_province_name = ""
+	hometown_city_name = ""
+	
+	if basic_profile
+		all_provinces_cities_cache = Province.get_all_provinces_cities
+		
+		province_name = Province.get_name(basic_profile.province_id, all_provinces_cities_cache) if basic_profile.province_id
+		city_name = City.get_name(basic_profile.city_id, all_provinces_cities_cache) if basic_profile.city_id
+
+		hometown_province_name = Province.get_name(basic_profile.hometown_province_id, all_provinces_cities_cache) if basic_profile.hometown_province_id
+		hometown_city_name = City.get_name(basic_profile.hometown_city_id, all_provinces_cities_cache) if basic_profile.hometown_city_id
+	end
+%>
+
+
 
 
 <%
@@ -16,12 +74,11 @@
 		riddle_client,
 		[
 			h(account_nick),
-			h(account.email),
 			h(basic_profile && basic_profile.real_name),
-			h(basic_profile && basic_profile.province && basic_profile.province.name),
-			h(basic_profile && basic_profile.city && basic_profile.city.name),
-			h(basic_profile && basic_profile.hometown_province && basic_profile.hometown_province.name),
-			h(basic_profile && basic_profile.hometown_city && basic_profile.hometown_city.name),
+			h(province_name),
+			h(city_name),
+			h(hometown_province_name),
+			h(hometown_city_name),
 			[
 				h(basic_profile && basic_profile.qmd),
 				h(hobby_profile && hobby_profile.intro),
@@ -48,51 +105,48 @@
 <div>
 	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
 		<tr>
-			<td valign="top" style="width: 90px">
+			<td valign="top" style="width: 75px">
 				<div class="align_c">
 					<div class="community_block">
 						<a href="/spaces/show/<%= account_id %>">
 							<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
-					</div>
-					<div class="community_block">
-						<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
-							<%= excerpts[0] %></a>
 					</div>
 				</div>
 			</td>
 			
 			<td valign="top">
 				<div>
+					<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+						<%= excerpts[0] %></a>
+				</div>
+				
+				<div>
 					<div>
 						<%# seems sphinx excerpts will always return empty string instead of nil %>
-						<% if excerpts[2] != "" %>
+						<% if excerpts[1] != "" %>
 							真实姓名:
-							<%= excerpts[2] %>
+							<%= excerpts[1] %>
 							&nbsp;&nbsp;&nbsp;
 						<% end %>
 
-						<% if excerpts[3] != "" || excerpts[4] != "" %>
+						<% if excerpts[2] != "" || excerpts[3] != "" %>
 							所在城市:
-							<%= excerpts[3] %> &nbsp; <%= excerpts[4] %>
+							<%= excerpts[2] %> &nbsp; <%= excerpts[3] %>
 							&nbsp;&nbsp;&nbsp;
 						<% end %>
 						
-						<% if excerpts[5] != "" || excerpts[6] != "" %>
+						<% if excerpts[4] != "" || excerpts[5] != "" %>
 							家乡:
-							<%= excerpts[5] %> &nbsp; <%= excerpts[6] %>
+							<%= excerpts[4] %> &nbsp; <%= excerpts[5] %>
 						<% end %>
 					</div>
 					
 					<div style="color: #6B6B6B">
-						<%= excerpts[7] %>
+						<%= excerpts[6] %>
 					</div>
 				</div>
 				
 				<div class="form_info_s search_result_info">
-					<%= excerpts[1].gsub("@", " [at] ") %>
-					
-					|
-					
 					加入时间
 					<%= format_datetime(account.created_at) %>
 				</div>

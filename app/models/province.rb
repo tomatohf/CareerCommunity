@@ -22,7 +22,7 @@ class Province < ActiveRecord::Base
   def self.get_name(province_id, all_provinces_cities_cache = nil)
     return nil unless province_id
     
-    all_provinces_cities_cache = self.get_all_provinces_cities
+    all_provinces_cities_cache ||= self.get_all_provinces_cities
     
     all_provinces_cities_cache.keys.each do |key|
       return key[1] if key[0].to_s == province_id.to_s

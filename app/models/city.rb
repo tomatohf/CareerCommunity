@@ -5,7 +5,7 @@ class City < ActiveRecord::Base
   def self.get_name(city_id, all_provinces_cities_cache = nil)
     return nil unless city_id
     
-    all_provinces_cities_cache = Province.get_all_provinces_cities
+    all_provinces_cities_cache ||= Province.get_all_provinces_cities
     
     all_provinces_cities_cache.values.each do |cities|
       cities.each do |city|

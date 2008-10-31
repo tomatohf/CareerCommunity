@@ -269,7 +269,6 @@ class CommunityController < ApplicationController
       :match_mode => Search_Match_Mode,
       :order => "@relevance DESC, created_at DESC",
       :field_weights => {
-        :email => 15,
         :nick => 20,
         
         :basic_real_name => 10,
@@ -304,7 +303,8 @@ class CommunityController < ApplicationController
       :include => [
         :profile_pic,
         :profile_hobby,
-        {:profile_basic => [:province, :city, :hometown_province, :hometown_city]}
+        :profile_basic,
+        :setting
       ],
       :with => {
         :checked => 1,

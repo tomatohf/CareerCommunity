@@ -9,6 +9,8 @@ class Friend < ActiveRecord::Base
 
   validates_presence_of :account_id, :friend_id
   
+  
+  
   def self.is_friend(a_id, f_id)
     self.find(:first, :conditions => ["account_id = ? and friend_id = ?", a_id, f_id])
   end

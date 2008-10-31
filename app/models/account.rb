@@ -2,7 +2,9 @@ class Account < ActiveRecord::Base
   
   define_index do
     # fields
-    indexes :email, :nick
+    
+    # indexes :email # exclude email from index
+    indexes :nick
     
     # basic profile
     # gender, two p_id and two city_id

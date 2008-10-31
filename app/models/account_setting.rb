@@ -1,4 +1,6 @@
 class AccountSetting < ActiveRecord::Base
+  
+  include CareerCommunity::Util
 
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
 
@@ -33,17 +35,24 @@ class AccountSetting < ActiveRecord::Base
         a_s.save
       end
       
-      Cache.set("#{CKP_account_setting}_#{account_id}".to_sym, a_s, Cache_TTL)
+      Cache.set("#{CKP_account_setting}_#{account_id}".to_sym, a_s.clear_association, Cache_TTL)
     end
     a_s
   end
   
   def self.set_account_setting_cache(account_id, account_setting)
-    Cache.set("#{CKP_account_setting}_#{account_id}".to_sym, account_setting, Cache_TTL)
+    Cache.set("#{CKP_account_setting}_#{account_id}".to_sym, account_setting.clear_association, Cache_TTL)
   end
   
   def self.clear_account_setting_cache(account_id)
     Cache.delete("#{CKP_account_setting}_#{account_id}".to_sym)
+  end
+
+  def clear_association
+    copy = deep_copy(self)
+    copy.clear_association_cache
+    copy.clear_aggregation_cache
+    copy
   end
   
   
