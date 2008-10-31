@@ -121,11 +121,13 @@
 
 					<div id="<%= key %>_section">
 						<% item_results.each do |result| %>
-							<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => get_riddle_client} %>
+							<% if result %>
+								<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => get_riddle_client} %>
 
-							<div style="padding: 0px 25px">
-								<%= thin_hr %>
-							</div>
+								<div style="padding: 0px 25px">
+									<%= thin_hr %>
+								</div>
+							<% end %>
 						<% end %>
 					</div>
 				</div>
@@ -144,11 +146,13 @@
 		<% if @results %>
 			<div class="community_block">
 				<% @results.each do |result| %>
-					<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => get_riddle_client} %>
-			
-					<div style="padding: 0px 25px">
-						<%= thin_hr %>
-					</div>
+					<% if result %>
+						<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => get_riddle_client} %>
+				
+						<div style="padding: 0px 25px">
+							<%= thin_hr %>
+						</div>
+					<% end %>
 				<% end %>
 			</div>
 	

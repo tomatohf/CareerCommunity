@@ -38,14 +38,6 @@ class CustomGroups::FeedbackController < CustomGroups::CustomGroupsController
       :include => [:account],
       :order => "responded_at DESC, created_at DESC"
     )
-    
-    @group_vote_topics = VoteTopic.find(
-      :all,
-      :limit => Group_Vote_Num,
-      :conditions => ["group_id = ?", @group_id],
-      :include => [:account],
-      :order => "created_at DESC"
-    )
   end
   
   

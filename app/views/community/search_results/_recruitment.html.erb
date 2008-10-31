@@ -25,7 +25,7 @@
 		<% if recruitment.location && recruitment.location != "" %>
 			[<a href="/recruitments/location?name=<%= h(recruitment.location) %>" class="account_nick_link"><%= recruitment_location %></a>]
 		<% end %>
-		<a href="<%= recruitment.source_link %>" target="_blank" class="account_nick_link">
+		<a href="/recruitments/<%= recruitment.id %>" class="account_nick_link">
 			<%= recruitment_title %></a>
 	</div>
 	
@@ -38,10 +38,6 @@
 				<%= format_date(recruitment.publish_time) %>
 			</b>
 		</span>
-		&nbsp;
-		|
-		&nbsp;
-		<a href="/recruitments/<%= recruitment.id %>">信息快照</a>
 	</div>
 	
 	<div class="recruitment_content">

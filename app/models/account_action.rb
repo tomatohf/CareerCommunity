@@ -133,6 +133,7 @@ class AccountAction < ActiveRecord::Base
     class JoinActivity < Base
       def action_text(data, operator, save_space)
         activity_id = data[:activity_id]
+        
         begin
           activity, activity_image = Activity.get_activity_with_image(activity_id)
           
@@ -147,7 +148,6 @@ class AccountAction < ActiveRecord::Base
         end
         
         activity_deleted = activity.nil?
-        
         
         %Q!
           render(:partial => "/spaces/actions/join_activity", :locals => {
@@ -167,14 +167,24 @@ class AccountAction < ActiveRecord::Base
     class CreateVoteTopic < Base
       def action_text(data, operator, save_space)
         vote_topic_id = data[:vote_topic_id]
-        vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+        
+        begin
+          vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+          
+          vote_topic_title = vote_topic.title
+        rescue
+          vote_topic_title ||= ""
+        end
+        
+        vote_topic_deleted = vote_topic.nil?
         
         %Q!
           render(:partial => "/spaces/actions/create_vote_topic", :locals => {
             :operator => #{operator},
             :vote_topic_id => #{vote_topic_id},
-            :vote_topic_title => "#{vote_topic.title}",
+            :vote_topic_title => "#{vote_topic_title}",
             :vote_image => "#{vote_image}",
+            :vote_topic_deleted => #{vote_topic_deleted},
             
             :save_space => #{save_space.inspect}
           })
@@ -185,14 +195,24 @@ class AccountAction < ActiveRecord::Base
     class JoinVoteTopic < Base
       def action_text(data, operator, save_space)
         vote_topic_id = data[:vote_topic_id]
-        vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+        
+        begin
+          vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+          
+          vote_topic_title = vote_topic.title
+        rescue
+          vote_topic_title ||= ""
+        end
+        
+        vote_topic_deleted = vote_topic.nil?
         
         %Q!
           render(:partial => "/spaces/actions/join_vote_topic", :locals => {
             :operator => #{operator},
             :vote_topic_id => #{vote_topic_id},
-            :vote_topic_title => "#{vote_topic.title}",
+            :vote_topic_title => "#{vote_topic_title}",
             :vote_image => "#{vote_image}",
+            :vote_topic_deleted => #{vote_topic_deleted},
             
             :save_space => #{save_space.inspect}
           })

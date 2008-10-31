@@ -4,7 +4,12 @@
 			<a href="/spaces/show/<%= operator[2] %>" class="account_nick_link">
 				<%= h(operator[0]) %></a>
 			参与了投票
-			<a href="/votes/<%= vote_topic_id %>"><%= h(vote_topic_title) %></a>
+			<% if vote_topic_deleted %>
+				&nbsp;&nbsp;
+				[已被删除]
+			<% else %>
+				<a href="/votes/<%= vote_topic_id %>"><%= h(vote_topic_title) %></a>
+			<% end %>
 		</td>
 		
 		<% unless save_space %>

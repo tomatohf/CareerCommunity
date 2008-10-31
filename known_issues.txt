@@ -1,5 +1,8 @@
 ﻿搜索用户 的 资料可见性 问题
 
+圈子收藏, 个人推荐
+
+
 使用附件
 
 new recruitment vendors - 3
@@ -10,6 +13,7 @@ guolairen
 
 
 Rails atom feed helper
+先做 blog 和 招聘信息的订阅好了
 
 
 highlight 活动日历上有活动的日子
