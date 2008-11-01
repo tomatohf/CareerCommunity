@@ -2,7 +2,7 @@ class CommunityController < ApplicationController
   
   New_Account_Size = 9
   New_Action_Size = 15
-  New_Recruitment_Size = 5
+  New_Recruitment_Size = 8
   New_Activity_Size = 5
   New_Group_Size = 6
   New_Activity_Post_Size = 8
@@ -42,7 +42,7 @@ class CommunityController < ApplicationController
       :all,
       :limit => New_Recruitment_Size,
       :select => "id, title, publish_time",
-      :conditions => ["location = ? and source_name = ?", "上海", "Hiall"],
+      :conditions => ["location = ? and source_name in (?)", "上海", ["Hiall", "我是应届生"]],
       :include => [:recruitment_tags],
       :order => "publish_time DESC"
     )

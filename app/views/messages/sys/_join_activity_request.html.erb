@@ -1,21 +1,21 @@
 <table cellpadding="0" cellspacing="5" class="main_part_w">
 	<tr>
 		<td style="width: 50px">
-			<a href="/activities/<%= activity_id %>">
+			<a href="/activities/<%= activity_id %>" target="_blank">
 				<img src="<%= face_img_src(activity_image) %>" border="0" /></a>
 		</td>
 		
 		<td>
-			<a href="/spaces/show/<%= requester_id %>" class="account_nick_link">
+			<a href="/spaces/show/<%= requester_id %>" class="account_nick_link" target="_blank">
 				<%= h(requester_nick) %></a>
 			报名参加活动
-			<a href="/activities/<%= activity_id %>"><%= h(activity_title) %></a>
+			<a href="/activities/<%= activity_id %>" target="_blank"><%= h(activity_title) %></a>
 			,
-			<a href="/activities/unapproved/<%= activity_id %>">处理这个报名参加活动的申请</a>
+			<a href="/activities/unapproved/<%= activity_id %>" target="_blank">处理这个报名参加活动的申请</a>
 		</td>
 		
 		<td style="width: 50px">
-			<a href="/spaces/show/<%= requester_id %>">
+			<a href="/spaces/show/<%= requester_id %>" target="_blank">
 				<img src="<%= face_img_src(requester_pic_url) %>" border="0" /></a>
 		</td>
 	</tr>

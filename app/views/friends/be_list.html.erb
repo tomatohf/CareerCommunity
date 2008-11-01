@@ -28,6 +28,24 @@
 			互相将对方加为了朋友
 		</div>
 	</div>
+	
+	
+	<div class="community_title">
+		搜索成员 ...
+	</div>
+	
+	<% form_tag "/community/search", :method => :get do %>
+		<div class="community_block">
+			<input type="text" name="query" class="text_field" style="width: 90%" />
+			<input type="hidden" name="scope" value="account" />
+		</div>
+		
+		<div class="community_block align_c">
+			<input type="submit" value="搜索成员" class="button" />
+		</div>
+		
+	<% end %>
+	
 </div>
 
 <div class="friend_container_l">

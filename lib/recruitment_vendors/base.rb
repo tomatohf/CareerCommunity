@@ -5,6 +5,7 @@ module RecruitmentVendor
     
     "sjtubbs" => "Sjtubbs",
     "utomorrow" => "Utomorrow",
+    "yjs54" => "Yjs54",
     "hiall" => "Hiall"
     
   }

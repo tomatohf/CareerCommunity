@@ -1,18 +1,18 @@
 <table cellpadding="0" cellspacing="5" class="main_part_w">
 	<tr>
 		<td style="width: 50px">
-			<a href="/groups/<%= group_id %>">
+			<a href="/groups/<%= group_id %>" target="_blank">
 				<img src="<%= face_img_src(group_image) %>" border="0" /></a>
 		</td>
 		
 		<td>
 			<% form_tag "/groups/#{group_id}/join", :method => :post, :target => :_blank do %>
 
-				<a href="/spaces/show/<%= inviter_id %>" class="account_nick_link">
+				<a href="/spaces/show/<%= inviter_id %>" class="account_nick_link" target="_blank">
 					<%= h(inviter_nick) %></a>
 				邀请你
 				<input type="submit" value="加入圈子" class="button" />
-				<a href="/groups/<%= group_id %>"><%= h(group_name) %></a>
+				<a href="/groups/<%= group_id %>" target="_blank"><%= h(group_name) %></a>
 				<% if invitation_words && (invitation_words != "") %>
 					:
 					&nbsp;
@@ -25,7 +25,7 @@
 		</td>
 		
 		<td style="width: 50px">
-			<a href="/spaces/show/<%= inviter_id %>">
+			<a href="/spaces/show/<%= inviter_id %>" target="_blank">
 				<img src="<%= face_img_src(inviter_pic_url) %>" border="0" /></a>
 		</td>
 	</tr>

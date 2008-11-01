@@ -96,7 +96,11 @@ module ApplicationHelper
   end
   
   def sanitize_tinymce(html)
-    sanitize(html, :attributes => %w(style src href border title))
+    sanitize(
+      html,
+      :tags => ActionView::Base.sanitized_allowed_tags + %w(table th tr td),
+      :attributes => ActionView::Base.sanitized_allowed_attributes + %w(style src href border title bgcolor)
+    )
   end
   
   def community_page_title(page_title)

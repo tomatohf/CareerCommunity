@@ -1,9 +1,7 @@
-﻿发邀请 email
-邀请 hotmail gmail yahoo 联系人
-
-圈子收藏, 个人推荐
+﻿圈子收藏, 个人推荐
 
 使用附件
+
 
 new recruitment vendors - 3
 guolairen
@@ -19,6 +17,9 @@ Rails atom feed helper
 highlight 活动日历上有活动的日子
 
 投票交叉分析, 投票构成
+
+发邀请 email
+邀请 hotmail gmail yahoo 联系人
 
 
 服务器 上的 log 清理
@@ -136,6 +137,7 @@ Denpendencies:
 	mislav-will_paginate (gem install mislav-will_paginate --source http://gems.github.com/)
 	select_with_include
 	freelancing-god-thinking-sphinx (gem install freelancing-god-thinking-sphinx --source http://gems.github.com)
+	contacts
 	-----
 	
 ======

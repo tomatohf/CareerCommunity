@@ -85,6 +85,7 @@ class Account < ActiveRecord::Base
   
   has_many :messages, :class_name => "Message", :foreign_key => "receiver_id", :dependent => :destroy
   has_many :sent_messages, :class_name => "SentMessage", :foreign_key => "sender_id", :dependent => :destroy
+  has_many :be_sent_messages, :class_name => "SentMessage", :foreign_key => "receiver_id", :dependent => :destroy
   has_many :sys_messages, :class_name => "SysMessage", :foreign_key => "account_id", :dependent => :destroy
   
   has_many :activity_photos, :class_name => "ActivityPhoto", :foreign_key => "account_id", :dependent => :destroy

@@ -64,6 +64,7 @@ class Recruitment < ActiveRecord::Base
   end
   
   
+  
   def self.paginate_by_catalog(page, per_page, catalog_name, catalog_value)
     self.paginate(
       :page => page,

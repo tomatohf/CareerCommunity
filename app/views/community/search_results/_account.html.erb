@@ -6,8 +6,14 @@
 
 <% Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email) %>
 
-<% account_setting = account.setting %>
-<% AccountSetting.set_account_setting_cache(account_id, account_setting) %>
+<%
+	account_setting = account.setting
+	unless account_setting
+		account_setting = AccountSetting.new(:account_id => account_id, :setting => "")
+		account_setting.save
+	end
+	AccountSetting.set_account_setting_cache(account_id, account_setting)
+%>
 
 <%
 	friends = account.friends
