@@ -1,6 +1,3 @@
-<% content = extract_text(recruitment.content) %>
-<% content = sanitize_tinymce(content) %>
-
 <div class="recruitment_container">
 	<div class="recruitment_title">
 		<% if recruitment.recruitment_type && recruitment.recruitment_type != "" %>
@@ -9,38 +6,27 @@
 		<% if recruitment.location && recruitment.location != "" %>
 			[<a href="/recruitments/location?name=<%= h(recruitment.location) %>" class="account_nick_link"><%= h(recruitment.location) %></a>]
 		<% end %>
-		<a href="<%= recruitment.source_link %>" target="_blank" class="account_nick_link">
+		<a href="/recruitments/<%= recruitment.id %>" class="account_nick_link">
 			<%= h(recruitment.title) %></a>
-	</div>
-	
-	<div class="align_r">
-		<span class="form_info_s">
-			发布时间:
-		</span>
-		<span class="recruitment_info_highlight">
-			<b>
-				<%= format_date(recruitment.publish_time) %>
-			</b>
-		</span>
-		&nbsp;
-		|
-		&nbsp;
-		<a href="/recruitments/<%= recruitment.id %>">信息快照</a>
-	</div>
-	
-	<div class="recruitment_content">
-		<%= truncate(content, 75) %>
-	</div>
-	
-	<% tags = recruitment.recruitment_tags %>
-	<% if tags.size > 0 %>
-		<div class="recruitment_tags form_info_s">
-			标签:
-			<% tags.each do |tag|%>
-				<a href="/recruitments/tag?name=<%= h(tag.name) %>" class="account_nick_link"><%= h(tag.name) %></a>
+			
+		<span style="font-size: 12px;">
+			(
+			<span class="recruitment_info_highlight">
+				<b>
+					<%= format_date(recruitment.publish_time) %>
+				</b>
+			</span>
+			)
+			
+			<% tags = recruitment.recruitment_tags %>
+			<% if tags.size > 0 %>
+				|
+				<% tags.each do |tag|%>
+					<a href="/recruitments/tag?name=<%= h(tag.name) %>" class="account_nick_link form_info_s"><%= h(tag.name) %></a>
+				<% end %>
 			<% end %>
-		</div>
-	<% end %>
+		</span>
+	</div>
 </div>
 
 

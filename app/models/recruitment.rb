@@ -69,6 +69,7 @@ class Recruitment < ActiveRecord::Base
     self.paginate(
       :page => page,
       :per_page => per_page,
+      :select => "id, title, publish_time, location, recruitment_type",
       :conditions => ["#{catalog_name} = ?", catalog_value],
       :order => "publish_time DESC",
       :include => [:recruitment_tags]

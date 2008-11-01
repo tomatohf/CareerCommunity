@@ -1,6 +1,6 @@
 class RecruitmentsController < ApplicationController
   
-  Recruitment_List_Size = 30
+  Recruitment_List_Size = 100
   
   layout "community"
   before_filter :check_login, :only => [:new, :create, :edit, :update, :destroy]
@@ -16,6 +16,7 @@ class RecruitmentsController < ApplicationController
     @recruitments = Recruitment.paginate(
       :page => page,
       :per_page => Recruitment_List_Size,
+      :select => "id, title, publish_time, location, recruitment_type",
       :include => [:recruitment_tags],
       :order => "publish_time DESC"
     )
@@ -40,7 +41,7 @@ class RecruitmentsController < ApplicationController
       @recruitments = Recruitment.paginate(
         :page => page,
         :per_page => Recruitment_List_Size,
-        :select => "recruitments.*",
+        :select => "recruitments.id, recruitments.title, recruitments.publish_time, recruitments.location, recruitments.recruitment_type",
         :joins => "INNER JOIN recruitments_recruitment_tags ON 
                     recruitments_recruitment_tags.recruitment_id = recruitments.id AND 
                     recruitments_recruitment_tags.recruitment_tag_id = #{@tag.id}",

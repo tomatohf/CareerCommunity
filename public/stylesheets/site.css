@@ -998,9 +998,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .recruitment_container {
-	margin-bottom: 20px;
-	
-	border-bottom: 1px dashed #CCCCCC;
+	margin-bottom: 10px;
 }
 
 .recruitment_title {

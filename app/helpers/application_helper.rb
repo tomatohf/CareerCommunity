@@ -74,7 +74,7 @@ module ApplicationHelper
   def paging_buttons(collection)
     will_paginate(
       collection,
-      :prev_label => "« 上一页",
+      :previous_label => "« 上一页",
       :next_label => "下一页 »",
       :param_name => :page, # parameter name for page number in URLs (default: :page)
       :page_links => true, # when false, only previous/next links are rendered (default: true) 
