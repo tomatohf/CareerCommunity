@@ -10,7 +10,27 @@ class RecruitmentsController < ApplicationController
   
   
   
-  def index  
+  ACKP_recruitments_index = :ac_recruitments_index
+  ACKP_recruitments_show = :ac_recruitments_show
+  
+  caches_action :index,
+    :cache_path => Proc.new { |controller|
+      page = controller.params[:page]
+      page = 1 unless page =~ /\d+/
+      
+      "#{ACKP_recruitments_index}_#{page}"
+    }
+    
+  caches_action :show,
+    :cache_path => Proc.new { |controller|
+      recruitment_id = controller.params[:id]
+
+      "#{ACKP_recruitments_show}_#{recruitment_id}"
+    }
+  
+  
+  
+  def index
     page = params[:page]
     page = 1 unless page =~ /\d+/
     @recruitments = Recruitment.paginate(

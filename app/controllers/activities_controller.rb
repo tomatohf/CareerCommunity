@@ -58,6 +58,19 @@ class ActivitiesController < ApplicationController
   
   
   
+  ACKP_activities_all_list = :ac_activities_all_list
+  ACKP_activities_day_list = :ac_activities_day_list
+  
+  caches_action :all,
+    :cache_path => Proc.new { |controller|
+      page = controller.params[:page]
+      page = 1 unless page =~ /\d+/
+      
+      "#{ACKP_activities_all_list}_#{page}"
+    }
+  
+  
+  
   def index
     jump_to("/activities/all")
   end
@@ -541,14 +554,6 @@ class ActivitiesController < ApplicationController
       :order => "responded_at DESC, created_at DESC"
     )
     
-    @created_activities = Activity.uncancelled.find(
-      :all,
-      :limit => Same_Creator_Activity_Num,
-      :select => "id, created_at, creator_id, title, cancelled, begin_at, end_at, application_deadline, in_group",
-      :conditions => ["creator_id = ?", @creator_id],
-      :order => "created_at DESC"
-    )
-    
     @interest_accounts = ActivityInterest.find(
       :all,
       :limit => New_Member_Num,
@@ -572,6 +577,8 @@ class ActivitiesController < ApplicationController
       :include => [:photo],
       :order => "created_at DESC"
     )
+    
+    # @created_activities value is set in view ...
   end
   
   def post

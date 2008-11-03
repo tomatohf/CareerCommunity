@@ -9,7 +9,7 @@
 	</div>
 	
 	<div class="community_block">
-		<a href="/spaces/<%= @edit ? "show_edit" : "show" %>/<%= @account_id %>"><%= owner_name %> 的空间</a>
+		<a href="/spaces/show/<%= @account_id %>"><%= owner_name %> 的空间</a>
 	</div>
 </div>
 
@@ -17,11 +17,11 @@
 	<h2><%= page_title %></h2>
 	
 	<div class="community_block">
-		<a href="/spaces/<%= @edit ? "show_edit" : "show" %>/<%= @account_id %>">
+		<a href="/spaces/show/<%= @account_id %>">
 			<img src="<%= face_img_src(@account_nick_pic[1]) %>" border="0" /></a>
 	</div>
 	<div class="community_block">
-		<a href="/spaces/<%= @edit ? "show_edit" : "show" %>/<%= @account_id %>" class="account_nick_link">
+		<a href="/spaces/show/<%= @account_id %>" class="account_nick_link">
 			<%= h(@account_nick_pic[0]) %></a>
 	</div>
 

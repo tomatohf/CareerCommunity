@@ -22,7 +22,7 @@ class SpacesController < ApplicationController
   
   # ! current account needed !
   def index
-    jump_to("/spaces/show_edit/#{session[:account_id]}")
+    jump_to("/spaces/show/#{session[:account_id]}")
   end
   
   def resume
@@ -72,6 +72,8 @@ class SpacesController < ApplicationController
     @account_id = params[:id]
     @account_nick_pic = Account.get_nick_and_pic(@account_id)
     
+    @edit = (@account_id == session[:account_id].to_s)
+    
     # should NOT cache the relationship check
     @relationship = "logout"
     if has_login?
@@ -111,15 +113,6 @@ class SpacesController < ApplicationController
         @hometown_city_name = City.get_name(@basic_profile.hometown_city_id, all_provinces_cities_cache)
       end
     end
-    
-    
-    @space_comments = SpaceComment.find(
-      :all,
-      :limit => Space_Comment_Num,
-      :conditions => ["owner_id = ?", @account_id],
-      :include => [:account => [:profile_pic]],
-      :order => "created_at DESC"
-    )
     
     
     @friends = Friend.get_all_by_account(
@@ -165,49 +158,18 @@ class SpacesController < ApplicationController
     end
     
     
-    @activity_members = ActivityMember.agreed.find(
-      :all,
-      :limit => Space_Activity_Num,
-      :conditions => ["account_id = ?", @account_id],
-      :include => [:activity => [:image]],
-      :order => "join_at DESC"
-    )
+    # @activity_members value is set in view ...
     
-    @activity_interests = ActivityInterest.find(
-      :all,
-      :limit => Space_Activity_Num,
-      :conditions => ["account_id = ?", @account_id],
-      :include => [:activity => [:image]],
-      :order => "created_at DESC"
-    )
+    # @activity_interests value is set in view ...
     
-    @vote_topics = VoteTopic.find(
-      :all,
-      :limit => Space_Vote_Num,
-      :conditions => ["account_id = ?", @account_id],
-      :order => "created_at DESC"
-    )
+    # @vote_topics value is set in view ...
     
-    @photos = Photo.find(
-      :all,
-      :limit => Space_Photo_Num,
-      :conditions => ["account_id = ?", @account_id],
-      :order => "created_at DESC"
-    )
+    # @photos value is set in view ...
     
-    @blogs = Blog.find(
-      :all,
-      :limit => Space_Blog_Num,
-      :conditions => ["account_id = ?", @account_id],
-      :order => "created_at DESC"
-    )
+    # @blogs value is set in view ...
     
-  end
-  
-  def show_edit
-    @edit = true
-    show
-    render :action => "show"
+    # @space_comments value is set in view ..
+    
   end
   
   def profile

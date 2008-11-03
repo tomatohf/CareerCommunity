@@ -1,5 +1,7 @@
 class Photo < ActiveRecord::Base
   
+  include CareerCommunity::Util
+  
   belongs_to :album, :class_name => "Album", :foreign_key => "album_id"
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   
@@ -19,6 +21,9 @@ class Photo < ActiveRecord::Base
   has_one :vote_image, :class_name => "VoteImage", :foreign_key => "photo_id", :dependent => :destroy
   
   
+  
+  FCKP_spaces_show_photo = :fc_spaces_show_photo
+
   after_destroy { |photo|
     # clean album cover photo
     Album.clear_album_cover_photo_cache(photo.album_id)
@@ -45,11 +50,21 @@ class Photo < ActiveRecord::Base
     
     # clean the album photos
     Album.clear_album_photos_cache(photo.album_id)
+    
+    
+    self.clear_spaces_show_photo_cache(photo.account_id)
   }
   
   after_save { |photo|
     Album.clear_album_photos_cache(photo.album_id)
+    
+    
+    self.clear_spaces_show_photo_cache(photo.account_id)
   }
+
+  def self.clear_spaces_show_photo_cache(account_id)
+    Cache.delete(expand_cache_key("#{FCKP_spaces_show_photo}_#{account_id}"))
+  end
   
   
   # paperclip

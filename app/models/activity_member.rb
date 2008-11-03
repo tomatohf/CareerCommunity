@@ -1,11 +1,29 @@
 class ActivityMember < ActiveRecord::Base
   
+  include CareerCommunity::Util
+  
   belongs_to :activity, :class_name => "Activity", :foreign_key => "activity_id"
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
 
   # ---
 
   validates_presence_of :activity_id, :account_id
+  
+  
+  
+  FCKP_spaces_show_activity_member = :fc_spaces_show_activity_member
+  
+  after_save { |activity_member|
+    self.clear_spaces_show_activity_member_cache(activity_member.account_id)
+  }
+  
+  after_destroy { |activity_member|
+    self.clear_spaces_show_activity_member_cache(activity_member.account_id)
+  }
+  
+  def self.clear_spaces_show_activity_member_cache(account_id)
+    Cache.delete(expand_cache_key("#{FCKP_spaces_show_activity_member}_#{account_id}"))
+  end
   
   
   
@@ -50,7 +68,10 @@ class ActivityMember < ActiveRecord::Base
   end
   
   def self.remove_account_from_activity(activity_id, account_id)
-    self.delete_all(["activity_id = ? and account_id = ?", activity_id, account_id])
+    self.find(
+      :all,
+      :conditions => ["activity_id = ? and account_id = ?", activity_id, account_id]
+    ).each { |am| am.destroy }
   end
   
   def self.join_activity(activity_id, account_id, need_approve = false)

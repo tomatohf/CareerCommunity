@@ -129,7 +129,7 @@
 		}
 		
 		function delete_album_photo(photo_id){
-			if(confirm('确定要删除么 ?')){
+			if(confirm('确定要删除么 ? 删除后所有引用到此照片的地方都将无法继续使用该照片')){
 				var indicator_id = "deleting_indicator_" + photo_id;
 				var link_id = "delete_album_photo_link_" + photo_id;
 				Element.show(indicator_id);

@@ -63,9 +63,50 @@ class Activity < ActiveRecord::Base
   
   CKP_activity_with_img = :activity_with_img
   
+  FCKP_activities_show_created_activity = :fc_activities_show_created_activity
+  
+  after_save { |activity|
+    self.clear_activities_all_cache
+    self.clear_spaces_show_activity_cache(activity.id)
+    self.clear_activities_show_created_activity_cache(activity.creator_id)
+  }
+  
   after_destroy { |activity|
     self.clear_activity_with_image_cache(activity.id)
+    
+    
+    self.clear_activities_all_cache
+    self.clear_activities_show_created_activity_cache(activity.creator_id)
   }
+  
+  def self.clear_activities_all_cache
+    activity_count = self.uncancelled.count
+    page_count = activity_count > 0 ? (activity_count.to_f/ActivitiesController::Activity_List_Size).ceil : 1
+
+    1.upto(page_count) { |i|
+      Cache.delete(expand_cache_key("#{ActivitiesController::ACKP_activities_all_list}_#{i}"))
+    }
+  end
+  
+  def self.clear_activities_show_created_activity_cache(creator_id)
+    Cache.delete(expand_cache_key("#{FCKP_activities_show_created_activity}_#{creator_id}"))
+  end
+  
+  def self.clear_spaces_show_activity_cache(activity_id)
+    ActivityMember.agreed.find(
+			:all,
+			:conditions => ["activity_id = ?", activity_id]
+		).each do |am|
+		  ActivityMember.clear_spaces_show_activity_member_cache(am.account_id)
+	  end
+	  
+	  ActivityInterest.find(
+			:all,
+			:conditions => ["activity_id = ?", activity_id]
+		).each do |ai|
+		  ActivityInterest.clear_spaces_show_activity_interest_cache(ai.account_id)
+	  end
+  end
   
   
   

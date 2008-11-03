@@ -167,19 +167,30 @@
 	</div>
 	
 	<div class="community_block">
-		<% @created_activities.each do |a| %>
-			<div>
-				»
-				<a href="/activities/<%= a.id %>" class="account_nick_link">
-					<%= h(a.get_title) %>
-				</a>
-				<span class="activity_info_label">
-					(<%= a.get_status[1] %>-<%= a.in_group && a.in_group > 0 ? "圈内活动" : "全局活动" %>)
-				</span>
-			</div>
+		<% cache("#{Activity::FCKP_activities_show_created_activity}_#{@creator_id}") do %>
+			<%
+				@created_activities = Activity.uncancelled.find(
+					:all,
+					:limit => ActivitiesController::Same_Creator_Activity_Num,
+					:select => "id, created_at, creator_id, title, cancelled, begin_at, end_at, application_deadline, in_group",
+					:conditions => ["creator_id = ?", @creator_id],
+					:order => "created_at DESC"
+				)
+			%>
+			<% @created_activities.each do |a| %>
+				<div>
+					»
+					<a href="/activities/<%= a.id %>" class="account_nick_link">
+						<%= h(a.get_title) %>
+					</a>
+					<span class="activity_info_label">
+						(<%= a.get_status[1] %>-<%= a.in_group && a.in_group > 0 ? "圈内活动" : "全局活动" %>)
+					</span>
+				</div>
+			<% end %>
 		<% end %>
-		<div>
-			<a class="float_r" href="/activities/list_create/<%= @creator_id %>">(查看全部)</a>
+		<div class="align_r">
+			<a href="/activities/list_create/<%= @creator_id %>">(查看全部)</a>
 		</div>
 	</div>
 	
@@ -349,6 +360,11 @@
 		
 		<div id="photo_section">
 			<%= float_list(@activity_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 6) %>
+			<% unless @activity_photos.size > 0 %>
+				<div class="form_info_l">
+					还没有活动照片 ...
+				</div>
+			<% end %>
 		</div>
 	</div>
 	

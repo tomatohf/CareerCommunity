@@ -228,12 +228,23 @@
 						</div>
 						
 						<div id="join_activity_section">
-							<%= render(:partial => "/activities/activity_small", :collection => @activity_members) %>
+							<% cache("#{ActivityMember::FCKP_spaces_show_activity_member}_#{@account_id}") do %>
+								<%
+									@activity_members = ActivityMember.agreed.find(
+										:all,
+										:limit => SpacesController::Space_Activity_Num,
+										:conditions => ["account_id = ?", @account_id],
+										:include => [:activity => [:image]],
+										:order => "join_at DESC"
+									)
+								%>
+								<%= render(:partial => "/activities/activity_small", :collection => @activity_members) %>
 							
-							<% unless @activity_members.size > 0 %>
-								<div class="form_info_l">
-									还没有参加过活动 ...
-								</div>
+								<% unless @activity_members.size > 0 %>
+									<div class="form_info_l">
+										还没有参加过活动 ...
+									</div>
+								<% end %>
 							<% end %>
 						</div>
 					</div>
@@ -257,12 +268,23 @@
 						</div>
 						
 						<div id="interest_activity_section">
-							<%= render(:partial => "/activities/activity_small", :collection => @activity_interests) %>
+							<% cache("#{ActivityInterest::FCKP_spaces_show_activity_interest}_#{@account_id}") do %>
+								<%
+									@activity_interests = ActivityInterest.find(
+										:all,
+										:limit => SpacesController::Space_Activity_Num,
+										:conditions => ["account_id = ?", @account_id],
+										:include => [:activity => [:image]],
+										:order => "created_at DESC"
+									)
+								%>
+								<%= render(:partial => "/activities/activity_small", :collection => @activity_interests) %>
 							
-							<% unless @activity_interests.size > 0 %>
-								<div class="form_info_l">
-									还没有感兴趣的活动 ...
-								</div>
+								<% unless @activity_interests.size > 0 %>
+									<div class="form_info_l">
+										还没有感兴趣的活动 ...
+									</div>
+								<% end %>
 							<% end %>
 						</div>
 					</div>
@@ -286,12 +308,22 @@
 		</div>
 	</div>
 	<div id="vote_section" class="community_block">
-		<%= render :partial => "/votes/vote_topic_small", :collection => @vote_topics %>
+		<% cache("#{VoteTopic::FCKP_spaces_show_vote_topic}_#{@account_id}") do %>
+			<%
+				@vote_topics = VoteTopic.find(
+					:all,
+					:limit => SpacesController::Space_Vote_Num,
+					:conditions => ["account_id = ?", @account_id],
+					:order => "created_at DESC"
+				)
+			%>
+			<%= render :partial => "/votes/vote_topic_small", :collection => @vote_topics %>
 		
-		<% unless @vote_topics.size > 0 %>
-			<div class="form_info_l">
-				还没有发起过投票 ...
-			</div>
+			<% unless @vote_topics.size > 0 %>
+				<div class="form_info_l">
+					还没有发起过投票 ...
+				</div>
+			<% end %>
 		<% end %>
 	</div>
 	
@@ -310,12 +342,22 @@
 		</div>
 	</div>
 	<div id="photo_section">
-		<%= float_list(@photos, "photo", :photo, {:edit => @edit}, 5) %>
+		<% cache("#{Photo::FCKP_spaces_show_photo}_#{@account_id}") do %>
+			<%
+				@photos = Photo.find(
+					:all,
+					:limit => SpacesController::Space_Photo_Num,
+					:conditions => ["account_id = ?", @account_id],
+					:order => "created_at DESC"
+				)
+			%>
+			<%= float_list(@photos, "photo", :photo, {:edit => @edit}, 5) %>
 		
-		<% unless @photos.size > 0 %>
-			<div class="form_info_l">
-				还没有上传过照片 ...
-			</div>
+			<% unless @photos.size > 0 %>
+				<div class="form_info_l">
+					还没有上传过照片 ...
+				</div>
+			<% end %>
 		<% end %>
 	</div>
 	<div class="clear_l" />
@@ -334,12 +376,22 @@
 		</div>
 		
 		<div id="blog_section" class="community_block">
-			<%= render(:partial => "blog", :collection => @blogs, :locals => {:edit => @edit}) %>
+			<% cache("#{Blog::FCKP_spaces_show_blog}_#{@account_id}") do %>
+				<%
+					@blogs = Blog.find(
+						:all,
+						:limit => SpacesController::Space_Blog_Num,
+						:conditions => ["account_id = ?", @account_id],
+						:order => "created_at DESC"
+					)
+				%>
+				<%= render(:partial => "blog", :collection => @blogs, :locals => {:edit => @edit}) %>
 			
-			<% unless @blogs.size > 0 %>
-				<div class="form_info_l">
-					还没有写过博客 ...
-				</div>
+				<% unless @blogs.size > 0 %>
+					<div class="form_info_l">
+						还没有写过博客 ...
+					</div>
+				<% end %>
 			<% end %>
 		</div>
 	</div>
@@ -358,9 +410,18 @@
 		</div>
 		
 		<div id="wall_section">
-			<div>
+			<% cache("#{SpaceComment::FCKP_spaces_show_wall}_#{@account_id}") do %>
+				<%
+					@space_comments = SpaceComment.find(
+						:all,
+						:limit => SpacesController::Space_Comment_Num,
+						:conditions => ["owner_id = ?", @account_id],
+						:include => [:account => [:profile_pic]],
+						:order => "created_at DESC"
+				    )
+				%>
 				<%= render(:partial => "/common/comment", :collection => @space_comments, :locals => {:can_del => @edit}) %>
-			</div>
+			<% end %>
 			
 			<div class="community_block_narrow">
 				<a id="comment_new">添加留言 »</a>

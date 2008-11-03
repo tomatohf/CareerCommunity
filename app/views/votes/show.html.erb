@@ -102,7 +102,17 @@
 	</div>
 	
 	<div class="community_block">
-		<%= render :partial => "vote_topic_small", :collection => @created_vote_topics, :locals => {:hide_sep_line => true} %>
+		<% cache("#{VoteTopic::FCKP_votes_show_created_vote_topic}_#{@vote_topic.account_id}") do %>
+			<%
+				@created_vote_topics = VoteTopic.find(
+					:all,
+					:limit => VotesController::Created_Topic_List_Size,
+					:conditions => ["account_id = ?", @vote_topic.account_id],
+					:order => "created_at DESC"
+				)
+			%>
+			<%= render :partial => "vote_topic_small", :collection => @created_vote_topics, :locals => {:hide_sep_line => true} %>
+		<% end %>
 	</div>
 	
 	<div class="align_r">

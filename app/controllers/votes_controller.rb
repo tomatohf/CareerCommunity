@@ -274,12 +274,7 @@ class VotesController < ApplicationController
       @voted_records[rr.account_id] << rr
     }
     
-    @created_vote_topics = VoteTopic.find(
-      :all,
-      :limit => Created_Topic_List_Size,
-      :conditions => ["account_id = ?", @vote_topic.account_id],
-      :order => "created_at DESC"
-    )
+    # @created_vote_topics value is set in view ...
   end
   
   def vote_to_option

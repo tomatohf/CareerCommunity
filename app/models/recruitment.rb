@@ -13,6 +13,8 @@ class Recruitment < ActiveRecord::Base
     # set_property :field_weights => {:field => number}
   end
   
+  include CareerCommunity::Util
+  
   has_and_belongs_to_many :recruitment_tags,
                           :foreign_key => "recruitment_id",
                           :association_foreign_key => "recruitment_tag_id",
@@ -38,12 +40,33 @@ class Recruitment < ActiveRecord::Base
   after_destroy { |r|
     self.clear_types_cache
     self.clear_locations_cache
+    
+    
+    self.clear_recruitments_index_cache
+    self.clear_recruitments_show_cache(r)
   }
   
   after_save { |r|
     self.clear_types_cache
     self.clear_locations_cache
+    
+    
+    self.clear_recruitments_index_cache
+    self.clear_recruitments_show_cache(r)
   }
+  
+  def self.clear_recruitments_index_cache
+    recruitment_count = self.count
+    index_page_count = recruitment_count > 0 ? (recruitment_count.to_f/RecruitmentsController::Recruitment_List_Size).ceil : 1
+
+    1.upto(index_page_count) { |i|
+      Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_index}_#{i}"))
+    }
+  end
+  
+  def self.clear_recruitments_show_cache(recruitment)
+    Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_show}_#{recruitment.id}"))
+  end
   
   
   

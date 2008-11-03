@@ -18,6 +18,12 @@ module CareerCommunity
     
     private
     
+    def self.included(klass)
+      def klass.expand_cache_key(key)
+        ActiveSupport::Cache.expand_cache_key(key, :views)
+      end
+    end
+    
     def deep_copy(ar)
       Marshal::load(Marshal.dump(ar))
     end

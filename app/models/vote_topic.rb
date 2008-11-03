@@ -42,9 +42,29 @@ class VoteTopic < ActiveRecord::Base
   
   CKP_vote_topic_with_img = :vote_topic_with_img
   
+  FCKP_spaces_show_vote_topic = :fc_spaces_show_vote_topic
+  FCKP_votes_show_created_vote_topic = :fc_votes_show_created_vote_topic
+  
+  after_save { |vote_topic|
+    self.clear_spaces_show_vote_topic_cache(vote_topic.account_id)
+    self.clear_votes_show_created_vote_topic_cache(vote_topic.account_id)
+  }
+  
   after_destroy { |vote_topic|
     self.clear_vote_with_image_cache(vote_topic.id)
+    
+    
+    self.clear_spaces_show_vote_topic_cache(vote_topic.account_id)
+    self.clear_votes_show_created_vote_topic_cache(vote_topic.account_id)
   }
+  
+  def self.clear_spaces_show_vote_topic_cache(account_id)
+    Cache.delete(expand_cache_key("#{FCKP_spaces_show_vote_topic}_#{account_id}"))
+  end
+  
+  def self.clear_votes_show_created_vote_topic_cache(account_id)
+    Cache.delete(expand_cache_key("#{FCKP_votes_show_created_vote_topic}_#{account_id}"))
+  end
   
   
   

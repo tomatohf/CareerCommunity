@@ -126,7 +126,7 @@
 	
 	<% if @edit %>
 		<div class="community_block">
-			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('photo_delete_form').submit();}; return false;">删除照片</a>
+			<a href="#" onclick="if(confirm('确定要删除么 ? 删除后所有引用到此照片的地方都将无法继续使用该照片')){document.getElementById('photo_delete_form').submit();}; return false;">删除照片</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="#" onclick="document.getElementById('set_as_album_cover_form').submit(); return false;">设为相册封面</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
