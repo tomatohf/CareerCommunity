@@ -253,7 +253,9 @@ ActionController::Routing::Routes.draw do |map|
     
     :tag => :get,
     :location => :get,
-    :recruitment_type => :get
+    :recruitment_type => :get,
+    
+    :feed => :get
     
   }, :member => {
     

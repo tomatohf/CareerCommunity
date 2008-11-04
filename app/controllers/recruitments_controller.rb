@@ -12,12 +12,13 @@ class RecruitmentsController < ApplicationController
   
   ACKP_recruitments_index = :ac_recruitments_index
   ACKP_recruitments_show = :ac_recruitments_show
+  ACKP_recruitments_feed = :ac_recruitments_feed
   
   caches_action :index,
     :cache_path => Proc.new { |controller|
       page = controller.params[:page]
       page = 1 unless page =~ /\d+/
-      
+
       "#{ACKP_recruitments_index}_#{page}"
     }
     
@@ -27,12 +28,21 @@ class RecruitmentsController < ApplicationController
 
       "#{ACKP_recruitments_show}_#{recruitment_id}"
     }
+    
+  caches_action :feed,
+    :cache_path => Proc.new { |controller|
+      ACKP_recruitments_feed.to_s
+    },
+    :if => Proc.new { |controller|
+      controller.request.format.atom?
+    }
   
   
   
   def index
     page = params[:page]
     page = 1 unless page =~ /\d+/
+    
     @recruitments = Recruitment.paginate(
       :page => page,
       :per_page => Recruitment_List_Size,
@@ -40,6 +50,22 @@ class RecruitmentsController < ApplicationController
       :include => [:recruitment_tags],
       :order => "publish_time DESC"
     )
+  end
+  
+  def feed
+    respond_to do |format|
+      format.html { jump_to("/recruitments/feed.atom") }
+      format.atom {
+        @recruitments = Recruitment.find(
+          :all,
+          :limit => Recruitment_List_Size,
+          :include => [:recruitment_tags],
+          :order => "publish_time DESC"
+        )
+        
+        render :layout => false
+      }
+    end
   end
   
   def show

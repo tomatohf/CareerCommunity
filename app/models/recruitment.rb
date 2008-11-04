@@ -44,6 +44,7 @@ class Recruitment < ActiveRecord::Base
     
     self.clear_recruitments_index_cache
     self.clear_recruitments_show_cache(r)
+    self.clear_recruitments_feed_cache
   }
   
   after_save { |r|
@@ -53,6 +54,7 @@ class Recruitment < ActiveRecord::Base
     
     self.clear_recruitments_index_cache
     self.clear_recruitments_show_cache(r)
+    self.clear_recruitments_feed_cache
   }
   
   def self.clear_recruitments_index_cache
@@ -66,6 +68,10 @@ class Recruitment < ActiveRecord::Base
   
   def self.clear_recruitments_show_cache(recruitment)
     Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_show}_#{recruitment.id}"))
+  end
+  
+  def self.clear_recruitments_feed_cache
+    Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_feed}.atom}"))
   end
   
   
