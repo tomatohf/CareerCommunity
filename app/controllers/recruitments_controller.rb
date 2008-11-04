@@ -54,7 +54,8 @@ class RecruitmentsController < ApplicationController
   
   def feed
     respond_to do |format|
-      format.html { jump_to("/recruitments/feed.atom") }
+      format.html { jump_to("/recruitments") }
+      
       format.atom {
         @recruitments = Recruitment.find(
           :all,

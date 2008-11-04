@@ -71,7 +71,7 @@ class Recruitment < ActiveRecord::Base
   end
   
   def self.clear_recruitments_feed_cache
-    Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_feed}.atom}"))
+    Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_feed}.atom"))
   end
   
   
