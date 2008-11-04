@@ -187,7 +187,11 @@ class MessagesController < ApplicationController
       box = "inbox"
     end
     
-    eval(message_class).delete_all(["#{owner_attr} = #{session[:account_id]} and id = ?", params[:id]])
+    eval(message_class).find(
+      :all,
+      :conditions => ["#{owner_attr} = #{session[:account_id]} and id = ?", params[:id]]
+    ).each { |m| m.destroy }
+    
     jump_to("/messages/#{box}/#{session[:account_id]}")
   end
   

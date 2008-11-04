@@ -50,7 +50,10 @@ class GroupMember < ActiveRecord::Base
   end
   
   def self.remove_account_from_group(group_id, account_id)
-    self.delete_all(["group_id = ? and account_id = ?", group_id, account_id])
+    self.find(
+      :all,
+      :conditions => ["group_id = ? and account_id = ?", group_id, account_id]
+    ).each { |gm| gm.destroy }
   end
   
   def self.join_group(group_id, account_id, need_approve = false)

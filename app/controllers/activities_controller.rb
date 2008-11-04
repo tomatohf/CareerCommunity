@@ -198,7 +198,10 @@ class ActivitiesController < ApplicationController
   
   def del_interest
     activity_id = params[:id]
-    ActivityInterest.delete_all(["account_id = #{session[:account_id]} and activity_id = ?", activity_id])
+    ActivityInterest.find(
+      :all,
+      :conditions => ["account_id = ? and activity_id = ?", session[:account_id], activity_id]
+    ).each { |ai| ai.destroy }
     
     jump_to("/activities/list_interest_edit/#{session[:account_id]}")
   end
