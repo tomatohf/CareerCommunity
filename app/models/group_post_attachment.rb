@@ -8,8 +8,13 @@ class GroupPostAttachment < ActiveRecord::Base
   Attachment_Path = ":rails_root/public/system/files/:class/:attachment/:id/:basename.:extension"
   Attachment_Content_Type = [
     "text/plain", "text/enriched",
+    
     "application/pdf", "application/x-pdf",
-    "application/msword", "application/mspowerpoint", "application/ms-powerpoint", "application/vnd.ms-powerpoint", "application/vnd.ms-excel", "application/x-msexcel", "application/ms-excel",
+    
+    "application/msword", "application/ms-word",
+    "application/mspowerpoint", "application/ms-powerpoint", "application/vnd.ms-powerpoint",
+    #"application/msexcel", "application/ms-excel", "application/vnd.ms-excel", "application/x-msexcel",
+    
     "application/zip"
   ]
   Attachment_Size_Limit = 5.megabyte

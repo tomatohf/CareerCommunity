@@ -199,9 +199,30 @@ module ApplicationHelper
   def get_content_type_icon(content_type)
     icon = "/images/attachment_icons/attachment.png"
     
-    # PDF
-    icon = "/images/attachment_icons/pdf.jpg" if ["application/pdf", "application/x-pdf"].include?(content_type)
-    icon = "/images/attachment_icons/word.jpg" if ["application/msword"].include?(content_type)
+    {
+      # text
+      "/images/attachment_icons/text.gif" => ["text/plain", "text/enriched"],
+      
+      # PDF
+      "/images/attachment_icons/pdf.jpg" => ["application/pdf", "application/x-pdf"],
+      
+      # ms office
+      # word
+      "/images/attachment_icons/word.jpg" => ["application/msword", "application/ms-word"],
+      # ppt
+      "/images/attachment_icons/ppt.gif" => ["application/mspowerpoint", "application/ms-powerpoint", "application/vnd.ms-powerpoint"],
+      # excel
+      #"/images/attachment_icons/excel.gif" => ["application/msexcel", "application/ms-excel", "application/vnd.ms-excel", "application/x-msexcel"],
+      
+      # zip and other compressed file
+      "/images/attachment_icons/zip.gif" => ["application/zip"]
+      
+    }.each do |key, value|
+      if value.include?(content_type)
+        icon = key
+        break
+      end
+    end
     
     icon
   end
