@@ -16,7 +16,8 @@
 	</div>
 
 	<div class="community_block">
-		<a href="/<%= pluralized_post_type %>/<%= @type_id %>">返回<%= @type_label %> <%= type_name %></a>
+		<a href="/<%= pluralized_post_type %>/post/<%= @type_id %>">
+			返回<%= @type_label %> <%= type_name %> 的全部讨论话题</a>
 	</div>
 	
 	<% if @access.include?(:member) %>
@@ -100,18 +101,53 @@
 	<% end %>
 	
 	<div class="community_block_narrow">
-		<% if @access.include?(:author) %>
-			<a href="/<%= @post_type %>/posts/<%= @post_id %>/edit">修改</a>
+		<% if @access.include?(:admin) %>
+			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('post_delete_form').submit();}; return false;">删除</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			
+			<a href="#" onclick="document.getElementById('adjust_top_form').submit(); return false;"><%= @post.top ? "取消置顶" : "置顶" %></a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<% end %>
 		
-		<% if @access.include?(:admin) %>
+		<% if @access.include?(:author) %>
+			<a href="/<%= @post_type %>/posts/<%= @post_id %>/edit">修改</a>
+			
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('post_delete_form').submit();}; return false;">删除</a>
+			
+			<a href="/<%= @post_type %>/posts/<%= @post_id %>/new_attachment">添加附件</a>
+			
+			
+			<% form_tag "/#{@post_type}/posts/#{@post_id}/delete_attachment", :method => :post, :id => "delete_attachment_form" do %>
+				<input type="hidden" id="delete_attachment_id" name="delete_attachment_id" value="" />
+			<% end %>
 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="#" onclick="document.getElementById('adjust_top_form').submit(); return false;"><%= @post.top ? "取消置顶" : "置顶" %></a>
+			<script language="JavaScript">
+				function delete_attachment(attachment_id) {
+					if(confirm("确定要删除这个附件么 ?")) {
+						document.getElementById("delete_attachment_id").value = attachment_id;
+						
+						del_form = document.getElementById("delete_attachment_form");
+						del_form.submit();
+					}
+				}
+			</script>
 		<% end %>
 	</div>
+	
+	<% if @attachments.size > 0 %>
+		<div class="community_title">
+			有
+			<b>
+				<%= @attachments.size %>
+			</b>
+			个附件 ...
+		</div>
+		
+		<div class="community_block_narrow">
+			<%= render :partial => "post_attachment", :collection => @attachments, :locals => {:can_del => @access.include?(:author)} %>
+		</div>
+	<% end %>
+	
 	
 	<div class="community_title">
 		共有

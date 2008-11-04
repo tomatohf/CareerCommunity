@@ -196,4 +196,14 @@ module ApplicationHelper
     colors.join
   end
   
+  def get_content_type_icon(content_type)
+    icon = "/images/attachment_icons/attachment.png"
+    
+    # PDF
+    icon = "/images/attachment_icons/pdf.jpg" if ["application/pdf", "application/x-pdf"].include?(content_type)
+    icon = "/images/attachment_icons/word.jpg" if ["application/msword"].include?(content_type)
+    
+    icon
+  end
+  
 end

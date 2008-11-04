@@ -1,0 +1,75 @@
+<% post_title = h(@post.title) %>
+
+<% page_title = "向#{@type_label}话题 #{post_title} 添加附件" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	
+	<div class="community_block">
+		<a href="/<%= @post_type %>/posts/<%= @post.id %>">
+			返回<%= @type_label %>话题 <%= post_title %></a>
+	</div>
+	
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow">
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @post_attachment && @post_attachment.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@post_attachment) %>
+			</p>
+		<% end %>
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+	</div>
+	
+	
+	<div class="community_title">
+		添加新的附件 ...
+	</div>
+	
+	<div class="community_block_narrow">
+		<% form_tag "/#{@post_type}/posts/#{@post.id}/create_attachment", :method => :post, :multipart => true do %>
+			<div class="community_block">
+				<label for="attachment_file">
+					附件:
+					&nbsp;
+				</label>
+				<input type="file" name="attachment_file" id="attachment_file" />
+			</div>
+			
+			<div class="community_block">
+				<label for="attachment_file_desc">
+					描述:
+					&nbsp;
+				</label>
+				<input type="text" name="attachment_file_desc" id="attachment_file_desc" class="text_field" size="30" value="<%= @post_attachment && h(@post_attachment.desc) %>" />
+			</div>
+			
+			<div class="community_block">
+				<div class="form_info_l">
+					5M 以内
+				</div>
+				
+				<div class="form_info_l">
+					如果需要上传的附件的文件类型目前不被允许, 可以到 <a href="/groups/1" target="_blank">乔布圈反馈小组</a> 进行申请
+				</div>
+			</div>
+			
+			<div class="community_block">
+				<input type="hidden" name="id" value="<%= @post.id %>" />
+				<%= submit_tag "上传新的附件", :class => "button", :disabled => @account_limited %>
+				
+				&nbsp;&nbsp;&nbsp;
+				
+				<a href="/<%= @post_type %>/posts/<%= @post.id %>">
+					返回<%= @type_label %>话题</a>
+		<% end %>
+	</div>
+</div>

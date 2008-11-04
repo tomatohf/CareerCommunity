@@ -19,6 +19,7 @@ class ActivityPost < ActiveRecord::Base
   include CareerCommunity::AccountBelongings
   
   has_many :comments, :class_name => "ActivityPostComment", :foreign_key => "activity_post_id", :dependent => :destroy
+  has_many :attachments, :class_name => "ActivityPostAttachment", :foreign_key => "activity_post_id", :dependent => :destroy
   
   belongs_to :activity, :class_name => "Activity", :foreign_key => "activity_id"
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"

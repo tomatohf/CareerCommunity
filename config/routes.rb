@@ -160,7 +160,11 @@ ActionController::Routing::Routes.draw do |map|
     :delete_comment => :post,
     
     :top => :post,
-    :untop => :post
+    :untop => :post,
+    
+    :new_attachment => :get,
+    :create_attachment => :post,
+    :delete_attachment => :post
   }
   map.connect "/:post_type/posts/:action/:id", :controller => "posts"
   

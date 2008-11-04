@@ -1,0 +1,22 @@
+<% can_del &&= true %>
+
+<div class="post_attachment">
+	<a href="<%= post_attachment.attachment.url %>" title="<%= h(post_attachment.desc) %>" class="account_nick_link">
+		<img src="<%= get_content_type_icon(post_attachment.attachment_content_type) %>" border="0" />
+		<%= post_attachment.attachment_file_name %></a>
+		
+	&nbsp;
+		
+	<span class="form_info_s">
+		(<%= format("%.1f", post_attachment.attachment_file_size.to_f / 1024) %> K)
+	</span>
+	
+	<% if can_del %>
+		&nbsp;
+		
+		<a title="删除附件" href="#" onclick="delete_attachment(<%= post_attachment.id %>); return false;">
+			<img src="/images/delete_small.gif" border="0" /></a>
+	<% end %>
+</div>
+
+

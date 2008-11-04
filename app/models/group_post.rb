@@ -19,6 +19,7 @@ class GroupPost < ActiveRecord::Base
   include CareerCommunity::AccountBelongings
   
   has_many :comments, :class_name => "GroupPostComment", :foreign_key => "group_post_id", :dependent => :destroy
+  has_many :attachments, :class_name => "GroupPostAttachment", :foreign_key => "group_post_id", :dependent => :destroy
   
   belongs_to :group, :class_name => "Group", :foreign_key => "group_id"
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"

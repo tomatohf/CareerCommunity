@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 10) do
+ActiveRecord::Schema.define(:version => 11) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -151,6 +151,21 @@ ActiveRecord::Schema.define(:version => 10) do
   add_index "activity_photos", ["photo_id"], :name => "index_activity_photos_on_photo_id"
   add_index "activity_photos", ["account_id"], :name => "index_activity_photos_on_account_id"
   add_index "activity_photos", ["delta"], :name => "index_activity_photos_on_delta"
+
+  create_table "activity_post_attachments", :force => true do |t|
+    t.datetime "created_at"
+    t.integer  "activity_post_id",        :limit => 11
+    t.integer  "account_id",              :limit => 11
+    t.string   "desc",                    :limit => 1000
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size",    :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "activity_post_attachments", ["created_at"], :name => "index_activity_post_attachments_on_created_at"
+  add_index "activity_post_attachments", ["activity_post_id"], :name => "index_activity_post_attachments_on_activity_post_id"
+  add_index "activity_post_attachments", ["account_id"], :name => "index_activity_post_attachments_on_account_id"
 
   create_table "activity_post_comments", :force => true do |t|
     t.integer  "activity_post_id", :limit => 11
@@ -369,6 +384,21 @@ ActiveRecord::Schema.define(:version => 10) do
   add_index "group_photos", ["photo_id"], :name => "index_group_photos_on_photo_id"
   add_index "group_photos", ["account_id"], :name => "index_group_photos_on_account_id"
   add_index "group_photos", ["delta"], :name => "index_group_photos_on_delta"
+
+  create_table "group_post_attachments", :force => true do |t|
+    t.datetime "created_at"
+    t.integer  "group_post_id",           :limit => 11
+    t.integer  "account_id",              :limit => 11
+    t.string   "desc",                    :limit => 1000
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size",    :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "group_post_attachments", ["created_at"], :name => "index_group_post_attachments_on_created_at"
+  add_index "group_post_attachments", ["group_post_id"], :name => "index_group_post_attachments_on_group_post_id"
+  add_index "group_post_attachments", ["account_id"], :name => "index_group_post_attachments_on_account_id"
 
   create_table "group_post_comments", :force => true do |t|
     t.integer  "group_post_id", :limit => 11

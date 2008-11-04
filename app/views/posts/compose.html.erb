@@ -30,7 +30,7 @@
 		<% end %>
 		
 		<div class="div_form">
-			<% form_tag "/#{@post_type}/posts", :method => :post do %>
+			<% form_tag "/#{@post_type}/posts", :method => :post, :multipart => true do %>
 			
 				<div>
 					<label for="title">
@@ -52,6 +52,31 @@
 				</div>
 				<div>
 					<textarea id="content" name="content" class="text_field" cols="75" rows="15"><%= @post.content %></textarea>
+				</div>
+				
+				<br />
+				
+				<div>
+					<label for="attachment_file">
+				        附件:
+						&nbsp;
+					</label>
+					<input type="file" name="attachment_file" id="attachment_file" />
+					
+					&nbsp;&nbsp;
+					
+					<label for="attachment_file_desc">
+						描述:
+						&nbsp;
+					</label>
+					<input type="text" name="attachment_file_desc" id="attachment_file_desc" class="text_field" size="25" value="" />
+				    
+				</div>
+				<div class="form_info_l">
+					如果需要上传更多的附件, 可以在发表话题后, 在话题显示页面中添加更多的附件
+				</div>
+				<div class="form_info_l">
+					5M 以内
 				</div>
 				
 				<br />

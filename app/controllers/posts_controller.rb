@@ -9,13 +9,14 @@ class PostsController < ApplicationController
   before_filter :prepare_post_type
   
   before_filter :check_login, :only => [:compose, :create, :create_comment, :delete_comment, :destroy,
-                                        :top, :untop, :edit, :update]
+                                        :top, :untop, :edit, :update,
+                                        :new_attachment, :create_attachment, :delete_attachment]
   before_filter :check_limited, :only => [:create, :create_comment, :delete_comment, :destroy,
-                                          :top, :untop, :update]
+                                          :top, :untop, :update, :create_attachment, :delete_attachment]
   
   before_filter :check_compose_access, :only => [:compose]
   before_filter :check_create_access, :only => [:create]
-  before_filter :check_update_access, :only => [:edit, :update]
+  before_filter :check_update_access, :only => [:edit, :update, :new_attachment, :create_attachment, :delete_attachment]
   before_filter :check_create_comment_access, :only => [:create_comment]
   before_filter :check_delete_comment_access, :only => [:delete_comment]
   before_filter :check_destroy_access, :only => [:destroy]
@@ -49,6 +50,17 @@ class PostsController < ApplicationController
     @post.content = params[:content] && params[:content].strip
     
     if @post.save
+      uploaded_file = params[:attachment_file]
+      if uploaded_file && uploaded_file != ""
+        post_attachment = @type_handler.get_post_attachment_class.new(
+          :account_id => session[:account_id],
+          :desc => params[:attachment_file_desc]
+        )
+        post_attachment.send("#{@type_handler.get_type_post_id}=", @post.id)
+        post_attachment.attachment = uploaded_file
+        post_attachment.save
+      end
+      
       jump_to("/#{@post_type}/posts/#{@post.id}")
     else
       flash.now[:error_msg] = "操作失败, 再试一次吧"
@@ -107,6 +119,8 @@ class PostsController < ApplicationController
       :include => [:account => [:profile_pic]],
       :order => "created_at ASC"
     )
+    
+    @attachments = @post.attachments
     
     @other_posts = type_handler.get_post_class.find(
       :all,
@@ -177,6 +191,46 @@ class PostsController < ApplicationController
     
     jump_to("/#{@post_type}/posts/#{@post.id}")
   end
+  
+  def new_attachment
+    @type_label = @type_handler.get_type_label
+  end
+  
+  def create_attachment
+    uploaded_file = params[:attachment_file]
+
+    post_attachment = @type_handler.get_post_attachment_class.new(
+      :account_id => session[:account_id],
+      :desc => params[:attachment_file_desc]
+    )
+    post_attachment.send("#{@type_handler.get_type_post_id}=", @post.id)
+    post_attachment.attachment = uploaded_file
+    
+    if post_attachment.save
+      flash.now[:message] = "已成功上传"
+      
+      return jump_to("/#{@post_type}/posts/#{@post.id}")
+    else
+      @post_attachment = post_attachment
+      
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+    
+    @type_label = @type_handler.get_type_label
+    
+    render :action => "new_attachment"
+  end
+  
+  def delete_attachment
+    attachment_id = params[:delete_attachment_id]
+    
+    attachment = @type_handler.get_post_attachment_class.find(attachment_id)
+    
+    attachment.destroy
+    
+    jump_to("/#{@post_type}/posts/#{@post.id}")
+  end
+  
   
   
   private
@@ -280,6 +334,10 @@ class PostsController < ApplicationController
       
       def get_post_comment_class
         eval("#{@type.capitalize}PostComment")
+      end
+      
+      def get_post_attachment_class
+        eval("#{@type.capitalize}PostAttachment")
       end
       
       def get_type_id
