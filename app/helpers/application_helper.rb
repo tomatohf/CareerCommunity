@@ -196,35 +196,74 @@ module ApplicationHelper
     colors.join
   end
   
-  def get_content_type_icon(content_type)
-    icon = "/images/attachment_icons/attachment.png"
+  def get_content_type_icon(content_type, file_name)
+    icon = nil
     
-    {
-      # text
-      "/images/attachment_icons/text.gif" => ["text/plain", "text/enriched"],
-      
-      # PDF
-      "/images/attachment_icons/pdf.jpg" => ["application/pdf", "application/x-pdf"],
-      
-      # ms office
-      # word
-      "/images/attachment_icons/word.jpg" => ["application/msword", "application/ms-word"],
-      # ppt
-      "/images/attachment_icons/ppt.gif" => ["application/mspowerpoint", "application/ms-powerpoint", "application/vnd.ms-powerpoint"],
-      # excel
-      #"/images/attachment_icons/excel.gif" => ["application/msexcel", "application/ms-excel", "application/vnd.ms-excel", "application/x-msexcel"],
-      
-      # zip and other compressed file
-      "/images/attachment_icons/zip.gif" => ["application/zip"]
-      
-    }.each do |key, value|
-      if value.include?(content_type)
-        icon = key
-        break
+    if content_type && content_type != ""
+      # firstly to try using content type
+      icon = case content_type
+        when /^text\//
+          "text.gif"
+          
+        when /^audio\//
+          "audio.gif"
+          
+        when /^image\//
+          "image.gif"
+          
+        when /^video\//
+          "video.gif"
+          
+        when /^application\/.*?pdf/
+          "pdf.png"
+          
+        when /^application\/.*?ms.*?word/, /^application\/.*?officedocument.wordprocessingml/
+          "word.jpg"
+          
+        when /^application\/.*?ms.*?powerpoint/, /^application\/.*?officedocument.presentationml/
+          "ppt.gif"
+          
+        when /^application\/.*?ms.*?excel/, /^application\/.*?officedocument.spreadsheetml/
+          "excel.gif"
+          
+        when /^application\/.*?(zip|rar|7z|tar)/
+          "zip.gif"
       end
     end
     
-    icon
+    
+    unless icon
+      # then to try using file extension name
+      ext_name = file_name && file_name.split(".").last
+      
+      if ext_name && ext_name != ""
+        icon = case ext_name
+          when "rb"
+            "ruby.gif"
+            
+          when "swf", "fla", "as", "swt", "swc", "flv"
+            "flash.png"
+            
+          when "zip", "rar", "7z", "tar", "gtar", "tgz"
+            "zip.gif"
+            
+          when "xls", "xlt", "xlsx", "xltx", "xlsb", "xlsm", "xps"
+            "excel.gif"
+            
+          when "ppt", "pps", "pptx", "ppsx", "pptm", "ppsm"
+            "ppt.gif"
+            
+          when "doc", "dot", "docx", "dotx", "docm", "dotm"
+            "word.jpg"
+            
+          when "pdf"
+            "pdf.png"
+        end
+      end
+    end
+
+    icon ||= "attachment.png"
+    "/images/attachment_icons/#{icon}"
   end
   
 end

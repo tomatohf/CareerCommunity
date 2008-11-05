@@ -1,8 +1,8 @@
 <% can_del &&= true %>
 
 <div class="post_attachment">
-	<a href="<%= post_attachment.attachment.url %>" title="<%= h(post_attachment.desc) %>" class="account_nick_link">
-		<img src="<%= get_content_type_icon(post_attachment.attachment_content_type) %>" border="0" />
+	<a href="/<%= post_type %>/posts/attachment/<%= post_attachment.id %>" title="<%= h(post_attachment.desc) %>" class="account_nick_link">
+		<img src="<%= get_content_type_icon(post_attachment.attachment_content_type, post_attachment.attachment_file_name) %>" border="0" />
 		<%= post_attachment.attachment_file_name %></a>
 		
 	&nbsp;

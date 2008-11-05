@@ -144,7 +144,7 @@
 		</div>
 		
 		<div class="community_block_narrow">
-			<%= render :partial => "post_attachment", :collection => @attachments, :locals => {:can_del => @access.include?(:author)} %>
+			<%= render :partial => "post_attachment", :collection => @attachments, :locals => {:can_del => @access.include?(:author), :post_type => @post_type} %>
 		</div>
 	<% end %>
 	

@@ -231,6 +231,22 @@ class PostsController < ApplicationController
     jump_to("/#{@post_type}/posts/#{@post.id}")
   end
   
+  def attachment
+    attachment_id = params[:id]
+    
+    type_handler = get_type_handler(@post_type)
+    
+    attachment = type_handler.get_post_attachment_class.find(attachment_id)
+
+    
+    # invoke the x-sendfile of lighttpd to download file
+    response.headers["Content-Type"] = attachment.attachment_content_type
+    response.headers["Content-Disposition"] = %Q!attachment; filename="#{attachment.attachment_file_name}"!
+    response.headers["Content-Length"] = attachment.attachment_file_size
+    response.headers["X-LIGHTTPD-send-file"] = attachment.attachment.path
+    render :nothing => true
+  end
+  
   
   
   private
