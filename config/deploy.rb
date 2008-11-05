@@ -32,7 +32,7 @@ set :rails_env, "production"
 
 desc "create symbol links and fix permissions" 
 task :after_update_code do
-  run "ln -s #{shared_path}/files #{latest_release}/files \\;"
+  run "ln -s #{shared_path}/files #{latest_release}/files"
   
   run "find #{release_path}/public -type d -exec chmod 0755 {} \\;"
   run "find #{release_path}/public -type f -exec chmod 0644 {} \\;"
