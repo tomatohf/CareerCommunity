@@ -91,10 +91,17 @@ div.auto_complete ul li {
 
 #top_bar {
 	margin-bottom: 10px;
-	padding-bottom: 1px;
-	border-bottom-width: 1px;
-	border-bottom-color: #B2B2B2;
-	border-bottom-style: solid;
+	border-bottom: 1px solid #B2B2B2;
+	
+	font-size: 13px;
+}
+
+#top_bar a {
+	text-decoration: none;
+}
+
+#top_bar a:hover {
+	text-decoration: underline;
 }
 
 #bottom_bar {

@@ -1,0 +1,136 @@
+<div class="index_contailer_l">
+	
+	<div class="index_post">
+		<img src="/images/real_index/index_post.png" />
+	</div>
+	
+	<div class="orange_bar">
+		<!--
+		<table border="0" cellspacing="5" cellpadding="0">
+			<tr>
+				<td>
+					intro ...
+				</td>
+				
+				<td>
+					intro ...
+				</td>
+			</tr>
+		</table>
+		-->
+	</div>
+	
+	<div class="index_container_l_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#EAEAEA", :style => "margin: 8px 5px;" do %>
+			<div class="seek_job_form">
+				<div>
+					<% form_tag "/community/search", :method => :get, :target => "_blank" do %>
+						<img class="float_l" src="/images/real_index/seek_job_icon.png" border="0" alt="死磕乔布" />
+						&nbsp;&nbsp;&nbsp;
+						找招聘信息:
+						&nbsp;&nbsp;&nbsp;
+					
+						<input type="text" name="query" class="text_field" style="width: 50%" />
+						<input type="hidden" name="scope" value="recruitment" />
+
+						&nbsp;&nbsp;&nbsp;
+						<input type="submit" value="死磕乔布" class="index_button" />
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="index_container_l_block">
+		<table cellpadding="0" cellspacing="5" border="0" style="width: 100%">
+			<tr>
+				<td valign="top" style="width: 50%">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								<img class="float_l" src="/images/real_index/qiaobuquan_icon.png" border="0" />
+								&nbsp;&nbsp;&nbsp;
+								乔布圈
+							</div>
+							
+							<div class="index_container_l_section_content">
+								圈子: <a href="/groups/8">求职面试</a>
+								<br />
+								圈子: <a href="/groups/7">人人皆销售</a>
+								<br />
+								圈子: <a href="/groups/5">网申---姻缘一线牵</a>
+								<br />
+								圈子: <a href="/groups/4">招聘--for HR</a>
+								<br />
+								圈子: <a href="/groups/3">求职简历----助你传檄而定！</a>
+								<br />
+								圈子: <a href="/groups/2">职言职语</a>
+							</div>
+							
+						</div>
+					<% end %>
+				</td>
+				
+				<td valign="top" style="width: 50%">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								<img class="float_l" src="/images/real_index/hot_news_icon.png" border="0" />
+								&nbsp;&nbsp;&nbsp;
+								乔布热
+							</div>
+
+							<div class="index_container_l_section_content">
+								沙龙: <a href="/activities/1006">2008.11.05简历交流沙龙</a>
+								<br />
+								讲座: <a href="/activities/1005">上海交通大学医学院 求职讲座</a>
+								<br />
+								讲座: <a href="/activities/1004">上海交通大学药学院讲座</a>
+								<br />
+								讲座: <a href="/activities/1003">中医药大学讲座</a>
+								<br />
+								课程: <a href="/coach/register_notice">11月课程安排</a>
+								<br />
+								信息: <a href="/recruitments">最新招聘信息</a>
+							</div>
+							
+						</div>
+					<% end %>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+</div>
+
+<div class="index_container_r">
+	
+	<div class="index_title_small">
+		<li>乔布堂海报栏</li>
+	</div>
+	
+	<%
+		[
+			["望闻问切 把脉职场", "1006/1035/thumb_120_1035.jpg", "/activities/1003"],
+			["成功求职的10个关键！", "1006/1032/thumb_120_1032.jpg", "/activities/1002"]
+		].each do |item|
+	%>
+		<div class="index_block">
+			<div>
+				<a href="<%= item[2] %>">
+					<%= item[0] %></a>
+			</div>
+			<div class="align_c">
+				<a href="<%= item[2] %>">
+					<img src="http://qiaobutang.com/system/files/photos_images/<%= item[1] %>" border="0" alt="<%= item[0] %>" title="<%= item[0] %>" style="border: 1px dotted #C2E3EF;" /></a>
+			</div>
+			<div>
+				<%= thin_hr %>
+			</div>
+		</div>
+	<% end %>
+	
+</div>
+
+<div class="clear"></div>
+

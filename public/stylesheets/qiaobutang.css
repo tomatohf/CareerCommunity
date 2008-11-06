@@ -4,7 +4,7 @@ body {
 
 #root_container {
 	margin: 0px auto;
-	width: 800px;
+	width: 856px;
 	
 	text-align: left;
 	
@@ -50,20 +50,17 @@ body {
 
 #main_menus_container {
 	margin-bottom: 10px;
-	border-bottom-width: 1px;
-	border-bottom-color: #EAEAEA;
-	border-bottom-style: solid;
 }
 
-#main_menus_container .contact_info {
+#main_menus_container {
 	font-size: 12px
 }
 
-.menu_bar {
-	margin-left: 120px;
+.main_menus_underline {
+	border-bottom: 2px solid #EAEAEA;
 }
 
-.menu_bar table {
+.menu_bar {
 	margin: 0px;
 	padding: 0px;
 }
@@ -76,12 +73,12 @@ body {
 }
 
 .menu_bar td {
-	width: 80px;
+	width: 75px;
 	text-align: center;
 }
 
 .menu_bar td.gap {
-	width: 20px;
+	width: 10px;
 }
 
 .menu_bar a.menu_selected {
@@ -281,5 +278,55 @@ body {
 .methodology_right_block {
 	margin-left: 25px;
 	margin-top: 20px;
+}
+
+.index_both_post_container {
+	border: 1px solid #E2E2E2;
+	padding: 2px 2px 0px 2px;
+}
+
+.index_small_post_container {
+	background-color: #000000;
+	height: 35px;
+	overflow: hidden;
+}
+
+.index_small_post {
+	float: left;
+	margin: 0px 10px;
+	height: 35px;
+}
+
+.index_big_post_container {
+	height: 343px;
+	overflow: hidden;
+}
+
+.index_register_button {
+	position: relative;
+	top: -90px;
+	left: 710px;
+	
+	width: 124px;
+	height: 33px;
+}
+
+.service_container {
+	border-top: 2px solid #EAEAEA;
+}
+
+.service_container table td {
+	background: transparent url(/images/real_index/bullet_icon.png) no-repeat scroll center left;
+	padding-left: 10px;
+	padding-right: 15px;
+}
+
+.service_container a {
+	text-decoration: none;
+}
+
+.index_button_container {
+	padding-left: 20px;
+	margin-bottom: 5px;
 }
 

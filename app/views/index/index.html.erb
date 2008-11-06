@@ -1,136 +1,141 @@
-<div class="index_contailer_l">
-	
-	<div class="index_post">
-		<img src="/images/real_index/index_post.png" />
-	</div>
-	
-	<div class="orange_bar">
-		<!--
-		<table border="0" cellspacing="5" cellpadding="0">
-			<tr>
-				<td>
-					intro ...
-				</td>
-				
-				<td>
-					intro ...
-				</td>
-			</tr>
-		</table>
-		-->
-	</div>
-	
-	<div class="index_container_l_block">
-		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#EAEAEA", :style => "margin: 8px 5px;" do %>
-			<div class="seek_job_form">
-				<div>
-					<% form_tag "/community/search", :method => :get, :target => "_blank" do %>
-						<img class="float_l" src="/images/real_index/seek_job_icon.png" border="0" alt="死磕乔布" />
-						&nbsp;&nbsp;&nbsp;
-						找招聘信息:
-						&nbsp;&nbsp;&nbsp;
-					
-						<input type="text" name="query" class="text_field" style="width: 50%" />
-						<input type="hidden" name="scope" value="recruitment" />
+<%
+	post_names = [
+		"overall", "resume_8_hrs", "career_path", "interview_2_days", "sales_training"
+	]
+%>
 
-						&nbsp;&nbsp;&nbsp;
-						<input type="submit" value="死磕乔布" class="index_button" />
-					<% end %>
-				</div>
-			</div>
+
+<script language="JavaScript" src="/lib/protopack/protoculous-effects-packer.js"></script>
+
+<script language="JavaScript">
+
+	var POSTS = [
+		"overall", "resume_8_hrs", "career_path", "interview_2_days", "sales_training"
+	];
+	
+	function get_big_post(post_name) {
+		return $("big_post_" + post_name);
+	}
+	
+	function get_small_post(post_name) {
+		return $("small_post_" + post_name);
+	}
+	
+	function get_selected_small_post(post_name) {
+		return $("selected_small_post_" + post_name);
+	}
+
+	function hide_all_big_and_selected_posts(exclude) {
+		for(var i = 0; i < POSTS.length; i++) {
+			var post_name = POSTS[i];
+			
+			if(post_name != exclude) {
+				var post = get_big_post(post_name);
+				if(post.visible()) {
+					post.hide();
+			
+					get_selected_small_post(post_name).hide();
+					get_small_post(post_name).show();
+				}
+			}
+		}
+	}
+	
+	function select_post(post_name) {
+		var shown_post = get_big_post(post_name);
+		if(shown_post.visible()) {
+			hide_all_big_and_selected_posts(post_name);
+			return;
+		}
+		
+		hide_all_big_and_selected_posts();
+		
+		shown_post.appear();
+		
+		get_small_post(post_name).hide();
+		get_selected_small_post(post_name).show();
+	}
+	
+	
+	function get_current_shown_post_index() {
+		for(var i = 0; i < POSTS.length; i++) {
+			var post_name = POSTS[i];
+			
+			var post = get_big_post(post_name);
+			if(post.visible()) {
+				return i;
+			}
+		}
+	}
+	
+	function get_next_post_index() {
+		current_index = get_current_shown_post_index();
+		
+		if(current_index == null) {
+			return 0;
+		}
+		
+		if(current_index + 1 < POSTS.length) {
+			return current_index + 1
+		}
+		
+		// at the end ... jump to first
+		return 0;
+	}
+	
+	
+	var ON_SMALL_POST = false;
+	function set_on_small_post(on) {
+		ON_SMALL_POST = on;
+	}
+	
+	function select_next_post() {
+		if(!ON_SMALL_POST) {
+			select_post(POSTS[get_next_post_index()]);
+		}
+		
+		setTimeout("select_next_post();", 1000 * 10);
+	}
+	
+</script>
+
+
+<div class="index_both_post_container">
+	<div class="index_big_post_container">
+		<%
+			post_names.each do |post_name|
+		%>
+			<img src="/images/real_index/posts/<%= post_name %>.jpg" id="big_post_<%= post_name %>" border="0" style="display: none;" />
 		<% end %>
 	</div>
-	
-	<div class="index_container_l_block">
-		<table cellpadding="0" cellspacing="5" border="0" style="width: 100%">
-			<tr>
-				<td valign="top" style="width: 50%">
-					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
-						<div class="index_container_l_section">
-							<div class="index_container_l_section_title">
-								<img class="float_l" src="/images/real_index/qiaobuquan_icon.png" border="0" />
-								&nbsp;&nbsp;&nbsp;
-								乔布圈
-							</div>
-							
-							<div class="index_container_l_section_content">
-								圈子: <a href="/groups/8">求职面试</a>
-								<br />
-								圈子: <a href="/groups/7">人人皆销售</a>
-								<br />
-								圈子: <a href="/groups/5">网申---姻缘一线牵</a>
-								<br />
-								圈子: <a href="/groups/4">招聘--for HR</a>
-								<br />
-								圈子: <a href="/groups/3">求职简历----助你传檄而定！</a>
-								<br />
-								圈子: <a href="/groups/2">职言职语</a>
-							</div>
-							
-						</div>
-					<% end %>
-				</td>
-				
-				<td valign="top" style="width: 50%">
-					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
-						<div class="index_container_l_section">
-							<div class="index_container_l_section_title">
-								<img class="float_l" src="/images/real_index/hot_news_icon.png" border="0" />
-								&nbsp;&nbsp;&nbsp;
-								乔布热
-							</div>
 
-							<div class="index_container_l_section_content">
-								沙龙: <a href="/activities/1006">2008.11.05简历交流沙龙</a>
-								<br />
-								讲座: <a href="/activities/1005">上海交通大学医学院 求职讲座</a>
-								<br />
-								讲座: <a href="/activities/1004">上海交通大学药学院讲座</a>
-								<br />
-								讲座: <a href="/activities/1003">中医药大学讲座</a>
-								<br />
-								课程: <a href="/coach/register_notice">11月课程安排</a>
-								<br />
-								信息: <a href="/recruitments">最新招聘信息</a>
-							</div>
-							
-						</div>
-					<% end %>
-				</td>
-			</tr>
-		</table>
+	<div class="index_small_post_container">
+		<%			
+			post_names.each do |post_name|
+		%>
+			<div class="index_small_post">
+				<a href="#" onmouseover="select_post('<%= post_name %>'); set_on_small_post(true); return false;" onmouseout="set_on_small_post(false); return false;">
+					<img src="/images/real_index/posts/<%= post_name %>_small_selected.png" id="selected_small_post_<%= post_name %>" border="0" style="display: none;" />
+					<img src="/images/real_index/posts/<%= post_name %>_small.png" id="small_post_<%= post_name %>" border="0" /></a>
+			</div>
+		
+		<% end %>
+		
+		<div style="clear: left;"></div>
 	</div>
 	
 </div>
 
-<div class="index_container_r">
-	
-	<div class="index_title_small">
-		<li>乔布堂海报栏</li>
-	</div>
-	
-	<%
-		[
-			["望闻问切 把脉职场", "1006/1035/thumb_120_1035.jpg", "/activities/1003"],
-			["成功求职的10个关键！", "1006/1032/thumb_120_1032.jpg", "/activities/1002"]
-		].each do |item|
-	%>
-		<div class="index_block">
-			<div>
-				<a href="<%= item[2] %>">
-					<%= item[0] %></a>
-			</div>
-			<div class="align_c">
-				<a href="<%= item[2] %>">
-					<img src="http://qiaobutang.com/system/files/photos_images/<%= item[1] %>" border="0" alt="<%= item[0] %>" title="<%= item[0] %>" style="border: 1px dotted #C2E3EF;" /></a>
-			</div>
-			<div>
-				<%= thin_hr %>
-			</div>
-		</div>
-	<% end %>
-	
+<div class="index_register_button">
+	<a href="/coach/register_notice#register_way">
+		<img src="/images/real_index/register.png" border="0" /></a>
 </div>
 
-<div class="clear"></div>
+
+<script language="JavaScript">
+
+	select_next_post();
+	
+</script>
+
 

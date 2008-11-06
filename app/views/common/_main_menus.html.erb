@@ -1,54 +1,101 @@
 <% selected_index ||= 0 %>
 
 <div id="main_menus_container">
-	<div>
-		<div class="float_l">
-			<a href="http://qiaobutang.com">
-				<img src="/images/real_index/qiaobutang_logo.png" border ="0" alt="乔布堂" title="乔布堂" /></a>
-		</div>
+	<table cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td align="left" valign="top" style="width: 140px; height: 65px;" class="main_menus_underline">
+				<a href="http://qiaobutang.com">
+					<img src="/images/real_index/qiaobutang_logo.png" border ="0" alt="乔布堂" title="乔布堂" /></a>
+			</td>
+			
+			<td align="left" valign="bottom" class="menu_bar main_menus_underline">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
 
-		<div class="float_r">
-			<div class="contact_info">
-				T: (86 21) 6381-5200
-				<br />
-				E: service@qiaobutang.com
-			</div>
-		</div>
-	</div>
-	
-	<div class="clear menu_bar">
-		<table cellpadding="0" cellspacing="0" border="0">
-			<tr>
+						<%
+							menus = [
+								["/", "首页"],
+								["/methodology", "乔布哲学"],
+								["/coach", "乔布教练"],
+								["/seekjob", "死磕乔布"],
+								["/community", "乔布圈"]
+							]
+						%>
+						<% menus.each_index do |i| %>
+							<% menu = menus[i] %>
+							<td class="gap"></td>
+							<td>
+								<a href="<%= menu[0] %>"
+									<% if i == selected_index %>
+									class="menu_selected"
+									<% else %>
+									onmouseover="this.className='menu_selected'"
+									onmouseout="this.className=''"
+									<% end %>
+									<% if menu[0] == "/community" %>
+									target="_blank"
+									<% end %>
+									>
+									<%= menu[1] %></a>
+							</td>
+						<% end %>
+
+					</tr>
+				</table>
+			</td>
+			
+			<td style="width: 40px;" class="main_menus_underline">
 				
-				<%
-					menus = [
-						["/", "首页"],
-						["/methodology", "乔布哲学"],
-						["/coach", "乔布教练"],
-						["/seekjob", "死磕乔布"],
-						["/community", "乔布圈"]
-					]
-				%>
-				<% menus.each_index do |i| %>
-					<% menu = menus[i] %>
-					<td class="gap"></td>
-					<td>
-						<a href="<%= menu[0] %>"
-							<% if i == selected_index %>
-							class="menu_selected"
-							<% else %>
-							onmouseover="this.className='menu_selected'"
-							onmouseout="this.className=''"
-							<% end %>
-							<% if menu[0] == "/community" %>
-							target="_blank"
-							<% end %>
-							>
-							<%= menu[1] %></a>
-					</td>
-				<% end %>
+			</td>
+			
+			<td align="left" valign="bottom">
+				<div class="index_button_container">
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td>
+								<a href="/coach/register_notice#register_way">
+									<img src="/images/real_index/training_button.png" border="0" /></a>
+							</td>
+							
+							<td>
+								<a href="http://qiaobuquan.com" target="_blank">
+									<img src="/images/real_index/qiaobuquan_button.png" border="0" /></a>
+							</td>
+						</tr>
+					</table>
+				</div>
 				
-			</tr>
-		</table>
-	</div>
+				<div style="height: 30px;">
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td align="left" valign="bottom" style="width: 27px;">
+								<img src="/images/real_index/curve.png" border="0" />
+							</td>
+
+							<td align="left" valign="bottom" class="service_container">
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td>
+											<a href="#">
+												学生服务</a>
+										</td>
+										
+										<td>
+											<a href="#">
+												企业服务</a>
+										</td>
+										
+										<td>
+											<a href="#">
+												学校服务</a>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
 </div>

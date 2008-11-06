@@ -15,8 +15,8 @@ class GroupPostAttachment < ActiveRecord::Base
     
     "application/zip", "application/rar", "application/x-rar", "application/x-7z-compressed", "application/x-tar", "application/x-gtar"
   ]
-  Attachment_Size_Limit = 5.megabyte
-  Attachment_Size_Limit_Text = "5M"
+  Attachment_Size_Limit = 10.megabyte
+  Attachment_Size_Limit_Text = "10M"
   
   # paperclip
   has_attached_file :attachment,
