@@ -128,56 +128,35 @@ class PhotosController < ApplicationController
       # check if own the album
       @owned_album_ids = Album.get_all_names_by_account_id(@photo.account_id).collect { |album| album[0].to_s }
       if @owned_album_ids.include?(album_id)
-        Photo.transaction do
-          @photo.album_id = album_id
-          if @photo.save
-            # move the photo image files
-            old_path = Pathname.new("#{RAILS_ROOT}/public#{old_url}").parent.to_s
-            new_image_url = @photo.image.url(:thumb_48)
-            new_path_obj = Pathname.new("#{RAILS_ROOT}/public#{new_image_url}").parent
-            new_path_parent_path = new_path_obj.parent.to_s
-            # create target parent directory
-            FileUtils.mkdir_p(new_path_parent_path)
-            # remove existing target
-            new_path = new_path_obj.to_s
-            FileUtils.rm_rf(new_path)
-            FileUtils.mv(old_path, new_path)
+        @photo.album_id = album_id
+        if @photo.save
+          # move the photo image files
+          old_path = Pathname.new("#{RAILS_ROOT}/public#{old_url}").parent.to_s
+          new_image_url = @photo.image.url(:thumb_48)
+          new_path_obj = Pathname.new("#{RAILS_ROOT}/public#{new_image_url}").parent
+          new_path_parent_path = new_path_obj.parent.to_s
+          # create target parent directory
+          FileUtils.mkdir_p(new_path_parent_path)
+          # remove existing target
+          new_path = new_path_obj.to_s
+          FileUtils.rm_rf(new_path)
+          
+          begin
+            FileUtils.cp_r(old_path, new_path)
+          rescue
+            # errors found during copy photo image files !!!
             
-            # clean the cover photo of the moved photo's album if needed
-            old_album = Album.find(old_album_id)
-            if old_album.cover_photo_id == @photo.id
-              old_album.cover_photo_id = nil
-              Album.clear_album_cover_photo_cache(old_album_id) if old_album.save
+            # rollback photo album_id changes ...
+            @photo.album_id = old_album_id
+            if @photo.save
+              # succeed to rollback, clean the photo image files at new path
+              FileUtils.rm_rf(new_path)
             end
             
-            # clean the photos cache of the moved photo's album
-            Album.clear_album_photos_cache(old_album_id)
-            
-            
-            # clean account pic 
-            PicProfile.find(:all, :conditions => ["photo_id = ?", @photo.id]).each do |pp|
-              Account.update_account_nick_pic_cache(pp.account_id, :pic => new_image_url)
-            end
-            PicProfile.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", @photo.id])
-
-            # clean group image
-            GroupImage.find(:all, :conditions => ["photo_id = ?", @photo.id]).each do |gi|
-              Group.update_group_with_image_cache(gi.group_id, :group_img => new_image_url)
-            end
-            GroupImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", @photo.id])
-
-            # clean activity image
-            ActivityImage.find(:all, :conditions => ["photo_id = ?", @photo.id]).each do |ai|
-              Activity.update_activity_with_image_cache(ai.activity_id, :activity_img => new_image_url)
-            end
-            ActivityImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", @photo.id])
-            
-            # clean vote topic image
-            VoteImage.find(:all, :conditions => ["photo_id = ?", @photo.id]).each do |vi|
-              VoteTopic.update_vote_topic_with_image_cache(vi.vote_topic_id, :vote_img => new_image_url)
-            end
-            VoteImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", @photo.id])
           end
+          
+          # clean photo image files at old path if needed
+          FileUtils.rm_rf(old_path) unless @photo.album_id == old_album_id
         end
       end
       

@@ -9,7 +9,7 @@ class GroupMember < ActiveRecord::Base
   
   
   
-  before_save { |group_member|
+  after_save { |group_member|
     if group_member.join_at_was.nil? && group_member.join_at.kind_of?(DateTime)
       AccountAction.create_new(group_member.account_id, "join_group", {
         :group_id => group_member.group_id

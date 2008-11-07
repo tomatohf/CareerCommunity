@@ -67,6 +67,53 @@ class Photo < ActiveRecord::Base
   end
   
   
+  after_update { |photo|
+    
+    if photo.album_id_changed?
+      new_image_url = photo.image.url(:thumb_48)
+    
+      # clean account pic 
+      PicProfile.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |pp|
+        Account.update_account_nick_pic_cache(pp.account_id, :pic => new_image_url)
+      end
+      PicProfile.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", photo.id])
+
+      # clean group image
+      GroupImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |gi|
+        Group.update_group_with_image_cache(gi.group_id, :group_img => new_image_url)
+      end
+      GroupImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", photo.id])
+
+      # clean activity image
+      ActivityImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |ai|
+        Activity.update_activity_with_image_cache(ai.activity_id, :activity_img => new_image_url)
+      end
+      ActivityImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", photo.id])
+    
+      # clean vote topic image
+      VoteImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |vi|
+        VoteTopic.update_vote_topic_with_image_cache(vi.vote_topic_id, :vote_img => new_image_url)
+      end
+      VoteImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", photo.id])
+      
+      
+      
+      old_album_id = photo.album_id_was
+      
+      # clean the cover photo of the moved photo's album if needed
+      old_album = Album.find(old_album_id)
+      if old_album.cover_photo_id == photo.id
+        old_album.cover_photo_id = nil
+        Album.clear_album_cover_photo_cache(old_album_id) if old_album.save
+      end
+      
+      # clean the photos cache of the moved photo's album
+      Album.clear_album_photos_cache(old_album_id)
+        
+    end
+  }
+  
+  
   # paperclip
   has_attached_file :image, :styles => {
     :big => "800x600>",
