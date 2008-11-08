@@ -50,14 +50,14 @@
 								</table>
 							</div>
 							<div class="sub_nav">
-								<table cellpadding="0" cellspacing="0" class="main_part_w">
+								<table cellpadding="0" cellspacing="0" class="main_part_w" border="0">
 									<tr>
-										<td style="width: 60%; color: #80807F" align="left">
+										<td style="width: 55%; color: #80807F" align="left">
 										</td>
 										<td align="right">
 											<% form_tag "/community/search", :method => :get do %>
 												<select name="scope" class="dropdown_list">
-													<option value="all">全部</option>
+													<option value="all">选择搜索范围</option>
 													<option value="account">成员</option>
 													<option value="group">圈子</option>
 													<option value="group_post">圈子话题</option>
@@ -90,11 +90,12 @@
 				<div class="float_l" id="func_list_container">
 					<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FAFFE7" do %>
 						<ul id="func_list">
-							<li style="list-style-image: url(/images/index/calendar_icon.png);"><a href="/activities">活动</a></li>
+							<li style="list-style-image: url(/images/index/calendar_icon.gif);"><a href="/activities">活动</a></li>
 							<li style="list-style-image: url(/images/index/pic_icon.png);"><a href="/albums">照片</a></li>
-							<li style="list-style-image: url(/images/index/recruit_icon.png);"><a href="/recruitments">招聘信息</a></li>
-							<li style="list-style-image: url(/images/index/vote_icon.png);"><a href="/votes">投票</a></li>
 							<li style="list-style-image: url(/images/index/blog_icon.png);"><a href="/blogs">博客</a></li>
+							<li style="list-style-image: url(/images/index/recruitment_icon.png);"><a href="/recruitments">招聘信息</a></li>
+							<li style="list-style-image: url(/images/index/vote_icon.png);"><a href="/votes">投票</a></li>
+							<li style="list-style-image: url(/images/index/job_targets_icon.png);"><a href="/job_targets">求职管家 <img src="/images/index/hot_icon.gif" border="0" /></a></li>
 							<!--
 							<li style="list-style-image: url(/images/index/qa_icon.png);"><a href="#">问答</a></li>
 							-->

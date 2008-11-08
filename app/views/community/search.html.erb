@@ -40,7 +40,7 @@
 		<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :class => "community_block align_c" do %>
 			<% form_tag "/community/search", :method => :get, :id => "search_form" do %>
 				<select name="scope" class="dropdown_list" id="scope_select">
-					<option value="all"<%= " selected=\"selected\"" if @scope == "all" %>>全部</option>
+					<option value="all"<%= " selected=\"selected\"" if @scope == "all" %>>选择搜索范围</option>
 					<option value="account"<%= " selected=\"selected\"" if @scope == "account" %>>成员</option>
 					<option value="group"<%= " selected=\"selected\"" if @scope == "group" %>>圈子</option>
 					<option value="group_post"<%= " selected=\"selected\"" if @scope == "group_post" %>>圈子话题</option>

@@ -300,6 +300,13 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/votes/:id/comment/:page", :controller => "votes", :action => "show", :id => /\d+/, :page => /\d+/
   map.connect "/votes/:id/:chart_type", :controller => "votes", :action => "show", :id => /\d+/
   map.connect "/votes/:id/:chart_type/comment/:page", :controller => "votes", :action => "show", :id => /\d+/, :page => /\d+/
+  
+  
+  map.resources :job_targets, :collection => {
+    
+  }, :member => {
+    
+  }
 
   
   

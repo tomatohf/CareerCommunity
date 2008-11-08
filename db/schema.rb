@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 11) do
+ActiveRecord::Schema.define(:version => 12) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -284,6 +284,16 @@ ActiveRecord::Schema.define(:version => 11) do
 
   add_index "cities", ["delta"], :name => "index_cities_on_delta"
 
+  create_table "companies", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id", :limit => 11, :default => 0
+    t.string   "name"
+    t.boolean  "delta"
+  end
+
+  add_index "companies", ["created_at"], :name => "index_companies_on_created_at"
+
   create_table "contact_profiles", :force => true do |t|
     t.integer  "account_id", :limit => 11
     t.datetime "updated_at"
@@ -471,6 +481,26 @@ ActiveRecord::Schema.define(:version => 11) do
   add_index "hobby_profiles", ["account_id"], :name => "index_hobby_profiles_on_account_id"
   add_index "hobby_profiles", ["delta"], :name => "index_hobby_profiles_on_delta"
 
+  create_table "job_positions", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id", :limit => 11, :default => 0
+    t.string   "name"
+    t.boolean  "delta"
+  end
+
+  add_index "job_positions", ["created_at"], :name => "index_job_positions_on_created_at"
+
+  create_table "job_processes", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id", :limit => 11, :default => 0
+    t.string   "name"
+    t.boolean  "delta"
+  end
+
+  add_index "job_processes", ["created_at"], :name => "index_job_processes_on_created_at"
+
   create_table "job_profiles", :force => true do |t|
     t.integer  "account_id",     :limit => 11
     t.datetime "updated_at"
@@ -489,6 +519,55 @@ ActiveRecord::Schema.define(:version => 11) do
   add_index "job_profiles", ["enter_year"], :name => "index_job_profiles_on_enter_year"
   add_index "job_profiles", ["enter_month"], :name => "index_job_profiles_on_enter_month"
   add_index "job_profiles", ["delta"], :name => "index_job_profiles_on_delta"
+
+  create_table "job_statuses", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id", :limit => 11, :default => 0
+    t.string   "name"
+    t.string   "color",      :limit => 7
+    t.boolean  "delta"
+  end
+
+  add_index "job_statuses", ["created_at"], :name => "index_job_statuses_on_created_at"
+  add_index "job_statuses", ["account_id"], :name => "index_job_statuses_on_account_id"
+  add_index "job_statuses", ["color"], :name => "index_job_statuses_on_color"
+
+  create_table "job_steps", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",     :limit => 11
+    t.integer  "job_process_id", :limit => 11
+    t.string   "name"
+    t.integer  "job_status_id",  :limit => 11
+    t.datetime "begin_at"
+    t.datetime "end_at"
+    t.boolean  "delta"
+  end
+
+  add_index "job_steps", ["created_at"], :name => "index_job_steps_on_created_at"
+  add_index "job_steps", ["account_id"], :name => "index_job_steps_on_account_id"
+  add_index "job_steps", ["job_process_id"], :name => "index_job_steps_on_job_process_id"
+  add_index "job_steps", ["job_status_id"], :name => "index_job_steps_on_job_status_id"
+
+  create_table "job_targets", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",          :limit => 11
+    t.integer  "company_id",          :limit => 11
+    t.integer  "job_position_id",     :limit => 11
+    t.integer  "current_job_step_id", :limit => 11
+    t.boolean  "closed",                            :default => false
+    t.boolean  "delta"
+  end
+
+  add_index "job_targets", ["created_at"], :name => "index_job_targets_on_created_at"
+  add_index "job_targets", ["updated_at"], :name => "index_job_targets_on_updated_at"
+  add_index "job_targets", ["account_id"], :name => "index_job_targets_on_account_id"
+  add_index "job_targets", ["company_id"], :name => "index_job_targets_on_company_id"
+  add_index "job_targets", ["job_position_id"], :name => "index_job_targets_on_job_position_id"
+  add_index "job_targets", ["current_job_step_id"], :name => "index_job_targets_on_current_job_step_id"
+  add_index "job_targets", ["closed"], :name => "index_job_targets_on_closed"
 
   create_table "messages", :force => true do |t|
     t.datetime "created_at"

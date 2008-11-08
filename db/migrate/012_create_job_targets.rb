@@ -52,6 +52,8 @@ class CreateJobTargets < ActiveRecord::Migration
       
       t.column :current_job_step_id, :integer
       
+      t.column :closed, :boolean, :default => false
+      
       
       # enable sphinx delta index
       t.column :delta, :boolean
@@ -62,6 +64,7 @@ class CreateJobTargets < ActiveRecord::Migration
     add_index :job_targets, :company_id
     add_index :job_targets, :job_position_id
     add_index :job_targets, :current_job_step_id
+    add_index :job_targets, :closed
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO job_targets (id) VALUES (1000)")
     ActiveRecord::Base.connection.execute("DELETE FROM job_targets WHERE id = 1000")

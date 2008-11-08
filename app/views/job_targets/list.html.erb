@@ -1,0 +1,92 @@
+<% owner_name = @edit ? "我" : h(@account_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 的求职目标" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<% if @edit %>
+		<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 130px;" do %>
+			<div class="action_bar">
+				<a href="#">添加新的目标</a>
+			</div>
+		<% end %>
+	<% else %>
+		<a href="/spaces/show/<%= @account_id %>">
+			<img src="<%= face_img_src(@account_nick_pic[1]) %>" border="0" /></a>
+	<% end %>
+</div>
+	
+<div class="blog_container">
+	<img class="float_l" style="margin: 0px 10px;" src="/images/job_targets/steward_small.png" border="0" alt="求职管家" />
+	<h2><%= page_title %></h2>
+	
+	<br />
+	<br />
+	
+	<div class="community_block">
+		
+		<table id="job_targets_container" cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+	        <thead>
+	            <tr style="background:#eeeeee;">
+	                <th>名字</th>
+	                <th>年龄</th>
+	                <th>性别</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr>
+	                <td>Barney Rubble</td>
+	                <td>32</td>
+	                <td>Male</td>
+
+	            </tr>
+	            <tr>
+	                <td>Fred Flintstone</td>
+	                <td>33</td>
+	                <td>Male</td>
+	            </tr>
+	            <tr>
+
+	                <td>Betty Rubble</td>
+	                <td>32</td>
+	                <td>Female</td>
+	            </tr>
+	            <tr>
+	                <td>Pebbles</td>
+	                <td>1</td>
+
+	                <td>Female</td>
+	            </tr>
+	            <tr>
+	                <td>Bamm Bamm</td>
+	                <td>2</td>
+	                <td></td>
+	            </tr>
+
+	        </tbody>
+	    </table>
+		
+	</div>
+	
+</div>
+
+
+<link rel="stylesheet" href="/lib/ext/resources/css/ext-all.css" type="text/css" media="screen"></link>
+<link rel="stylesheet" href="/lib/ext/resources/css/xtheme-gray.css" type="text/css" media="screen"></link>
+
+<script language="JavaScript" type="text/javascript" src="/lib/ext/adapter/ext/ext-base.js"></script>
+<script language="JavaScript" type="text/javascript" src="/lib/ext/ext-all.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/GridFilters.js"></script>
+<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/Filter.js"></script>
+<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/NumericFilter.js"></script>
+<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/StringFilter.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/menu/RangeMenu.js"></script>
+<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/menu/EditableItem.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="/lib/ext/build/locale/ext-lang-zh_CN.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="/javascripts/job_target_table.js"></script>
+
+
