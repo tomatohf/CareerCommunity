@@ -47,7 +47,7 @@ class CoachController < ApplicationController
   end
   
   def apply
-    jump_to("/coach/course_apply") unless request.post?
+    return jump_to("/coach/course_apply") unless request.post?
     
     @real_name = params[:real_name] && params[:real_name].strip
     @school = params[:school] && params[:school].strip
@@ -95,8 +95,24 @@ class CoachController < ApplicationController
     end
   end
   
+  
+  # ----------
+  
+  before_filter :check_general_admin, :only => [:course_applications]
+  
   def course_applications
-    # @applications = ServiceApplication.find(:all)
+    return jump_to("/coach/courses") unless request.post?
+    
+    @applications = ServiceApplication.find(:all)
+    
+    render :layout => false
+  end
+  
+  
+  private
+  
+  def check_general_admin
+    return jump_to("/coach/courses") unless has_login? && ApplicationController.helpers.general_admin?(session[:account_id])
   end
   
 end
