@@ -1,6 +1,6 @@
-<% community_page_title("医药行业") %>
+<% community_page_title("医药专题") %>
 
-<div>
+<div class="breadcrumb">
 	<a href="/">
 		乔布堂</a>
 	»
@@ -8,105 +8,340 @@
 		乔布教练</a>
 	»
 	<a href="/coach/pharmaceutical">
-		医药行业</a>
+		医药专题</a>
+</div>
+
+
+<link href="/lib/greybox/gb_styles.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+	var GB_ROOT_DIR = "/lib/greybox/";
+</script>
+
+<script type="text/javascript" src="/lib/greybox/AJS.js"></script>
+<script type="text/javascript" src="/lib/greybox/AJS_fx.js"></script>
+<script type="text/javascript" src="/lib/greybox/gb_scripts.js"></script>
+
+
+<div class="coach_block align_c">
+	<img src="/images/coach/subjects/pharmaceutical/pharmaceutical_post.jpg" border="0" />
+</div>
+
+<div class="coach_block">
+	<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+		<div class="index_container_l_section">
+			<div class="index_container_l_section_content">
+				乔布教练的医药行业专题，包括系列校园行讲座，专业培训课程，医药高校、企业服务等。经过长时间，多位行业资深培训师共同研究和设计，专门针对学生求职的需求进行内容开发。
+			</div>
+		</div>
+	<% end %>
+</div>
+
+<div class="coach_block">
+	<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+		<div class="index_container_l_section">
+			<div class="index_container_l_section_title">
+				<img class="float_l" src="/images/coach/trainer_icon.png" border="0" />
+				&nbsp;
+				医药行业专业培训师
+			</div>
+
+			<div class="index_container_l_section_content">
+				<table cellpadding="0" cellspacing="15" border="0" class="main_part_w">
+					<%
+						trainers = [
+							# [name, desc, photo_image]
+							["Lucy Lin", "医药行业资深销售，10余年医药行业培训经验，担任跨国医药公司培训总监；在乔布培训中倾情传授医药行业职业素质培训，包括医药行业基本知识，沟通技巧，时间管理，压力管理等课程。", "Lucy_Lin_photo.jpg"],
+							["Rick Ma", "4年资深体验培训师，2年知名跨国医药公司就职经验，多次主持企业会议及各项活动，专心研究国内外职业生涯规划和求职技巧，并设计多门实战式职业规划课程。", "Rick_Ma_photo.jpg"],
+							["Chen Su", "原中央电视台文艺和健康节目主持人，从遍访各艺术门类知名艺术家到面对不同学科的医学菁英。职场深深深几许，生存的需求和对成功的追求无论任何年代都未改变，于是所幸今天有太多的信息和协助可以给到你。", "Chen_Su_photo.jpg"]
+						]
+					%>
+					<% trainers.each do |trainer| %>
+						<tr>
+							<td align="left" valign="top" style="width: 75px;">
+								<img src="/images/coach/trainers/<%= trainer[2] %>" border="0" />
+							</td>
+
+							<td align="left" valign="top" style="background-color: #FAFAFA; padding: 0px 5px;">
+								<div style="font-weight: bold;">
+									<%= trainer[0] %>
+								</div>
+								<div>
+									<%= trainer[1] %>
+								</div>
+							</td>
+						</tr>
+					<% end %>
+				</table>
+			</div>
+			
+		</div>
+	<% end %>
 </div>
 
 <div class="coach_block align_c">
-	<img src="/images/coach/coach_index_post.jpg" />
+	<img src="/images/coach/subjects/pharmaceutical/campus_lecture_post.png" border="0" />
 </div>
 
 <div class="coach_block">
-	<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
-		<div class="index_container_l_section">
-			<div class="index_container_l_section_content">
-				乔布教练的医药行业培训课程，经过多位行业资深培训师共同研究和设计，针对学生求职的特点进行课程开发。
-			</div>
-		</div>
-	<% end %>
-</div>
+	
+	<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+		<tr>
+			<td align="left" valign="top">
+				<div class="coach_block">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								医药行业专业培训
+							</div>
 
-<div class="coach_block">
-	<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
-		<div class="index_container_l_section">
-			<div class="index_container_l_section_title">
-				医药行业培训师 »
-			</div>
+							<div class="index_container_l_section_content">
+								<div style="color: #FF6600; font-weight: bold; font-size: 14px;">
+									谁来参加
+								</div>
+								<div>
+									<ul>
+										<li>
+											<span style="color: #000000; font-weight: bold;">
+												医药专业：
+											</span>
+											<span style="color: #333333;">
+												恭喜你！你已经是熟知医药知识的行家！那么你了解在商业社会里，医药行业的发展么？在市场经济下，企业对什么样的人才如饥似渴？在公司环境里，怎么理顺自己的发展之路？如果对这些问题你心存疑问，再次恭喜你，医药行业的知音与你一一畅谈！
+											</span>
+										</li>
+										
+										<li>
+											<span style="color: #000000; font-weight: bold;">
+												非医药专业：
+											</span>
+											<span style="color: #333333;">
+												如果你对医药行业一无所知却充满好奇，如果你想尝试进入医药行业，如果你单单了解医药行业的新闻知识，那么即使你从未涉足医药领域，乔布堂也为你提供全方位知识准备！
+											</span>
+										</li>
+										
+										<li>
+											<span style="color: #000000; font-weight: bold;">
+												应届毕业生：
+											</span>
+											<span style="color: #333333;">
+												找工作？难！应届生找工作？更难！应届生找称心的工作？难上加难！选准方向，对症下药！如果在意医药行业，来听听行业内的专题讲解；如果在意求职结果，来实地进行行业的求职训练！
+											</span>
+										</li>
+										
+										<li>
+											<span style="color: #000000; font-weight: bold;">
+												在读同学：
+											</span>
+											<span style="color: #333333;">
+												未雨绸缪说的就是你！
+											</span>
+										</li>
+									</ul>
+								</div>
+								
+								
+								<br />
+								<div style="color: #FF6600; font-weight: bold; font-size: 14px;">
+									为什么参加
+								</div>
+								<div>
+									<table cellpadding="5" cellspacing="2" border="0" class="main_part_w">
+										<%
+											reasons = [
+												[
+													[["助你决策", "掌握信息，决定是否跻身医药行业！"], "了解医药行业的职业前景", "#FFE0C1"],
+													[nil, "了解医药行业公司的工作氛围", "#FFE0C1"],
+													[nil, "分析不同职位的需求差异，确定自己的职业起点", "#FFE0C1"]
+												],
+												[
+													[["获得成功", "医药行业成功求职！"], "为医药行业的不同职位订制简历", "#FFEFAB"],
+													[nil, "模拟医药行业、职位面试现场", "#FFEFAB"],
+													[nil, "拓展关系网，直入公司内部", "#FFEFAB"]
+												],
+												[
+													[["维护关系", "迈出职业生涯第一步！"], "建立同行业伙伴求职关系网，互通有无", "#FFCCDD"],
+													[nil, "行业专家手把手辅导，引你入门", "#FFCCDD"],
+													[nil, "随时更新行业信息，赢在职业起跑线", "#FFCCDD"]
+												]
+											]
+										%>
 
-			<div class="index_container_l_section_content">
-				<div>
-					<div>
-						<img class="float_l" src="/images/coach/trainer_icon.png" border="0" />
-						&nbsp;&nbsp;&nbsp;
-						<b>
-							林老师
-						</b>
-					</div>
-					<div>
-						医药行业资深销售，10余年医药行业培训经验，担任跨国医药公司培训总 监；在乔布培训中倾情传授医药行业职业素质培训，包括医药行业基本知识，沟通技巧，时间管理，压力管理等课程；
-					</div>
-					
-					<div style="height: 15px;"></div>
-					
-					<div>
-						<img class="float_l" src="/images/coach/trainer_icon.png" border="0" />
-						&nbsp;&nbsp;&nbsp;
-						<b>
-							冯老师
-						</b>
-					</div>
-					<div>
-						著名职业礼仪培训师，多年企业培训经验，担任跨国公司培训经理；在乔布培训中分享职业礼仪的具体操作方法；
-					</div>
-					
-					<div style="height: 15px;"></div>
-					
-					<div>
-						<img class="float_l" src="/images/coach/trainer_icon.png" border="0" />
-						&nbsp;&nbsp;&nbsp;
-						<b>
-							马老师
-						</b>
-					</div>
-					<div>
-						潜心研究国内外职业生涯规划和求职技巧，设计多门实战式职业规划课程；2年知名跨国医药公司销售经验，就职期间因业绩突出被破格提升；4年资深体验培训师，曾担任飞利浦、长江巴黎百富勤、复旦大学管理学院、上海财大MBA学院、西门子、强生制药、易初莲花、德州仪器、SAP、西安杨森、爱芬食品、华润雪花、柯尼卡美能达等知名公司外训培训师；
-					</div>
-				</div>
-			</div>
-			
-		</div>
-	<% end %>
-</div>
+										<% reasons.each do |reason| %>
+											<% reason_size = reason.size %>
+											<% reason_size.times do |i| %>
+												<% reason_row = reason[i] %>
+												<tr>
+													<% if reason_row[0] %>
+													<td style="width: 25%; background-color: <%= reason_row[2] %>;"<%= %Q! rowspan="#{reason_size}"! if i==0 %>>
+														<b>
+															<%= reason_row[0][0] %>
+															--
+														</b>
+														
+														<br />
+														
+														<%= reason_row[0][1] %>
+													</td>
+													<% end %>
 
-<div class="coach_block">
-	<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
-		<div class="index_container_l_section">
-			<div class="index_container_l_section_title">
-				行业公司 »
-			</div>
+													<td style="background-color: <%= reason_row[2] %>;">
+														<%= reason_row[1] %>
+													</td>
+												</tr>
+											<% end %>
+										<% end %>
+									</table>
+								</div>
+								
+								
+								<br />
+								<div style="color: #FF6600; font-weight: bold; font-size: 14px;">
+									如何参加
+								</div>
+								<div>
+									<table cellpadding="5" cellspacing="5" border="0" class="main_part_w">
+										<tr>
+											<td align="left" valign="top" style="width: 50%; background-color: #FAFAFA;">
+												<div style="font-weight: bold; text-align: center;">
+													医药行业 精品班
+												</div>
+												<div>
+													<ul>
+														<li>32 学时</li>
+														<li>快速了解行业信息</li>
+														<li>费用：480元/32学时</li>
+													</ul>
+												</div>
+												<div class="align_c">
+													<a rel="gb_page_center[500, 350]" title="我要报名: 申请医药行业精品班" href="/coach/course_apply?sid=9">
+														<img src="/images/coach/join_button.png" border="0" /></a>
+												</div>
+											</td>
+											
+											
+											<td style="width: 50px;"></td>
+											
+											
+											<td align="left" valign="top" style="width: 50%; background-color: #FAFAFA;">
+												<div style="font-weight: bold; text-align: center;">
+													医药行业 拓展班
+												</div>
+												<div>
+													<ul>
+														<li>64 学时</li>
+														<li>模拟练习+现场练习精解</li>
+														<li>费用：1860元/64学时</li>
+													</ul>
+												</div>
+												<div class="align_c">
+													<a rel="gb_page_center[500, 350]" title="我要报名: 申请医药行业拓展班" href="/coach/course_apply?sid=10">
+														<img src="/images/coach/join_button.png" border="0" /></a>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+								
+							</div>
 
-			<div class="index_container_l_section_content">
-				<div>
-					乔布堂与医药行业内知名公司保持联系，选择合适的学生简历向公司 HR 推荐。
+						</div>
+					<% end %>
 				</div>
 				
-				<div style="word-spacing: 30px; padding: 0px 20px">
-					<div>
-						<img src="/images/coach/company_logos/bi.png" />
-						<img src="/images/coach/company_logos/xianyangsen.png" />
-						<img src="/images/coach/company_logos/johnson.png" />
-						
-					</div>
-					<div>
-						<img src="/images/coach/company_logos/gsk.png" />
-						<img src="/images/coach/company_logos/bayer.png" />
-						<img src="/images/coach/company_logos/lilly.png" />
-						<img src="/images/coach/company_logos/wyeth.png" />
-					</div>
+				
+				<div class="coach_block">
+					<img src="/images/coach/subjects/pharmaceutical/jobtown_night.png" border="0" />
 				</div>
-			</div>
+			</td>
 			
-		</div>
-	<% end %>
+			
+			<td align="left" valign="top" style="width: 180px;">
+				<div class="coach_block">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								行业公司
+							</div>
+
+							<div class="index_container_l_section_content">
+								<div>
+									乔布堂与医药行业内知名公司保持联系，选择合适的学生简历向公司 HR 推荐。
+								</div>
+
+								<p class="align_c">
+									<img src="/images/coach/company_logos/bi.png" border="0" />
+								</p>
+								
+								<p class="align_c">
+									<img src="/images/coach/company_logos/xianyangsen.png" border="0" />
+								</p>
+								
+								<p class="align_c">
+									<img src="/images/coach/company_logos/johnson.png" border="0" />
+								</p>
+								
+								<p class="align_c">
+									<img src="/images/coach/company_logos/gsk.png" border="0" />
+								</p>
+								
+								<p class="align_c">
+									<img src="/images/coach/company_logos/bayer.png" border="0" />
+								</p>
+								
+								<p class="align_c">
+									<img src="/images/coach/company_logos/lilly.png" border="0" />
+								</p>
+								
+								<p class="align_c">
+									<img src="/images/coach/company_logos/wyeth.png" border="0" />
+								</p>
+							</div>
+						</div>
+					<% end %>
+				</div>
+				
+				<div class="coach_block">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								如何咨询
+							</div>
+
+							<div class="index_container_l_section_content">
+								<div>
+									咨询电话:
+								</div>
+								<div style="font-weight: bold; text-align: right;">
+									(021) 6381 5200
+								</div>
+								
+								<div>
+									咨询邮箱:
+								</div>
+								<div style="font-weight: bold; text-align: right;">
+									service@qiaobutang.com
+								</div>
+							</div>
+						</div>
+					<% end %>
+				</div>
+				
+				<div class="coach_block">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_content">
+								或者
+								<a href="/coach/course_apply">留下你的联系方式</a>
+								,
+								我们将与你联系
+							</div>
+						</div>
+					<% end %>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
 </div>
 
 

@@ -1,0 +1,36 @@
+<% name = trainer_info[0] %>
+<% desc = trainer_info[1] %>
+<% photo_image = trainer_info[2] %>
+<% name_image = trainer_info[3] %>
+
+<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+	<tr>
+		<td align="left" valign="top" style="width: 65px;">
+			<% if photo_image && photo_image != "" %>
+				<div>
+					<img src="/images/coach/trainers/<%= photo_image %>" border="0" />
+				</div>
+			<% end %>
+			
+			<div>
+				<img src="/images/coach/trainers/<%= name_image %>" border="0" />
+			</div>
+		</td>
+		
+		
+		<td style="width: 15px;"></td>
+		
+		
+		<td valign="top" style="padding: 5px 10px; background-color: #FAFAFA; color: #111111;">
+			<div style="font-size: 14px; font-weight: bold;">
+				<%= name %>
+			</div>
+			
+			<div>
+				<%= desc %>
+			</div>
+		</td>
+	</tr>
+</table>
+
+

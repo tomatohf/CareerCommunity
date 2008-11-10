@@ -1,0 +1,55 @@
+<% community_page_title("培训师团队") %>
+
+<div class="breadcrumb">
+	<a href="/">
+		乔布堂</a>
+	»
+	<a href="/coach">
+		乔布教练</a>
+	»
+	<a href="/coach/trainers">
+		培训师团队</a>
+</div>
+
+
+<div class="coach_block">
+	
+	<%
+		trainers_info = [
+			# [name, desc, photo_image, name_image]
+			["Lucy Lin", "医药行业资深销售，10余年医药行业培训经验，担任跨国医药公司培训总 监；在乔布培训中倾情传授医药行业职业素质培训，包括医药行业基本知识，沟通技巧，时间管理，压力管理等课程。", "Lucy_Lin_photo.jpg", "Lucy_Lin_name.png"],
+			["Chen Su", "原中央电视台文艺和健康节目主持人，从遍访各艺术门类知名艺术家到面对不同学科的医学菁英。职场深深深几许，生存的需求和对成功的追求无论任何年代都未改变，于是所幸今天有太多的信息和协助可以给到你。", "Chen_Su_photo.jpg", "Chen_Su_name.png"],
+			["Rick Ma", "4年资深体验培训师，2年知名跨国医药公司就职经验，多次主持企业会议及各项活动，专心研究国内外职业生涯规划和求职技巧，并设计多门实战式职业规划课程。", "Rick_Ma_photo.jpg", "Rick_Ma_name.png"],
+			["Steffi Feng", "著名职业礼仪培训师，多年企业培训经验，担任跨国公司培训经理；在乔布培训中分享职业礼仪的具体操作方法。", nil, "Steffi_Feng_name.png"],
+			["Bonie Mao", "原浦发银行Trainining Director ，曾在行政部、个金部、营业部等各个部门任职。负责新员工入职培训，E learning网络培训，行员专业培训与考核及个人素养培训。具有丰富的行业经验和职业培训经验。", "Bonie_Mao_photo.jpg", "Bonie_Mao_name.png"],
+			["Anny Hu", "毕业于上海交通大学管理学院，目前担任某合资公司的人事与行政经理。曾任职于世界500强公司，历任培训专员，亚太区培训支持主管。有着丰富的外企任职经验及培训经验。曾负责新员工培训、企业文化培训、商务礼仪培训等。", nil, "Anny_Hu_name.png"]
+		]
+	%>
+	
+	<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+		<% i = 0 %>
+		<% trainer_count = trainers_info.size %>
+		<% while i < trainer_count %>
+			<tr>
+				<td colspan="2" style="height: 30px;"></td>
+			</tr>
+			
+			<tr>
+				<td align="left" valign="top" style="width: 50%; padding-right: 25px;">
+					<%= render :partial => "trainer", :locals => {:trainer_info => trainers_info[i]} %>
+					<% i = i + 1 %>
+				</td>
+				
+				<td align="left" valign="top" style="width: 50%; padding-left: 25px;">
+					<% if i < trainer_count %>
+						<%= render :partial => "trainer", :locals => {:trainer_info => trainers_info[i]} %>
+						<% i = i + 1 %>
+					<% end %>
+				</td>
+			</tr>
+		<% end %>
+	</table>
+	
+</div>
+
+

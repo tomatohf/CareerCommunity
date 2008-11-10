@@ -20,94 +20,75 @@
 			
 			
 			<div>
-				<div class="coach_right_column">
-					<div class="index_title_small">
-						<li>相关活动</li>
-					</div>
-					<%
-						[
-							["上海中医药大学讲座", "1006/1035/thumb_48_1035.jpg", "/activities/1003"],
-							[%Q!“望闻问切 把脉职场”成功求职的10个关键!, "1006/1032/thumb_48_1032.jpg", "/activities/1002"]
-						].each do |item|
-					%>
-						<div class="index_block">
-							<div class="align_c">
-								<a href="<%= item[2] %>">
-									<img src="http://qiaobutang.com/system/files/photos_images/<%= item[1] %>" border="0" alt="<%= item[0] %>" title="<%= item[0] %>" style="border: 1px dotted #C2E3EF;" /></a>
-							</div>
+				<div class="coach_container_l">
+					<div class="coach_menus">
+						<div class="coach_menu_top">
+							<a href="/coach">
+								乔布教练</a>
 						</div>
-					<% end %>
-					<br />
-					
-					<div class="index_title_small">
-						<li>相关乔布圈</li>
-					</div>
-					<%
-						[
-							["职言职语", "1002/1040/thumb_48_1040.jpg", "/groups/2"]
-						].each do |item|
-					%>
-						<div class="index_block">
-							<div class="align_c">
-								<a href="<%= item[2] %>">
-									<img src="http://qiaobutang.com/system/files/photos_images/<%= item[1] %>" border="0" alt="<%= item[0] %>" title="<%= item[0] %>" style="border: 1px dotted #C2E3EF;" /></a>
-							</div>
-						</div>
-					<% end %>
-				</div>
-				
-				<div class="coach_container">
-					<div class="coach_container_l">
-						<div class="coach_menus">
-							<div class="coach_menu_top">
-								<a href="/coach">
-									乔布教练</a>
-							</div>
-							<%
-								menus = [
-									["pharmaceutical", "医药行业"],
-									#["#", "顾问团队"],
-									["register_notice", "报名须知"]
-									#,
-									#["#", "常见问题"]
-								]
-							%>
-							<% menus.each do |menu| %>
-								<div
-									<% if action_name == menu[0] %>
-									class="coach_menu_selected"
-									<% else %>
-									onmouseover="this.className='coach_menu_selected'"
-									onmouseout="this.className=''"
+						<%
+							menus = [
+								["trainers", "培训师团队"],
+								["courses", "培训项目"],
+								["consultant", "乔布堂求职顾问"],
+								["course_apply", "我要报名 / 咨询详情"]
+							]
+						%>
+						<% menus.each do |menu| %>
+							<div
+								<% if action_name == menu[0] %>
+								class="coach_menu_selected"
+								<% else %>
+								onmouseover="this.className='coach_menu_selected'"
+								onmouseout="this.className=''"
+								<% end %>
+								>
+								<a href="/coach/<%= menu[0] %>">
+									<%= menu[1] %>
+									
+									<% if action_name == "courses" && menu[0] == action_name %>
+										&nbsp;
+										<img src="/images/coach/course_menu_expand_icon.png" border="0" />
 									<% end %>
-									>
-									<a href="/coach/<%= menu[0] %>">
-										<%= menu[1] %></a>
+									
+									<% if menu[0] == "consultant" %>
+										<img src="/images/coach/hot_icon.png" border="0" />
+									<% end %>
+								</a>
+							</div>
+							
+							<% if action_name == "courses" && menu[0] == action_name %>
+								<div class="course_menus">
+									<%
+										course_menus = [
+											["career_path", "职业决策研讨班"],
+											["resume_8_hrs", "简历网申求职信8 小时特训"],
+											["interview_2_days", "面试和职场礼仪模拟训练"],
+											["sales_training", "销售精英启航班"],
+											["course32", "求职精品班"],
+											["course64", "求职拓展班"]
+										]
+									%>
+									<% course_menus.each do |course_menu| %>
+										<a href="/coach/courses#<%= course_menu[0] %>">
+											<%= course_menu[1] %></a>
+									<% end %>
 								</div>
 							<% end %>
-						</div>
-						
-						<div class="coach_related_link_title">
-							11月课程安排
-						</div>
+						<% end %>
+					</div>
+					
+					<div class="subjects_container">
 						<div>
-							<img src="/images/coach/class_schedule.png" border="0" />
-						</div>
-						<br />
-						<div style="padding: 0px 15px;">
-							精品班最近课程
-							<br />
-							从11月01日开始
-							<br />
-							每周末上课2天
-							<br />
-							拓展班课程寒假开设
+							<a href="/coach/pharmaceutical">
+								<img src="/images/coach/subjects/pharmaceutical.png" border="0" /></a>
 						</div>
 					</div>
 					
-					<div class="coach_container_r">
-						<%= yield %>
-					</div>
+				</div>
+				
+				<div class="coach_container_r">
+					<%= yield %>
 				</div>
 			</div>
 			

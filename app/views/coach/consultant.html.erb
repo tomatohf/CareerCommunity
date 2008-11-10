@@ -1,0 +1,214 @@
+<% community_page_title("求职顾问") %>
+
+<div class="breadcrumb">
+	<a href="/">
+		乔布堂</a>
+	»
+	<a href="/coach">
+		乔布教练</a>
+	»
+	<a href="/coach/consultant">
+		乔布堂求职顾问</a>
+</div>
+
+
+<link href="/lib/greybox/gb_styles.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+	var GB_ROOT_DIR = "/lib/greybox/";
+</script>
+
+<script type="text/javascript" src="/lib/greybox/AJS.js"></script>
+<script type="text/javascript" src="/lib/greybox/AJS_fx.js"></script>
+<script type="text/javascript" src="/lib/greybox/gb_scripts.js"></script>
+
+
+<div class="coach_block">
+	<a rel="gb_page_center[500, 350]" title="我要报名: 申请乔布堂求职顾问" href="/coach/course_apply?sid=2">
+		<img src="/images/coach/consultant.jpg" border="0" /></a>
+</div>
+
+
+<div class="coach_block">
+	
+	<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+		<tr>
+			<td align="left" valign="top">
+				<div class="coach_block">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								五大特点
+							</div>
+
+							<div class="index_container_l_section_content">
+								<ul>
+									<li>简历、面试、职业素质，全部量身定做！</li>
+									<li>文笔、口才、基本礼仪，一切因材施教！</li>
+									<li>每个模块由不同的行业背景顾问指导,有机会借助顾问丰富的行业人脉！</li>
+									<li>所有内容针对实战校园招聘，全真题模拟！</li>
+									<li>每个学员都能享受乔布堂的实习/就业推荐机会！</li>
+								</ul>
+							</div>
+
+						</div>
+					<% end %>
+				</div>
+				
+				<div class="coach_block">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								求职顾问帮助解决以下求职问题！
+							</div>
+
+							<div class="index_container_l_section_content">
+								<table cellpadding="3" cellspacing="2" border="0" class="main_part_w">
+									<tr>
+										<th style="text-align:center; color: #FFFFFF; font-weight: bold; background-color: #FF9933; width: 35%;">
+											模块
+										</th>
+										
+										<th style="text-align:center; color: #FFFFFF; font-weight: bold; background-color: #FFCC00">
+											内容
+										</th>
+									</tr>
+									
+									<%
+										consulting_contents = [
+											[
+												["职业咨询", "&nbsp;"]
+											],
+											[
+												["简历-求职信", "针对不同行业定制"],
+												[nil, "HR 真正的关注点"],
+												[nil, "海投不中的原因"]
+											],
+											[
+												["网申", "开放性问题 (Open Questions)"],
+												[nil, "文书写作 (Essay Questions)"],
+												[nil, "常见误区 (GPA不高/实习经历不丰富)"]
+											],
+											[
+												["笔试", "SHL 笔试题"],
+												[nil, "逻辑推理题"],
+												[nil, "公文模拟"]
+											],
+											[
+												["面试", "案例分析 (Case Study)"],
+												[nil, "角色扮演 (Role Play)"],
+												[nil, "演讲陈述 (Presentation)"],
+												[nil, "情境模拟 (Situational Simulation)"],
+												[nil, "无领导小组讨论 (Panel Discussion)"]
+											],
+											[
+												["职业素质", "时间管理"],
+												[nil, "演讲技能"],
+												[nil, "拜访技巧"],
+												[nil, "商务沟通"],
+												[nil, "谈判技巧"],
+												[nil, "客户关系管理"]
+											],
+											[
+												["乔布堂企业推荐!", "&nbsp;"]
+											]
+										]
+									%>
+									
+									<% consulting_contents.each do |content| %>
+										<% content_size = content.size %>
+										<% content_size.times do |i| %>
+											<% content_row = content[i] %>
+											<tr>
+												<% if content_row[0] %>
+												<td style="background-color: #FFE0C1;"<%= %Q! rowspan="#{content_size}"! if i==0 %>>
+													<%= content_row[0] %>
+												</td>
+												<% end %>
+
+												<td style="background-color: #FFEFAB;">
+													<%= content_row[1] %>
+												</td>
+											</tr>
+										<% end %>
+									<% end %>
+								</table>
+							</div>
+
+						</div>
+					<% end %>
+				</div>
+				
+				<div class="coach_block">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								关于求职顾问
+							</div>
+
+							<div class="index_container_l_section_content">
+								<div>
+									免费赠送价值100元的全套职业测评！（内部注释：MBTI、霍兰德）
+								</div>
+								
+								<div>
+									费用：120元/小时，不满1小时部分按1小时计费。
+								</div>
+								
+								<div style="text-align: center; margin-top: 15px;">
+									<a rel="gb_page_center[500, 350]" title="我要报名: 申请乔布堂求职顾问" href="/coach/course_apply?sid=2">
+										<img src="/images/coach/apply_button.png" border="0" /></a>
+								</div>
+							</div>
+						</div>
+					<% end %>
+				</div>
+			</td>
+			
+			
+			<td align="left" valign="top" style="width: 180px;">
+				<div class="coach_block">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_title">
+								如何咨询
+							</div>
+
+							<div class="index_container_l_section_content">
+								<div>
+									咨询电话:
+								</div>
+								<div style="font-weight: bold; text-align: right;">
+									(021) 6381 5200
+								</div>
+								
+								<div>
+									咨询邮箱:
+								</div>
+								<div style="font-weight: bold; text-align: right;">
+									service@qiaobutang.com
+								</div>
+							</div>
+						</div>
+					<% end %>
+				</div>
+				
+				<div class="coach_block">
+					<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+						<div class="index_container_l_section">
+							<div class="index_container_l_section_content">
+								或者
+								<a href="/coach/course_apply">留下你的联系方式</a>
+								,
+								我们将与你联系
+							</div>
+						</div>
+					<% end %>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
+</div>
+
+

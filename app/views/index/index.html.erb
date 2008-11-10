@@ -100,6 +100,60 @@
 </script>
 
 
+<link href="/lib/greybox/gb_styles.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+	var GB_ROOT_DIR = "/lib/greybox/";
+</script>
+
+<script type="text/javascript" src="/lib/greybox/AJS.js"></script>
+<script type="text/javascript" src="/lib/greybox/AJS_fx.js"></script>
+<script type="text/javascript" src="/lib/greybox/gb_scripts.js"></script>
+
+
+<script type="text/javascript">
+	function apply_course() {
+		var current_index = get_current_shown_post_index();
+		
+		// [
+		// 	"overall", "resume_8_hrs", "career_path", "interview_2_days", "sales_training"
+		// ];
+		
+		var course_title;
+		var course_apply_url;
+		
+		switch(current_index) {
+			case 0:
+				course_title = "我要报名: 申请乔布堂求职顾问";
+				course_apply_url = "/coach/course_apply?sid=2";
+				break;
+			case 1:
+				course_title = "我要报名: 申请简历网申求职信8小时特训";
+				course_apply_url = "/coach/course_apply?sid=4";
+				break;
+			case 2:
+				course_title = "我要报名: 申请职业决策研讨班";
+				course_apply_url = "/coach/course_apply?sid=3";
+				break;
+			case 3:
+				course_title = "我要报名: 申请面试和职场礼仪模拟训练";
+				course_apply_url = "/coach/course_apply?sid=5";
+				break;
+			case 4:
+				course_title = "我要报名: 申请销售精英启航班";
+				course_apply_url = "/coach/course_apply?sid=6";
+				break;
+		   
+			default:
+				return;
+		}
+
+		
+		return GB_showCenter(course_title, course_apply_url, 350, 500);
+	}
+</script>
+
+
 <div class="index_both_post_container">
 	<div class="index_big_post_container">
 		<%
@@ -114,7 +168,7 @@
 			post_names.each do |post_name|
 		%>
 			<div class="index_small_post">
-				<a href="#" onmouseover="select_post('<%= post_name %>'); set_on_small_post(true); return false;" onmouseout="set_on_small_post(false); return false;">
+				<a href="<%= post_name == "overall" ? "/coach/consultant" : "/coach/courses##{post_name}" %>" onmouseover="select_post('<%= post_name %>'); set_on_small_post(true); return false;" onmouseout="set_on_small_post(false); return false;">
 					<img src="/images/real_index/posts/<%= post_name %>_small_selected.png" id="selected_small_post_<%= post_name %>" border="0" style="display: none;" />
 					<img src="/images/real_index/posts/<%= post_name %>_small.png" id="small_post_<%= post_name %>" border="0" /></a>
 			</div>
@@ -127,7 +181,7 @@
 </div>
 
 <div class="index_register_button">
-	<a href="/coach/register_notice#register_way">
+	<a href="/coach/course_apply" onclick="apply_course(); return false;">
 		<img src="/images/real_index/register.png" border="0" /></a>
 </div>
 

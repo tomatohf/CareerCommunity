@@ -1,0 +1,243 @@
+<style>
+	.apply_form_container {
+		font-family: Arial,Helvetica,sans-serif;
+	}
+	
+	.apply_form_text_field {
+		border-style: solid;
+		border-width: 1px;
+		border-color: #DAEAEA;
+	}
+	
+	.apply_form_info_button {
+		padding: 1px 2px;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #A3988C;
+		background: #FFF5E8;
+		cursor: pointer;
+	}
+	
+	.apply_form_bullets_container div {
+		background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 5px;
+		padding-left: 10px;
+		margin-top: 5px;
+	}
+	
+	.apply_form_error_msg {
+		background-repeat: no-repeat;
+		background-position: 5px 5px;
+		padding: 2px 10px 2px 30px;
+		background-color: #FFFDC0;
+		
+		background-image: url(/images/error_small.gif);
+		border: 1px dashed red;
+		color: red;
+		
+		font-size: 12px;
+	}
+	
+	.contact_info_container {
+		margin-top: 25px;
+	}
+	
+	.contact_info_container div {
+		margin-top: 5px;
+	}
+	
+	.contact_info_container .info_text {
+		font-weight: bold;
+	}
+</style>
+
+<div class="apply_form_container">
+	<div>
+		<% if @application && @application.errors.size > 0 %>
+			<div class="apply_form_error_msg">
+				<%= list_model_validate_errors(@application) %>
+			</div>
+		<% end %>
+	</div>
+	
+	<% form_tag "/coach/apply", :method => :post do %>
+	<table cellpadding="0" cellspacing="10" border="0" style="font-size: 12px;">
+		<tr>
+			<td align="left" valign="top" style="width: 250px;">
+				<div>
+					<% round_corner_div :border_color => "#FEFEFE", :bg_color => "#FFF2E5" do %>
+						<div style="font-weight: bold; color: #FF6600; padding-left: 10px;padding-top: 5px;">
+							个人信息
+						</div>
+						<div style="padding: 5px 0px 10px 10px;">
+							<table cellpadding="0" cellspacing="3" border="0" style="font-size: 12px;">
+								<tr>
+									<td style="width: 60px;">
+										<label for="real_name">
+											姓名(<span style="color: red;">*</span>)
+											:
+										</label>
+									</td>
+									
+									<td>
+										<input type="text" id="real_name" name="real_name" class="apply_form_text_field" style="width: 95%;" value="<%= h(@real_name) %>" />
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<label for="school">
+											学校
+											:
+										</label>
+									</td>
+									
+									<td>
+										<input type="text" id="school" name="school" class="apply_form_text_field" style="width: 95%;" value="<%= h(@school) %>" />
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<label for="major">
+											专业
+											:
+										</label>
+									</td>
+									
+									<td>
+										<input type="text" id="major" name="major" class="apply_form_text_field" style="width: 95%;" value="<%= h(@major) %>" />
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<label for="grade">
+											年级
+											:
+										</label>
+									</td>
+									
+									<td>
+										<input type="text" id="grade" name="grade" class="apply_form_text_field" style="width: 95%;" value="<%= h(@grade) %>" />
+									</td>
+								</tr>
+							</table>
+						</div>
+					<% end %>
+				</div>				
+				
+				<div style="margin-top: 10px;">
+					<% round_corner_div :border_color => "#FEFEFE", :bg_color => "#FFF2E5" do %>
+						<div style="font-weight: bold; color: #FF6600; padding-left: 10px; padding-top: 5px;">
+							联系方式
+						</div>
+						<div style="padding: 5px 0px 10px 10px;">
+							<table cellpadding="0" cellspacing="3" border="0" style="font-size: 12px;">
+								<tr>
+									<td style="width: 60px;">
+										<label for="mobile">
+											手机(<span style="color: red;">*</span>)
+											:
+										</label>
+									</td>
+									
+									<td>
+										<input type="text" id="mobile" name="mobile" class="apply_form_text_field" style="width: 95%;" value="<%= h(@mobile) %>" />
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<label for="email">
+											邮箱(<span style="color: red;">*</span>)
+											:
+										</label>
+									</td>
+									
+									<td>
+										<input type="text" id="email" name="email" class="apply_form_text_field" style="width: 95%;" value="<%= h(@email) %>" />
+									</td>
+								</tr>
+							</table>
+						</div>						
+					<% end %>
+				</div>
+				
+				<% unless @sid %>
+					<div style="margin-top: 10px;">
+						<% round_corner_div :border_color => "#FEFEFE", :bg_color => "#FFF2E5" do %>
+							<div style="font-weight: bold; color: #FF6600; padding-left: 10px; padding-top: 5px;">
+								我要
+							</div>
+							<div style="padding: 5px 10px 10px 10px; font-size: 12px; text-align: right;">
+								<% services = Service.find(:all) %>
+
+								<select name="sid" id="sid" class="dropdown_list">
+									<% services.each_index do |i| %>
+										<option value="<%= i+1 %>"><%= services[i] %></option>
+									<% end %>
+								</select>
+							</div>
+						<% end %>
+						
+						<input type="hidden" name="f" value="true" />
+					</div>
+				<% end %>
+				
+				<div style="text-align: right; margin-top: 10px; margin-right: 10px;">
+					<% if @sid %>
+						<input type="hidden" name="sid" value="<%= @sid %>" />
+						<span style="color: #B3ABA2">(<%= Service.find(@sid.to_i) %>)</span>&nbsp;&nbsp;
+					<% end %>
+					<input type="submit" value="提交" class="apply_form_info_button" />
+				</div>
+			</td>
+			
+			
+			<td style="width: 15px;"></td>
+			
+			
+			<td align="left" valign="top" style="line-height: 150%;">
+				<div style="font-weight: bold; color: #FF6600; margin-bottom: 10px;">
+					认真看看
+				</div>
+				
+				<div class="apply_form_bullets_container">
+					<div>
+						请准确填写每一项
+					</div>
+					<div>
+						我们会在48小时内与您联系，请确保联系畅通
+					</div>
+					<div>
+						您的所有信息我们都将严格保密
+					</div>
+				</div>
+				
+				<div class="contact_info_container">
+					<div>
+						咨询电话:
+						<span class="info_text">
+							(021) 6381 5200
+						</span>
+					</div>
+					
+					<div>
+						咨询邮箱:
+						<span class="info_text">
+							service@qiaobutang.com
+						</span>
+					</div>
+					
+					<div>
+						联系人:
+						<span class="info_text">
+							沈小姐
+						</span>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<% end %>
+</div>

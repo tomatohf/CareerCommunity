@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 12) do
+ActiveRecord::Schema.define(:version => 13) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -711,6 +711,28 @@ ActiveRecord::Schema.define(:version => 12) do
   add_index "sent_messages", ["receiver_id"], :name => "index_sent_messages_on_receiver_id"
   add_index "sent_messages", ["reply_to_id"], :name => "index_sent_messages_on_reply_to_id"
   add_index "sent_messages", ["delta"], :name => "index_sent_messages_on_delta"
+
+  create_table "service_applications", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",   :limit => 11, :default => 0
+    t.integer  "service_id",   :limit => 11
+    t.boolean  "closed",                     :default => false
+    t.string   "real_name"
+    t.string   "school"
+    t.string   "major"
+    t.string   "grade"
+    t.string   "mobile"
+    t.string   "email"
+    t.string   "requester_ip", :limit => 40
+    t.boolean  "delta"
+  end
+
+  add_index "service_applications", ["created_at"], :name => "index_service_applications_on_created_at"
+  add_index "service_applications", ["account_id"], :name => "index_service_applications_on_account_id"
+  add_index "service_applications", ["service_id"], :name => "index_service_applications_on_service_id"
+  add_index "service_applications", ["closed"], :name => "index_service_applications_on_closed"
+  add_index "service_applications", ["delta"], :name => "index_service_applications_on_delta"
 
   create_table "space_comments", :force => true do |t|
     t.integer  "owner_id",   :limit => 11

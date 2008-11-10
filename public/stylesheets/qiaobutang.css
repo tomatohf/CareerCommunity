@@ -176,17 +176,43 @@ body {
 	border-left: 1px dotted #EAEAEA;
 }
 
-.coach_container {
-	margin-right: 200px;
-}
-
 .coach_container_l {
 	float: left;
-	width: 150px;
+	width: 180px;
 }
 
 .coach_container_r {
-	margin-left: 150px;
+	margin-left: 180px;
+}
+
+.methodology_container_l {
+	float: left;
+	width: 180px;
+}
+
+.methodology_container_r {
+	margin-left: 180px;
+}
+
+.methodology_container {
+	margin-right: 200px;
+}
+
+.seekjob_container_l {
+	float: left;
+	width: 180px;
+}
+
+.seekjob_container_r {
+	margin-left: 180px;
+}
+
+.seekjob_container {
+	margin-right: 200px;
+}
+
+.coach_index_container {
+	margin: 20px 50px;
 }
 
 .coach_menus {
@@ -242,7 +268,7 @@ body {
 }
 
 .course_info_table, .course_info_table_2 {
-	width: 420px;
+	width: 100%;
 	margin-top: 10px;
 	text-align: left;
 }
@@ -328,5 +354,60 @@ body {
 .index_button_container {
 	padding-left: 20px;
 	margin-bottom: 5px;
+}
+
+.breadcrumb a {
+	color: #B3ABA2;
+	text-decoration: none;
+}
+
+.course_bullets_container div {
+	background: transparent url(/images/coach/bullet_icon.png) no-repeat scroll center left;
+	padding-left: 10px;
+}
+
+.course_section {
+	padding-bottom: 50px;
+	border-bottom: 1px dashed #D2D2D2;
+}
+
+.course_tip {
+	background-color: #FFEFAB;
+	width: 140px;
+	padding: 5px 10px;
+	margin-top: 50px;
+}
+
+.course_tip_title {
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+div.course_menus {
+	background-color: #F8F8F8;
+}
+
+div.course_menus a {
+	margin: 0px 10px;
+	background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 6px;
+	padding-left: 10px;
+	background-color: #F8F8F8;
+	color: #333333;
+}
+
+div.course_menus a:hover {
+	color: #FF9900;
+}
+
+.subjects_container {
+	margin-top: 30px;
+	margin-right: 20px;
+	text-align: center;
+}
+
+.subjects_container div, .subjects_container img {
+	margin: 0px;
+	padding: 0px;
 }
 
