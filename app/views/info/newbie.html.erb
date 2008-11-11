@@ -1,0 +1,145 @@
+<% community_page_title("新手上路") %>
+
+<div class="methodology_container_l">
+	<div class="coach_menus">
+		<div class="coach_menu_top" style="color: #FFFFFF; font-weight: bold;">
+			新手上路
+		</div>
+		<%
+			menus = [
+				["faq", "FAQ"],
+				["search_help", "搜索使用帮助"]
+			]
+		%>
+		<% menus.each do |menu| %>
+			<div
+				<% if action_name == menu[0] %>
+				class="coach_menu_selected"
+				<% else %>
+				onmouseover="this.className='coach_menu_selected'"
+				onmouseout="this.className=''"
+				<% end %>
+				style="padding-right: 3px;"
+				>
+				<a href="#<%= menu[0] %>">
+					<%= menu[1] %></a>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<div class="methodology_container_r">
+	
+	<div class="breadcrumb">
+		<a href="/">
+			乔布堂</a>
+		»
+		<a href="#">
+			新手上路</a>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="faq">FAQ</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="text-indent: 25px; padding: 20px;">
+					<div style="font-weight: bold; text-indent: 0px;">
+						什么是乔布堂：
+					</div>
+					<div>
+						乔布堂即JobTown，致力于向大学生求职者提供职业发展咨询服务。帮助缺少工作经验的学员提高就业能力和职业素质，获得更好的职业发展。
+					</div>
+					
+					<div style="font-weight: bold; text-indent: 0px; margin-top: 20px;">
+						什么是乔布圈：
+					</div>
+					<div>
+						通过网络组织活动等，帮助学生维护社交和朋友圈子。
+					</div>
+					
+					<div style="font-weight: bold; text-indent: 0px; margin-top: 20px;">
+						我怎么参加培训项目：
+					</div>
+					<div>
+						每个培训项目里都有一个“我要报名”/“我要申请”的按钮，点击该按钮即可轻松报名。报名后，乔布堂工作人员会尽快与你电话或邮件联系，你可以在电话中具体询问培训项目的情况。
+					</div>
+					
+					<div style="font-weight: bold; text-indent: 0px; margin-top: 20px;">
+						我怎么参加圈子里的活动：
+					</div>
+					<div>
+						乔布堂举办的所有沙龙、拓展、以及讲座等活动，都会提前在乔布圈中发起相关活动。请随时留意乔布圈中的最新活动，同时我们也将在相关高校BBS，社区网络中提前发起活动，届时欢迎大家参加，或推荐给亲朋好友和伙伴们。
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="search_help">搜索使用帮助</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="text-indent: 25px;">
+					<!-- ######################################################### -->
+
+					<p>
+						The following special operators can be used:
+					</p>
+					<div>
+						<ul type="disc">
+							<li>operator OR: <pre>hello | world</pre></li>
+							<li>operator NOT:
+					<pre>hello -world
+			hello !world
+					</pre></li><li>field search operator: <pre>@title hello @body world</pre></li><li>phrase search operator: <pre>"hello world"</pre></li><li>proximity search operator: <pre>"hello world"~10</pre></li><li>quorum matching operator: <pre>"the world is a wonderful place"/3</pre></li></ul></div><p>
+
+					Here's an example query which uses most of these operators:
+					</p>
+					<div><a name="ex-extended-query"></a><p><b>Example&nbsp;6.&nbsp;Extended query example</b></p><div><pre>"hello world" @title "example program"~5 @body python -(php|perl)
+					</pre></div></div>
+					<p>
+					There always is implicit AND operator, so "hello world" means that
+					both "hello" and "world" must be present in matching document.
+					</p><p>
+					OR operator precedence is higher than AND, so "looking for cat | dog | mouse"
+					means "looking for ( cat | dog | mouse )" and <span><em>not</em></span>
+					"(looking for cat) | dog | mouse".
+					</p><p>
+					Proximity distance is specified in words, adjusted for word count, and
+					applies to all words within quotes. For instance, "cat dog mouse"~5 query
+					means that there must be less than 8-word span which contains all 3 words,
+					ie. "CAT aaa bbb ccc DOG eee fff MOUSE" document will <span><em>not</em></span>
+
+					match this query, because this span is exactly 8 words long.
+					</p><p>
+					Quorum matching operator introduces a kind of fuzzy matching.
+					It will only match those documents that pass a given threshold of given words.
+					The example above ("the world is a wonderful place"/3) will match all documents
+					that have at least 3 of the 6 specified words.
+					</p><p>
+					Nested brackets, as in queries like
+					</p><pre>aaa | ( bbb ccc | ( ddd eee ) )
+					</pre><p>
+					are not allowed yet, but this will be fixed.
+					</p><p>
+					Negation (ie. operator NOT) is only allowed on top level and not within
+					brackets (ie. groups). This isn't going to change, because supporting nested
+					negations would make phrase ranking implementation way too complicated.
+					</p>
+
+					<!-- ######################################################### -->
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+</div>

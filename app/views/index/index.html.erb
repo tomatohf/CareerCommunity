@@ -457,6 +457,42 @@
 							<img src="/images/real_index/more_icon.png" border="0" /></a>
 					</div>
 				</div>
+				
+			</div>
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2">
+			<div style="padding-top: 30px;">
+				<div class="index_section_title">
+					从搜索感兴趣的东西开始
+				</div>
+				
+				<% round_corner_div :border_color => "#E0E0E0", :bg_color => "#FAFAFA", :style => "margin: 8px 5px; padding-right: 60px;" do %>
+					<div style="padding: 10px 15px;">
+						<% form_tag "/community/search", :method => :get, :target => "_blank" do %>
+							<img class="float_l" src="/images/real_index/seek_job_icon.png" border="0" alt="死磕乔布" />
+							&nbsp;&nbsp;&nbsp;
+							
+							<select name="scope" class="dropdown_list">
+								<option value="all">选择搜索范围</option>
+								<option value="account">成员</option>
+								<option value="group">圈子</option>
+								<option value="group_post">圈子话题</option>
+								<option value="activity">活动</option>
+								<option value="activity_post">活动话题</option>
+								<option value="recruitment">招聘信息</option>
+								<option value="vote">投票</option>
+								<option value="blog">博客</option>
+							</select>
+							&nbsp;
+							<input type="text" name="query" class="text_field" size="50" />
+							&nbsp;
+							<input type="submit" value="搜索" class="button" />
+						<% end %>
+					</div>
+				<% end %>
 			</div>
 		</td>
 	</tr>
@@ -465,12 +501,7 @@
 <div class="clear">
 	
 	
-	
-<div>
-	
-</div>
-	
-	
+
 </div>
 
 

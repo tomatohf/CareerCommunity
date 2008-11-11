@@ -1,0 +1,231 @@
+<% community_page_title("活动报名") %>
+
+<div class="methodology_container_l">
+	<div class="coach_menus">
+		<div class="coach_menu_top" style="color: #FFFFFF; font-weight: bold;">
+			活动报名
+		</div>
+		<%
+			menus = [
+				["course", "报名培训项目"],
+				["subject", "参加行业专题"],
+				["activity", "参加乔布沙龙"],
+				["pay", "付款方式"]
+			]
+		%>
+		<% menus.each do |menu| %>
+			<div
+				<% if action_name == menu[0] %>
+				class="coach_menu_selected"
+				<% else %>
+				onmouseover="this.className='coach_menu_selected'"
+				onmouseout="this.className=''"
+				<% end %>
+				style="padding-right: 3px;"
+				>
+				<a href="#<%= menu[0] %>">
+					<%= menu[1] %></a>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<div class="methodology_container_r">
+	
+	<div class="breadcrumb">
+		<a href="/">
+			乔布堂</a>
+		»
+		<a href="#">
+			活动报名</a>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="course">报名培训项目</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					乔布堂提供全面的培训项目，你可以按照自己的需求进行选择：
+					
+					<%
+						courses = [
+							["/coach/consultant", "乔布堂求职顾问"],
+							["/coach/courses#cocareer_path", "职业决策研讨班"],
+							["/coach/courses#resume_8_hrs", "简历网申求职信8 小时特训"],
+							["/coach/courses#interview_2_days", "面试和职场礼仪模拟训练"],
+							["/coach/courses#sales_training", "销售精英启航班"],
+							["/coach/courses#course32", "求职精品班"],
+							["/coach/courses#course64", "求职拓展班"],
+							["/coach/pharmaceutical#how_to_join", "医药行业 精品班"],
+							["/coach/pharmaceutical#how_to_join", "医药行业 拓展班"]
+						]
+					%>
+					<% courses.each do |course| %>
+						<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 6px; padding-left: 10px;">
+							<a href="<%= course[0] %>" target="_blank">
+								<%= course[1] %></a>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						报名方式：
+					</div>
+					<div>
+						每个培训项目里都有一个"我要报名"/"我要申请"的按钮，点击该按钮即可轻松报名。报名后，乔布堂工作人员会尽快与你电话或邮件联系，你可以在电话中具体询问培训项目的情况。
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="subject">参加行业专题</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					乔布教练的医药行业专题，包括系列校园行讲座，专业培训课程，医药高校、企业服务等。经过长时间，多位行业资深培训师共同研究和设计，专门针对学生求职的需求进行内容开发。
+					
+					<%
+						subjects = [
+							["/coach/pharmaceutical", "医药专题"]
+						]
+					%>
+					<% subjects.each do |subject| %>
+						<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 6px; padding-left: 10px;">
+							<a href="<%= subject[0] %>" target="_blank">
+								<%= subject[1] %></a>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						报名方式：
+					</div>
+					<ul>
+						<li>
+							行业专题培训项目：
+							<div style="text-indent: 25px;">
+								每个行业专题，我们都会设有专门培训师团队的培训项目。培训项目分为两种：精品班和拓展班。你可以分别选择精品班或拓展班报名。 点击"我要参加"按钮即可轻松报名.
+							</div>
+						</li>
+						
+						<li style="margin-top: 20px;">
+							行业专题讲座等活动项目：
+							<div style="text-indent: 25px;">
+								行业活动中还会有丰富多彩的讲座、沙龙等活动，如果你希望参加这些活动，你可以：
+								<div>
+									<div>
+										1. 从专题中，点击宣传标语，进入活动主页面
+									</div>
+									<div>
+										2. 去乔布圈进入活动
+									</div>
+								</div>
+								
+								<div>
+									通过这两个途径，你都点击"我要报名"按钮，参与活动。因为所有活动都在乔布圈中发起，请一定注意你的时间安排，如果在报名后有事情无法参加活动，一定要在该活动规定的天数内取消参加活动，或者告知活动发起者，否则你在乔布圈上的活动参加信用度就会降低哦。
+								</div>
+							</div>
+						</li>
+					</ul>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="activity">参加乔布沙龙</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div>
+						乔布堂举办的所有沙龙、拓展、以及讲座等活动，都会提前在乔布圈中发起相关活动。请随时留意乔布圈中的最新活动，同时我们也将在相关高校BBS，社区网络中提前发起活动，届时欢迎大家参加，或推荐给亲朋好友和伙伴们。
+					</div>
+					
+					<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 6px; padding-left: 10px;">
+						<a href="/activities/all" target="_blank">
+							浏览活动列表</a>
+					</div>
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						报名方式：
+					</div>
+					<div>
+						如果你是乔布圈/乔布堂的注册用户，直接报名加入活动即可。
+					</div>
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						退出活动：
+					</div>
+					<div>
+						如果临时有事而不能参加活动，一定要在该活动规定的天数内退出参加活动，或者告知活动发起者，否则你在乔布圈上的活动参加信用度就会降低哦。
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="pay">付款方式</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						培训项目支付方式：
+					</div>
+					<div>
+						<div>
+							1. 打电话咨询：
+							<div style="text-indent: 25px;">
+								培训或参加活动前请学员拨打课程专线询问详细价格及具体付款方式：
+								<b>
+									（021） 6381 5200
+								</b>
+								电话咨询或在网上确认详细价格。
+							</div>
+						</div>
+						<div>
+							2. 在线报名：
+							<div style="text-indent: 25px;">
+								点击：(我要报名的链接)
+								    乔布堂工作人员会尽快与你取得联系。
+							</div>
+						</div>
+					</div>
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						活动支付方式：
+					</div>
+					<div>
+						<div>
+							1. 在报名时仔细看提示，活动发起者会详细列出价格和付款方式；
+						</div>
+						<div>
+							2. 如果不清楚，可以随时发站内邮件给活动发起者。
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+</div>

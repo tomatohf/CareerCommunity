@@ -2,18 +2,34 @@
 	<div style="width: 800px; margin: 20px auto 0px; padding-bottom: 20px;">
 		<table cellpadding="0" cellspacing="0" border="0">
 			<tr>
+				<% link_left_padding = "5px" %>
+				
 				<td align="left" valign="top">
 					<div style="font-weight: bold;">
 						新手上路
 					</div>
+					
+					<%
+						join_infos = [
+							["FAQ", "/info/newbie#faq"],
+							["搜索使用帮助", "/info/newbie#search_help"]
+						]
+					%>
+					
+					<% join_infos.each do |info| %>
+						<div style="padding-left: <%= link_left_padding %>;">
+							<a href="<%= info[1] %>" target="_blank">
+								<%= info[0] %></a>
+						</div>
+					<% end %>
+					
 				</td>
 				
 				
-				<% sep_width = "60px" %>
+				<% sep_width = "45px" %>
 				<td style="width: <%= sep_width %>;"></td>
 				
 				
-				<% link_left_padding = "5px" %>
 				<td align="left" valign="top">
 					<div style="font-weight: bold;">
 						活动报名
@@ -21,10 +37,10 @@
 					
 					<%
 						join_infos = [
-							["报名培训项目", "#"],
-							["参加行业专题", "#"],
-							["参加乔布沙龙", "#"],
-							["付款方式", "#"]
+							["报名培训项目", "/info/apply#course"],
+							["参加行业专题", "/info/apply#subject"],
+							["参加乔布沙龙", "/info/apply#activity"],
+							["付款方式", "/info/apply#pay"]
 						]
 					%>
 					
@@ -102,6 +118,23 @@
 					<div style="font-weight: bold;">
 						学校服务
 					</div>
+					
+					<%
+						school_infos = [
+							["高校就业指导讲座", "#"],
+							["高校求职指导课程", "#"],
+							["非毕业生素拓培训", "#"],
+							["高校-企业合作服务", "#"]
+						]
+					%>
+					
+					<% school_infos.each do |info| %>
+						<div style="padding-left: <%= link_left_padding %>;">
+							<a href="<%= info[1] %>" target="_blank">
+								<%= info[0] %></a>
+						</div>
+					<% end %>
+					
 				</td>
 				
 				
@@ -115,7 +148,6 @@
 					
 					<%
 						jobtown_infos = [
-							["乔布堂团队", "#"],
 							["隐私条款", "#"],
 							["合作伙伴", "#"],
 							["加入乔布堂", "#"]
