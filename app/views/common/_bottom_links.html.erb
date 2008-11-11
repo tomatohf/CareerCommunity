@@ -1,0 +1,136 @@
+<div id="bottom_links">
+	<div style="width: 800px; margin: 20px auto 0px; padding-bottom: 20px;">
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td align="left" valign="top">
+					<div style="font-weight: bold;">
+						新手上路
+					</div>
+				</td>
+				
+				
+				<% sep_width = "60px" %>
+				<td style="width: <%= sep_width %>;"></td>
+				
+				
+				<% link_left_padding = "5px" %>
+				<td align="left" valign="top">
+					<div style="font-weight: bold;">
+						活动报名
+					</div>
+					
+					<%
+						join_infos = [
+							["报名培训项目", "#"],
+							["参加行业专题", "#"],
+							["参加乔布沙龙", "#"],
+							["付款方式", "#"]
+						]
+					%>
+					
+					<% join_infos.each do |info| %>
+						<div style="padding-left: <%= link_left_padding %>;">
+							<a href="<%= info[1] %>" target="_blank">
+								<%= info[0] %></a>
+						</div>
+					<% end %>
+					
+				</td>
+				
+				
+				<td style="width: <%= sep_width %>;"></td>
+				
+				
+				<td align="left" valign="top">
+					<div style="font-weight: bold;">
+						学生服务
+					</div>
+					
+					<%
+						student_infos = [
+							["乔布堂顾问", "#"],
+							["乔布教练培训项目", "#"],
+							["行业求职讲座", "#"],
+							["乔布沙龙系列活动", "#"],
+							["死磕乔布", "#"]
+						]
+					%>
+					
+					<% student_infos.each do |info| %>
+						<div style="padding-left: <%= link_left_padding %>;">
+							<a href="<%= info[1] %>" target="_blank">
+								<%= info[0] %></a>
+						</div>
+					<% end %>
+					
+				</td>
+				
+				
+				<td style="width: <%= sep_width %>;"></td>
+				
+				
+				<td align="left" valign="top">
+					<div style="font-weight: bold;">
+						企业服务
+					</div>
+					
+					<%
+						company_infos = [
+							["企业人力资源培训", "#"],
+							["校园招聘外包服务", "#"],
+							["实习生外包服务", "#"],
+							["行业专向人才招聘", "#"],
+							["校园活动推广服务", "#"],
+							["企业定制圈子服务", "#"]
+						]
+					%>
+					
+					<% company_infos.each do |info| %>
+						<div style="padding-left: <%= link_left_padding %>;">
+							<a href="<%= info[1] %>" target="_blank">
+								<%= info[0] %></a>
+						</div>
+					<% end %>
+					
+				</td>
+				
+				
+				<td style="width: <%= sep_width %>;"></td>
+				
+				
+				<td align="left" valign="top">
+					<div style="font-weight: bold;">
+						学校服务
+					</div>
+				</td>
+				
+				
+				<td style="width: <%= sep_width %>;"></td>
+				
+				
+				<td align="left" valign="top">
+					<div style="font-weight: bold;">
+						关于乔布堂
+					</div>
+					
+					<%
+						jobtown_infos = [
+							["乔布堂团队", "#"],
+							["隐私条款", "#"],
+							["合作伙伴", "#"],
+							["加入乔布堂", "#"]
+						]
+					%>
+					
+					<% jobtown_infos.each do |info| %>
+						<div style="padding-left: <%= link_left_padding %>;">
+							<a href="<%= info[1] %>" target="_blank">
+								<%= info[0] %></a>
+						</div>
+					<% end %>
+					
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
