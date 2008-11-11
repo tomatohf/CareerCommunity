@@ -37,6 +37,10 @@ class Recruitment < ActiveRecord::Base
   CKP_types = :recruitment_types
   CKP_locations = :recruitment_locations
   
+  FCKP_index_lecture = :fc_index_lecture_recruitments
+  FCKP_index_fulltime = :fc_index_fulltime_recruitments
+  FCKP_index_parttime = :fc_index_parttime_recruitments
+  
   after_destroy { |r|
     self.clear_types_cache
     self.clear_locations_cache
@@ -45,6 +49,10 @@ class Recruitment < ActiveRecord::Base
     self.clear_recruitments_index_cache
     self.clear_recruitments_show_cache(r)
     self.clear_recruitments_feed_cache
+    
+    self.clear_index_lecture_cache if r.recruitment_type == "宣讲会"
+    self.clear_index_fulltime_cache if r.recruitment_type == "全职"
+    self.clear_index_parttime_cache if r.recruitment_type == "兼职"
   }
   
   after_save { |r|
@@ -55,6 +63,10 @@ class Recruitment < ActiveRecord::Base
     self.clear_recruitments_index_cache
     self.clear_recruitments_show_cache(r)
     self.clear_recruitments_feed_cache
+    
+    self.clear_index_lecture_cache if r.recruitment_type == "宣讲会"
+    self.clear_index_fulltime_cache if r.recruitment_type == "全职"
+    self.clear_index_parttime_cache if r.recruitment_type == "兼职"
   }
   
   def self.clear_recruitments_index_cache
@@ -72,6 +84,18 @@ class Recruitment < ActiveRecord::Base
   
   def self.clear_recruitments_feed_cache
     Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_feed}.atom"))
+  end
+  
+  def self.clear_index_lecture_cache
+    Cache.delete(expand_cache_key(FCKP_index_lecture))
+  end
+  
+  def self.clear_index_fulltime_cache
+    Cache.delete(expand_cache_key(FCKP_index_fulltime))
+  end
+  
+  def self.clear_index_parttime_cache
+    Cache.delete(expand_cache_key(FCKP_index_parttime))
   end
   
   

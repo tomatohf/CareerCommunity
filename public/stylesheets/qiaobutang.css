@@ -411,3 +411,35 @@ div.course_menus a:hover {
 	padding: 0px;
 }
 
+.index_partner_container {
+	text-align: center;
+	float: right;
+	width: 150px;
+	border-left: 5px solid #EAEAEA;
+}
+
+.index_section_title {
+	color: #EE9966;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.index_partner {
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+
+.index_community_container {
+	margin-right: 150px;
+	width: 700px;
+}
+
+.index_community_container a {
+	color: #3B5998;
+	text-decoration: none;
+}
+
+.index_community_container a:hover {
+	text-decoration: underline;
+}
+

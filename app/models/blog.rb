@@ -35,16 +35,26 @@ class Blog < ActiveRecord::Base
   
   FCKP_spaces_show_blog = :fc_spaces_show_blog
   
+  FCKP_index_blog = :fc_index_blog
+  
   after_save { |blog|
     self.clear_spaces_show_blog_cache(blog.account_id)
+    
+    self.clear_index_blog_cache
   }
   
   after_destroy { |blog|
     self.clear_spaces_show_blog_cache(blog.account_id)
+    
+    self.clear_index_blog_cache
   }
   
   def self.clear_spaces_show_blog_cache(account_id)
     Cache.delete(expand_cache_key("#{FCKP_spaces_show_blog}_#{account_id}"))
+  end
+  
+  def self.clear_index_blog_cache
+    Cache.delete(expand_cache_key(FCKP_index_blog))
   end
   
   

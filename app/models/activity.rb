@@ -65,10 +65,14 @@ class Activity < ActiveRecord::Base
   
   FCKP_activities_show_created_activity = :fc_activities_show_created_activity
   
+  FCKP_index_activity = :fc_index_activity
+  
   after_save { |activity|
     self.clear_activities_all_cache
     self.clear_spaces_show_activity_cache(activity.id)
     self.clear_activities_show_created_activity_cache(activity.creator_id)
+    
+    self.clear_index_activity_cache if IndexController::Index_Activity_Account_Id_Scope.include?(activity.creator_id)
   }
   
   after_destroy { |activity|
@@ -77,6 +81,8 @@ class Activity < ActiveRecord::Base
     
     self.clear_activities_all_cache
     self.clear_activities_show_created_activity_cache(activity.creator_id)
+    
+    self.clear_index_activity_cache if IndexController::Index_Activity_Account_Id_Scope.include?(activity.creator_id)
   }
   
   def self.clear_activities_all_cache
@@ -106,6 +112,10 @@ class Activity < ActiveRecord::Base
 		).each do |ai|
 		  ActivityInterest.clear_spaces_show_activity_interest_cache(ai.account_id)
 	  end
+  end
+  
+  def self.clear_index_activity_cache
+    Cache.delete(expand_cache_key(FCKP_index_activity))
   end
   
   
