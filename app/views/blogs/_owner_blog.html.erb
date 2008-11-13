@@ -1,4 +1,4 @@
-<% blog_show_url = "/blogs/#{"show_edit/" if edit}#{owner_blog.id}" %>
+<% blog_show_url = "/blogs/#{owner_blog.id}" %>
 
 <% blog_content = extract_text(owner_blog.content) %>
 <% blog_content = sanitize_tinymce(blog_content) %>

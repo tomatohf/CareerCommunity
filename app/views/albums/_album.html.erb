@@ -1,6 +1,6 @@
 <div class="album_item">
 	<div class="album_img">
-		<% album_show_url = "/albums/#{"show_edit/" if edit}#{album.id}" %>
+		<% album_show_url = "/albums/#{album.id}" %>
 		<a href="<%= album_show_url %>">
 			<img src="<%= album.get_cover_photo_img_src_and_set_cache(:thumb_200) %>" border="0" /></a>
 	</div>

@@ -1,7 +1,7 @@
 <% show_account &&= true %>
 <% edit &&= true %>
 
-<% blog_show_url = "/blogs/#{"show_edit/" if edit}#{blog.id}" %>
+<% blog_show_url = "/blogs/#{blog.id}" %>
 
 <% blog_content = extract_text(blog.content) %>
 <% blog_content = sanitize_tinymce(blog_content) %>

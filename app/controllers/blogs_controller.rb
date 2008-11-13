@@ -7,12 +7,10 @@ class BlogsController < ApplicationController
   
   layout "community"
   before_filter :check_current_account, :only => [:index]
-  before_filter :check_login, :only => [:show_edit, :new, :create, :edit, :update, :destroy,
+  before_filter :check_login, :only => [:new, :create, :edit, :update, :destroy,
                                         :create_comment, :delete_comment]
   before_filter :check_limited, :only => [:create, :update, :destroy, :create_comment, :delete_comment]
   before_filter :check_blog_access, :only => [:edit, :update, :destroy]
-  
-  before_filter :check_show_edit_for_blog, :only => [:show_edit]
   
   before_filter :check_comment_owner, :only => [:delete_comment]
   
@@ -65,7 +63,7 @@ class BlogsController < ApplicationController
         :blog_title => @blog.title
       })
       
-      jump_to("/blogs/show_edit/#{@blog.id}")
+      jump_to("/blogs/#{@blog.id}")
     else
       flash.now[:error_msg] = "操作失败, 再试一次吧"
       render :action => "new"
@@ -75,6 +73,8 @@ class BlogsController < ApplicationController
   
   def show
     @blog ||= Blog.find(params[:id])
+    
+    @edit = (@blog.account_id == session[:account_id])
     
     @owner_nick_pic = Account.get_nick_and_pic(@blog.account_id) unless @edit
     
@@ -87,12 +87,6 @@ class BlogsController < ApplicationController
       :include => [:account => [:profile_pic]],
       :order => "created_at ASC"
     )
-  end
-  
-  def show_edit
-    @edit = true
-    show
-    render :action => "show"
   end
   
   def edit
@@ -134,13 +128,13 @@ class BlogsController < ApplicationController
     total_count = BlogComment.get_count(blog_comment.blog_id)
     last_page = total_count > 0 ? (total_count.to_f/Comment_Page_Size).ceil : 1
     
-    jump_to("/blogs#{"/show_edit" if params[:e] == "true"}/#{blog_id}/comment/#{last_page}#{"#comment_#{blog_comment.id}" if comment_saved}")
+    jump_to("/blogs/#{blog_id}/comment/#{last_page}#{"#comment_#{blog_comment.id}" if comment_saved}")
   end
   
   def delete_comment
     @blog_comment.destroy
     
-    jump_to("/blogs#{"/show_edit" if params[:e] == "true"}/#{@blog_comment.blog_id}")
+    jump_to("/blogs/#{@blog_comment.blog_id}")
   end
   
   
@@ -158,10 +152,6 @@ class BlogsController < ApplicationController
   
   def no_blog_access
     jump_to("/errors/forbidden")
-  end
-  
-  def check_show_edit_for_blog
-    jump_to("/blogs/#{params[:id]}") unless check_blog_owner
   end
   
   def check_comment_owner

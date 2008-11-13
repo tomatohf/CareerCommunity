@@ -10,6 +10,6 @@
 			].each do |p| %>
 				<a href="/profiles/<%= session[:account_id] %>/<%= p[0] %>"<%= "class=\"link_selected\"" if p[0] == action_name %>><%= p[1] %></a>
 		<% end %>
-		<a target="_blank" href="/spaces/resume_edit/<%= session[:account_id] %>">生成简历</a>
+		<a target="_blank" href="/spaces/resume/<%= session[:account_id] %>">生成简历</a>
 	</div>
 <% end %>

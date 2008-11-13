@@ -19,11 +19,11 @@
 	<% end %>
 	
 	<div class="community_block">
-		<a href="/friends/<%= @edit ? "list_edit" : "list" %>/<%= @owner_id %>">» <%= owner_name %> 的朋友</a>
+		<a href="/friends/list/<%= @owner_id %>">» <%= owner_name %> 的朋友</a>
 	</div>
 	
 	<div class="community_block">
-		<a href="/friends/<%= @edit ? "be_list_edit" : "be_list" %>/<%= @owner_id %>">» 谁把 <%= owner_name %> 加为朋友了</a>
+		<a href="/friends/be_list/<%= @owner_id %>">» 谁把 <%= owner_name %> 加为朋友了</a>
 	</div>
 	
 	

@@ -40,15 +40,15 @@
 	</div>
 	
 	<div class="community_block">
-		<a href="/friends/<%= @edit? "list_edit" : "list" %>/<%= @owner_id %>">» <%= owner_name %> 的朋友</a>
+		<a href="/friends/list/<%= @owner_id %>">» <%= owner_name %> 的朋友</a>
 	</div>
 	
 	<div class="community_block">
-		<a href="/friends/<%= @edit? "be_list_edit" : "be_list" %>/<%= @owner_id %>">» 谁把 <%= owner_name %> 加为朋友了</a>
+		<a href="/friends/be_list/<%= @owner_id %>">» 谁把 <%= owner_name %> 加为朋友了</a>
 	</div>
 	
 	<div class="community_block">
-		<a href="/friends/<%= @edit? "both_list_edit" : "both_list" %>/<%= @owner_id %>">» <%= owner_name %> 的伙伴</a>
+		<a href="/friends/both_list/<%= @owner_id %>">» <%= owner_name %> 的伙伴</a>
 		<div class="form_info_l">
 			互相将对方加为了朋友
 		</div>

@@ -14,9 +14,8 @@ class SpacesController < ApplicationController
   
   layout "community"
   before_filter :check_current_account, :only => [:index]
-  before_filter :check_login, :only => [:resume_edit, :show_edit, :profile_edit, :wall_edit, :create_comment, :delete_comment]
+  before_filter :check_login, :only => [:create_comment, :delete_comment]
   before_filter :check_limited, :only => [:create_comment, :delete_comment]
-  before_filter :check_edit_for_space, :only => [:resume_edit, :show_edit, :profile_edit, :wall_edit]
   before_filter :check_comment_owner, :only => [:delete_comment]
   
   
@@ -28,6 +27,8 @@ class SpacesController < ApplicationController
   def resume
     @account_id = params[:id]
     @account_nick_pic = Account.get_nick_and_pic(@account_id)
+    
+    @edit = (session[:account_id].to_s == @account_id)
     
     @resume_visible = true
     unless @edit
@@ -60,12 +61,6 @@ class SpacesController < ApplicationController
         @city_name = City.get_name(@basic_profile.city_id, all_provinces_cities_cache)
       end
     end
-  end
-  
-  def resume_edit
-    @edit = true
-    resume
-    render :action => "resume"
   end
   
   def show
@@ -176,6 +171,8 @@ class SpacesController < ApplicationController
     @account_id = params[:id]
     @account_nick_pic = Account.get_nick_and_pic(@account_id)
     
+    @edit = (session[:account_id].to_s == @account_id)
+    
     @basic_profile_visible = true
     @contact_profile_visible = true
     @hobby_profile_visible = true
@@ -237,14 +234,11 @@ class SpacesController < ApplicationController
     end
   end
   
-  def profile_edit
-    @edit = true
-    profile
-    render :action => "profile"
-  end
-  
   def wall
     @account_id = params[:id]
+    
+    @edit = (session[:account_id].to_s == @account_id)
+    
     @account_nick_pic = Account.get_nick_and_pic(@account_id) unless @edit
     
     page = params[:page]
@@ -256,12 +250,6 @@ class SpacesController < ApplicationController
       :include => [:account => [:profile_pic]],
       :order => "created_at DESC"
     )
-  end
-  
-  def wall_edit
-    @edit = true
-    wall
-    render :action => "wall"
   end
   
   def actions
@@ -324,20 +312,16 @@ class SpacesController < ApplicationController
       end
     end
     
-    jump_to("/spaces/#{params[:e] == "true" ? "wall_edit" : "wall"}/#{owner_id}")
+    jump_to("/spaces/wall/#{owner_id}")
   end
   
   def delete_comment
     @space_comment.destroy
     
-    jump_to("/spaces/#{params[:e] == "true" ? "wall_edit" : "wall"}/#{session[:account_id]}")
+    jump_to("/spaces/wall/#{session[:account_id]}")
   end
   
   private
-  
-  def check_edit_for_space
-    jump_to("/spaces/#{action_name[0...-5]}/#{params[:id]}") unless session[:account_id].to_s == params[:id]
-  end
   
   def check_comment_owner
     @space_comment = SpaceComment.find(params[:id])

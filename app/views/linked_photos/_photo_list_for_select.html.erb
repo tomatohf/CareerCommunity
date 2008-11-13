@@ -4,7 +4,7 @@
 		<% form_tag "", :method => :post, :id => "create_link_form_#{album.id}" do %>
 			<div class="community_block album_title">
 				<%= h(album.name) %>
-				<a href="/albums/show_edit/<%= album.id %>" target="_blank" title="查看相册">
+				<a href="/albums/<%= album.id %>" target="_blank" title="查看相册">
 					<img src="/images/ext_link_small.gif" border="0" /></a>
 			</div>
 			

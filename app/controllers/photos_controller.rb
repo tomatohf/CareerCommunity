@@ -3,12 +3,11 @@ class PhotosController < ApplicationController
   Comment_Page_Size = 100
   
   layout "community"
-  before_filter :check_login, :only => [:show_edit, :edit, :update, :create_comment, :delete_comment,
+  before_filter :check_login, :only => [:edit, :update, :create_comment, :delete_comment,
                                         :destroy, :move_to_other_album, :update_photo_title]
   before_filter :check_limited, :only => [:update, :create_comment, :delete_comment, :destroy,
                                           :move_to_other_album, :update_photo_title]
   before_filter :check_photo_access, :only => [:edit, :update, :destroy, :move_to_other_album, :update_photo_title]
-  before_filter :check_show_edit_for_photo, :only => [:show_edit]
   
   before_filter :check_comment_owner, :only => [:delete_comment]
   
@@ -18,6 +17,8 @@ class PhotosController < ApplicationController
   
   def show
     @photo ||= Photo.find(params[:id])
+    
+    @edit = (@photo.account_id == session[:account_id])
     
     @album = @photo.album
     @owner_nick_pic = Account.get_nick_and_pic(@album.account_id) unless @edit
@@ -52,12 +53,6 @@ class PhotosController < ApplicationController
     @albums = Album.get_all_names_by_account_id(@album.account_id) if @edit
   end
   
-  def show_edit
-    @edit = true
-    show
-    render :action => "show"
-  end
-  
   def edit
     
   end
@@ -79,7 +74,7 @@ class PhotosController < ApplicationController
     
     @photo.save
     
-    jump_to("/photos/show_edit/#{@photo.id}#photo_title_section")
+    jump_to("/photos/#{@photo.id}#photo_title_section")
   end
   
   def destroy
@@ -88,7 +83,7 @@ class PhotosController < ApplicationController
     
     @photo.destroy
     
-    request.xhr? ? (@album_photo_id = "album_photo_#{photo_id}") : jump_to("/albums/show_edit/#{album_id}")
+    request.xhr? ? (@album_photo_id = "album_photo_#{photo_id}") : jump_to("/albums/#{album_id}")
   end
   
   def create_comment
@@ -107,13 +102,13 @@ class PhotosController < ApplicationController
     total_count = PhotoComment.get_count(photo_comment.photo_id)
     last_page = total_count > 0 ? (total_count.to_f/Comment_Page_Size).ceil : 1
     
-    jump_to("/photos#{"/show_edit" if params[:e] == "true"}/#{photo_id}/comment/#{last_page}#{"#comment_#{photo_comment.id}" if comment_saved}")
+    jump_to("/photos/#{photo_id}/comment/#{last_page}#{"#comment_#{photo_comment.id}" if comment_saved}")
   end
   
   def delete_comment
     @photo_comment.destroy
     
-    jump_to("/photos#{"/show_edit" if params[:e] == "true"}/#{@photo_comment.photo_id}")
+    jump_to("/photos/#{@photo_comment.photo_id}")
   end
   
   def move_to_other_album
@@ -162,7 +157,7 @@ class PhotosController < ApplicationController
       
     end
     
-    jump_to("/photos/show_edit/#{@photo.id}")    
+    jump_to("/photos/#{@photo.id}")    
   end
   
   
@@ -180,10 +175,6 @@ class PhotosController < ApplicationController
   
   def no_photo_access
     jump_to("/errors/forbidden")
-  end
-  
-  def check_show_edit_for_photo
-    jump_to("/photos/#{params[:id]}") unless check_photo_owner
   end
   
   def check_comment_owner

@@ -66,7 +66,6 @@ ActionController::Routing::Routes.draw do |map|
   }
   
   
-  map.connect "/photos/show_edit/:id/comment/:page", :controller => "photos", :action => "show_edit", :id => /\d+/, :page => /\d+/
   map.connect "/photos/:id/comment/:page", :controller => "photos", :action => "show", :id => /\d+/, :page => /\d+/
   map.resources :photos, :member => {
     :create_comment => :post,
@@ -78,14 +77,12 @@ ActionController::Routing::Routes.draw do |map|
   
   
   map.connect "/blogs/list/:id/:page", :controller => "blogs", :action => "list", :id => /\d+/, :page => /\d+/
-  map.connect "/blogs/show_edit/:id/comment/:page", :controller => "blogs", :action => "show_edit", :id => /\d+/, :page => /\d+/
   map.connect "/blogs/:id/comment/:page", :controller => "blogs", :action => "show", :id => /\d+/, :page => /\d+/
   map.resources :blogs, :member => {
     :create_comment => :post
   }
   
   
-  map.connect "/spaces/wall_edit/:id/:page", :controller => "spaces", :action => "wall_edit", :id => /\d+/, :page => /\d+/
   map.connect "/spaces/wall/:id/:page", :controller => "spaces", :action => "wall", :id => /\d+/, :page => /\d+/
   map.connect "/spaces/actions/:id/:page", :controller => "spaces", :action => "actions", :id => /\d+/, :page => /\d+/
   map.connect "/spaces/friend_actions/:id/:page", :controller => "spaces", :action => "friend_actions", :id => /\d+/, :page => /\d+/

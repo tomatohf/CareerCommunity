@@ -2,7 +2,7 @@ class AlbumsController < ApplicationController
   
   layout "community"
   before_filter :check_current_account, :only => [:index]
-  before_filter :check_login, :only => [:list_edit, :show_edit, :new, :create,
+  before_filter :check_login, :only => [:new, :create,
                                         :edit, :update, :upload, :upload_simple,
                                         :create_photo_simple, :photo_selector,
                                         :fetch_photos, :destroy, :create_photo_from_photo_selector]
@@ -10,38 +10,29 @@ class AlbumsController < ApplicationController
   before_filter :check_album_access, :only => [:upload, :upload_simple,
                                               :create_photo_simple, :fetch_photos, :destroy, :create_photo_from_photo_selector]
   before_filter :check_album_access_full, :only => [:edit, :update]
-  
-  before_filter :check_list_edit_for_album, :only => [:list_edit]
-  before_filter :check_show_edit_for_album, :only => [:show_edit]
     
 
   
   # ! current account needed !
   def index
-    jump_to("/albums/list_edit/#{session[:account_id]}")
+    jump_to("/albums/list/#{session[:account_id]}")
   end
   
   def list
     @owner_id = params[:id]
+    
+    @edit = (session[:account_id].to_s == @owner_id)
+    
     @albums = Album.get_all_by_account_id(@owner_id)
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id)
   end
   
-  # ! login required !
-  def list_edit
-    @albums = Album.get_all_by_account_id(session[:account_id])
-    @edit = true
-    render :action => "list"
-  end
-  
   def show
     @album ||= Album.find(params[:id])
+    
+    @edit = (session[:account_id] == @album.account_id)
+    
     @owner_nick_pic = Account.get_nick_and_pic(@album.account_id)
-  end
-  
-  def show_edit
-    @edit = true
-    render :action => "show"
   end
   
   # ! login required !
@@ -94,7 +85,7 @@ class AlbumsController < ApplicationController
       flash[:message] = "已成功删除相册"
     end
     
-    jump_to("/albums/list_edit/#{session[:account_id]}")
+    jump_to("/albums/list/#{session[:account_id]}")
   end
   
   # ! login required !
@@ -135,7 +126,7 @@ class AlbumsController < ApplicationController
         unless is_limited?(@account_limited)
           photo = Photo.new(:swfupload_file => params[:Filedata], :album_id => @album.id, :account_id => session[:account_id])
           if photo.save
-            render(:text => %Q!<a target="_blank" href="/photos/show_edit/#{photo.id}" title="点击查看照片"><img src="#{photo.image.url(:thumb_80)}" border="0" /></a>!)
+            render(:text => %Q!<a target="_blank" href="/photos/#{photo.id}" title="点击查看照片"><img src="#{photo.image.url(:thumb_80)}" border="0" /></a>!)
           else
             render :text => "error", :layour => false, :status => 500
           end
@@ -237,14 +228,6 @@ class AlbumsController < ApplicationController
   
   def no_album_access
     jump_to("/errors/forbidden")
-  end
-  
-  def check_list_edit_for_album
-    jump_to("/albums/list/#{params[:id]}") unless session[:account_id].to_s == params[:id]
-  end
-  
-  def check_show_edit_for_album
-    jump_to("/albums/#{params[:id]}") unless check_album_owner(true)
   end
   
 end

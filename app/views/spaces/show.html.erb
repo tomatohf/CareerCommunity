@@ -66,9 +66,9 @@
 	<% end %>
 	
 	<div class="community_block align_c">
-		<a href="/spaces/<%= @edit ? "resume_edit" : "resume" %>/<%= @account_id %>">查看简历</a>
+		<a href="/spaces/resume/<%= @account_id %>">查看简历</a>
 		&nbsp;&nbsp;&nbsp;
-		<a href="/spaces/<%= @edit ? "profile_edit" : "profile" %>/<%= @account_id %>">详细资料</a>
+		<a href="/spaces/profile/<%= @account_id %>">详细资料</a>
 		&nbsp;&nbsp;&nbsp;
 		<a href="#comment_new">留个言吧</a>
 		<% unless @edit %>
@@ -105,7 +105,7 @@
 			<a class="float_r" title="展开" id="friend_section_collapse" href="#" onclick="expand_section('friend_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
 			
-			<a href="/friends/<%= @edit ? "list_edit" : "list" %>/<%= @account_id %>">所有朋友</a>
+			<a href="/friends/list/<%= @account_id %>">所有朋友</a>
 		</div>
 		
 		<div id="friend_section">
@@ -338,7 +338,7 @@
 			<a class="float_r" title="展开" id="photo_section_collapse" href="#" onclick="expand_section('photo_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
 			
-			<a href="/albums/<%= @edit ? "list_edit" : "list" %>/<%= @account_id %>">所有相册</a>
+			<a href="/albums/list/<%= @account_id %>">所有相册</a>
 		</div>
 	</div>
 	<div id="photo_section">
@@ -406,7 +406,7 @@
 			<a class="float_r" title="展开" id="wall_section_collapse" href="#" onclick="expand_section('wall_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
 			
-			<a href="/spaces/<%= @edit ? "wall_edit" : "wall" %>/<%= @account_id %>">到留言板查看所有留言</a>
+			<a href="/spaces/wall/<%= @account_id %>">到留言板查看所有留言</a>
 		</div>
 		
 		<div id="wall_section">
@@ -429,7 +429,6 @@
 					<textarea id="space_comment" name="space_comment" class="text_field" cols="50" rows="5"></textarea>
 					
 					<div>
-						<input type="hidden" name="e" value="<%= true if @edit %>" />
 						<input type="submit" value="发表留言" class="button" />
 					</div>
 				<% end %>
@@ -441,7 +440,6 @@
 
 <% if @edit %>
 	<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
-		<input type="hidden" name="e" value="<%= true if @edit %>" />
 	<% end %>
 	
 	<script language="JavaScript">

@@ -42,7 +42,6 @@
 	
 	<% if @edit %>
 		<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
-			<input type="hidden" name="e" value="<%= true if @edit %>" />
 		<% end %>
 		
 		<script language="JavaScript">
@@ -70,7 +69,6 @@
 			<textarea id="space_comment" name="space_comment" class="text_field" cols="50" rows="5"></textarea>
 			
 			<div>
-				<input type="hidden" name="e" value="<%= true if @edit %>" />
 				<input type="submit" value="发表留言" class="button" />
 			</div>
 		<% end %>

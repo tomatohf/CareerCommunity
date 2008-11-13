@@ -3,7 +3,7 @@
 <div class="album_photo_item" id="album_photo_<%= album_photo.id %>">
 	
 	<div class="album_photo_img">
-		<% photo_show_url = "/photos/#{"show_edit/" if edit}#{album_photo.id}" %>
+		<% photo_show_url = "/photos/#{album_photo.id}" %>
 		<a href="<%= photo_show_url %>" title="<%= album_photo.title %>">
 			<img src="<%= album_photo.image.url(:thumb_120) %>" border="0" alt="<%= album_photo.title %>" /></a>
 	</div>
