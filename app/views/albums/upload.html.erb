@@ -82,7 +82,9 @@
 		</p>
 		
 		<div>
-			<button id="add_file_button" class="button add_file_button icon_button"<%= %q{ disabled="disabled"} if @account_limited %>>选择图片文件</button>
+			<span style="position:relative; top: 6px;">
+				<button id="add_file_button" class="button add_file_button icon_button"<%= %q{ disabled="disabled"} if @account_limited %>>选择图片文件</button>
+			</span>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<button id="upload_file_button" class="button upload_file_button icon_button">开始上传</button>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -101,7 +103,7 @@
 		</div>
 		<div class="form_info_l">
 			同一时间等待上传的图片个数不能超过
-			<b>100</b>
+			<b>50</b>
 			个
 		</div>
 		
@@ -268,13 +270,14 @@
 		// Setup SWFU object
 		var settings = {
 			upload_url: "/albums/<%= @album.id %>/create_photo?_session_id_4_swf=<%= session.session_id %>",
-			flash_url: "/lib/SWFUpload/swfupload_f9.swf",
+			flash_url: "/lib/SWFUpload/swfupload.swf",
+			prevent_swf_caching: true,
 			file_post_name: "Filedata",
 
-			file_queue_limit: 100,
+			file_queue_limit: 50,
 			file_size_limit: "<%= 3.megabyte %> B",
 			file_types: "*.jpg;*.jpeg;*.gif;*.png;*.bmp",
-			file_types_description: "Image Files",
+			file_types_description: "图片文件",
 
 			// event handlers
 			swfupload_loaded_handler : Upload.swfupload_loaded,
@@ -290,12 +293,27 @@
 				authenticity_token: encodeURIComponent("<%= form_authenticity_token %>")
 			},
 
-			debug: false, // Set to true to find out why things aren't working
+			debug: true, // Set to true to find out why things aren't working
 			
 			// SWFObject settings
 			minimum_flash_version: "9.0.28",
 			swfupload_pre_load_handler: Upload.swfupload_pre_load,
-			swfupload_load_failed_handler: Upload.swfupload_load_failed
+			swfupload_load_failed_handler: Upload.swfupload_load_failed,
+			
+			
+			// for Flash Player 10 and swfupload v2.2
+			button_placeholder_id: "add_file_button",
+			button_image_url: "/lib/SWFUpload/add_file_button.jpg",
+			
+			//button_text: "选择图片文件",
+			//button_text_top_padding: 0,
+			//button_text_left_padding: 0,
+			
+			button_width: 92,
+			button_height: 20,
+			
+			button_disabled: <%= @account_limited.to_s %>,
+			button_cursor: SWFUpload.CURSOR.HAND
 		};
 		
 		swfu = new SWFUpload(settings);
