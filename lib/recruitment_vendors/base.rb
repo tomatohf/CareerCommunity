@@ -109,6 +109,8 @@ module RecruitmentVendor
           # :all => [/regexp1/, /regexp2/]
           # :content => [/regexp1/, /regexp2/]
         #}
+        
+        :all => Recruitment.Filter_Out_Key_Words
       ]
     end
     

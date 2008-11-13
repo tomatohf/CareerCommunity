@@ -1,9 +1,7 @@
 ﻿过滤 竞争对手 条目 比如: loooker
 
-招聘信息 show 页面的缓存 bug
 
-
-swfupload
+remove troublesome "_edit" pages ...
 
 
 关闭一条目标, 实现一条目标

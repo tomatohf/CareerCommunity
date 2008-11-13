@@ -34,6 +34,20 @@ class Recruitment < ActiveRecord::Base
   
   validates_uniqueness_of :source_link, :case_sensitive => false, :message => "来源链接 已存在, 可能该信息已存在. 试试发布其他信息吧"
   
+  
+  Filter_Out_Key_Words = %w{
+    hiall
+    utomorrow
+    54yjs
+    yingjiesheng
+    loooker
+    2588
+    guolairen
+    hongyangedu
+    5imeet
+  }
+  
+  
   CKP_types = :recruitment_types
   CKP_locations = :recruitment_locations
   
@@ -47,7 +61,6 @@ class Recruitment < ActiveRecord::Base
     
     
     self.clear_recruitments_index_cache
-    self.clear_recruitments_show_cache(r)
     self.clear_recruitments_feed_cache
     
     self.clear_index_lecture_cache if r.recruitment_type == "宣讲会"
@@ -61,7 +74,6 @@ class Recruitment < ActiveRecord::Base
     
     
     self.clear_recruitments_index_cache
-    self.clear_recruitments_show_cache(r)
     self.clear_recruitments_feed_cache
     
     self.clear_index_lecture_cache if r.recruitment_type == "宣讲会"
@@ -76,10 +88,6 @@ class Recruitment < ActiveRecord::Base
     1.upto(index_page_count) { |i|
       Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_index}_#{i}"))
     }
-  end
-  
-  def self.clear_recruitments_show_cache(recruitment)
-    Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_show}_#{recruitment.id}"))
   end
   
   def self.clear_recruitments_feed_cache
@@ -114,6 +122,24 @@ class Recruitment < ActiveRecord::Base
     vendor_class_name = "RecruitmentVendor::#{vendor_class_name}" unless vendor_class_name =~ /^RecruitmentVendor/
     
     eval(vendor_class_name).instance.save_new_messages(start_page, page_count)
+  end
+  
+  def self.filter_out_by_key_words
+    all_ids = Recruitment.find(:all, :select => "id")
+    all_ids.each do |id|
+      r = Recruitment.find(id.id)
+      
+      Filter_Out_Key_Words.each do |word|
+        if r.title.include?(word) || r.content.include?(word)
+          puts "id #{r.id} with title #{r.title} will be deleted"
+          r.recruitment_tags.clear
+          r.destroy
+          break
+        end
+      end
+      
+      puts "id #{r.id} with title #{r.title} passed"
+    end
   end
   
   

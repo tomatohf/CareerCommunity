@@ -11,7 +11,6 @@ class RecruitmentsController < ApplicationController
   
   
   ACKP_recruitments_index = :ac_recruitments_index
-  ACKP_recruitments_show = :ac_recruitments_show
   ACKP_recruitments_feed = :ac_recruitments_feed
   
   caches_action :index,
@@ -20,13 +19,6 @@ class RecruitmentsController < ApplicationController
       page = 1 unless page =~ /\d+/
 
       "#{ACKP_recruitments_index}_#{page}"
-    }
-    
-  caches_action :show,
-    :cache_path => Proc.new { |controller|
-      recruitment_id = controller.params[:id]
-
-      "#{ACKP_recruitments_show}_#{recruitment_id}"
     }
     
   caches_action :feed,

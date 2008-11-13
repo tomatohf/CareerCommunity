@@ -58,9 +58,11 @@ module RecruitmentVendor
     end
     
     def filter_match_rules
-      super << {
-        :all => [/hiall/i]
-      }
+      # the sample of how to override this method
+      
+      #super << {
+      #  :all => [/hiall/i]
+      #}
     end
     
     
