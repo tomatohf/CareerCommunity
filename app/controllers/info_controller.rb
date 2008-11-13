@@ -8,6 +8,24 @@ class InfoController < ApplicationController
     
   end
   
+  def about
+    
+  end
+  
+  
+  
+  def school
+    
+  end
+  
+  def company
+    
+  end
+  
+  def student
+    
+  end
+  
   
   
 end

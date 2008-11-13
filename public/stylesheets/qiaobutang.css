@@ -180,6 +180,15 @@ a {
 	border-left: 1px dotted #EAEAEA;
 }
 
+.info_right_column {
+	float: right;
+	width: 250px;
+}
+
+.info_container {
+	margin-right: 250px;
+}
+
 .coach_container_l {
 	float: left;
 	width: 180px;
@@ -420,6 +429,14 @@ div.course_menus a:hover {
 	float: right;
 	width: 150px;
 	border-left: 5px solid #EAEAEA;
+}
+
+.index_partner_container a {
+	text-decoration: none;
+}
+
+.index_partner_container a:hover {
+	text-decoration: underline;
 }
 
 .index_section_title {

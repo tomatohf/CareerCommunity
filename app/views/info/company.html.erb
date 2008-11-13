@@ -1,0 +1,481 @@
+<% community_page_title("企业服务") %>
+
+<div class="methodology_container_l">
+	<div class="coach_menus">
+		<div class="coach_menu_top" style="color: #FFFFFF; font-weight: bold;">
+			企业服务
+		</div>
+		<%
+			menus = [
+				["hr", "企业人力资源培训"],
+				["recruit", "校园招聘外包服务"],
+				["intern", "实习生外包服务"],
+				["special", "行业专向人才招聘"],
+				["campus", "校园活动推广服务"],
+				["group", "企业定制圈子服务"]
+			]
+		%>
+		<% menus.each do |menu| %>
+			<div
+				<% if action_name == menu[0] %>
+				class="coach_menu_selected"
+				<% else %>
+				onmouseover="this.className='coach_menu_selected'"
+				onmouseout="this.className=''"
+				<% end %>
+				style="padding-right: 3px;"
+				>
+				<a href="#<%= menu[0] %>">
+					<%= menu[1] %></a>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<div class="methodology_container_r">
+	
+	<div class="breadcrumb">
+		<a href="/">
+			乔布堂</a>
+		»
+		<a href="#">
+			企业服务</a>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="hr">企业人力资源培训</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						服务内容：
+					</div>
+					
+					<%
+						hr_contents = [
+							["", "提供新员工招聘方案"],
+							["", "提供新员工职业素质培训指导"],
+							["", "提供企业培训师TTT服务"]
+						]
+					%>
+					<% hr_contents.each do |content| %>
+						<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+							<%= content[1] %>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务流程：
+					</div>
+					<div>
+						确认企业内训需求
+						&nbsp;
+						→
+						&nbsp;
+						确定内训方案
+						&nbsp;
+						→
+						&nbsp;
+						实施内训
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务优势：
+					</div>
+					<div>
+						<%
+							hr_advs = [
+								"20年培训经验的行业培训师进行专业指导",
+								"迅速反馈企业要求，合作制定企业内训方案"
+							]
+						%>
+						<% hr_advs.each do |adv| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= adv %>
+							</div>
+						<% end %>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="recruit">校园招聘外包服务</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						企业校园招聘的五项基本修炼：
+					</div>
+					
+					<%
+						recruit_troubles = [
+							"1. 身兼人才储备之职，心系公司预算之难，校园招聘经费怎么省？",
+							"2. 场地难借，宣传难进，高校关系怎么搞？",
+							"3. 人多，嘴刁，要求高，应届毕业生简历怎么挑？",
+							"4. 时间紧，任务重，普通岗位学生怎么选？",
+							"5. 潮流服，火星语，90后员工怎么管？"
+						]
+					%>
+					<% recruit_troubles.each do |recruit_troubles| %>
+						<div style="padding-left: 15px;">
+							<%= recruit_troubles %>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务内容：
+					</div>
+					<div>
+						<%
+							recruit_contents = [
+								"组织策划校园宣讲，助您以最低成本， 成效进行校园品牌推广",
+								"搭建企业-学生简历直通车，帮您预选优秀人才",
+								"推荐优秀人才，通过培训的高校学子将更职业的进入企业服务",
+								"提供新员工入职职业素质培训，进一步缩短职工入职 \"适应期\""
+							]
+						%>
+						<% recruit_contents.each do |content| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= content %>
+							</div>
+						<% end %>
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务优势：
+					</div>
+					<div>
+						<%
+							recruit_advs = [
+								"优质的高校合作关系，覆盖上海地区20所高校，并直接接触各学院学生组织",
+								"专业的职业培训课程，确保学生的职业素养"
+							]
+						%>
+						<% recruit_advs.each do |adv| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= adv %>
+							</div>
+						<% end %>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="intern">实习生外包服务</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						企业招聘实习生的四大困扰：
+					</div>
+					
+					<%
+						intern_troubles = [
+							"1. 十万火急！老板说2周内交任务，人手不够哪里找？",
+							"2. 近百封简历，只有1个小时，我该怎么选择？",
+							"3. 实习生的标准的判定，我怎么知道他是不是能胜任？",
+							"4. 其实，我也不想让实习生只是来做影帝影后，但他们还会做什么？"
+						]
+					%>
+					<% intern_troubles.each do |recruit_troubles| %>
+						<div style="padding-left: 15px;">
+							<%= recruit_troubles %>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务内容：
+					</div>
+					<div>
+						<%
+							intern_contents = [
+								"迅速提供短期项目所需人才，为您解决燃眉之急",
+								"随时为企业提供优秀的高校人才，为您提供储备人才",
+								"跟踪实习生表现，定期与企业一起评估"
+							]
+						%>
+						<% intern_contents.each do |content| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= content %>
+							</div>
+						<% end %>
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务流程：
+					</div>
+					<div>
+						企业确定用人需求
+						&nbsp;
+						→
+						&nbsp;
+						乔布堂人才库推荐最佳任选，提供培训能力认证
+						&nbsp;
+						→
+						&nbsp;
+						推荐入职实习/工作
+						&nbsp;
+						→
+						&nbsp;
+						定期学员工作表现反馈
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务优势：
+					</div>
+					<div>
+						<%
+							intern_advs = [
+								"快速的反应速度，优质的服务，规范的服务流程",
+								"优质的高校合作关系，覆盖上海地区20所高校，并直接接触各学院学生组织"
+							]
+						%>
+						<% intern_advs.each do |adv| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= adv %>
+							</div>
+						<% end %>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="special">行业专向人才招聘</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						服务内容：
+					</div>
+					
+					<%
+						special_contents = [
+							["", "专门针对企业所在行业，提供具备行业所需基本知识的人才"],
+							["", "针对不同职位，提供经过培训，具备该职位所需技能的人才"],
+							["", "提供专业对口，企业需求的应届毕业生 （可参考校园招聘外包）"],
+							["", "提供专业对口，有相关职业经验的人才"]
+						]
+					%>
+					<% special_contents.each do |content| %>
+						<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+							<%= content[1] %>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务流程：
+					</div>
+					<div>
+						明确企业人才需求
+						&nbsp;
+						→
+						&nbsp;
+						从人才库中筛选人才
+						&nbsp;
+						→
+						&nbsp;
+						向企业提供该人才相关信息
+						&nbsp;
+						→
+						&nbsp;
+						帮助企业安排笔试、面试
+						&nbsp;
+						→
+						&nbsp;
+						确定之后事宜
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务优势：
+					</div>
+					<div>
+						<%
+							special_advs = [
+								"通过乔布堂优质的行业人才网络，提供并筛选企业所需人才",
+								"快速的反应速度，优质的服务，规范的服务流程"
+							]
+						%>
+						<% special_advs.each do |adv| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= adv %>
+							</div>
+						<% end %>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="campus">校园活动推广服务</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						服务内容：
+					</div>
+					
+					<%
+						campus_contents = [
+							["", "协助企业在校园推广品牌"],
+							["", "搭建企业和学校的平台"]
+						]
+					%>
+					<% campus_contents.each do |content| %>
+						<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+							<%= content[1] %>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务优势：
+					</div>
+					<div>
+						<%
+							campus_advs = [
+								"快速的反应速度，优质的服务，规范的服务流程",
+								"优质的高校合作关系，覆盖上海地区20所高校，并直接接触各学院学生组织"
+							]
+						%>
+						<% campus_advs.each do |adv| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= adv %>
+							</div>
+						<% end %>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="group">企业定制圈子服务</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						利用互联网开展业务的三大困扰：
+					</div>
+					
+					<%
+						group_troubles = [
+							"1. 架设网站, 托管应用, 与网络服务提供商打交道劳神伤财, 网站基本功能重复开发, 添加自定义功能费时费力",
+							"2. 线上网站, 线下活动, 业务难兼顾",
+							"3. 网站没人访问, 积累会员难",
+						]
+					%>
+					<% group_troubles.each do |recruit_troubles| %>
+						<div style="padding-left: 15px;">
+							<%= recruit_troubles %>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务内容：
+					</div>
+					<div>
+						<%
+							group_contents = [
+								"以定制圈子的方式架设网站",
+								"圈子定制功能的开发",
+								"发起, 组织和总结线下活动"
+							]
+						%>
+						<% group_contents.each do |content| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= content %>
+							</div>
+						<% end %>
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务流程：
+					</div>
+					<div>
+						讨论和明确合作方式
+						&nbsp;
+						→
+						&nbsp;
+						商讨和确定圈子需求
+						&nbsp;
+						→
+						&nbsp;
+						如果有自定义功能, 进行圈子自定义功能的开发
+						&nbsp;
+						→
+						&nbsp;
+						圈子上线
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务优势：
+					</div>
+					<div>
+						<%
+							group_advs = [
+								"完备的圈子基本功能, 包括话题讨论, 组织线下活动, 投票, 照片 ... 等",
+								"定制圈子的额外功能",
+								"直接融入已有的用户群"
+							]
+						%>
+						<% group_advs.each do |adv| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= adv %>
+							</div>
+						<% end %>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+</div>

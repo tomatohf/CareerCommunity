@@ -6,7 +6,8 @@
 				
 				<td align="left" valign="top">
 					<div style="font-weight: bold;">
-						新手上路
+						<a href="/info/newbie" target="_blank" style="color: #000000">
+							新手上路</a>
 					</div>
 					
 					<%
@@ -32,7 +33,8 @@
 				
 				<td align="left" valign="top">
 					<div style="font-weight: bold;">
-						活动报名
+						<a href="/info/apply" target="_blank" style="color: #000000">
+							活动报名</a>
 					</div>
 					
 					<%
@@ -59,16 +61,17 @@
 				
 				<td align="left" valign="top">
 					<div style="font-weight: bold;">
-						学生服务
+						<a href="/info/student" target="_blank" style="color: #000000">
+							学生服务</a>
 					</div>
 					
 					<%
 						student_infos = [
-							["乔布堂顾问", "#"],
-							["乔布教练培训项目", "#"],
-							["行业求职讲座", "#"],
-							["乔布沙龙系列活动", "#"],
-							["死磕乔布", "#"]
+							["乔布堂顾问", "/info/student#consultant"],
+							["乔布教练培训项目", "/info/student#course"],
+							["行业求职讲座", "/info/student#session"],
+							["乔布沙龙系列活动", "/info/student#activity"],
+							["死磕乔布", "/info/student#seekjob"]
 						]
 					%>
 					
@@ -87,17 +90,18 @@
 				
 				<td align="left" valign="top">
 					<div style="font-weight: bold;">
-						企业服务
+						<a href="#" target="_blank" style="color: #000000">
+							企业服务</a>
 					</div>
 					
 					<%
 						company_infos = [
-							["企业人力资源培训", "#"],
-							["校园招聘外包服务", "#"],
-							["实习生外包服务", "#"],
-							["行业专向人才招聘", "#"],
-							["校园活动推广服务", "#"],
-							["企业定制圈子服务", "#"]
+							["企业人力资源培训", "/info/company#hr"],
+							["校园招聘外包服务", "/info/company#recruit"],
+							["实习生外包服务", "/info/company#intern"],
+							["行业专向人才招聘", "/info/company#special"],
+							["校园活动推广服务", "/info/company#campus"],
+							["企业定制圈子服务", "/info/company#group"]
 						]
 					%>
 					
@@ -116,15 +120,16 @@
 				
 				<td align="left" valign="top">
 					<div style="font-weight: bold;">
-						学校服务
+						<a href="/info/school" target="_blank" style="color: #000000">
+							学校服务</a>
 					</div>
 					
 					<%
 						school_infos = [
-							["高校就业指导讲座", "#"],
-							["高校求职指导课程", "#"],
-							["非毕业生素拓培训", "#"],
-							["高校-企业合作服务", "#"]
+							["学校就业指导讲座", "/info/school#jiuye"],
+							["学校求职指导课程", "/info/school#qiuzhi"],
+							["非毕业生素拓培训", "/info/school#tuozhan"],
+							["学校-企业合作服务", "/info/school#hezuo"]
 						]
 					%>
 					
@@ -143,14 +148,16 @@
 				
 				<td align="left" valign="top">
 					<div style="font-weight: bold;">
-						关于乔布堂
+						<a href="/info/about" target="_blank" style="color: #000000">
+							关于乔布堂</a>
 					</div>
 					
 					<%
 						jobtown_infos = [
-							["隐私条款", "#"],
-							["合作伙伴", "#"],
-							["加入乔布堂", "#"]
+							["隐私条款", "/info/about#privacy"],
+							#["合作伙伴", "/info/about#partner"],
+							["加入乔布堂", "/info/about#join"],
+							["反馈小组", "/groups/1"]
 						]
 					%>
 					

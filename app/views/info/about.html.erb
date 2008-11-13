@@ -1,0 +1,372 @@
+<% community_page_title("关于乔布堂") %>
+
+<div class="methodology_container_l">
+	<div class="coach_menus">
+		<div class="coach_menu_top" style="color: #FFFFFF; font-weight: bold;">
+			关于乔布堂
+		</div>
+		<%
+			menus = [
+				["privacy", "隐私条款"],
+				#["partner", "合作伙伴"],
+				["join", "加入乔布堂"]
+			]
+		%>
+		<% menus.each do |menu| %>
+			<div
+				<% if action_name == menu[0] %>
+				class="coach_menu_selected"
+				<% else %>
+				onmouseover="this.className='coach_menu_selected'"
+				onmouseout="this.className=''"
+				<% end %>
+				style="padding-right: 3px;"
+				>
+				<a href="#<%= menu[0] %>">
+					<%= menu[1] %></a>
+			</div>
+		<% end %>
+		
+		
+		<div
+			onmouseover="this.className='coach_menu_selected'"
+			onmouseout="this.className=''"
+			style="padding-right: 3px;"
+			>
+			<a href="/groups/1" target="_blank">
+				反馈小组</a>
+		</div>
+	</div>
+</div>
+
+<div class="methodology_container_r">
+	
+	<div class="breadcrumb">
+		<a href="/">
+			乔布堂</a>
+		»
+		<a href="#">
+			关于乔布堂</a>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_content" style="text-indent: 25px; text-align: center;">
+					<p>
+						<img src="/images/real_index/qiaobutang_big_logo.png" border="0" />
+					</p>
+					
+					<div style="margin-top: 30px; font-size: 14px; font-weight: bold;">
+						<p>
+							乔布是一种信念：目标引领航向！
+						</p>
+
+						<p>
+							乔布是一份执着：行动成就梦想！
+						</p>
+
+						<p>
+							乔布是实实在在：一切都为找到好工作！
+						</p>
+
+						<p>
+							乔布堂，你的行业求职伙伴！
+						</p>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="privacy">隐私条款</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					您的隐私保护对我们至关重要， 乔布堂将为您提供控制您的个人信息使用的能力。 本隐私权保护声明说明我们将如何收集、使用您的个人信息。隐私权保护声明系本网站保护用户个人隐私的承诺，请您务必仔细阅读。本条款可能在必要时会不定时更改，请注意定期查阅。
+					
+					<div style="margin-top: 20px;">
+						1. 信息的收集
+					</div>
+
+					<div style="text-indent: 25px;">
+						1.1 当您在本网站进行用户注册登记以及进行各种活动时，在您的同意及确认下，本网站将通过注册表格等形式要求您提供一些个人资料。这些个人资料包括：
+					</div>
+					
+					<div style="text-indent: 50px;">
+						1.1.1 个人识别资料：如姓名、性别、年龄、出生日期、电话、住址、电子邮件地址等。
+					</div>
+					<div style="text-indent: 50px;">
+						1.1.2 个人背景： 职业、教育程度、收入状况、婚姻、家庭状况、照片、兴趣爱好等。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						这些信息可以被其他的用户查看，为了保护您的隐私，我们提供了允许您控制部分敏感个人信息披露程度的功能，您可以通过这些功能来保护自己的个人信息。
+					</div>
+					
+					
+					<div style="text-indent: 25px;">
+						1.2 在未经您同意及确认之前，本网站不会将以上资料用于其它目的。惟按下列第 5 条规定，应政府及法律要求披露时不在此限。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						1.3 在您邀请新成员或者通过乔布堂发送消息时，我们收集和保留相关的信息，请注意和其他社会网络网站一样，这些信息将可能被其他人查看，请审慎保护这些资料。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						1.4 为了改进网站的管理和服务，我们将可能通过您的 IP 地址来收集非个人化的信息，例如您的浏览器性质、操作系统种类、给您提供接入服务的 ISP 的域名等，以优化在您计算机屏幕上显示的页面。通过收集上述信息，我们亦进行客流量统计，从而改进网站的管理和服务。
+					</div>
+					
+					
+					<div style="margin-top: 20px;">
+						2. 用户权利
+					</div>
+					
+					<div style="text-indent: 25px;">
+						2.1 您对于自己的个人资料享有以下权利：
+					</div>
+					
+					<div style="text-indent: 50px;">
+						2.1.1 随时查询及请求阅览；
+					</div>
+					<div style="text-indent: 50px;">
+						2.1.2 随时请求补充或更正；
+					</div>
+					<div style="text-indent: 50px;">
+						2.1.3 随时请求删除；
+					</div>
+					
+					<div style="text-indent: 25px;">
+						2.2 针对以上权利， 乔布堂为您提供相关服务，您可以发送电子邮件到 HeFan@QiaoBuTang.com
+					</div>
+					
+					
+					<div style="margin-top: 20px;">
+						3. 信息的使用
+					</div>
+					
+					<div style="text-indent: 25px;">
+						3.1 我们将根据您的输入和帐户设置显示您的个人信息，这些信息将可以被其他用户查看。 乔布堂的成员可以看到其他成员可公开的个人资料以了解对方及其社会网络并与社会网络中的其他成员联系。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						3.2 当您通过乔布堂发送消息、发表文章等时，您的部分基本个人信息将一起显示， 对于其中部分功能，乔布堂亦提供了使用匿名或者笔名发表的功能。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						3.3 乔布堂将可能根据您的帐户设置向您的个人邮箱或者手机发送各种提醒信息，这是为了改善对您的服务，您也可以在任何时候通过乔布堂修改这些设置。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						3.4 我们郑重声明不发送垃圾邮件和垃圾短信，也绝不出售邮件地址和手机号码。
+					</div>
+					
+					
+					<div style="margin-top: 20px;">
+						4. 限制使用原则
+					</div>
+					
+					<div style="text-indent: 25px;">
+						本网站惟在符合下列条件之一，方对收集之个人资料进行必要范围以外之使用：
+					</div>
+					
+					<div style="text-indent: 25px;">
+						4.1 已取得您的书面同意；
+					</div>
+					
+					<div style="text-indent: 25px;">
+						4.2 为免除您在生命、身体或财产方面之急迫危险；
+					</div>
+					
+					<div style="text-indent: 25px;">
+						4.3 为防止他人权益之重大危害；
+					</div>
+					
+					<div style="text-indent: 25px;">
+						4.4 为增进公共利益，且无害于您的重大利益。
+					</div>
+					
+					
+					<div style="margin-top: 20px;">
+						5. 资料之披露
+					</div>
+					
+					<div style="text-indent: 25px;">
+						5.1 当政府机关依照法定程序要求本网站披露个人资料时，本网站将根据执法单位之要求或为公共安全之目的提供个人资料。在此情况下之任何披露，本网站均得免责。
+					</div>
+					
+					
+					<div style="margin-top: 20px;">
+						6. Cookies
+					</div>
+					
+					<div style="text-indent: 25px;">
+						6.1 Cookies 是指一种技术，当使用者访问设有 Cookies 装置的本网站时，本网站之服务器会自动发送 Cookies 至阁下浏览器内，并储存到您的电脑硬盘内，此 Cookies 便负责记录日后您到访本网站的种种活动、个人资料、浏览习惯、消费习惯甚至信用记录。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						6.2 运用 Cookies 技术，本网站能够为您提供更加周到的个性化服务。本网站将会运用 Cookies 追访您的喜好，从而向您提供感兴趣的信息资料或储存密码，以便您造访本网站时不必每次重复输入密码。
+					</div>
+					
+					
+					<div style="margin-top: 20px;">
+						7. 资料转移
+					</div>
+					
+					<div style="text-indent: 25px;">
+						7.1 乔布堂保留在网站所有权转移的情况下转移用户资料归属的权利，例如被收购或者与其它公司合并时。
+					</div>
+					
+					
+					<div style="margin-top: 20px;">
+						8. 免责
+					</div>
+					
+					<div style="text-indent: 25px;">
+						除上述第 5 条规定属免责外，下列情况时本网站亦毋需承担任何责任： 
+					</div>
+					
+					<div style="text-indent: 25px;">
+						8.1 由于您将用户密码告知他人或与他人共享注册帐户，由此导致的任何个人资料泄露。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						8.2 任何由于黑客攻击、计算机病毒侵入或发作、因政府管制而造成的暂时性关闭等影响网络正常经营之不可抗力而造成的个人资料泄露、丢失、被盗用或被篡改等。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						8.3 由于与本网站链接的其它网站所造成之个人资料泄露及由此而导致的任何法律争议和后果。
+					</div>
+					
+					
+					<div style="margin-top: 20px;">
+						使用乔布堂的服务，意味着您接受此隐私权保护声明，此声明将可能更改，如有重要更改，我们将在乔布堂发出更改通知，请及时查看。 如果您有任何疑问，请与我们联系。您可以发送电子邮件到 HeFan@QiaoBuTang.com
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<% if false %>
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="partner">合作伙伴</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="text-indent: 25px;">
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<% end %>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="join">加入乔布堂</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-size: 14px; font-weight: bold;">
+						乔布堂校园天使
+					</div>
+					
+					<p class="info_msg">
+						申请职位请发送简历至 Service@QiaoBuTang.com
+						<br />
+						邮件标题为：应聘乔布堂校园天使
+					</p>
+					
+					<div>
+						<ul>
+							<li>
+								职责：
+								<ul>
+									<li>
+										宣传、推广中心的校园项目；
+									</li>
+									<li>
+										宣传先进的就业理念；
+									</li>
+									<li>
+										在校园和学生中宣传和推进中心的理念，扩大影响力;
+									</li>
+									<li>
+										建立和拓展本校内外的合作伙伴，为本校的会员服务提供更多的资源;
+									</li>
+								</ul>
+							</li>
+							
+							<li style="margin-top: 30px;">
+								要求：
+								<ul>
+									<li>
+										对市场和营销工作有强烈兴趣，善于聆听，有清晰的表达能力，有影响力；
+									</li>
+									<li>
+										思路清晰、善于总结，有发现问题和解决问题的能力；
+									</li>
+									<li>
+										善于自我激励、积极主动，有良好团队合作精神；
+									</li>
+									<li>
+										具有拓展和公关能力，具备良好的沟通技巧和清晰的表达能力；
+									</li>
+									<li>
+										熟悉学校各有关部门，善于建立和拓展人际关系网络；
+									</li>
+									<li>
+										有强烈的责任心、丰富的资源整合能力和谈判经验。
+									</li>
+								</ul>
+							</li>
+							
+							<li style="margin-top: 30px;">
+								回馈：
+								<ul>
+									<li>
+										具有竞争力的绩效奖金；
+									</li>
+									<li>
+										获得乔布堂颁发的校园大使证书；
+									</li>
+									<li>
+										优先参与中心组织的各种活动，拓展视野和人际圈；
+									</li>
+									<li>
+										你的领导力、执行力、表达能力、策划能力都会在工作中得到提高；
+									</li>
+									<li>
+										优秀大使获得中心软技能训练的奖励；
+									</li>
+									<li>
+										优秀大使获得中心的名企实习推荐、就业推荐的奖励。
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					
+					<p class="info_msg">
+						申请职位请发送简历至 Service@QiaoBuTang.com
+						<br />
+						邮件标题为：应聘乔布堂校园天使
+					</p>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+</div>

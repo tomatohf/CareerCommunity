@@ -1,0 +1,348 @@
+<% community_page_title("学校服务") %>
+
+<div class="methodology_container_l">
+	<div class="coach_menus">
+		<div class="coach_menu_top" style="color: #FFFFFF; font-weight: bold;">
+			学校服务
+		</div>
+		<%
+			menus = [
+				["jiuye", "学校就业指导讲座"],
+				["qiuzhi", "学校求职指导课程"],
+				["tuozhan", "非毕业生素拓培训"],
+				["hezuo", "学校-企业合作服务"]
+			]
+		%>
+		<% menus.each do |menu| %>
+			<div
+				<% if action_name == menu[0] %>
+				class="coach_menu_selected"
+				<% else %>
+				onmouseover="this.className='coach_menu_selected'"
+				onmouseout="this.className=''"
+				<% end %>
+				style="padding-right: 3px;"
+				>
+				<a href="#<%= menu[0] %>">
+					<%= menu[1] %></a>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<div class="methodology_container_r">
+	
+	<div class="breadcrumb">
+		<a href="/">
+			乔布堂</a>
+		»
+		<a href="#">
+			学校服务</a>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold; color: #FF6600;">
+						乔布堂学校服务宗旨:
+					</div>
+					
+					<% 
+						[
+							"以帮助学校提高学生就业率为己任！",
+							"以实实在在帮助学生提高社会工作能力为己任！",
+							"以帮助学校引进并整合社会、企业优质学生服务资源为己任！"
+						].each do |content| %>
+						<p style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+							<%= content %>
+						</p>
+					<% end %>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="jiuye">学校就业指导讲座</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						服务内容：
+					</div>
+					
+					<% 
+						[
+							"针对学校要求，举办与就业求职相关讲座",
+							"提供专业职业培训师讲述与求职相关的全面内容",
+							"邀请企业相关人员进入学校进行求职指导"
+						].each do |content| %>
+						<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+							<%= content %>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务流程：
+					</div>
+					<div>
+						了解学校需求
+						&nbsp;
+						→
+						&nbsp;
+						确定讲座针对对象需求
+						&nbsp;
+						→
+						&nbsp;
+						确定讲座内容
+						&nbsp;
+						→
+						&nbsp;
+						安排讲座事宜
+						&nbsp;
+						→
+						&nbsp;
+						讲座及后续事宜
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务优势：
+					</div>
+					<div>
+						<% 
+							[
+								"行业内培训经验丰富的职业指导老师进行现场培训",
+								"快速的反应速度，优质的服务，规范的服务流程"
+							].each do |adv| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= adv %>
+							</div>
+						<% end %>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="qiuzhi">学校求职指导课程</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						服务内容：
+					</div>
+					
+					<% 
+						[
+							"根据学生需求，帮助学校开展求职指导课程，提高学生的就业能力",
+							"引进国际先进的教学理念及方法，开展课程培训"
+						].each do |content| %>
+						<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+							<%= content %>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务流程：
+					</div>
+					<div>
+						了解学校需求
+						&nbsp;
+						→
+						&nbsp;
+						确定可提供的课程安排
+						&nbsp;
+						→
+						&nbsp;
+						确定讲课时间及内容
+						&nbsp;
+						→
+						&nbsp;
+						安排课程表
+						&nbsp;
+						→
+						&nbsp;
+						专业讲师授课及后续事宜
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务优势：
+					</div>
+					<div>
+						<% 
+							[
+								"行业内培训经验丰富的职业指导老师进行现场培训",
+								"将体验式及拓展式实战培训经验引进学校课堂",
+								"快速的反应速度，优质的服务，规范的服务流程"
+							].each do |adv| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= adv %>
+							</div>
+						<% end %>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="tuozhan">非毕业生素拓培训</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						服务内容：
+					</div>
+					
+					<% 
+						[
+							"提供大一新生的拓展训练，帮助同学融入并规划自己的校园生活",
+							"提供大二大三同学的素质训练，帮助同学了解社会工作，开展实践活动"
+						].each do |content| %>
+						<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+							<%= content %>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务流程：
+					</div>
+					<div>
+						确定需求
+						&nbsp;
+						→
+						&nbsp;
+						提供培训项目
+						&nbsp;
+						→
+						&nbsp;
+						确定讲课时间及内容
+						&nbsp;
+						→
+						&nbsp;
+						安排课程表
+						&nbsp;
+						→
+						&nbsp;
+						专业讲师授课及后续事宜
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务优势：
+					</div>
+					<div>
+						<% 
+							[
+								"行业内培训经验丰富的职业指导老师进行现场培训",
+								"将体验式及拓展式实战培训经验引进学校课堂",
+								"快速的反应速度，优质的服务，规范的服务流程"
+							].each do |adv| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= adv %>
+							</div>
+						<% end %>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="hezuo">学校-企业合作服务</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="font-weight: bold;">
+						服务内容：
+					</div>
+					
+					<% 
+						[
+							"为企业提供人才储备，并为建立良好的校企合作关系奠定基础",
+							"引入社会力量，提高学生基本素质和社会实践能力，更为优秀毕业生提供一个展示自己的舞台",
+							"增加广大同学对企业及其招聘过程的认识，树立明确的目标"
+						].each do |content| %>
+						<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+							<%= content %>
+						</div>
+					<% end %>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务流程：
+					</div>
+					<div>
+						确定学校需求
+						&nbsp;
+						→
+						&nbsp;
+						寻找相关企业合作
+						&nbsp;
+						→
+						&nbsp;
+						确定三方合作事宜
+						&nbsp;
+						→
+						&nbsp;
+						确定合作项目
+						&nbsp;
+						→
+						&nbsp;
+						开展活动
+						&nbsp;
+						→
+						&nbsp;
+						后续跟进
+					</div>
+					
+					
+					<div style="font-weight: bold; margin-top: 30px;">
+						服务优势：
+					</div>
+					<div>
+						<% 
+							[
+								"快速的反应速度，优质的服务，规范的服务流程",
+								"不同行业的企业社会资源整合",
+								"丰富的活动经验，有效架起一座企业校园合作的桥梁"
+							].each do |adv| %>
+							<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px;">
+								<%= adv %>
+							</div>
+						<% end %>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+</div>

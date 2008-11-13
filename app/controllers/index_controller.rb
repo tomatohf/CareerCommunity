@@ -16,4 +16,12 @@ class IndexController < ApplicationController
     send_data(image.code_image, :type => "image/jpeg", :disposition => "inline")
   end
   
+  
+  
+  # ----------
+  
+  def pharm_campus_session
+    render :layout => "campus_session"
+  end
+  
 end

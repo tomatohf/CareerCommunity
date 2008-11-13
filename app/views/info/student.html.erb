@@ -1,0 +1,216 @@
+<% community_page_title("学生服务") %>
+
+<div class="methodology_container_l">
+	<div class="coach_menus">
+		<div class="coach_menu_top" style="color: #FFFFFF; font-weight: bold;">
+			学生服务
+		</div>
+		<%
+			menus = [
+				["consultant", "乔布堂顾问"],
+				["course", "乔布教练培训项目"],
+				["session", "行业求职讲座"],
+				["activity", "乔布沙龙系列活动"],
+				["seekjob", "死磕乔布"],
+				["qiaobuquan", "乔布圈"]
+			]
+		%>
+		<% menus.each do |menu| %>
+			<div
+				<% if action_name == menu[0] %>
+				class="coach_menu_selected"
+				<% else %>
+				onmouseover="this.className='coach_menu_selected'"
+				onmouseout="this.className=''"
+				<% end %>
+				style="padding-right: 3px;"
+				>
+				<a href="#<%= menu[0] %>">
+					<%= menu[1] %></a>
+			</div>
+		<% end %>
+	</div>
+	
+	<div style="margin-top: 30px; text-align: center;">
+		<a href="/community" target="_blank">
+			<img src="/images/index/qiaobuquan_logo.png" border="0" /></a>
+	</div>
+		
+</div>
+
+<div class="methodology_container_r">
+	
+	<div class="breadcrumb">
+		<a href="/">
+			乔布堂</a>
+		»
+		<a href="#">
+			学生服务</a>
+	</div>
+	
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="text-align: center;">
+						<img src="/images/real_index/service_student.jpg" border="0" />
+					</div>
+					
+					<p>
+						<b>
+							乔布教练：
+						</b>
+						通过系统的讲座和指导课程，使学生了解职业生涯规划的意义，并掌握直接运用于求职中的技巧
+					</p>
+					
+					<p>
+						<b>
+							死磕乔布(Seek Job)：
+						</b>
+						提供求职信息和途径
+					</p>
+					
+					<p>
+						<b>
+							乔布圈：
+						</b>
+						通过网络组织活动等，帮助学生维护社交和朋友圈子
+					</p>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="consultant">乔布堂顾问</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="text-indent: 25px;">
+						乔布堂推出求职顾问，为你提供一对一的个人求职辅导顾问。
+					</div>
+					
+					<div style="margin-left: 25px; margin-top: 20px; background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 6px; padding-left: 10px;">
+						<a href="/coach/consultant" target="_blank">
+							查看详情</a>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="course">乔布教练培训项目</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="text-indent: 25px;">
+						乔布堂提供全面和系统的培训项目。
+					</div>
+					
+					<div style="margin-left: 25px; margin-top: 20px; background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 6px; padding-left: 10px;">
+						<a href="/coach/courses" target="_blank">
+							浏览培训项目</a>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="session">行业求职讲座</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="text-indent: 25px;">
+						针对不同行业，乔布堂会在不同时期开展行业求职讲座。
+					</div>
+					
+					<div style="margin-left: 25px; margin-top: 20px; background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 6px; padding-left: 10px;">
+						<a href="/index/pharm_campus_session" target="_blank">
+							"望闻问切 把脉职场" 医药求职讲座校园行</a>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="activity">乔布沙龙系列活动</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					<div style="text-indent: 25px;">
+						乔布沙龙系列活动专注不同行业，针对求职中不同方面的问题展开系列沙龙活动，活动形式多种多样，包括游戏、户外等丰富多彩的活动。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						沙龙活动中会由资深企业人，帮助同学解答求职，以及直接发展中遇到的不同问题，提供一个同学了解公司的渠道。
+					</div>
+					
+					<div style="text-indent: 25px;">
+						同时，通过沙龙活动，同学也可以更加了解自己，回顾自己的成就故事，帮助同学们就业奠定基础。
+					</div>
+					
+					<div style="margin-left: 25px; margin-top: 20px; background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 6px; padding-left: 10px;">
+						<a href="/activities/all" target="_blank">
+							浏览活动列表</a>
+					</div>
+					
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="seekjob">死磕乔布</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					死磕乔布即Seek Job，提供求职信息和途径。
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="coach_block">
+		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
+			<div class="index_container_l_section">
+				<div class="index_container_l_section_title">
+					<a href="#top" style="float: right;">回页首</a>
+					<a name="qiaobuquan">乔布圈</a>
+				</div>
+
+				<div class="index_container_l_section_content" style="padding: 20px;">
+					乔布堂旗下网站，供求职同学及毕业几年内的职场新人交流经验的圈子，通过网络组织活动等，帮助学生维护社交和朋友圈子。
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
+</div>

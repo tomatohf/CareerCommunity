@@ -205,6 +205,35 @@
 
 <div class="index_partner_container">
 	<div class="index_section_title">
+		乔布热
+	</div>
+	
+	<%
+		hots = [
+			["乔布教练 医药专题", "pharm.jpg", "/coach/pharmaceutical"],
+			["医药求职讲座校园行", "pharm_campus_session.jpg", "/index/pharm_campus_session"]
+		]
+	%>
+	<% hots.each do |hot| %>
+		<div class="index_partner">
+			<div>
+				<a href="<%= hot[2] %>" target="_blank">
+					<img src="/images/real_index/hot/<%= hot[1] %>" border="0" /></a>
+			</div>
+			<div>
+				<a href="<%= hot[2] %>" target="_blank">
+					<%= hot[0] %></a>
+			</div>
+		</div>
+	<% end %>
+	
+	
+	<div style="height: 10px; border-bottom: 3px solid #EAEAEA; margin: 10px;">
+		
+	</div>
+	
+	
+	<div class="index_section_title">
 		乔布堂合作伙伴
 	</div>
 	
@@ -212,7 +241,9 @@
 		partners = [
 			["应届生求职网", "yingjiesheng.gif", "http://yingjiesheng.com"],
 			["上海市心理学会", "hrm.png", "http://www.hrm.org.cn"],
-			["上海百恒企业咨询服务", "baiheng.jpg", "http://www.eapbh.com"]
+			["上海百恒企业咨询服务", "baiheng.jpg", "http://www.eapbh.com"],
+			["Blacking", "blacking.jpg", "http://www.blacking.cn"],
+			["Team-Key", "team_key.jpg", "http://www.team-key.com"]
 		]
 	%>
 	<% partners.each do |partner| %>

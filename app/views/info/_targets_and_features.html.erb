@@ -1,0 +1,49 @@
+<% only_targets &&= true %>
+
+<div style="margin-top: 20px;">
+	<div style="background: transparent url(/images/real_index/service_section_bar.png) no-repeat scroll right bottom; text-align: right; color: #DD6600; margin-bottom: 10px;">
+		乔布堂宗旨
+	</div>
+	
+	<%
+		targets = [
+			"帮助年轻的求职者做好全面的求职准备",
+			"帮助缺少工作经验的学员提高就业能力",
+			"帮助初入职场的新人获得更好的职业发展"
+		]
+	%>
+	<% targets.each do |target| %>
+		<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px; margin-left: 18px;">
+			<%= target %>
+		</div>
+	<% end %>
+	
+</div>
+
+
+<% unless only_targets %>
+
+<div style="margin-top: 10px;">
+	<div style="background: transparent url(/images/real_index/service_section_bar.png) no-repeat scroll right bottom; text-align: right; color: #DD6600; margin-bottom: 10px;">
+		乔布堂特点
+	</div>
+	
+	<%
+		features = [
+			"快速反应和优质的服务",
+			"规范的时间管理和项目操作流程",
+			"经验丰富的专业企业培训师团队",
+			"长三角地区优秀的人才网，通过密集的活动可量化的人才培养及交流模式"
+		]
+	%>
+	<% features.each do |feature| %>
+		<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 8px; padding-left: 10px; margin-left: 18px;">
+			<%= feature %>
+		</div>
+	<% end %>
+	
+</div>
+
+<% end %>
+
+

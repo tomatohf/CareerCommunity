@@ -1,0 +1,87 @@
+<% community_page_title("医药求职讲座校园行") %>
+
+<div class="banner_container">
+	<a href="/coach/pharmaceutical">
+		<img src="/images/campus_session/pharm.png" border="0" /></a>
+</div>
+
+
+<%
+	activities = [
+		# activity_id, name_image, image
+		[7, "zhongyiyao_name.png", "zhongyiyao.jpg"],
+		[11, "sjtuyao_name.png", "sjtuyao.jpg"],
+		[7, "sjtugonggongweisheng_name.png", "sjtugonggongweisheng.jpg"],
+		[11, "shatian_name.png", "shatian.jpg"]
+	]
+	
+	
+	all_photos = ActivityPhoto.find(
+		:all,
+		:conditions => ["activity_id in (?)", activities.collect { |a| a[0] }],
+		:include => [:photo],
+		:order => "created_at DESC"
+	)
+%>
+
+<% activities.each_index do |i| %>
+	<% a = activities[i] %>
+	<% dir = (i+1).odd? ? "l" : "r" %>
+
+	<div class="activity_container">
+		<div class="activity_image_container_<%= dir %>">
+			<a href="/activities/<%= a[0] %>" target="_blank">
+				<img src="/images/campus_session/pharm/<%= a[2] %>" border="0" /></a>
+			
+			<div class="more_container">
+				<a href="/activities/<%= a[0] %>" target="_blank">
+					更多精彩内容 »</a>
+			</div>
+		</div>
+		
+		<%
+			photos = all_photos.select {|p| p.activity_id == a[0] }[0, 8]
+		%>
+		<div class="activity_photos_container_<%= dir %>">
+			<% photos.each_index do |j| %>
+				<% ap = photos[j] %>
+				<div class="activity_photo_<%= dir %>">
+					<a href="<%= ap.photo.image.url(:big) %>" rel="lightbox[activity]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='/photos/<%= ap.photo.id %>'&gt;查看/评论&lt;/a&gt; &lt;br /&gt; <%= ap.photo.title %> &lt;br /&gt;">
+						<img src="<%= ap.photo.image.url(:thumb_80) %>" border="0" /></a>
+				</div>
+				<% if j == 3 %>
+					<div style="clear: <%= dir == "l" ? "right" : "left" %>"></div>
+				<% end %>
+			<% end %>
+		</div>
+		
+		<div class="activity_name_container_<%= dir %>">
+			<img src="/images/campus_session/pharm/<%= a[1] %>" border="0" />
+		</div>
+	</div>
+	<div style="clear: both;"></div>
+
+<% end %>
+
+
+
+<table cellpadding="0" cellspacing="10" border="0" class="schedule_container">
+	<tr>
+		<td align="center" valign="top" style="width: 50%;">
+			<img src="/images/campus_session/pharm/post.jpg" border="0" />
+		</td>
+		
+		
+		<td align="right" valign="middle" style="width: 50%;">
+			<div>
+				<img src="/images/campus_session/pharm/schedule_text.png" border="0" />
+			</div>
+			
+			<div>
+				<img src="/images/campus_session/pharm/schedule.jpg" border="0" />
+			</div>
+		</td>
+	</tr>
+</table>
+
+
