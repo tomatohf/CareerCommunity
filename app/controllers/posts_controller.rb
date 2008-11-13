@@ -319,7 +319,7 @@ class PostsController < ApplicationController
     
     account_id = session[:account_id]
     
-    jump_to("/errors/forbidden") unless @type_handler.check_destroy_access(@type_id, account_id)
+    jump_to("/errors/forbidden") unless (@post.account_id == account_id || @type_handler.check_destroy_access(@type_id, account_id))
   end
   
   def check_top_access

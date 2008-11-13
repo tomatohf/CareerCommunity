@@ -78,10 +78,7 @@
 		<%= format_datetime(@post.updated_at) %>
 	</div>
 	
-	<% if @access.include?(:admin) %>
-		<% form_tag "/#{@post_type}/posts/#{@post_id}", :method => :delete, :id => "post_delete_form" do %>
-		<% end %>
-		
+	<% if @access.include?(:admin) %>	
 		<% top_action = @post.top ? "untop" : "top" %>
 		<% form_tag "/#{@post_type}/posts/#{@post_id}/#{top_action}", :method => :post, :id => "adjust_top_form" do %>
 		<% end %>
@@ -101,10 +98,15 @@
 	<% end %>
 	
 	<div class="community_block_narrow">
-		<% if @access.include?(:admin) %>
+		<% if @access.include?(:admin) || @access.include?(:author) %>
+			<% form_tag "/#{@post_type}/posts/#{@post_id}", :method => :delete, :id => "post_delete_form" do %>
+			<% end %>
+			
 			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('post_delete_form').submit();}; return false;">删除</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<% end %>
 			
+		<% if @access.include?(:admin) %>
 			<a href="#" onclick="document.getElementById('adjust_top_form').submit(); return false;"><%= @post.top ? "取消置顶" : "置顶" %></a>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<% end %>
