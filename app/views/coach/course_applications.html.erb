@@ -13,6 +13,8 @@
 		
 		<thead>
             <tr>
+				<th>编号</th>
+				
                 <th>记录类型</th>
 
                 <th>姓名</th>
@@ -32,6 +34,10 @@
         <tbody>
             <% @applications.each do |a| %>
 				<tr>
+					<td>
+						<%= a.id %>
+					</td>
+					
 					<td>
 						<%= Service.find(a.service_id) %>
 					</td>
@@ -66,7 +72,7 @@
 						<%= a.account_id > 0 ? %Q!<a href="/spaces/show/#{a.account_id}" target="_blank">#{a.account_id}</a>! : "未注册" %>
 					</td>
 					<td>
-						<%= a.closed ? "已关闭" : "需要回应" %>
+						<%= a.closed ? "已关闭" : "需回应" %>
 					</td>
 				</tr>
 			<% end %>
@@ -75,7 +81,7 @@
 	</table>
 	
 	
-	<div id="pagination_buttons" style="margin-right: 15px; word-spacing: 5px;">
+	<div id="pagination_buttons" style="margin: 0px 15px; word-spacing: 5px;">
 		<%=
 			will_paginate(
 				@applications,
@@ -111,21 +117,21 @@
 
 <script language="JavaScript" type="text/javascript">
 
-	TableGrid = function(table, config) {
+	TableGrid = function(table_id, config) {
 		config = config || {};
 		Ext.apply(this, config);
 		
 		var cf = config.fields || [];
 		var ch = config.columns || [];
 		
-		table = Ext.get(table);
+		var table_element = Ext.get(table_id);
 
-		var grid_element = table.insertSibling();
+		var grid_element = table_element.insertSibling();
 
 		var fields = [];
 		var columns = [];
 		
-		var headers = table.query("thead th");
+		var headers = table_element.query("thead th");
 		for(var i = 0, h; h = headers[i]; i++) {
 			var text = h.innerHTML;
 			var name = "column_" + i;
@@ -161,24 +167,24 @@
 					fields
 				),
 				
-				data: table.dom,
+				data: table_element.dom,
 				
 				sortInfo: {
-					field: "column_7", // created_at
+					field: "column_8", // created_at
 					direction: "DESC"
 				},
 				
-				groupField: "column_7"
+				groupField: "column_8"
 			}
 		);
 
 		// no need to load data since we use "data" directly
-		//ds.loadData(table.dom);
+		//ds.loadData(table_element.dom);
 
 		var column_model = new Ext.grid.ColumnModel(columns);
 
 		// if (config.remove != false) {
-			table.remove();
+			table_element.remove();
 		// }
 
 		Ext.applyIf(this,
@@ -189,6 +195,7 @@
 				"selModel": new Ext.grid.RowSelectionModel(),
 				
 				"autoHeight": true,
+				"bodyStyle": "width:100%",
 				"autoWidth": true
 			}
 		);
@@ -200,12 +207,62 @@
 	
 </script>
 
+
 <script language="JavaScript" type="text/javascript">
+
+	function change_closed(record_id, closed) {
+		var connection = new Ext.data.Connection();
+		connection.request(
+			{
+				url: "/coach/update_course_application_closed/" + record_id,
+				method: "POST",
+				params: {
+					closed: String(closed),
+					authenticity_token: encodeURIComponent("<%= form_authenticity_token %>")
+				},
+				
+				callback: function (options, success, response) {
+					if(success) {
+						if(response.responseText.trim() == "true") {
+							return grid.getStore().commitChanges();
+						}
+					}
+					
+					grid.getStore().rejectChanges();
+					
+					Ext.Msg.show(
+						{
+							title: "将" + record_id + "号记录设置为" + (closed ? "已关闭": "需回应"),
+							msg: "操作失败! 请重试 ...",
+							buttons: Ext.Msg.OK,
+							icon: Ext.MessageBox. WARNING,
+							minWidth: 250
+						}
+					);
+				}
+			}
+		);
+	}
+	
+	function close_record(record_id) {
+		change_closed(record_id, true);
+	}
+	
+	function reopen_record(record_id) {
+		change_closed(record_id, false);
+	}
+	
+</script>
+
+
+<script language="JavaScript" type="text/javascript">
+
+	var grid;
 	
 	Ext.onReady(function() {
 
 		// create the grid
-		var grid = new TableGrid(
+		grid = new TableGrid(
 			"application_table",
 			{
 				stripeRows: true, // stripe alternate rows
@@ -270,7 +327,8 @@
 								handler: function() {
 									window.location.href = "/";
 								}
-							},
+							}
+							
 						]
 					}
 				),
@@ -280,17 +338,22 @@
 						items: [
 							"->",
 							
+							"共有 <%= @applications.total_entries %> 条记录",
+							
+							"-",
+							
 							Ext.get("pagination_buttons").dom,
 							
 							"-",
 							
 							{
 								id: "return_first_page_btn",
-								text: "回首页",
+								text: "回第一页",
 								handler: function() {
 									window.location.href = "/coach/course_applications";
 								}
 							}
+							
 						]
 					}
 				),
@@ -308,7 +371,7 @@
 						filters: [
 							{
 								dataIndex: "column_0",
-								type: "string"
+								type: "numeric"
 							},
 							
 							{
@@ -343,21 +406,26 @@
 							
 							{
 								dataIndex: "column_7",
-								type: "date"
-							},
-							
-							{
-								dataIndex: "column_8",
 								type: "string"
 							},
 							
 							{
+								dataIndex: "column_8",
+								type: "date"
+							},
+							
+							{
 								dataIndex: "column_9",
-								type: "numeric"
+								type: "string"
 							},
 							
 							{
 								dataIndex: "column_10",
+								type: "numeric"
+							},
+							
+							{
+								dataIndex: "column_11",
 								type: "string"
 							}
 							
@@ -368,32 +436,56 @@
 		);
 		
 		
-		grid.render();
 		
+		
+		
+		grid.addListener(
+			"rowcontextmenu",
+			function(grid, row_index, e) {
+				e.preventDefault();
+				
+				if(row_index < 0) { return; }
+				
+				var record = grid.getStore().getAt(row_index);
+				
+				var record_id = record.data.column_0.trim()
+				
+				var row_menu_obj = new Ext.menu.Menu(
+					{
+						id: "row_menu",
+						items: [
+							{
+								id: "row_menu_set_closed",
+								text: "设置为: 已关闭",
+								icon: "/images/coach/course_applications/show_closed.gif",
+								handler: function(item, e) {
+									record.set("column_11", "已关闭");
+									close_record(record_id);
+								}
+							},
+							
+							{
+								id: "row_menu_set_unclosed",
+								text: "设置为: 需回应",
+								icon: "/images/coach/course_applications/show_unclosed.gif",
+								handler: function(item, e) {
+									record.set("column_11", "需回应");
+									reopen_record(record_id);
+								}
+							}
 
-		grid.addListener('rowcontextmenu', rightClickFn);//右键菜单代码关键部分
-		var rightClick = new Ext.menu.Menu({
-		    id:'rightClickCont',  //在HTML文件中必须有个rightClickCont的DIV元素
-		    items: [
-		        {
-		            id: 'rMenu1',
-		            handler: rMenu1Fn,//点击后触发的事件
-		            text: '右键菜单1'
-		        },
-		        {
-		            //id: 'rMenu2',
-		            //handler: rMenu2Fn,
-		            text: '右键菜单2'
-		        }
-		    ]
-		});
-		function rightClickFn(grid,rowindex,e){
-		    e.preventDefault();
-		    rightClick.showAt(e.getXY());
-		}
-		function rMenu1Fn(){
-		   Ext.MessageBox.alert('right','rightClick');
-		}
+						],
+						shadow: "frame"
+					}
+				);
+				
+			    row_menu_obj.showAt(e.getXY());
+			}
+		);
+		
+		
+		
+		grid.render();
 
 	});
 	

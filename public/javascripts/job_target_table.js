@@ -1,4 +1,5 @@
 Ext.onReady(function() {
+	alert("ready");
 
 	// create the grid
 	var grid = new TableGrid(
