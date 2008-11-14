@@ -97,8 +97,9 @@
 		</div>
 	
 		<div class="community_block_narrow">
-			<a name="photo_title_section"></a>
-			<%= simple_format(h(@photo.title)) %>
+			<span id="photo_title_section">
+				<%= simple_format(h(@photo.title)) %>
+			</span>
 			
 			<div class="photo_view_actions_container">
 				<% if @edit %>
@@ -152,7 +153,7 @@
 		<b>
 			<%= @photo_comments.total_entries %>
 		</b>
-		条<a id="comment_list">评论</a> ...
+		条<span id="comment_list">评论</span> ...
 	</div>
 	
 	<% if @edit %>
@@ -183,7 +184,7 @@
 	</div>
 
 	<div class="community_block_narrow">
-		<a id="comment_new">添加评论 »</a>
+		<span id="comment_new">添加评论 »</span>
 		<% form_tag "/photos/#{@photo.id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('photo_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
 			<textarea id="photo_comment" name="photo_comment" class="text_field" cols="50" rows="5"></textarea>
 			

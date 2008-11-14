@@ -25,7 +25,7 @@
 	
 	<div class="community_block_narrow">
 		<% form_tag "/activities/#{@activity.id}/update_image", :method => :post, :onsubmit => "on_activity_img_submit(this); return false;" do %>
-			<a id="current_pic_label">活动当前图标:</a>
+			<span id="current_pic_label">活动当前图标:</span>
 			<div class="pic_profile_current_pic_photo">
 				<img id="current_img" src="<%= face_img_src(@activity_image) %>" border="0" />
 				<input id="photo_id" name="photo_id" type="hidden" value="" />

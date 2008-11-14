@@ -136,7 +136,8 @@ Ext.grid.filter.DateFilter = Ext.extend(Ext.grid.filter.Filter, {
 	},
 	
 	validateRecord: function(record) {
-		var val = record.get(this.dataIndex).clearTime(true).getTime();
+		//var val = record.get(this.dataIndex).clearTime(true).getTime();
+		var val = Date.parseDate(record.get(this.dataIndex).trim(), "Y-m-d").clearTime(true).getTime();
 		
 		if(this.dates.on.checked && val != this.getFieldValue('on').clearTime(true).getTime()) {
 			return false;

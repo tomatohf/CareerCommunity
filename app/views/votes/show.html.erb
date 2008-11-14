@@ -142,7 +142,7 @@
 	</div>
 	
 	<div class="align_c">
-		<a name="result_chart"></a>
+		<span id="result_chart"></span>
 		<div>
 		    <%= ziya_chart("/votes/refresh_vote_result/#{@vote_topic_id}?chart_type=#{@chart_type}&token=#{Time.now.to_i}", :width => 500, :height => @vote_topic.calculate_chart_height) %>
 		</div>
@@ -165,7 +165,7 @@
 		<b>
 			<%= @vote_comments.total_entries %>
 		</b>
-		条<a id="comment_list">评论</a> ...
+		条<span id="comment_list">评论</span> ...
 	</div>
 	
 	<% if @edit %>
@@ -196,7 +196,7 @@
 	</div>
 	
 	<div class="community_block_narrow">
-		<a id="comment_new">添加评论 »</a>
+		<span id="comment_new">添加评论 »</span>
 		<% form_tag "/votes/#{@vote_topic_id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('vote_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
 			<textarea id="vote_comment" name="vote_comment" class="text_field" cols="50" rows="5"></textarea>
 			

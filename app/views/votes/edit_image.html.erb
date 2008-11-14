@@ -25,7 +25,7 @@
 	
 	<div class="community_block_narrow">
 		<% form_tag "/votes/#{@vote_topic.id}/update_image", :method => :post, :onsubmit => "on_vote_topic_img_submit(this); return false;" do %>
-			<a id="current_pic_label">投票当前图标:</a>
+			<span id="current_pic_label">投票当前图标:</span>
 			<div class="pic_profile_current_pic_photo">
 				<img id="current_img" src="<%= face_img_src(@vote_image) %>" border="0" />
 				<input id="photo_id" name="photo_id" type="hidden" value="" />

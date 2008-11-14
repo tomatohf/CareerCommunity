@@ -1,8 +1,15 @@
+<title>
+	报名课程/咨询详情 申请记录
+	-
+	乔布堂
+</title>
+
+
 <div>
 	
-	<h2>全部 报名课程/咨询详情 申请记录</h2>
+	<h2 style="margin: 15px;">全部 报名课程/咨询详情 申请记录</h2>
 	
-	<table id="application_table" cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+	<table id="application_table" cellpadding="0" cellspacing="0" border="0">
 		
 		<thead>
             <tr>
@@ -67,6 +74,19 @@
 		
 	</table>
 	
+	
+	<div id="pagination_buttons" style="margin-right: 15px; word-spacing: 5px;">
+		<%=
+			will_paginate(
+				@applications,
+				:previous_label => "«上一页",
+				:next_label => "下一页»",
+				:param_name => :page,
+				:page_links => true
+			)
+		%>
+	</div>
+	
 </div>
 
 
@@ -81,11 +101,104 @@
 <script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/Filter.js"></script>
 <script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/NumericFilter.js"></script>
 <script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/StringFilter.js"></script>
+<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/DateFilter.js"></script>
+
 
 <script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/menu/RangeMenu.js"></script>
 <script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/menu/EditableItem.js"></script>
 
 <script language="JavaScript" type="text/javascript" src="/lib/ext/build/locale/ext-lang-zh_CN.js"></script>
+
+<script language="JavaScript" type="text/javascript">
+
+	TableGrid = function(table, config) {
+		config = config || {};
+		Ext.apply(this, config);
+		
+		var cf = config.fields || [];
+		var ch = config.columns || [];
+		
+		table = Ext.get(table);
+
+		var grid_element = table.insertSibling();
+
+		var fields = [];
+		var columns = [];
+		
+		var headers = table.query("thead th");
+		for(var i = 0, h; h = headers[i]; i++) {
+			var text = h.innerHTML;
+			var name = "column_" + i;
+
+			fields.push(
+				Ext.applyIf(cf[i] || {},
+					{
+						name: name,
+						mapping: "td:nth(" + (i+1) + ")/@innerHTML"
+					}
+				)
+			);
+
+			columns.push(
+				Ext.applyIf(ch[i] || {},
+					{
+						"header": text,
+						"dataIndex": name,
+						"width": h.offsetWidth,
+						"tooltip": h.innerHTML,
+						"sortable": true
+					}
+				)
+			);
+		}
+
+		var data_store = new Ext.data.GroupingStore(
+			{
+				reader: new Ext.data.XmlReader(
+					{
+						record: "tbody tr"
+					},
+					fields
+				),
+				
+				data: table.dom,
+				
+				sortInfo: {
+					field: "column_7", // created_at
+					direction: "DESC"
+				},
+				
+				groupField: "column_7"
+			}
+		);
+
+		// no need to load data since we use "data" directly
+		//ds.loadData(table.dom);
+
+		var column_model = new Ext.grid.ColumnModel(columns);
+
+		// if (config.remove != false) {
+			table.remove();
+		// }
+
+		Ext.applyIf(this,
+			{
+				"ds": data_store,
+				"cm": column_model,
+				
+				"selModel": new Ext.grid.RowSelectionModel(),
+				
+				"autoHeight": true,
+				"autoWidth": true
+			}
+		);
+		
+		TableGrid.superclass.constructor.call(this, grid_element, {});
+	};
+
+	Ext.extend(TableGrid, Ext.grid.GridPanel);
+	
+</script>
 
 <script language="JavaScript" type="text/javascript">
 	
@@ -100,50 +213,163 @@
 
 				tbar: new Ext.Toolbar(
 					{
-			        	items:[
-			                {
-			                    id:'buttonA'
-			                    ,text:"Button A"
-			                    ,handler: function(){ alert("You clicked Button A"); }
-			                }
-			                ,
-			                new Ext.Toolbar.SplitButton({})
-			                ,{
-			                    id:'buttonB'
-			                    ,text:"Button B"
-			                    ,handler: function(){ alert("You clicked Button B"); }
-			                }
-			                ,
-			                '-'
-			                ,{
-			                    id:'buttonc'
-			                    ,text:"Button c"
-			                }
-			            ]
-			        }
+						items: [
+							"->",
+							
+							{
+								id: "show_unclosed_btn",
+								text: "仅显示需要回应的记录",
+								icon: "/images/coach/course_applications/show_unclosed.gif",
+								cls: "x-btn-text-icon",
+								handler: function() {
+									window.location.href = "/coach/course_applications?closed_filter=unclosed";
+								}
+							},
+							
+							{
+								id: "show_closed_btn",
+								text: "仅显示已关闭的记录",
+								icon: "/images/coach/course_applications/show_closed.gif",
+								cls: "x-btn-text-icon",
+								handler: function() {
+									window.location.href = "/coach/course_applications?closed_filter=closed";
+								}
+							},
+							
+							{
+								id: "show_all_btn",
+								text: "显示全部记录",
+								icon: "/images/coach/course_applications/show_all.gif",
+								cls: "x-btn-text-icon",
+								handler: function() {
+									window.location.href = "/coach/course_applications";
+								}
+							},
+							
+							"-",
+							
+							{
+								id: "return_coach_btn",
+								text: "返回乔布教练",
+								handler: function() {
+									window.location.href = "/coach";
+								}
+							},
+							
+							{
+								id: "return_qiaobuquan_btn",
+								text: "返回乔布圈",
+								handler: function() {
+									window.location.href = "/community";
+								}
+							},
+							
+							{
+								id: "return_qiaobutang_btn",
+								text: "返回乔布堂",
+								handler: function() {
+									window.location.href = "/";
+								}
+							},
+						]
+					}
+				),
+				
+				bbar: new Ext.Toolbar(
+					{
+						items: [
+							"->",
+							
+							Ext.get("pagination_buttons").dom,
+							
+							"-",
+							
+							{
+								id: "return_first_page_btn",
+								text: "回首页",
+								handler: function() {
+									window.location.href = "/coach/course_applications";
+								}
+							}
+						]
+					}
 				),
 
-		        view: new Ext.grid.GroupingView(
+				view: new Ext.grid.GroupingView(
 					{
-		            	forceFit: true,
-		            	groupTextTpl: '{text} ({[values.rs.length]} 项)'
-		        	}
+						forceFit: true,
+						groupTextTpl: "{text} ({[values.rs.length]} 条记录)"
+					}
 				),
 
 				plugins: new Ext.grid.GridFilters(
 					{
-						local:true,
-						  filters:[
-						    {type: 'numeric',  dataIndex: 'tcol-1'},
-						    {type: 'string',  dataIndex: 'tcol-0'},
-						    {type: 'string', dataIndex: 'tcol-2'}
+						local: true,
+						filters: [
+							{
+								dataIndex: "column_0",
+								type: "string"
+							},
+							
+							{
+								dataIndex: "column_1",
+								type: "string"
+							},
+							
+							{
+								dataIndex: "column_2",
+								type: "string"
+							},
+							
+							{
+								dataIndex: "column_3",
+								type: "string"
+							},
+							
+							{
+								dataIndex: "column_4",
+								type: "string"
+							},
+							
+							{
+								dataIndex: "column_5",
+								type: "string"
+							},
+							
+							{
+								dataIndex: "column_6",
+								type: "string"
+							},
+							
+							{
+								dataIndex: "column_7",
+								type: "date"
+							},
+							
+							{
+								dataIndex: "column_8",
+								type: "string"
+							},
+							
+							{
+								dataIndex: "column_9",
+								type: "numeric"
+							},
+							
+							{
+								dataIndex: "column_10",
+								type: "string"
+							}
+							
 						]
 					}
 				)
 			}
 		);
 		
+		
 		grid.render();
+		
 
 		grid.addListener('rowcontextmenu', rightClickFn);//右键菜单代码关键部分
 		var rightClick = new Ext.menu.Menu({
@@ -170,74 +396,6 @@
 		}
 
 	});
-
-
-	TableGrid = function(table, config) {
-	  config = config || {};
-	  Ext.apply(this, config);
-	  var cf = config.fields || [], ch = config.columns || [];
-	  table = Ext.get(table);
-
-	  var ct = table.insertSibling();
-
-	  var fields = [], cols = [];
-		
-		cols.push(new Ext.grid.RowNumberer());
-		cols.push(new Ext.grid.CheckboxSelectionModel());
-		
-	  var headers = table.query("thead th");
-	  for (var i = 0, h; h = headers[i]; i++) {
-	    var text = h.innerHTML;
-	    var name = "tcol-" + i;
-
-	    fields.push(Ext.applyIf(cf[i] || {}, {
-	      name: name,
-	      mapping: "td:nth(" + (i+1) + ")/@innerHTML"
-	    }));
-
-	    cols.push(Ext.applyIf(ch[i] || {}, {
-	      "header": text,
-	      "dataIndex": name,
-	      "width": h.offsetWidth,
-	      "tooltip": h.title,
-	      "sortable": true
-	    }));
-	  }
-
-	  var ds  = new Ext.data.GroupingStore({
-	    reader: new Ext.data.XmlReader({
-	      record:"tbody tr"
-	    }, fields),
-	data: table.dom,
-	sortInfo: {field: "tcol-1", direction: "ASC"},
-	groupField: "tcol-2"
-	  });
-
-	  //ds.loadData(table.dom);
-
-	  var cm = new Ext.grid.ColumnModel(cols);
-
-	  if (config.width || config.height) {
-	    ct.setSize(config.width || "auto", config.height || "auto");
-	  } else {
-	    ct.setWidth(table.getWidth());
-	  }
-
-	  if (config.remove !== false) {
-	    table.remove();
-	  }
-
-	  Ext.applyIf(this, {
-	    "ds": ds,
-	    "cm": cm,
-	    "sm": new Ext.grid.RowSelectionModel(),
-	    autoHeight: true,
-	    autoWidth: false
-	  });
-	  TableGrid.superclass.constructor.call(this, ct, {});
-	};
-
-	Ext.extend(TableGrid, Ext.grid.GridPanel);
 	
 </script>
 

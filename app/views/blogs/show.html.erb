@@ -76,7 +76,7 @@
 		<b>
 			<%= @blog_comments.total_entries %>
 		</b>
-		条<a id="comment_list">评论</a> ...
+		条<span id="comment_list">评论</span> ...
 	</div>
 	
 	<% if @edit %>
@@ -107,7 +107,7 @@
 	</div>
 	
 	<div class="community_block_narrow">
-		<a id="comment_new">添加评论 »</a>
+		<span id="comment_new">添加评论 »</span>
 		<% form_tag "/blogs/#{@blog.id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('blog_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
 			<textarea id="blog_comment" name="blog_comment" class="text_field" cols="50" rows="5"></textarea>
 			

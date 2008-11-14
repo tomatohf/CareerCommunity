@@ -5,9 +5,7 @@
 
 <% if general_admin?(session[:account_id]) %>
 	<div class="community_block">
-		<% form_tag "/coach/course_applications", :method => :post do %>
-			<input type="submit" value="浏览 报名课程/咨询详情 申请表" class="button" />
-		<% end %>
+		<a href="/coach/course_applications?closed_filter=unclosed">浏览 报名课程/咨询详情 申请表</a>
 	</div>
 <% end %>
 

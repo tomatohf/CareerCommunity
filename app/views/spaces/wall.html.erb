@@ -64,7 +64,7 @@
 	</div>
 	
 	<div class="community_block_narrow">
-		<a id="comment_new">添加留言 »</a>
+		<span id="comment_new">添加留言 »</span>
 		<% form_tag "/spaces/create_comment/#{@account_id}", :method => :post, :onsubmit => "if(document.getElementById('space_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
 			<textarea id="space_comment" name="space_comment" class="text_field" cols="50" rows="5"></textarea>
 			

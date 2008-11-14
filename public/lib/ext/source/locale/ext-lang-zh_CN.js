@@ -168,6 +168,16 @@ if(Ext.grid.GridFilters){
   });
 }
 
+// added by Tomato
+if(Ext.grid.filter.DateFilter){
+  Ext.apply(Ext.grid.filter.DateFilter.prototype, {
+    //dateFormat: "Y-m-d",
+	beforeText: "之前",
+    afterText: "之后",
+    onText: "具体在"
+  });
+}
+
 if(Ext.grid.PropertyColumnModel){
    Ext.apply(Ext.grid.PropertyColumnModel.prototype, {
       nameText   : "名称",

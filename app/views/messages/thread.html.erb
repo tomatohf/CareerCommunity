@@ -44,7 +44,7 @@
 	%>
 	
 	<div class="community_block_narrow">
-		<a id="message_reply">回复消息 »</a>
+		<span id="message_reply">回复消息 »</span>
 		<% form_tag "/messages/create_reply/#{@reply_to_id}", :method => :post, :onsubmit => "if(document.getElementById('message_content').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写消息内容 ...'); return false; }" do %>
 			<textarea id="message_content" name="message_content" class="text_field" cols="50" rows="5"></textarea>
 			

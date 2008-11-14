@@ -98,12 +98,31 @@ class CoachController < ApplicationController
   
   # ----------
   
+  def export_excel
+    header[:Pragma] = "public";
+    #header("Expires: 0"); // set expiration time
+    #header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    #header("Content-Type: application/force-download");
+    header["Content-type"] = "application/vnd.ms-excel";
+    header["Content-Disposition"] = "attachment;filename=export";
+    render :text => params['exportContent'];
+  end
+  
   before_filter :check_general_admin, :only => [:course_applications]
   
   def course_applications
-    return jump_to("/coach/courses") unless request.post?
+    conditions = []
     
-    @applications = ServiceApplication.find(:all)
+    conditions = ["closed = ?", params[:closed_filter] == "closed"] if params[:closed_filter]
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @applications = ServiceApplication.paginate(
+      :page => page,
+      :per_page => 20,
+      :conditions => conditions,
+      :order => "created_at DESC"
+    )
     
     render :layout => false
   end
