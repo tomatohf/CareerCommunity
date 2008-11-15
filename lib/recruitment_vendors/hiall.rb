@@ -63,6 +63,8 @@ module RecruitmentVendor
       #super << {
       #  :all => [/hiall/i]
       #}
+      
+      super
     end
     
     
@@ -195,7 +197,9 @@ module RecruitmentVendor
         p.search("//a").collect{|a| 
           href = a["href"].strip
           href += "/" if href[-1, 1] != "/"
-          root_url + href
+          href = (root_url + href) unless href[0, 4] == "http"
+          
+          href
         }.select { |href| href =~ /action-model-name-hr-itemid-\d*/ }
       }.flatten
       

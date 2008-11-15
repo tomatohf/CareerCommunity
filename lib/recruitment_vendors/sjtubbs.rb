@@ -180,7 +180,8 @@ module RecruitmentVendor
         
         href = title_a[:href].strip
         
-        ["#{root_url}/#{href}", init_values]
+        href = "#{root_url}/#{href}" unless href[0, 4] == "http"
+        [href, init_values]
       }
     end
     

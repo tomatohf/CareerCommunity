@@ -185,7 +185,7 @@ module RecruitmentVendor
         
         list.collect { |a|
           href = a["href"].strip
-          root_url + href
+          root_url + href unless href[0, 4] == "http"
         }.select { |href| href =~ /\d+\.html$/ }
                 
       else
@@ -196,7 +196,7 @@ module RecruitmentVendor
         list.collect { |td|
           a = td.at("a")
           href = a["href"].strip
-          root_url + href
+          root_url + href unless href[0, 4] == "http"
         }.select { |href| href =~ /\d+\.html$/ }
         
       end

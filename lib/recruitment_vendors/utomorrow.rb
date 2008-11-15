@@ -194,8 +194,9 @@ module RecruitmentVendor
         
         href = title_a["href"].strip
         
+        href = (url_job_prefix + href) unless href[0, 4] == "http"
         
-        [url_job_prefix + href, init_values]
+        [href, init_values]
       }.select { |link_info| link_info[0] =~ /job\/jobshow-\d*\.html$/ }
     end
 
@@ -227,8 +228,10 @@ module RecruitmentVendor
 
         href = title_a["href"].strip
 
-
-        [url_bbs_prefix + href, init_values]
+        
+        href = (url_bbs_prefix + href) unless href[0, 4] == "http"
+        
+        [href, init_values]
       }.select { |link_info| link_info[0] =~ /viewthread.php\?tid=\d*/ }
     end
     

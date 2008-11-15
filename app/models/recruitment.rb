@@ -35,17 +35,18 @@ class Recruitment < ActiveRecord::Base
   validates_uniqueness_of :source_link, :case_sensitive => false, :message => "来源链接 已存在, 可能该信息已存在. 试试发布其他信息吧"
   
   
-  Filter_Out_Key_Words = %w{
-    hiall
-    utomorrow
-    54yjs
-    yingjiesheng
-    loooker
-    2588
-    guolairen
-    hongyangedu
-    5imeet
-  }
+  Filter_Out_Key_Words = [
+    /hiall/i,
+    /utomorrow/i,
+    /54yjs/i,
+    /yingjiesheng/i,
+    /loooker/i,
+    /2588/i,
+    /guolairen/i,
+    /hongyangedu/i,
+    /5imeet/i,
+    /bebeyond/i
+  ]
   
   
   CKP_types = :recruitment_types
@@ -130,7 +131,7 @@ class Recruitment < ActiveRecord::Base
       r = Recruitment.find(id.id)
       
       Filter_Out_Key_Words.each do |word|
-        if r.title.include?(word) || r.content.include?(word)
+        if r.title =~ word || r.content =~ word
           puts "id #{r.id} with title #{r.title} will be deleted"
           r.recruitment_tags.clear
           r.destroy
