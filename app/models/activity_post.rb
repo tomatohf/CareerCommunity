@@ -17,6 +17,7 @@ class ActivityPost < ActiveRecord::Base
   end
   
   include CareerCommunity::AccountBelongings
+  include CareerCommunity::Util
   
   has_many :comments, :class_name => "ActivityPostComment", :foreign_key => "activity_post_id", :dependent => :destroy
   has_many :attachments, :class_name => "ActivityPostAttachment", :foreign_key => "activity_post_id", :dependent => :destroy
@@ -31,5 +32,40 @@ class ActivityPost < ActiveRecord::Base
   validates_presence_of :content, :message => "请输入 内容"
   
   validates_length_of :title, :maximum => 256, :message => "标题 超过长度限制", :allow_nil => false
+  
+  
+  
+  after_destroy { |post|
+    self.clear_post_cache(post.id)
+  }
+  
+  after_save { |post|
+    self.set_post_cache(post.id, post)
+  }
+  
+  
+  CKP_group_post = :group_post
+  
+  
+  
+  def get_post(post_id)
+    post = Cache.get("#{CKP_group_post}_#{post_id}".to_sym)
+    
+    unless post
+      post = self.find(post_id)
+      
+      self.set_post_cache(post_id, post)
+    end
+    post
+  end
+  
+  def self.set_post_cache(post_id, post)
+    Cache.set("#{CKP_group_post}_#{post_id}".to_sym, post.clear_association, Cache_TTL)
+  end
+  
+  def self.clear_post_cache(post_id)
+    Cache.delete("#{CKP_group_post}_#{post_id}".to_sym)
+  end
+  
   
 end
