@@ -369,7 +369,7 @@ select.dropdown_list, .dropdown_list select {
 	padding-left: 30px;
 }
 
-.error_msg, .info_msg {
+.error_msg, .info_msg, .warning_msg {
 	background-repeat: no-repeat;
 	background-position: 5px 5px;
 	padding: 2px 10px 2px 30px;
@@ -386,6 +386,12 @@ select.dropdown_list, .dropdown_list select {
 	background-image: url(/images/info_small.gif);
 	border: 1px dashed green;
 	color: green;
+}
+
+.warning_msg {
+	background-image: url(/images/warning_small.png);
+	border: 1px dashed green;
+	color: black;
 }
 
 .profile_edit_section_nav {

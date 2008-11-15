@@ -179,6 +179,7 @@ class GroupsController < ApplicationController
     
     group_setting = {
       :need_approve => (params[:need_approve] == "true"),
+      :need_join_to_view_post => (params[:need_join_to_view_post] == "true"),
       :notice => "欢迎来到圈子 #{@group.name} ~"
     }
     
@@ -523,12 +524,14 @@ class GroupsController < ApplicationController
   end
   
   def update_access
-    need_approve = params[:need_approve] == "true"
+    need_approve = (params[:need_approve] == "true")
+    need_join_to_view_post = (params[:need_join_to_view_post] == "true")
     
     @group, @group_image = Group.get_group_with_image(@group_id)
     
     group_setting = {
-      :need_approve => need_approve
+      :need_approve => need_approve,
+      :need_join_to_view_post => need_join_to_view_post
     }
     
     @group.update_setting(group_setting)

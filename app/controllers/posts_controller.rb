@@ -21,6 +21,7 @@ class PostsController < ApplicationController
   before_filter :check_delete_comment_access, :only => [:delete_comment]
   before_filter :check_destroy_access, :only => [:destroy]
   before_filter :check_top_access, :only => [:top, :untop]
+  before_filter :check_attachment_access, :only => [:attachment]
   
   
   
@@ -110,17 +111,21 @@ class PostsController < ApplicationController
     @type_name, @type_image = type_handler.get_type_with_image(@type_id)
     @type_label = type_handler.get_type_label
     
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    @comments = @post.comments.paginate(
-      :page => page,
-      :per_page => Comment_Page_Size,
-      :total_entries => type_handler.get_post_comment_class.get_count(@post_id),
-      :include => [:account => [:profile_pic]],
-      :order => "created_at ASC"
-    )
+    @can_view = type_handler.check_view_access(@type_id, session[:account_id])
     
-    @attachments = @post.attachments
+    if @can_view
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @comments = @post.comments.paginate(
+        :page => page,
+        :per_page => Comment_Page_Size,
+        :total_entries => type_handler.get_post_comment_class.get_count(@post_id),
+        :include => [:account => [:profile_pic]],
+        :order => "created_at ASC"
+      )
+    
+      @attachments = @post.attachments
+    end
     
     @other_posts = type_handler.get_post_class.find(
       :all,
@@ -232,18 +237,12 @@ class PostsController < ApplicationController
   end
   
   def attachment
-    attachment_id = params[:id]
-    
-    type_handler = get_type_handler(@post_type)
-    
-    attachment = type_handler.get_post_attachment_class.find(attachment_id)
-
     
     # invoke the x-sendfile of lighttpd to download file
-    response.headers["Content-Type"] = attachment.attachment_content_type
-    response.headers["Content-Disposition"] = %Q!attachment; filename="#{attachment.attachment_file_name}"!
-    response.headers["Content-Length"] = attachment.attachment_file_size
-    response.headers["X-LIGHTTPD-send-file"] = attachment.attachment.path
+    response.headers["Content-Type"] = @attachment.attachment_content_type
+    response.headers["Content-Disposition"] = %Q!attachment; filename="#{@attachment.attachment_file_name}"!
+    response.headers["Content-Length"] = @attachment.attachment_file_size
+    response.headers["X-LIGHTTPD-send-file"] = @attachment.attachment.path
     render :nothing => true
   end
   
@@ -333,6 +332,20 @@ class PostsController < ApplicationController
     jump_to("/errors/forbidden") unless @type_handler.check_top_access(type_id, account_id)
   end
   
+  def check_attachment_access
+    @type_handler = get_type_handler(@post_type)
+    
+    @attachment_id = params[:id]
+    @attachment = @type_handler.get_post_attachment_class.find(@attachment_id)
+    
+    post_id = @attachment.send(@type_handler.get_type_post_id)
+    post = @type_handler.get_post_class.find(post_id)
+    type_id = post.send(@type_handler.get_type_id)
+    account_id = session[:account_id]
+    
+    jump_to("/errors/unauthorized") unless @type_handler.check_attachment_access(type_id, account_id)
+  end
+  
   
   
   module Types
@@ -398,6 +411,17 @@ class PostsController < ApplicationController
       
       def check_top_access(type_id, account_id)
         check_destroy_access(type_id, account_id)
+      end
+      
+      def check_view_access(type_id, account_id)
+        group = ::Group.get_group_with_image(type_id)[0]
+        need_join_to_view_post = group.get_setting[:need_join_to_view_post]
+        
+        !(need_join_to_view_post && (!GroupMember.is_group_member(type_id, account_id)))
+      end
+      
+      def check_attachment_access(type_id, account_id)
+        check_view_access(type_id, account_id)
       end
       
       def get_access(current_account_id, poster_id, type_id)
@@ -467,6 +491,14 @@ class PostsController < ApplicationController
       
       def check_top_access(type_id, account_id)
         check_destroy_access(type_id, account_id)
+      end
+      
+      def check_view_access(type_id, account_id)
+        true
+      end
+      
+      def check_attachment_access(type_id, account_id)
+        true
       end
       
       def get_access(current_account_id, poster_id, type_id)

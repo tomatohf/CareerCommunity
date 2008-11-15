@@ -44,7 +44,7 @@
 						<br />
 						<span class="form_info_s">15 个字符内</span>
 					</td>
-					<td>
+					<td valign="top">
 						<input type="text" id="group_name" name="group_name" class="text_field" size="30" value="<%= h(@group.name) %>" />
 					</td>
 				</tr>
@@ -135,6 +135,16 @@
 					</td>
 				</tr>
 				<% end %>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= check_box_tag :need_join_to_view_post, value = "true", @group.get_setting[:need_join_to_view_post] %>
+			            <label for="need_join_to_view_post">
+			                只有圈子成员可以查看圈内讨论话题的具体内容
+			            </label>
+					</td>
+				</tr>
 				
 				<tr>
 					<td></td>
