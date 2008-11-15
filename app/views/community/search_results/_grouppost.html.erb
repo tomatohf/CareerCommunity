@@ -1,5 +1,7 @@
 <% group_post = result %>
 
+<% GroupPost.set_post_cache(group_post.id, group_post) %>
+
 <% account = group_post.account %>
 <% account_id = account.id %>
 <% account_nick = account.get_nick %>

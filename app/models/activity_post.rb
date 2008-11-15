@@ -48,7 +48,7 @@ class ActivityPost < ActiveRecord::Base
   
   
   
-  def get_post(post_id)
+  def self.get_post(post_id)
     post = Cache.get("#{CKP_group_post}_#{post_id}".to_sym)
     
     unless post

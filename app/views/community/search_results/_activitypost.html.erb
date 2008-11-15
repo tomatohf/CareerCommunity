@@ -1,5 +1,7 @@
 <% activity_post = result %>
 
+<% ActivityPost.set_post_cache(activity_post.id, activity_post) %>
+
 <% account = activity_post.account %>
 <% account_id = account.id %>
 <% account_nick = account.get_nick %>

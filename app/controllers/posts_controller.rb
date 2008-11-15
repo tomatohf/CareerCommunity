@@ -102,7 +102,7 @@ class PostsController < ApplicationController
     @post_id = params[:id] && params[:id].strip
     type_handler = get_type_handler(@post_type)
     
-    @post = type_handler.get_post_class.find(@post_id)
+    @post = type_handler.get_post_class.get_post(@post_id)
     
     @type_id = @post.send(type_handler.get_type_id)
     
@@ -280,7 +280,7 @@ class PostsController < ApplicationController
   def check_update_access
     @type_handler = get_type_handler(@post_type)
     
-    @post = @type_handler.get_post_class.find(params[:id])
+    @post = @type_handler.get_post_class.get_post(params[:id])
     
     jump_to("/errors/forbidden") unless @post.account_id == session[:account_id]
   end
@@ -288,7 +288,7 @@ class PostsController < ApplicationController
   def check_create_comment_access
     @type_handler = get_type_handler(@post_type)
     
-    @post = @type_handler.get_post_class.find(params[:id])
+    @post = @type_handler.get_post_class.get_post(params[:id])
     type_id = @post.send(@type_handler.get_type_id)
     
     account_id = session[:account_id]
@@ -302,7 +302,7 @@ class PostsController < ApplicationController
     @post_comment = @type_handler.get_post_comment_class.find(params[:id])
     @post_id = @post_comment.send("#{@type_handler.get_type_post_id}")
     
-    @post = @type_handler.get_post_class.find(@post_id)
+    @post = @type_handler.get_post_class.get_post(@post_id)
     type_id = @post.send(@type_handler.get_type_id)
     
     account_id = session[:account_id]
@@ -312,7 +312,7 @@ class PostsController < ApplicationController
   
   def check_destroy_access
     @type_handler = get_type_handler(@post_type)
-    @post = @type_handler.get_post_class.find(params[:id])
+    @post = @type_handler.get_post_class.get_post(params[:id])
     
     @type_id = @post.send(@type_handler.get_type_id)
     
@@ -323,7 +323,7 @@ class PostsController < ApplicationController
   
   def check_top_access
     @type_handler = get_type_handler(@post_type)
-    @post = @type_handler.get_post_class.find(params[:id])
+    @post = @type_handler.get_post_class.get_post(params[:id])
     
     type_id = @post.send(@type_handler.get_type_id)
     
@@ -339,7 +339,7 @@ class PostsController < ApplicationController
     @attachment = @type_handler.get_post_attachment_class.find(@attachment_id)
     
     post_id = @attachment.send(@type_handler.get_type_post_id)
-    post = @type_handler.get_post_class.find(post_id)
+    post = @type_handler.get_post_class.get_post(post_id)
     type_id = post.send(@type_handler.get_type_id)
     account_id = session[:account_id]
     
