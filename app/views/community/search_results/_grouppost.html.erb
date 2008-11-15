@@ -9,9 +9,12 @@
 
 
 <%
+	need_join_to_view_post = group_post.group.get_setting[:need_join_to_view_post]
+	can_view = !(need_join_to_view_post && (!GroupMember.is_group_member(group_post.group_id, session[:account_id])))
+
 	excerpts = build_excerpts(
 		riddle_client,
-		[h(group_post.title), sanitize_tinymce(extract_text(group_post.content)), h(account_nick), h(group_post.group.name)],
+		[h(group_post.title), can_view ? sanitize_tinymce(extract_text(group_post.content)) : "", h(account_nick), h(group_post.group.name)],
 		query,
 		"group_post_core"
 	)
@@ -44,6 +47,12 @@
 				<div class="search_result_body">
 					<%= excerpts[1] %>
 				</div>
+				
+				<% unless can_view %>
+					<div class="form_info_s">
+						<i>(按照其所在圈子的设置, 只有圈子成员可以查看圈内讨论话题的具体内容 ... )</i>
+					</div>
+				<% end %>
 				
 				<div class="form_info_s search_result_info">
 					<a href="/group/posts/<%= group_post.id %>#comment_list" class="account_nick_link">
