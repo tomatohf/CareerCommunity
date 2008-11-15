@@ -1,0 +1,131 @@
+<% page_title = "添加一个新的收藏" %>
+<% community_page_title(page_title) %>
+
+<div class="bookmark_container">
+	<h2><%= page_title %></h2>
+	
+	<div>
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @bookmark.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@bookmark) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/bookmarks", :method => :post do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td style="width: 70px">
+							<label for="bookmark_title">
+						        标题(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="bookmark_title" name="bookmark_title" class="text_field" size="75" value="<%= h(@bookmark.title) %>" />
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><div class="form_info_l">输入名字或标题, 例如: <b>乔布圈</b></div></td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="bookmark_url">
+						        地址(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="bookmark_url" name="bookmark_url" class="text_field" size="75" value="<%= h(@bookmark.url) %>" />
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><div class="form_info_l">输入网址, 例如: <b>http://qiaobuquan.com</b></div></td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="bookmark_desc">
+						        描述
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="bookmark_desc" name="bookmark_desc" class="text_field" size="75" value="<%= h(@bookmark.desc) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label>
+						        收藏到
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="radio" value="personal" name="bookmark_type" id="bookmark_type_personal"<%= %Q! checked="checked"! if @bookmark.kind_of?(PersonalBookmark) %> onchange="change_bookmark_type('personal');" />
+
+							<label for="bookmark_type_personal">
+								我的推荐
+							</label>
+							
+							&nbsp;&nbsp;
+							&nbsp;&nbsp;
+							&nbsp;&nbsp;
+							
+							<input type="radio" value="group" name="bookmark_type" id="bookmark_type_group"<%= %Q! checked="checked"! if @bookmark.kind_of?(GroupBookmark) %> onchange="change_bookmark_type('group');" />
+
+							<label for="bookmark_type_group">
+								我参加的圈子
+							</label>
+							
+							&nbsp;
+							<span id="group_select" style="display: <%= "none" unless @bookmark.kind_of?(GroupBookmark) %>">
+								<%= render :partial => "group_name_selector" %>
+							</span>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "添加收藏", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/bookmarks">返回收藏列表</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+
+<script language="JavaScript">
+	
+	function change_bookmark_type(bookmark_type) {
+		var group_select_display = "none";
+		if(bookmark_type == "group") {
+			group_select_display = "";
+		}
+		
+		document.getElementById("group_select").style.display = group_select_display;
+	}
+	
+</script>
+
+

@@ -299,6 +299,20 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/votes/:id/:chart_type/comment/:page", :controller => "votes", :action => "show", :id => /\d+/, :page => /\d+/
   
   
+  map.connect "/bookmarks/list_personal_index", :controller => "bookmarks", :action => "list_personal_index"
+  map.connect "/bookmarks/personal/:page", :controller => "bookmarks", :action => "personal", :page => /\d+/
+  map.connect "/bookmarks/group/:page", :controller => "bookmarks", :action => "group", :page => /\d+/
+  map.connect "/bookmarks/list_personal/:id/:page", :controller => "bookmarks", :action => "list_personal", :id => /\d+/, :page => /\d+/
+  map.resources :bookmarks, :collection => {
+    
+    :personal => :get,
+    :group => :get
+    
+  }, :member => {
+    
+  }
+  
+  
   map.resources :job_targets, :collection => {
     
   }, :member => {

@@ -1126,5 +1126,29 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	margin-top: 5px;
 }
 
+.bookmark_container {
+	margin-left: 150px;
+	padding: 0px 20px;
+}
+
+.bookmark_container_l {
+	margin-left: 150px;
+	margin-right: 200px;
+	padding: 0px 20px;
+}
+
+.bookmark_container_r {
+	width: 200px;
+}
+
+.bookmark {
+	border-bottom: 1px dashed #DDDDDD;
+}
+
+.bookmark_title {
+	font-size: 15px;
+	font-weight: bold;
+}
+
 
 

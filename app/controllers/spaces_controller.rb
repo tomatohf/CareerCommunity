@@ -11,6 +11,7 @@ class SpacesController < ApplicationController
   Space_Vote_Num = 10
   Space_Photo_Num = 10
   Space_Blog_Num = 5
+  Space_Bookmark_Num = 5
   
   layout "community"
   before_filter :check_current_account, :only => [:index]

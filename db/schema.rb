@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 13) do
+ActiveRecord::Schema.define(:version => 14) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -347,6 +347,20 @@ ActiveRecord::Schema.define(:version => 13) do
 
   add_index "group_activities", ["delta"], :name => "index_group_activities_on_delta"
 
+  create_table "group_bookmarks", :force => true do |t|
+    t.datetime "created_at"
+    t.integer  "account_id", :limit => 11
+    t.integer  "group_id",   :limit => 11
+    t.string   "title"
+    t.string   "url"
+    t.string   "desc",       :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "group_bookmarks", ["created_at"], :name => "index_group_bookmarks_on_created_at"
+  add_index "group_bookmarks", ["account_id"], :name => "index_group_bookmarks_on_account_id"
+  add_index "group_bookmarks", ["group_id"], :name => "index_group_bookmarks_on_group_id"
+
   create_table "group_images", :force => true do |t|
     t.integer  "group_id",   :limit => 11
     t.datetime "updated_at"
@@ -585,6 +599,18 @@ ActiveRecord::Schema.define(:version => 13) do
   add_index "messages", ["has_read"], :name => "index_messages_on_has_read"
   add_index "messages", ["reply_to_id"], :name => "index_messages_on_reply_to_id"
   add_index "messages", ["delta"], :name => "index_messages_on_delta"
+
+  create_table "personal_bookmarks", :force => true do |t|
+    t.datetime "created_at"
+    t.integer  "account_id", :limit => 11
+    t.string   "title"
+    t.string   "url"
+    t.string   "desc",       :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "personal_bookmarks", ["created_at"], :name => "index_personal_bookmarks_on_created_at"
+  add_index "personal_bookmarks", ["account_id"], :name => "index_personal_bookmarks_on_account_id"
 
   create_table "photo_comments", :force => true do |t|
     t.integer  "photo_id",   :limit => 11

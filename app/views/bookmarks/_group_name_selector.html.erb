@@ -1,0 +1,21 @@
+<% # should be cached %>
+
+<%
+	owner_id = session[:account_id]
+	
+	group_members = GroupMember.agreed.find(
+		:all,
+		:select => "group_members.id, group_members.group_id, groups.id, groups.name",
+		:conditions => ["account_id = ?", owner_id],
+		:include => [:group],
+		:order => "join_at DESC"
+	)
+%>
+
+<select id="group_id" name="group_id" class="dropdown_list">
+	<% group_members.each do |group_member| %>
+		<option value="<%= group_member.group.id %>"><%= h(group_member.group.name) %></option>
+	<% end %>
+</select>
+
+

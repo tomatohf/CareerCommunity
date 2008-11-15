@@ -18,7 +18,8 @@ class AccountAction < ActiveRecord::Base
     "join_group" => "加入圈子",
     "join_activity" => "参加活动",
     "create_vote_topic" => "发起投票",
-    "join_vote_topic" => "参与投票"
+    "join_vote_topic" => "参与投票",
+    "add_bookmark" => "添加推荐/收藏"
   }
   
   Action_Types.keys.each do |t|
@@ -230,6 +231,29 @@ class AccountAction < ActiveRecord::Base
             :operator => #{operator},
             :blog_id => #{blog_id},
             :blog_title => "#{blog_title}",
+          
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddBookmark < Base
+      def action_text(data, operator, save_space)
+        bookmark_class_name = data[:bookmark_class_name]
+        bookmark_id = data[:bookmark_id]
+        bookmark_title = data[:bookmark_title]
+        bookmark_url = data[:bookmark_url]
+        bookmark_desc = data[:bookmark_desc]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_bookmark", :locals => {
+            :operator => #{operator},
+            :bookmark_class_name => "#{bookmark_class_name}",
+            :bookmark_id => #{bookmark_id},
+            :bookmark_title => "#{bookmark_title}",
+            :bookmark_url => "#{bookmark_url}",
+            :bookmark_desc => "#{bookmark_desc}",
           
             :save_space => #{save_space.inspect}
           })

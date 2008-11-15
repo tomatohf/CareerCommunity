@@ -1,0 +1,110 @@
+<%
+	account = bookmark.account
+	account_id = account.id
+	account_nick = account.get_nick
+	account_pic_url = account.get_profile_pic_url
+	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
+%>
+
+
+<div class="bookmark">
+<% if bookmark.kind_of?(GroupBookmark) %>
+
+	<%
+		group = bookmark.group
+		
+		group_id = group.id
+		group_name = group.name
+		group_image = group.get_image_url
+
+		Group.set_group_with_image_cache(group_id, group, group_image)
+	%>
+	
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 80px">
+				<div class="align_c">
+					<div>
+						<a href="/groups/<%= group_id %>">
+							<img src="<%= face_img_src(group_image) %>" border="0" /></a>
+					</div>
+					<div>
+						<a href="/groups/<%= group_id %>" class="account_nick_link">
+							<%= h(group_name) %></a>
+					</div>
+				</div>
+			</td>
+			
+			<td style="width: 20px;"></td>
+
+			<td valign="top">
+				<% bookmark_url = h(bookmark.url[0, 4] == "http" ? bookmark.url : "http://qiaobutang.com" + bookmark.url) %>
+				<div class="bookmark_title">
+					<a href="<%= bookmark_url %>" target="_blank" class="account_nick_link">						
+						<%= h(bookmark.title) %>
+						<img src="/images/ext_link_small.gif" border="0" /></a>
+				</div>
+				<div class="form_info_s">
+					<%= h(bookmark.desc) %>
+					&nbsp;&nbsp;&nbsp;
+					(
+					<i>
+						<a href="/spaces/show/<%= account_id %>">
+							<%= h(account_nick) %></a>
+						添加于
+						<%= format_datetime(bookmark.created_at) %>
+					</i>
+					)
+				</div>
+				<div class="form_info_s">
+					<a href="<%= bookmark_url %>" target="_blank">
+						<%= bookmark_url %></a>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+<% else %>
+
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 80px">
+				<div class="align_c">
+					<div>
+						<a href="/spaces/show/<%= account_id %>">
+							<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+					</div>
+					<div>
+						<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+							<%= h(account_nick) %></a>
+					</div>
+				</div>
+			</td>
+			
+			<td style="width: 20px;"></td>
+
+			<td valign="top">
+				<% bookmark_url = h(bookmark.url[0, 4] == "http" ? bookmark.url : "http://qiaobutang.com" + bookmark.url) %>
+				<div class="bookmark_title">
+					<a href="<%= h(bookmark.url) %>" target="_blank" class="account_nick_link">
+						<%= h(bookmark.title) %>
+						<img src="/images/ext_link_small.gif" border="0" /></a>
+				</div>
+				<div class="form_info_s">
+					<%= h(bookmark.desc) %>
+					&nbsp;&nbsp;&nbsp;
+					(<i><%= format_datetime(bookmark.created_at) %></i>)
+				</div>
+				<div class="form_info_s">
+					<a href="<%= h(bookmark.url) %>" target="_blank">
+						<%= bookmark_url %></a>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+<% end %>
+
+</div>
+
+

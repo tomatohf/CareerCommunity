@@ -95,6 +95,7 @@
 		<% end %>
 	<% end %>
 	
+	
 	<div class="community_title">
 		<%= owner_name %> 的朋友 ...
 	</div>
@@ -131,7 +132,46 @@
 		<div id="group_section">
 			<%= float_list(@group_members, "/groups/group_name_img", :group_name_img, {:show_icon => true, :owner_name => owner_name}, 3) %>
 		</div>
+		<div class="clear_l">
+			
+		</div>
 	</div>
+	
+	
+	<div class="community_title">
+		<%= owner_name %> 的推荐 ...
+	</div>
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="bookmark_section_expand" href="#" onclick="collapse_section('bookmark_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="bookmark_section_collapse" href="#" onclick="expand_section('bookmark_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			
+			<a href="/bookmarks/list_personal/<%= @account_id %>">所有的推荐</a>
+		</div>
+		
+		<div id="bookmark_section" class="community_block">
+			<% cache("#{PersonalBookmark::FCKP_spaces_show_bookmark}_#{@account_id}") do %>
+				<%
+					bookmarks = PersonalBookmark.find(
+						:all,
+						:limit => SpacesController::Space_Bookmark_Num,
+						:conditions => ["account_id = ?", @account_id],
+						:order => "created_at DESC"
+					)
+				%>
+				<%= render :partial => "/bookmarks/bookmark_small", :collection => bookmarks %>
+
+				<% unless bookmarks.size > 0 %>
+					<div class="form_info_l">
+						还没有任何推荐 ...
+					</div>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+	
 </div>
 
 <div class="community_container_l">

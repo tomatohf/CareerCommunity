@@ -1,0 +1,60 @@
+<% @page_title = h(@page_title) %>
+<% community_page_title(@page_title) %>
+
+<div class="float_r bookmark_container_r">
+	
+	<div class="community_block">
+		<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 180px;" do %>
+			<div class="action_bar">
+				<a href="/bookmarks/new">
+					<img src="/images/bookmarks/new_bookmark_small.gif" border="0" style="margin-right: 6px;" />添加新的收藏</a>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="community_block">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block align_c">
+		»
+		<a href="/bookmarks/list_personal_index">
+			我的所有推荐</a>
+	</div>
+	
+</div>
+
+<div class="bookmark_container_l">
+
+	<h2><%= @page_title %></h2>
+	
+	<% if action_name == "personal" || action_name == "group" %>
+		<div class="community_block_narrow">
+			<a href="/bookmarks/personal"<%= %Q! class="link_selected"! if action_name == "personal" %>>
+				最新会员推荐</a>
+			
+			&nbsp;&nbsp;&nbsp;
+		
+			<a href="/bookmarks/group"<%= %Q! class="link_selected"! if action_name == "group" %>>
+				最新圈子收藏</a>
+		</div>
+	<% end %>
+	
+	<div class="community_block form_info_s">
+		共有
+		<b><%= @bookmarks.total_entries %></b>
+		个
+	</div>
+
+	<div class="community_block">
+		<%= render :partial => "bookmark", :collection => @bookmarks, :locals => {:can_del => @edit} %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@bookmarks) %>
+	</div>
+	
+</div>
+
+
+

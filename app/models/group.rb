@@ -34,6 +34,13 @@ class Group < ActiveRecord::Base
   
   
   
+  CKP_created_count = :group_created_count
+  CKP_group_with_img = :group_with_img
+  
+  FCKP_account_group_names = :fc_account_group_names
+  
+  
+  
   after_destroy { |group|
     self.decrease_created_count_cache(group.creator_id)
   }
@@ -43,8 +50,6 @@ class Group < ActiveRecord::Base
   }
   
   
-  CKP_created_count = :group_created_count
-  CKP_group_with_img = :group_with_img
   
   
   

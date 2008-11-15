@@ -448,7 +448,7 @@
 							lecture_recruitments = Recruitment.find(
 								:all,
 								:limit => 15,
-								:conditions => ["recruitment_type = ?", "全职"],
+								:conditions => ["recruitment_type = ? and source_name in (?)", "全职", ["Hiall", "我是应届生"]],
 								:select => "id, title, publish_time, location, recruitment_type",
 								:order => "publish_time DESC"
 						    )
@@ -473,7 +473,7 @@
 							lecture_recruitments = Recruitment.find(
 								:all,
 								:limit => 15,
-								:conditions => ["recruitment_type = ?", "兼职"],
+								:conditions => ["recruitment_type = ? and source_name in (?)", "兼职", ["Hiall", "我是应届生"]],
 								:select => "id, title, publish_time, location, recruitment_type",
 								:order => "publish_time DESC"
 						    )
