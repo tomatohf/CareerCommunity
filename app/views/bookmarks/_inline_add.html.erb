@@ -1,0 +1,18 @@
+<% skip_lib &&= true %>
+
+<% unless skip_lib %>
+	<link href="/lib/greybox/gb_styles.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript">
+		var GB_ROOT_DIR = "/lib/greybox/";
+	</script>
+
+	<script type="text/javascript" src="/lib/greybox/AJS.js"></script>
+	<script type="text/javascript" src="/lib/greybox/AJS_fx.js"></script>
+	<script type="text/javascript" src="/lib/greybox/gb_scripts.js"></script>
+<% end %>
+
+<a rel="gb_page_center[580, 260]" title="推荐/收藏- <%= title %>" href="/bookmarks/inline_add_form?url=<%= url %>&title=<%= title %>">
+	<img src="/images/bookmarks/inline_add.png" border="0" /></a>
+
+

@@ -116,10 +116,12 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/groups/activity/:id/:page", :controller => "groups", :action => "activity", :id => /\d+/, :page => /\d+/
   map.connect "/groups/vote/:id/:page", :controller => "groups", :action => "vote", :id => /\d+/, :page => /\d+/
   map.connect "/groups/photo/:id/:page", :controller => "groups", :action => "photo", :id => /\d+/, :page => /\d+/
+  map.connect "/groups/bookmark/:id/:page", :controller => "groups", :action => "bookmark", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_post/:id/:page", :controller => "groups", :action => "all_post", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_activity/:id/:page", :controller => "groups", :action => "all_activity", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_vote/:id/:page", :controller => "groups", :action => "all_vote", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_photo/:id/:page", :controller => "groups", :action => "all_photo", :id => /\d+/, :page => /\d+/
+  map.connect "/groups/all_bookmark/:id/:page", :controller => "groups", :action => "all_bookmark", :id => /\d+/, :page => /\d+/
   map.connect "/groups/created_post/:id/:page", :controller => "groups", :action => "created_post", :id => /\d+/, :page => /\d+/
   map.connect "/groups/commented_post/:id/:page", :controller => "groups", :action => "commented_post", :id => /\d+/, :page => /\d+/
   map.resources :groups, :member => {
@@ -306,7 +308,12 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :bookmarks, :collection => {
     
     :personal => :get,
-    :group => :get
+    :group => :get,
+    
+    :new_group_bookmark => :post,
+    
+    :inline_add_form => :any,
+    :create_inline => :post
     
   }, :member => {
     

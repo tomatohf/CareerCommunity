@@ -10,11 +10,11 @@
 			相册的主人 ...
 		</div>
 		
-		<div class="community_block">
+		<div class="community_block align_c">
 			<a href="/spaces/show/<%= @photo.account_id %>">
 				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
 		</div>
-		<div class="community_block">
+		<div class="community_block align_c">
 			<a href="/spaces/show/<%= @photo.account_id %>" class="account_nick_link">
 				<%= owner_name %></a>
 		</div>
@@ -53,6 +53,10 @@
 </div>
 
 <div class="photo_container_l">
+	<div class="float_r">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/photos/#{@photo.id}", :title => (@photo.title && @photo.title != "") ? "照片: #{h(@photo.title)}" : ""} %>
+	</div>
+	
 	<h2><%= page_title %></h2>
 	
 	<% if @edit %>

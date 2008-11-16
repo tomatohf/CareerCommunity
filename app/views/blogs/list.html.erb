@@ -45,6 +45,10 @@
 </div>
 
 <div class="blog_small_container_l">
+	<div class="float_r">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/blogs/list/#{@owner_id}", :title => "#{h(page_title)}"} %>
+	</div>
+	
 	<h2><%= page_title %></h2>
 	
 	<div class="community_block_narrow form_info_s">

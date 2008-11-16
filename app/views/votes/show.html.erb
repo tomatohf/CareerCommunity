@@ -122,15 +122,20 @@
 </div>
 
 <div class="vote_container_l">
-	<span class="float_r form_info_s">
-		分类:
-		[
-			<a href="/votes/category/<%= @vote_topic.category_id %>">
-				<%= VoteCategory.get_category(@vote_topic.category_id) %></a>
-		]
-	</span>
+	<div class="float_r">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/votes/#{@vote_topic_id}", :title => "投票话题: #{vote_topic_title}"} %>
+	</div>
 		
-	<h2><%= vote_topic_title %></h2>
+	<h2>
+		<%= vote_topic_title %>
+		&nbsp;
+		<span class="form_info_s" style="font-size: 12px;">
+			[
+				<a href="/votes/category/<%= @vote_topic.category_id %>">
+					<%= VoteCategory.get_category(@vote_topic.category_id) %></a>
+			]
+		</span>
+	</h2>
 	
 	<div class="form_info_s">
 		<%= h(@vote_topic.desc) %>

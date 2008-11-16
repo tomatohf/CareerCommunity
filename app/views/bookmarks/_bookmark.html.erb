@@ -1,14 +1,6 @@
-<%
-	account = bookmark.account
-	account_id = account.id
-	account_nick = account.get_nick
-	account_pic_url = account.get_profile_pic_url
-	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
-%>
-
+<% if bookmark.kind_of?(GroupBookmark) %>
 
 <div class="bookmark">
-<% if bookmark.kind_of?(GroupBookmark) %>
 
 	<%
 		group = bookmark.group
@@ -38,7 +30,7 @@
 			<td style="width: 20px;"></td>
 
 			<td valign="top">
-				<% bookmark_url = h(bookmark.url[0, 4] == "http" ? bookmark.url : "http://qiaobutang.com" + bookmark.url) %>
+				<% bookmark_url = h(bookmark.get_display_url) %>
 				<div class="bookmark_title">
 					<a href="<%= bookmark_url %>" target="_blank" class="account_nick_link">						
 						<%= h(bookmark.title) %>
@@ -49,8 +41,8 @@
 					&nbsp;&nbsp;&nbsp;
 					(
 					<i>
-						<a href="/spaces/show/<%= account_id %>">
-							<%= h(account_nick) %></a>
+						<a href="/spaces/show/<%= bookmark.account.id %>">
+							<%= h(bookmark.account.get_nick) %></a>
 						添加于
 						<%= format_datetime(bookmark.created_at) %>
 					</i>
@@ -64,47 +56,12 @@
 		</tr>
 	</table>
 
+</div>
+
 <% else %>
 
-	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
-		<tr>
-			<td valign="top" style="width: 80px">
-				<div class="align_c">
-					<div>
-						<a href="/spaces/show/<%= account_id %>">
-							<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
-					</div>
-					<div>
-						<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
-							<%= h(account_nick) %></a>
-					</div>
-				</div>
-			</td>
-			
-			<td style="width: 20px;"></td>
-
-			<td valign="top">
-				<% bookmark_url = h(bookmark.url[0, 4] == "http" ? bookmark.url : "http://qiaobutang.com" + bookmark.url) %>
-				<div class="bookmark_title">
-					<a href="<%= h(bookmark.url) %>" target="_blank" class="account_nick_link">
-						<%= h(bookmark.title) %>
-						<img src="/images/ext_link_small.gif" border="0" /></a>
-				</div>
-				<div class="form_info_s">
-					<%= h(bookmark.desc) %>
-					&nbsp;&nbsp;&nbsp;
-					(<i><%= format_datetime(bookmark.created_at) %></i>)
-				</div>
-				<div class="form_info_s">
-					<a href="<%= h(bookmark.url) %>" target="_blank">
-						<%= bookmark_url %></a>
-				</div>
-			</td>
-		</tr>
-	</table>
+	<%= render :partial => "personal_bookmark", :object => bookmark, :locals => {:show_face => true} %>
 
 <% end %>
-
-</div>
 
 

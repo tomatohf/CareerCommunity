@@ -6,6 +6,7 @@ class GroupsController < ApplicationController
   Post_List_Size = 50
   Activity_List_Size = 15
   Vote_List_Size = 6
+  Bookmark_List_Size = 20
   Photo_List_Size = 30
   
   Group_Recent_List_Size = 24
@@ -13,10 +14,11 @@ class GroupsController < ApplicationController
   Activity_Recent_List_Size = 16
   Photo_Recent_List_Size = 15
   
-  New_Member_Num = 9
+  New_Member_Num = 15
   Group_Post_Num = 20
   Group_Activity_Num = 10
   Group_Vote_Num = 10
+  Group_Bookmark_Num = 10
   Group_Photo_Num = 15
   
   Group_Admin_Max_Count = 11
@@ -338,6 +340,23 @@ class GroupsController < ApplicationController
       :per_page => Photo_List_Size,
       :conditions => ["group_id = ?", @group_id],
       :include => [:photo, :account],
+      :order => "created_at DESC"
+    )
+  end
+  
+  def bookmark
+    @group_id = params[:id]
+    @group, @group_image = Group.get_group_with_image(@group_id)
+    
+    @is_admin = GroupMember.is_group_admin(@group_id, session[:account_id])
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @bookmarks = GroupBookmark.paginate(
+      :page => page,
+      :per_page => Bookmark_List_Size,
+      :conditions => ["group_id = ?", @group_id],
+      :include => [:account => :profile_pic],
       :order => "created_at DESC"
     )
   end

@@ -4,6 +4,7 @@
 <% community_page_title(page_title) %>
 
 <div class="float_r blog_container_r">
+	
 	<div class="community_title">
 		<%= owner_name %> 的博客 ...
 	</div>
@@ -58,6 +59,10 @@
 	<div class="community_block form_info_s">
 		最后更新于
 		<%= format_datetime(@blog.updated_at) %>
+	</div>
+	
+	<div class="align_r">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/blogs/#{@blog.id}", :title => "博客: #{page_title}"} %>
 	</div>
 	
 	<% if @edit %>

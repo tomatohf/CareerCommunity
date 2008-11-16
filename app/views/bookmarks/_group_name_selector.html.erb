@@ -1,5 +1,7 @@
 <% # should be cached %>
 
+<% selected_group_id ||= "" %>
+
 <%
 	owner_id = session[:account_id]
 	
@@ -14,7 +16,11 @@
 
 <select id="group_id" name="group_id" class="dropdown_list">
 	<% group_members.each do |group_member| %>
-		<option value="<%= group_member.group.id %>"><%= h(group_member.group.name) %></option>
+		<option value="<%= group_member.group.id %>"
+			<%= %Q! selected="selected"! if group_member.group.id == selected_group_id %>
+		>
+			<%= h(group_member.group.name) %>
+		</option>
 	<% end %>
 </select>
 

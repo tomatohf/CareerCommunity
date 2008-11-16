@@ -81,6 +81,12 @@
 			最后更新于
 			<%= format_datetime(@post.updated_at) %>
 		</div>
+		
+		
+		<div class="align_r">
+			<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/#{pluralized_post_type}/posts/#{@post_id}", :title => "#{@type_label}讨论话题: #{page_title}"} %>
+		</div>
+		
 	
 		<% if @access.include?(:admin) %>	
 			<% top_action = @post.top ? "untop" : "top" %>

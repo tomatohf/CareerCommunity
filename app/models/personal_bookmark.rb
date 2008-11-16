@@ -32,6 +32,16 @@ class PersonalBookmark < ActiveRecord::Base
   
   
   
+  def is_absolute_url
+    url[0, 4] == "http"
+  end
+  
+  def get_display_url
+    is_absolute_url ? url : "http://qiaobutang.com" + url
+  end
+  
+  
+  
 end
 
 

@@ -6,8 +6,14 @@
 <% community_page_title(page_title) %>
 
 <div class="float_r">
-	<a class="browser_album_link" href="<%= @album.get_cover_photo_img_src(:big) %>" rel="lightbox[album]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 &lt;br /&gt; <%= h_album_name %> 的封面照片 &lt;br /&gt;">
-		浏览相册中的照片<img src="/images/album_browser.png" border="0" /></a>
+	<div>
+		<a class="browser_album_link" href="<%= @album.get_cover_photo_img_src(:big) %>" rel="lightbox[album]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 &lt;br /&gt; <%= h_album_name %> 的封面照片 &lt;br /&gt;">
+			浏览相册中的照片<img src="/images/album_browser.png" border="0" /></a>
+	</div>
+	
+	<div class="align_c" style="margin-top: 25px;">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/albums/#{@album.id}", :title => "#{page_title}"} %>
+	</div>
 </div>
 	
 <div class="album_container">

@@ -5,6 +5,10 @@
 
 <div class="float_r blog_container_r">
 	
+	<div class="align_c">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/activities/#{@activity_id}", :title => "活动: #{activity_title}"} %>
+	</div>
+	
 	<% if @group %>
 		<div class="community_title">
 			圈子内活动 ...
