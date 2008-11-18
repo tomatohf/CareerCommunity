@@ -38,9 +38,6 @@ class ActivitiesController < ApplicationController
                                           :add_absent, :del_absent, :add_interest, :del_interest,
                                           :cancel, :recover, :add_admin, :del_admin, :update_master]
 
-  before_filter :check_edit_for_activity, :only => [:list_join_edit, :list_create_edit,
-                                                    :list_interest_edit, :list_notbegin_join_edit]
-
   before_filter :check_activity_groups_account, :only => [:activity_groups]
   
   before_filter :check_activity_admin, :only => [:edit_image, :update_image,
@@ -137,6 +134,8 @@ class ActivitiesController < ApplicationController
   def list_join
     @owner_id = params[:id]
     
+    @edit = (session[:account_id].to_s == params[:id])
+    
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
     page = params[:page]
@@ -150,14 +149,10 @@ class ActivitiesController < ApplicationController
     )
   end
   
-  def list_join_edit
-    @edit = true
-    list_join
-    render(:action => "list_join")
-  end
-  
   def list_create
     @owner_id = params[:id]
+    
+    @edit = (session[:account_id].to_s == params[:id])
     
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
@@ -172,14 +167,10 @@ class ActivitiesController < ApplicationController
     )
   end
   
-  def list_create_edit
-    @edit = true
-    list_create
-    render(:action => "list_create")
-  end
-  
   def list_interest
     @owner_id = params[:id]
+    
+    @edit = (session[:account_id].to_s == params[:id])
     
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
@@ -194,12 +185,6 @@ class ActivitiesController < ApplicationController
     )
   end
   
-  def list_interest_edit
-    @edit = true
-    list_interest
-    render(:action => "list_interest")
-  end
-  
   def del_interest
     activity_id = params[:id]
     ActivityInterest.find(
@@ -207,12 +192,14 @@ class ActivitiesController < ApplicationController
       :conditions => ["account_id = ? and activity_id = ?", session[:account_id], activity_id]
     ).each { |ai| ai.destroy }
     
-    jump_to("/activities/list_interest_edit/#{session[:account_id]}")
+    jump_to("/activities/list_interest/#{session[:account_id]}")
   end
   
   
   def list_notbegin_join
     @owner_id = params[:id]
+    
+    @edit = (session[:account_id].to_s == params[:id])
     
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
@@ -225,12 +212,6 @@ class ActivitiesController < ApplicationController
       :include => [:activity => [:image]],
       :order => "activities.begin_at ASC"
     )
-  end
-  
-  def list_notbegin_join_edit
-    @edit = true
-    list_notbegin_join
-    render(:action => "list_notbegin_join")
   end
   
   def list_friend
@@ -1323,10 +1304,6 @@ class ActivitiesController < ApplicationController
   def is_activity_member_beyond_limit(activity, include_equal = true)
     limit = activity.member_limit
     (limit && limit > 0) && (ActivityMember.count_activity_member(activity.id).send(include_equal ? ">=" : ">", limit))
-  end
-  
-  def check_edit_for_activity
-    jump_to("/activities/#{action_name[0...-5]}/#{params[:id]}") unless session[:account_id].to_s == params[:id]
   end
   
   

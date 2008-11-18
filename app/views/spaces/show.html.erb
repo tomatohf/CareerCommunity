@@ -258,7 +258,7 @@
 							<a class="float_r" title="展开" id="join_activity_section_collapse" href="#" onclick="expand_section('join_activity_section'); return false;" style="display: none">
 								<img src="/images/collapse.png" border="0" /></a>
 							<span class="float_r">
-								<a href="/activities/<%= @edit ? "list_join_edit" : "list_join" %>/<%= @account_id %>">所有参加的活动</a>
+								<a href="/activities/list_join/<%= @account_id %>">所有参加的活动</a>
 								&nbsp;&nbsp;&nbsp;
 							</span>
 							
@@ -298,7 +298,7 @@
 							<a class="float_r" title="展开" id="interest_activity_section_collapse" href="#" onclick="expand_section('interest_activity_section'); return false;" style="display: none">
 								<img src="/images/collapse.png" border="0" /></a>
 							<span class="float_r">
-								<a href="/activities/<%= @edit ? "list_interest_edit" : "list_interest" %>/<%= @account_id %>">所有感兴趣的活动</a>
+								<a href="/activities/list_interest/<%= @account_id %>">所有感兴趣的活动</a>
 								&nbsp;
 							</span>
 							

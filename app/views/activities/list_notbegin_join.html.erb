@@ -25,15 +25,15 @@
 	</div>
 	
 	<div class="community_block">
-		<a href="/activities/<%= @edit ? "list_join_edit" : "list_join" %>/<%= @owner_id %>">所有 <%= owner_name %> 参加的活动</a>
+		<a href="/activities/list_join/<%= @owner_id %>">所有 <%= owner_name %> 参加的活动</a>
 	</div>
 	
 	<div class="community_block">
-		<a href="/activities/<%= @edit ? "list_create_edit" : "list_create" %>/<%= @owner_id %>">所有 <%= owner_name %> 发起的活动</a>
+		<a href="/activities/list_create/<%= @owner_id %>">所有 <%= owner_name %> 发起的活动</a>
 	</div>
 
 	<div class="community_block">
-		<a href="/activities/<%= @edit ? "list_interest_edit" : "list_interest" %>/<%= @owner_id %>">所有 <%= owner_name %> 感兴趣的活动</a>
+		<a href="/activities/list_interest/<%= @owner_id %>">所有 <%= owner_name %> 感兴趣的活动</a>
 	</div>
 	
 	<div class="community_block_narrow">
