@@ -96,7 +96,7 @@
 		</div>
 		<div class="community_block_narrow form_info_s">
 			注意: 除圈主外, 最多只能再设置
-			<b>10</b>
+			<b><%= GroupsController::Group_Admin_Max_Count - 1 %></b>
 			名管理员
 		</div>
 	<% end %>

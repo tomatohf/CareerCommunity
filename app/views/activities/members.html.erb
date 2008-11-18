@@ -1,6 +1,11 @@
 <% activity_title = h(@activity.get_title) %>
 
-<% page_title = "#{"管理" if @is_master}参加活动 #{activity_title} 的成员" %>
+<%
+	page_title = "参加活动 #{activity_title} 的成员"
+	page_title = "管理参加活动 #{activity_title} 的成员" if @is_admin
+	page_title = "设置活动 #{activity_title} 的管理员" if @is_master
+%>
+
 <% community_page_title(page_title) %>
 
 <div class="float_r group_container_r">
@@ -15,6 +20,15 @@
 	</div>
 	
 	<% if @is_master %>
+		<div class="community_block">
+			<a href="/activities/<%= @activity_id %>/edit_master">» 转让负责人身份给其他管理员</a>
+		</div>
+		<div class="community_block">
+			<a href="/activities/members_edit/<%= @activity_id %>">» 管理参加活动的成员</a>
+		</div>
+	<% end %>
+	
+	<% if @is_admin %>
 		<div class="community_block">
 			<a href="/activities/members_info/<%= @activity_id %>">统计报名参加活动成员的信息</a>
 		</div>
@@ -42,12 +56,32 @@
 		</div>
 	</div>
 	
+	<div class="community_title">
+		管理员 ...
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		有
+		<b><%= @admin_members.size %></b>
+		名管理员
+	</div>
+	
+	<div>
+		<%= float_list(@admin_members, "member", :member, {:can_minus_admin => @is_master}, 3) %>
+	</div>
+	
 </div>
 
 <div class="group_container_l">
 	<h2><%= page_title %></h2>
 	
-	<% if @is_master %>
+	<div class="community_block_narrow form_info_s">
+		点击
+		<a title="查看其活动出席/缺席情况的统计" href="#">
+			<img src="/images/activities/edit_absent_small.png" border="0" /></a>
+		查看网友的出席/缺席活动的情况的统计
+	</div>
+	<% if @is_admin %>
 		<div class="community_block_narrow form_info_s">
 			点击
 			<a title="从参加活动的成员中删除" href="#">
@@ -55,12 +89,25 @@
 			将成员从活动中删除
 		</div>
 	<% end %>
-	<div class="community_block_narrow form_info_s">
-		点击
-		<a title="查看其活动出席/缺席情况的统计" href="#">
-			<img src="/images/activities/edit_absent_small.png" border="0" /></a>
-		查看网友的出席/缺席活动的情况的统计
-	</div>
+	<% if @is_master %>
+		<div class="community_block_narrow form_info_s">
+			点击
+			<a title="升级为管理员" href="#">
+				<img src="/images/groups/plus_small.png" border="0" /></a>
+			将普通成员升级为活动的管理员
+		</div>
+		<div class="community_block_narrow form_info_s">
+			点击
+			<a title="降为普通成员" href="#">
+				<img src="/images/groups/minus_small.png" border="0" /></a>
+			将活动的管理员降为普通成员
+		</div>
+		<div class="community_block_narrow form_info_s">
+			注意: 除负责人外, 最多只能再设置
+			<b><%= ActivitiesController::Activity_Admin_Max_Count - 1 %></b>
+			名管理员
+		</div>
+	<% end %>
 	
 	
 	<div class="community_title">
@@ -74,7 +121,7 @@
 	</div>
 	
 	<div class="community_block overflow_hidden">
-		<%= float_list(@members, "member", :member, {:can_del => @is_master}, 6) %>
+		<%= float_list(@members, "member", :member, {:can_del => @is_admin, :can_plus_admin => @is_master}, 6) %>
 	</div>
 	
 	<div class="community_block">
@@ -83,7 +130,7 @@
 	
 </div>
 
-<% if @is_master %>
+<% if @is_admin %>
 	<% form_tag "/activities/#{@activity_id}/del_member", :method => :post, :id => "delete_member_form" do %>
 		<input type="hidden" id="del_member_id" name="del_member_id" />
 	<% end %>
@@ -93,6 +140,34 @@
 			if(confirm("确定要将其从活动中删除么 ?")) {
 				var del_form = document.getElementById("delete_member_form");
 				document.getElementById("del_member_id").value = account_id;
+				del_form.submit();
+			}
+		}
+	</script>
+<% end %>
+
+<% if @is_master %>
+	<% form_tag "/activities/#{@activity_id}/add_admin", :method => :post, :id => "add_admin_form" do %>
+		<input type="hidden" id="add_admin_id" name="add_admin_id" />
+	<% end %>
+	
+	<% form_tag "/activities/#{@activity_id}/del_admin", :method => :post, :id => "delete_admin_form" do %>
+		<input type="hidden" id="del_admin_id" name="del_admin_id" />
+	<% end %>
+	
+	<script language="JavaScript">
+		function plus_admin(account_id) {
+			if(confirm("确定要将其升级为管理员么 ?")) {
+				var add_form = document.getElementById("add_admin_form");
+				document.getElementById("add_admin_id").value = account_id;
+				add_form.submit();
+			}
+		}
+		
+		function minus_admin(account_id) {
+			if(confirm("确定要将其降为普通成员么 ?")) {
+				var del_form = document.getElementById("delete_admin_form");
+				document.getElementById("del_admin_id").value = account_id;
 				del_form.submit();
 			}
 		}

@@ -86,7 +86,7 @@
 		<%= thin_hr %>
 	</div>
 		
-	<% if @is_master %>
+	<% if @is_admin %>
 		<%# if activity_status[0] <= Activity::Status::Ongoing[0] %>
 			<div class="community_block">
 				<a href="/activities/<%= @activity_id %>/edit">修改活动的信息</a>
@@ -132,6 +132,14 @@
 		</div>
 	<% end %>
 	
+	<% if @is_master %>
+		<div class="community_block">
+			<a href="/activities/members_master/<%= @activity_id %>">
+				<img src="/images/groups/admin_icon.png" border="0" />
+				设置活动的管理员</a>
+		</div>
+	<% end %>
+	
 	<div class="community_block">
 		<a href="/activities/interest/<%= @activity_id %>">
 			<img src="/images/activities/interest_small.png" border="0" />
@@ -140,9 +148,9 @@
 	
 	<% if activity_status[0] >= Activity::Status::Ongoing[0] %>
 		<div class="community_block">
-			<a href="/activities/<%= @is_master ? "absent_edit" : "absent" %>/<%= @activity_id %>">
+			<a href="/activities/<%= @is_admin ? "absent_edit" : "absent" %>/<%= @activity_id %>">
 				<img src="/images/activities/edit_absent_small.png" border="0" />
-				<%= @is_master ? "编辑" : "查看" %>活动的缺席成员</a>
+				<%= @is_admin ? "编辑" : "查看" %>活动的缺席成员</a>
 		</div>
 	<% end %>
 	
@@ -301,7 +309,7 @@
 					<td align="left" valign="middle" style="width: 200px;">
 						<% face_image_url = @activity_image || "" %>
 						<% face_image_url = face_image_url.gsub("thumb_48", "thumb_200") if face_image_url.include?("thumb_48") %>
-						<% if @is_master && activity_status[0] <= Activity::Status::Ongoing[0] %>
+						<% if @is_admin # && activity_status[0] <= Activity::Status::Ongoing[0] %>
 							<a href="/activities/<%= @activity_id %>/edit_image">
 								<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>
 						<% else %>
@@ -320,7 +328,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="desc_section_collapse" href="#" onclick="expand_section('desc_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% if @is_master && activity_status[0] <= Activity::Status::Ongoing[0] %>
+			<% if @is_admin # && activity_status[0] <= Activity::Status::Ongoing[0] %>
 				<span class="float_r">
 					<a href="/activities/<%= @activity_id %>/edit#edit_activity_desc">编辑活动的描述</a>
 					&nbsp;&nbsp;&nbsp;

@@ -6,11 +6,17 @@
 		</td>
 		
 		<td>
-			你参加活动
-			<a href="/activities/<%= activity_id %>" target="_blank"><%= h(activity_title) %></a>
-			的申请被
+			<a href="/spaces/show/<%= admin_id %>" class="account_nick_link" target="_blank">
+				<%= h(admin_nick) %></a>
 			<b><%= approve ? "批准" : "拒绝" %></b>
-			了
+			了你参加活动
+			<a href="/activities/<%= activity_id %>" target="_blank"><%= h(activity_title) %></a>
+			的申请
+		</td>
+		
+		<td style="width: 50px">
+			<a href="/spaces/show/<%= admin_id %>" target="_blank">
+				<img src="<%= face_img_src(admin_pic_url) %>" border="0" /></a>
 		</td>
 	</tr>
 </table>

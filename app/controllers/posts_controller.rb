@@ -478,7 +478,7 @@ class PostsController < ApplicationController
       end
       
       def check_destroy_access(type_id, account_id)
-        ::Activity.get_activity_with_image(type_id)[0].master_id == account_id
+        ActivityMember.is_activity_admin(type_id, account_id)
       end
       
       def check_create_comment_access(type_id, account_id)
@@ -507,11 +507,12 @@ class PostsController < ApplicationController
         access << :member # everyone can add post in activity
         
         if current_account_id
-          access << :admin if ::Activity.get_activity_with_image(type_id)[0].master_id == current_account_id
+          access << :admin if ActivityMember.is_activity_admin(type_id, current_account_id)
           access << :author if (poster_id == current_account_id)
         end
         access
       end
+      
     end
     
   end

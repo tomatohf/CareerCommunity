@@ -85,11 +85,25 @@ class ActivityMember < ActiveRecord::Base
     activity_member
   end
   
+  def self.get_activity_admins(activity_id, include_account = true)
+    options = {
+      :conditions => ["activity_id = ? and admin = ?", activity_id, true],
+      :order => "join_at ASC"
+    }
+    options[:include] = [:account => [:profile_pic]] if include_account
+    
+    self.agreed.find(:all, options)
+  end
+  
+  def self.count_admin(activity_id)
+    self.agreed.count(:conditions => ["activity_id = ? and admin = ?", activity_id, true])
+  end
+  
   def self.paginate_activity_members(activity_id, page, page_size)
     self.agreed.paginate(
       :page => page,
       :per_page => page_size,
-      :conditions => ["activity_id = ?", activity_id],
+      :conditions => ["activity_id = ? and admin = ?", activity_id, false],
       :include => [:account => [:profile_pic]],
       :order => "join_at DESC"
     )

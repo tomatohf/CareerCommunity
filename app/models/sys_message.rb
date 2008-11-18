@@ -305,6 +305,11 @@ class SysMessage < ActiveRecord::Base
     
     class ApproveRejectJoinActivity < Base
       def msg_text(data, owner_id)
+        admin_id = data[:admin_account_id] || data[:master_account_id]
+        admin_nick_pic = Account.get_nick_and_pic(admin_id)
+        admin_nick = admin_nick_pic[0]
+        admin_pic_url = admin_nick_pic[1]
+        
         activity_id = data[:activity_id]
         activity, activity_image = Activity.get_activity_with_image(activity_id)
         
@@ -312,6 +317,10 @@ class SysMessage < ActiveRecord::Base
         
         %Q!
           render(:partial => "/messages/sys/approve_reject_join_activity", :locals => {
+            :admin_id => #{admin_id},
+            :admin_nick => "#{admin_nick}",
+            :admin_pic_url => "#{admin_pic_url}",
+            
             :activity_id => #{activity_id},
             :activity_title => "#{activity.get_title}",
             :activity_image => "#{activity_image}",

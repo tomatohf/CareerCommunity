@@ -219,10 +219,16 @@ ActionController::Routing::Routes.draw do |map|
     
     :del_member => :post,
     
+    :add_admin => :post,
+    :del_admin => :post,
+    
     :approve_member => :post,
     :reject_member => :post,
     
     :invite_member => :post,
+    
+    :edit_master => :get,
+    :update_master => :post,
     
     :add_absent => :post,
     :del_absent => :post,

@@ -19,6 +19,8 @@ class ActivitiesController < ApplicationController
   
   Same_Creator_Activity_Num = 10
   
+  Activity_Admin_Max_Count = 11
+  
   layout "community"
   before_filter :check_current_account, :only => [:recent_index]
   before_filter :check_login, :only => [:new, :new_in_groups, :create, :activity_groups,
@@ -28,25 +30,27 @@ class ActivitiesController < ApplicationController
                                         :approve_member, :reject_member, :invite, :invite_member,
                                         :absent_edit, :add_absent, :del_absent,
                                         :add_interest, :del_interest, :photo_selector_for_activity_image,
-                                        :members_info, :cancel, :recover]
+                                        :members_info, :cancel, :recover,
+                                        :members_master, :add_admin, :del_admin, :edit_master, :update_master]
   before_filter :check_limited, :only => [:create, :update_image, :join, :quit,
                                           :edit, :update, :update_desc, :update_access, :del_member,
                                           :approve_member, :reject_member, :invite_member,
                                           :add_absent, :del_absent, :add_interest, :del_interest,
-                                          :cancel, :recover]
+                                          :cancel, :recover, :add_admin, :del_admin, :update_master]
 
   before_filter :check_edit_for_activity, :only => [:list_join_edit, :list_create_edit,
                                                     :list_interest_edit, :list_notbegin_join_edit]
 
   before_filter :check_activity_groups_account, :only => [:activity_groups]
   
-  before_filter :check_activity_master, :only => [:edit_image, :update_image,
+  before_filter :check_activity_admin, :only => [:edit_image, :update_image,
                                                   :edit, :update, :update_desc, :update_access,
-                                                  :members_edit, :del_member, :unapproved,
-                                                  :approve_member, :reject_member,
-                                                  :invite, :invite_member,
                                                   :absent_edit, :add_absent, :del_absent,
-                                                  :members_info, :cancel, :recover]
+                                                  :invite, :invite_member,
+                                                  :approve_member, :reject_member,
+                                                  :members_edit, :del_member, :unapproved, :members_info]
+  before_filter :check_activity_master, :only => [:members_master, :add_admin, :del_admin,
+                                                  :cancel, :recover, :edit_master, :update_master]
                                                   
   before_filter :check_activity_status_registering, :only => [:check_profile, :join, :quit,
                                                               :invite, :invite_member]
@@ -492,8 +496,8 @@ class ActivitiesController < ApplicationController
   end
   
   def edit_image
-    # done by before filter - check_activity_master
-    # @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    
   end
   
   def update_image
@@ -530,6 +534,7 @@ class ActivitiesController < ApplicationController
     
     @is_master = (@activity.master_id == session[:account_id])
     @is_member = has_login? && ActivityMember.is_activity_member(@activity_id, session[:account_id])
+    @is_admin = @is_master || (@is_member && @is_member.admin)
     @beyond_limit = (@activity.get_status[0] <= Activity::Status::Registering[0]) && (!@is_member) && is_activity_member_beyond_limit(@activity)
     
     @can_add_interest = has_login? && (!@is_member) && (!ActivityInterest.is_interest_activity(session[:account_id], @activity_id))
@@ -612,7 +617,7 @@ class ActivitiesController < ApplicationController
     @activity_id = params[:id]
     @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
     
-    @is_admin = @activity.master_id == session[:account_id]
+    @is_admin = ActivityMember.is_activity_admin(@activity_id, session[:account_id])
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
@@ -739,11 +744,16 @@ class ActivitiesController < ApplicationController
     
     # need to wait for the approval of activity master
     
-    # send sys message to activity master
-    SysMessage.create_new(@activity.master_id, "join_activity_request", {
-      :requester_id => session[:account_id],
-      :activity_id => @activity_id
-    })
+    # send sys message to admins
+    SysMessage.transaction do
+      activity_admins = ActivityMember.get_activity_admins(@activity_id, false)
+      activity_admins.each do |aa|
+        SysMessage.create_new(aa.account_id, "join_activity_request", {
+          :requester_id => session[:account_id],
+          :activity_id => @activity_id
+        })
+      end
+    end
   end
   
   def quit
@@ -772,13 +782,14 @@ class ActivitiesController < ApplicationController
   
   
   def edit
-    # done by before filter - check_activity_master
-    # @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
     
     @in_groups = [Group.get_group_with_image(@activity.in_group)] if @activity.in_group && @activity.in_group > 0
   end
   
   def update
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    
     @old_activity_title = @activity.get_title
     
     @in_groups = [Group.get_group_with_image(@activity.in_group)] if @activity.in_group && @activity.in_group > 0
@@ -815,6 +826,8 @@ class ActivitiesController < ApplicationController
   end
   
   def update_desc
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    
     @in_groups = [Group.get_group_with_image(@activity.in_group)] if @activity.in_group && @activity.in_group > 0
     
     activity_setting = {
@@ -833,6 +846,8 @@ class ActivitiesController < ApplicationController
   end
   
   def update_access
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    
     @in_groups = [Group.get_group_with_image(@activity.in_group)] if @activity.in_group && @activity.in_group > 0
     
     activity_setting = {
@@ -863,12 +878,24 @@ class ActivitiesController < ApplicationController
     @master_id = @activity.master_id
     @master_nick_pic = Account.get_nick_and_pic(@master_id)
     
+    @admin_members = ActivityMember.get_activity_admins(@activity_id)
+    
+    # check and ensure admins include activity master
+    master_member = @admin_members.select {|m| (m.account_id == @master_id) && m.admin }[0]
+    ActivityMember.add_account_to_activity(@activity_id, @master_id, true) unless master_member
+    
     page = params[:page]
     page = 1 unless page =~ /\d+/
     @members = ActivityMember.paginate_activity_members(@activity_id, page, Member_Page_Size)
   end
   
   def members_edit
+    @is_admin = true
+    members
+    render :action => "members"
+  end
+  
+  def members_master
     @is_master = true
     members
     render :action => "members"
@@ -887,8 +914,9 @@ class ActivitiesController < ApplicationController
   end
   
   def absent
-    @activity_id ||= params[:id]
-    @activity, @activity_image = Activity.get_activity_with_image(@activity_id) unless @activity
+    # done in before filter
+    # @activity_id ||= params[:id]
+    # @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
@@ -993,6 +1021,8 @@ class ActivitiesController < ApplicationController
   end
   
   def del_member
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    
     member_id = params[:del_member_id]
     if @activity.master_id.to_s != member_id
       activity_member = ActivityMember.get_by_activity_and_account(@activity_id, member_id)
@@ -1008,6 +1038,36 @@ class ActivitiesController < ApplicationController
     jump_to("/activities/members_edit/#{@activity_id}")
   end
   
+  def add_admin
+    member_id = params[:add_admin_id] && params[:add_admin_id].strip
+    
+    admin_count = ActivityMember.count_admin(@activity_id)
+    if admin_count < Activity_Admin_Max_Count
+      activity_member = ActivityMember.get_by_activity_and_account(@activity_id, member_id)
+      if activity_member && activity_member.agreed && (!activity_member.admin)
+        activity_member.admin = true
+        activity_member.save
+      end
+    end
+    
+    jump_to("/activities/members_master/#{@activity_id}")
+  end
+  
+  def del_admin
+    member_id = params[:del_admin_id] && params[:del_admin_id].strip
+    
+    if @activity.master_id.to_s != member_id
+      # must be NOT activity master
+      activity_member = ActivityMember.get_by_activity_and_account(@activity_id, member_id)
+      if activity_member && activity_member.admin
+        activity_member.admin = false
+        activity_member.save
+      end
+    end
+    
+    jump_to("/activities/members_master/#{@activity_id}")
+  end
+  
   def unapproved
     page = params[:page]
     page = 1 unless page =~ /\d+/
@@ -1015,6 +1075,8 @@ class ActivitiesController < ApplicationController
   end
   
   def approve_member
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    
     approve_member_id = params[:approve_member_id]
     
     if is_activity_member_beyond_limit(@activity)
@@ -1027,7 +1089,7 @@ class ActivitiesController < ApplicationController
         activity_member.join_at = DateTime.now
         if activity_member.save
           SysMessage.create_new(activity_member.account_id, "approve_reject_join_activity", {
-            :master_account_id => session[:account_id],
+            :admin_account_id => session[:account_id],
             :activity_id => @activity_id,
             :approve => true
           })
@@ -1047,7 +1109,7 @@ class ActivitiesController < ApplicationController
       activity_member.destroy
       
       SysMessage.create_new(activity_member.account_id, "approve_reject_join_activity", {
-          :master_account_id => session[:account_id],
+          :admin_account_id => session[:account_id],
           :activity_id => @activity_id,
           :approve => false
         })
@@ -1132,6 +1194,8 @@ class ActivitiesController < ApplicationController
   end
   
   def members_info
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    
     page = params[:page]
     page = 1 unless page =~ /\d+/
     
@@ -1182,6 +1246,22 @@ class ActivitiesController < ApplicationController
 #    
 #    jump_to("/activities")
 #  end
+
+  def edit_master
+    @admin_members = ActivityMember.get_activity_admins(@activity_id)
+  end
+  
+  def update_master
+    new_master_id = params[:new_master_id] && params[:new_master_id].strip
+    
+    admin_member = ActivityMember.is_activity_admin(@activity_id, new_master_id)
+    if admin_member
+      @activity.master_id = admin_member.account_id
+      @activity.save
+    end
+    
+    jump_to("/activities/#{@activity_id}")
+  end
   
   
   
@@ -1189,6 +1269,12 @@ class ActivitiesController < ApplicationController
   
   def check_activity_groups_account
     jump_to("/activities/activity_groups/#{session[:account_id]}") unless session[:account_id].to_s == params[:id]
+  end
+  
+  def check_activity_admin
+    @activity_id = params[:id]
+    
+    jump_to("/errors/forbidden") unless ActivityMember.is_activity_admin(@activity_id, session[:account_id])
   end
   
   def check_activity_master

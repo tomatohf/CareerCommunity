@@ -145,7 +145,7 @@ class LinkedPhotosController < ApplicationController
       end
 
       def check_destroy_link_access(type_id, account_id)
-        ::Activity.get_activity_with_image(type_id)[0].master_id == account_id
+        ActivityMember.is_activity_admin(type_id, account_id)
       end
     end
     

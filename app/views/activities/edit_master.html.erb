@@ -1,0 +1,64 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "转让活动 #{activity_title} 的负责人" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/members_edit/<%= @activity_id %>">
+			<img src="/images/groups/members_small.gif" border="0" />
+			管理参活动的成员</a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/members_master/<%= @activity_id %>">
+			<img src="/images/groups/admin_icon.png" border="0" />
+			设置活动的管理员</a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_l">
+		将负责人转让给其他的活动管理员
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		选择要将负责人转让给哪位管理员
+	</div>
+	
+	
+	<div class="community_block overflow_hidden">
+		<%= float_list(@admin_members, "master_selector", :master_selector, {}, 6) %>
+	</div>
+	
+</div>
+
+
+
+<% form_tag "/activities/#{@activity_id}/update_master", :method => :post, :id => "update_master_form" do %>
+	<input type="hidden" id="new_master_id" name="new_master_id" />
+<% end %>
+
+<script language="JavaScript">
+	function update_master(account_id, account_name) {
+		if(confirm("确定要将负责人转让给 " + account_name + " 么 ?")) {
+			var update_form = document.getElementById("update_master_form");
+			document.getElementById("new_master_id").value = account_id;
+			update_form.submit();
+		}
+	}
+</script>
+

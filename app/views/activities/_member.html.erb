@@ -1,5 +1,8 @@
 <% can_del &&= true %>
 
+<% can_plus_admin &&= true %>
+<% can_minus_admin &&= true %>
+
 <% can_add_absent &&= true %>
 <% can_del_absent &&= true %>
 
@@ -28,6 +31,16 @@
 		<% if can_del %>
 			<a title="从活动成员中删除" href="#" onclick="delete_member(<%= account_id %>)">
 				<img src="/images/delete_small.gif" width="12" height="12" border="0" /></a>
+		<% end %>
+		
+		<% if can_plus_admin %>
+			<a title="升级为管理员" href="#" onclick="plus_admin(<%= account_id %>)">
+				<img src="/images/groups/plus_small.png" width="12" height="12" border="0" /></a>
+		<% end %>
+		
+		<% if can_minus_admin %>
+			<a title="降为普通成员" href="#" onclick="minus_admin(<%= account_id %>)">
+				<img src="/images/groups/minus_small.png" width="12" height="12" border="0" /></a>
 		<% end %>
 		
 		<% if can_add_absent %>
