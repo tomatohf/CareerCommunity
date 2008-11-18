@@ -38,4 +38,17 @@ class Postman < ActionMailer::Base
     body(:nick => account.get_nick, :source => self.class.source, :password => account.password, :host => self.class.host)
   end
   
+  
+  def course_application_remind(course_application)
+    recipients(
+      [
+        "hefan@qiaobutang.com"
+      ]
+    )
+    
+    from(self.class.from)
+    subject("#{course_application.real_name} 要 #{Service.find(course_application.service_id)}")
+    body(:course_application => course_application)
+  end
+  
 end
