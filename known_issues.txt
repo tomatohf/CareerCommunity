@@ -1,8 +1,4 @@
 ﻿
-remove *_list_edit page
-
-group show cache
-
 活动也加上管理员吧
 
 报名记录的提醒机制
@@ -29,6 +25,8 @@ HR交流圈子:
 	
 		
 加更多的 cache ...
+
+remove *_edit page
 
 用户是否在线
 

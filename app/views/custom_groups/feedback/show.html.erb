@@ -36,14 +36,12 @@
 	<div class="community_block_narrow">
 		<%= thin_hr %>
 	</div>
-	
-	<% unless @relationship == "not_member" || @relationship == "logout" %>
-		<div class="community_block">
-			<a href="/group/posts/compose/<%= @group_id %>">
-				<img src="/images/groups/add_post_small.png" border="0" />
-				提交错误或反馈意见</a>
-		</div>
-	<% end %>
+
+	<div class="community_block">
+		<a href="/group/posts/compose/<%= @group_id %>">
+			<img src="/images/groups/add_post_small.png" border="0" />
+			提交错误或反馈意见</a>
+	</div>
 	
 	
 	<div class="community_block_narrow">
@@ -127,6 +125,57 @@
 				</div>
 			<% end %>
 		</div>
+	</div>
+	
+	
+	<div class="community_title">
+		最新圈内收藏 ...
+	</div>
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="bookmark_section_expand" href="#" onclick="collapse_section('bookmark_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="bookmark_section_collapse" href="#" onclick="expand_section('bookmark_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<% unless @relationship == "not_member" || @relationship == "logout" %>
+				<span class="float_r">
+					<a href="#" onclick="document.getElementById('new_group_bookmark_form').submit(); return false;">
+						添加新的圈内收藏</a>
+					&nbsp;&nbsp;&nbsp;
+					
+					<% form_tag "/bookmarks/new_group_bookmark", :method => :post, :id => "new_group_bookmark_form" do %>
+						<input type="hidden" name="group_id" value="<%= @group_id %>" />
+					<% end %>
+				</span>
+			<% end %>
+			
+			<img class="float_l" src="/images/index/bookmark_icon.gif" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<a href="/groups/bookmark/<%= @group_id %>">全部圈内收藏</a>
+		</div>
+		
+		<div id="bookmark_section" class="community_block">
+			<% cache("#{GroupBookmark::FCKP_groups_show_bookmark}_#{@group_id}") do %>
+				<%
+					bookmarks = GroupBookmark.find(
+						:all,
+						:limit => GroupsController::Group_Bookmark_Num,
+						:conditions => ["group_id = ?", @group_id],
+						:order => "created_at DESC"
+					)
+				%>
+				<%= render :partial => "/bookmarks/bookmark_small", :collection => bookmarks %>
+
+				<% unless bookmarks.size > 0 %>
+					<div class="form_info_l">
+						还没有圈内收藏 ...
+					</div>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+	<div class="community_block clear_l">
 	</div>
 	
 </div>
