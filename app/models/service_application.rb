@@ -9,7 +9,8 @@ class ServiceApplication < ActiveRecord::Base
   
   
   after_save { |service_application|
-    Postman.deliver_course_application_remind(service_application)
+    # disable the email reminder ...
+    # Postman.deliver_course_application_remind(service_application)
   }
   
   

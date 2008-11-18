@@ -1,0 +1,60 @@
+<% community_page_title("医药专题") %>
+
+<div class="breadcrumb">
+	<a href="/">
+		乔布堂</a>
+	»
+	<a href="/coach">
+		乔布教练</a>
+	»
+	<a href="/coach/stp">
+		销售实习生计划</a>
+</div>
+
+
+<link href="/lib/greybox/gb_styles.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+	var GB_ROOT_DIR = "/lib/greybox/";
+</script>
+
+<script type="text/javascript" src="/lib/greybox/AJS.js"></script>
+<script type="text/javascript" src="/lib/greybox/AJS_fx.js"></script>
+<script type="text/javascript" src="/lib/greybox/gb_scripts.js"></script>
+
+
+
+<div class="align_c">
+	<img src="/images/coach/programs/STP.png" border="0" />
+</div>
+
+
+<div class="coach_block" style="margin-top: 15px;">
+	<ul>
+		<%
+			features = [
+				"专业销售培训体系 与世界500强公司内部培训无缝对接",
+				"跨国公司销售市场总监任总教练",
+				"全部培训师为跨国公司内部销售培训师",
+				"为期6个月，全方位打造极具竞争力的销售精英",
+				"3星级以上学员加入乔布堂销售人才库",
+				"4星级以上学员有机会获得就业推荐",
+				"5星级以上学员将得到销售总教练亲笔推荐信"
+			]
+		%>
+		
+		<% features.each do |feature| %>
+			<li style="font-size: 14px; font-weight: bold; margin-top: 5px;">
+				<%= feature %>
+			</li>
+		<% end %>
+	</ul>
+</div>
+
+
+<div class="coach_block align_c">
+	<a rel="gb_page_center[500, 350]" title="我要申请: 百万销售实习生计划 (STP)" href="/coach/course_apply?sid=11">
+		<img src="/images/coach/apply_button.png" border="0" /></a>
+</div>
+
+

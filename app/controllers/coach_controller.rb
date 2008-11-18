@@ -21,6 +21,11 @@ class CoachController < ApplicationController
   end
   
   
+  def stp
+    
+  end
+  
+  
   # ---
   
   def course_apply
