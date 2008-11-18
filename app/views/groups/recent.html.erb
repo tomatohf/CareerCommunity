@@ -42,7 +42,7 @@
 	</div>
 	
 	<div class="community_block">
-		<a href="/groups/<%= @edit ? "list_friend_edit" : "list_friend" %>/<%= @owner_id %>">
+		<a href="/groups/list_friend/<%= @owner_id %>">
 			<%= owner_name %> 的朋友的圈子近况
 		</a>
 	</div>
@@ -71,11 +71,11 @@
 			<a class="float_r" title="展开" id="group_section_collapse" href="#" onclick="expand_section('group_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
 			<span class="float_r">
-				<a href="/groups/<%= @edit ? "list_admin_edit" : "list_admin" %>/<%= @owner_id %>">所有管理的圈子</a>
+				<a href="/groups/list_admin/<%= @owner_id %>">所有管理的圈子</a>
 				&nbsp;&nbsp;&nbsp;
 			</span>
 			
-			<a href="/groups/<%= @edit ? "list_edit" : "list" %>/<%= @owner_id %>">所有参加的圈子</a>
+			<a href="/groups/list/<%= @owner_id %>">所有参加的圈子</a>
 		</div>
 	</div>
 		

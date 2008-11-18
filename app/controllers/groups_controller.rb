@@ -25,8 +25,7 @@ class GroupsController < ApplicationController
   
   layout "community"
   before_filter :check_current_account, :only => [:index]
-  before_filter :check_login, :only => [:list_edit, :list_admin_edit, :list_friend_edit,
-                                        :new, :create,:edit_image, :update_image,
+  before_filter :check_login, :only => [:new, :create,:edit_image, :update_image,
                                         :edit, :update, :update_access, :join, :quit, :members_edit,
                                         :members_master, :del_member, :add_admin, :del_admin,
                                         :unapproved, :approve_member, :reject_member, :approve_all,
@@ -37,7 +36,6 @@ class GroupsController < ApplicationController
                                           :approve_member, :reject_member, :approve_all,
                                           :invite_member, :update_master, :remove_activity, :remove_vote]
   
-  before_filter :check_edit_for_group, :only => [:list_edit, :list_admin_edit, :list_friend_edit]
   before_filter :check_can_create_group, :only => [:new, :create]
   
   before_filter :check_group_admin, :only => [:edit_image, :update_image, :edit, :update,
@@ -107,6 +105,9 @@ class GroupsController < ApplicationController
   
   def list
     @owner_id = params[:id]
+    
+    @edit = (session[:account_id].to_s == params[:id])
+    
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
     page = params[:page]
@@ -121,21 +122,10 @@ class GroupsController < ApplicationController
     )
   end
   
-  def list_edit
-    @edit = true
-    list
-    render :action => "list"
-  end
-  
   def list_admin
     @only_admin = true
     list
     render :action => "list"
-  end
-  
-  def list_admin_edit
-    @edit = true
-    list_admin
   end
   
   def all
@@ -151,6 +141,9 @@ class GroupsController < ApplicationController
   
   def list_friend
     @owner_id = params[:id]
+    
+    @edit = (session[:account_id].to_s == params[:id])
+    
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
     @friends = Friend.get_all_by_account(
@@ -158,12 +151,6 @@ class GroupsController < ApplicationController
       :include => [:friend => [:profile_pic]],
       :order => "created_at DESC"
     )
-  end
-  
-  def list_friend_edit
-    @edit = true
-    list_friend
-    render :action => "list_friend"
   end
   
   
@@ -854,10 +841,6 @@ class GroupsController < ApplicationController
   
   
   private
-  
-  def check_edit_for_group
-    jump_to("/groups/#{action_name[0...-5]}/#{params[:id]}") unless session[:account_id].to_s == params[:id]
-  end
   
   def check_can_create_group
     @account_id = session[:account_id]

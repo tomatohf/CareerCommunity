@@ -42,7 +42,7 @@
 		<% end %>
 	<% else %>
 		<div class="community_block">
-			<a href="/groups/<%= @edit ? "list_admin_edit" : "list_admin" %>/<%= @owner_id %>">
+			<a href="/groups/list_admin/<%= @owner_id %>">
 				<img src="/images/groups/admin_icon.png" border="0" />
 				<%= owner_name %> 担任管理员的圈子
 			</a>
@@ -50,7 +50,7 @@
 	<% end %>
 	
 	<div class="community_block">
-		<a href="/groups/<%= @edit ? "list_friend_edit" : "list_friend" %>/<%= @owner_id %>">
+		<a href="/groups/list_friend/<%= @owner_id %>">
 			<%= owner_name %> 的朋友的圈子近况
 		</a>
 	</div>
