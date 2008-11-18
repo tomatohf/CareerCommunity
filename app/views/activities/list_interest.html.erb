@@ -68,7 +68,7 @@
 		<% end %>
 		
 		<script language="JavaScript">
-			function delete_interest(activity_id) {
+			function remove_activity(activity_id) {
 				if(confirm("确定要将其从感兴趣的活动中删除么 ?")) {
 					del_form = document.getElementById("delete_interest_form");
 					del_form.action = "/activities/" + activity_id + "/del_interest";

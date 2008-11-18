@@ -20,7 +20,24 @@
 	<br />
 	
 	
-	<%= render(:partial => "/votes/topic_preview_list", :locals => {:vote_topics => @vote_topics}) %>
+	<% if @is_admin %>
+		<% form_tag "/groups/#{@group_id}/remove_vote", :method => :post, :id => "remove_group_vote_form" do %>
+			<input type="hidden" id="remove_group_vote_id" name="vote_id" value="" />
+		<% end %>
+		
+		<script language="JavaScript">
+			function remove_vote(vote_id) {
+				if(confirm("从圈子移除这个投票后, 这个投票将变为一个全局投票. 这个操作是不可撤销的, 建议跟投票的发起者先适当沟通. 确定要将其从圈内投票中移除么 ?")) {
+					document.getElementById("remove_group_vote_id").value = vote_id;
+					
+					del_form = document.getElementById("remove_group_vote_form");
+					del_form.submit();
+				}
+			}
+		</script>
+	<% end %>
+	
+	<%= render(:partial => "/votes/topic_preview_list", :locals => {:vote_topics => @vote_topics, :can_del => @is_admin}) %>
 	
 </div>
 

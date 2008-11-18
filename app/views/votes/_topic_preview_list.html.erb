@@ -1,10 +1,12 @@
+<% can_del &&= true %>
+
 <div>
 	
 	<table cellpadding="0" cellspacing="0" class="main_part_w">
 	    <tbody>
 	        <tr>
 				<td align="left" valign="top">
-	                <%= render :partial => "/votes/vote_topic_item", :collection => vote_topics %>
+	                <%= render :partial => "/votes/vote_topic_item", :collection => vote_topics, :locals => {:can_del => can_del} %>
 		        </td>
 		
 				<td style="width: 30px;"></td>

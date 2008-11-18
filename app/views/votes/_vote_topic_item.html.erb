@@ -1,3 +1,5 @@
+<% can_del &&= true %>
+
 <%
 	vote_topic_id = vote_topic_item.id
 	vote_image = vote_topic_item.get_image_url
@@ -57,6 +59,13 @@
 					</div>
 		        </div>
 		    </td>
+		
+			<% if can_del %>
+				<td align="right" valign="top" style="width: 20px;">
+					<a class="" title="从列表中移除" href="#" onclick="remove_vote(<%= vote_topic_id %>); return false;">
+						<img src="/images/delete_small.gif" border="0" /></a>
+				</td>
+			<% end %>
 		</tr>
 	</table>
 </div>

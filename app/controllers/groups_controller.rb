@@ -31,11 +31,11 @@ class GroupsController < ApplicationController
                                         :members_master, :del_member, :add_admin, :del_admin,
                                         :unapproved, :approve_member, :reject_member, :approve_all,
                                         :invite, :invite_member, :edit_master, :update_master,
-                                        :photo_selector_for_group_image]
+                                        :photo_selector_for_group_image, :remove_activity, :remove_vote]
   before_filter :check_limited, :only => [:create, :update_image, :update, :update_access, :join,
                                           :quit, :del_member, :add_admin, :del_admin,
                                           :approve_member, :reject_member, :approve_all,
-                                          :invite_member, :update_master]
+                                          :invite_member, :update_master, :remove_activity, :remove_vote]
   
   before_filter :check_edit_for_group, :only => [:list_edit, :list_admin_edit, :list_friend_edit]
   before_filter :check_can_create_group, :only => [:new, :create]
@@ -43,7 +43,7 @@ class GroupsController < ApplicationController
   before_filter :check_group_admin, :only => [:edit_image, :update_image, :edit, :update,
                                               :update_access, :members_edit, :del_member,
                                               :unapproved, :approve_member, :reject_member, :approve_all,
-                                              :invite, :invite_member]
+                                              :invite, :invite_member, :remove_activity, :remove_vote]
   before_filter :check_group_master, :only => [:members_master, :add_admin, :del_admin, :edit_master, :update_master]
   
   before_filter :check_custom_group, :only => [:show]
@@ -301,6 +301,8 @@ class GroupsController < ApplicationController
     @group_id = params[:id]
     @group, @group_image = Group.get_group_with_image(@group_id)
     
+    @is_admin = GroupMember.is_group_admin(@group_id, session[:account_id])
+    
     page = params[:page]
     page = 1 unless page =~ /\d+/
     @group_activities = Activity.uncancelled.paginate(
@@ -312,9 +314,24 @@ class GroupsController < ApplicationController
     )
   end
   
+  def remove_activity
+    activity_id = params[:activity_id] && params[:activity_id].strip
+    activity, activity_image = Activity.get_activity_with_image(activity_id)
+    
+    if activity.in_group.to_s == @group_id
+      # change to global activity
+      activity.in_group = 0
+      activity.save
+    end
+    
+    jump_to("/groups/activity/#{@group_id}")
+  end
+  
   def vote
     @group_id = params[:id]
     @group, @group_image = Group.get_group_with_image(@group_id)
+    
+    @is_admin = GroupMember.is_group_admin(@group_id, session[:account_id])
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
@@ -325,6 +342,19 @@ class GroupsController < ApplicationController
       :include => [:image, :account],
       :order => "created_at DESC"
     )
+  end
+
+  def remove_vote
+    vote_id = params[:vote_id] && params[:vote_id].strip
+    vote, vote_image = VoteTopic.get_vote_topic_with_image(vote_id)
+
+    if vote.group_id.to_s == @group_id
+      # change to global vote
+      vote.group_id = 0
+      vote.save
+    end
+
+    jump_to("/groups/activity/#{@group_id}")
   end
   
   def photo

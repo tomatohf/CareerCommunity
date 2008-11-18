@@ -805,7 +805,6 @@ class ActivitiesController < ApplicationController
     end
     
     if @activity.save
-      Activity.update_activity_with_image_cache(@activity_id, :activity => @activity)
       @old_activity_title = nil
       flash.now[:message] = "活动信息已成功修改"
     else
@@ -824,7 +823,6 @@ class ActivitiesController < ApplicationController
     @activity.update_setting(activity_setting)
     
     if @activity.save
-      Activity.update_activity_with_image_cache(@activity_id, :activity => @activity)
       @old_activity_title = nil
       flash.now[:message] = "活动描述已成功修改"
     else
@@ -848,7 +846,6 @@ class ActivitiesController < ApplicationController
     @activity.update_setting(activity_setting)
     
     if @activity.save
-      Activity.update_activity_with_image_cache(@activity_id, :activity => @activity)
       @old_activity_title = nil
       flash.now[:message] = "活动的报名设置已成功修改"
     else
@@ -1161,14 +1158,14 @@ class ActivitiesController < ApplicationController
   
   def cancel
     @activity.cancelled = true
-    Activity.update_activity_with_image_cache(@activity_id, :activity => @activity) if @activity.save
+    @activity.save
     
     jump_to("/activities/#{@activity_id}")
   end
   
   def recover
     @activity.cancelled = false
-    Activity.update_activity_with_image_cache(@activity_id, :activity => @activity) if @activity.save
+    @activity.save
     
     jump_to("/activities/#{@activity_id}")
   end

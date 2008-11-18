@@ -145,7 +145,11 @@ ActionController::Routing::Routes.draw do |map|
     :invite_member => :post,
     
     :edit_master => :get,
-    :update_master => :post
+    :update_master => :post,
+    
+    :remove_activity => :post,
+    :remove_vote => :post
+    
   }, :collection => {
     :photo_selector_for_group_image => :get,
     

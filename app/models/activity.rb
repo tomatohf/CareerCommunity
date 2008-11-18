@@ -68,6 +68,8 @@ class Activity < ActiveRecord::Base
   FCKP_index_activity = :fc_index_activity
   
   after_save { |activity|
+    self.update_activity_with_image_cache(activity.id, :activity => activity)
+    
     self.clear_activities_all_cache
     self.clear_spaces_show_activity_cache(activity.id)
     self.clear_activities_show_created_activity_cache(activity.creator_id)

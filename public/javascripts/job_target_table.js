@@ -1,143 +1,211 @@
-Ext.onReady(function() {
-	alert("ready");
+TableGrid = function(table_id, config) {
+	config = config || {};
+	Ext.apply(this, config);
+	
+	var cf = config.fields || [];
+	var ch = config.columns || [];
+	
+	var table_element = Ext.get(table_id);
 
-	// create the grid
-	var grid = new TableGrid(
-		"job_targets_container",
+	var grid_element = table_element.insertSibling();
+
+	var fields = [];
+	var columns = [];
+	
+	columns.push(new Ext.grid.RowNumberer());
+	
+	var headers = table_element.query("thead th");
+	for(var i = 0, h; h = headers[i]; i++) {
+		var text = h.innerHTML;
+		var name = "column_" + i;
+
+		fields.push(
+			Ext.applyIf(cf[i] || {},
+				{
+					name: name,
+					mapping: "td:nth(" + (i+1) + ")/@innerHTML"
+				}
+			)
+		);
+
+		columns.push(
+			Ext.applyIf(ch[i] || {},
+				{
+					"header": text,
+					"dataIndex": name,
+					"width": h.offsetWidth,
+					"tooltip": h.innerHTML,
+					"sortable": true
+				}
+			)
+		);
+	}
+
+	var data_store = new Ext.data.GroupingStore(
 		{
-			stripeRows: true, // stripe alternate rows
-			border: false,
+			reader: new Ext.data.XmlReader(
+				{
+					record: "tbody tr"
+				},
+				fields
+			),
 			
-			tbar: new Ext.Toolbar({
-		        items:[
-		                {
-		                    id:'buttonA'
-		                    ,text:"Button A"
-		                    ,handler: function(){ alert("You clicked Button A"); }
-		                }
-		                ,
-		                new Ext.Toolbar.SplitButton({})
-		                ,{
-		                    id:'buttonB'
-		                    ,text:"Button B"
-		                    ,handler: function(){ alert("You clicked Button B"); }
-		                }
-		                ,
-		                '-'
-		                ,{
-		                    id:'buttonc'
-		                    ,text:"Button c"
-		                }
-		            ]
-		        }),
-		
-		
-
-		        view: new Ext.grid.GroupingView({
-		            forceFit:true,
-		            groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
-		        }),
-		
-			plugins: new Ext.grid.GridFilters({
-				local:true,
-				  filters:[
-				    {type: 'numeric',  dataIndex: 'tcol-1'},
-				    {type: 'string',  dataIndex: 'tcol-0'},
-				    {type: 'string', dataIndex: 'tcol-2'}
-				]})
+			data: table_element.dom,
+			
+			sortInfo: {
+				field: "column_2", // created_at
+				direction: "DESC"
+			},
+			
+			groupField: "column_2"
 		}
 	);
-	grid.render();
+
+	// no need to load data since we use "data" directly
+	//ds.loadData(table_element.dom);
+
+	var column_model = new Ext.grid.ColumnModel(columns);
+
+	// if (config.remove != false) {
+		table_element.remove();
+	// }
+
+	Ext.applyIf(this,
+		{
+			"ds": data_store,
+			"cm": column_model,
+			
+			"selModel": new Ext.grid.RowSelectionModel(),
+			
+			"autoHeight": true,
+			"bodyStyle": "width:100%",
+			"autoWidth": true
+		}
+	);
 	
-	
-	grid.addListener('rowcontextmenu', rightClickFn);//右键菜单代码关键部分
-	var rightClick = new Ext.menu.Menu({
-	    id:'rightClickCont',  //在HTML文件中必须有个rightClickCont的DIV元素
-	    items: [
-	        {
-	            id: 'rMenu1',
-	            handler: rMenu1Fn,//点击后触发的事件
-	            text: '右键菜单1'
-	        },
-	        {
-	            //id: 'rMenu2',
-	            //handler: rMenu2Fn,
-	            text: '右键菜单2'
-	        }
-	    ]
-	});
-	function rightClickFn(grid,rowindex,e){
-	    e.preventDefault();
-	    rightClick.showAt(e.getXY());
-	}
-	function rMenu1Fn(){
-	   Ext.MessageBox.alert('right','rightClick');
-	}
-
-});
-
-
-TableGrid = function(table, config) {
-  config = config || {};
-  Ext.apply(this, config);
-  var cf = config.fields || [], ch = config.columns || [];
-  table = Ext.get(table);
-
-  var ct = table.insertSibling();
-
-  var fields = [], cols = [];
-  var headers = table.query("thead th");
-  for (var i = 0, h; h = headers[i]; i++) {
-    var text = h.innerHTML;
-    var name = "tcol-" + i;
-
-    fields.push(Ext.applyIf(cf[i] || {}, {
-      name: name,
-      mapping: "td:nth(" + (i+1) + ")/@innerHTML"
-    }));
-
-    cols.push(Ext.applyIf(ch[i] || {}, {
-      "header": text,
-      "dataIndex": name,
-      "width": h.offsetWidth,
-      "tooltip": h.title,
-      "sortable": true
-    }));
-  }
-
-  var ds  = new Ext.data.GroupingStore({
-    reader: new Ext.data.XmlReader({
-      record:"tbody tr"
-    }, fields),
-data: table.dom,
-sortInfo: {field: "tcol-1", direction: "ASC"},
-groupField: "tcol-2"
-  });
-
-  //ds.loadData(table.dom);
-
-  var cm = new Ext.grid.ColumnModel(cols);
-
-  if (config.width || config.height) {
-    ct.setSize(config.width || "auto", config.height || "auto");
-  } else {
-    ct.setWidth(table.getWidth());
-  }
-
-  if (config.remove !== false) {
-    table.remove();
-  }
-
-  Ext.applyIf(this, {
-    "ds": ds,
-    "cm": cm,
-    "sm": new Ext.grid.RowSelectionModel(),
-    autoHeight: true,
-    autoWidth: false
-  });
-  TableGrid.superclass.constructor.call(this, ct, {});
+	TableGrid.superclass.constructor.call(this, grid_element, {});
 };
 
 Ext.extend(TableGrid, Ext.grid.GridPanel);
+
+
+
+Ext.onReady(
+	
+	function() {
+
+		var grid;
+	
+		grid = new TableGrid(
+			"job_targets_container",
+			{
+				stripeRows: true, // stripe alternate rows
+				border: false,
+			
+				tbar: new Ext.Toolbar(
+					{
+						items: [
+							"->",
+						
+							{
+								id: "",
+								text: "tool bar button",
+								//icon: "",
+								//cls: "x-btn-text-icon",
+								handler: function() {
+									alert("tool bar button");
+								}
+							}
+						
+						]
+					}
+				),
+			
+				bbar: new Ext.Toolbar(
+					{
+						items: [
+							"->",
+						
+							"文字",
+						
+							"-",
+						
+							{
+								id: "",
+								text: "bottom bar button",
+								handler: function() {
+									alert("bottom bar button");
+								}
+							}
+						
+						]
+					}
+				),
+
+				view: new Ext.grid.GroupingView(
+					{
+						forceFit: true,
+						groupTextTpl: "{text} ({[values.rs.length]} 条记录)"
+					}
+				),
+
+				plugins: new Ext.grid.GridFilters(
+					{
+						local: true,
+						filters: [
+							{
+								dataIndex: "column_0",
+								type: "string"
+							}
+						
+						]
+					}
+				)
+			}
+		);
+	
+	
+	
+	
+	
+		grid.addListener(
+			"rowcontextmenu",
+			function(grid, row_index, e) {
+				e.preventDefault();
+			
+				if(row_index < 0) { return; }
+			
+				var record = grid.getStore().getAt(row_index);
+			
+				var record_id = record.data.column_0.trim()
+			
+				var row_menu_obj = new Ext.menu.Menu(
+					{
+						id: "row_menu",
+						items: [
+							{
+								id: "",
+								text: "menu button",
+								//icon: "",
+								handler: function(item, e) {
+									alert("menu button");
+								}
+							}
+							
+						],
+						shadow: "frame"
+					}
+				);
+			
+			    row_menu_obj.showAt(e.getXY());
+			}
+		);
+	
+	
+	
+		grid.render();
+
+	}
+);
 
 

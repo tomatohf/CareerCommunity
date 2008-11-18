@@ -35,9 +35,26 @@
 		<b><%= @group_activities.total_entries %></b>
 		个圈内活动
 	</div>
+	
+	<% if @is_admin %>
+		<% form_tag "/groups/#{@group_id}/remove_activity", :method => :post, :id => "remove_group_activity_form" do %>
+			<input type="hidden" id="remove_group_activity_id" name="activity_id" value="" />
+		<% end %>
+		
+		<script language="JavaScript">
+			function remove_activity(activity_id) {
+				if(confirm("从圈子移除这个活动后, 这个活动将变为一个全局活动. 这个操作是不可撤销的, 建议跟活动的发起者先适当沟通. 确定要将其从圈内活动中移除么 ?")) {
+					document.getElementById("remove_group_activity_id").value = activity_id;
+					
+					del_form = document.getElementById("remove_group_activity_form");
+					del_form.submit();
+				}
+			}
+		</script>
+	<% end %>
 
 	<div class="community_block overflow_hidden">
-		<%= render(:partial => "/activities/activity", :collection => @group_activities) %>
+		<%= render(:partial => "/activities/activity", :collection => @group_activities, :locals => {:can_del => @is_admin}) %>
 	</div>
 	
 	<div class="community_block">
