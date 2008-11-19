@@ -12,8 +12,6 @@ HR交流圈子:
 		
 加更多的 cache ...
 
-remove *_edit page
-
 用户是否在线
 
 发起话题的 动态  -- 似乎没什么必要...
@@ -44,18 +42,8 @@ Ruby Patch of the GC for Rails
 	
 
 
-profiles: request.post? 影响 action cache
-community/index: session[:nick] 影响 action cache
-album.photos: 缓存清除的规则是不是太粗鲁了 ???
-
 好友动态 & 系统消息
 	显示的时候 用户查询的 N+1 问题
-	
-博客的 最新文章列表 和 最新评论列表
-
-分页:
-	好友列表
-	相册列表
 
 圈子功能
 	邀请发送 email ... ???
@@ -89,8 +77,6 @@ Vote client ???
 
 照片 和 博客 的 tag  功能
 
-个人 profile 和 相册的 隐私设置
-
 
 
 
@@ -108,21 +94,13 @@ http://www.javaeye.com/topic/107055
 SWFUpload 上传大小超过 3M 的文件, server 端会抛错, client 端会一直等待 ...
 
 添加对 从确认邮件登录 的介绍，而可以是一张页面，最好是一些 inline 的 tip
-贡献相册或照片的 tip 解释
 
 工具箱里搞点 性格测验一类的东西
 放 Flash 游戏
 
 修改 email 地址
 
-用户设置功能
-
-强大的隐私设置
-
 所有的删除功能都必须非常的小心，确保相关的东西都妥善处理
-
-网站缓存
-我的空间页面一定要 cache 啊 ......
 
 更快的模板？
 Tenjin - http://www.kuwata-lab.com/tenjin/
@@ -157,25 +135,6 @@ respond_to do |wants|
 	wants.atom
 	wants.yaml
 ends
-
-
-======文件下载======
-response.headers['Content-Type'] = @attachment.content_type  
-response.headers['Content-Disposition'] = "attachment; filename=\"#{URI.encode(@attachment.filename)}\""   
-response.headers['Content-Length'] = @attachment.size  
-response.headers["X-LIGHTTPD-send-file"] = @attachment.public_filename  
-render :nothing => true
-
------
-
-module ActionController # fix rails X-sendfile bug!  
-  class CgiResponse  
-    def set_content_length!  
-      @headers["Content-Length"] = @body.size unless @body.respond_to?(:call) || @headers["X-LIGHTTPD-send-file"]  
-    end  
-  end  
-end
-================
 
 
 ======显示用户是否在线======
