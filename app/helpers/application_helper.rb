@@ -98,8 +98,8 @@ module ApplicationHelper
   def sanitize_tinymce(html)
     sanitize(
       html,
-      :tags => ActionView::Base.sanitized_allowed_tags + %w(table th tr td),
-      :attributes => ActionView::Base.sanitized_allowed_attributes + %w(style src href border title bgcolor)
+      :tags => ActionView::Base.sanitized_allowed_tags + %w(table th tr td embed),
+      :attributes => ActionView::Base.sanitized_allowed_attributes + %w(style src href border title bgcolor type)
     )
   end
   

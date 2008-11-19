@@ -62,6 +62,8 @@
 				<div>
 					<%= submit_tag "更新", :class => "button", :disabled => @account_limited %>
 					&nbsp;&nbsp;&nbsp;
+					<a href="/<%= @post_type %>/posts/<%= @post.id %>">返回这个话题</a>
+					&nbsp;&nbsp;&nbsp;
 					<a href="/<%= pluralized_post_type %>/<%= @type_id %>">返回<%= @type_label %> <%= type_name %></a>
 				</div>
 			
