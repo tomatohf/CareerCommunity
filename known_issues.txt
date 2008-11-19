@@ -37,6 +37,7 @@ highlight 活动日历上有活动的日子
 
 
 Ruby Patch of the GC for Rails
+	需要重新编译 Ruby
 	
 	
 	

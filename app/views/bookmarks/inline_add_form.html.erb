@@ -63,7 +63,7 @@
 						    </label>
 						</td>
 						<td>
-							<input type="radio" value="personal" name="bookmark_type" id="bookmark_type_personal"<%= %Q! checked="checked"! if @bookmark.kind_of?(PersonalBookmark) %> onchange="change_bookmark_type('personal');" />
+							<input type="radio" value="personal" name="bookmark_type" id="bookmark_type_personal"<%= %Q! checked="checked"! if @bookmark.kind_of?(PersonalBookmark) %> onclick="change_bookmark_type(this.value);" />
 
 							<label for="bookmark_type_personal">
 								我的推荐
@@ -73,7 +73,7 @@
 							&nbsp;&nbsp;
 							&nbsp;&nbsp;
 							
-							<input type="radio" value="group" name="bookmark_type" id="bookmark_type_group"<%= %Q! checked="checked"! if @bookmark.kind_of?(GroupBookmark) %> onchange="change_bookmark_type('group');" />
+							<input type="radio" value="group" name="bookmark_type" id="bookmark_type_group"<%= %Q! checked="checked"! if @bookmark.kind_of?(GroupBookmark) %> onclick="change_bookmark_type(this.value);" />
 
 							<label for="bookmark_type_group">
 								我参加的圈子
