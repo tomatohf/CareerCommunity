@@ -23,47 +23,27 @@
 	<br />
 	<br />
 	
-	<div class="community_block">
+	<div id="loading_container" class="community_block" style="padding-left: 50px;">
+		<img src="/images/loading_small.gif" />
+		&nbsp;
+		正在加载 求职目标 ...
+	</div>
+	
+	<div id="table_container" class="community_block" style="display: none;">
 		
 		<table id="job_targets_container" cellpadding="0" cellspacing="0" border="0" class="main_part_w">
-	        <thead>
-	            <tr>
-	                <th>名字</th>
-	                <th>年龄</th>
-	                <th>性别</th>
-	            </tr>
-	        </thead>
-	        <tbody>
-	            <tr>
-	                <td>Barney Rubble</td>
-	                <td>32</td>
-	                <td>男</td>
-
-	            </tr>
-	            <tr>
-	                <td>Fred Flintstone</td>
-	                <td>33</td>
-	                <td>男</td>
-	            </tr>
-	            <tr>
-
-	                <td>Betty Rubble</td>
-	                <td>32</td>
-	                <td>女</td>
-	            </tr>
-	            <tr>
-	                <td>Pebbles</td>
-	                <td>1</td>
-
-	                <td>女</td>
-	            </tr>
-	            <tr>
-	                <td>Bamm Bamm</td>
-	                <td>2</td>
-	                <td></td>
-	            </tr>
-	        </tbody>
-	    </table>
+			<thead>
+				<tr>
+					<th>公司</th>
+					<th>职位</th>
+					<th>步骤</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<%= render :partial => "target", :collection => @targets %>
+			</tbody>
+		</table>
 		
 	</div>
 	
@@ -87,5 +67,20 @@
 <script language="JavaScript" type="text/javascript" src="/lib/ext/build/locale/ext-lang-zh_CN.js"></script>
 
 <script language="JavaScript" type="text/javascript" src="/javascripts/job_target_table.js"></script>
+
+
+
+<script language="JavaScript" type="text/javascript">
+
+	Ext.onReady(
+		function() {
+			Ext.get("table_container").show(true);
+			create_table_grid();
+			
+			Ext.get("loading_container").remove();
+		}
+	);
+
+</script>
 
 

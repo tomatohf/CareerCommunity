@@ -17,6 +17,13 @@ class JobTargetsController < ApplicationController
   def list
     @edit = true
     
+    @targets = JobTarget.find(
+      :all,
+      :conditions => ["account_id = ?", session[:account_id]],
+      :include => [:company, :job_position, :steps],
+      :order => "created_at DESC"
+    )
+    
   end
   
   

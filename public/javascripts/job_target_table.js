@@ -53,11 +53,11 @@ TableGrid = function(table_id, config) {
 			data: table_element.dom,
 			
 			sortInfo: {
-				field: "column_2", // created_at
+				field: "column_0", // created_at
 				direction: "DESC"
 			},
 			
-			groupField: "column_2"
+			groupField: "column_0"
 		}
 	);
 
@@ -90,122 +90,119 @@ Ext.extend(TableGrid, Ext.grid.GridPanel);
 
 
 
-Ext.onReady(
-	
-	function() {
+function create_table_grid() {
 
-		var grid;
-	
-		grid = new TableGrid(
-			"job_targets_container",
-			{
-				stripeRows: true, // stripe alternate rows
-				border: false,
-			
-				tbar: new Ext.Toolbar(
-					{
-						items: [
-							"->",
-						
-							{
-								id: "",
-								text: "tool bar button",
-								//icon: "",
-								//cls: "x-btn-text-icon",
-								handler: function() {
-									alert("tool bar button");
-								}
-							}
-						
-						]
-					}
-				),
-			
-				bbar: new Ext.Toolbar(
-					{
-						items: [
-							"->",
-						
-							"文字",
-						
-							"-",
-						
-							{
-								id: "",
-								text: "bottom bar button",
-								handler: function() {
-									alert("bottom bar button");
-								}
-							}
-						
-						]
-					}
-				),
+	var grid;
 
-				view: new Ext.grid.GroupingView(
-					{
-						forceFit: true,
-						groupTextTpl: "{text} ({[values.rs.length]} 条记录)"
-					}
-				),
-
-				plugins: new Ext.grid.GridFilters(
-					{
-						local: true,
-						filters: [
-							{
-								dataIndex: "column_0",
-								type: "string"
+	grid = new TableGrid(
+		"job_targets_container",
+		{
+			stripeRows: true, // stripe alternate rows
+			border: false,
+		
+			tbar: new Ext.Toolbar(
+				{
+					items: [
+						"->",
+					
+						{
+							id: "",
+							text: "tool bar button",
+							//icon: "",
+							//cls: "x-btn-text-icon",
+							handler: function() {
+								alert("tool bar button");
 							}
+						}
+					
+					]
+				}
+			),
+		
+			bbar: new Ext.Toolbar(
+				{
+					items: [
+						"->",
+					
+						"文字",
+					
+						"-",
+					
+						{
+							id: "",
+							text: "bottom bar button",
+							handler: function() {
+								alert("bottom bar button");
+							}
+						}
+					
+					]
+				}
+			),
+
+			view: new Ext.grid.GroupingView(
+				{
+					forceFit: true,
+					groupTextTpl: "{text} ({[values.rs.length]} 条目标)"
+				}
+			),
+
+			plugins: new Ext.grid.GridFilters(
+				{
+					local: true,
+					filters: [
+						{
+							dataIndex: "column_0",
+							type: "string"
+						}
+					
+					]
+				}
+			)
+		}
+	);
+
+
+
+
+
+	grid.addListener(
+		"rowcontextmenu",
+		function(grid, row_index, e) {
+			e.preventDefault();
+		
+			if(row_index < 0) { return; }
+		
+			var record = grid.getStore().getAt(row_index);
+		
+			var record_id = record.data.column_0.trim()
+		
+			var row_menu_obj = new Ext.menu.Menu(
+				{
+					id: "row_menu",
+					items: [
+						{
+							id: "",
+							text: "menu button",
+							//icon: "",
+							handler: function(item, e) {
+								alert("menu button");
+							}
+						}
 						
-						]
-					}
-				)
-			}
-		);
-	
-	
-	
-	
-	
-		grid.addListener(
-			"rowcontextmenu",
-			function(grid, row_index, e) {
-				e.preventDefault();
-			
-				if(row_index < 0) { return; }
-			
-				var record = grid.getStore().getAt(row_index);
-			
-				var record_id = record.data.column_0.trim()
-			
-				var row_menu_obj = new Ext.menu.Menu(
-					{
-						id: "row_menu",
-						items: [
-							{
-								id: "",
-								text: "menu button",
-								//icon: "",
-								handler: function(item, e) {
-									alert("menu button");
-								}
-							}
-							
-						],
-						shadow: "frame"
-					}
-				);
-			
-			    row_menu_obj.showAt(e.getXY());
-			}
-		);
-	
-	
-	
-		grid.render();
+					],
+					shadow: "frame"
+				}
+			);
+		
+		    row_menu_obj.showAt(e.getXY());
+		}
+	);
 
-	}
-);
+
+
+	grid.render();
+
+}
 
 

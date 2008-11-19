@@ -137,6 +137,8 @@ class CreateJobTargets < ActiveRecord::Migration
     create_table :job_steps, :force => true do |t|
       t.column :created_at, :datetime
       t.column :updated_at, :datetime
+      
+      t.column :job_target_id, :integer
 
       t.column :account_id, :integer
       t.column :job_process_id, :integer
@@ -152,6 +154,7 @@ class CreateJobTargets < ActiveRecord::Migration
       t.column :delta, :boolean
     end
     add_index :job_steps, :created_at
+    add_index :job_steps, :job_target_id
     add_index :job_steps, :account_id
     add_index :job_steps, :job_process_id
     add_index :job_steps, :job_status_id

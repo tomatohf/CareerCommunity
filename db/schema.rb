@@ -550,6 +550,7 @@ ActiveRecord::Schema.define(:version => 14) do
   create_table "job_steps", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "job_target_id",  :limit => 11
     t.integer  "account_id",     :limit => 11
     t.integer  "job_process_id", :limit => 11
     t.string   "name"
@@ -560,6 +561,7 @@ ActiveRecord::Schema.define(:version => 14) do
   end
 
   add_index "job_steps", ["created_at"], :name => "index_job_steps_on_created_at"
+  add_index "job_steps", ["job_target_id"], :name => "index_job_steps_on_job_target_id"
   add_index "job_steps", ["account_id"], :name => "index_job_steps_on_account_id"
   add_index "job_steps", ["job_process_id"], :name => "index_job_steps_on_job_process_id"
   add_index "job_steps", ["job_status_id"], :name => "index_job_steps_on_job_status_id"

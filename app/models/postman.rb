@@ -39,16 +39,19 @@ class Postman < ActionMailer::Base
   end
   
   
-  def course_application_remind(course_application)
+  def course_application_remind(course_applications)
     recipients(
       [
-        "hefan@qiaobutang.com"
+        "Tomato.HF@gmail.com",
+        "hefan@qiaobutang.com",
+        "shenkai@qiaobutang.com",
+        "rick@qiaobutang.com"
       ]
     )
     
     from(self.class.from)
-    subject("#{course_application.real_name} 要 #{Service.find(course_application.service_id)}")
-    body(:course_application => course_application)
+    subject("[#{DateTime.now.strftime("%Y-%m-%d")}] 有 #{course_applications.size} 个需要回应的报名课程/咨询详情的记录")
+    body(:course_applications => course_applications)
   end
   
 end

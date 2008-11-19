@@ -68,4 +68,12 @@ class ActivityPost < ActiveRecord::Base
   end
   
   
+  def clear_association
+    copy = deep_copy(self)
+    copy.clear_association_cache
+    copy.clear_aggregation_cache
+    copy
+  end
+  
+  
 end
