@@ -34,6 +34,8 @@ class CreateJobTargets < ActiveRecord::Migration
       t.column :name, :string
       # TODO - category info ...
       
+      t.column :desc, :string, :limit => 1000
+      
       
       # enable sphinx delta index
       t.column :delta, :boolean

@@ -499,8 +499,9 @@ ActiveRecord::Schema.define(:version => 14) do
   create_table "job_positions", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "account_id", :limit => 11, :default => 0
+    t.integer  "account_id", :limit => 11,   :default => 0
     t.string   "name"
+    t.string   "desc",       :limit => 1000
     t.boolean  "delta"
   end
 

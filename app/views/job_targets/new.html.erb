@@ -52,9 +52,15 @@
 	</div>
 	
 	<div class="community_block_narrow" id="specify_company_from_mine" style="display: none;">
-		<%= account_companies = Company.get_account_companies(session[:account_id]) %>
+		<% account_companies = Company.get_account_companies(session[:account_id]) %>
 		
-		<%= render :partial => "company", :collection => account_companies %>
+		<% unless account_companies.size > 0 %>
+			<div class="form_info_l">
+				还没有添加过公司 ...
+			</div>
+		<% end %>
+		
+		<%= render :partial => "item", :collection => account_companies %>
 	</div>
 	
 	<div class="community_block_narrow" id="specify_company_from_new" style="display: none;">
@@ -95,10 +101,20 @@
 		<% end %>
 	</div>
 	
+	
+	<% form_tag "/job_targets/new_for_position", :method => :post, :id => "company_id_form" do %>
+		<input type="hidden" name="company_id" id="company_id" value="" />
+	<% end %>
+	
 </div>
 
 
 <script language="JavaScript" type="text/javascript">
+
+	function select_item(item_id) {
+		document.getElementById("company_id").value = item_id;
+		document.getElementById("company_id_form").submit();
+	}
 
 	function select_company_from_new() {
 		var radio = document.getElementById("company_from_new");

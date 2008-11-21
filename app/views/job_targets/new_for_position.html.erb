@@ -1,0 +1,121 @@
+<% page_title = "添加求职目标: 选择目标职位" %>
+<% community_page_title(page_title) %>
+
+	
+<div class="blog_container">
+	<a class="float_r" href="/job_targets/new">
+		返回上一步: 选择目标公司</a>
+		
+	<h2><%= page_title %></h2>
+	
+	<%= render :partial => "new_job_target_order", :locals => {:current_order => 1, :company_name => session[:new_target_company_name]} %>
+	
+	<div class="community_block">
+		<div class="info_msg float_r" style="width: 200px; color: #666666;">
+			友情提醒: 使用系统添加的职位可获得更多的关联信息噢~
+		</div>
+		
+		
+		<input type="radio" value="system" name="position_from" id="position_from_system"<%= %Q! checked="checked"! if @position_from == "system" %> onclick="change_position_from(this.value);" />
+		<label for="position_from_system">
+			从系统添加的职位中选择
+		</label>
+	
+		&nbsp;&nbsp;
+		&nbsp;&nbsp;
+		
+		<input type="radio" value="mine" name="position_from" id="position_from_mine"<%= %Q! checked="checked"! if @position_from == "mine" %> onclick="change_position_from(this.value);" />
+		<label for="position_from_mine">
+			从自己曾添加的职位中选择
+		</label>
+		
+		&nbsp;&nbsp;
+		&nbsp;&nbsp;
+		
+		<input type="radio" value="new" name="position_from" id="position_from_new"<%= %Q! checked="checked"! if @position_from == "new" %> onclick="change_position_from(this.value);" />
+		<label for="position_from_new">
+			添加新的职位
+		</label>
+		
+	</div>
+	
+	
+	<div class="community_block_narrow" id="specify_position_from_system" style="display: none;">
+		<div class="community_block">
+			职位搜索框 和 职位 搜索的结果
+		</div>
+		
+		<div class="community_block">
+			<a href="#" onclick="select_position_from_new(); return false;">
+				系统还没有添加要找的职位? 那么先自己添加一个吧</a>
+		</div>
+	</div>
+	
+	<div class="community_block_narrow" id="specify_position_from_mine" style="display: none;">
+		<%= account_positions = JobPosition.get_account_positions(session[:account_id]) %>
+		
+		<%= render :partial => "item", :collection => account_positions %>
+	</div>
+	
+	<div class="community_block_narrow" id="specify_position_from_new" style="display: none;">
+		<% if flash[:error_msg] %>
+			<p class="error_msg" style="width: 400px;"><%= flash[:error_msg] %></p>
+		<% end %>
+		
+		<% form_tag "/job_targets", :method => :post do %>
+			<div class="community_block" style="margin-top: 10px;">
+				<label for"new_position_name">
+					职位的名称(<span style="color: red;">*</span>):
+					&nbsp;
+				</label>
+			</div>
+			<div class="community_block_narrow">
+				<input type="text" id="new_position_name" name="new_position_name" class="text_field" size="50" value="<%= h(@position_name) %>" />
+				<div class="form_info_l">
+					例如: 软件工程师
+				</div>
+			</div>
+			
+			<div class="community_block" style="margin-top: 10px;">
+				<label for"new_position_desc">
+					职位的英文名, 别名 或 其他常用名:
+					&nbsp;
+				</label>
+			</div>
+			<div class="community_block_narrow">
+				<input type="text" id="new_position_desc" name="new_position_desc" class="text_field" size="50" value="<%= h(@position_desc) %>" />
+				<div class="form_info_l">
+					例如: Software Engineer
+				</div>
+			</div>
+			
+			<div class="community_block">
+				<%= submit_tag "下一步", :class => "button", :disabled => @account_limited %>
+			</div>
+		<% end %>
+	</div>
+	
+</div>
+
+
+<script language="JavaScript" type="text/javascript">
+
+	function select_position_from_new() {
+		var radio = document.getElementById("position_from_new");
+		radio.checked = true;
+		radio.onclick();
+	}
+
+	function change_position_from(position_from) {
+		document.getElementById("specify_position_from_system").style.display = "none";
+		document.getElementById("specify_position_from_mine").style.display = "none";
+		document.getElementById("specify_position_from_new").style.display = "none";
+		
+		document.getElementById("specify_position_from_" + position_from).style.display = "";
+	}
+	
+	change_position_from("<%= @position_from %>");
+
+</script>
+
+

@@ -31,7 +31,7 @@ class Company < ActiveRecord::Base
   
   after_destroy { |company|
     self.clear_account_companies_cache(company.account_id) if company.account_id && company.account_id > 0
-    self.clear_company_cache(company_id)
+    self.clear_company_cache(company.id)
   }
   
   
@@ -41,7 +41,7 @@ class Company < ActiveRecord::Base
     a_c = Cache.get("#{CKP_account_companies}_#{account_id}".to_sym)
     
     unless a_c
-      a_c = Company.find(:all, :conditions => ["account_id = ?", account_id])
+      a_c = self.find(:all, :conditions => ["account_id = ?", account_id], :order => "created_at DESC")
       
       Cache.set("#{CKP_account_companies}_#{account_id}".to_sym, a_c, Cache_TTL)
     end
@@ -56,8 +56,8 @@ class Company < ActiveRecord::Base
   def self.get_company(company_id)
     c = Cache.get("#{CKP_company}_#{company_id}".to_sym)
     
-    unless a_c
-      c = Company.find(company_id)
+    unless c
+      c = self.find(company_id)
       
       self.set_company_cache(c.id, c)
     end

@@ -1,9 +1,9 @@
 <div class="community_block_narrow add_job_target_order">
 	<%
 		orders = [
-			["new", "第一步:选择目标公司"],
-			["new_for_position", "第二步:选择目标职位"],
-			["new_for_steps", "第三步:添加求职步骤"]
+			"第一步:选择目标公司",
+			"第二步:选择目标职位",
+			"第三步:添加求职步骤"
 		]
 	%>
 	
@@ -17,16 +17,15 @@
 		
 		<% if current_order > i %>
 			<span>
-				<a href="/job_targets/<%= order[0] %>">
-					<img src="/images/job_targets/finished_order.gif" border="0" /><%= order[1] %></a>
+				<img src="/images/job_targets/finished_order.gif" border="0" /><%= (company_name && company_name != "") ? "目标公司:#{h(company_name)}" : order %>
 			</span>
 		<% elsif current_order < i %>
-			<span class="coming_add_job_target_order">
-				<img src="/images/job_targets/coming_order.gif" border="0" /><%= order[1] %>
+			<span>
+				<img src="/images/job_targets/coming_order.gif" border="0" /><%= order %>
 			</span>
 		<% else %>
 			<span class="current_add_job_target_order">
-				<%= order[1] %>
+				<%= order %>
 			</span>
 		<% end %>
 	

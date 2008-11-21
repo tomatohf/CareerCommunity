@@ -1154,15 +1154,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	border-bottom: 1px dotted #DDDDDD;
 	padding-bottom: 5px;
 	margin-bottom: 20px;
-}
-
-.add_job_target_order a {
 	color: #B3ABA2;
-	text-decoration: none;
-}
-
-.add_job_target_order a:hover {
-	text-decoration: underline;
 }
 
 .add_job_target_order img {
@@ -1174,8 +1166,16 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	font-weight: bold;
 }
 
-.add_job_target_order .coming_add_job_target_order {
-	color: #B3ABA2;
+.add_target_item {
+	width: 500px;
+	border-bottom: 1px dashed #EEEEEE;
+	padding-left: 15px;
+	background: transparent url(/images/job_targets/add_target_item_small.gif) no-repeat scroll left 6px;
+}
+
+.add_target_item_title {
+	font-weight: bold;
+	font-size: 14px;
 }
 
 
