@@ -154,6 +154,11 @@ function create_table_grid() {
 						{
 							dataIndex: "column_0",
 							type: "string"
+						},
+						
+						{
+							dataIndex: "column_1",
+							type: "string"
 						}
 					
 					]

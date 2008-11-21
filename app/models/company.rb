@@ -1,0 +1,78 @@
+class Company < ActiveRecord::Base
+  
+  define_index do
+    # fields
+    indexes :name, :desc
+
+    # attributes
+    has :created_at, :updated_at, :account_id
+    
+    set_property :delta => true
+    
+    # set_property :field_weights => {:field => number}
+  end
+  
+  
+  
+  validates_presence_of :name, :message => "请输入 名称"
+  
+  validates_length_of :name, :maximum => 256, :message => "名称 超过长度限制", :allow_nil => false
+  validates_length_of :desc, :maximum => 1000, :message => "别名或其他常用名 超过长度限制", :allow_nil => true
+  
+  
+  
+  CKP_account_companies = :account_companies
+  CKP_company = :company
+  
+  after_save { |company|
+    self.clear_account_companies_cache(company.account_id) if company.account_id && company.account_id > 0
+    self.set_company_cache(company.id, company)
+  }
+  
+  after_destroy { |company|
+    self.clear_account_companies_cache(company.account_id) if company.account_id && company.account_id > 0
+    self.clear_company_cache(company_id)
+  }
+  
+  
+  
+  
+  def self.get_account_companies(account_id)
+    a_c = Cache.get("#{CKP_account_companies}_#{account_id}".to_sym)
+    
+    unless a_c
+      a_c = Company.find(:all, :conditions => ["account_id = ?", account_id])
+      
+      Cache.set("#{CKP_account_companies}_#{account_id}".to_sym, a_c, Cache_TTL)
+    end
+    a_c
+  end
+  
+  def self.clear_account_companies_cache(account_id)
+    Cache.delete("#{CKP_account_companies}_#{account_id}".to_sym)
+  end
+  
+  
+  def self.get_company(company_id)
+    c = Cache.get("#{CKP_company}_#{company_id}".to_sym)
+    
+    unless a_c
+      c = Company.find(company_id)
+      
+      self.set_company_cache(c.id, c)
+    end
+    c
+  end
+  
+  def self.set_company_cache(company_id, company)
+    Cache.set("#{CKP_company}_#{company_id}".to_sym, company, Cache_TTL)
+  end
+  
+  def self.clear_company_cache(company_id)
+    Cache.delete("#{CKP_company}_#{company_id}".to_sym)
+  end
+  
+  
+end
+
+

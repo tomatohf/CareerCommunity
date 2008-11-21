@@ -60,10 +60,10 @@ class AccountSetting < ActiveRecord::Base
   @@default_values = {
     # profile visible settings
     # "any" or "login" or "friend" or "both_friend"
-    :profile_basic_visible => "any",
+    :profile_basic_visible => "login",
     :profile_contact_visible => "friend",
-    :profile_hobby_visible => "any",
-    :profile_resume_visible => "any"
+    :profile_hobby_visible => "login",
+    :profile_resume_visible => "friend"
     
   }
   def self.default_value(name)

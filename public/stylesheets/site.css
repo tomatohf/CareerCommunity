@@ -1149,5 +1149,34 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	font-weight: bold;
 }
 
+.add_job_target_order {
+	word-spacing: 10px;
+	border-bottom: 1px dotted #DDDDDD;
+	padding-bottom: 5px;
+	margin-bottom: 20px;
+}
+
+.add_job_target_order a {
+	color: #B3ABA2;
+	text-decoration: none;
+}
+
+.add_job_target_order a:hover {
+	text-decoration: underline;
+}
+
+.add_job_target_order img {
+	margin-right: 3px;
+}
+
+.add_job_target_order .current_add_job_target_order {
+	color: #000000;
+	font-weight: bold;
+}
+
+.add_job_target_order .coming_add_job_target_order {
+	color: #B3ABA2;
+}
+
 
 

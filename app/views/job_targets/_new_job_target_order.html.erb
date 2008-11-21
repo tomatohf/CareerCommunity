@@ -1,0 +1,35 @@
+<div class="community_block_narrow add_job_target_order">
+	<%
+		orders = [
+			["new", "第一步:选择目标公司"],
+			["new_for_position", "第二步:选择目标职位"],
+			["new_for_steps", "第三步:添加求职步骤"]
+		]
+	%>
+	
+	<% orders.each_index do |i| %>
+		<% order = orders[i] %>
+	
+		<% if i > 0 %>
+			»
+		<% end %>
+		
+		
+		<% if current_order > i %>
+			<span>
+				<a href="/job_targets/<%= order[0] %>">
+					<img src="/images/job_targets/finished_order.gif" border="0" /><%= order[1] %></a>
+			</span>
+		<% elsif current_order < i %>
+			<span class="coming_add_job_target_order">
+				<img src="/images/job_targets/coming_order.gif" border="0" /><%= order[1] %>
+			</span>
+		<% else %>
+			<span class="current_add_job_target_order">
+				<%= order[1] %>
+			</span>
+		<% end %>
+	
+	<% end %>
+	
+</div>

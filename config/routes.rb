@@ -326,6 +326,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :job_targets, :collection => {
     
+    :new_for_position => :post
+    
   }, :member => {
     
   }
