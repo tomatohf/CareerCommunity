@@ -163,6 +163,11 @@ function create_table_grid() {
 						{
 							dataIndex: "column_1",
 							type: "string"
+						},
+
+						{
+							dataIndex: "column_2",
+							type: "date"
 						}
 					
 					]

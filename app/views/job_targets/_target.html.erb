@@ -38,7 +38,9 @@
 	</td>
 	
 	<td>
-		<%= ordered_steps.collect {|step| "#{step.label}(#{JobProcess.get_process(step.job_process_id).name})" }.join("  |  ") %>
+		<span style="color: red;">
+			<%= ordered_steps.collect {|step| "#{step.label}(#{JobProcess.get_process(step.job_process_id).name})" }.join("  |  ") %>
+		</span>
 	</td>
 </tr>
 

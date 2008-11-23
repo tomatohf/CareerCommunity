@@ -60,7 +60,7 @@ module ApplicationHelper
   end
   
   def format_short_date(date)
-    date && date.strftime("%y.%m.%d")
+    date && date.strftime("%y-%m-%d")
   end
   
   def format_activity_time(time)

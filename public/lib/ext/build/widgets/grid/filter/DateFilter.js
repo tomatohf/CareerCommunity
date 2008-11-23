@@ -137,7 +137,10 @@ Ext.grid.filter.DateFilter = Ext.extend(Ext.grid.filter.Filter, {
 	
 	validateRecord: function(record) {
 		//var val = record.get(this.dataIndex).clearTime(true).getTime();
-		var val = Date.parseDate(record.get(this.dataIndex).trim(), "Y-m-d").clearTime(true).getTime();
+		// modified by Tomato
+		date_text = record.get(this.dataIndex).trim();
+		date_obj = Date.parseDate(date_text, "Y-m-d") || Date.parseDate(date_text, "y-m-d");
+		var val = date_obj.clearTime(true).getTime();
 		
 		if(this.dates.on.checked && val != this.getFieldValue('on').clearTime(true).getTime()) {
 			return false;
