@@ -1,0 +1,10 @@
+if @saved
+  page.insert_html :bottom,
+          					"account_process_container",
+                    :partial => "process",
+                    :object => @process
+  
+  page.call "clear_after_add_process"
+end
+
+

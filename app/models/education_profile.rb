@@ -30,14 +30,14 @@ class EducationProfile < ActiveRecord::Base
     Cache.set(:all_edu_names, all_edu_names, Cache_TTL)
   end
   
-  def self.get_by_partial_edu_name(partial_edu_name)
-    self.get_all_edu_names.select {|edu_name| edu_name.include?(partial_edu_name) }
+  def self.get_by_partial_edu_name(partial_edu_name = "")
+    self.get_all_edu_names.select {|edu_name| edu_name.downcase.include?(partial_edu_name.downcase) }
   end
   
   
   
   def add_to_cache
-    all_edu_names = Cache.get(:all_edu_names)
+    all_edu_names = self.class.get_all_edu_names
     if edu_name && edu_name != "" && (!all_edu_names.include?(edu_name))
       all_edu_names << edu_name
       self.class.set_all_edu_names_cache(all_edu_names)

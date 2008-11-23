@@ -26,7 +26,7 @@ class JobPosition < ActiveRecord::Base
   
   after_save { |position|
     self.clear_account_positions_cache(position.account_id) if position.account_id && position.account_id > 0
-    self.set_position_cache(position.id, position)
+    self.set_position_cache(position)
   }
   
   after_destroy { |position|
@@ -43,6 +43,9 @@ class JobPosition < ActiveRecord::Base
     unless a_p
       a_p = self.find(:all, :conditions => ["account_id = ?", account_id], :order => "created_at DESC")
       
+      # set individual position cache
+      a_p.each { |p| self.set_position_cache(p) }
+      
       Cache.set("#{CKP_account_positions}_#{account_id}".to_sym, a_p, Cache_TTL)
     end
     a_p
@@ -53,19 +56,22 @@ class JobPosition < ActiveRecord::Base
   end
   
   
+  require_dependency "job_target"
+  require_dependency "job_step"
+  require_dependency "company"
   def self.get_position(position_id)
-    c = Cache.get("#{CKP_position}_#{position_id}".to_sym)
+    p = Cache.get("#{CKP_position}_#{position_id}".to_sym)
     
-    unless a_c
-      c = self.find(position_id)
+    unless p
+      p = self.find(position_id)
       
-      self.set_position_cache(c.id, c)
+      self.set_position_cache(p)
     end
-    c
+    p
   end
   
-  def self.set_position_cache(position_id, position)
-    Cache.set("#{CKP_position}_#{position_id}".to_sym, position, Cache_TTL)
+  def self.set_position_cache(position)
+    Cache.set("#{CKP_position}_#{position.id}".to_sym, position, Cache_TTL)
   end
   
   def self.clear_position_cache(position_id)

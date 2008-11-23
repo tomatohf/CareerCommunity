@@ -59,6 +59,10 @@ module ApplicationHelper
     date && date.strftime("%Y-%m-%d")
   end
   
+  def format_short_date(date)
+    date && date.strftime("%y.%m.%d")
+  end
+  
   def format_activity_time(time)
     time && (time.strftime("%Y年%m月%d日") + " 星期#{["天","一","二","三","四","五","六"][time.wday]} " + time.strftime("%H:%M"))
   end

@@ -32,14 +32,14 @@ class JobProfile < ActiveRecord::Base
     Cache.set(:all_job_names, all_job_names, Cache_TTL)
   end
   
-  def self.get_by_partial_job_name(partial_job_name)
-    self.get_all_job_names.select {|job_name| job_name.include?(partial_job_name) }
+  def self.get_by_partial_job_name(partial_job_name = "")
+    self.get_all_job_names.select {|job_name| job_name.downcase.include?(partial_job_name.downcase) }
   end
   
   
   
   def add_to_cache
-    all_job_names = Cache.get(:all_job_names)
+    all_job_names = self.class.get_all_job_names
     if job_name && job_name != "" && (!all_job_names.include?(job_name))
       all_job_names << job_name
       self.class.set_all_job_names_cache(all_job_names)

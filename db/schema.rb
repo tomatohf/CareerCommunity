@@ -555,7 +555,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.integer  "job_target_id",  :limit => 11
     t.integer  "account_id",     :limit => 11
     t.integer  "job_process_id", :limit => 11
-    t.string   "name"
+    t.string   "label"
     t.integer  "job_status_id",  :limit => 11
     t.datetime "begin_at"
     t.datetime "end_at"
@@ -576,6 +576,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.integer  "job_position_id",     :limit => 11
     t.integer  "current_job_step_id", :limit => 11
     t.boolean  "closed",                            :default => false
+    t.text     "info"
     t.boolean  "delta"
   end
 

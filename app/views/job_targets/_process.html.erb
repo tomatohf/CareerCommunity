@@ -1,0 +1,7 @@
+<% process_name = h(process.name) %>
+<div class="float_l job_process" id="process_<%= process.id %>">
+	<button class="button add_process_button" onclick="add_step(<%= process.id %>, '<%= process_name %>');">
+		<%= process_name %></button>
+</div>
+
+

@@ -1,0 +1,174 @@
+<% page_title = "添加求职目标: 添加求职步骤" %>
+<% community_page_title(page_title) %>
+
+	
+<div class="blog_container">
+	<a class="float_r" href="/job_targets/list/<%= session[:account_id] %>">
+		返回我的求职目标</a>
+		
+	<h2><%= page_title %></h2>
+	
+	<%= render :partial => "new_job_target_order", :locals => {:current_order => 2, :company_name => h(@target.get_company_name), :position_name => h(@target.get_position_name)} %>
+	
+	<div class="community_block_narrow">
+		<p class="form_info_l">
+			按顺序添加需要的求职流程作为求职步骤, 可以多次添加同一个流程
+			<br />
+			可为每个步骤提供一个名称, 例如: 添加两个<b>面试</b>步骤, 分别取名为 <b>一面</b> 和 <b>二面</b>
+		</p>
+	</div>
+	
+	
+	<div class="community_block">
+	
+		<fieldset class="fieldset">
+			<legend>系统添加的求职流程</legend>
+		
+			<% system_processes = JobProcess.get_system_processes %>
+			
+			<%= render :partial => "process", :collection => system_processes %>
+			<div class="clear_l"></div>
+			
+		</fieldset>
+	
+	</div>
+
+	<div class="community_block">
+	
+		<fieldset class="fieldset">
+			<legend>自己曾添加的求职流程</legend>
+		
+			<% account_processes = JobProcess.get_account_processes(session[:account_id]) %>
+			
+			<div id="account_process_container">
+				<%= render :partial => "process", :collection => account_processes %>
+			</div>
+			<div class="clear_l"></div>
+			
+			<% unless account_processes.size > 0 %>
+				<div id="no_account_process_msg" class="form_info_l">
+					还没有添加过求职流程 ...
+				</div>
+			<% end %>
+		</fieldset>
+	
+	</div>
+	
+	
+	<div class="community_block align_r" id="add_process_link">
+		<a href="#" onclick="toggle_add_process_form(); return false;">
+			找不到需要的求职流程? 自己添加新的求职流程</a>
+	</div>
+	
+	<div class="community_block align_r" id="add_process_form" style="display: none;">
+		<% form_tag "", :onsubmit => "add_process(); return false;" do %>
+		<div class="community_block">
+			<label for="new_process_name">
+				求职流程的名称:
+			</label>
+			&nbsp;
+			<input type="text" id="new_process_name" name="new_process_name" class="text_field" size="25" value="" />
+		</div>
+	
+		<div class="community_block">
+			<img src="/images/loading_small.gif" id="adding_process_indicator" style="display: none;" />
+			&nbsp;
+			
+			<%= submit_tag "添加", :id => "add_process_button", :class => "button", :disabled => @account_limited %>
+			&nbsp;
+			<a href="#" onclick="toggle_add_process_form(); return false;">
+				先不添加了</a>
+		</div>
+		<% end %>
+	</div>
+	
+	
+	<div class="community_block">
+		<% form_tag "/job_targets/#{@target.id}/add_steps", :method => :post do %>
+			<div class="community_block" id="added_steps_container">
+				
+			</div>
+			<div class="clear_l community_block"></div>
+			
+			<div class="community_block align_c">
+				<%= submit_tag "完成添加求职目标", :class => "button", :disabled => @account_limited %>
+			</div>
+		<% end %>
+	</div>
+	
+	
+</div>
+
+
+<script language="JavaScript" src="/lib/protopack/prototype-packer.js"></script>
+
+
+<script language="JavaScript" type="text/javascript">
+
+	function toggle_add_process_form() {
+		$("add_process_link").toggle();
+		$("add_process_form").toggle();
+	}
+	
+	function add_process() {
+		$("add_process_button").disable();
+		$("adding_process_indicator").show();
+		
+		new Ajax.Request(
+			"/job_targets/add_account_process",
+			{
+				asynchronous: true,
+				evalScripts: true,
+				onComplete: function(request) {
+					$("add_process_button").enable();
+					$("adding_process_indicator").hide();
+				},
+				parameters: "new_process_name=" + $("new_process_name").getValue() + "&authenticity_token=<%= form_authenticity_token %>",
+				method: "post"
+			}
+		);
+	}
+	
+	function clear_after_add_process() {
+		$("new_process_name").clear();
+		toggle_add_process_form();
+		
+		var msg = $("no_account_process_msg");
+		if(msg) {
+			msg.remove();
+		}
+	}
+	
+	
+	function add_step(process_id, process_name) {
+		var container = $("added_steps_container");
+		container.insert(get_step_entry(process_id, process_name));
+	}
+	
+	function remove_step(step_id) {
+		$(step_id).remove();
+	}
+	
+	function get_step_entry(process_id, process_name) {
+		var step_id = new Date().getTime();
+		
+		var html = "";
+		
+		html += "<div class='float_l new_step' id='" + step_id + "'>";
+		
+		html += 	"<a href='#' title='删除' onclick=\"remove_step('" + step_id + "'); return false;\">"
+		html += 		"<img src='/images/job_targets/remove_step_small.gif' border='0' /></a>"
+		
+		html += 	"<input type='text' class='text_field' name='step_" + step_id + "_label' style='width: 50px;' />";
+		html += 	" (" + process_name + ")";
+		
+		html += 	"<input type='hidden' name='step_" + step_id + "_process_id' value='" + process_id + "' />";
+		
+		html += "</div>";
+		
+		return html;
+	}
+
+</script>
+
+

@@ -52,7 +52,13 @@
 	</div>
 	
 	<div class="community_block_narrow" id="specify_position_from_mine" style="display: none;">
-		<%= account_positions = JobPosition.get_account_positions(session[:account_id]) %>
+		<% account_positions = JobPosition.get_account_positions(session[:account_id]) %>
+		
+		<% unless account_positions.size > 0 %>
+			<div class="form_info_l">
+				还没有添加过职位 ...
+			</div>
+		<% end %>
 		
 		<%= render :partial => "item", :collection => account_positions %>
 	</div>
@@ -95,10 +101,21 @@
 		<% end %>
 	</div>
 	
+	
+	
+	<% form_tag "/job_targets", :method => :post, :id => "position_id_form" do %>
+		<input type="hidden" name="position_id" id="position_id" value="" />
+	<% end %>
+	
 </div>
 
 
 <script language="JavaScript" type="text/javascript">
+
+	function select_item(item_id) {
+		document.getElementById("position_id").value = item_id;
+		document.getElementById("position_id_form").submit();
+	}
 
 	function select_position_from_new() {
 		var radio = document.getElementById("position_from_new");

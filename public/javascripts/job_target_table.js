@@ -53,11 +53,15 @@ TableGrid = function(table_id, config) {
 			data: table_element.dom,
 			
 			sortInfo: {
-				field: "column_0", // created_at
+				field: "column_2", // created_at
 				direction: "DESC"
-			},
+			}
+			
+			/*
+			,
 			
 			groupField: "column_0"
+			*/
 		}
 	);
 

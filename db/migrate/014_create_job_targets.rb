@@ -58,6 +58,11 @@ class CreateJobTargets < ActiveRecord::Migration
       
       t.column :closed, :boolean, :default => false
       
+      t.column :info, :text
+      # step_order
+      # color
+      # icon
+      
       
       # enable sphinx delta index
       t.column :delta, :boolean
@@ -147,7 +152,7 @@ class CreateJobTargets < ActiveRecord::Migration
       t.column :account_id, :integer
       t.column :job_process_id, :integer
 
-      t.column :name, :string
+      t.column :label, :string
       t.column :job_status_id, :integer
       
       t.column :begin_at, :datetime

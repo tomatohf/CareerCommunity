@@ -26,7 +26,7 @@ class Company < ActiveRecord::Base
   
   after_save { |company|
     self.clear_account_companies_cache(company.account_id) if company.account_id && company.account_id > 0
-    self.set_company_cache(company.id, company)
+    self.set_company_cache(company)
   }
   
   after_destroy { |company|
@@ -43,6 +43,9 @@ class Company < ActiveRecord::Base
     unless a_c
       a_c = self.find(:all, :conditions => ["account_id = ?", account_id], :order => "created_at DESC")
       
+      # set individual company cache
+      a_c.each { |c| self.set_company_cache(c) }
+      
       Cache.set("#{CKP_account_companies}_#{account_id}".to_sym, a_c, Cache_TTL)
     end
     a_c
@@ -53,19 +56,22 @@ class Company < ActiveRecord::Base
   end
   
   
+  require_dependency "job_target"
+  require_dependency "job_step"
+  require_dependency "job_position"
   def self.get_company(company_id)
     c = Cache.get("#{CKP_company}_#{company_id}".to_sym)
     
     unless c
       c = self.find(company_id)
       
-      self.set_company_cache(c.id, c)
+      self.set_company_cache(c)
     end
     c
   end
   
-  def self.set_company_cache(company_id, company)
-    Cache.set("#{CKP_company}_#{company_id}".to_sym, company, Cache_TTL)
+  def self.set_company_cache(company)
+    Cache.set("#{CKP_company}_#{company.id}".to_sym, company, Cache_TTL)
   end
   
   def self.clear_company_cache(company_id)

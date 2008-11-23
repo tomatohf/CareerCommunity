@@ -308,10 +308,24 @@ div.auto_complete ul li {
 	cursor: pointer;
 }
 
+.button:hover {
+	border-style: outset;
+}
+
+.button:active {
+	border-style: inset;
+}
+
 select.dropdown_list, .dropdown_list select {
 	border-style: dotted;
 	border-width: 1px;
 	border-color: #A3988C;
+}
+
+.fieldset {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #CCCCCC;
 }
 
 .search_input {
@@ -1161,6 +1175,11 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	margin-right: 3px;
 }
 
+.add_job_target_order .the_name {
+	color: #666666;
+	font-weight: bold;
+}
+
 .add_job_target_order .current_add_job_target_order {
 	color: #000000;
 	font-weight: bold;
@@ -1177,6 +1196,29 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	font-weight: bold;
 	font-size: 14px;
 }
+
+.job_process {
+	margin: 5px 8px;
+	padding: 2px;
+}
+
+.add_process_button {
+	background-repeat: no-repeat;
+	background-position: 5px center;
+	padding: 3px 5px 3px 18px;
+	background-image: url(/images/job_targets/add_step_small.gif);
+}
+
+.new_step {
+	border: 2px groove #C2E3EF;
+	margin: 5px 10px;
+	padding: 1px 5px;
+}
+
+.new_step img {
+	margin-right: 4px;
+}
+
 
 
 

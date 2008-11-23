@@ -1,4 +1,4 @@
-<div class="community_block_narrow add_job_target_order">
+<div class="community_block add_job_target_order">
 	<%
 		orders = [
 			"第一步:选择目标公司",
@@ -16,8 +16,9 @@
 		
 		
 		<% if current_order > i %>
+			<% the_name = i > 0 ? %Q!目标职位:<span class="the_name">#{h(position_name)}</span>! : %Q!目标公司:<span class="the_name">#{h(company_name)}</span>! %>
 			<span>
-				<img src="/images/job_targets/finished_order.gif" border="0" /><%= (company_name && company_name != "") ? "目标公司:#{h(company_name)}" : order %>
+				<img src="/images/job_targets/finished_order.gif" border="0" /><%= (company_name && company_name != "") ? the_name : order %>
 			</span>
 		<% elsif current_order < i %>
 			<span>

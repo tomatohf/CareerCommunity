@@ -1,14 +1,44 @@
+<%
+	company = target.company
+	Company.set_company_cache(company)
+	
+	position = target.job_position
+	JobPosition.set_position_cache(position)
+%>
+
+<%
+	steps = target.steps
+	steps.each do |s|
+		# set the job step cache
+		JobStep.set_step_cache(s)
+	end
+	
+	ordered_steps = target.get_info[:step_order].collect { |sid|
+		sobj = nil
+		begin
+			sobj = JobStep.get_step(sid)
+		rescue
+		end
+		
+		sobj
+	}.compact
+%>
+
 <tr>
 	<td>
-		<%= h(target.company.name) %>
+		<%= h(company.name) %>
 	</td>
 	
 	<td>
-		<%= h(target.job_position.name) %>
+		<%= h(position.name) %>
 	</td>
 	
 	<td>
-		
+		<%= format_short_date(target.created_at) %>
+	</td>
+	
+	<td>
+		<%= ordered_steps.collect {|step| "#{step.label}(#{JobProcess.get_process(step.job_process_id).name})" }.join("  |  ") %>
 	</td>
 </tr>
 
