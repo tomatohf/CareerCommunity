@@ -121,6 +121,16 @@ div.auto_complete ul li {
 	line-height: 146%;
 }
 
+#bottom_bar #beianhao {
+	margin-left: 5px;
+	color: #B3ABA2;
+	text-decoration: none;
+}
+
+#bottom_bar #beianhao:hover {
+	text-decoration: underline;
+}
+
 #top_bar_left {
 	float: left;
 	margin-left: 20px;
