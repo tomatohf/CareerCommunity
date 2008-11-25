@@ -87,24 +87,10 @@
 	<% end %>
 	
 	
-	<!--
-	<div class="community_title">
-		最新招聘信息 ...
-	</div>
-	-->
-	<div class="community_block">
-		<%= render(:partial => "recruitment", :collection => @new_recruitments) %>
-		
-		<div class="align_r">
-			<a href="/recruitments" class="more_part">« 更多招聘信息</a>
-		</div>
-	</div>
-	
-	
 	<div class="community_title">
 		最新活动 ...
 	</div>
-	<div style="margin-top: 10px;">
+	<div class="overflow_hidden" style="margin-top: 10px;">
 		<%= float_list(@new_activities, "activity", :activity, {}, 5) %>
 		
 		<div class="clear_l align_r">
@@ -145,6 +131,28 @@
 		
 		<div class="align_r">
 			<a href="/groups" class="more_part">« 去我的圈子近况</a>
+		</div>
+	</div>
+	
+	
+	<div class="community_title">
+		最新投票 ...
+	</div>
+	<div class="community_block">
+		<% cache(VoteTopic::FCKP_community_index_vote_topic) do %>
+			<%
+				new_vote_topics = VoteTopic.find(
+					:all,
+					:limit => CommunityController::New_Vote_Topic_Size,
+					:select => "id, title, created_at, category_id",
+					:order => "created_at DESC"
+				)
+			%>
+			<%= render(:partial => "vote_topic", :collection => new_vote_topics) %>
+		<% end %>
+		
+		<div class="align_r">
+			<a href="/votes" class="more_part">« 更多投票</a>
 		</div>
 	</div>
 	

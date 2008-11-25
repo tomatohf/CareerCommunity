@@ -2,11 +2,11 @@ class CommunityController < ApplicationController
   
   New_Account_Size = 9
   New_Action_Size = 15
-  New_Recruitment_Size = 8
-  New_Activity_Size = 5
-  New_Group_Size = 6
-  New_Activity_Post_Size = 8
-  New_Group_Post_Size = 8
+  New_Activity_Size = 10
+  New_Group_Size = 12
+  New_Activity_Post_Size = 10
+  New_Group_Post_Size = 10
+  New_Vote_Topic_Size = 10
   New_Blog_Size = 5
   
   Search_Result_Page_Size = 10
@@ -36,15 +36,6 @@ class CommunityController < ApplicationController
       :limit => New_Action_Size,
       :include => [:account => [:profile_pic]],
       :order => "created_at DESC"
-    )
-    
-    @new_recruitments = Recruitment.find(
-      :all,
-      :limit => New_Recruitment_Size,
-      :select => "id, title, publish_time",
-      :conditions => ["location = ? and source_name in (?)", "上海", ["Hiall", "我是应届生"]],
-      :include => [:recruitment_tags],
-      :order => "publish_time DESC"
     )
     
     @new_activities = Activity.uncancelled.find(

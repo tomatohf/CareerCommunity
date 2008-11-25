@@ -136,6 +136,47 @@ function create_table_grid() {
 			re_create_step_dd();
 		}
 	);
+	
+	grid_toolbar = new Ext.Toolbar(
+		{
+			items: [
+				"->",
+			
+				{
+					id: "",
+					text: "tool bar button",
+					//icon: "",
+					//cls: "x-btn-text-icon",
+					handler: function() {
+						alert("tool bar button");
+					}
+				}
+			
+			]
+		}
+	);
+	
+	grid_bottombar = new Ext.Toolbar(
+		{
+			items: [
+				"->",
+			
+				"文字",
+			
+				"-",
+			
+				{
+					id: "",
+					text: "bottom bar button",
+					handler: function() {
+						alert("bottom bar button");
+					}
+				}
+			
+			]
+		}
+	);
+	
 
 	grid = new TableGrid(
 		"job_targets_container",
@@ -146,45 +187,9 @@ function create_table_grid() {
 			disableSelection: true,
 			deferRowRender: false,
 		
-			tbar: new Ext.Toolbar(
-				{
-					items: [
-						"->",
-					
-						{
-							id: "",
-							text: "tool bar button",
-							//icon: "",
-							//cls: "x-btn-text-icon",
-							handler: function() {
-								alert("tool bar button");
-							}
-						}
-					
-					]
-				}
-			),
+			tbar: grid_toolbar,
 		
-			bbar: new Ext.Toolbar(
-				{
-					items: [
-						"->",
-					
-						"文字",
-					
-						"-",
-					
-						{
-							id: "",
-							text: "bottom bar button",
-							handler: function() {
-								alert("bottom bar button");
-							}
-						}
-					
-					]
-				}
-			),
+			bbar: grid_bottombar,
 
 			view: grid_view,
 

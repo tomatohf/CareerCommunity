@@ -46,12 +46,14 @@ class VoteTopic < ActiveRecord::Base
   FCKP_votes_show_created_vote_topic = :fc_votes_show_created_vote_topic
   
   FCKP_index_vote_topic = :fc_index_vote_topic
+  FCKP_community_index_vote_topic = :fc_community_index_vote_topic
   
   after_save { |vote_topic|
     self.clear_spaces_show_vote_topic_cache(vote_topic.account_id)
     self.clear_votes_show_created_vote_topic_cache(vote_topic.account_id)
     
     self.clear_index_vote_topic_cache
+    self.clear_community_index_vote_topic_cache
   }
   
   after_destroy { |vote_topic|
@@ -62,6 +64,7 @@ class VoteTopic < ActiveRecord::Base
     self.clear_votes_show_created_vote_topic_cache(vote_topic.account_id)
     
     self.clear_index_vote_topic_cache
+    self.clear_community_index_vote_topic_cache
   }
   
   def self.clear_spaces_show_vote_topic_cache(account_id)
@@ -74,6 +77,10 @@ class VoteTopic < ActiveRecord::Base
   
   def self.clear_index_vote_topic_cache
     Cache.delete(expand_cache_key(FCKP_index_vote_topic))
+  end
+  
+  def self.clear_community_index_vote_topic_cache
+    Cache.delete(expand_cache_key(FCKP_community_index_vote_topic))
   end
   
   

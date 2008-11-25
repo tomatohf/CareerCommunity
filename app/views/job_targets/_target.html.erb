@@ -45,7 +45,7 @@
 		
 		<div id="step_dd_group_<%= target.id %>">
 			<% ordered_steps.each do |step| %>
-				<div class="float_l step" id="step_<%= step.id %>">
+				<div class="float_l step<%= " step_current" if (step.id == target.current_job_step_id) %>" id="step_<%= step.id %>">
 					<%= h(step.label) %>
 					(<%= h(JobProcess.get_process(step.job_process_id).name) %>)
 				</div>

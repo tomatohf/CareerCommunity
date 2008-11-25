@@ -873,7 +873,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 
 .community_index_group {
 	float: left;
-	margin: 0px;
+	margin-bottom: 20px;
 	text-align: center;
 	width: 80px;
 }
@@ -984,7 +984,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 
 .community_index_activity {
 	float: left;
-	margin: 0px;
+	margin-bottom: 20px;
 	text-align: center;
 	width: 95px;
 }
@@ -1242,8 +1242,16 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	background-color: #EEEEEE;
 	border-right: 1px solid #AAAAAA;
 	border-bottom: 1px solid #AAAAAA;
-	margin: 2px 0px;
+
+	margin: 4px 0px 2px 0px;
 	padding: 5px 10px;
+	
+	height: 15px;
+}
+
+.step_current {
+	margin-top: 2px;
+	height: 20px;
 }
 
 .step_dd_over {

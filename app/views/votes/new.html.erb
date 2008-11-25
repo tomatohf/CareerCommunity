@@ -24,28 +24,34 @@
 		<div>
 			<% form_tag "/votes", :method => :post do %>
 			
-				<% if @group_with_image %>
-					<% group = @group_with_image[0] %>
-					<% group_image = @group_with_image[1] %>
-					<div class="float_r">
-						投票所在圈子:
-						<div class="align_c" style="width: 80px;">
-							<div>
-								<a href="/groups/<%= group.id %>" target="_blank">
-									<img src="<%= face_img_src(group_image) %>" border="0" /></a>
-							</div>
-							<div>
-								<a href="/groups/<%= group.id %>" target="_blank" class="group_name_link">
-									<%= h(group.name) %></a>
-							</div>
-							<input type="hidden" name="group_id" value="<%= group.id %>" />
-						</div>
-					</div>
-				<% end %>
-			
 				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<% if @group_with_image %>
+						<% group = @group_with_image[0] %>
+						<% group_image = @group_with_image[1] %>
+						<tr>
+							<td>
+								投票所在圈子
+								:
+							</td>
+							
+							<td>
+								<div class="float_l align_c">
+									<div>
+										<a href="/groups/<%= group.id %>" target="_blank">
+											<img src="<%= face_img_src(group_image) %>" border="0" /></a>
+									</div>
+									<div>
+										<a href="/groups/<%= group.id %>" target="_blank" class="group_name_link">
+											<%= h(group.name) %></a>
+									</div>
+									<input type="hidden" name="group_id" value="<%= group.id %>" />
+								</div>
+							</td>
+						</tr>
+					<% end %>
+					
 					<tr>
-						<td style="width: 75px">
+						<td style="width: 100px">
 							<label for="vote_topic_title">
 						        投票标题(<span style="color: red;">*</span>)
 								:

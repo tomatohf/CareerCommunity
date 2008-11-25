@@ -1,0 +1,16 @@
+<div style="border-bottom: 1px dashed #DDDDDD; margin-bottom: 5px;">
+	<div>
+		<a href="/votes/<%= vote_topic.id %>" class="account_nick_link">
+			<%= h(vote_topic.title) %></a>	
+		&nbsp;&nbsp;
+		[<a href="/votes/category/<%= vote_topic.category_id %>" class="account_nick_link"><%= VoteCategory.get_category(vote_topic.category_id) %></a>]
+
+		&nbsp;&nbsp;
+
+		<span class="form_info_s">
+			<%= format_datetime(vote_topic.created_at) %>
+		</span>
+	</div>
+</div>
+
+
