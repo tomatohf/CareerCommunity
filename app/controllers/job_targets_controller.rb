@@ -10,6 +10,8 @@ class JobTargetsController < ApplicationController
   before_filter :check_account_access, :only => [:list]
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order]
   
+  before_filter :do_protection
+  
 
   
   # ! current account needed !
@@ -201,6 +203,10 @@ class JobTargetsController < ApplicationController
   
   
   private
+  
+  def do_protection
+    jump_to("/community") unless ApplicationController.helpers.general_admin?(session[:account_id])
+  end
   
   def check_account_access
     @account_id = params[:id]
