@@ -5,10 +5,10 @@ class JobTargetsController < ApplicationController
   # generally, all action should require login to view
   before_filter :check_login #, :only => [:list]
   before_filter :check_limited, :only => [:new_for_position, :create, :add_account_process, :add_steps,
-                                          :adjust_step_order]
+                                          :adjust_step_order, :set_current_step]
   
   before_filter :check_account_access, :only => [:list]
-  before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order]
+  before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step]
   
   before_filter :do_protection
   
@@ -147,17 +147,23 @@ class JobTargetsController < ApplicationController
     
     step_order = []
     step_timestamps.each do |step_timestamp|
-      step_label = params["step_#{step_timestamp}_label".to_sym]
       step_process_id = params["step_#{step_timestamp}_process_id".to_sym]
+      process = JobProcess.get_process(step_process_id)
       
-      step = JobStep.new(
-        :job_target_id => @target.id,
-        :account_id => session[:account_id],
-        :job_process_id => step_process_id,
-        :label => step_label
-      )
+      if process && (process.account_id.nil? || process.account_id == 0 || process.account_id == session[:account_id])
       
-      step_order << step.id if step.save
+        step_label = params["step_#{step_timestamp}_label".to_sym]
+      
+        step = JobStep.new(
+          :job_target_id => @target.id,
+          :account_id => session[:account_id],
+          :job_process_id => step_process_id,
+          :label => step_label
+        )
+      
+        step_order << step.id if step.save
+        
+      end
     end
     
     # update the step_order of job target
@@ -194,6 +200,20 @@ class JobTargetsController < ApplicationController
           :step_order => new_step_order
         }
       )
+      return render(:layout => false, :text => @target.save.to_s)
+    end
+    
+    render :layout => false, :text => "false"
+  end
+  
+  def set_current_step
+    step_id = params[:step_id] && params[:step_id].strip
+    
+    step = JobStep.get_step(step_id)
+    
+    if (step.account_id == session[:account_id]) && step.job_target_id == @target.id
+      @target.current_job_step_id = step_id
+    
       return render(:layout => false, :text => @target.save.to_s)
     end
     

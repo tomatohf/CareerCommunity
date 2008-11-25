@@ -38,9 +38,10 @@
 	</td>
 	
 	<td>
+		
 		<script language="JavaScript" type="text/javascript">
-			step_dd_groups.step_dd_group_<%= target.id %> = [];
 			group_and_target_id_mapping.step_dd_group_<%= target.id %> = <%= target.id %>;
+			current_step_mapping["<%= target.id %>"] = "<%= target.current_job_step_id %>";
 		</script>
 		
 		<div id="step_dd_group_<%= target.id %>">
@@ -51,7 +52,7 @@
 				</div>
 				
 				<script language="JavaScript" type="text/javascript">
-					step_dd_groups.step_dd_group_<%= target.id %>.push("step_<%= step.id %>");
+					step_and_group_mapping.step_<%= step.id %> = "step_dd_group_<%= target.id %>";
 					step_id_mapping.step_<%= step.id %> = <%= step.id %>;
 				</script>
 			<% end %>

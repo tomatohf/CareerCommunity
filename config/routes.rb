@@ -334,7 +334,8 @@ ActionController::Routing::Routes.draw do |map|
     
     :add_steps => :post,
     
-    :adjust_step_order => :post
+    :adjust_step_order => :post,
+    :set_current_step => :post
     
   }
 
