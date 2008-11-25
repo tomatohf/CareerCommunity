@@ -332,7 +332,9 @@ ActionController::Routing::Routes.draw do |map|
     
   }, :member => {
     
-    :add_steps => :post
+    :add_steps => :post,
+    
+    :adjust_step_order => :post
     
   }
 

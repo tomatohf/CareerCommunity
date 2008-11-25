@@ -5,10 +5,10 @@ class JobTargetsController < ApplicationController
   # generally, all action should require login to view
   before_filter :check_login #, :only => [:list]
   before_filter :check_limited, :only => [:new_for_position, :create, :add_account_process, :add_steps,
-                                          ]
+                                          :adjust_step_order]
   
   before_filter :check_account_access, :only => [:list]
-  before_filter :check_target_owner, :only => [:add_steps]
+  before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order]
   
 
   
@@ -168,6 +168,34 @@ class JobTargetsController < ApplicationController
     
     jump_to("/job_targets/list/#{session[:account_id]}")
     
+  end
+  
+  def adjust_step_order
+    moved_step_id = params[:moved_step_id] && params[:moved_step_id].strip
+    des_step_id = params[:des_step_id] && params[:des_step_id].strip
+    
+    step_order = @target.get_info[:step_order]
+    des_index = step_order.index(des_step_id.to_i)
+    
+    moved_step_id_int = moved_step_id.to_i
+    if des_index
+      new_step_order = []
+      step_order.each_index do |i|
+        new_step_order << moved_step_id_int if i == des_index
+        
+        step_id = step_order[i]
+        new_step_order << step_id unless step_id == moved_step_id_int
+      end
+      
+      @target.update_info(
+        {
+          :step_order => new_step_order
+        }
+      )
+      return render(:layout => false, :text => @target.save.to_s)
+    end
+    
+    render :layout => false, :text => "false"
   end
   
   

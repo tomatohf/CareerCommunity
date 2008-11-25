@@ -38,9 +38,24 @@
 	</td>
 	
 	<td>
-		<span style="color: red;">
-			<%= ordered_steps.collect {|step| "#{step.label}(#{JobProcess.get_process(step.job_process_id).name})" }.join("  |  ") %>
-		</span>
+		<script language="JavaScript" type="text/javascript">
+			step_dd_groups.step_dd_group_<%= target.id %> = [];
+			group_and_target_id_mapping.step_dd_group_<%= target.id %> = <%= target.id %>;
+		</script>
+		
+		<div id="step_dd_group_<%= target.id %>">
+			<% ordered_steps.each do |step| %>
+				<div class="float_l step" id="step_<%= step.id %>">
+					<%= h(step.label) %>
+					(<%= h(JobProcess.get_process(step.job_process_id).name) %>)
+				</div>
+				
+				<script language="JavaScript" type="text/javascript">
+					step_dd_groups.step_dd_group_<%= target.id %>.push("step_<%= step.id %>");
+					step_id_mapping.step_<%= step.id %> = <%= step.id %>;
+				</script>
+			<% end %>
+		</div>
 	</td>
 </tr>
 

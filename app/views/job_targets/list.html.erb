@@ -33,6 +33,46 @@
 		正在加载 求职目标 ...
 	</div>
 	
+	
+	
+	<link rel="stylesheet" href="/lib/ext/resources/css/ext-all.css" type="text/css" media="screen"></link>
+	<link rel="stylesheet" href="/lib/ext/resources/css/xtheme-gray.css" type="text/css" media="screen"></link>
+
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/adapter/ext/ext-base.js"></script>
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/ext-all.js"></script>
+
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/GridFilters.js"></script>
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/Filter.js"></script>
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/NumericFilter.js"></script>
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/StringFilter.js"></script>
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/DateFilter.js"></script>
+
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/menu/RangeMenu.js"></script>
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/menu/EditableItem.js"></script>
+
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/build/locale/ext-lang-zh_CN.js"></script>
+
+	<script language="JavaScript" type="text/javascript" src="/javascripts/job_target_table.js"></script>
+
+
+
+	<script language="JavaScript" type="text/javascript">
+	
+		var form_authenticity_token = encodeURIComponent("<%= form_authenticity_token %>");
+
+		Ext.onReady(
+			function() {
+				Ext.get("table_container").show(true);
+				create_table_grid();
+
+				Ext.get("loading_container").remove();
+			}
+		);
+
+	</script>
+	
+	
+	
 	<div id="table_container" class="community_block" style="display: none;">
 		
 		<table id="job_targets_container" cellpadding="0" cellspacing="0" border="0" class="main_part_w">
@@ -53,40 +93,5 @@
 	</div>
 	
 </div>
-
-
-<link rel="stylesheet" href="/lib/ext/resources/css/ext-all.css" type="text/css" media="screen"></link>
-<link rel="stylesheet" href="/lib/ext/resources/css/xtheme-gray.css" type="text/css" media="screen"></link>
-
-<script language="JavaScript" type="text/javascript" src="/lib/ext/adapter/ext/ext-base.js"></script>
-<script language="JavaScript" type="text/javascript" src="/lib/ext/ext-all.js"></script>
-
-<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/GridFilters.js"></script>
-<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/Filter.js"></script>
-<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/NumericFilter.js"></script>
-<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/StringFilter.js"></script>
-<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/grid/filter/DateFilter.js"></script>
-
-<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/menu/RangeMenu.js"></script>
-<script language="JavaScript" type="text/javascript" src="/lib/ext/build/widgets/menu/EditableItem.js"></script>
-
-<script language="JavaScript" type="text/javascript" src="/lib/ext/build/locale/ext-lang-zh_CN.js"></script>
-
-<script language="JavaScript" type="text/javascript" src="/javascripts/job_target_table.js"></script>
-
-
-
-<script language="JavaScript" type="text/javascript">
-
-	Ext.onReady(
-		function() {
-			Ext.get("table_container").show(true);
-			create_table_grid();
-			
-			Ext.get("loading_container").remove();
-		}
-	);
-
-</script>
 
 
