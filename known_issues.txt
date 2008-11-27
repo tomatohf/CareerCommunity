@@ -124,10 +124,11 @@ Denpendencies:
 	memcache-client
 	paperclip
 	mime-types
-	mislav-will_paginate (gem install mislav-will_paginate --source http://gems.github.com/)
+	mislav-will_paginate (gem install mislav-will_paginate --source http://gems.github.com)
 	select_with_include
 	freelancing-god-thinking-sphinx (gem install freelancing-god-thinking-sphinx --source http://gems.github.com)
-	
+	json (required by contrast-exceptional)
+	contrast-exceptional (gem install contrast-exceptional --source http://gems.github.com)
 	contacts (to be used ...)
 	-----
 	

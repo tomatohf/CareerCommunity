@@ -13,6 +13,11 @@ class ApplicationController < ActionController::Base
   
   
   
+  # include hoptoad exception notifier
+  include HoptoadNotifier::Catcher
+  
+  
+  
   
   private
   
