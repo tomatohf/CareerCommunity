@@ -127,13 +127,15 @@ Denpendencies:
 	mislav-will_paginate (gem install mislav-will_paginate --source http://gems.github.com/)
 	select_with_include
 	freelancing-god-thinking-sphinx (gem install freelancing-god-thinking-sphinx --source http://gems.github.com)
-	contacts
+	
+	contacts (to be used ...)
 	-----
 	
 ======
 
 
-Rails 异常监控   ===>   http://dev.rubyonrails.org/svn/rails/plugins/exception_notification/README
+Rails 异常监控
+exception_notification   ===>   http://dev.rubyonrails.org/svn/rails/plugins/exception_notification/README
 
 
 ======

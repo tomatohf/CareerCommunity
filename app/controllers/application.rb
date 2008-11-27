@@ -11,8 +11,6 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging "password"
   
   
-  # switch to include hoptoad exception notifier
-  include HoptoadNotifier::Catcher
   
   
   
