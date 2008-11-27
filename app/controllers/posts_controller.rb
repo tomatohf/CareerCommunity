@@ -405,7 +405,7 @@ class PostsController < ApplicationController
         check_compose_access(type_id, account_id)
       end
       
-      def check_delete_comment_access()
+      def check_delete_comment_access(type_id, account_id)
         check_destroy_access(type_id, account_id)
       end
       
@@ -485,7 +485,7 @@ class PostsController < ApplicationController
         check_compose_access(type_id, account_id)
       end
       
-      def check_delete_comment_access()
+      def check_delete_comment_access(type_id, account_id)
         check_destroy_access(type_id, account_id)
       end
       

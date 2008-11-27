@@ -35,7 +35,6 @@ highlight 活动日历上有活动的日子
 邀请 hotmail gmail yahoo 联系人
 
 
-服务器 上的 log 清理
 将重启服务器的命令添加到部署文件,在更新代码后自动执行
 
 
@@ -132,6 +131,9 @@ Denpendencies:
 	-----
 	
 ======
+
+
+Rails 异常监控   ===>   http://dev.rubyonrails.org/svn/rails/plugins/exception_notification/README
 
 
 ======

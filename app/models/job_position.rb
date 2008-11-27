@@ -1,16 +1,16 @@
 class JobPosition < ActiveRecord::Base
   
-  define_index do
-    # fields
-    indexes :name, :desc
+#  define_index do
+#    # fields
+#    indexes :name, :desc
 
-    # attributes
-    has :created_at, :updated_at, :account_id
+#    # attributes
+#    has :created_at, :updated_at, :account_id
     
-    set_property :delta => true
+#    set_property :delta => true
     
-    # set_property :field_weights => {:field => number}
-  end
+#    # set_property :field_weights => {:field => number}
+#  end
   
   
   
