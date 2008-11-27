@@ -40,7 +40,7 @@
 		            <%= count %>
 		        </td>
 		        <td align="right" valign="middle">
-		            <%= total_count > 0 ? "#{(count * 100 / total_count.to_f).round}%" : "0%" %>
+		            (<%= total_count > 0 ? "#{(count * 100 / total_count.to_f).round}%" : "0%" %>)
 		        </td>
 	
 				<% if can_vote %>

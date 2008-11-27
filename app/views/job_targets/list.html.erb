@@ -59,6 +59,26 @@
 	<script language="JavaScript" type="text/javascript">
 	
 		var form_authenticity_token = encodeURIComponent("<%= form_authenticity_token %>");
+		
+		var system_processes = [];
+		var account_processes = [];
+		
+		<% @system_processes.each do |process| %>
+			system_processes.push(
+				{
+					id: "<%= process.id %>",
+					name: "<%= h(process.name) %>"
+				}
+			);
+		<% end %>
+		<% @account_processes.each do |process| %>
+			account_processes.push(
+				{
+					id: "<%= process.id %>",
+					name: "<%= h(process.name) %>"
+				}
+			);
+		<% end %>
 
 		Ext.onReady(
 			function() {

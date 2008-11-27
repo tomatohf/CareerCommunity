@@ -326,7 +326,9 @@ function show_step_menu(evt, target, options) {
 	
 	var step_id = options.step_id;
 	var step_dom_id = "step_" + step_id;
-	var target_id = steps[step_dom_id].target_id;
+	var step = steps[step_dom_id];
+	var target_id = step.target_id;
+	var process_id = step.process_id;
 	
 	menu_items = [
 		{
@@ -356,10 +358,57 @@ function show_step_menu(evt, target, options) {
 	
 	
 	menu_items.push("-");
+	
+	var set_process_handler = function(item, e) {
+		if(item.process_id != process_id) {
+			update_step_process(step_id, target_id, item.process_id, item.text);
+		}
+	}
+	var process_items = [];
+	process_items.push("系统添加的流程:");
+	process_items.push("-");
+	for(var i=0; i<system_processes.length; i++) {
+		var process = system_processes[i];
+		process_items.push(
+			{
+				text: process.name,
+				process_id: process.id,
+				checked: (process_id == process.id),
+				group: "process_list",
+				handler: set_process_handler
+			}
+		);
+	}
+	process_items.push("-");
+	process_items.push("自己添加的流程:");
+	process_items.push("-");
+	for(var i=0; i<account_processes.length; i++) {
+		var process = account_processes[i];
+		process_items.push(
+			{
+				text: process.name,
+				process_id: process.id,
+				checked: (process_id == process.id),
+				group: "process_list",
+				handler: set_process_handler
+			}
+		);
+	}
+	menu_items.push(
+		{
+			id: "set_process_menu",
+			text: "设置步骤的流程",
+			//icon: "/images/job_targets/",
+			menu: {
+				items: process_items
+			}
+		}
+	);
+	
 	menu_items.push(
 		{
 			//id: "",
-			text: "重命名...",
+			text: "重命名..",
 			//icon: "/images/job_targets/",
 			handler: function(item, e) {
 				edit_step_label(step_id, target_id);
@@ -573,6 +622,40 @@ function update_step_label(step_id, target_id, new_label) {
 		{
 			title: "重命名步骤",
 			msg: "重命名步骤失败! 请重试 ...",
+			minWidth: 250
+		}
+	);
+}
+
+
+function update_step_process(step_id, target_id, new_process_id, new_process_name) {
+	ajax_request(
+		{
+			url: "/job_targets/" + target_id + "/update_step_process",
+			params: {
+				step_id: String(step_id),
+				process_id: new_process_id,
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			if(response.responseText.trim() == "true") {
+				// update dom
+				Ext.get("step_process_" + step_id).update("("+new_process_name+")", false);
+				
+				// update data
+				steps["step_" + step_id].process_id = new_process_id;
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "设置步骤的流程",
+			msg: "设置流程失败! 请重试 ...",
 			minWidth: 250
 		}
 	);

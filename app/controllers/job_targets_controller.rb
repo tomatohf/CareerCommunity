@@ -5,11 +5,12 @@ class JobTargetsController < ApplicationController
   # generally, all action should require login to view
   before_filter :check_login #, :only => [:list]
   before_filter :check_limited, :only => [:new_for_position, :create, :add_account_process, :add_steps,
-                                          :adjust_step_order, :set_current_step, :update_step_label]
+                                          :adjust_step_order, :set_current_step, :update_step_label,
+                                          :update_step_process]
   
   before_filter :check_account_access, :only => [:list]
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
-                                                :update_step_label]
+                                                :update_step_label, :update_step_process]
   
   before_filter :do_protection
   
@@ -30,6 +31,9 @@ class JobTargetsController < ApplicationController
       :order => "created_at DESC"
     )
     
+    @system_processes = JobProcess.get_system_processes
+    @account_processes = JobProcess.get_account_processes(session[:account_id])
+    
   end
   
   def new
@@ -43,12 +47,12 @@ class JobTargetsController < ApplicationController
       company = Company.get_company(company_id)
       return jump_to("/errors/forbidden") unless company && (company.account_id.nil? || company.account_id == 0 || company.account_id == session[:account_id])
     else
-      @company_name = params[:new_company_name] && params[:new_company_name].strip
+      @company_name = (params[:new_company_name] && params[:new_company_name].strip) || ""
       @company_desc = params[:new_company_desc] && params[:new_company_desc].strip
       
       company = Company.find(
         :first,
-        :conditions => ["name = ? and account_id = ?", @company_name, session[:account_id]]
+        :conditions => ["LOWER(name) = ? and account_id = ?", @company_name.downcase, session[:account_id]]
       ) || Company.new(
         :name => @company_name,
         :account_id => session[:account_id]
@@ -88,12 +92,12 @@ class JobTargetsController < ApplicationController
       position = JobPosition.get_position(position_id)
       return jump_to("/errors/forbidden") unless position && (position.account_id.nil? || position.account_id == 0 || position.account_id == session[:account_id])
     else
-      @position_name = params[:new_position_name] && params[:new_position_name].strip
+      @position_name = (params[:new_position_name] && params[:new_position_name].strip) || ""
       @position_desc = params[:new_position_desc] && params[:new_position_desc].strip
       
       position = JobPosition.find(
         :first,
-        :conditions => ["name = ? and account_id = ?", @position_name, session[:account_id]]
+        :conditions => ["LOWER(name) = ? and account_id = ?", @position_name.downcase, session[:account_id]]
       ) || JobPosition.new(
         :name => @position_name,
         :account_id => session[:account_id]
@@ -231,6 +235,24 @@ class JobTargetsController < ApplicationController
       step.label = new_label
     
       return render(:layout => false, :text => step.save.to_s)
+    end
+    
+    render :layout => false, :text => "false"
+  end
+  
+  def update_step_process
+    step_id = params[:step_id] && params[:step_id].strip
+    new_process_id = params[:process_id] && params[:process_id].strip
+    
+    step = JobStep.get_step(step_id)
+    
+    if (step.account_id == session[:account_id]) && step.job_target_id == @target.id
+      process = JobProcess.get_process(new_process_id)
+      if process.account_id.nil? || process.account_id == 0 || process.account_id == session[:account_id]
+        step.job_process_id = process.id
+    
+        return render(:layout => false, :text => step.save.to_s)
+      end
     end
     
     render :layout => false, :text => "false"

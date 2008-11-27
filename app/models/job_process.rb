@@ -6,6 +6,8 @@ class JobProcess < ActiveRecord::Base
   
   validates_presence_of :name, :message => "请输入 名称"
   
+  validates_uniqueness_of :name, :case_sensitive => false, :message => "名称 已经存在"
+  
   validates_length_of :name, :maximum => 250, :message => "名称 超过长度限制", :allow_nil => false
   
   
