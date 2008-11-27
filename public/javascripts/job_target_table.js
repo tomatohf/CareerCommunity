@@ -1,7 +1,8 @@
-var step_and_group_mapping = {};
-var group_and_target_id_mapping = {};
-var step_id_mapping = {};
+var steps = {};
 var current_step_mapping = {};
+
+var processes = {};
+
 
 
 TableGrid = function(table_id, config) {
@@ -274,32 +275,45 @@ function create_table_grid() {
 
 
 
-function create_step_dd() {
-	for(var step in step_and_group_mapping) {
-		group = step_and_group_mapping[step];
+function reconfig_step() {
+	for(var step_dom_id in steps) {
+		var step = steps[step_dom_id];
+		var step_dom = Ext.get(step_dom_id);
+		var step_id = step.id;
+		
+		// create step dd
+		var group = "step_group_" + step.target_id;
 		if(Ext.get(group)) {
-			var drag_source = new Ext.dd.DragSource(step, { group: group });
-			new Ext.dd.DDTarget(step, group);
+			var drag_source = new Ext.dd.DragSource(step_dom_id, { group: group });
+			new Ext.dd.DDTarget(step_dom_id, group);
 			
 			drag_source.afterDragDrop = after_step_dd;
 			drag_source.afterDragEnter = after_step_dd_enter;
 			drag_source.afterDragOut = after_step_dd_out;
 			//drag_source.afterDragOver
 		}
-	}
-}
-
-function create_step_menu() {
-	for(var i in step_id_mapping) {
-		var step_id = step_id_mapping[i];
-				
-		Ext.get(i).addListener(
+		
+		
+		// create step menu
+		step_dom.addListener(
 			"contextmenu",
 			show_step_menu,
 			null,
 			{
-				step_id: step_id,
-				step_dom_id: i
+				step_id: step_id
+			}
+		);
+		
+		
+		// create step double click action
+		step_dom.addListener(
+			"dblclick",
+			function(evt, target, options) {
+				edit_step_label(options.step_id, steps["step_" + options.step_id].target_id);
+			},
+			null,
+			{
+				step_id: step_id
 			}
 		);
 	}
@@ -311,8 +325,8 @@ function show_step_menu(evt, target, options) {
 	evt.stopEvent();
 	
 	var step_id = options.step_id;
-	var step_dom_id = options.step_dom_id
-	var target_id = group_and_target_id_mapping[step_and_group_mapping[step_dom_id]];
+	var step_dom_id = "step_" + step_id;
+	var target_id = steps[step_dom_id].target_id;
 	
 	menu_items = [
 		{
@@ -340,6 +354,20 @@ function show_step_menu(evt, target, options) {
 		}
 	];
 	
+	
+	menu_items.push("-");
+	menu_items.push(
+		{
+			//id: "",
+			text: "重命名...",
+			//icon: "/images/job_targets/",
+			handler: function(item, e) {
+				edit_step_label(step_id, target_id);
+			}
+		}
+	);
+	
+	
 	if(current_step_mapping["" + target_id] != "" + step_id) {
 		menu_items.push("-");
 		menu_items.push(
@@ -364,9 +392,26 @@ function show_step_menu(evt, target, options) {
 }
 
 
-function reconfig_step() {
-	create_step_dd();
-	create_step_menu();
+function edit_step_label(step_id, target_id) {
+	var step_dom_id = "step_" + step_id;
+	var step = steps[step_dom_id];
+	var step_label = step.label;
+	var process_name = processes["" + step.process_id].name;
+	
+	Ext.Msg.prompt(
+		"重命名",
+		"(" + process_name + ") 输入步骤的名称:",
+		function(btn, text) {
+			if (btn == "ok"){
+				if(step.label != text) {
+					update_step_label(step_id, target_id, text);
+				}
+			}
+		},
+		null,
+		false,
+		step_label
+	);
 }
 
 
@@ -430,9 +475,9 @@ function ajax_request(args, success_func, error_msg_args) {
 function adjust_step_order(src_id, des_id, groups) {
 	var group = groups[0];
 	
-	var moved_step_id = step_id_mapping[src_id];
-	var des_step_id = step_id_mapping[des_id];
-	var target_id = group_and_target_id_mapping[group];
+	var moved_step_id = steps[src_id].id;
+	var des_step_id = steps[des_id].id;
+	var target_id = group.substr("step_group_".length);
 	
 	ajax_request(
 		{
@@ -494,6 +539,40 @@ function set_current_step(step_id, target_id) {
 		{
 			title: "设置当前步骤",
 			msg: "设置当前步骤失败! 请重试 ...",
+			minWidth: 250
+		}
+	);
+}
+
+
+function update_step_label(step_id, target_id, new_label) {
+	ajax_request(
+		{
+			url: "/job_targets/" + target_id + "/update_step_label",
+			params: {
+				step_id: String(step_id),
+				label: new_label,
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			if(response.responseText.trim() == "true") {
+				// update dom
+				Ext.get("step_label_" + step_id).update(new_label, false);
+				
+				// update data
+				steps["step_" + step_id].label = new_label;
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "重命名步骤",
+			msg: "重命名步骤失败! 请重试 ...",
 			minWidth: 250
 		}
 	);

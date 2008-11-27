@@ -5,10 +5,11 @@ class JobTargetsController < ApplicationController
   # generally, all action should require login to view
   before_filter :check_login #, :only => [:list]
   before_filter :check_limited, :only => [:new_for_position, :create, :add_account_process, :add_steps,
-                                          :adjust_step_order, :set_current_step]
+                                          :adjust_step_order, :set_current_step, :update_step_label]
   
   before_filter :check_account_access, :only => [:list]
-  before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step]
+  before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
+                                                :update_step_label]
   
   before_filter :do_protection
   
@@ -215,6 +216,21 @@ class JobTargetsController < ApplicationController
       @target.current_job_step_id = step_id
     
       return render(:layout => false, :text => @target.save.to_s)
+    end
+    
+    render :layout => false, :text => "false"
+  end
+  
+  def update_step_label
+    step_id = params[:step_id] && params[:step_id].strip
+    new_label = params[:label] && params[:label].strip
+    
+    step = JobStep.get_step(step_id)
+    
+    if (step.account_id == session[:account_id]) && step.job_target_id == @target.id
+      step.label = new_label
+    
+      return render(:layout => false, :text => step.save.to_s)
     end
     
     render :layout => false, :text => "false"
