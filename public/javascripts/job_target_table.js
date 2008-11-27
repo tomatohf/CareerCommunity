@@ -134,7 +134,7 @@ function create_table_grid() {
 	grid_view.addListener(
 		"refresh",
 		function() {
-			re_create_step_dd();
+			reconfig_step();
 		}
 	);
 	
@@ -228,7 +228,7 @@ function create_table_grid() {
 		function(grid, row_index, cell_index, e) {
 			e.preventDefault();
 		
-			if(row_index < 0 || cell_index > 2) { return; }
+			//if(row_index < 0 || cell_index > 2) { return; }
 		
 			var record = grid.getStore().getAt(row_index);
 		
@@ -261,7 +261,7 @@ function create_table_grid() {
 	grid.addListener(
 		"statesave",
 		function() {
-			re_create_step_dd();
+			reconfig_step();
 		}
 	);
 
@@ -269,9 +269,7 @@ function create_table_grid() {
 
 	grid.render();
 	
-	re_create_step_dd();
-	
-	create_step_menu();
+	reconfig_step();
 }
 
 
@@ -309,7 +307,8 @@ function create_step_menu() {
 
 
 function show_step_menu(evt, target, options) {
-	evt.preventDefault();
+	//evt.preventDefault();
+	evt.stopEvent();
 	
 	var step_id = options.step_id;
 	var step_dom_id = options.step_dom_id
@@ -365,8 +364,9 @@ function show_step_menu(evt, target, options) {
 }
 
 
-function re_create_step_dd() {
-	create_step_dd.defer(10);
+function reconfig_step() {
+	create_step_dd();
+	create_step_menu();
 }
 
 
