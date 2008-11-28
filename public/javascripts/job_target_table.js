@@ -5,6 +5,8 @@ var processes = {};
 
 
 
+Ext.QuickTips.init();
+
 TableGrid = function(table_id, config) {
 	config = config || {};
 	Ext.apply(this, config);
@@ -143,6 +145,30 @@ function create_table_grid() {
 		{
 			items: [
 				{
+					text: "",
+					icon: "/images/job_targets/hide_left_icon.gif",
+					cls: "x-btn-icon",
+					enableToggle: true,
+					pressed: false,
+					tooltip: "隐藏左边的功能列表栏, 增大求职目标列表的宽度",
+					toggleHandler: function(item, pressed) {
+						var left_part = Ext.get("func_list_container");
+						left_part.enableDisplayMode("");
+						left_part.setVisible(!pressed, Element.DISPLAY);
+						if(pressed) {
+							Ext.get("job_target_list_page").addClass("bigger_job_targets_container");
+							item.icon = "";
+						}
+						else {
+							Ext.get("job_target_list_page").removeClass("bigger_job_targets_container");
+						}
+						
+					}
+				},
+				
+				"-",
+				
+				{
 					//id: "",
 					text: "tool bar button",
 					//icon: "",
@@ -150,7 +176,11 @@ function create_table_grid() {
 					handler: function() {
 						alert("tool bar button");
 					}
-				}
+				},
+				
+				"->",
+				
+				"今天是 <b>" + new Date().format("Y年m月d日") + "</b>"
 			
 			]
 		}
@@ -374,7 +404,7 @@ function show_step_menu(evt, target, options) {
 			menu: new Ext.menu.DateMenu(
 				{
 					handler: function(dp, date){
-						alert(date.format("Y-m-d"));
+						update_step_date(step_id, target_id, date, "begin");
 					}
 				}
 			)
@@ -386,7 +416,7 @@ function show_step_menu(evt, target, options) {
 			menu: new Ext.menu.DateMenu(
 				{
 					handler: function(dp, date){
-						alert(date.format("Y-m-d"));
+						update_step_date(step_id, target_id, date, "end");
 					}
 				}
 			)
@@ -816,6 +846,38 @@ function create_step(target_id, process_id, process_name, label) {
 		{
 			title: "添加步骤",
 			msg: "添加步骤失败! 请重试 ...",
+			minWidth: 250
+		}
+	);
+}
+
+
+function update_step_date(step_id, target_id, date, at) {
+	ajax_request(
+		{
+			url: "/job_targets/" + target_id + "/update_step_date",
+			params: {
+				step_id: String(step_id),
+				at: at,
+				date: date.format("Y-m-d"),
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			if(response.responseText.trim() == "true") {
+				// update dom
+				Ext.get("step_" + at + "_" + step_id).update(date.format("m.d"), false);
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "设置步骤日期",
+			msg: "设置步骤日期失败! 请重试 ...",
 			minWidth: 250
 		}
 	);

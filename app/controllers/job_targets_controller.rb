@@ -6,12 +6,12 @@ class JobTargetsController < ApplicationController
   before_filter :check_login #, :only => [:list]
   before_filter :check_limited, :only => [:new_for_position, :create, :add_account_process, :add_steps,
                                           :adjust_step_order, :set_current_step, :update_step_label,
-                                          :update_step_process, :del_step, :create_step]
+                                          :update_step_process, :del_step, :create_step, :update_step_date]
   
   before_filter :check_account_access, :only => [:list]
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
                                                 :update_step_label, :update_step_process, :del_step,
-                                                :create_step]
+                                                :create_step, :update_step_date]
   
   before_filter :do_protection
   
@@ -307,6 +307,22 @@ class JobTargetsController < ApplicationController
       end
   
       return render(:partial => "step", :locals => {:step => step, :target => @target, :process => process}) if saved
+    end
+    
+    render :layout => false, :text => "false"
+  end
+  
+  def update_step_date
+    step_id = params[:step_id] && params[:step_id].strip
+    at = params[:at] && params[:at].strip
+    new_date = params[:date] && params[:date].strip
+    
+    step = JobStep.get_step(step_id)
+    
+    if (step.account_id == session[:account_id]) && step.job_target_id == @target.id
+      step.send("#{at == "begin" ? "begin_at" : "end_at"}=", new_date)
+    
+      return render(:layout => false, :text => step.save.to_s)
     end
     
     render :layout => false, :text => "false"

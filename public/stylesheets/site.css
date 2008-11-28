@@ -1246,9 +1246,10 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	margin: 5px 0px 5px 0px;
 	padding: 5px 10px;
 	
-	height: 15px;
+	height: 30px;
 	
 	cursor: pointer;
+	text-align: center;
 }
 
 .step_current {
@@ -1258,6 +1259,10 @@ a.account_nick_link:hover, a.group_name_link:hover {
 .step_dd_over {
 	margin-left: 5px;
 	background: #EEEEEE url(/images/job_targets/put_left_arrow_small.gif) no-repeat -1px center;
+}
+
+.bigger_job_targets_container {
+	margin-left: 5px;
 }
 
 
