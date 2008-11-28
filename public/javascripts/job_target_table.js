@@ -154,15 +154,13 @@ function create_table_grid() {
 					toggleHandler: function(item, pressed) {
 						var left_part = Ext.get("func_list_container");
 						left_part.enableDisplayMode("");
-						left_part.setVisible(!pressed, Element.DISPLAY);
+						left_part.setVisible(!pressed);
 						if(pressed) {
 							Ext.get("job_target_list_page").addClass("bigger_job_targets_container");
-							item.icon = "";
 						}
 						else {
 							Ext.get("job_target_list_page").removeClass("bigger_job_targets_container");
 						}
-						
 					}
 				},
 				
