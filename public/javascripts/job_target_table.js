@@ -142,10 +142,8 @@ function create_table_grid() {
 	grid_toolbar = new Ext.Toolbar(
 		{
 			items: [
-				"->",
-			
 				{
-					id: "",
+					//id: "",
 					text: "tool bar button",
 					//icon: "",
 					//cls: "x-btn-text-icon",
@@ -233,27 +231,64 @@ function create_table_grid() {
 		
 			var record = grid.getStore().getAt(row_index);
 		
-			var record_id = record.data.column_0.trim()
-		
-			var row_menu_obj = new Ext.menu.Menu(
+			var steps_dom = record.data.column_3;
+			
+			var steps_element = get_element_from_html(steps_dom);
+			var target_id = steps_element.id.substr("step_group_".length);
+			
+			var menu_items = [];
+			
+			
+			var add_step_handler = function(item, e) {
+				new_step(target_id, item.process_id, item.text);
+			}
+			var process_items = [];
+			process_items.push("系统添加的流程:");
+			process_items.push("-");
+			for(var i=0; i<system_processes.length; i++) {
+				var process = system_processes[i];
+				process_items.push(
+					{
+						text: process.name,
+						process_id: process.id,
+						handler: add_step_handler
+					}
+				);
+			}
+			process_items.push("-");
+			process_items.push("自己添加的流程:");
+			process_items.push("-");
+			for(var i=0; i<account_processes.length; i++) {
+				var process = account_processes[i];
+				process_items.push(
+					{
+						text: process.name,
+						process_id: process.id,
+						handler: add_step_handler
+					}
+				);
+			}
+			
+			menu_items.push(
 				{
-					id: "row_menu",
-					items: [
-						{
-							id: "",
-							text: row_index + " menu button " + cell_index,
-							//icon: "",
-							handler: function(item, e) {
-								alert("menu button");
-							}
-						}
-						
-					],
+					//id: "",
+					text: "添加新的步骤",
+					//icon: "",
+					menu: {
+						items: process_items
+					}
+				}
+			);
+		
+			var cell_menu_obj = new Ext.menu.Menu(
+				{
+					//id: "",
+					items: menu_items,
 					shadow: "frame"
 				}
 			);
 		
-		    row_menu_obj.showAt(e.getXY());
+		    cell_menu_obj.showAt(e.getXY());
 		}
 	);
 	
@@ -327,8 +362,10 @@ function show_step_menu(evt, target, options) {
 	var step_id = options.step_id;
 	var step_dom_id = "step_" + step_id;
 	var step = steps[step_dom_id];
+	var step_label = step.label
 	var target_id = step.target_id;
 	var process_id = step.process_id;
+	var process_name = processes["" + process_id].name;
 	
 	menu_items = [
 		{
@@ -355,6 +392,27 @@ function show_step_menu(evt, target, options) {
 			)
 		}
 	];
+	
+	
+	menu_items.push("-");
+	menu_items.push(
+		{
+			//id: "",
+			text: "删除",
+			icon: "/images/delete_small.gif",
+			handler: function(item, e) {
+				Ext.Msg.confirm(
+					"删除步骤",
+					"确定要删除步骤 " + step_label + "(" + process_name + ")" + " 么?",
+					function(btn) {
+						if (btn == "yes") {
+							del_step(step_id, target_id);
+						}
+					}
+				);
+			}
+		}
+	);
 	
 	
 	menu_items.push("-");
@@ -396,7 +454,7 @@ function show_step_menu(evt, target, options) {
 	}
 	menu_items.push(
 		{
-			id: "set_process_menu",
+			//id: "set_process_menu",
 			text: "设置步骤的流程",
 			//icon: "/images/job_targets/",
 			menu: {
@@ -461,6 +519,26 @@ function edit_step_label(step_id, target_id) {
 		false,
 		step_label
 	);
+}
+
+
+function new_step(target_id, process_id, process_name) {
+	Ext.Msg.prompt(
+		"添加步骤",
+		"(" + process_name + ") 步骤的名称:",
+		function(btn, text) {
+			if (btn == "ok"){
+				create_step(target_id, process_id, process_name, text);
+			}
+		}
+	);
+}
+
+
+function get_element_from_html(html) {
+	var ele = new Ext.Element(document.createElement("div"));
+	Ext.DomHelper.overwrite(ele, html);
+	return ele.first();
 }
 
 
@@ -656,6 +734,88 @@ function update_step_process(step_id, target_id, new_process_id, new_process_nam
 		{
 			title: "设置步骤的流程",
 			msg: "设置流程失败! 请重试 ...",
+			minWidth: 250
+		}
+	);
+}
+
+
+function del_step(step_id, target_id) {
+	ajax_request(
+		{
+			url: "/job_targets/" + target_id + "/del_step",
+			params: {
+				step_id: String(step_id),
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			if(response.responseText.trim() == "true") {
+				// update dom
+				Ext.get("step_" + step_id).remove();
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "删除步骤",
+			msg: "删除步骤失败! 请重试 ...",
+			minWidth: 250
+		}
+	);
+}
+
+
+function create_step(target_id, process_id, process_name, label) {
+	ajax_request(
+		{
+			url: "/job_targets/" + target_id + "/create_step",
+			params: {
+				process_id: String(process_id),
+				label: label,
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			resp = response.responseText.trim();
+			if(resp != "false") {
+				var step_ele = get_element_from_html(resp);
+				var step_dom_id = step_ele.id;
+				var step_id = step_dom_id.substr("step_".length);
+				
+				// update dom
+				Ext.get("step_group_" + target_id).appendChild(step_ele);
+				
+				// update data
+				processes["" + process_id] = {
+					id: "" + process_id,
+					name: process_name
+				};
+				steps[step_dom_id] = {
+					id: "" + step_id,
+					target_id: "" + target_id,
+					process_id: "" + process_id,
+					status_id: "",
+					label: label
+				};
+				
+				// refresh event
+				reconfig_step();
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "添加步骤",
+			msg: "添加步骤失败! 请重试 ...",
 			minWidth: 250
 		}
 	);

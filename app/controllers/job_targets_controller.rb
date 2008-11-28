@@ -6,11 +6,12 @@ class JobTargetsController < ApplicationController
   before_filter :check_login #, :only => [:list]
   before_filter :check_limited, :only => [:new_for_position, :create, :add_account_process, :add_steps,
                                           :adjust_step_order, :set_current_step, :update_step_label,
-                                          :update_step_process]
+                                          :update_step_process, :del_step, :create_step]
   
   before_filter :check_account_access, :only => [:list]
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
-                                                :update_step_label, :update_step_process]
+                                                :update_step_label, :update_step_process, :del_step,
+                                                :create_step]
   
   before_filter :do_protection
   
@@ -253,6 +254,59 @@ class JobTargetsController < ApplicationController
     
         return render(:layout => false, :text => step.save.to_s)
       end
+    end
+    
+    render :layout => false, :text => "false"
+  end
+  
+  def del_step
+    step_id = params[:step_id] && params[:step_id].strip
+    
+    step = JobStep.get_step(step_id)
+    int_step_id = step.id
+    
+    step.destroy
+    
+    step_order = @target.get_info[:step_order]
+    step_order.delete(int_step_id)
+    @target.update_info(
+      {
+        :step_order => step_order
+      }
+    )
+    @target.save
+    
+    render :layout => false, :text => "true"
+  end
+  
+  def create_step
+    process_id = params[:process_id] && params[:process_id].strip
+    label = params[:label] && params[:label].strip
+
+    process = JobProcess.get_process(process_id)
+    
+    if process.account_id.nil? || process.account_id == 0 || process.account_id == session[:account_id]
+      step = JobStep.new(
+        :job_target_id => @target.id,
+        :account_id => session[:account_id],
+        :job_process_id => process.id,
+        :label => label
+      )
+      
+      saved = step.save
+      
+      if saved
+        step_order = @target.get_info[:step_order]
+        step_order << step.id
+        @target.update_info(
+          {
+            :step_order => step_order
+          }
+        )
+        @target.save
+      end
+  
+      return render(:partial => "step", :locals => {:step => step, :target => @target, :process => process}) if saved
     end
     
     render :layout => false, :text => "false"

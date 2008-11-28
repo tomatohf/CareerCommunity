@@ -58,22 +58,14 @@
 	<td>
 		<div id="step_group_<%= target.id %>">
 			<% ordered_steps.each do |step| %>
-				<div class="float_l step<%= " step_current" if (step.id == target.current_job_step_id) %>" id="step_<%= step.id %>">
-					<span id="step_label_<%= step.id %>">
-						<%= h(step.label) %>
-					</span>
-					
-					<% process = JobProcess.get_process(step.job_process_id) %>
-					<% process_name = h(process.name) %>
-					<span id="step_process_<%= step.id %>">
-						(<%= process_name %>)
-					</span>
-				</div>
+				<% process = JobProcess.get_process(step.job_process_id) %>
+				
+				<%= render :partial => "step", :locals => {:step => step, :target => target, :process => process} %>
 				
 				<script language="JavaScript" type="text/javascript">
 					processes["<%= process.id %>"] = {
 						id: "<%= process.id %>",
-						name: "<%= process_name %>"
+						name: "<%= h(process.name) %>"
 					};
 				</script>
 			<% end %>

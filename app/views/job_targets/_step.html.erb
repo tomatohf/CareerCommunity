@@ -1,0 +1,11 @@
+<div class="float_l step<%= " step_current" if (step.id == target.current_job_step_id) %>" id="step_<%= step.id %>">
+	<span id="step_label_<%= step.id %>">
+		<%= h(step.label) %>
+	</span>
+	
+	<span id="step_process_<%= step.id %>">
+		(<%= h(process.name) %>)
+	</span>
+</div>
+
+

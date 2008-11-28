@@ -1239,11 +1239,11 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .step {
-	background-color: #EEEEEE;
+	background-color: #EFEFEF;
 	border-right: 1px solid #AAAAAA;
 	border-bottom: 1px solid #AAAAAA;
 
-	margin: 4px 0px 2px 0px;
+	margin: 5px 0px 5px 0px;
 	padding: 5px 10px;
 	
 	height: 15px;
@@ -1252,9 +1252,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .step_current {
-	margin-top: 1px;
-	height: 20px;
-	border: 1px solid #FF9900;
+	background-color: #DDDDDD;
 }
 
 .step_dd_over {
