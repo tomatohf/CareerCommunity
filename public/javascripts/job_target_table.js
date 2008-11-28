@@ -137,7 +137,7 @@ function create_table_grid() {
 	grid_view.addListener(
 		"refresh",
 		function() {
-			reconfig_step();
+			reconfig_steps();
 		}
 	);
 	
@@ -325,7 +325,7 @@ function create_table_grid() {
 	grid.addListener(
 		"statesave",
 		function() {
-			reconfig_step();
+			reconfig_steps();
 		}
 	);
 
@@ -333,53 +333,62 @@ function create_table_grid() {
 
 	grid.render();
 	
-	reconfig_step();
+	reconfig_steps();
 }
 
 
 
-function reconfig_step() {
+function reconfig_steps() {
 	for(var step_dom_id in steps) {
-		var step = steps[step_dom_id];
-		var step_dom = Ext.get(step_dom_id);
-		var step_id = step.id;
-		
-		// create step dd
-		var group = "step_group_" + step.target_id;
-		if(Ext.get(group)) {
-			var drag_source = new Ext.dd.DragSource(step_dom_id, { group: group });
-			new Ext.dd.DDTarget(step_dom_id, group);
-			
-			drag_source.afterDragDrop = after_step_dd;
-			drag_source.afterDragEnter = after_step_dd_enter;
-			drag_source.afterDragOut = after_step_dd_out;
-			//drag_source.afterDragOver
-		}
-		
-		
-		// create step menu
-		step_dom.addListener(
-			"contextmenu",
-			show_step_menu,
-			null,
-			{
-				step_id: step_id
-			}
-		);
-		
-		
-		// create step double click action
-		step_dom.addListener(
-			"dblclick",
-			function(evt, target, options) {
-				edit_step_label(options.step_id, steps["step_" + options.step_id].target_id);
-			},
-			null,
-			{
-				step_id: step_id
-			}
-		);
+		reconfig_step(step_dom_id);
 	}
+}
+
+function reconfig_step(step_dom_id) {
+	var step = steps[step_dom_id];
+	var step_dom = Ext.get(step_dom_id);
+	var step_id = step.id;
+	
+	// create step dd
+	var group = "step_group_" + step.target_id;
+	if(Ext.get(group)) {
+		try{
+		var drag_source = new Ext.dd.DragSource(step_dom_id, { group: group });
+		new Ext.dd.DDTarget(step_dom_id, group);
+	}catch(e) {
+		//alert(step_dom_id + "   +   " + group);
+		alert(step_dom);
+	}
+		
+		drag_source.afterDragDrop = after_step_dd;
+		drag_source.afterDragEnter = after_step_dd_enter;
+		drag_source.afterDragOut = after_step_dd_out;
+		//drag_source.afterDragOver
+	}
+	
+	
+	// create step menu
+	step_dom.addListener(
+		"contextmenu",
+		show_step_menu,
+		null,
+		{
+			step_id: step_id
+		}
+	);
+	
+	
+	// create step double click action
+	step_dom.addListener(
+		"dblclick",
+		function(evt, target, options) {
+			edit_step_label(options.step_id, steps["step_" + options.step_id].target_id);
+		},
+		null,
+		{
+			step_id: step_id
+		}
+	);
 }
 
 
@@ -810,7 +819,7 @@ function create_step(target_id, process_id, process_name, label) {
 		},
 		
 		function(response) {
-			resp = response.responseText.trim();
+			resp = response.responseText;
 			if(resp != "false") {
 				var step_ele = get_element_from_html(resp);
 				var step_dom_id = step_ele.id;
@@ -832,8 +841,8 @@ function create_step(target_id, process_id, process_name, label) {
 					label: label
 				};
 				
-				// refresh event
-				reconfig_step();
+				// refresh event of added step
+				reconfig_step(step_dom_id);
 				
 				return true;
 			}
