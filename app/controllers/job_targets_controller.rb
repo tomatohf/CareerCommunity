@@ -6,12 +6,14 @@ class JobTargetsController < ApplicationController
   before_filter :check_login #, :only => [:list]
   before_filter :check_limited, :only => [:new_for_position, :create, :add_account_process, :add_steps,
                                           :adjust_step_order, :set_current_step, :update_step_label,
-                                          :update_step_process, :del_step, :create_step, :update_step_date]
+                                          :update_step_process, :update_step_status, :del_step,
+                                          :create_step, :update_step_date]
   
   before_filter :check_account_access, :only => [:list]
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
-                                                :update_step_label, :update_step_process, :del_step,
-                                                :create_step, :update_step_date]
+                                                :update_step_label, :update_step_process,
+                                                :update_step_status, :del_step, :create_step,
+                                                :update_step_date]
   
   before_filter :do_protection
   
@@ -34,6 +36,9 @@ class JobTargetsController < ApplicationController
     
     @system_processes = JobProcess.get_system_processes
     @account_processes = JobProcess.get_account_processes(session[:account_id])
+    
+    @system_statuses = JobStatus.get_system_statuses
+    @account_statuses = JobStatus.get_account_statuses(session[:account_id])
     
   end
   
@@ -251,6 +256,24 @@ class JobTargetsController < ApplicationController
       process = JobProcess.get_process(new_process_id)
       if process.account_id.nil? || process.account_id == 0 || process.account_id == session[:account_id]
         step.job_process_id = process.id
+    
+        return render(:layout => false, :text => step.save.to_s)
+      end
+    end
+    
+    render :layout => false, :text => "false"
+  end
+
+  def update_step_status
+    step_id = params[:step_id] && params[:step_id].strip
+    new_status_id = params[:status_id] && params[:status_id].strip
+    
+    step = JobStep.get_step(step_id)
+    
+    if (step.account_id == session[:account_id]) && step.job_target_id == @target.id
+      status = JobStatus.get_status(new_status_id)
+      if status.account_id.nil? || status.account_id == 0 || status.account_id == session[:account_id]
+        step.job_status_id = status.id
     
         return render(:layout => false, :text => step.save.to_s)
       end

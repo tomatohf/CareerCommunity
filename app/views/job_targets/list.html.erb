@@ -60,6 +60,7 @@
 	
 		var form_authenticity_token = encodeURIComponent("<%= form_authenticity_token %>");
 		
+		
 		var system_processes = [];
 		var account_processes = [];
 		
@@ -79,6 +80,30 @@
 				}
 			);
 		<% end %>
+		
+		
+		var system_statuses = [];
+		var account_statuses = [];
+		
+		<% @system_statuses.each do |status| %>
+			system_statuses.push(
+				{
+					id: "<%= status.id %>",
+					name: "<%= h(status.name) %>",
+					color: "<%= status.color %>"
+				}
+			);
+		<% end %>
+		<% @account_statuses.each do |status| %>
+			account_statuses.push(
+				{
+					id: "<%= status.id %>",
+					name: "<%= h(status.name) %>",
+					color: "<%= status.color %>"
+				}
+			);
+		<% end %>
+		
 
 		Ext.onReady(
 			function() {

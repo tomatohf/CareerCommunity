@@ -2,6 +2,7 @@ var steps = {};
 var current_step_mapping = {};
 
 var processes = {};
+var statuses = {};
 
 
 
@@ -352,13 +353,8 @@ function reconfig_step(step_dom_id) {
 	// create step dd
 	var group = "step_group_" + step.target_id;
 	if(Ext.get(group)) {
-		try{
 		var drag_source = new Ext.dd.DragSource(step_dom_id, { group: group });
 		new Ext.dd.DDTarget(step_dom_id, group);
-	}catch(e) {
-		//alert(step_dom_id + "   +   " + group);
-		alert(step_dom);
-	}
 		
 		drag_source.afterDragDrop = after_step_dd;
 		drag_source.afterDragEnter = after_step_dd_enter;
@@ -403,6 +399,7 @@ function show_step_menu(evt, target, options) {
 	var target_id = step.target_id;
 	var process_id = step.process_id;
 	var process_name = processes["" + process_id].name;
+	var status_id = step.status_id;
 	
 	menu_items = [
 		{
@@ -453,6 +450,56 @@ function show_step_menu(evt, target, options) {
 	
 	
 	menu_items.push("-");
+	
+	var set_status_handler = function(item, e) {
+		if(item.status_id != status_id) {
+			update_step_status(step_id, target_id, item.status_id, item.status_name, item.status_color);
+		}
+	}
+	var status_items = [];
+	status_items.push("系统添加的状态:");
+	status_items.push("-");
+	for(var i=0; i<system_statuses.length; i++) {
+		var s = system_statuses[i];
+		status_items.push(
+			{
+				text: s.name,
+				status_id: s.id,
+				status_name: s.name,
+				status_color: s.color,
+				checked: (status_id == s.id),
+				group: "status_list",
+				handler: set_status_handler
+			}
+		);
+	}
+	status_items.push("-");
+	status_items.push("自己添加的状态:");
+	status_items.push("-");
+	for(var i=0; i<account_statuses.length; i++) {
+		var s = account_statuses[i];
+		status_items.push(
+			{
+				text: s.name,
+				status_id: s.id,
+				status_name: s.name,
+				status_color: s.color,
+				checked: (status_id == s.id),
+				group: "status_list",
+				handler: set_status_handler
+			}
+		);
+	}
+	menu_items.push(
+		{
+			//id: "set_status_menu",
+			text: "改变步骤的状态",
+			//icon: "/images/job_targets/",
+			menu: {
+				items: status_items
+			}
+		}
+	);
 	
 	var set_process_handler = function(item, e) {
 		if(item.process_id != process_id) {
@@ -761,6 +808,10 @@ function update_step_process(step_id, target_id, new_process_id, new_process_nam
 				
 				// update data
 				steps["step_" + step_id].process_id = new_process_id;
+				processes["" + new_process_id] = {
+					id: "" + new_process_id,
+					name: new_process_name
+				};
 				
 				return true;
 			}
@@ -771,6 +822,45 @@ function update_step_process(step_id, target_id, new_process_id, new_process_nam
 		{
 			title: "设置步骤的流程",
 			msg: "设置流程失败! 请重试 ...",
+			minWidth: 250
+		}
+	);
+}
+
+
+function update_step_status(step_id, target_id, new_status_id, new_status_name, new_status_color) {
+	ajax_request(
+		{
+			url: "/job_targets/" + target_id + "/update_step_status",
+			params: {
+				step_id: String(step_id),
+				status_id: new_status_id,
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			if(response.responseText.trim() == "true") {
+				// update dom
+				Ext.get("step_" + step_id).dom.style.color = "#" + new_status_color;
+				
+				// update data
+				steps["step_" + step_id].status_id = new_status_id;
+				statuses["" + new_status_id] = {
+					id: "" + new_status_id,
+					name: new_status_name,
+					color: new_status_color
+				};
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "改变步骤的状态",
+			msg: "改变状态失败! 请重试 ...",
 			minWidth: 250
 		}
 	);

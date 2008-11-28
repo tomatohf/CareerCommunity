@@ -59,14 +59,23 @@
 		<div id="step_group_<%= target.id %>">
 			<% ordered_steps.each do |step| %>
 				<% process = JobProcess.get_process(step.job_process_id) %>
+				<% status = JobStatus.get_status(step.job_status_id) if step.job_status_id && step.job_status_id > 0 %>
 				
-				<%= render :partial => "step", :locals => {:step => step, :target => target, :process => process} %>
+				<%= render :partial => "step", :locals => {:step => step, :target => target, :process => process, :status => status} %>
 				
 				<script language="JavaScript" type="text/javascript">
 					processes["<%= process.id %>"] = {
 						id: "<%= process.id %>",
 						name: "<%= h(process.name) %>"
 					};
+					
+					<% if status %>	
+						statuses["<%= status.id %>"] = {
+							id: "<%= status.id %>",
+							name: "<%= h(status.name) %>",
+							color: "<%= status.color %>"
+						};
+					<% end %>
 				</script>
 			<% end %>
 		</div>

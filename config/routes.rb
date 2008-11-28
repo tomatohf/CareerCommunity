@@ -340,7 +340,8 @@ ActionController::Routing::Routes.draw do |map|
     :update_step_process => :post,
     :del_step => :post,
     :create_step => :post,
-    :update_step_date => :post
+    :update_step_date => :post,
+    :update_step_status => :post
     
   }
 
