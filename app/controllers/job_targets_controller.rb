@@ -7,7 +7,8 @@ class JobTargetsController < ApplicationController
   before_filter :check_limited, :only => [:new_for_position, :create, :add_account_process, :add_steps,
                                           :adjust_step_order, :set_current_step, :update_step_label,
                                           :update_step_process, :update_step_status, :del_step,
-                                          :create_step, :update_step_date]
+                                          :create_step, :update_step_date, :create_account_process,
+                                          :create_account_status]
   
   before_filter :check_account_access, :only => [:list]
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
@@ -147,6 +148,38 @@ class JobTargetsController < ApplicationController
     
     @saved = @process.save
     
+  end
+  
+  def create_account_process
+    process_name = params[:process_name] && params[:process_name].strip
+    
+    process = JobProcess.new(
+      :account_id => session[:account_id],
+      :name => process_name
+    )
+    
+    if process.save
+      render(:layout => false, :text => process.id.to_s)
+    else
+      render(:layout => false, :text => "false")
+    end
+  end
+  
+  def create_account_status
+    status_name = params[:status_name] && params[:status_name].strip
+    status_color = params[:status_color] && params[:status_color].strip
+    
+    status = JobStatus.new(
+      :account_id => session[:account_id],
+      :name => status_name,
+      :color => status_color
+    )
+    
+    if status.save
+      render(:layout => false, :text => status.id.to_s)
+    else
+      render(:layout => false, :text => "false")
+    end
   end
   
   def add_steps

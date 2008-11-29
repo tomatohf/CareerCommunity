@@ -169,13 +169,40 @@ function create_table_grid() {
 				
 				{
 					//id: "",
-					text: "tool bar button",
+					text: "添加流程",
 					//icon: "",
 					//cls: "x-btn-text-icon",
 					handler: function() {
-						alert("tool bar button");
+						new_process();
 					}
 				},
+				
+				"-",
+				
+				{
+					//id: "",
+					text: "添加状态",
+					//icon: "",
+					//cls: "x-btn-text-icon",
+					menu: {
+						// id: "",
+						items: [
+							{
+								text: "选择状态的颜色",
+								icon: "/images/job_targets/color_palette_icon.gif",
+								menu: new Ext.menu.ColorMenu(
+									{
+										selectHandler: function(cp, color) {
+											new_status(color);
+										}
+									}
+								)
+							}
+						]
+					}
+				},
+				
+				"-",
 				
 				"->",
 				
@@ -619,6 +646,38 @@ function new_step(target_id, process_id, process_name) {
 }
 
 
+function new_process() {
+	Ext.Msg.prompt(
+		"添加流程",
+		"输入新流程的名称:",
+		function(btn, text) {
+			if (btn == "ok"){
+				var process_name = text.trim();
+				if(process_name && process_name != "") {
+					create_process(process_name);
+				}
+			}
+		}
+	);
+}
+
+
+function new_status(color) {
+	Ext.Msg.prompt(
+		"添加状态",
+		"输入新状态的名称:",
+		function(btn, text) {
+			if (btn == "ok"){
+				var status_name = text.trim();
+				if(status_name && status_name != "") {
+					create_status(status_name, color);
+				}
+			}
+		}
+	);
+}
+
+
 function get_element_from_html(html) {
 	var ele = new Ext.Element(document.createElement("div"));
 	Ext.DomHelper.overwrite(ele, html);
@@ -943,6 +1002,80 @@ function create_step(target_id, process_id, process_name, label) {
 		{
 			title: "添加步骤",
 			msg: "添加步骤失败! 请重试 ...",
+			minWidth: 250
+		}
+	);
+}
+
+
+function create_process(process_name) {
+	ajax_request(
+		{
+			url: "/job_targets/create_account_process",
+			params: {
+				process_name: process_name,
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			resp = response.responseText.trim();
+			if(resp != "false") {
+				// update data
+				account_processes.push(
+					{
+						id: resp,
+						name: Ext.util.Format.htmlEncode(process_name)
+					}
+				);
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "添加流程",
+			msg: "添加流程失败! 请重试 ...",
+			minWidth: 250
+		}
+	);
+}
+
+
+function create_status(status_name, color) {
+	ajax_request(
+		{
+			url: "/job_targets/create_account_status",
+			params: {
+				status_name: status_name,
+				status_color: color,
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			resp = response.responseText.trim();
+			if(resp != "false") {
+				// update data
+				account_statuses.push(
+					{
+						id: resp,
+						name: Ext.util.Format.htmlEncode(status_name),
+						color: color
+					}
+				);
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "添加状态",
+			msg: "添加状态失败! 请重试 ...",
 			minWidth: 250
 		}
 	);

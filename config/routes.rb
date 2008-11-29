@@ -328,7 +328,9 @@ ActionController::Routing::Routes.draw do |map|
     
     :new_for_position => :post,
     
-    :add_account_process => :post
+    :add_account_process => :post,
+    :create_account_process => :post,
+    :create_account_status => :post
     
   }, :member => {
     
