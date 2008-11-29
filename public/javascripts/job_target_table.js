@@ -215,20 +215,21 @@ function create_table_grid() {
 	grid_bottombar = new Ext.Toolbar(
 		{
 			items: [
+				{
+					//id: "",
+					text: "所有已关闭的目标",
+					icon: "/images/job_targets/closed_targets_icon.png",
+					cls: "x-btn-text-icon",
+					handler: function() {
+						window.location.href = "/job_targets/list_closed/" + current_user_id;
+					}
+				},
+				
+				"-",
+				
 				"->",
 			
-				"文字",
-			
-				"-",
-			
-				{
-					id: "",
-					text: "bottom bar button",
-					handler: function() {
-						alert("bottom bar button");
-					}
-				}
-			
+				"共有 <b><span id='unclosed_target_count'>" + target_count + "</span></b> 条未关闭的目标"
 			]
 		}
 	);
@@ -285,7 +286,8 @@ function create_table_grid() {
 		
 			//if(row_index < 0 || cell_index > 2) { return; }
 		
-			var record = grid.getStore().getAt(row_index);
+			var store = grid.getStore()
+			var record = store.getAt(row_index);
 		
 			var steps_dom = record.data.column_3;
 			
@@ -332,6 +334,27 @@ function create_table_grid() {
 					//icon: "",
 					menu: {
 						items: process_items
+					}
+				}
+			);
+			
+			menu_items.push("-");
+			
+			menu_items.push(
+				{
+					//id: "",
+					text: "关闭此目标",
+					icon: "/images/job_targets/close_target_icon.gif",
+					handler: function() {
+						Ext.Msg.confirm(
+							"关闭目标",
+							"确定要关闭这条目标么?",
+							function(btn) {
+								if (btn == "yes") {
+									close_target(target_id, store, record);
+								}
+							}
+						);
 					}
 				}
 			);
@@ -941,6 +964,11 @@ function del_step(step_id, target_id) {
 				// update dom
 				Ext.get("step_" + step_id).remove();
 				
+				// update data
+				if(current_step_mapping["" + target_id] == ("" + step_id)) {
+					current_step_mapping["" + target_id] = "";
+				}
+				
 				return true;
 			}
 			
@@ -1108,6 +1136,37 @@ function update_step_date(step_id, target_id, date, at) {
 		{
 			title: "设置步骤日期",
 			msg: "设置步骤日期失败! 请重试 ...",
+			minWidth: 250
+		}
+	);
+}
+
+
+function close_target(target_id, store, record) {
+	ajax_request(
+		{
+			url: "/job_targets/" + target_id + "/close_target",
+			params: {
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			if(response.responseText.trim() == "true") {
+				// update data and dom
+				store.remove(record);
+				target_count = target_count - 1;
+				Ext.get("unclosed_target_count").update("" + target_count, false);
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "关闭目标",
+			msg: "关闭目标失败! 请重试 ...",
 			minWidth: 250
 		}
 	);

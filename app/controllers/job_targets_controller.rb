@@ -1,5 +1,7 @@
 class JobTargetsController < ApplicationController
   
+  Closed_Target_Page_Size = 30
+  
   layout "community"
   before_filter :check_current_account, :only => [:index]
   # generally, all action should require login to view
@@ -8,13 +10,13 @@ class JobTargetsController < ApplicationController
                                           :adjust_step_order, :set_current_step, :update_step_label,
                                           :update_step_process, :update_step_status, :del_step,
                                           :create_step, :update_step_date, :create_account_process,
-                                          :create_account_status]
+                                          :create_account_status, :close_target, :open_target]
   
-  before_filter :check_account_access, :only => [:list]
+  before_filter :check_account_access, :only => [:list, :list_closed]
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
                                                 :update_step_label, :update_step_process,
                                                 :update_step_status, :del_step, :create_step,
-                                                :update_step_date]
+                                                :update_step_date, :close_target, :open_target]
   
   before_filter :do_protection
   
@@ -26,9 +28,7 @@ class JobTargetsController < ApplicationController
   end
   
   def list
-    @edit = true
-    
-    @targets = JobTarget.find(
+    @targets = JobTarget.unclosed.find(
       :all,
       :conditions => ["account_id = ?", session[:account_id]],
       :include => [:company, :job_position, :steps],
@@ -41,6 +41,18 @@ class JobTargetsController < ApplicationController
     @system_statuses = JobStatus.get_system_statuses
     @account_statuses = JobStatus.get_account_statuses(session[:account_id])
     
+  end
+  
+  def list_closed
+    @page = params[:page]
+    @page = 1 unless @page =~ /\d+/
+    @targets = JobTarget.closed.paginate(
+      :page => @page,
+      :per_page => Closed_Target_Page_Size,
+      :conditions => ["account_id = ?", session[:account_id]],
+      :include => [:company, :job_position, :steps],
+      :order => "created_at DESC"
+    )
   end
   
   def new
@@ -383,6 +395,21 @@ class JobTargetsController < ApplicationController
     end
     
     render :layout => false, :text => "false"
+  end
+  
+  def close_target
+    @target.closed = true
+    
+    return render(:layout => false, :text => @target.save.to_s)
+  end
+  
+  def open_target
+    @target.closed = false
+    @target.save
+    
+    page = params[:page] && params[:page].strip
+    
+    jump_to("/job_targets/list_closed/#{session[:account_id]}/#{page}")
   end
   
   
