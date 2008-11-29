@@ -330,6 +330,7 @@ class JobTargetsController < ApplicationController
         :step_order => step_order
       }
     )
+    @target.current_job_step_id = nil if int_step_id == @target.current_job_step_id
     @target.save
     
     render :layout => false, :text => "true"
