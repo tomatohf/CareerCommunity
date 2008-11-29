@@ -1,0 +1,34 @@
+<%
+	company = closed_target.company
+	Company.set_company_cache(company)
+	
+	position = closed_target.job_position
+	JobPosition.set_position_cache(position)
+%>
+
+<tr>
+	<td>
+		<%= h(company.name) %>
+	</td>
+	
+	<td>
+		<%= h(position.name) %>
+	</td>
+	
+	<td>
+		<%= format_date(closed_target.created_at) %>
+	</td>
+	
+	<td>
+		
+	</td>
+	
+	<td>
+		<% form_tag "/job_targets/#{closed_target.id}/open_target", :memthod => :post, :onsubmit => "if(!confirm('确定要重新打开这个目标么 ?')){ return false; }" do %>
+			<input type="hidden" name="page" value="<%= page %>" />
+			<%= submit_tag "重新打开此目标", :class => "button", :disabled => @account_limited %>
+		<% end %>
+	</td>
+</tr>
+
+
