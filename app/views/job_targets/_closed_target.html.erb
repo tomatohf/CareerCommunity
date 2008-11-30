@@ -7,28 +7,31 @@
 %>
 
 <tr>
-	<td>
+	<td align="left" valign="middle" style="width: 40px;">
+		<a title="删除" href="#" onclick="delete_target(<%= closed_target.id %>); return false;">
+			<img src="/images/delete_small.gif" border="0" /></a>
+	</td>
+	
+	<td align="left" valign="middle" style="font-size: 14px;">
 		<%= h(company.name) %>
 	</td>
 	
-	<td>
+	<td align="left" valign="middle" style="font-size: 14px;">
 		<%= h(position.name) %>
 	</td>
 	
-	<td>
+	<td align="left" valign="middle">
 		<%= format_date(closed_target.created_at) %>
 	</td>
 	
-	<td>
-		
+	<td align="right" valign="middle" style="width: 100px;">
+		<a href="#" onclick="open_target(<%= closed_target.id %>); return false;">
+			重新打开此目标</a>
 	</td>
-	
-	<td>
-		<% form_tag "/job_targets/#{closed_target.id}/open_target", :memthod => :post, :onsubmit => "if(!confirm('确定要重新打开这个目标么 ?')){ return false; }" do %>
-			<input type="hidden" name="page" value="<%= page %>" />
-			<%= submit_tag "重新打开此目标", :class => "button", :disabled => @account_limited %>
-		<% end %>
-	</td>
+</tr>
+
+<tr>
+	<td colspan="5" style="border-bottom: 1px dashed #EAEAEA;"></td>
 </tr>
 
 

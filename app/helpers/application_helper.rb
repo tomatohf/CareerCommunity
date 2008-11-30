@@ -99,7 +99,10 @@ module ApplicationHelper
     html
   end
   
-  def sanitize_tinymce(html)
+  def sanitize_tinymce(html = "")
+    # strip any comments, and if they have a newline at the end (ie. line with only a comment) strip that too
+    html.gsub!(/<!--(.*?)-->[\n]?/m, "")
+    
     sanitize(
       html,
       :tags => ActionView::Base.sanitized_allowed_tags + %w(table th tr td embed),

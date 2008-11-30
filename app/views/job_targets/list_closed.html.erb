@@ -9,7 +9,7 @@
 	<h2><%= page_title %></h2>
 	
 	
-	<div class="community_block form_info_s">
+	<div class="community_block_narrow form_info_s">
 		共有
 		<b><%= @targets.total_entries %></b>
 		条已关闭的目标
@@ -17,19 +17,45 @@
 	
 	<div class="community_block">
 		
-		<table cellpadding="0" cellspacing="10" border="0" class="main_part_w ">
+		<% form_tag "", :method => :post, :id => "open_target_form" do %>
+			<input type="hidden" name="page" value="<%= @page %>" />
+		<% end %>
+		
+		<% form_tag "", :method => :delete, :id => "delete_target_form" do %>
+			<input type="hidden" name="page" value="<%= @page %>" />
+		<% end %>
+		
+		<script language="JavaScript">
+			function open_target(target_id) {
+				if(confirm("确定要重新打开这个目标么 ?")) {
+					open_form = document.getElementById("open_target_form");
+					open_form.action = "/job_targets/" + target_id + "/open_target";
+					open_form.submit();
+				}
+			}
+			
+			function delete_target(target_id) {
+				if(confirm("已关闭的目标不会显示在你的目标列表中, 并可以随时重新打开. 确定要删除么 ?")) {
+					del_form = document.getElementById("delete_target_form");
+					del_form.action = "/job_targets/" + target_id;
+					del_form.submit();
+				}
+			}
+		</script>
+		
+		<table cellpadding="0" cellspacing="10" border="0" class="main_part_w">
 			<thead>
 				<tr class="table_header">
+					<th>删除</th>
 					<th>公司</th>
 					<th>职位</th>
 					<th>添加日期</th>
-					<th>步骤</th>
-					<th>操作</th>
+					<td></td>
 				</tr>
 			</thead>
 			
 			<tbody>
-				<%= render :partial => "closed_target", :collection => @targets, :locals => {:page => @page} %>
+				<%= render :partial => "closed_target", :collection => @targets %>
 			</tbody>
 		</table>
 		

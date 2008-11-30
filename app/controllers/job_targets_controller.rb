@@ -10,13 +10,13 @@ class JobTargetsController < ApplicationController
                                           :adjust_step_order, :set_current_step, :update_step_label,
                                           :update_step_process, :update_step_status, :del_step,
                                           :create_step, :update_step_date, :create_account_process,
-                                          :create_account_status, :close_target, :open_target]
+                                          :create_account_status, :close_target, :open_target, :destroy]
   
   before_filter :check_account_access, :only => [:list, :list_closed]
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
                                                 :update_step_label, :update_step_process,
                                                 :update_step_status, :del_step, :create_step,
-                                                :update_step_date, :close_target, :open_target]
+                                                :update_step_date, :close_target, :open_target, :destroy]
   
   before_filter :do_protection
   
@@ -406,6 +406,14 @@ class JobTargetsController < ApplicationController
   def open_target
     @target.closed = false
     @target.save
+    
+    page = params[:page] && params[:page].strip
+    
+    jump_to("/job_targets/list_closed/#{session[:account_id]}/#{page}")
+  end
+  
+  def destroy
+    @target.destroy
     
     page = params[:page] && params[:page].strip
     

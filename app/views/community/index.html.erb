@@ -109,6 +109,18 @@
 			<a href="/groups/all" class="more_part">« 全部圈子</a>
 		</div>
 	</div>
+	
+	
+	<div class="community_title">
+		最新圈内话题 ...
+	</div>
+	<div class="community_block">
+		<%= render(:partial => "group_post", :collection => @new_group_posts) %>
+		
+		<div class="align_r">
+			<a href="/groups" class="more_part">« 去我的圈子近况</a>
+		</div>
+	</div>
 
 
 	<div class="community_title">
@@ -119,18 +131,6 @@
 		
 		<div class="align_r">
 			<a href="/activities/recent_index" class="more_part">« 去我的活动近况</a>
-		</div>
-	</div>
-
-
-	<div class="community_title">
-		最新圈内话题 ...
-	</div>
-	<div class="community_block">
-		<%= render(:partial => "group_post", :collection => @new_group_posts) %>
-		
-		<div class="align_r">
-			<a href="/groups" class="more_part">« 去我的圈子近况</a>
 		</div>
 	</div>
 	

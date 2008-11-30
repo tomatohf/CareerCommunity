@@ -1,4 +1,12 @@
-﻿求职管家:
+﻿发邀请 email
+邀请 hotmail gmail yahoo 联系人
+
+提醒未读消息的邮件
+设置接收哪些邮件
+
+
+
+求职管家:
 	删除添加的公司 和 职位 - 处理已经关联的目标
 	删除添加的流程 和 状态 - 处理已经关联的步骤
 
@@ -30,10 +38,6 @@ new recruitment vendors - guolairen, www.xyzp.net(卖我网)
 highlight 活动日历上有活动的日子
 
 投票交叉分析, 投票构成
-
-发邀请 email
-邀请 hotmail gmail yahoo 联系人
-
 
 将重启服务器的命令添加到部署文件,在更新代码后自动执行
 
