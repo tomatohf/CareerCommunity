@@ -346,7 +346,9 @@ ActionController::Routing::Routes.draw do |map|
     :update_step_date => :post,
     :update_step_status => :post,
     :close_target => :post,
-    :open_target => :post
+    :open_target => :post,
+    :star_target => :post,
+    :unstar_target => :post
     
   }
 

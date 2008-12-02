@@ -51,19 +51,16 @@ JobTownGrid = function(table_id, config) {
 					"menuDisabled": (i == 5),
 					"renderer": function() {
 						if(i == 0) {
-							return function(value) {
+							return function(value, metadata, record, rowIndex, colIndex, store) {
 								var html = "";
-								html += "<div class='target_info'>";
-								
-								var img_src = "";
-								if(value.trim() == 1) {
-									img_src = "starred_icon.png";
+								html += "<div class='";
+								if(value == 1) {
+									html += "target_starred";
 								}
 								else {
-									img_src = "unstarred_icon.png";
+									html += "target_star";
 								}
-								
-								html += "<img src='/images/job_targets/" + img_src + "' border='0' />";
+								html += "'>";
 								html += "</div>";
 								return html;
 							}
@@ -162,7 +159,7 @@ function create_table_grid() {
 	var grid_view = new Ext.grid.GroupingView(
 		{
 			forceFit: true,
-			groupTextTpl: "{gvalue}: {[values.rs.length]} 条目标"
+			groupTextTpl: "{[values.rs.length]} 条目标"
 		}
 	);
 	
@@ -371,6 +368,27 @@ function create_table_grid() {
 					}
 				}
 			);
+			
+			
+			menu_items.push("-");
+			
+			var target_starred = (record.data.column_0 == 1);
+			menu_items.push(
+				{
+					//id: "",
+					text: target_starred ? "取消星标" : "添加星标",
+					icon: "/images/job_targets/" + (target_starred ? "unstarred_icon" : "starred_icon") + ".png",
+					handler: function() {
+						if(target_starred) {
+							update_target_star(target_id, false, store, record);
+						}
+						else {
+							update_target_star(target_id, true, store, record);
+						}
+					}
+				}
+			);
+			
 			
 			menu_items.push("-");
 			
@@ -1261,6 +1279,43 @@ function close_target(target_id, store, record) {
 		{
 			title: "关闭目标",
 			msg: "关闭目标失败! 请重试 ...",
+			minWidth: 250
+		}
+	);
+}
+
+
+function update_target_star(target_id, starred, store, record) {
+	var update_action = starred ? "star_target" : "unstar_target";
+	ajax_request(
+		{
+			url: "/job_targets/" + target_id + "/" + update_action,
+			params: {
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			if(response.responseText.trim() == "true") {
+				// update store
+				record.set("column_0", (starred ? 1 : 2));
+				store.commitChanges();
+				
+				// update dom
+				if("column_0" == store.groupField) {
+					store.sort("column_0");
+					store.groupBy("column_0", true);
+				}
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "设置目标的星标",
+			msg: "设置目标的星标失败! 请重试 ...",
 			minWidth: 250
 		}
 	);
