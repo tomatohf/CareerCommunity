@@ -1,0 +1,44 @@
+<div>
+	
+	<div>
+		Hi <%= h(@nick) %>,
+	</div>
+
+	<p>
+		你在 乔布圈 有:
+		
+		<ul>
+			<% if @msg_count > 0 %>
+				<li><b><%= @msg_count %></b> 条收到的消息未读</li>
+			<% end %>
+			
+			<% if @sys_msg_count > 0 %>
+				<li><b><%= @sys_msg_count %></b> 条未读系统通知</li>
+			<% end %>
+		</ul>
+		
+		请用此链接查看你的信息: <a href="http://qiaobutang.com/messages/summary/<%= @account_id %>" target="_blank">http://qiaobutang.com/messages/summary/<%= @account_id %></a>
+	</p>
+
+
+	<br />
+	<br />
+	<br />
+	<font color="#B3ABA2">
+		<div>
+			乔布堂: <a href="http://qiaobutang.com" target="_blank">http://qiaobutang.com</a>
+		</div>
+		<div>
+			乔布圈: <a href="http://qiaobuquan.com" target="_blank">http://qiaobuquan.com</a>
+		</div>
+
+		---
+	
+		<div>
+			若你不想收到此类邮件提醒, 可登录乔布圈进行设置: <a href="http://qiaobutang.com/account_settings/email/<%= @account_id %>" target="_blank">http://qiaobutang.com/account_settings/email/<%= @account_id %></a>
+		</div>
+	</font>
+	
+</div>
+
+

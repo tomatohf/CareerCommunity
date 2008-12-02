@@ -25,7 +25,8 @@ TableGrid = function(table_id, config) {
 	//columns.push(new Ext.grid.RowNumberer());
 	
 	var headers = table_element.query("thead th");
-	for(var i = 0, h; h = headers[i]; i++) {
+	for(var i = 0; i < 4;  i++) {
+		var h = headers[i];
 		var text = h.innerHTML;
 		var name = "column_" + i;
 
@@ -75,7 +76,8 @@ TableGrid = function(table_id, config) {
 		{
 			reader: new Ext.data.XmlReader(
 				{
-					record: "tbody tr"
+					record: "tbody tr",
+					id: "td:nth(5)/@innerHTML"
 				},
 				fields
 			),
@@ -123,10 +125,9 @@ TableGrid = function(table_id, config) {
 Ext.extend(TableGrid, Ext.grid.GridPanel);
 
 
+var grid;
 
 function create_table_grid() {
-
-	var grid;
 	
 	var grid_view = new Ext.grid.GroupingView(
 		{
@@ -286,7 +287,7 @@ function create_table_grid() {
 		
 			//if(row_index < 0 || cell_index > 2) { return; }
 		
-			var store = grid.getStore()
+			var store = grid.getStore();
 			var record = store.getAt(row_index);
 		
 			var steps_dom = record.data.column_3;
@@ -402,7 +403,7 @@ function reconfig_step(step_dom_id) {
 	
 	// create step dd
 	var group = "step_group_" + step.target_id;
-	if(Ext.get(group)) {
+	if(Ext.get(group) && step_dom) {
 		var drag_source = new Ext.dd.DragSource(step_dom_id, { group: group });
 		new Ext.dd.DDTarget(step_dom_id, group);
 		
@@ -413,28 +414,30 @@ function reconfig_step(step_dom_id) {
 	}
 	
 	
-	// create step menu
-	step_dom.addListener(
-		"contextmenu",
-		show_step_menu,
-		null,
-		{
-			step_id: step_id
-		}
-	);
+	if(step_dom) {
+		// create step menu
+		step_dom.addListener(
+			"contextmenu",
+			show_step_menu,
+			null,
+			{
+				step_id: step_id
+			}
+		);
 	
 	
-	// create step double click action
-	step_dom.addListener(
-		"dblclick",
-		function(evt, target, options) {
-			edit_step_label(options.step_id, steps["step_" + options.step_id].target_id);
-		},
-		null,
-		{
-			step_id: step_id
-		}
-	);
+		// create step double click action
+		step_dom.addListener(
+			"dblclick",
+			function(evt, target, options) {
+				edit_step_label(options.step_id, steps["step_" + options.step_id].target_id);
+			},
+			null,
+			{
+				step_id: step_id
+			}
+		);
+	}
 }
 
 
@@ -732,6 +735,30 @@ function after_step_dd_out(target, event, id) {
 
 
 
+function update_grid_store_for_steps(target_id) {
+	var store = grid.getStore();
+	store.getById(target_id).set("column_3", get_step_group_html(target_id, Ext.get("step_group_" + target_id).dom.innerHTML));
+	store.commitChanges();
+	
+	for(var step_dom_id in steps) {
+		if(steps[step_dom_id].target_id == target_id) {
+			reconfig_step(step_dom_id);
+		}
+	}
+}
+
+function get_step_group_html(target_id, steps_html) {
+	var html = "";
+	
+	html += "<div id='step_group_" + target_id + "'>";
+	html += steps_html;
+	html += "</div>";
+	
+	return html;
+}
+
+
+
 
 // +++++++++++++++++++++ ajax requests +++++++++++++++++++++++++++++
 
@@ -784,9 +811,14 @@ function adjust_step_order(src_id, des_id, groups) {
 		
 		function(response) {
 			if(response.responseText.trim() == "true") {
+				// update dom
 				var moved_step = Ext.get(src_id);
 				moved_step.insertBefore(des_id);
 				moved_step.highlight("C3DAF9");
+				
+				//update grid store
+				update_grid_store_for_steps(target_id);
+				
 				return true;
 			}
 			
@@ -823,6 +855,10 @@ function set_current_step(step_id, target_id) {
 				// set new current step
 				current_step_mapping["" + target_id] = "" + step_id;
 				Ext.get("step_" + step_id).addClass("step_current");
+				
+				// update grid store
+				update_grid_store_for_steps(target_id);
+				
 				return true;
 			}
 			
@@ -856,6 +892,9 @@ function update_step_label(step_id, target_id, new_label) {
 				
 				// update data
 				steps["step_" + step_id].label = new_label;
+				
+				// update grid store
+				update_grid_store_for_steps(target_id);
 				
 				return true;
 			}
@@ -894,6 +933,9 @@ function update_step_process(step_id, target_id, new_process_id, new_process_nam
 					id: "" + new_process_id,
 					name: new_process_name
 				};
+				
+				// update grid store
+				update_grid_store_for_steps(target_id);
 				
 				return true;
 			}
@@ -934,6 +976,9 @@ function update_step_status(step_id, target_id, new_status_id, new_status_name, 
 					color: new_status_color
 				};
 				
+				// update grid store
+				update_grid_store_for_steps(target_id);
+				
 				return true;
 			}
 			
@@ -968,6 +1013,10 @@ function del_step(step_id, target_id) {
 				if(current_step_mapping["" + target_id] == ("" + step_id)) {
 					current_step_mapping["" + target_id] = "";
 				}
+				delete steps["step_" + step_id];
+				
+				// update grid store
+				update_grid_store_for_steps(target_id);
 				
 				return true;
 			}
@@ -1018,8 +1067,11 @@ function create_step(target_id, process_id, process_name, label) {
 					label: label
 				};
 				
+				// update grid store
+				update_grid_store_for_steps(target_id);
+				
 				// refresh event of added step
-				reconfig_step(step_dom_id);
+				// reconfig_step(step_dom_id);
 				
 				return true;
 			}
@@ -1126,6 +1178,9 @@ function update_step_date(step_id, target_id, date, at) {
 			if(response.responseText.trim() == "true") {
 				// update dom
 				Ext.get("step_" + at + "_" + step_id).update(date.format("m.d"), false);
+				
+				// update grid store
+				update_grid_store_for_steps(target_id);
 				
 				return true;
 			}

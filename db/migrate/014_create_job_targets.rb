@@ -10,7 +10,6 @@ class CreateJobTargets < ActiveRecord::Migration
       # set account_id to 0, meaning it is added by system
       
       t.column :name, :string
-      # TODO - industry info ...
       
       t.column :desc, :string, :limit => 1000
       
@@ -32,7 +31,6 @@ class CreateJobTargets < ActiveRecord::Migration
       # set account_id to 0, meaning it is added by system
       
       t.column :name, :string
-      # TODO - category info ...
       
       t.column :desc, :string, :limit => 1000
       

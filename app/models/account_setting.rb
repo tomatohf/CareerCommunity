@@ -63,8 +63,13 @@ class AccountSetting < ActiveRecord::Base
     :profile_basic_visible => "login",
     :profile_contact_visible => "friend",
     :profile_hobby_visible => "login",
-    :profile_resume_visible => "friend"
+    :profile_resume_visible => "friend",
     
+    # email settings
+    # "true" or "false"
+    :email_message_notify => "false",
+    
+    :dumy => ""
   }
   def self.default_value(name)
     @@default_values[name]
@@ -75,6 +80,10 @@ class AccountSetting < ActiveRecord::Base
   
   def self.valid_profile_setting_values
     ["any", "login", "friend", "both_friend"]
+  end
+  
+  def self.valid_email_setting_values
+    ["true", "false"]
   end
     
   # end: valid setting values

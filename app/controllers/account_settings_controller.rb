@@ -3,7 +3,7 @@ class AccountSettingsController < ApplicationController
   layout "community"
   before_filter :check_current_account, :only => [:index]
   before_filter :check_login_for_account_settings, :except => [:index]
-  before_filter :check_limited, :check_request_type_post, :only => [:set_profile]
+  before_filter :check_limited, :check_request_type_post, :only => [:set_profile, :set_email]
   
   
   
@@ -27,10 +27,10 @@ class AccountSettingsController < ApplicationController
     @profile_resume_visible = params[:profile_resume_visible] && params[:profile_resume_visible].strip
     
     profile_visible_setting = {
-      :profile_basic_visible => AccountSetting.valid_profile_setting_values.include?(@profile_basic_visible) ? @profile_basic_visible : AccountSetting.default_values[:profile_basic_visible],
-      :profile_contact_visible => AccountSetting.valid_profile_setting_values.include?(@profile_contact_visible) ? @profile_contact_visible : AccountSetting.default_values[:profile_contact_visible],
-      :profile_hobby_visible => AccountSetting.valid_profile_setting_values.include?(@profile_hobby_visible) ? @profile_hobby_visible : AccountSetting.default_values[:profile_hobby_visible],
-      :profile_resume_visible => AccountSetting.valid_profile_setting_values.include?(@profile_resume_visible) ? @profile_resume_visible : AccountSetting.default_values[:profile_resume_visible]
+      :profile_basic_visible => AccountSetting.valid_profile_setting_values.include?(@profile_basic_visible) ? @profile_basic_visible : AccountSetting.default_value(:profile_basic_visible),
+      :profile_contact_visible => AccountSetting.valid_profile_setting_values.include?(@profile_contact_visible) ? @profile_contact_visible : AccountSetting.default_value(:profile_contact_visible),
+      :profile_hobby_visible => AccountSetting.valid_profile_setting_values.include?(@profile_hobby_visible) ? @profile_hobby_visible : AccountSetting.default_value(:profile_hobby_visible),
+      :profile_resume_visible => AccountSetting.valid_profile_setting_values.include?(@profile_resume_visible) ? @profile_resume_visible : AccountSetting.default_value(:profile_resume_visible)
     }
     
     @account_setting.update_setting(profile_visible_setting)
@@ -42,6 +42,29 @@ class AccountSettingsController < ApplicationController
     end
     
     render(:action => "profile")
+  end
+  
+  def email
+    settings = @account_setting.get_setting
+    @email_message_notify = @account_setting.get_setting_value(:email_message_notify, settings)
+  end
+  
+  def set_email
+    @email_message_notify = params[:email_message_notify] && params[:email_message_notify].strip
+    
+    email_notify_setting = {
+      :email_message_notify => AccountSetting.valid_email_setting_values.include?(@email_message_notify) ? @email_message_notify : AccountSetting.default_value(:email_message_notify)
+    }
+    
+    @account_setting.update_setting(email_notify_setting)
+    
+    if @account_setting.save
+      flash.now[:message] = "设置已成功修改"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+    
+    render(:action => "email")
   end
   
   
