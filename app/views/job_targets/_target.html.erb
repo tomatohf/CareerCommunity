@@ -13,12 +13,15 @@
 		JobStep.set_step_cache(s)
 	end
 	
+	current_step = nil
 	ordered_steps = target.get_info[:step_order].collect { |sid|
 		sobj = nil
 		begin
 			sobj = JobStep.get_step(sid)
 		rescue
 		end
+		
+		current_step = sobj if target.current_job_step_id == sid
 		
 		if sobj
 %>
@@ -43,6 +46,15 @@
 </script>
 
 <tr>
+	<td>
+		<%#= target.starred ? 1 : 2 %>
+		<%= target.id > 4 ? 1 : 2 %>
+	</td>
+	
+	<td>
+		<%= current_step && format_short_date(current_step.end_at) %>
+	</td>
+	
 	<td>
 		<%= h(company.name) %>
 	</td>

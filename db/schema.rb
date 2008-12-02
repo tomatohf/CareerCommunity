@@ -578,6 +578,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.boolean  "closed",                            :default => false
     t.text     "info"
     t.boolean  "delta"
+    t.boolean  "starred",                           :default => false
   end
 
   add_index "job_targets", ["created_at"], :name => "index_job_targets_on_created_at"

@@ -55,6 +55,7 @@ class CreateJobTargets < ActiveRecord::Migration
       t.column :current_job_step_id, :integer
       
       t.column :closed, :boolean, :default => false
+      t.column :starred, :boolean, :default => false
       
       t.column :info, :text
       # step_order

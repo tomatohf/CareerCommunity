@@ -8,7 +8,7 @@ var statuses = {};
 
 Ext.QuickTips.init();
 
-TableGrid = function(table_id, config) {
+JobTownGrid = function(table_id, config) {
 	config = config || {};
 	Ext.apply(this, config);
 	
@@ -25,7 +25,7 @@ TableGrid = function(table_id, config) {
 	//columns.push(new Ext.grid.RowNumberer());
 	
 	var headers = table_element.query("thead th");
-	for(var i = 0; i < 4;  i++) {
+	for(var i = 0; i < 6;  i++) {
 		var h = headers[i];
 		var text = h.innerHTML;
 		var name = "column_" + i;
@@ -44,29 +44,63 @@ TableGrid = function(table_id, config) {
 				{
 					"header": text,
 					"dataIndex": name,
-					"width": h.offsetWidth,
+					"width": (i == 0) ? 30 : h.offsetWidth,
 					"tooltip": h.innerHTML,
-					"sortable": !(i == 3),
-					"hidden": (i == 2),
-					"menuDisabled": (i == 3),
-					"renderer": (i == 3) ? function(value) {
-							return value;
-						}
-					: ((i == 2) ? function(value) {
+					"sortable": !(i == 5),
+					"hidden": (i == 1 || i == 4),
+					"menuDisabled": (i == 5),
+					"renderer": function() {
+						if(i == 0) {
+							return function(value) {
 								var html = "";
 								html += "<div class='target_info'>";
-								html += value;
+								
+								var img_src = "";
+								if(value.trim() == 1) {
+									img_src = "starred_icon.png";
+								}
+								else {
+									img_src = "unstarred_icon.png";
+								}
+								
+								html += "<img src='/images/job_targets/" + img_src + "' border='0' />";
 								html += "</div>";
 								return html;
 							}
-						: function(value) {
+						}
+						
+						else if(i == 1) {
+							return function(value) {
+								return value;
+							}
+						}
+						
+						else if( i == 2 || i == 3) {
+							return function(value) {
 								var html = "";
 								html += "<div class='target_text'>";
 								html += value;
 								html += "</div>";
 								return html;
 							}
-					)
+						}
+						
+						else if( i == 4) {
+							return function(value) {
+								var html = "";
+								html += "<div class='target_info'>";
+								html += value;
+								html += "</div>";
+								return html;
+							}
+						}
+						
+						else {
+							return function(value) {
+								return value;
+							}
+						}
+					}()
 				}
 			)
 		);
@@ -77,7 +111,7 @@ TableGrid = function(table_id, config) {
 			reader: new Ext.data.XmlReader(
 				{
 					record: "tbody tr",
-					id: "td:nth(5)/@innerHTML"
+					id: "td:nth(7)/@innerHTML"
 				},
 				fields
 			),
@@ -85,15 +119,11 @@ TableGrid = function(table_id, config) {
 			data: table_element.dom,
 			
 			sortInfo: {
-				field: "column_2", // created_at
+				field: "column_1",
 				direction: "DESC"
-			}
-			
-			/*
-			,
+			},
 			
 			groupField: "column_0"
-			*/
 		}
 	);
 
@@ -119,10 +149,10 @@ TableGrid = function(table_id, config) {
 		}
 	);
 	
-	TableGrid.superclass.constructor.call(this, grid_element, {});
+	JobTownGrid.superclass.constructor.call(this, grid_element, {});
 };
 
-Ext.extend(TableGrid, Ext.grid.GridPanel);
+Ext.extend(JobTownGrid, Ext.grid.GridPanel);
 
 
 var grid;
@@ -132,7 +162,7 @@ function create_table_grid() {
 	var grid_view = new Ext.grid.GroupingView(
 		{
 			forceFit: true,
-			groupTextTpl: "{text} ({[values.rs.length]} 条目标)"
+			groupTextTpl: "{gvalue}: {[values.rs.length]} 条目标"
 		}
 	);
 	
@@ -236,7 +266,7 @@ function create_table_grid() {
 	);
 	
 
-	grid = new TableGrid(
+	grid = new JobTownGrid(
 		"job_targets_container",
 		{
 			stripeRows: false,
@@ -257,16 +287,21 @@ function create_table_grid() {
 					filters: [
 						{
 							dataIndex: "column_0",
+							type: "boolean"
+						},
+						
+						{
+							dataIndex: "column_2",
 							type: "string"
 						},
 						
 						{
-							dataIndex: "column_1",
+							dataIndex: "column_3",
 							type: "string"
 						},
 
 						{
-							dataIndex: "column_2",
+							dataIndex: "column_4",
 							type: "date"
 						}
 					
@@ -285,12 +320,10 @@ function create_table_grid() {
 		function(grid, row_index, cell_index, e) {
 			e.preventDefault();
 		
-			//if(row_index < 0 || cell_index > 2) { return; }
-		
 			var store = grid.getStore();
 			var record = store.getAt(row_index);
 		
-			var steps_dom = record.data.column_3;
+			var steps_dom = record.data.column_5;
 			
 			var steps_element = get_element_from_html(steps_dom);
 			var target_id = steps_element.id.substr("step_group_".length);
@@ -386,6 +419,7 @@ function create_table_grid() {
 	grid.render();
 	
 	reconfig_steps();
+	
 }
 
 
@@ -737,7 +771,7 @@ function after_step_dd_out(target, event, id) {
 
 function update_grid_store_for_steps(target_id) {
 	var store = grid.getStore();
-	store.getById(target_id).set("column_3", get_step_group_html(target_id, Ext.get("step_group_" + target_id).dom.innerHTML));
+	store.getById(target_id).set("column_5", get_step_group_html(target_id, Ext.get("step_group_" + target_id).dom.innerHTML));
 	store.commitChanges();
 	
 	for(var step_dom_id in steps) {
@@ -1208,10 +1242,15 @@ function close_target(target_id, store, record) {
 		
 		function(response) {
 			if(response.responseText.trim() == "true") {
-				// update data and dom
+				// update store
 				store.remove(record);
+				
+				// update dom
 				target_count = target_count - 1;
 				Ext.get("unclosed_target_count").update("" + target_count, false);
+				
+				// update data
+				delete current_step_mapping["" + target_id];
 				
 				return true;
 			}

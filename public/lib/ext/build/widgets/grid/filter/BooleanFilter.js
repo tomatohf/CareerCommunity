@@ -62,6 +62,8 @@ Ext.grid.filter.BooleanFilter = Ext.extend(Ext.grid.filter.Filter, {
 	},
 	
 	validateRecord: function(record) {
-		return record.get(this.dataIndex) == this.getValue();
+		// return record.get(this.dataIndex) == this.getValue();
+		// modified by Tomato
+		return (record.get(this.dataIndex) == 1) == this.getValue();
 	}
 });

@@ -178,6 +178,14 @@ if(Ext.grid.filter.DateFilter){
   });
 }
 
+// added by Tomato
+if(Ext.grid.filter.BooleanFilter){
+  Ext.apply(Ext.grid.filter.BooleanFilter.prototype, {
+	yesText: "是",
+    noText: "否"
+  });
+}
+
 if(Ext.grid.PropertyColumnModel){
    Ext.apply(Ext.grid.PropertyColumnModel.prototype, {
       nameText   : "名称",
