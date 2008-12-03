@@ -101,35 +101,11 @@
 			<a href="/activities/members_info/<%= @activity_id %>">统计报名参加活动成员的信息</a>
 		</div>
 		
-		<% if activity_status[0] <= Activity::Status::Registering[0] %>
-			<div class="community_block">
-				<a href="/activities/invite/<%= @activity_id %>">邀请朋友参加活动</a>
-			</div>
-		<% end %>
-		
 		<% if activity_status[0] <= Activity::Status::Registered[0] %>
 			<div class="community_block">
 				<a href="/activities/unapproved/<%= @activity_id %>">处理报名参加活动的申请</a>
 			</div>
-			
-			<div class="community_block">
-				<a href="/activities/members_edit/<%= @activity_id %>">
-					<img src="/images/groups/members_small.gif" border="0" />
-					管理报名参加活动的成员</a>
-			</div>
-		<% else %>
-			<div class="community_block">
-				<a href="/activities/members/<%= @activity_id %>">
-					<img src="/images/groups/members_small.gif" border="0" />
-					浏览报名参加活动的成员</a>
-			</div>
 		<% end %>
-	<% else %>
-		<div class="community_block">
-			<a href="/activities/members/<%= @activity_id %>">
-				<img src="/images/groups/members_small.gif" border="0" />
-				浏览报名参加活动的成员</a>
-		</div>
 	<% end %>
 	
 	<% if @is_master %>
@@ -140,11 +116,48 @@
 		</div>
 	<% end %>
 	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<% if @is_admin && activity_status[0] <= Activity::Status::Registered[0] %>
+		<div class="community_block">
+			<a href="/activities/members_edit/<%= @activity_id %>">
+				<img src="/images/groups/members_small.gif" border="0" />
+				管理报名参加活动的成员</a>
+		</div>
+	<% else %>
+		<div class="community_block">
+			<a href="/activities/members/<%= @activity_id %>">
+				<img src="/images/groups/members_small.gif" border="0" />
+				浏览报名参加活动的成员</a>
+		</div>
+	<% end %>
+	
 	<div class="community_block">
 		<a href="/activities/interest/<%= @activity_id %>">
 			<img src="/images/activities/interest_small.png" border="0" />
 			浏览对活动感兴趣的成员</a>
 	</div>
+	
+	<% if @is_member && activity_status[0] <= Activity::Status::Registering[0] %>
+		<!--
+		<div class="community_block">
+			<a href="/activities/invite/<%= @activity_id %>">
+				<img src="/images/groups/qiao_small.png" border="0" />
+				邀请乔布圈内的朋友参加活动</a>
+		</div>
+	
+		
+		<div class="community_block">
+			<a href="/activities/invite/<%= @activity_id %>">
+				<img src="/images/groups/invite_contact_small.png" border="0" />
+				邀请MSN/Gmail/Email联系人加入圈子</a>
+		</div>
+		-->
+	<% end %>
 	
 	<% if activity_status[0] >= Activity::Status::Ongoing[0] %>
 		<div class="community_block">
