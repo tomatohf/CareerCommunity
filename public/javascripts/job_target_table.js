@@ -250,6 +250,7 @@ function create_table_grid() {
 							{
 								text: "选择状态的颜色",
 								icon: "/images/job_targets/color_palette_icon.gif",
+								hideOnClick: false,
 								menu: new Ext.menu.ColorMenu(
 									{
 										selectHandler: function(cp, color) {
@@ -395,6 +396,7 @@ function create_table_grid() {
 					//id: "",
 					text: "添加新的步骤",
 					//icon: "",
+					hideOnClick: false,
 					menu: {
 						items: process_items
 					}
@@ -542,6 +544,7 @@ function show_step_menu(evt, target, options) {
 		{
 			text: "设置开始日期",
 			icon: "/images/job_targets/begin_date_icon.gif",
+			hideOnClick: false,
 			menu: new Ext.menu.DateMenu(
 				{
 					handler: function(dp, date){
@@ -554,6 +557,7 @@ function show_step_menu(evt, target, options) {
 		{
 			text: "设置结束日期",
 			icon: "/images/job_targets/end_date_icon.gif",
+			hideOnClick: false,
 			menu: new Ext.menu.DateMenu(
 				{
 					handler: function(dp, date){
@@ -632,6 +636,7 @@ function show_step_menu(evt, target, options) {
 			//id: "set_status_menu",
 			text: "改变步骤的状态",
 			//icon: "/images/job_targets/",
+			hideOnClick: false,
 			menu: {
 				items: status_items
 			}
@@ -678,6 +683,7 @@ function show_step_menu(evt, target, options) {
 			//id: "set_process_menu",
 			text: "设置步骤的流程",
 			//icon: "/images/job_targets/",
+			hideOnClick: false,
 			menu: {
 				items: process_items
 			}
