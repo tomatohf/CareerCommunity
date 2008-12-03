@@ -31228,6 +31228,9 @@ Ext.extend(Ext.grid.GridView, Ext.util.Observable, {
 
         if(g.autoHeight){
             this.scroller.dom.style.overflow = 'visible';
+			// added by Tomato
+			// to fix the scroll issue on Safari
+			this.scroller.dom.style.position = 'static';
         }else{
             this.el.setSize(csize.width, csize.height);
 

@@ -173,8 +173,8 @@ JobTownGrid = function(table_id, config) {
 			//"selModel": new Ext.grid.CellSelectionModel(),
 			
 			"autoHeight": true,
-			"bodyStyle": "width:100%",
-			"autoWidth": true
+			"autoWidth": true,
+			"bodyStyle": "width:100%"
 		}
 	);
 	
