@@ -51,6 +51,41 @@
 				
 				
 				<tr>
+					<td style="width: 150px;">
+						<label for="email_group_invitation_notify">
+			                <b>
+								圈子邀请邮件:
+			                </b>
+			            </label>
+					</td>
+					<td>
+						<select name="email_group_invitation_notify" id="email_group_invitation_notify" class="dropdown_list">
+							<% options.each do |option| %>
+								<option value="<%= option[0] %>"<%= " selected=\"selected\"" if @email_group_invitation_notify == option[0] %>><%= option[1] %></option>
+							<% end %>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td style="width: 150px;">
+						<label for="email_activity_invitation_notify">
+			                <b>
+								活动邀请邮件:
+			                </b>
+			            </label>
+					</td>
+					<td>
+						<select name="email_activity_invitation_notify" id="email_activity_invitation_notify" class="dropdown_list">
+							<% options.each do |option| %>
+								<option value="<%= option[0] %>"<%= " selected=\"selected\"" if @email_activity_invitation_notify == option[0] %>><%= option[1] %></option>
+							<% end %>
+						</select>
+					</td>
+				</tr>
+				
+				
+				<tr>
 					<td></td>
 					<td>
 						<%= submit_tag "更新设置", :class => "button", :disabled => @account_limited %>

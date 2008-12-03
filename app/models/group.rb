@@ -37,6 +37,8 @@ class Group < ActiveRecord::Base
   CKP_created_count = :group_created_count
   CKP_group_with_img = :group_with_img
   
+  CKP_group_invitations = :group_invitations
+  
   FCKP_account_group_names = :fc_account_group_names
   
   
@@ -166,6 +168,22 @@ class Group < ActiveRecord::Base
       Cache.set("#{CKP_created_count}_#{account_id}".to_sym, updated_c_c, Cache_TTL)
     end
   end
+  
+  
+  def self.get_group_invitations
+    Cache.get(CKP_group_invitations) || []
+  end
+  
+  def self.add_group_invitation(invitation)
+    invitations = get_group_invitations
+    invitations << invitation
+    Cache.set(CKP_group_invitations, invitations)
+  end
+  
+  def self.clear_group_invitations_cache
+    Cache.delete(CKP_group_invitations)
+  end
+  
   
   def clear_association
     copy = deep_copy(self)

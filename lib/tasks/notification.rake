@@ -3,10 +3,50 @@ namespace :notification do
   desc "send email for reminding if there is any new course application"
   task :send_course_application_notification => :environment do
     sa = ServiceApplication.get_to_be_notified_service_applications
+    ServiceApplication.clear_to_be_notified_service_applications_cache
     
     if sa.size > 0
-      Postman.deliver_course_application_remind(sa)
-      ServiceApplication.clear_to_be_notified_service_applications_cache
+      begin
+        Postman.deliver_course_application_remind(sa)
+      rescue
+      end
+    end
+  end
+  
+  
+  desc "send group invitation emails"
+  task :send_group_invitations => :environment do
+    invitations = Group.get_group_invitations
+    Group.clear_group_invitations_cache
+    
+    invitations.each do |invitation|
+      begin
+        group_id = invitation[:group_id]
+        invitor_account_id = invitation[:invitor_account_id]
+        invited_account_ids = invitation[:invited_account_ids]
+        invitation_words = invitation[:invitation_words]
+      
+        group, group_image = Group.get_group_with_image(group_id)
+        invitor_account = Account.find_enabled(invitor_account_id)
+        
+        if invitor_account
+          invited_accounts = Account.enabled.find(
+            :all,
+            :conditions => ["id in (?)", invited_account_ids],
+            :include => [:setting]
+          )
+          
+          invited_accounts.each do |invited_account|
+            setting = invited_account.setting
+            AccountSetting.set_account_setting_cache(invited_account.id, setting)
+
+            if setting.get_setting_value(:email_group_invitation_notify) == "true"
+              Postman.deliver_group_invitation(invited_account, invitor_account, group, invitation_words)
+            end
+          end
+        end
+      rescue
+      end
     end
   end
   

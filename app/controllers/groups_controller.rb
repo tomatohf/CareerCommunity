@@ -41,8 +41,10 @@ class GroupsController < ApplicationController
   before_filter :check_group_admin, :only => [:edit_image, :update_image, :edit, :update,
                                               :update_access, :members_edit, :del_member,
                                               :unapproved, :approve_member, :reject_member, :approve_all,
-                                              :invite, :invite_member, :remove_activity, :remove_vote]
+                                              :remove_activity, :remove_vote]
   before_filter :check_group_master, :only => [:members_master, :add_admin, :del_admin, :edit_master, :update_master]
+  
+  before_filter :check_group_member, :only => [:invite, :invite_member]
   
   before_filter :check_custom_group, :only => [:show]
   
@@ -746,24 +748,29 @@ class GroupsController < ApplicationController
   def invite
     @group, @group_image = Group.get_group_with_image(@group_id)
     
+    @is_admin = GroupMember.is_group_admin(@group_id, session[:account_id])
+    
     @friends = Friend.get_all_by_account(
       session[:account_id],
       :include => [:friend => [:profile_pic]],
       :order => "created_at DESC"
     )
     
-    @unaccepted_members = GroupMember.get_unaccepted_members(@group_id)
+    @unaccepted_members = GroupMember.get_unaccepted_members(@group_id) if @is_admin
   end
   
   def invite_member
     invited_account_id = params[:invited_account_id] || []
     invitation_words = (params[:invitation_words] && params[:invitation_words].strip) || ""
+    invitation_way = params[:invitation_way]
     
     if invitation_words.size > 100
       flash[:error_msg] = "邀请的话 超过长度限制"
     elsif invited_account_id.size <= 0
       flash[:error_msg] = "还没有选择想邀请的朋友"
     else
+      is_admin = GroupMember.is_group_admin(@group_id, session[:account_id])
+      
       existing = GroupMember.find(
         :all,
         :conditions => ["group_id = ? and account_id in (?)", @group_id, invited_account_id]
@@ -775,7 +782,7 @@ class GroupsController < ApplicationController
       existing.each do |m|
         no_need_insert << m.account_id.to_s
         if m.approved
-          no_need_invite << m.account_id.to_s
+          no_need_invite << m.account_id.to_s if m.accepted
         else
           need_update << m.id if m.accepted
         end
@@ -785,31 +792,45 @@ class GroupsController < ApplicationController
       need_invite = invited_account_id - no_need_invite
       
       
-      GroupMember.update_all(
-        ["approved = ?, join_at = ?", true, DateTime.now],
-        ["id in (?)", need_update]
-      ) if need_update.size > 0
+      if is_admin
+        GroupMember.update_all(
+          ["approved = ?, join_at = ?", true, DateTime.now],
+          ["id in (?)", need_update]
+        ) if need_update.size > 0
       
-      GroupMember.transaction do
-        need_insert.each do |account_id|
-          GroupMember.create(
-            :group_id => @group_id,
-            :account_id => account_id,
-            :accepted => false,
-            :approved => true,
-            :admin => false
-          )
+        GroupMember.transaction do
+          need_insert.each do |account_id|
+            GroupMember.create(
+              :group_id => @group_id,
+              :account_id => account_id,
+              :accepted => false,
+              :approved => true,
+              :admin => false
+            )
+          end
         end
       end
       
-      # send sys message to invited account
-      SysMessage.transaction do
-        need_invite.each do |account_id|
-          SysMessage.create_new(account_id, "invite_join_group", {
-            :inviter_id => session[:account_id],
+      
+      if invitation_way == "email"
+        Group.add_group_invitation(
+          {
             :group_id => @group_id,
+            :invitor_account_id => session[:account_id],
+            :invited_account_ids => need_invite,
             :invitation_words => invitation_words
-          })
+          }
+        )
+      else
+        # send sys message to invited account
+        SysMessage.transaction do
+          need_invite.each do |account_id|
+            SysMessage.create_new(account_id, "invite_join_group", {
+              :inviter_id => session[:account_id],
+              :group_id => @group_id,
+              :invitation_words => invitation_words
+            })
+          end
         end
       end
       
@@ -871,6 +892,12 @@ class GroupsController < ApplicationController
     @group, @group_image = Group.get_group_with_image(@group_id)
     
     jump_to("/groups/members/#{@group_id}") unless @group.master_id == session[:account_id]
+  end
+  
+  def check_group_member
+    @group_id = params[:id]
+    
+    jump_to("/errors/forbidden") unless GroupMember.is_group_member(@group_id, session[:account_id])
   end
   
 end

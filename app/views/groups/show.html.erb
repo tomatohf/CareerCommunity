@@ -1,11 +1,14 @@
 <% page_title = h(@group.name) %>
 <% community_page_title(page_title) %>
 
+<% can_admin = @relationship == "master" || @relationship == "admin" %>
+<% no_membership = @relationship == "not_member" || @relationship == "logout" %>
+
 <div class="float_r group_container_r">
 	<div class="community_block align_c">
 		<% face_image_url = @group_image || "" %>
 		<% face_image_url = face_image_url.gsub("thumb_48", "thumb_200") if face_image_url.include?("thumb_48") %>
-		<% if @relationship == "master" || @relationship == "admin" %>
+		<% if can_admin %>
 			<a href="/groups/<%= @group_id %>/edit_image">
 				<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>
 		<% else %>
@@ -15,34 +18,51 @@
 	
 	
 	
-	<% if @relationship == "master" || @relationship == "admin" %>
+	<% if can_admin %>
 		<div class="community_block">
 			<a href="/groups/<%= @group_id %>/edit">修改圈子的设置</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="/groups/<%= @group_id %>/edit_image">设置圈子的图标</a>
 		</div>
 		<div class="community_block">
-			<a href="/groups/invite/<%= @group_id %>">邀请朋友加入圈子</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="/groups/unapproved/<%= @group_id %>">处理加入圈子的申请</a>
 		</div>
-		<div class="community_block">
-			<a href="/groups/members_edit/<%= @group_id %>">
-				<img src="/images/groups/members_small.gif" border="0" />
-				管理圈子成员</a>
-			<% if @relationship == "master" %>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<% if @relationship == "master" %>
+			<div class="community_block">
 				<a href="/groups/members_master/<%= @group_id %>">
 					<img src="/images/groups/admin_icon.png" border="0" />
 					设置圈子的管理员</a>
-			<% end %>
-		</div>
+			</div>
+		<% end %>
 		
-	<% else %>
-		<div class="community_block">
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+	<% end %>
+	
+	<div class="community_block">
+		<% if can_admin %>
+			<a href="/groups/members_edit/<%= @group_id %>">
+				<img src="/images/groups/members_small.gif" border="0" />
+				管理圈子成员</a>
+		<% else %>
 			<a href="/groups/members/<%= @group_id %>">
 				<img src="/images/groups/members_small.gif" border="0" />
 				浏览所有成员</a>
+		<% end %>
+	</div>
+	
+	<% unless no_membership %>
+		<div class="community_block">
+			<a href="/groups/invite/<%= @group_id %>">
+				<img src="/images/groups/qiao_small.png" border="0" />
+				邀请乔布圈内的朋友加入圈子</a>
+		</div>
+	
+		<div class="community_block">
+			<a href="/groups/invite/<%= @group_id %>">
+				<img src="/images/groups/invite_contact_small.png" border="0" />
+				邀请MSN/Gmail/Email联系人加入圈子</a>
 		</div>
 	<% end %>
 	
@@ -50,7 +70,7 @@
 		<%= thin_hr %>
 	</div>
 	
-	<% if @relationship == "not_member" || @relationship == "logout" %>
+	<% if no_membership %>
 		<div class="community_block align_c">
 			<% form_tag "/groups/#{@group_id}/join", :method => :post do %>
 				<input type="submit" value="加入这个圈子" class="button" />
@@ -177,7 +197,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="post_section_collapse" href="#" onclick="expand_section('post_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% unless @relationship == "not_member" || @relationship == "logout" %>
+			<% unless no_membership %>
 				<span class="float_r">
 					<a href="/group/posts/compose/<%= @group_id %>">发起新的讨论话题</a>
 					&nbsp;&nbsp;&nbsp;
@@ -223,7 +243,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="activity_section_collapse" href="#" onclick="expand_section('activity_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% unless @relationship == "not_member" || @relationship == "logout" %>
+			<% unless no_membership %>
 				<span class="float_r">
 					<a href="#" onclick="document.getElementById('new_group_activity_form').submit(); return false;">
 						发起新的圈内活动</a>
@@ -258,7 +278,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="vote_section_collapse" href="#" onclick="expand_section('vote_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% unless @relationship == "not_member" || @relationship == "logout" %>
+			<% unless no_membership %>
 				<span class="float_r">
 					<a href="#" onclick="document.getElementById('new_group_vote_topic_form').submit(); return false;">
 						发起新的圈内投票</a>
@@ -293,7 +313,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="bookmark_section_collapse" href="#" onclick="expand_section('bookmark_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% unless @relationship == "not_member" || @relationship == "logout" %>
+			<% unless no_membership %>
 				<span class="float_r">
 					<a href="#" onclick="document.getElementById('new_group_bookmark_form').submit(); return false;">
 						添加新的圈内收藏</a>
@@ -340,7 +360,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="photo_section_collapse" href="#" onclick="expand_section('photo_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% unless @relationship == "not_member" || @relationship == "logout" %>
+			<% unless no_membership %>
 				<span class="float_r">
 					<a href="/group/linked_photos/select/<%= @group_id %>">
 						添加新的圈子照片</a>

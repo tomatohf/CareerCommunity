@@ -68,6 +68,8 @@ class AccountSetting < ActiveRecord::Base
     # email settings
     # "true" or "false"
     :email_message_notify => "false",
+    :email_group_invitation_notify => "true",
+    :email_activity_invitation_notify => "true",
     
     :dumy => ""
   }
