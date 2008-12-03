@@ -4,6 +4,9 @@ var current_step_mapping = {};
 var processes = {};
 var statuses = {};
 
+var DAY_MSEC = 60*60*24*1000;
+var VERY_LARGE_DATE = new Date(2037, 4, 29).getTime();
+
 
 
 Ext.QuickTips.init();
@@ -44,10 +47,20 @@ JobTownGrid = function(table_id, config) {
 				{
 					"header": text,
 					"dataIndex": name,
-					"width": (i == 0) ? 30 : h.offsetWidth,
+					"width": function(h) {
+						if(i == 0) {
+							return 30;
+						}
+						else if(i == 1) {
+							return 50;
+						}
+						else {
+							return h.offsetWidth;
+						}
+					}(h),
 					"tooltip": h.innerHTML,
 					"sortable": !(i == 5),
-					"hidden": (i == 1 || i == 4),
+					"hidden": (i == 4),
 					"menuDisabled": (i == 5),
 					"renderer": function() {
 						if(i == 0) {
@@ -68,11 +81,30 @@ JobTownGrid = function(table_id, config) {
 						
 						else if(i == 1) {
 							return function(value) {
-								return value;
+								value = parseInt(value);
+								
+								var html = "";
+								html += "<div class='target_info'>";
+								
+								if(value == VERY_LARGE_DATE) {
+									html += "<font color='grey'><i>未设置</i></font>";;
+								}
+								else if(value > VERY_LARGE_DATE) {
+									html += "<font color='red'>已过去</font>";
+								}
+								else {
+									now = new Date();
+									due = new Date().setTime(value);
+									days = Math.floor((due - now + DAY_MSEC)/DAY_MSEC);
+									html += days < 1 ? "<b>今天</b>" : days + "天后";
+								}
+								
+								html += "</div>";
+								return html;
 							}
 						}
 						
-						else if( i == 2 || i == 3) {
+						else if(i == 2 || i == 3) {
 							return function(value) {
 								var html = "";
 								html += "<div class='target_text'>";
@@ -82,11 +114,11 @@ JobTownGrid = function(table_id, config) {
 							}
 						}
 						
-						else if( i == 4) {
+						else if(i == 4) {
 							return function(value) {
 								var html = "";
 								html += "<div class='target_info'>";
-								html += value;
+								html += Date.parseDate(value.trim(), "Y-m-d").format("y-m-d");
 								html += "</div>";
 								return html;
 							}
@@ -117,7 +149,7 @@ JobTownGrid = function(table_id, config) {
 			
 			sortInfo: {
 				field: "column_1",
-				direction: "DESC"
+				direction: "ASC"
 			},
 			
 			groupField: "column_0"
@@ -792,6 +824,10 @@ function update_grid_store_for_steps(target_id) {
 	store.getById(target_id).set("column_5", get_step_group_html(target_id, Ext.get("step_group_" + target_id).dom.innerHTML));
 	store.commitChanges();
 	
+	reconfig_target_steps(target_id);
+}
+
+function reconfig_target_steps(target_id) {
 	for(var step_dom_id in steps) {
 		if(steps[step_dom_id].target_id == target_id) {
 			reconfig_step(step_dom_id);
@@ -807,6 +843,29 @@ function get_step_group_html(target_id, steps_html) {
 	html += "</div>";
 	
 	return html;
+}
+
+function update_grid_store_for_current_end_date(target_id, date) {
+	var store = grid.getStore();
+	
+	store.getById(target_id).set("column_5", get_step_group_html(target_id, Ext.get("step_group_" + target_id).dom.innerHTML));
+	
+	var now = new Date().getTime();
+	date = parseInt(date);
+	var current_end_date = VERY_LARGE_DATE;
+	if(date && date != "") {
+		if((date + DAY_MSEC) > now) {
+			current_end_date = date;
+		}
+		else {
+			current_end_date = VERY_LARGE_DATE + (now - date);
+		}
+	}
+	store.getById(target_id).set("column_1", current_end_date);
+	
+	store.commitChanges();
+	
+	reconfig_target_steps(target_id);
 }
 
 
@@ -909,7 +968,7 @@ function set_current_step(step_id, target_id) {
 				Ext.get("step_" + step_id).addClass("step_current");
 				
 				// update grid store
-				update_grid_store_for_steps(target_id);
+				update_grid_store_for_current_end_date("" + target_id, steps["step_" + step_id].end_at);
 				
 				return true;
 			}
@@ -1231,8 +1290,16 @@ function update_step_date(step_id, target_id, date, at) {
 				// update dom
 				Ext.get("step_" + at + "_" + step_id).update(date.format("m.d"), false);
 				
+				// update data
+				steps["step_" + step_id][at + "_at"] = date.getTime();
+				
 				// update grid store
-				update_grid_store_for_steps(target_id);
+				if((current_step_mapping["" + target_id] == ("" + step_id)) && (at == "end")) {
+					update_grid_store_for_current_end_date("" + target_id, date && date.getTime());
+				}
+				else {
+					update_grid_store_for_steps("" + target_id);
+				}
 				
 				return true;
 			}

@@ -31,7 +31,9 @@
 					target_id: "<%= sobj.job_target_id %>",
 					process_id: "<%= sobj.job_process_id %>",
 					status_id: "<%= sobj.job_status_id %>",
-					label: "<%= h(sobj.label) %>"
+					label: "<%= h(sobj.label) %>",
+					begin_at: "<%= sobj.begin_at && (sobj.begin_at.to_i * 1000) %>",
+					end_at: "<%= sobj.end_at && (sobj.end_at.to_i * 1000) %>"
 				};
 			</script>
 <%
@@ -51,7 +53,18 @@
 	</td>
 	
 	<td>
-		<%= current_step && format_short_date(current_step.end_at) %>
+		<% very_large_time = Time.mktime(2037, 5, 29) %>
+		<% now = Time.now %>
+		<% if current_step && current_step.end_at %>
+			<% next_day = current_step.end_at + 60*60*24 %>
+			<% if next_day > now %>
+				<%= current_step.end_at.to_i * 1000 %>
+			<% else %>
+				<%= (very_large_time + (now - current_step.end_at)).to_i * 1000 %>
+			<% end %>
+		<% else %>
+			<%= very_large_time.to_i * 1000 %>
+		<% end %>
 	</td>
 	
 	<td>
@@ -63,7 +76,7 @@
 	</td>
 	
 	<td>
-		<%= format_short_date(target.created_at) %>
+		<%= format_date(target.created_at) %>
 	</td>
 	
 	<td>
