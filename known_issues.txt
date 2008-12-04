@@ -59,10 +59,6 @@ Ruby Patch of the GC for Rails
 好友动态 & 系统消息
 	显示的时候 用户查询的 N+1 问题
 
-圈子功能
-	邀请发送 email ... ???
-	在圈子页面上 接受或拒绝加入圈子的邀请
-
 
 
 Voting
@@ -133,7 +129,7 @@ Denpendencies:
 	freelancing-god-thinking-sphinx (gem install freelancing-god-thinking-sphinx --source http://gems.github.com)
 	json (required by contrast-exceptional)
 	contrast-exceptional (gem install contrast-exceptional --source http://gems.github.com)
-	contacts (to be used ...)
+	contacts
 	-----
 	
 ======

@@ -40,7 +40,7 @@ namespace :notification do
             setting = invited_account.setting
             AccountSetting.set_account_setting_cache(invited_account.id, setting)
 
-            if setting.get_setting_value(:email_group_invitation_notify) == "true"
+            if !invited_account.limited? && setting.get_setting_value(:email_group_invitation_notify) == "true"
               Postman.deliver_group_invitation(invited_account, invitor_account, group, invitation_words)
             end
           end
@@ -76,7 +76,7 @@ namespace :notification do
             setting = invited_account.setting
             AccountSetting.set_account_setting_cache(invited_account.id, setting)
 
-            if setting.get_setting_value(:email_activity_invitation_notify) == "true"
+            if !invited_account.limited? && setting.get_setting_value(:email_activity_invitation_notify) == "true"
               Postman.deliver_activity_invitation(invited_account, invitor_account, activity, invitation_words)
             end
           end
