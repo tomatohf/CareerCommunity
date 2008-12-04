@@ -63,6 +63,8 @@ class Activity < ActiveRecord::Base
   
   CKP_activity_with_img = :activity_with_img
   
+  CKP_activity_invitations = :activity_invitations
+  
   FCKP_activities_show_created_activity = :fc_activities_show_created_activity
   
   FCKP_index_activity = :fc_index_activity
@@ -227,6 +229,22 @@ class Activity < ActiveRecord::Base
       Status::Finished
     end
   end
+  
+  
+  def self.get_activity_invitations
+    Cache.get(CKP_activity_invitations) || []
+  end
+  
+  def self.add_activity_invitation(invitation)
+    invitations = get_activity_invitations
+    invitations << invitation
+    Cache.set(CKP_activity_invitations, invitations)
+  end
+  
+  def self.clear_activity_invitations_cache
+    Cache.delete(CKP_activity_invitations)
+  end
+  
   
   def clear_association
     copy = deep_copy(self)

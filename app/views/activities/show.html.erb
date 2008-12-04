@@ -81,12 +81,12 @@
 			<% end %>
 		</div>
 	<% end %>
-	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
 		
 	<% if @is_admin %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+		
 		<%# if activity_status[0] <= Activity::Status::Ongoing[0] %>
 			<div class="community_block">
 				<a href="/activities/<%= @activity_id %>/edit">修改活动的信息</a>
@@ -142,15 +142,14 @@
 			浏览对活动感兴趣的成员</a>
 	</div>
 	
-	<% if @is_member && activity_status[0] <= Activity::Status::Registering[0] %>
-		<!--
+	<% if activity_status[0] <= Activity::Status::Registering[0] %>
 		<div class="community_block">
 			<a href="/activities/invite/<%= @activity_id %>">
 				<img src="/images/groups/qiao_small.png" border="0" />
 				邀请乔布圈内的朋友参加活动</a>
 		</div>
 	
-		
+		<!--
 		<div class="community_block">
 			<a href="/activities/invite/<%= @activity_id %>">
 				<img src="/images/groups/invite_contact_small.png" border="0" />

@@ -1,5 +1,8 @@
 class Postman < ActionMailer::Base
   
+  helper :application
+  
+  
   def self.source
     "乔布堂"
   end
@@ -86,6 +89,29 @@ class Postman < ActionMailer::Base
       :invitor_nick => invitor_nick,
       :invitor_account_id => invitor_account.id,
       :group => group,
+      :invitation_words => invitation_words
+    )
+    content_type "text/html"
+  end
+  
+  def activity_invitation(account, invitor_account, activity, invitation_words)
+    recipients(
+      [
+        account.email
+      ]
+    )
+    
+    from(self.class.from)
+    
+    invitor_nick = invitor_account.get_nick
+    activity_title = activity.get_title
+    subject("#{invitor_nick} 邀请你参加活动 #{activity_title}")
+    body(
+      :nick => account.get_nick,
+      :account_id => account.id,
+      :invitor_nick => invitor_nick,
+      :invitor_account_id => invitor_account.id,
+      :activity => activity,
       :invitation_words => invitation_words
     )
     content_type "text/html"

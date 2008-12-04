@@ -50,6 +50,42 @@ namespace :notification do
     end
   end
   
+  desc "send activity invitation emails"
+  task :send_activity_invitations => :environment do
+    invitations = Activity.get_activity_invitations
+    Activity.clear_activity_invitations_cache
+    
+    invitations.each do |invitation|
+      begin
+        activity_id = invitation[:activity_id]
+        invitor_account_id = invitation[:invitor_account_id]
+        invited_account_ids = invitation[:invited_account_ids]
+        invitation_words = invitation[:invitation_words]
+      
+        activity, activity_image = Activity.get_activity_with_image(activity_id)
+        invitor_account = Account.find_enabled(invitor_account_id)
+        
+        if invitor_account
+          invited_accounts = Account.enabled.find(
+            :all,
+            :conditions => ["id in (?)", invited_account_ids],
+            :include => [:setting]
+          )
+          
+          invited_accounts.each do |invited_account|
+            setting = invited_account.setting
+            AccountSetting.set_account_setting_cache(invited_account.id, setting)
+
+            if setting.get_setting_value(:email_activity_invitation_notify) == "true"
+              Postman.deliver_activity_invitation(invited_account, invitor_account, activity, invitation_words)
+            end
+          end
+        end
+      rescue
+      end
+    end
+  end
+  
   
   desc "send email for reminding if there is any unread message"
   task :send_message_notification => :environment do

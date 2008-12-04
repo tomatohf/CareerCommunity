@@ -15,18 +15,21 @@
 		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
 	</div>
 	
-	<div class="community_block">
-		<a href="/activities/members_edit/<%= @activity_id %>">管理参加活动的成员</a>
-	</div>
+	
+	<% if @is_admin %>
+		<div class="community_block">
+			<a href="/activities/members_edit/<%= @activity_id %>">管理参加活动的成员</a>
+		</div>
 	
 	
-	<div class="community_title">
-		尚未接受的邀请 ...
-	</div>
+		<div class="community_title">
+			尚未接受的邀请 ...
+		</div>
 	
-	<div>
-		<%= float_list(@unaccepted_members, "member", :member, {}, 3) %>
-	</div>
+		<div>
+			<%= float_list(@unaccepted_members, "member", :member, {}, 3) %>
+		</div>
+	<% end %>
 	
 </div>
 
@@ -65,6 +68,31 @@
 		
 		<div class="community_block">
 			<textarea id="invitation_words" name="invitation_words" class="text_field" cols="30" rows="3"></textarea>
+		</div>
+		
+		<div class="community_block">
+			<label for="invitation_way">
+				邀请方式:
+			</label>
+			
+			&nbsp;&nbsp;&nbsp;
+			
+			<select id="invitation_way" name="invitation_way" class="dropdown_list" onchange="toggle_email_invitation_info(this.value);">
+				<option value="message">站内消息</option>
+				<option value="email">电子邮件</option>
+			</select>
+			
+			&nbsp;&nbsp;&nbsp;
+			<span id="email_invitation_info" class="form_info_l" style="display: none;">
+				注意: 不会向设置了不接收邮件邀请的用户发送邀请邮件
+			</span>
+			
+			<script language="JavaScript">
+				function toggle_email_invitation_info(way) {
+					var display = (way == "email") ? "" : "none";
+					document.getElementById("email_invitation_info").style.display = display;
+				}
+			</script>
 		</div>
 		
 		<div class="community_block">

@@ -43,11 +43,12 @@ class ActivitiesController < ApplicationController
   before_filter :check_activity_admin, :only => [:edit_image, :update_image,
                                                   :edit, :update, :update_desc, :update_access,
                                                   :absent_edit, :add_absent, :del_absent,
-                                                  :invite, :invite_member,
                                                   :approve_member, :reject_member,
                                                   :members_edit, :del_member, :unapproved, :members_info]
   before_filter :check_activity_master, :only => [:members_master, :add_admin, :del_admin,
                                                   :cancel, :recover, :edit_master, :update_master]
+                                                  
+  # before_filter :check_activity_member, :only => [:invite, :invite_member]
                                                   
   before_filter :check_activity_status_registering, :only => [:check_profile, :join, :quit,
                                                               :invite, :invite_member]
@@ -1100,24 +1101,29 @@ class ActivitiesController < ApplicationController
   end
   
   def invite
+    @is_admin = ActivityMember.is_activity_admin(@activity_id, session[:account_id])
+    
     @friends = Friend.get_all_by_account(
       session[:account_id],
       :include => [:friend => [:profile_pic]],
       :order => "created_at DESC"
     )
     
-    @unaccepted_members = ActivityMember.get_unaccepted_members(@activity_id)
+    @unaccepted_members = ActivityMember.get_unaccepted_members(@activity_id) if @is_admin
   end
   
   def invite_member
     invited_account_id = params[:invited_account_id] || []
     invitation_words = (params[:invitation_words] && params[:invitation_words].strip) || ""
+    invitation_way = params[:invitation_way]
     
     if invitation_words.size > 100
       flash[:error_msg] = "邀请的话 超过长度限制"
     elsif invited_account_id.size <= 0
       flash[:error_msg] = "还没有选择想邀请的朋友"
     else
+      is_admin = GroupMember.is_group_admin(@group_id, session[:account_id])
+      
       existing = ActivityMember.find(
         :all,
         :conditions => ["activity_id = ? and account_id in (?)", @activity_id, invited_account_id]
@@ -1129,7 +1135,7 @@ class ActivitiesController < ApplicationController
       existing.each do |m|
         no_need_insert << m.account_id.to_s
         if m.approved
-          no_need_invite << m.account_id.to_s
+          no_need_invite << m.account_id.to_s if m.accepted
         else
           need_update << m.id if m.accepted
         end
@@ -1139,31 +1145,45 @@ class ActivitiesController < ApplicationController
       need_invite = invited_account_id - no_need_invite
       
       
-      ActivityMember.update_all(
-        ["approved = ?, join_at = ?", true, DateTime.now],
-        ["id in (?)", need_update]
-      ) if need_update.size > 0
+      if is_admin
+        ActivityMember.update_all(
+          ["approved = ?, join_at = ?", true, DateTime.now],
+          ["id in (?)", need_update]
+        ) if need_update.size > 0
       
-      ActivityMember.transaction do
-        need_insert.each do |account_id|
-          ActivityMember.create(
-            :activity_id => @activity_id,
-            :account_id => account_id,
-            :accepted => false,
-            :approved => true,
-            :admin => false
-          )
+        ActivityMember.transaction do
+          need_insert.each do |account_id|
+            ActivityMember.create(
+              :activity_id => @activity_id,
+              :account_id => account_id,
+              :accepted => false,
+              :approved => true,
+              :admin => false
+            )
+          end
         end
       end
       
-      # send sys message to invited account
-      SysMessage.transaction do
-        need_invite.each do |account_id|
-          SysMessage.create_new(account_id, "invite_join_activity", {
-            :inviter_id => session[:account_id],
+      
+      if invitation_way == "email"
+        Activity.add_activity_invitation(
+          {
             :activity_id => @activity_id,
+            :invitor_account_id => session[:account_id],
+            :invited_account_ids => need_invite,
             :invitation_words => invitation_words
-          })
+          }
+        )
+      else
+        # send sys message to invited account
+        SysMessage.transaction do
+          need_invite.each do |account_id|
+            SysMessage.create_new(account_id, "invite_join_activity", {
+              :inviter_id => session[:account_id],
+              :activity_id => @activity_id,
+              :invitation_words => invitation_words
+            })
+          end
         end
       end
       
@@ -1263,6 +1283,12 @@ class ActivitiesController < ApplicationController
     @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
     
     jump_to("/errors/forbidden") unless @activity.master_id == session[:account_id]
+  end
+  
+  def check_activity_member
+    @activity_id = params[:id]
+    
+    jump_to("/errors/forbidden") unless ActivityMember.is_activity_member(@activity_id, session[:account_id])
   end
   
   def is_before_status?(status)
