@@ -1235,8 +1235,12 @@ class ActivitiesController < ApplicationController
     render(:layout => false, :text => "true")
   end
   
-  #load "contact.rb"
+  load "contact.rb"
   def select_contact
+    @contacts = session[:invite_contacts] || []
+    
+    return jump_to("/activities/invite_contact/#{@activity_id}") unless @contacts.size > 0
+    
     @type = case session[:invite_contacts_type]
       when "msn"
         "MSN 好友"
@@ -1245,7 +1249,6 @@ class ActivitiesController < ApplicationController
       else
         "联系人"
     end
-    @contacts = session[:invite_contacts]
   end
   
   def send_contact_invitations
@@ -1257,14 +1260,14 @@ class ActivitiesController < ApplicationController
       return jump_to("/activities/select_contact/#{@activity_id}")
     end
     
-    Activity.add_activity_contact_invitation(
-      {
-        :activity_id => @activity_id,
-        :invitor_account_id => session[:account_id],
-        :invited_emails => emails,
-        :invitation_words => invitation_words
-      }
-    )
+    #Activity.add_activity_contact_invitation(
+    #  {
+    #    :activity_id => @activity_id,
+    #    :invitor_account_id => session[:account_id],
+    #    :invited_emails => emails,
+    #    :invitation_words => invitation_words
+    #  }
+    #)
     
     flash[:message] = "已成功发出邀请"
     jump_to("/activities/invite_contact/#{@activity_id}")

@@ -14,18 +14,30 @@ module CareerCommunity
       1
     end
     
-    def fetch_msn_contacts(user_id, user_pwd, wait_time = nil, wait_step = nil)
+    def fetch_msn_contacts(user_id, user_pwd)
+      wait_time = 30
+      wait_step = 3
       
+      msn = MSNConnection.new(user_id, user_pwd)
+      msn.start
+      
+      contact_list = wait_collect_contacts(wait_time, wait_step) { msn.contactlists["AL"].list }
+      
+      contacts = contact_list.values.collect { |contact| [contact.email, CGI.unescape(contact.nick || get_name_from_email(contact.email))] }
+      
+      msn.close
+      
+      contacts
     end
     
-    def fetch_gtalk_contacts(user_id, user_pwd, wait_time = nil, wait_step = nil)
+    def fetch_gtalk_contacts(user_id, user_pwd)
       user_mail = "#{user_id}@gmail.com"
       
       gtalk = Jabber::Simple.new(user_mail, user_pwd)
       
-      roster_items = wait_collect_contacts(wait_time, wait_step) { gtalk.roster.items.values }
+      roster_items = wait_collect_contacts { gtalk.roster.items.values }
       
-      contacts = roster_items.collect { |item| [(jid = item.jid.strip.to_s), item.iname || jid.split("@")[0]] }
+      contacts = roster_items.collect { |item| [(jid = item.jid.strip.to_s), item.iname || get_name_from_email(jid)] }
       
       gtalk.disconnect
       
@@ -33,7 +45,7 @@ module CareerCommunity
     end
     
     
-    def wait_collect_contacts(wait_time, wait_step)
+    def wait_collect_contacts(wait_time = nil, wait_step = nil)
       seconds = 0
       contacts = []
       contacts_in_last = []
@@ -47,6 +59,10 @@ module CareerCommunity
       end
       
       contacts
+    end
+    
+    def get_name_from_email(email)
+      email.split("@")[0]
     end
     
   end
