@@ -1,9 +1,6 @@
-﻿发邀请 email
-邀请 hotmail gmail yahoo 联系人
+﻿邀请 hotmail gmail yahoo 联系人
 
-提醒未读消息的邮件
-设置接收哪些邮件
-
+邀请参加投票
 
 
 求职管家:
@@ -129,7 +126,8 @@ Denpendencies:
 	freelancing-god-thinking-sphinx (gem install freelancing-god-thinking-sphinx --source http://gems.github.com)
 	json (required by contrast-exceptional)
 	contrast-exceptional (gem install contrast-exceptional --source http://gems.github.com)
-	contacts
+	rcov (xmpp4r-simple needs it)
+	xmpp4r-simple
 	-----
 	
 ======

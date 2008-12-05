@@ -309,6 +309,18 @@ div.auto_complete ul li {
 	border-color: #A3988C;
 }
 
+.text_field:hover {
+	border-style: inset;
+}
+
+.text_field:active {
+	border-style: inset;
+}
+
+.text_field:focus {
+	border-style: inset;
+}
+
 .button {
 	padding: 1px 2px;
 	border-style: solid;
@@ -393,7 +405,7 @@ select.dropdown_list, .dropdown_list select {
 	padding-left: 30px;
 }
 
-.error_msg, .info_msg, .warning_msg {
+.error_msg, .info_msg, .warning_msg, .important_info_msg {
 	background-repeat: no-repeat;
 	background-position: 5px 5px;
 	padding: 2px 10px 2px 30px;
@@ -416,6 +428,13 @@ select.dropdown_list, .dropdown_list select {
 	background-image: url(/images/warning_small.png);
 	border: 1px dashed green;
 	color: black;
+}
+
+.important_info_msg {
+	background-color: #FFFEDF;
+	background-image: url(/images/important_info_small.gif);
+	border: 1px dashed #CCCCCC;
+	color: #444444;
 }
 
 .profile_edit_section_nav {
@@ -1081,7 +1100,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .tinymce_content {
-	line-height: 150%;
+	line-height: 1.5;
 }
 
 .tinymce_content p {
@@ -1276,6 +1295,43 @@ a.account_nick_link:hover, a.group_name_link:hover {
 
 .bigger_job_targets_container {
 	margin-left: 5px;
+}
+
+.contact_form_item {
+	padding-bottom: 10px;
+	border-bottom: 1px dashed #DDDDDD;
+}
+
+.contact_form_logo {
+	margin-right: 10px;
+	margin-top: 10px;
+}
+
+.contact_list {
+	border: 1px solid #DDDDDD;
+	height: 500px;
+	overflow: auto;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+.contact_list .selector, .contact_list .name, .contact_list .email {
+	border-bottom: 1px dashed #DADADA;
+	padding: 5px;
+}
+
+.contact_list .selector {
+	width: 6%;
+}
+
+.contact_list .name {
+	width: 40%;
+	color: #222222;
+}
+
+.contact_list .email {
+	width: 54%;
+	color: #888888;
 }
 
 

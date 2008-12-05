@@ -232,7 +232,10 @@ ActionController::Routing::Routes.draw do |map|
     :check_profile => :any,
     
     :cancel => :post,
-    :recover => :post
+    :recover => :post,
+    
+    :import_contact => :post,
+    :send_contact_invitations => :post
     
   }, :collection => {
     :new_in_groups => :post,

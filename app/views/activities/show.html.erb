@@ -149,13 +149,11 @@
 				邀请乔布圈内的朋友参加活动</a>
 		</div>
 	
-		<!--
 		<div class="community_block">
-			<a href="/activities/invite/<%= @activity_id %>">
+			<a href="/activities/invite_contact/<%= @activity_id %>">
 				<img src="/images/groups/invite_contact_small.png" border="0" />
-				邀请MSN/Gmail/Email联系人加入圈子</a>
+				邀请 MSN/Gtalk 上的好友 和 Email 联系人参加活动</a>
 		</div>
-		-->
 	<% end %>
 	
 	<% if activity_status[0] >= Activity::Status::Ongoing[0] %>

@@ -1,0 +1,147 @@
+<div class="community_block important_info_msg">
+	我们不会存储你的密码, 请放心使用.
+	<br />
+	你也可以先改密码再使用, 成功后再改回原始密码, 确保密码安全.
+</div>
+
+
+<div class="contact_form_item">
+	<div class="community_title">
+		<img class="float_l contact_form_logo" src="/images/msn_contact.gif" border="0" />
+		邀请 MSN 好友 ...
+	</div>
+
+	<div class="community_block">
+		<% form_tag "dumy_action", :method => :post, :id => "msn_contact_form", :onsubmit => "import_contact('msn'); return false;" do %>
+			<table cellpadding="0" cellspacing="5">
+				<tr>
+					<td style="width: 75px;">
+						<label for="msn_id">
+							你的帐号
+							:
+						</label>
+					</td>
+
+					<td>
+						<input type="text" id="msn_id" name="user_id" class="text_field" size="30" value="" />
+					</td>
+
+					<td></td>
+				</tr>
+
+				<tr>
+					<td>
+						<label for="msn_pwd">
+							你的密码
+							:
+						</label>
+					</td>
+
+					<td>
+						<input type="password" id="msn_pwd" name="user_pwd" class="text_field" size="30" value="" />
+					</td>
+
+					<td></td>
+				</tr>
+
+				<tr>
+					<td></td>
+
+					<td colspan="2">
+						<input type="hidden" name="type" value="msn" />
+						
+						<%= submit_tag "邀请 MSN 好友", :class => "button", :disabled => @account_limited %>
+						
+						&nbsp;&nbsp;&nbsp;
+						
+						<span id="msn_indicator" style="display: none;">
+							<img src="/images/importing_contact_middle.gif" border="0" />
+							&nbsp;
+							正在导入 ...
+						</span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="3">
+						<div id="msn_error" class="">
+							
+						</div>
+					</td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+</div>
+
+
+<div class="contact_form_item">
+	<div class="community_title">
+		<img class="float_l contact_form_logo" src="/images/gtalk_contact.jpg" border="0" />
+		邀请 Google Talk 好友 ...
+	</div>
+
+	<div class="community_block">
+		<% form_tag "dumy_action", :method => :post, :id => "gtalk_contact_form", :onsubmit => "import_contact('gtalk'); return false;" do %>
+			<table cellpadding="0" cellspacing="5">
+				<tr>
+					<td style="width: 75px;">
+						<label for="gtalk_id">
+							你的帐号
+							:
+						</label>
+					</td>
+
+					<td>
+						<input type="text" id="gtalk_id" name="user_id" class="text_field" size="20" value="" /><b>@gmail.com</b>
+					</td>
+
+					<td></td>
+				</tr>
+
+				<tr>
+					<td>
+						<label for="gtalk_pwd">
+							你的密码
+							:
+						</label>
+					</td>
+
+					<td>
+						<input type="password" id="gtalk_pwd" name="user_pwd" class="text_field" size="30" value="" />
+					</td>
+
+					<td></td>
+				</tr>
+
+				<tr>
+					<td></td>
+
+					<td colspan="2">
+						<input type="hidden" name="type" value="gtalk" />
+						
+						<%= submit_tag "邀请 Gtalk 好友", :class => "button", :disabled => @account_limited %>
+						
+						&nbsp;&nbsp;&nbsp;
+						
+						<span id="gtalk_indicator" style="display: none;">
+							<img src="/images/importing_contact_middle.gif" border="0" />
+							&nbsp;
+							正在导入 ...
+						</span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="3">
+						<div id="gtalk_error" class="">
+							
+						</div>
+					</td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+</div>
+
+

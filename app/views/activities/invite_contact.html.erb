@@ -1,0 +1,84 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "邀请 MSN/Gtalk 好友 和 Email 联系人参加活动 #{activity_title}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+			
+	</div>
+
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<% if flash[:message] %>
+	    <p class="info_msg"><%= flash[:message] %></p>
+	<% end %>
+	
+	<%= render :partial => "/common/contact_form", :locals => {:form_action => "/activities/#{@activity_id}/import_contact"} %>
+	
+	<script language="JavaScript">
+		function import_contact(type) {
+			var contact_form = $(type + "_contact_form");
+			
+			var params = contact_form.serialize();
+			
+			toggle_all_forms(false);
+			
+			var indicator = $(type + "_indicator");
+			indicator.show();
+			
+			var error_field = $(type + "_error");
+			error_field.removeClassName("error_msg");
+			error_field.update("");
+			
+			new Ajax.Request(
+				"/activities/<%= @activity_id %>/import_contact",
+				{
+					asynchronous: true,
+					evalScripts: true,
+					onComplete: function(request) {
+						var result = request.responseText;
+						if(result && result != "") {
+							if(result == "true") {
+								window.location.href = "/activities/select_contact/<%= @activity_id %>";
+							}
+							else {
+								error_field
+								error_field.addClassName("error_msg");
+								error_field.update(result);
+							}
+						}
+						
+						indicator.hide();
+						toggle_all_forms(true);
+					},
+					method: "post",
+					parameters: params
+				}
+			);
+		}
+		
+		function toggle_all_forms(enabled) {
+			var all_forms = $$("form");
+			for(var i=0; i<all_forms.length; i++) {
+				$(all_forms[i])[enabled ? "enable" : "disable"]();
+			}
+		}
+	</script>
+	
+</div>
+
+
+<script language="JavaScript" src="/lib/protopack/prototype-packer.js"></script>
+
+

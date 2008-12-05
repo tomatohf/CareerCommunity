@@ -21,6 +21,8 @@ class ActivitiesController < ApplicationController
   
   Activity_Admin_Max_Count = 11
   
+  include CareerCommunity::Contact
+  
   layout "community"
   before_filter :check_current_account, :only => [:recent_index]
   before_filter :check_login, :only => [:new, :new_in_groups, :create, :activity_groups,
@@ -31,12 +33,15 @@ class ActivitiesController < ApplicationController
                                         :absent_edit, :add_absent, :del_absent,
                                         :add_interest, :del_interest, :photo_selector_for_activity_image,
                                         :members_info, :cancel, :recover,
-                                        :members_master, :add_admin, :del_admin, :edit_master, :update_master]
+                                        :members_master, :add_admin, :del_admin, :edit_master, :update_master,
+                                        :invite_contact, :import_contact, :select_contact,
+                                        :send_contact_invitations]
   before_filter :check_limited, :only => [:create, :update_image, :join, :quit,
                                           :edit, :update, :update_desc, :update_access, :del_member,
                                           :approve_member, :reject_member, :invite_member,
                                           :add_absent, :del_absent, :add_interest, :del_interest,
-                                          :cancel, :recover, :add_admin, :del_admin, :update_master]
+                                          :cancel, :recover, :add_admin, :del_admin, :update_master,
+                                          :import_contact, :send_contact_invitations]
 
   before_filter :check_activity_groups_account, :only => [:activity_groups]
   
@@ -51,7 +56,9 @@ class ActivitiesController < ApplicationController
   # before_filter :check_activity_member, :only => [:invite, :invite_member]
                                                   
   before_filter :check_activity_status_registering, :only => [:check_profile, :join, :quit,
-                                                              :invite, :invite_member]
+                                                              :invite, :invite_member,
+                                                              :invite_contact, :import_contact, :select_contact,
+                                                              :send_contact_invitations]
   before_filter :check_activity_status_registered, :only => [:unapproved, :members_edit]
 #  before_filter :check_activity_status_ongoing, :only => [:edit_image, :update_image,
 #                                                          :edit, :update, :update_desc, :update_access]
@@ -1193,6 +1200,77 @@ class ActivitiesController < ApplicationController
     
     jump_to("/activities/invite/#{@activity_id}")
   end
+  
+  def invite_contact
+    
+  end
+  
+  def import_contact
+    user_id = params[:user_id] && params[:user_id].strip
+    user_pwd = params[:user_pwd]
+    type = params[:type] && params[:type].strip
+    
+    # check input
+    if !self.respond_to?("fetch_#{type}_contacts", true)
+      return render(:layout => false, :text => "")
+    elsif user_id.nil? || user_id == ""
+      return render(:layout => false, :text => "请输入你的帐号")
+    elsif user_pwd.nil? || user_pwd == ""
+      return render(:layout => false, :text => "请输入你的密码")
+    end
+    
+    contacts = []
+    begin
+      contacts = self.send("fetch_#{type}_contacts", user_id, user_pwd)
+    rescue Jabber::ClientAuthenticationFailure
+      return(render(:layout => false, :text => "帐号或密码错误"))
+    rescue
+      return(render(:layout => false, :text => "发生错误, 请重试"))
+    end
+    
+    return(render(:layout => false, :text => "抱歉, 没有找到任何联系人")) unless contacts.size > 0
+    
+    session[:invite_contacts_type] = type
+    session[:invite_contacts] = contacts
+    render(:layout => false, :text => "true")
+  end
+  
+  #load "contact.rb"
+  def select_contact
+    @type = case session[:invite_contacts_type]
+      when "msn"
+        "MSN 好友"
+      when "gtalk"
+        "Google Talk 好友"
+      else
+        "联系人"
+    end
+    @contacts = session[:invite_contacts]
+  end
+  
+  def send_contact_invitations
+    emails = params[:emails] || []
+    invitation_words = params[:invitation_words] && params[:invitation_words].strip
+    
+    unless emails.size > 0
+      flash[:error_msg] = "还没有选择要邀请谁"
+      return jump_to("/activities/select_contact/#{@activity_id}")
+    end
+    
+    Activity.add_activity_contact_invitation(
+      {
+        :activity_id => @activity_id,
+        :invitor_account_id => session[:account_id],
+        :invited_emails => emails,
+        :invitation_words => invitation_words
+      }
+    )
+    
+    flash[:message] = "已成功发出邀请"
+    jump_to("/activities/invite_contact/#{@activity_id}")
+    
+  end
+  
   
   def members_info
     @activity, @activity_image = Activity.get_activity_with_image(@activity_id)

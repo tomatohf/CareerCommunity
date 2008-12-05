@@ -40,6 +40,8 @@ require "fileutils"
 
 require "iconv"
 
+require "xmpp4r-simple"
+
 ##################################################
 ### END
 ##################################################
@@ -56,6 +58,8 @@ require "util"
 require "noisy_image"
 
 require "recruitment_vendors/base"
+
+require "contact"
 
 ##################################################
 ### END
