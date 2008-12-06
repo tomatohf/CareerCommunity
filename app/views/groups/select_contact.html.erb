@@ -1,0 +1,101 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "邀请#{@type}加入圈子 #{group_name}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+			
+	</div>
+
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_l">
+		勾选你想邀请的<%= @type %>
+	</div>
+	
+	<% if flash[:error_msg] %>
+		<p class="error_msg"><%= flash[:error_msg] %></p>
+	<% end %>
+	
+	
+	<% form_tag "/groups/#{@group_id}/send_contact_invitations", :method => :post do %>
+		<div class="community_block">
+			<script language="JavaScript">
+				function toggle_all_checkbox(checked) {
+					var checkboxes = document.getElementsByName("emails[]");
+					for(var i=0; i<checkboxes.length; i++){
+						checkboxes[i].checked = checked;
+					}
+				}
+			</script>
+			
+			<div class="community_block_narrow">
+				<a href="#" onclick="toggle_all_checkbox(false); return false;">
+					全部不选</a>
+
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<a href="#" onclick="toggle_all_checkbox(true); return false;">
+					选中全部 <%= @contacts.size %> 个</a>
+			</div>
+			
+			<div class="contact_list">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<% @contacts.each do |contact| %>
+						<% email = h(contact[0]) %>
+						<tr>
+							<td align="left" valign="top" class="selector">
+								<input type="checkbox" id="contact_<%= email %>" name="emails[]" value="<%= email %>" />
+							</td>
+							
+							<td align="left" valign="top" class="name">
+								<label for="contact_<%= email %>">
+									<%= h(contact[1]) %>
+								</label>
+							</td>
+							
+							<td align="left" valign="top" class="email">
+								<label for="contact_<%= email %>">
+									<%= email %>
+								</label>
+							</td>
+						</tr>
+					<% end %>
+				</table>
+			</div>
+		</div>
+		
+		<div class="community_block">
+			<label for="invitation_words">
+				<span style="font-size: 14px; font-weight: bold;">
+					写几句邀请的话
+				</span>
+				<span class="form_info_s">
+					(100 字以内)
+				</span> :
+			</label>
+		</div>
+		
+		<div class="community_block">
+			<textarea id="invitation_words" name="invitation_words" class="text_field" cols="60" rows="5"></textarea>
+		</div>
+		
+		<div class="community_block">
+			<input type="submit" value="发送邀请" class="button"<%= %Q! disabled="true"! if @account_limited %> />
+		</div>
+	<% end %>
+	
+</div>
+
+

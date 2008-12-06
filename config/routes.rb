@@ -149,7 +149,10 @@ ActionController::Routing::Routes.draw do |map|
     :update_master => :post,
     
     :remove_activity => :post,
-    :remove_vote => :post
+    :remove_vote => :post,
+    
+    :import_contact => :post,
+    :send_contact_invitations => :post
     
   }, :collection => {
     :photo_selector_for_group_image => :get,

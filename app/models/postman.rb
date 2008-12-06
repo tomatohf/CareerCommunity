@@ -140,4 +140,25 @@ class Postman < ActionMailer::Base
     content_type "text/html"
   end
   
+  def group_contact_invitation(email, invitor_account, group, invitation_words)
+    recipients(
+      [
+        email
+      ]
+    )
+    
+    from(self.class.from)
+    
+    invitor_nick = invitor_account.get_nick
+    group_name = group.name
+    subject("#{invitor_nick} 邀请你加入圈子 #{group_name}")
+    body(
+      :invitor_nick => invitor_nick,
+      :invitor_account_id => invitor_account.id,
+      :group => group,
+      :invitation_words => invitation_words
+    )
+    content_type "text/html"
+  end
+  
 end

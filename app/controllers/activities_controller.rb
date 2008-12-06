@@ -1233,18 +1233,17 @@ class ActivitiesController < ApplicationController
     
     return(render(:layout => false, :text => "抱歉, 没有找到任何联系人")) unless contacts.size > 0
     
-    session[:invite_contacts_type] = type
-    session[:invite_contacts] = contacts
+    session[:activity_invite_contacts_type] = type
+    session[:activity_invite_contacts] = contacts
     render(:layout => false, :text => "true")
   end
   
-  load "contact.rb"
   def select_contact
-    @contacts = session[:invite_contacts] || []
+    @contacts = session[:activity_invite_contacts] || []
     
     return jump_to("/activities/invite_contact/#{@activity_id}") unless @contacts.size > 0
     
-    @type = case session[:invite_contacts_type]
+    @type = case session[:activity_invite_contacts_type]
       when "msn"
         "MSN 好友"
       when "gtalk"

@@ -1,18 +1,18 @@
-<% activity_title = h(@activity.get_title) %>
+<% group_name = h(@group.name) %>
 
-<% page_title = "邀请 MSN/Gtalk 好友 和 Email 联系人参加活动 #{activity_title}" %>
+<% page_title = "邀请MSN/Gmail/Email联系人加入圈子 #{group_name}" %>
 <% community_page_title(page_title) %>
 
 <div class="float_r group_container_r">
 	
 	<div class="community_block align_c">
-		<a href="/activities/<%= @activity_id %>">
-			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
 			
 	</div>
 
 	<div class="community_block">
-		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
 	</div>
 	
 </div>
@@ -42,7 +42,7 @@
 			error_field.update("");
 			
 			new Ajax.Request(
-				"/activities/<%= @activity_id %>/import_contact",
+				"/groups/<%= @group_id %>/import_contact",
 				{
 					asynchronous: true,
 					evalScripts: true,
@@ -50,7 +50,7 @@
 						var result = request.responseText;
 						if(result && result != "") {
 							if(result == "true") {
-								window.location.href = "/activities/select_contact/<%= @activity_id %>";
+								window.location.href = "/groups/select_contact/<%= @group_id %>";
 							}
 							else {
 								error_field

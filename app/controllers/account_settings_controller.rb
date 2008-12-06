@@ -55,11 +55,13 @@ class AccountSettingsController < ApplicationController
     @email_message_notify = params[:email_message_notify] && params[:email_message_notify].strip
     @email_group_invitation_notify = params[:email_group_invitation_notify] && params[:email_group_invitation_notify].strip
     @email_activity_invitation_notify = params[:email_activity_invitation_notify] && params[:email_activity_invitation_notify].strip
+    @email_vote_invitation_notify = params[:email_vote_invitation_notify] && params[:email_vote_invitation_notify].strip
     
     email_notify_setting = {
       :email_message_notify => AccountSetting.valid_email_setting_values.include?(@email_message_notify) ? @email_message_notify : AccountSetting.default_value(:email_message_notify),
       :email_group_invitation_notify => AccountSetting.valid_email_setting_values.include?(@email_group_invitation_notify) ? @email_group_invitation_notify : AccountSetting.default_value(:email_group_invitation_notify),
-      :email_activity_invitation_notify => AccountSetting.valid_email_setting_values.include?(@email_activity_invitation_notify) ? @email_activity_invitation_notify : AccountSetting.default_value(:email_activity_invitation_notify)
+      :email_activity_invitation_notify => AccountSetting.valid_email_setting_values.include?(@email_activity_invitation_notify) ? @email_activity_invitation_notify : AccountSetting.default_value(:email_activity_invitation_notify),
+      :email_vote_invitation_notify => AccountSetting.valid_email_setting_values.include?(@email_vote_invitation_notify) ? @email_vote_invitation_notify : AccountSetting.default_value(:email_vote_invitation_notify)
     }
     
     @account_setting.update_setting(email_notify_setting)

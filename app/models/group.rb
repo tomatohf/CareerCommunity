@@ -38,6 +38,7 @@ class Group < ActiveRecord::Base
   CKP_group_with_img = :group_with_img
   
   CKP_group_invitations = :group_invitations
+  CKP_group_contact_invitations = :group_contact_invitations
   
   FCKP_account_group_names = :fc_account_group_names
   
@@ -182,6 +183,21 @@ class Group < ActiveRecord::Base
   
   def self.clear_group_invitations_cache
     Cache.delete(CKP_group_invitations)
+  end
+  
+  
+  def self.get_group_contact_invitations
+    Cache.get(CKP_group_contact_invitations) || []
+  end
+  
+  def self.add_group_contact_invitation(invitation)
+    invitations = get_group_contact_invitations
+    invitations << invitation
+    Cache.set(CKP_group_contact_invitations, invitations)
+  end
+  
+  def self.clear_group_contact_invitations_cache
+    Cache.delete(CKP_group_contact_invitations)
   end
   
   

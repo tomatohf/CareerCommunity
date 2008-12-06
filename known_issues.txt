@@ -1,6 +1,9 @@
-﻿邀请 hotmail gmail yahoo 联系人
+﻿寻找 MSN Gtalk 好友
+邀请 MSN Gtalk 好友注册
 
 邀请参加投票
+	- 站内
+	-MSN Gtalk
 
 
 求职管家:
@@ -124,8 +127,6 @@ Denpendencies:
 	mislav-will_paginate (gem install mislav-will_paginate --source http://gems.github.com)
 	select_with_include
 	freelancing-god-thinking-sphinx (gem install freelancing-god-thinking-sphinx --source http://gems.github.com)
-	json (required by contrast-exceptional)
-	contrast-exceptional (gem install contrast-exceptional --source http://gems.github.com)
 	rcov (xmpp4r-simple needs it)
 	xmpp4r-simple
 	SystemTimer

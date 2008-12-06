@@ -23,6 +23,8 @@ class GroupsController < ApplicationController
   
   Group_Admin_Max_Count = 11
   
+  include CareerCommunity::Contact::InstanceMethods
+  
   layout "community"
   before_filter :check_current_account, :only => [:index]
   before_filter :check_login, :only => [:new, :create,:edit_image, :update_image,
@@ -30,11 +32,14 @@ class GroupsController < ApplicationController
                                         :members_master, :del_member, :add_admin, :del_admin,
                                         :unapproved, :approve_member, :reject_member, :approve_all,
                                         :invite, :invite_member, :edit_master, :update_master,
-                                        :photo_selector_for_group_image, :remove_activity, :remove_vote]
+                                        :photo_selector_for_group_image, :remove_activity, :remove_vote,
+                                        :invite_contact, :import_contact, :select_contact,
+                                        :send_contact_invitations]
   before_filter :check_limited, :only => [:create, :update_image, :update, :update_access, :join,
                                           :quit, :del_member, :add_admin, :del_admin,
                                           :approve_member, :reject_member, :approve_all,
-                                          :invite_member, :update_master, :remove_activity, :remove_vote]
+                                          :invite_member, :update_master, :remove_activity, :remove_vote,
+                                          :import_contact, :send_contact_invitations]
   
   before_filter :check_can_create_group, :only => [:new, :create]
   
@@ -44,7 +49,8 @@ class GroupsController < ApplicationController
                                               :remove_activity, :remove_vote]
   before_filter :check_group_master, :only => [:members_master, :add_admin, :del_admin, :edit_master, :update_master]
   
-  before_filter :check_group_member, :only => [:invite, :invite_member]
+  before_filter :check_group_member, :only => [:invite, :invite_member, :invite_contact, :import_contact,
+                                                :select_contact, :send_contact_invitations]
   
   before_filter :check_custom_group, :only => [:show]
   
@@ -840,6 +846,88 @@ class GroupsController < ApplicationController
     
     jump_to("/groups/invite/#{@group_id}")
   end
+  
+  def invite_contact
+    @group, @group_image = Group.get_group_with_image(@group_id)
+  end
+  
+  def import_contact
+    user_id = params[:user_id] && params[:user_id].strip
+    user_pwd = params[:user_pwd]
+    type = params[:type] && params[:type].strip
+    logger.info "+++++++++++++++++++++"
+    logger.info user_id
+    logger.info user_pwd
+    
+    # check input
+    if !self.respond_to?("fetch_#{type}_contacts", true)
+      return render(:layout => false, :text => "")
+    elsif user_id.nil? || user_id == ""
+      return render(:layout => false, :text => "请输入你的帐号")
+    elsif user_pwd.nil? || user_pwd == ""
+      return render(:layout => false, :text => "请输入你的密码")
+    end
+    
+    contacts = []
+    begin
+      contacts = self.send("fetch_#{type}_contacts", user_id, user_pwd)
+    rescue Jabber::ClientAuthenticationFailure
+      return(render(:layout => false, :text => "帐号或密码错误"))
+    rescue Timeout::Error
+      return(render(:layout => false, :text => "操作超时, 请重试"))
+    rescue
+      return raise if ENV['RAILS_ENV'] = "development"
+      return(render(:layout => false, :text => "发生错误, 请重试"))
+    end
+    
+    return(render(:layout => false, :text => "抱歉, 没有找到任何联系人")) unless contacts.size > 0
+    
+    session[:group_invite_contacts_type] = type
+    session[:group_invite_contacts] = contacts
+    render(:layout => false, :text => "true")
+  end
+  
+  load "contact.rb"
+  def select_contact
+    @contacts = session[:group_invite_contacts] || []
+    
+    return jump_to("/activities/invite_contact/#{@activity_id}") unless @contacts.size > 0
+    
+    @group, @group_image = Group.get_group_with_image(@group_id)
+    
+    @type = case session[:group_invite_contacts_type]
+      when "msn"
+        "MSN 好友"
+      when "gtalk"
+        "Google Talk 好友"
+      else
+        "联系人"
+    end
+  end
+  
+  def send_contact_invitations
+    emails = params[:emails] || []
+    invitation_words = params[:invitation_words] && params[:invitation_words].strip
+    
+    unless emails.size > 0
+      flash[:error_msg] = "还没有选择要邀请谁"
+      return jump_to("/groups/select_contact/#{@group_id}")
+    end
+    
+    Group.add_group_contact_invitation(
+      {
+        :group_id => @group_id,
+        :invitor_account_id => session[:account_id],
+        :invited_emails => emails,
+        :invitation_words => invitation_words
+      }
+    )
+    
+    flash[:message] = "已成功发出邀请"
+    jump_to("/groups/invite_contact/#{@group_id}")
+    
+  end
+  
   
   def edit_master
     @admin_members = GroupMember.get_group_admins(@group_id)

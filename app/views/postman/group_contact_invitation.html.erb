@@ -1,0 +1,42 @@
+<div>
+	
+	<% h_invitor_nick = h(@invitor_nick) %>
+	<p>
+		<%= h_invitor_nick %>(<a href="http://qiaobutang.com/spaces/show/<%= @invitor_account_id %>" target="_blank">http://qiaobutang.com/spaces/show/<%= @invitor_account_id %></a>) 邀请你加入圈子 <%= h(@group.name) %>, 你可以到 <a href="http://qiaobutang.com/groups/<%= @group.id %>" target="_blank">http://qiaobutang.com/groups/<%= @group.id %></a> 查看圈子的详情和加入这个圈子
+	</p>
+
+	<% if @invitation_words && @invitation_words != "" %>
+		<p>
+			<%= h_invitor_nick %> 说: "<%= h(@invitation_words) %>"
+		</p>
+	<% end %>
+	
+	<% if @group.desc && @group.desc != "" %>
+		<p>
+			<div>
+				圈子描述:
+			</div>
+			<%= h(@group.desc) %>
+		</p>
+	<% end %>
+	
+	
+	
+	<br />
+	<br />
+	<br />
+	<font color="#B3ABA2">
+		<div>
+			---
+		</div>
+		<div>
+			乔布堂: <a href="http://qiaobutang.com" target="_blank">http://qiaobutang.com</a>
+		</div>
+		<div>
+			乔布圈: <a href="http://qiaobuquan.com" target="_blank">http://qiaobuquan.com</a>
+		</div>
+	</font>
+	
+</div>
+
+
