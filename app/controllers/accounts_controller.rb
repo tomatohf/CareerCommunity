@@ -11,6 +11,8 @@ class AccountsController < ApplicationController
   end
   
   def new
+    save_previous_address
+    
     @account = Account.new
   end
   
@@ -99,6 +101,12 @@ class AccountsController < ApplicationController
     do_logout if @deleted
   end
   
+  def logon
+    save_previous_address
+    
+    jump_to("/accounts/login_form")
+  end
+  
   def login_form
     
   end
@@ -123,6 +131,8 @@ class AccountsController < ApplicationController
   end
   
   def logout
+    save_previous_address
+    
     do_logout
     redirect_to_original_address
   end
@@ -146,6 +156,10 @@ class AccountsController < ApplicationController
       end
     end
     render :action => "forgot_password"
+  end
+  
+  def return_original_page
+    redirect_to_original_address
   end
   
 

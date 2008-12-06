@@ -32,6 +32,7 @@ class Postman < ActionMailer::Base
 
     # email body substitutions go here
     body(:nick => account.get_nick, :source => self.class.source, :uid => account.id, :key => account.get_key, :host => self.class.host)
+    content_type "text/html"
   end
   
   def password_remind(account)
@@ -40,6 +41,7 @@ class Postman < ActionMailer::Base
     subject("#{self.class.source} 密码提醒")
 
     body(:nick => account.get_nick, :source => self.class.source, :password => account.password, :host => self.class.host)
+    content_type "text/html"
   end
   
   

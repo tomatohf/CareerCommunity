@@ -137,7 +137,7 @@ class AlbumsController < ApplicationController
         render :text => "无权进行上传操作, 请 <a href='/albums'>返回</a>", :layout => false
       end
     else
-      render :text => "请先 <a href='/accounts/login_form'>登录</a>", :layout => false
+      render :text => "请先 <a href='/accounts/logon'>登录</a>", :layout => false
     end
   end
   

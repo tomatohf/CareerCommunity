@@ -1,18 +1,49 @@
-Hi <%= h(@nick) %>,
- 
-感谢您在 <%= @source %> 注册!
+<div>
+	
+	<div>
+		Hi <%= h(@nick) %>,
+	</div>
 
-访问以下链接来确认并验证您的帐号:
- 
-<%= @host %>/accounts/confirm_register/<%= @uid %>?k=<%= @key %>
+	<p>
+		感谢您在 <%= @source %> 注册!
+	</p>
+	
+	<p>
+		访问以下链接来确认并验证您的帐号:
+	</p>
+	
+	<p>
+		<a href="<%= @host %>/accounts/confirm_register/<%= @uid %>?k=<%= @key %>" target="_blank"><%= @host %>/accounts/confirm_register/<%= @uid %>?k=<%= @key %></a>
+	</p>
+	
+	<br />
+	<p>
+		---
+	</p>
+	<br />
+	
+	<p>
+		如果您从未在 <%= @source %> 注册，我们很抱歉对您的打扰。您可以访问以下链接来删除注册:
+	</p>
+	
+	<p>
+		<a href="<%= @host %>/accounts/delete_register/<%= @uid %>?k=<%= @key %>" target="_blank"><%= @host %>/accounts/delete_register/<%= @uid %>?k=<%= @key %></a>
+	</p>
+	
+	
+	
+	<br />
+	<br />
+	<br />
+	<font color="#B3ABA2">
+		<div>
+			乔布堂: <a href="http://qiaobutang.com" target="_blank">http://qiaobutang.com</a>
+		</div>
+		<div>
+			乔布圈: <a href="http://qiaobuquan.com" target="_blank">http://qiaobuquan.com</a>
+		</div>
+	</font>
+	
+</div>
 
----
 
-如果您从未在 <%= @source %> 注册，我们很抱歉对您的打扰。您可以访问以下链接来删除注册:
-
-<%= @host %>/accounts/delete_register/<%= @uid %>?k=<%= @key %>
-
-
-<%= @source %>
-
-<%= @host %>

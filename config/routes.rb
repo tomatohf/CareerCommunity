@@ -6,13 +6,16 @@ ActionController::Routing::Routes.draw do |map|
   
     :send_register_confirmation => :get,
     
+    :logon => :get,
     :login_form => :get,
     :login => :post,
     
     :logout => :any,
     
     :forgot_password => :get,
-    :send_password => :post
+    :send_password => :post,
+    
+    :return_original_page => :any
     
   }, :member => {
   

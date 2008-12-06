@@ -67,7 +67,7 @@ class BookmarksController < ApplicationController
         <div style="padding: 30px">
           添加收藏前,
           请先
-          <a href="/accounts/login_form" target="_blank" onclick="setTimeout('parent.parent.GB_hide();', 1000*1); return true;">
+          <a href="/accounts/logon" target="_blank" onclick="setTimeout('parent.parent.GB_hide();', 1000*1); return true;">
             登录</a>
         </div>
       !
