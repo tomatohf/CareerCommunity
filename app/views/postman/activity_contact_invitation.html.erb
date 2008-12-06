@@ -1,0 +1,43 @@
+<div>
+	
+	<% h_invitor_nick = h(@invitor_nick) %>
+	<p>
+		<%= h_invitor_nick %>(<a href="http://qiaobutang.com/spaces/show/<%= @invitor_account_id %>" target="_blank">http://qiaobutang.com/spaces/show/<%= @invitor_account_id %></a>) 邀请你参加活动 <%= h(@activity.get_title) %>, 活动地点在 <%= h(@activity.place) %>, 你可以到 <a href="http://qiaobutang.com/activities/<%= @activity.id %>" target="_blank">http://qiaobutang.com/activities/<%= @activity.id %></a> 查看活动的详情和报名参加这个活动
+	</p>
+
+	<% if @invitation_words && @invitation_words != "" %>
+		<p>
+			<%= h_invitor_nick %> 说: "<%= h(@invitation_words) %>"
+		</p>
+	<% end %>
+	
+	<% activity_desc = @activity.get_setting[:desc] %>
+	<% if activity_desc && activity_desc != "" %>
+		<p>
+			<div>
+				活动描述:
+			</div>
+			<%= sanitize_tinymce(activity_desc) %>
+		</p>
+	<% end %>
+	
+	
+	
+	<br />
+	<br />
+	<br />
+	<font color="#B3ABA2">
+		<div>
+			---
+		</div>
+		<div>
+			乔布堂: <a href="http://qiaobutang.com" target="_blank">http://qiaobutang.com</a>
+		</div>
+		<div>
+			乔布圈: <a href="http://qiaobuquan.com" target="_blank">http://qiaobuquan.com</a>
+		</div>
+	</font>
+	
+</div>
+
+

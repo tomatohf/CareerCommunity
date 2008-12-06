@@ -119,4 +119,25 @@ class Postman < ActionMailer::Base
     content_type "text/html"
   end
   
+  def activity_contact_invitation(email, invitor_account, activity, invitation_words)
+    recipients(
+      [
+        email
+      ]
+    )
+    
+    from(self.class.from)
+    
+    invitor_nick = invitor_account.get_nick
+    activity_title = activity.get_title
+    subject("#{invitor_nick} 邀请你参加活动 #{activity_title}")
+    body(
+      :invitor_nick => invitor_nick,
+      :invitor_account_id => invitor_account.id,
+      :activity => activity,
+      :invitation_words => invitation_words
+    )
+    content_type "text/html"
+  end
+  
 end

@@ -21,7 +21,7 @@ class ActivitiesController < ApplicationController
   
   Activity_Admin_Max_Count = 11
   
-  include CareerCommunity::Contact
+  include CareerCommunity::Contact::InstanceMethods
   
   layout "community"
   before_filter :check_current_account, :only => [:recent_index]
@@ -1224,7 +1224,10 @@ class ActivitiesController < ApplicationController
       contacts = self.send("fetch_#{type}_contacts", user_id, user_pwd)
     rescue Jabber::ClientAuthenticationFailure
       return(render(:layout => false, :text => "帐号或密码错误"))
+    rescue Timeout::Error
+      return(render(:layout => false, :text => "操作超时, 请重试"))
     rescue
+      return raise if ENV['RAILS_ENV'] = "development"
       return(render(:layout => false, :text => "发生错误, 请重试"))
     end
     
@@ -1260,14 +1263,14 @@ class ActivitiesController < ApplicationController
       return jump_to("/activities/select_contact/#{@activity_id}")
     end
     
-    #Activity.add_activity_contact_invitation(
-    #  {
-    #    :activity_id => @activity_id,
-    #    :invitor_account_id => session[:account_id],
-    #    :invited_emails => emails,
-    #    :invitation_words => invitation_words
-    #  }
-    #)
+    Activity.add_activity_contact_invitation(
+      {
+        :activity_id => @activity_id,
+        :invitor_account_id => session[:account_id],
+        :invited_emails => emails,
+        :invitation_words => invitation_words
+      }
+    )
     
     flash[:message] = "已成功发出邀请"
     jump_to("/activities/invite_contact/#{@activity_id}")
