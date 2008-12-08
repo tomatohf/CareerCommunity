@@ -119,6 +119,31 @@ class Postman < ActionMailer::Base
     content_type "text/html"
   end
   
+  def vote_invitation(account, invitor_account, vote_topic, invitation_words)
+    recipients(
+      [
+        account.email
+      ]
+    )
+    
+    from(self.class.from)
+    
+    invitor_nick = invitor_account.get_nick
+    vote_topic_title = vote_topic.title
+    vote_topic_category = VoteCategory.get_category(vote_topic.category_id)
+    subject("[#{vote_topic_category}] #{invitor_nick} 邀请你参与投票 #{vote_topic_title}")
+    body(
+      :nick => account.get_nick,
+      :account_id => account.id,
+      :invitor_nick => invitor_nick,
+      :invitor_account_id => invitor_account.id,
+      :vote_topic => vote_topic,
+      :vote_options => VoteOption.get_vote_topic_options(vote_topic.id),
+      :invitation_words => invitation_words
+    )
+    content_type "text/html"
+  end
+  
   def activity_contact_invitation(email, invitor_account, activity, invitation_words)
     recipients(
       [
@@ -156,6 +181,29 @@ class Postman < ActionMailer::Base
       :invitor_nick => invitor_nick,
       :invitor_account_id => invitor_account.id,
       :group => group,
+      :invitation_words => invitation_words
+    )
+    content_type "text/html"
+  end
+  
+  def vote_contact_invitation(email, invitor_account, vote_topic, invitation_words)
+    recipients(
+      [
+        email
+      ]
+    )
+    
+    from(self.class.from)
+    
+    invitor_nick = invitor_account.get_nick
+    vote_topic_title = vote_topic.title
+    vote_topic_category = VoteCategory.get_category(vote_topic.category_id)
+    subject("[#{vote_topic_category}] #{invitor_nick} 邀请你参与投票 #{vote_topic_title}")
+    body(
+      :invitor_nick => invitor_nick,
+      :invitor_account_id => invitor_account.id,
+      :vote_topic => vote_topic,
+      :vote_options => VoteOption.get_vote_topic_options(vote_topic.id),
       :invitation_words => invitation_words
     )
     content_type "text/html"

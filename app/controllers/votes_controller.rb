@@ -14,10 +14,12 @@ class VotesController < ApplicationController
                                         :create_comment, :delete_comment, :vote_to_option,
                                         :clear_vote_record, :edit, :update, :destroy,
                                         :edit_option, :create_new_option, :add_new_option,
-                                        :delete_others_option]
+                                        :delete_others_option, :invite, :invite_member,
+                                        :invite_contact, :import_contact, :send_contact_invitations]
   before_filter :check_limited, :only => [:create, :update_image, :create_comment, :delete_comment,
                                           :vote_to_option, :clear_vote_record, :update, :destroy,
-                                          :create_new_option, :delete_others_option]
+                                          :create_new_option, :delete_others_option, :invite_member,
+                                          :import_contact, :send_contact_invitations]
   
   before_filter :check_vote_groups_account, :only => [:vote_groups]
   
@@ -429,6 +431,139 @@ class VotesController < ApplicationController
     end
     
     jump_to("/votes/#{@vote_topic_id}/edit_option")
+  end
+  
+  def invite
+    @vote_topic_id = params[:id]
+    @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
+    
+    @friends = Friend.get_all_by_account(
+      session[:account_id],
+      :include => [:friend => [:profile_pic]],
+      :order => "created_at DESC"
+    )
+  end
+  
+  def invite_member
+    @vote_topic_id = params[:id]
+    
+    invited_account_id = params[:invited_account_id] || []
+    invitation_words = (params[:invitation_words] && params[:invitation_words].strip) || ""
+    invitation_way = params[:invitation_way]
+    
+    if invitation_words.size > 100
+      flash[:error_msg] = "邀请的话 超过长度限制"
+    elsif invited_account_id.size <= 0
+      flash[:error_msg] = "还没有选择想邀请的朋友"
+    else
+      if invitation_way == "email"
+        VoteTopic.add_vote_invitation(
+          {
+            :vote_topic_id => @vote_topic_id,
+            :invitor_account_id => session[:account_id],
+            :invited_account_ids => invited_account_id,
+            :invitation_words => invitation_words
+          }
+        )
+      else
+        # send sys message to invited account
+        SysMessage.transaction do
+          invited_account_id.each do |account_id|
+            SysMessage.create_new(account_id, "invite_join_vote", {
+              :inviter_id => session[:account_id],
+              :vote_topic_id => @vote_topic_id,
+              :invitation_words => invitation_words
+            })
+          end
+        end
+      end
+      
+      flash[:message] = "已成功发出邀请"
+      
+    end
+    
+    jump_to("/votes/invite/#{@vote_topic_id}")
+  end
+  
+  def invite_contact
+    @vote_topic_id = params[:id]
+    @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
+  end
+  
+  def import_contact
+    user_id = params[:user_id] && params[:user_id].strip
+    user_pwd = params[:user_pwd]
+    type = params[:type] && params[:type].strip
+    
+    # check input
+    if !self.respond_to?("fetch_#{type}_contacts", true)
+      return render(:layout => false, :text => "")
+    elsif user_id.nil? || user_id == ""
+      return render(:layout => false, :text => "请输入你的帐号")
+    elsif user_pwd.nil? || user_pwd == ""
+      return render(:layout => false, :text => "请输入你的密码")
+    end
+    
+    contacts = []
+    begin
+      contacts = self.send("fetch_#{type}_contacts", user_id, user_pwd)
+    rescue Jabber::ClientAuthenticationFailure
+      return(render(:layout => false, :text => "帐号或密码错误"))
+    rescue Timeout::Error
+      return(render(:layout => false, :text => "操作超时, 请重试"))
+    rescue
+      return(render(:layout => false, :text => "发生错误, 请重试"))
+    end
+    
+    return(render(:layout => false, :text => "抱歉, 没有找到任何联系人")) unless contacts.size > 0
+    
+    session[:vote_invite_contacts_type] = type
+    session[:vote_invite_contacts] = contacts
+    render(:layout => false, :text => "true")
+  end
+  
+  def select_contact
+    @vote_topic_id = params[:id]
+    
+    @contacts = session[:vote_invite_contacts] || []
+    
+    return jump_to("/votes/invite_contact/#{@vote_topic_id}") unless @contacts.size > 0
+    
+    @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
+    
+    @type = case session[:vote_invite_contacts_type]
+      when "msn"
+        "MSN 好友"
+      when "gtalk"
+        "Google Talk 好友"
+      else
+        "联系人"
+    end
+  end
+  
+  def send_contact_invitations
+    @vote_topic_id = params[:id]
+    
+    emails = params[:emails] || []
+    invitation_words = params[:invitation_words] && params[:invitation_words].strip
+    
+    unless emails.size > 0
+      flash[:error_msg] = "还没有选择要邀请谁"
+      return jump_to("/votes/select_contact/#{@vote_topic_id}")
+    end
+    
+    VoteTopic.add_vote_contact_invitation(
+      {
+        :vote_topic_id => @vote_topic_id,
+        :invitor_account_id => session[:account_id],
+        :invited_emails => emails,
+        :invitation_words => invitation_words
+      }
+    )
+    
+    flash[:message] = "已成功发出邀请"
+    jump_to("/votes/invite_contact/#{@vote_topic_id}")
+    
   end
   
   

@@ -1227,7 +1227,6 @@ class ActivitiesController < ApplicationController
     rescue Timeout::Error
       return(render(:layout => false, :text => "操作超时, 请重试"))
     rescue
-      return raise if ENV['RAILS_ENV'] = "development"
       return(render(:layout => false, :text => "发生错误, 请重试"))
     end
     

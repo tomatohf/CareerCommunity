@@ -65,7 +65,8 @@ class SysMessage < ActiveRecord::Base
     "approve_reject_join_activity" => "批准/拒绝参加活动",
     "invite_join_group" => "邀请加入圈子",
     "invite_join_activity" => "邀请参加活动",
-    "deleted_from_activity" => "从活动中删除"
+    "deleted_from_activity" => "从活动中删除",
+    "invite_join_vote" => "邀请参与投票"
   }
   
   Msg_Types.keys.each do |t|
@@ -326,6 +327,34 @@ class SysMessage < ActiveRecord::Base
             :activity_image => "#{activity_image}",
             
             :approve => #{approve}
+          })
+        !
+      end
+    end
+    
+    class InviteJoinVote < Base
+      def msg_text(data, owner_id)
+        inviter_id = data[:inviter_id]
+        inviter_nick_pic = Account.get_nick_and_pic(inviter_id)
+        inviter_nick = inviter_nick_pic[0]
+        inviter_pic_url = inviter_nick_pic[1]
+        
+        vote_topic_id = data[:vote_topic_id]
+        vote_topic, vote_topic_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+        
+        invitation_words = data[:invitation_words]
+        
+        %Q!
+          render(:partial => "/messages/sys/invite_join_vote", :locals => {
+            :inviter_id => #{inviter_id},
+            :inviter_nick => "#{inviter_nick}",
+            :inviter_pic_url => "#{inviter_pic_url}",
+            
+            :vote_topic_id => #{vote_topic_id},
+            :vote_topic_title => "#{vote_topic.title}",
+            :vote_topic_image => "#{vote_topic_image}",
+            
+            :invitation_words => "#{invitation_words}"
           })
         !
       end

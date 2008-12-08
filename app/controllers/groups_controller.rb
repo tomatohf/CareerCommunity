@@ -855,9 +855,6 @@ class GroupsController < ApplicationController
     user_id = params[:user_id] && params[:user_id].strip
     user_pwd = params[:user_pwd]
     type = params[:type] && params[:type].strip
-    logger.info "+++++++++++++++++++++"
-    logger.info user_id
-    logger.info user_pwd
     
     # check input
     if !self.respond_to?("fetch_#{type}_contacts", true)
@@ -876,7 +873,6 @@ class GroupsController < ApplicationController
     rescue Timeout::Error
       return(render(:layout => false, :text => "操作超时, 请重试"))
     rescue
-      return raise if ENV['RAILS_ENV'] = "development"
       return(render(:layout => false, :text => "发生错误, 请重试"))
     end
     
@@ -887,11 +883,10 @@ class GroupsController < ApplicationController
     render(:layout => false, :text => "true")
   end
   
-  load "contact.rb"
   def select_contact
     @contacts = session[:group_invite_contacts] || []
     
-    return jump_to("/activities/invite_contact/#{@activity_id}") unless @contacts.size > 0
+    return jump_to("/groups/invite_contact/#{@group_id}") unless @contacts.size > 0
     
     @group, @group_image = Group.get_group_with_image(@group_id)
     

@@ -1,0 +1,31 @@
+<table cellpadding="0" cellspacing="5" class="main_part_w">
+	<tr>
+		<td style="width: 50px">
+			<a href="/votes/<%= vote_topic_id %>" target="_blank">
+				<img src="<%= face_img_src(vote_topic_image) %>" border="0" /></a>
+		</td>
+		
+		<td>
+
+			<a href="/spaces/show/<%= inviter_id %>" class="account_nick_link" target="_blank">
+				<%= h(inviter_nick) %></a>
+			邀请你
+			参与投票
+			<a href="/votes/<%= vote_topic_id %>" target="_blank"><%= h(vote_topic_title) %></a>
+			<% if invitation_words && (invitation_words != "") %>
+				:
+				&nbsp;
+				<img src="/images/left_quote.gif" border="0" />
+				<%= h(invitation_words) %>
+				<img src="/images/right_quote.gif" border="0" />
+			<% end %>
+
+		</td>
+		
+		<td style="width: 50px">
+			<a href="/spaces/show/<%= inviter_id %>" target="_blank">
+				<img src="<%= face_img_src(inviter_pic_url) %>" border="0" /></a>
+		</td>
+	</tr>
+</table>
+

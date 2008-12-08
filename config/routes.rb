@@ -306,7 +306,12 @@ ActionController::Routing::Routes.draw do |map|
     
     :vote_to_option => :post,
     
-    :clear_vote_record => :post
+    :clear_vote_record => :post,
+    
+    :invite_member => :post,
+    
+    :import_contact => :post,
+    :send_contact_invitations => :post
     
   }
   map.connect "/votes/:id/comment/:page", :controller => "votes", :action => "show", :id => /\d+/, :page => /\d+/

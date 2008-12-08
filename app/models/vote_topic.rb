@@ -42,6 +42,9 @@ class VoteTopic < ActiveRecord::Base
   
   CKP_vote_topic_with_img = :vote_topic_with_img
   
+  CKP_vote_invitations = :vote_invitations
+  CKP_vote_contact_invitations = :vote_contact_invitations
+  
   FCKP_spaces_show_vote_topic = :fc_spaces_show_vote_topic
   FCKP_votes_show_created_vote_topic = :fc_votes_show_created_vote_topic
   
@@ -141,6 +144,36 @@ class VoteTopic < ActiveRecord::Base
   def calculate_chart_height(height_of_one_option = 25)
     h = height_of_one_option * (VoteOption.get_vote_topic_options(self.id).size)
     h < 150 ? 150 : h
+  end
+  
+  
+  def self.get_vote_invitations
+    Cache.get(CKP_vote_invitations) || []
+  end
+  
+  def self.add_vote_invitation(invitation)
+    invitations = get_vote_invitations
+    invitations << invitation
+    Cache.set(CKP_vote_invitations, invitations)
+  end
+  
+  def self.clear_vote_invitations_cache
+    Cache.delete(CKP_vote_invitations)
+  end
+  
+  
+  def self.get_vote_contact_invitations
+    Cache.get(CKP_vote_contact_invitations) || []
+  end
+  
+  def self.add_vote_contact_invitation(invitation)
+    invitations = get_vote_contact_invitations
+    invitations << invitation
+    Cache.set(CKP_vote_contact_invitations, invitations)
+  end
+  
+  def self.clear_vote_contact_invitations_cache
+    Cache.delete(CKP_vote_contact_invitations)
   end
   
   

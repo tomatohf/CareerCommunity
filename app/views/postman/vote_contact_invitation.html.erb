@@ -1,0 +1,68 @@
+<div>
+	
+	<% h_invitor_nick = h(@invitor_nick) %>
+	<p>
+		<%= h_invitor_nick %>(<a href="http://qiaobutang.com/spaces/show/<%= @invitor_account_id %>" target="_blank">http://qiaobutang.com/spaces/show/<%= @invitor_account_id %></a>) 邀请你参与投票 <%= h(@vote_topic.title) %>, 你可以到 <a href="http://qiaobutang.com/votes/<%= @vote_topic.id %>" target="_blank">http://qiaobutang.com/votes/<%= @vote_topic.id %></a> 查看投票话题的详情和结果并参与这个投票
+	</p>
+
+	<% if @invitation_words && @invitation_words != "" %>
+		<p>
+			<%= h_invitor_nick %> 说: "<%= h(@invitation_words) %>"
+		</p>
+	<% end %>
+	
+	<% if @vote_topic.desc && @vote_topic.desc != "" %>
+		<p>
+			<div>
+				投票描述:
+			</div>
+			<%= h(@vote_topic.desc) %>
+		</p>
+	<% end %>
+	
+	<p>
+		<div>
+			投票选项:
+		</div>
+		<div>
+			<table cellpadding="0" cellspacing="0">
+				<% @vote_options.each do |option| %>
+					<% option_title = option[1] %>
+					<% if option_title && option_title != "" %>
+						<tr>
+							<td>
+								<td align="center" valign="middle">
+						            <input type="<%= vote_topic.multiple ? "checkbox" : "radio" %>" disabled="disabled" />
+								</td>
+							</td>
+
+							<td>
+								<%= h(option_title) %>
+							</td>
+						</tr>
+					<% end %>
+				<% end %>
+			</table>
+		</div>
+	</p>
+	
+	
+	
+	<br />
+	<br />
+	<br />
+	<font color="#B3ABA2">
+		<div>
+			---
+		</div>
+		<div>
+			乔布堂: <a href="http://qiaobutang.com" target="_blank">http://qiaobutang.com</a>
+		</div>
+		<div>
+			乔布圈: <a href="http://qiaobuquan.com" target="_blank">http://qiaobuquan.com</a>
+		</div>
+	</font>
+	
+</div>
+
+
