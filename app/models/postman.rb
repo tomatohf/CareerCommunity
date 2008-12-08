@@ -17,7 +17,12 @@ class Postman < ActionMailer::Base
   
   # this method is only for test uasage
   def test(other = "")
-    recipients(["Tomato.HF@gmail.com"])
+    recipients(
+      [
+        "Tomato.HF@gmail.com",
+        "Tomato_HF@hotmail.com"
+      ]
+    )
     from(self.class.from)
     subject("Hello 娃哈哈")
     body(:content => "This is for test ~~ 和一些中文 ... !!\n#{other}")

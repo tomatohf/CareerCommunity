@@ -113,6 +113,7 @@ namespace :notification do
             AccountSetting.set_account_setting_cache(invited_account.id, setting)
 
             if !invited_account.limited? && setting.get_setting_value(:email_vote_invitation_notify) == "true"
+              puts "send vote invitation mail to #{invited_account.email} ..."
               Postman.deliver_vote_invitation(invited_account, invitor_account, vote_topic, invitation_words)
             end
           end
@@ -189,7 +190,7 @@ namespace :notification do
         invited_emails = invitation[:invited_emails]
         invitation_words = invitation[:invitation_words]
       
-        vote_topic, vote_image = VoteTopic.get_vote_with_image(vote_topic_id)
+        vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
         invitor_account = Account.find_enabled(invitor_account_id)
         
         if invitor_account

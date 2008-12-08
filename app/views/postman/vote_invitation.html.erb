@@ -29,14 +29,14 @@
 			投票选项:
 		</div>
 		<div>
-			<table cellpadding="0" cellspacing="0">
+			<table cellpadding="0" cellspacing="5">
 				<% @vote_options.each do |option| %>
 					<% option_title = option[1] %>
 					<% if option_title && option_title != "" %>
 						<tr>
 							<td>
 								<td align="center" valign="middle">
-						            <input type="<%= vote_topic.multiple ? "checkbox" : "radio" %>" disabled="disabled" />
+						            <input type="<%= @vote_topic.multiple ? "checkbox" : "radio" %>" disabled="disabled" />
 								</td>
 							</td>
 

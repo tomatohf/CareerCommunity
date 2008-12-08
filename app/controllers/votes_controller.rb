@@ -8,6 +8,8 @@ class VotesController < ApplicationController
   
   Created_Topic_List_Size = 10
   
+  include CareerCommunity::Contact::InstanceMethods
+  
   layout "community"
   before_filter :check_login, :only => [:new, :new_in_group, :vote_groups, :create,
                                         :edit_image, :update_image,
@@ -15,7 +17,8 @@ class VotesController < ApplicationController
                                         :clear_vote_record, :edit, :update, :destroy,
                                         :edit_option, :create_new_option, :add_new_option,
                                         :delete_others_option, :invite, :invite_member,
-                                        :invite_contact, :import_contact, :send_contact_invitations]
+                                        :invite_contact, :import_contact, :select_contact,
+                                        :send_contact_invitations]
   before_filter :check_limited, :only => [:create, :update_image, :create_comment, :delete_comment,
                                           :vote_to_option, :clear_vote_record, :update, :destroy,
                                           :create_new_option, :delete_others_option, :invite_member,
