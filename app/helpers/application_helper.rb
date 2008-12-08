@@ -269,4 +269,15 @@ module ApplicationHelper
     "/images/attachment_icons/#{icon}"
   end
   
+  def get_contact_type_label(type)
+    case type
+      when "msn"
+        "MSN 好友"
+      when "gtalk"
+        "Google Talk 好友"
+      else
+        "联系人"
+    end
+  end
+  
 end

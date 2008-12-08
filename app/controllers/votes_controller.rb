@@ -534,14 +534,7 @@ class VotesController < ApplicationController
     
     @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
     
-    @type = case session[:vote_invite_contacts_type]
-      when "msn"
-        "MSN 好友"
-      when "gtalk"
-        "Google Talk 好友"
-      else
-        "联系人"
-    end
+    @type = session[:vote_invite_contacts_type]
   end
   
   def send_contact_invitations

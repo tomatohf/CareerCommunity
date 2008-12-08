@@ -890,14 +890,7 @@ class GroupsController < ApplicationController
     
     @group, @group_image = Group.get_group_with_image(@group_id)
     
-    @type = case session[:group_invite_contacts_type]
-      when "msn"
-        "MSN 好友"
-      when "gtalk"
-        "Google Talk 好友"
-      else
-        "联系人"
-    end
+    @type = session[:group_invite_contacts_type]
   end
   
   def send_contact_invitations

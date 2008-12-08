@@ -1,6 +1,7 @@
 <% group_name = h(@group.name) %>
+<% type_label = get_contact_type_label(@type) %>
 
-<% page_title = "邀请#{@type}加入圈子 #{group_name}" %>
+<% page_title = "邀请#{type_label}加入圈子 #{group_name}" %>
 <% community_page_title(page_title) %>
 
 <div class="float_r group_container_r">
@@ -21,7 +22,7 @@
 	<h2><%= page_title %></h2>
 	
 	<div class="community_block_narrow form_info_l">
-		勾选你想邀请的<%= @type %>
+		勾选你想邀请的<%= type_label %>
 	</div>
 	
 	<% if flash[:error_msg] %>

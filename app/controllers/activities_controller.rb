@@ -1242,14 +1242,7 @@ class ActivitiesController < ApplicationController
     
     return jump_to("/activities/invite_contact/#{@activity_id}") unless @contacts.size > 0
     
-    @type = case session[:activity_invite_contacts_type]
-      when "msn"
-        "MSN 好友"
-      when "gtalk"
-        "Google Talk 好友"
-      else
-        "联系人"
-    end
+    @type = session[:activity_invite_contacts_type]
   end
   
   def send_contact_invitations
