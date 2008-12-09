@@ -32,6 +32,17 @@
 			            <%= o_i[:index] %>:
 			            &nbsp;
 			            <%= h(o_i[:title]) %>
+			
+						<% option_account_id = o_i[:option][3] %>
+						<% if vote_topic.account_id != option_account_id %>
+							<% option_account = Account.get_nick_and_pic(option_account_id) %>
+							<span class="form_info_s">
+								(由
+								<a href="/spaces/show/<%= option_account_id %>" class="account_nick_link form_info_s" target="_blank">
+									<%= h(option_account[0]) %></a>
+								添加)
+							</span>
+						<% end %>
 					</label>
 		        </td>
 	
