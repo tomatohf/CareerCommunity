@@ -17,6 +17,17 @@ class IndexController < ApplicationController
   end
   
   
+  def ie6_warning
+    render :layout => "uncategoried"
+  end
+  
+  def confirm_using_ie6
+    session[:confirmed_using_ie6] = "true"
+    
+    redirect_to_original_address
+  end
+  
+  
   
   # ----------
   
