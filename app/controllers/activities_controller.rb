@@ -1246,12 +1246,21 @@ class ActivitiesController < ApplicationController
   end
   
   def send_contact_invitations
-    emails = params[:emails] || []
+    type = params[:type]
     invitation_words = params[:invitation_words] && params[:invitation_words].strip
     
-    unless emails.size > 0
-      flash[:error_msg] = "还没有选择要邀请谁"
-      return jump_to("/activities/select_contact/#{@activity_id}")
+    if type == "email"
+      emails = params[:emails].split(",").collect { |email|
+        addr = email && email.strip
+        (addr != "") ? addr : nil
+      }.compact
+    else
+      emails = params[:emails] || []
+    
+      unless emails.size > 0
+        flash[:error_msg] = "还没有选择要邀请谁"
+        return jump_to("/activities/select_contact/#{@activity_id}")
+      end
     end
     
     Activity.add_activity_contact_invitation(
@@ -1261,7 +1270,7 @@ class ActivitiesController < ApplicationController
         :invited_emails => emails,
         :invitation_words => invitation_words
       }
-    )
+    ) if emails.size > 0
     
     flash[:message] = "已成功发出邀请"
     jump_to("/activities/invite_contact/#{@activity_id}")

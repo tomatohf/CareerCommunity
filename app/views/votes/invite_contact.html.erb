@@ -27,6 +27,12 @@
 	<%= render :partial => "/common/contact_form" %>
 	
 	<script language="JavaScript">
+		function send_invitations(type) {
+			var contact_form = $(type + "_contact_form");
+			contact_form.action = "/votes/<%= @vote_topic_id %>/send_contact_invitations";
+			contact_form.submit();
+		}
+		
 		function import_contact(type) {
 			var contact_form = $(type + "_contact_form");
 			

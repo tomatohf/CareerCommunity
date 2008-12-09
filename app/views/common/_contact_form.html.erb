@@ -145,3 +145,43 @@
 </div>
 
 
+<div class="contact_form_item">
+	<div class="community_title">
+		<img class="float_l contact_form_logo" src="/images/email_contact.png" border="0" />
+		通过 Email 邀请好友 ...
+	</div>
+
+	<div class="community_block" style="margin-left: 65px;">
+		<% form_tag "dumy_action", :method => :post, :id => "email_contact_form" do %>
+			<div>
+				<label for="emails">
+					<b>好友的 email</b>
+					<br />
+					(多个 email 用 <b>逗号</b> 隔开)
+					:
+				</label>
+			</div>
+			<div>
+				<textarea id="emails" name="emails" class="text_field" cols="60" rows="5"></textarea>
+			</div>
+			
+			<div>
+				<label for="invitation_words">
+					<b>写几句邀请的话</b>
+					:
+				</label>
+			</div>
+			<div>
+				<textarea id="invitation_words" name="invitation_words" class="text_field" cols="60" rows="3"></textarea>
+			</div>
+			
+			<div class="community_block">
+				<input type="hidden" name="type" value="email" />
+				
+				<%= button_to_function "发送邀请", "send_invitations('email');", :class => "button", :disabled => @account_limited %>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+

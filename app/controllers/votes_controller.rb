@@ -552,12 +552,21 @@ class VotesController < ApplicationController
   def send_contact_invitations
     @vote_topic_id = params[:id]
     
-    emails = params[:emails] || []
+    type = params[:type]
     invitation_words = params[:invitation_words] && params[:invitation_words].strip
     
-    unless emails.size > 0
-      flash[:error_msg] = "还没有选择要邀请谁"
-      return jump_to("/votes/select_contact/#{@vote_topic_id}")
+    if type == "email"
+      emails = params[:emails].split(",").collect { |email|
+        addr = email && email.strip
+        (addr != "") ? addr : nil
+      }.compact
+    else
+      emails = params[:emails] || []
+    
+      unless emails.size > 0
+        flash[:error_msg] = "还没有选择要邀请谁"
+        return jump_to("/votes/select_contact/#{@vote_topic_id}")
+      end
     end
     
     VoteTopic.add_vote_contact_invitation(
@@ -567,7 +576,7 @@ class VotesController < ApplicationController
         :invited_emails => emails,
         :invitation_words => invitation_words
       }
-    )
+    ) if emails.size > 0
     
     flash[:message] = "已成功发出邀请"
     jump_to("/votes/invite_contact/#{@vote_topic_id}")
