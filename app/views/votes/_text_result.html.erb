@@ -84,9 +84,11 @@
 <% end %>
 
 <% if vote_topic.allow_add_option %>
-	<div class="community_block align_r">
-		<a href="/votes/<%= vote_topic.id %>/add_new_option">添加新的选项</a>
-	</div>
+	<% if has_login && group && !not_group_member %>
+		<div class="community_block align_r">
+			<a href="/votes/<%= vote_topic.id %>/add_new_option">添加新的选项</a>
+		</div>
+	<% end %>
 <% end %>
 
 

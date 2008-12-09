@@ -387,6 +387,12 @@ class VotesController < ApplicationController
     vote_topic_id = params[:id]
     vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
     
+    group_id = vote_topic.group_id || 0
+    group, group_image = Group.get_group_with_image(group_id) if group_id > 0
+    not_group_member = group && (!GroupMember.is_group_member(group.id, session[:account_id]))
+    
+    return jump_to("/votes/#{@vote_topic_id}") if not_group_member
+    
     if (vote_topic.account_id == session[:account_id]) || vote_topic.allow_add_option
       # valid to add new option
       
@@ -412,6 +418,12 @@ class VotesController < ApplicationController
   def add_new_option
     @vote_topic_id = params[:id]
     @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
+    
+    group_id = @vote_topic.group_id || 0
+    group, group_image = Group.get_group_with_image(group_id) if group_id > 0
+    not_group_member = group && (!GroupMember.is_group_member(group.id, session[:account_id]))
+    
+    return jump_to("/votes/#{@vote_topic_id}") if not_group_member
     
     if @vote_topic.allow_add_option
       @option_number_limit = Vote_Option_Limit
