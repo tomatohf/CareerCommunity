@@ -17,7 +17,7 @@ class CustomGroups::CustomGroupsController < GroupsController
     @group_id = params[:id]
     @group, @group_image = Group.get_group_with_image(@group_id)
     
-    custom_key = @group.get_setting[:custom_key]
+    custom_key = @group.custom_key
     custom_group = custom_key && Group::Custom_Groups[custom_key]
     
     jump_to("/groups/#{@group_id}") unless controller_name == custom_group

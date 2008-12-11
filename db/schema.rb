@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 14) do
+ActiveRecord::Schema.define(:version => 15) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -467,6 +467,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.text     "setting"
     t.boolean  "delta"
     t.boolean  "dismissed",                  :default => false
+    t.string   "custom_key"
   end
 
   add_index "groups", ["created_at"], :name => "index_groups_on_created_at"

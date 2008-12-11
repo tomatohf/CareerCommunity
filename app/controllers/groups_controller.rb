@@ -182,7 +182,7 @@ class GroupsController < ApplicationController
     
     if ApplicationController.helpers.superadmin?(session[:account_id])
       group_custom_key = params[:custom_key] && params[:custom_key].strip
-      group_setting[:custom_key] = group_custom_key if (group_custom_key && group_custom_key != "")
+      @group.custom_key = group_custom_key if (group_custom_key && group_custom_key != "")
     end
     
     @group.fill_setting(group_setting)
@@ -550,7 +550,7 @@ class GroupsController < ApplicationController
     }
     if ApplicationController.helpers.superadmin?(session[:account_id])
       group_custom_key = params[:custom_key] && params[:custom_key].strip
-      group_setting[:custom_key] = group_custom_key if (group_custom_key && group_custom_key != "")
+      @group.custom_key = group_custom_key if (group_custom_key && group_custom_key != "")
     end
     
     @group.update_setting(group_setting)
@@ -960,7 +960,7 @@ class GroupsController < ApplicationController
     @group_id = params[:id]
     @group, @group_image = Group.get_group_with_image(@group_id)
     
-    custom_key = @group.get_setting[:custom_key]
+    custom_key = @group.custom_key
     custom_group = custom_key && Group::Custom_Groups[custom_key]
     
     jump_to("/custom_groups/#{custom_group}/show/#{@group_id}") if custom_group && (custom_group != "")

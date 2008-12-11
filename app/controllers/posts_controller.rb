@@ -443,7 +443,7 @@ class PostsController < ApplicationController
       
       def get_group_self_check_compose_access_result(group_id, account_id)
         group = ::Group.get_group_with_image(group_id)[0]
-        custom_key = group.get_setting[:custom_key]
+        custom_key = group.custom_key
         custom_group = custom_key && ::Group::Custom_Groups[custom_key]
         
         compose_access = false

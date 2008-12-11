@@ -12,6 +12,8 @@ class CreateGroups < ActiveRecord::Migration
       t.column :name, :string
       t.column :desc, :string, :limit => 1000
       
+      t.column :custom_key, :string
+      
       t.column :setting, :text
       
       
