@@ -41,12 +41,16 @@ class Blog < ActiveRecord::Base
     self.clear_spaces_show_blog_cache(blog.account_id)
     
     self.clear_index_blog_cache
+    
+    self.clear_blogs_account_feed_cache(blog.account_id)
   }
   
   after_destroy { |blog|
     self.clear_spaces_show_blog_cache(blog.account_id)
     
     self.clear_index_blog_cache
+    
+    self.clear_blogs_account_feed_cache(blog.account_id)
   }
   
   def self.clear_spaces_show_blog_cache(account_id)
@@ -55,6 +59,10 @@ class Blog < ActiveRecord::Base
   
   def self.clear_index_blog_cache
     Cache.delete(expand_cache_key(FCKP_index_blog))
+  end
+  
+  def self.clear_blogs_account_feed_cache(account_id)
+    Cache.delete(expand_cache_key("#{BlogsController::ACKP_blogs_account_feed}_#{account_id}.atom"))
   end
   
   

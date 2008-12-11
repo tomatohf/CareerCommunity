@@ -33,21 +33,16 @@
 	<% end %>
 	
 	
-	<!--
-	<div class="community_title">
-		订阅 (RSS/Feed) ...
-	</div>
 	
-	<div class="community_block">
-		
+	<br />
+	<div class="community_block align_c">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/blogs/list/#{@owner_id}", :title => "#{h(page_title)}"} %>
 	</div>
-	-->
 </div>
 
 <div class="blog_small_container_l">
-	<div class="float_r">
-		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/blogs/list/#{@owner_id}", :title => "#{h(page_title)}"} %>
-	</div>
+	<a class="float_r" href="/blogs/feed/<%= @owner_id %>.atom">
+		<img src="/images/feed_icon.gif" border="0" alt="订阅<%= owner_name %>的博客" title="订阅<%= owner_name %>的博客" /></a>
 	
 	<h2><%= page_title %></h2>
 	

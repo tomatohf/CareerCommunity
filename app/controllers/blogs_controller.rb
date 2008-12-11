@@ -14,6 +14,21 @@ class BlogsController < ApplicationController
   
   before_filter :check_comment_owner, :only => [:delete_comment]
   
+  
+  
+  ACKP_blogs_account_feed = :ac_blogs_account_feed
+  
+  caches_action :feed,
+    :cache_path => Proc.new { |controller|
+      owner_id = controller.params[:id]
+      "#{ACKP_blogs_account_feed}_#{owner_id}"
+    },
+    :if => Proc.new { |controller|
+      controller.request.format.atom?
+    }
+  
+  
+  
   # ! current account needed !
   def index
     jump_to("/blogs/list/#{session[:account_id]}")
@@ -32,7 +47,6 @@ class BlogsController < ApplicationController
       :page => page,
       :per_page => Blog_Page_Size,
       :conditions => ["blogs.account_id = ?", @owner_id],
-      :include => [:account => [:profile_pic]],
       :order => "created_at DESC"
     )
     
@@ -43,6 +57,27 @@ class BlogsController < ApplicationController
       :include => [:account => [:profile_pic]],
       :order => "updated_at DESC"
     )
+  end
+  
+  def feed
+    @owner_id = params[:id]
+    
+    respond_to do |format|
+      format.html { jump_to("/blogs/list/#{@owner_id}") }
+      
+      format.atom {
+        @owner_nick_pic = Account.get_nick_and_pic(@owner_id)
+        
+        @blogs = Blog.find(
+          :all,
+          :limit => Blog_Page_Size,
+          :conditions => ["blogs.account_id = ?", @owner_id],
+          :order => "created_at DESC"
+        )
+        
+        render :layout => false
+      }
+    end
   end
   
   # ! login required !

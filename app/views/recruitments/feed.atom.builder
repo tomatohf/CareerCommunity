@@ -5,7 +5,7 @@ atom_feed(:language => "zh_CN", :schema_date => 2008, "xmlns:app" => "http://www
 
   for r in @recruitments
     feed.entry(r) do |entry|
-      entry.title(r.title)
+      entry.title(h(r.title))
       
       entry.url("http://qiaobutang.com/recruitments/#{r.id}")
       
@@ -28,7 +28,7 @@ atom_feed(:language => "zh_CN", :schema_date => 2008, "xmlns:app" => "http://www
   		
 			entry_content += "<br />"
 			
-      entry_content += r.content
+      entry_content += sanitize_tinymce(r.content)
       entry.content(entry_content, :type => "html")
     end
   end
