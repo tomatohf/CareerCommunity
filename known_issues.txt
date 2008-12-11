@@ -11,6 +11,7 @@
 将活动功能包装成一个 APP
 Enhance 活动的功能
 	- 地图调用
+		ABQIAAAAx5FxwPteEaekBa2OsGoGMhRhWPLdTYHlYKadOx9YMcM4H2s8ERRt0O5IDG1pAtx2TxjX-UMGlI5CLA
 	- 天气情况调用
 
 
