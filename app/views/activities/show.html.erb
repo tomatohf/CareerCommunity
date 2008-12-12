@@ -712,18 +712,15 @@
 		
 		if(isNaN(parsed_lat) || isNaN(parsed_lng)) {
 			unrecognize_place();
-			alert("from cache");
 		}
 		else {
 			draw_map(parsed_lat, parsed_lng);
-			alert("from cache");
 		}
 	<% else %>
 		var search = new LTLocalSearch(search_finish);
 
 		search.setCity("上海");
 		search.search("<%= activity_place %>");
-		alert("do search");
 	<% end %>
 </script>
 
