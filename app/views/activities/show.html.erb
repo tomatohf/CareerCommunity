@@ -532,9 +532,12 @@
 	window.onunload = GUnload;
 	
 	var map;
+	
 	var type_control = new GMapTypeControl();
 	var small_control = new GSmallMapControl();
 	var big_control = new GLargeMapControl();
+	
+	var lat_lng;
 
 	function draw_map(lat, lng) {
 		display_map(lat, lng);
@@ -555,15 +558,33 @@
 					size: new GSize(200, 200)
 				}
 			);
-			map.setCenter(
-				new GLatLng(lat/100000, lng/100000),
-				15
-			);
+			
+			lat_lng = new GLatLng(lat/100000, lng/100000);
+			
+			reset_map_center();
 
 			map.addControl(type_control);
 			map.addControl(small_control);
 
-
+			//map.openInfoWindow(map.getCenter(), document.createTextNode("Hello, world"));
+			
+			show_marker();
+		}
+	}
+	
+	function show_marker() {
+		map.addOverlay(new GMarker(lat_lng));
+	}
+	
+	function reset_map_center() {
+		if(map.isLoaded()) {
+			map.panTo(lat_lng);
+		}
+		else {
+			map.setCenter(
+				lat_lng,
+				15
+			);
 		}
 	}
 </script>
@@ -606,7 +627,9 @@
 			
 			map.removeControl(small_control);
 			map.addControl(big_control);
-		
+			
+			reset_map_center();
+			
 			document.getElementById("small_map_link").style.display = "";
 			document.getElementById("big_map_link").style.display = "none";
 		}
@@ -630,17 +653,19 @@
 		
 			mc.style.position = "relative";
 		
+			reset_map_center();
+			
 			document.getElementById("big_map_link").style.display = "";
 			document.getElementById("small_map_link").style.display = "none";
 		}
 	}
 	
 	function explain_wrong_map() {
-		alert("乔布圈根据搜索*活动地点*的结果自动呈现地图, 请尽量填写清晰和易于搜索的*活动地点*, 以获得最佳的地图匹配和呈现效果.");
+		alert("乔布圈根据搜索*活动地点*的结果自动呈现地图, 请尽量填写清晰和易于搜索的*活动地点*, 以获得最佳的地图匹配和呈现效果. (注: 目前仅支持上海市)");
 	}
 	
 	function explain_no_map() {
-		alert("乔布圈根据搜索*活动地点*的结果自动呈现地图, 如果所填写的*活动地点*无法识别或无法被搜索到, 则无法呈现地图. 请尽量填写清晰和易于搜索的*活动地点*.");
+		alert("乔布圈根据搜索*活动地点*的结果自动呈现地图, 如果所填写的*活动地点*无法识别或无法被搜索到, 则无法呈现地图. 请尽量填写清晰和易于搜索的*活动地点*. (注: 目前仅支持上海市)");
 	}
 </script>
 
@@ -653,13 +678,11 @@
 	
 	function search_finish(result) {
 		var points = result.searchPoints;
-		var lat;
-		var lng;
 		
 		if(points.length > 0) {
 			var point = points[0].point;
-			lat = String(point[1]);
-			lng = String(point[0]);
+			lat = point[1];
+			lng = point[0];
 			
 			draw_map(lat, lng);
 		}
@@ -671,8 +694,8 @@
 		}
 		
 		<% if @is_admin %>
-			document.getElementById("point_lat").value = lat;
-			document.getElementById("point_lng").value = lng;
+			document.getElementById("point_lat").value = String(lat);
+			document.getElementById("point_lng").value = String(lng);
 			document.getElementById("do_cache_form").submit();
 		<% end %>
 	}
