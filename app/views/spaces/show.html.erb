@@ -109,14 +109,13 @@
 			<a href="/friends/list/<%= @account_id %>">所有朋友</a>
 		</div>
 		
-		<div id="friend_section">
-			<div>
-				<%= float_list(@friends, "/friends/account_nick_pic", :account_nick_pic, {:can_del => false}, 3) %>
-			</div>
+		<div id="friend_section" class="overflow_hidden">
+			<%= float_list(@friends, "/friends/account_nick_pic", :account_nick_pic, {:can_del => false}, 3) %>
 		</div>
+		<div class="clear_l"></div>
 	</div>
 	
-	<div class="community_title clear_l">
+	<div class="community_title">
 		<%= owner_name %> 参加的圈子 ...
 	</div>
 	<div class="community_block">
@@ -129,12 +128,10 @@
 			<a href="/groups/list/<%= @account_id %>">所有参加的圈子</a>
 		</div>
 		
-		<div id="group_section">
+		<div id="group_section" class="overflow_hidden">
 			<%= float_list(@group_members, "/groups/group_name_img", :group_name_img, {:show_icon => true, :owner_name => owner_name}, 3) %>
 		</div>
-		<div class="clear_l">
-			
-		</div>
+		<div class="clear_l"></div>
 	</div>
 	
 	
@@ -381,7 +378,7 @@
 			<a href="/albums/list/<%= @account_id %>">所有相册</a>
 		</div>
 	</div>
-	<div id="photo_section">
+	<div id="photo_section" class="overflow_hidden">
 		<% cache("#{Photo::FCKP_spaces_show_photo}_#{@account_id}") do %>
 			<%
 				@photos = Photo.find(

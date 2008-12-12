@@ -223,12 +223,11 @@
 			<a href="/activities/all_photo/<%= @owner_id %>">参加的活动的全部活动照片</a>
 		</div>
 		
-		<div id="photo_section" class="community_block">
+		<div id="photo_section" class="community_block overflow_hidden">
 			<%= float_list(@activity_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
 		</div>
 	</div>
-	<div class="clear_l">
-	</div>
+	<div class="clear_l"></div>
 	
 </div>
 

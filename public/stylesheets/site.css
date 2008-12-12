@@ -973,8 +973,21 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	width: 250px;
 }
 
+.activity_container_l {
+	margin-left: 150px;
+	margin-right: 210px;
+	padding: 0px 10px;
+}
+
+.activity_container_l * {
+	max-width: 600px;
+}
+
+.activity_container_r {
+	width: 210px;
+}
+
 .activity_status {
-	text-align: center;
 	font-size: medium;
 	font-weight: bold;
 }

@@ -135,13 +135,15 @@
 		新加入成员 ...
 	</div>
 	
-	<div>
+	<div class="overflow_hidden">
 		<%= float_list(@new_members, "new_member", :new_member, {}, 3) %>
+		
+		<div class="clear_l"></div>
 	</div>
 	
 	
 	<!--
-	<div class="community_title clear_l">
+	<div class="community_title">
 		订阅圈子讨论 ...
 	</div>
 	
@@ -256,15 +258,15 @@
 			<a href="/groups/activity/<%= @group_id %>">全部圈内活动</a>
 		</div>
 	</div>
-	<div id="activity_section">
+	<div id="activity_section" class="overflow_hidden">
 		<%= float_list(@group_activities, "activity_small", :activity_small, {}, 2) %>
 		<% unless @group_activities.size > 0 %>
 			<div class="form_info_l">
 				还没有圈内活动 ...
 			</div>
 		<% end %>
-	</div>
-	<div class="community_block clear_l">
+		
+		<div class="clear_l"></div>
 	</div>
 	
 	
@@ -346,8 +348,6 @@
 			<% end %>
 		</div>
 	</div>
-	<div class="community_block clear_l">
-	</div>
 	
 	
 	<div class="community_title">
@@ -373,16 +373,16 @@
 			<a href="/groups/photo/<%= @group_id %>">全部圈子照片</a>
 		</div>
 		
-		<div id="photo_section">
+		<div id="photo_section" class="overflow_hidden">
 			<%= float_list(@group_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
 			<% unless @group_photos.size > 0 %>
 				<div class="form_info_l">
 					还没有圈子照片 ...
 				</div>
 			<% end %>
+			
+			<div class="clear_l"></div>
 		</div>
-	</div>
-	<div class="community_block clear_l">
 	</div>
 	
 </div>

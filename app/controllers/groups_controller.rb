@@ -10,7 +10,7 @@ class GroupsController < ApplicationController
   Photo_List_Size = 30
   
   Group_Recent_List_Size = 24
-  Post_Recent_List_Size = 30
+  Post_Recent_List_Size = 25
   Activity_Recent_List_Size = 16
   Photo_Recent_List_Size = 15
   

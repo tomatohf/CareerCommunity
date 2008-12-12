@@ -241,7 +241,9 @@ ActionController::Routing::Routes.draw do |map|
     :recover => :post,
     
     :import_contact => :post,
-    :send_contact_invitations => :post
+    :send_contact_invitations => :post,
+    
+    :cache_point => :post
     
   }, :collection => {
     :new_in_groups => :post,

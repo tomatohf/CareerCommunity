@@ -379,7 +379,11 @@ class ActivitiesController < ApplicationController
   end
   
   def day
-    @date = Date.parse(params[:date])
+    begin
+      @date = Date.parse(params[:date])
+    rescue
+      return jump_to("/activities/all")
+    end
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
@@ -534,6 +538,8 @@ class ActivitiesController < ApplicationController
     in_group = @activity.in_group || 0
     @group, @group_image = Group.get_group_with_image(in_group) if in_group > 0
     
+    @place_point = Activity.get_activity_place_point(@activity_id)
+    
     @top_activity_posts = ActivityPost.find(
       :all,
       :select => "id, created_at, activity_id, top, account_id, title, responded_at",
@@ -576,6 +582,18 @@ class ActivitiesController < ApplicationController
     )
     
     # @created_activities value is set in view ...
+  end
+  
+  def cache_point
+    activity_id = params[:id]
+    
+    if ActivityMember.is_activity_admin(activity_id, session[:account_id])
+      lat = params[:point_lat]
+      lng = params[:point_lng]
+      Activity.set_activity_place_point(activity_id, lat, lng)
+    end
+    
+    render :layout => false, :text => ""
   end
   
   def post

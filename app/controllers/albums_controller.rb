@@ -174,13 +174,17 @@ class AlbumsController < ApplicationController
       photo_saved = photo.save
     end
     
-    render :text => %Q!
+    if photo_saved
+      render :text => %Q!
   
-      <script language="JavaScript">
-        parent.photo_selector.refresh_album_of_uploaded_photo(#{@album.id}, "#{params[:photo_list_template]}")
-      </script>
+        <script language="JavaScript">
+          parent.photo_selector.refresh_album_of_uploaded_photo(#{@album.id}, "#{params[:photo_list_template]}")
+        </script>
     
-    !, :layout => false if photo_saved
+      !, :layout => false
+    else
+      render :text => "", :layout => false
+    end
   end
   
   def photo_selector

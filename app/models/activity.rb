@@ -66,18 +66,24 @@ class Activity < ActiveRecord::Base
   CKP_activity_invitations = :activity_invitations
   CKP_activity_contact_invitations = :activity_contact_invitations
   
+  CKP_activity_place_point = :activity_place_point
+  
   FCKP_activities_show_created_activity = :fc_activities_show_created_activity
   
   FCKP_index_activity = :fc_index_activity
   
   after_save { |activity|
-    self.update_activity_with_image_cache(activity.id, :activity => activity)
-    
     self.clear_activities_all_cache
     self.clear_spaces_show_activity_cache(activity.id)
     self.clear_activities_show_created_activity_cache(activity.creator_id)
     
     self.clear_index_activity_cache if IndexController::Index_Activity_Account_Id_Scope.include?(activity.creator_id)
+    
+    self.clear_activity_place_point_cache(activity.id) if activity.place_changed?
+    
+    # clear changed attributes, before we cache it ...
+    activity.clean_myself
+    self.update_activity_with_image_cache(activity.id, :activity => activity)
   }
   
   after_destroy { |activity|
@@ -88,6 +94,8 @@ class Activity < ActiveRecord::Base
     self.clear_activities_show_created_activity_cache(activity.creator_id)
     
     self.clear_index_activity_cache if IndexController::Index_Activity_Account_Id_Scope.include?(activity.creator_id)
+    
+    self.clear_activity_place_point_cache(activity.id)
   }
   
   def self.clear_activities_all_cache
@@ -259,6 +267,19 @@ class Activity < ActiveRecord::Base
   
   def self.clear_activity_contact_invitations_cache
     Cache.delete(CKP_activity_contact_invitations)
+  end
+  
+  
+  def self.get_activity_place_point(activity_id)
+    Cache.get("#{CKP_activity_place_point}_#{activity_id}".to_sym)
+  end
+  
+  def self.set_activity_place_point(activity_id, lat, lng)
+    Cache.set("#{CKP_activity_place_point}_#{activity_id}".to_sym, [lat, lng])
+  end
+  
+  def self.clear_activity_place_point_cache(activity_id)
+    Cache.delete("#{CKP_activity_place_point}_#{activity_id}".to_sym)
   end
   
   

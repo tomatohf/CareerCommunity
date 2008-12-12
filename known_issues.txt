@@ -1,4 +1,24 @@
-﻿寻找 MSN Gtalk 好友
+﻿在设置里面自定义我的空间显示哪些内容
+照片按相册设置查看权限
+圈子内容更全面的 view 权限设置
+
+设置活动和圈子功能的首页面
+	活动 - 全部活动 - 今天的活动 - 我的活动近况
+	圈子 - 全部圈子 - 我参加的圈子 - 我的圈子近况
+	
+	
+服务器情况监测
+	监测服务器使用情况, 何时需要作相应的调整
+
+
+Enhance 活动的功能
+	- 地图调用
+		ABQIAAAAx5FxwPteEaekBa2OsGoGMhRhWPLdTYHlYKadOx9YMcM4H2s8ERRt0O5IDG1pAtx2TxjX-UMGlI5CLA
+	- 天气情况调用
+
+
+
+寻找 MSN Gtalk 好友
 邀请 MSN Gtalk 好友注册
 
 
@@ -9,10 +29,6 @@
 
 
 将活动功能包装成一个 APP
-Enhance 活动的功能
-	- 地图调用
-		ABQIAAAAx5FxwPteEaekBa2OsGoGMhRhWPLdTYHlYKadOx9YMcM4H2s8ERRt0O5IDG1pAtx2TxjX-UMGlI5CLA
-	- 天气情况调用
 
 
 求职小组 自定义圈子

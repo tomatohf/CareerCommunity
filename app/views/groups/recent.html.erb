@@ -79,8 +79,10 @@
 		</div>
 	</div>
 		
-	<div id="group_section">
+	<div id="group_section" class="overflow_hidden">
 		<%= float_list(@group_members, "group_name_img", :group_name_img, {:show_icon => true, :owner_name => owner_name}, 3) %>
+		
+		<div class="clear_l"></div>
 	</div>
 
 </div>
@@ -153,7 +155,7 @@
 			<a href="/groups/all_activity/<%= @owner_id %>">参加的圈子的全部圈子活动</a>
 		</div>
 	</div>
-	<div id="activity_section">
+	<div id="activity_section" class="overflow_hidden">
 		<%= float_list(@group_activities, "activity_small", :activity_small, {}, 2) %>
 		
 		<% unless @group_activities.size > 0 %>
@@ -161,8 +163,8 @@
 				还没有圈子活动 ...
 			</div>
 		<% end %>
-	</div>
-	<div class="clear_l">
+		
+		<div class="clear_l"></div>
 	</div>
 	
 	
@@ -210,7 +212,7 @@
 			<a href="/groups/all_photo/<%= @owner_id %>">参加的圈子的全部圈子照片</a>
 		</div>
 		
-		<div id="photo_section" class="community_block">
+		<div id="photo_section" class="community_block overflow_hidden">
 			<%= float_list(@group_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
 			
 			<% unless @group_photos.size > 0 %>
@@ -218,9 +220,9 @@
 					还没有圈子照片 ...
 				</div>
 			<% end %>
+			
+			<div class="clear_l"></div>
 		</div>
-	</div>
-	<div class="clear_l">
 	</div>
 	
 </div>

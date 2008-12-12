@@ -1,17 +1,7 @@
 <% community_page_title("星座信息") %>
 
 <div class="float_r community_container_r">
-	<div class="community_title">
-		试试其他小工具 ...
-	</div>
-	<div class="community_block">
-		<p>
-			<a href="/toolkits/astrology">查询星座</a>
-		</p>
-		<p>
-			<a href="/toolkits/password_strength">检测密码强度</a>
-		</p>
-	</div>
+	<%= render(:partial => "tool_list") %>
 </div>
 
 <div class="community_container_l">
@@ -37,9 +27,11 @@
 			<p><%= @astrology.e %></p>
 			
 		<% else %>
-			<p class="error_msg">
-				<%= flash[:error_msg] %>
-			</p>
+			<% if flash[:error_msg] %>
+				<p class="error_msg">
+					<%= flash[:error_msg] %>
+				</p>
+			<% end %>
 		<% end %>
 		
 		<br />

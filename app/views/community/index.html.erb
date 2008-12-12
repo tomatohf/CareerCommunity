@@ -33,7 +33,7 @@
 		<div class="community_title">
 			谁新加入了我们 ...
 		</div>
-		<div class="community_block">
+		<div class="community_block overflow_hidden">
 			<%= float_list(@new_accounts, "account", :account, {}, 3) %>
 		</div>
 		<div class="clear_l">
@@ -102,7 +102,7 @@
 	<div class="community_title">
 		最新圈子 ...
 	</div>
-	<div style="margin-top: 10px;">
+	<div class="overflow_hidden" style="margin-top: 10px;">
 		<%= float_list(@new_groups, "group", :group, {}, 6) %>
 		
 		<div class="clear_l align_r">

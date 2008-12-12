@@ -1,17 +1,14 @@
 <% activity_status = @activity.get_status %>
 <% activity_title = h(@activity.get_title) %>
+<% activity_place = h(@activity.place) %>
 
 <% community_page_title(activity_title) %>
 
-<div class="float_r blog_container_r">
-	
-	<div class="align_c">
-		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/activities/#{@activity_id}", :title => "活动: #{activity_title}"} %>
-	</div>
+<div class="float_r activity_container_r">
 	
 	<% if @group %>
-		<div class="community_title">
-			圈子内活动 ...
+		<div class="align_c">
+			<b>圈子内活动</b>
 		</div>
 
 		<div class="community_block align_c">
@@ -25,63 +22,44 @@
 			</div>
 		</div>
 	<% else %>
-		<div class="community_title">
-			全局的活动
+		<div class="align_c">
+			<b>全局的活动</b>
 		</div>
 	<% end %>
 	
-	<div class="community_title">
-		活动状态 ...
-	</div>
-
-	<div class="community_block activity_status">
-		<%= activity_status[1] %>
+	<div class="community_block_narrow">
+		<%= thin_hr %>
 	</div>
 	
-	<% if activity_status[0] <= Activity::Status::Registering[0] %>
-		<% if @is_member %>	
-			<% unless @is_master %>
-				<div class="community_block_narrow">
-					<%= thin_hr %>
-				</div>
-				
-				<div class="community_block align_c">
-					<% form_tag "/activities/#{@activity_id}/quit", :method => :post, :onsubmit => "if(!confirm('确定要退出这个活动么 ?')){ return false; }" do %>
-						<input type="submit" value="退出这个活动" class="button" />
-					<% end %>
-				</div>
-			<% end %>
-		<% else %>
-			<div class="community_block_narrow">
-				<%= thin_hr %>
+	
+	<div>
+		<div id="map_canvas">
+			
+		</div>
+		
+		<div class="align_c">
+			<a id="big_map_link" href="#" onclick="big_map(); return false;" style="display: none;">
+				<img src="/images/show_big.gif" border="0" alt="大图" title="大图" width="12" height="12" />
+				查看大地图</a>
+		</div>
+		
+		<% if @is_admin %>
+			<div class="align_r">
+				<a id="wrong_map_link" href="#" onclick="explain_wrong_map(); return false;" style="display: none;">
+					(地图错误?)</a>
 			</div>
 			
-			<% unless @beyond_limit %>
-				<div class="community_block align_c">
-					<% form_tag "/activities/#{@activity_id}/check_profile", :method => :post do %>
-						<input type="submit" value="报名参加这个活动" class="button" />
-					<% end %>
-				</div>
-			<% else %>
-				<div class="community_block activity_status">
-					报名人数已满
-				</div>
-			<% end %>
+			<div class="align_c">
+				<a id="no_map_link" href="#" onclick="explain_no_map(); return false;" style="display: none;">
+					(为什么没有显示地图?)</a>
+			</div>
 		<% end %>
-	<% end %>
+		
+		<a id="small_map_link" href="#" onclick="small_map(); return false;" style="position: absolute; top: 5px; left: 875px; display: none;">
+			<img id="close_big_map_img" src="/images/activities/close_big_map_middle.gif" border="0" /></a>
+	</div>
 	
-	<% if @can_add_interest %>
-		<div class="community_block_narrow">
-			<%= thin_hr %>
-		</div>
-		
-		<div class="community_block align_c">
-			<% form_tag "/activities/#{@activity_id}/add_interest", :method => :post do %>
-				<input type="submit" value="对活动感兴趣" class="button" />
-			<% end %>
-		</div>
-	<% end %>
-		
+	
 	<% if @is_admin %>
 		<div class="community_block_narrow">
 			<%= thin_hr %>
@@ -228,14 +206,10 @@
 	
 </div>
 
-<div class="blog_container_l">
-	<% if @is_master %>
-		<% unless @activity.cancelled %>
-			<% form_tag "/activities/#{@activity_id}/cancel", :method => :post, :onsubmit => "if(!confirm('确定要取消这个活动么 ?')){ return false; }" do %>
-				<input type="submit" value="取消这个活动" class="float_r button" />
-			<% end %>
-		<% end %>
-	<% end %>
+<div class="activity_container_l">
+	<div class="float_r">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/activities/#{@activity_id}", :title => "活动: #{activity_title}"} %>
+	</div>
 		
 	<h2><%= activity_title %></h2>
 	
@@ -255,7 +229,7 @@
 		<% end %>
 	<% end %>
 	
-	<div class="community_block">
+	<div>
 		<div class="space_section_title">
 			<a class="float_r" title="收起" id="info_section_expand" href="#" onclick="collapse_section('info_section'); return false;">
 				<img src="/images/expand.png" border="0" /></a>
@@ -274,10 +248,10 @@
 		</div>
 		
 		<div id="info_section">
-			<table cellpadding="0" cellspacing="10" class="main_part_w">
+			<table cellpadding="0" cellspacing="5" border="0" class="main_part_w">
 				<tr>
 					<td align="left" valign="top">
-						<div class="community_block">
+						<div>
 							<span class="activity_info_label">开始时间:</span>
 							<%= format_activity_time(@activity.begin_at) %>
 							
@@ -289,11 +263,11 @@
 							<br />
 							
 							<span class="activity_info_label">地点:</span>
-							<%= h(@activity.place) %>
+							<%= activity_place %>
 							
 							<br />
 							
-							<span class="activity_info_label">报名截止时间:</span>
+							<span class="activity_info_label">报名截止:</span>
 							<%= @activity.application_deadline ? format_activity_time(@activity.application_deadline) : "活动开始前" %>
 							
 							<br />
@@ -324,6 +298,52 @@
 								<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>
 						<% else %>
 							<img src="<%= face_img_src(face_image_url) %>" border="0" />
+						<% end %>
+					</td>
+					
+					
+					<td style="width: 10px;">&nbsp;</td>
+					<td align="left" valign="top" style="width: 110px;">
+						<div class="community_block activity_status" style="margin-bottom: 10px;">
+							活动 <%= activity_status[1] %>
+						</div>
+						
+						<% if activity_status[0] <= Activity::Status::Registering[0] %>
+							<% if @is_member %>	
+								<% if @is_master %>
+									<% unless @activity.cancelled %>
+										<% form_tag "/activities/#{@activity_id}/cancel", :method => :post, :onsubmit => "if(!confirm('确定要取消这个活动么 ?')){ return false; }" do %>
+											<input type="submit" value="取消这个活动" class="button" />
+										<% end %>
+									<% end %>
+								<% else %>
+									<div class="community_block">
+										<% form_tag "/activities/#{@activity_id}/quit", :method => :post, :onsubmit => "if(!confirm('确定要退出这个活动么 ?')){ return false; }" do %>
+											<input type="submit" value="退出这个活动" class="button" />
+										<% end %>
+									</div>
+								<% end %>
+							<% else %>
+								<% unless @beyond_limit %>
+									<div class="community_block">
+										<% form_tag "/activities/#{@activity_id}/check_profile", :method => :post do %>
+											<input type="submit" value="报名参加活动" class="button" />
+										<% end %>
+									</div>
+								<% else %>
+									<div class="community_block activity_status">
+										报名人数已满
+									</div>
+								<% end %>
+							<% end %>
+						<% end %>
+						
+						<% if @can_add_interest %>
+							<div class="community_block" style="margin-top: 10px;">
+								<% form_tag "/activities/#{@activity_id}/add_interest", :method => :post do %>
+									<input type="submit" value="对活动感兴趣" class="button" />
+								<% end %>
+							</div>
 						<% end %>
 					</td>
 				</tr>
@@ -380,18 +400,20 @@
 			<a href="/activities/photo/<%= @activity_id %>">全部活动照片</a>
 		</div>
 		
-		<div id="photo_section">
+		<div id="photo_section" class="overflow_hidden">
 			<%= float_list(@activity_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 6) %>
 			<% unless @activity_photos.size > 0 %>
 				<div class="form_info_l">
 					还没有活动照片 ...
 				</div>
 			<% end %>
+			
+			<div class="clear_l"></div>
 		</div>
 	</div>
 	
 	
-	<div class="community_title clear_l">
+	<div class="community_title">
 		最近活动讨论 ...
 	</div>
 	
@@ -457,8 +479,10 @@
 			</b>
 		</div>
 		
-		<div id="join_section">
+		<div id="join_section" class="overflow_hidden">
 			<%= float_list(@members, "member", :member, {}, 7) %>
+			
+			<div class="clear_l"></div>
 		</div>
 	</div>
 	
@@ -480,12 +504,69 @@
 			</b>
 		</div>
 		
-		<div id="interest_section">
+		<div id="interest_section" class="overflow_hidden">
 			<%= float_list(@interest_accounts, "member", :member, {}, 7) %>
 		</div>
+		<div class="clear_l"></div>
 	</div>
 	
+	
+	<% if @is_admin %>
+		<div>
+			<% form_tag "/activities/#{@activity_id}/cache_point", :method => :post, :target => "point_cache_operator", :id => "do_cache_form" do %>
+				<input type="hidden" name="point_lat" id="point_lat" value="" />
+				<input type="hidden" name="point_lng" id="point_lng" value="" />
+			<% end %>
+		</div>
+	
+		<iframe name="point_cache_operator" id="point_cache_operator" style="display:none"></iframe>
+	<% end %>
+	
 </div>
+
+
+
+<script src="http://ditu.google.cn/maps?file=api&v=2&hl=zh&key=ABQIAAAAx5FxwPteEaekBa2OsGoGMhRhWPLdTYHlYKadOx9YMcM4H2s8ERRt0O5IDG1pAtx2TxjX-UMGlI5CLA" type="text/javascript"></script>
+
+<script type="text/javascript">
+	window.onunload = GUnload;
+	
+	var map;
+	var type_control = new GMapTypeControl();
+	var small_control = new GSmallMapControl();
+	var big_control = new GLargeMapControl();
+
+	function draw_map(lat, lng) {
+		display_map(lat, lng);
+		
+		document.getElementById("big_map_link").style.display = "";
+		
+		<% if @is_admin %>
+			document.getElementById("wrong_map_link").style.display = "";
+		<% end %>
+	}
+	
+	function display_map(lat, lng) {
+		if (GBrowserIsCompatible()) {
+			
+			map = new google.maps.Map2(
+				document.getElementById("map_canvas"),
+				{
+					size: new GSize(200, 200)
+				}
+			);
+			map.setCenter(
+				new GLatLng(lat/100000, lng/100000),
+				15
+			);
+
+			map.addControl(type_control);
+			map.addControl(small_control);
+
+
+		}
+	}
+</script>
 
 
 
@@ -507,4 +588,120 @@
 		document.getElementById(expand_icon).style.display = "none";
 		document.getElementById(collapse_icon).style.display = "";
 	}
+	
+	function big_map() {
+		if(map) {
+			var mc = document.getElementById("map_canvas");
+		
+			mc.style.position = "absolute";
+		
+			mc.style.top = "30px";
+			mc.style.left = "75px";
+		
+			mc.style.border = "10px solid #888888";
+		
+			mc.style.width = "800px";
+			mc.style.height = "500px";
+			map.checkResize();
+			
+			map.removeControl(small_control);
+			map.addControl(big_control);
+		
+			document.getElementById("small_map_link").style.display = "";
+			document.getElementById("big_map_link").style.display = "none";
+		}
+	}
+	
+	function small_map() {
+		if(map) {
+			var mc = document.getElementById("map_canvas");
+		
+			mc.style.borderStyle = "none";
+		
+			mc.style.width = "200px";
+			mc.style.height = "200px";
+			map.checkResize();
+			
+			map.removeControl(big_control);
+			map.addControl(small_control);
+		
+			mc.style.top = "";
+			mc.style.left = "";
+		
+			mc.style.position = "relative";
+		
+			document.getElementById("big_map_link").style.display = "";
+			document.getElementById("small_map_link").style.display = "none";
+		}
+	}
+	
+	function explain_wrong_map() {
+		alert("乔布圈根据搜索*活动地点*的结果自动呈现地图, 请尽量填写清晰和易于搜索的*活动地点*, 以获得最佳的地图匹配和呈现效果.");
+	}
+	
+	function explain_no_map() {
+		alert("乔布圈根据搜索*活动地点*的结果自动呈现地图, 如果所填写的*活动地点*无法识别或无法被搜索到, 则无法呈现地图. 请尽量填写清晰和易于搜索的*活动地点*.");
+	}
 </script>
+
+
+
+<script language="javascript" src="http://api.51ditu.com/js/search.js"></script>
+<script language="javascript">
+	var lat;
+	var lng;
+	
+	function search_finish(result) {
+		var points = result.searchPoints;
+		var lat;
+		var lng;
+		
+		if(points.length > 0) {
+			var point = points[0].point;
+			lat = String(point[1]);
+			lng = String(point[0]);
+			
+			draw_map(lat, lng);
+		}
+		else {
+			lat = "no";
+			lng = "no";
+			
+			unrecognize_place();
+		}
+		
+		<% if @is_admin %>
+			document.getElementById("point_lat").value = lat;
+			document.getElementById("point_lng").value = lng;
+			document.getElementById("do_cache_form").submit();
+		<% end %>
+	}
+	
+	function unrecognize_place() {
+		<% if @is_admin %>
+			document.getElementById("no_map_link").style.display = "";
+		<% end %>
+	}
+	
+	<% if @place_point && (lat = @place_point[0]) && (lng = @place_point[1]) && (lat != "") && (lng != "") %>		
+		var parsed_lat = parseInt("<%= lat %>");
+		var parsed_lng = parseInt("<%= lng %>");
+		
+		if(isNaN(parsed_lat) || isNaN(parsed_lng)) {
+			unrecognize_place();
+			alert("from cache");
+		}
+		else {
+			draw_map(parsed_lat, parsed_lng);
+			alert("from cache");
+		}
+	<% else %>
+		var search = new LTLocalSearch(search_finish);
+
+		search.setCity("上海");
+		search.search("<%= activity_place %>");
+		alert("do search");
+	<% end %>
+</script>
+
+
