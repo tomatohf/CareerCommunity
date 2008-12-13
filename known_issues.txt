@@ -11,10 +11,6 @@
 	监测服务器使用情况, 何时需要作相应的调整
 
 
-Enhance 活动的功能
-	- 天气情况调用
-
-
 
 寻找 MSN Gtalk 好友
 邀请 MSN Gtalk 好友注册
@@ -27,6 +23,11 @@ Enhance 活动的功能
 
 
 将活动功能包装成一个 APP
+Enhance 活动的功能
+	- 天气情况调用
+		http://www.google.com/ig/api?hl=zh-cn&weather=,,,31238560,121412360
+		51地图 格式 x10, Google Map 格式 x1000000
+		http://www.google.com/ig/api?hl=zh_CN&weather=Shanghai
 
 
 求职小组 自定义圈子
@@ -126,6 +127,7 @@ SWFUpload 上传大小超过 3M 的文件, server 端会抛错, client 端会一
 
 更快的模板？
 Tenjin - http://www.kuwata-lab.com/tenjin/
+http://www.hokstad.com/mini-reviews-of-19-ruby-template-engines.html
 
 
 ======
