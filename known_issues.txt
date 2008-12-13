@@ -3,6 +3,8 @@
 	
 	
 服务器运行情况报告
+性能监测
+	http://www.newrelic.com (目前不支持 Lighttpd + fcgi)
 	
 
 在设置里面自定义我的空间的内容的显示规则
