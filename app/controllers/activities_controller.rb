@@ -81,7 +81,30 @@ class ActivitiesController < ApplicationController
   
   
   def index
-    jump_to("/activities/all")
+    return jump_to("/activities/all") unless has_login?
+    
+    account_id = session[:account_id]
+    
+    account_setting = AccountSetting.get_account_setting(account_id)
+    module_activity_index = account_setting.get_setting_value(:module_activity_index)
+    
+    url = case module_activity_index
+      when "all"
+        "all"
+      when "recent"
+        "recent/#{account_id}"
+      when "join"
+        "list_join/#{account_id}"
+      when "week"
+        "coming_week"
+      when "join_notbegin"
+        "list_notbegin_join/#{account_id}"
+      when "create"
+        "list_create/#{account_id}"
+      else
+        "all"
+    end
+    jump_to("/activities/#{url}")
   end
   
   def recent_index

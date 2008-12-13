@@ -1,4 +1,4 @@
-<% community_page_title("用户设置") %>
+<% community_page_title("邮件提醒与邀请 - 用户设置") %>
 
 <% options = [["true", "接收"], ["false", "不接收"]] %>
 
@@ -20,7 +20,7 @@
 		<% end %>
 		<% if @account_setting.errors.size > 0 %>
 			<p class="error_msg">
-				<%= list_model_validate_errors(@activity) %>
+				<%= list_model_validate_errors(@account_setting) %>
 			</p>
 		<% end %>
 		<% if flash[:message] %>

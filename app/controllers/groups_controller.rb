@@ -26,7 +26,7 @@ class GroupsController < ApplicationController
   include CareerCommunity::Contact::InstanceMethods
   
   layout "community"
-  before_filter :check_current_account, :only => [:index]
+  before_filter :check_current_account, :only => [:recent_index]
   before_filter :check_login, :only => [:new, :create,:edit_image, :update_image,
                                         :edit, :update, :update_access, :join, :quit, :members_edit,
                                         :members_master, :del_member, :add_admin, :del_admin,
@@ -58,6 +58,29 @@ class GroupsController < ApplicationController
   
   # ! current account needed !
   def index
+    return jump_to("/groups/all") unless has_login?
+    
+    account_id = session[:account_id]
+    
+    account_setting = AccountSetting.get_account_setting(account_id)
+    module_group_index = account_setting.get_setting_value(:module_group_index)
+    
+    url = case module_group_index
+      when "all"
+        "all"
+      when "recent"
+        "recent/#{account_id}"
+      when "join"
+        "list/#{account_id}"
+      when "admin"
+        "list_admin/#{account_id}"
+      else
+        "recent/#{account_id}"
+    end
+    jump_to("/groups/#{url}")
+  end
+  
+  def recent_index
     jump_to("/groups/recent/#{session[:account_id]}")
   end
   

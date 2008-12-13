@@ -44,6 +44,7 @@ class AccountSettingsController < ApplicationController
     render(:action => "profile")
   end
   
+  
   def email
     settings = @account_setting.get_setting
     @email_message_notify = @account_setting.get_setting_value(:email_message_notify, settings)
@@ -73,6 +74,33 @@ class AccountSettingsController < ApplicationController
     end
     
     render(:action => "email")
+  end
+  
+  
+  def module_index
+    settings = @account_setting.get_setting
+    @module_group_index = @account_setting.get_setting_value(:module_group_index, settings)
+    @module_activity_index = @account_setting.get_setting_value(:module_activity_index, settings)
+  end
+  
+  def set_module_index
+    @module_group_index = params[:module_group_index] && params[:module_group_index].strip
+    @module_activity_index = params[:module_activity_index] && params[:module_activity_index].strip
+    
+    module_index_setting = {
+      :module_group_index => AccountSetting.valid_group_index_setting_values.include?(@module_group_index) ? @module_group_index : AccountSetting.default_value(:module_group_index),
+      :module_activity_index => AccountSetting.valid_activity_index_setting_values.include?(@module_activity_index) ? @module_activity_index : AccountSetting.default_value(:module_activity_index)
+    }
+    
+    @account_setting.update_setting(module_index_setting)
+    
+    if @account_setting.save
+      flash.now[:message] = "设置已成功修改"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+    
+    render(:action => "module_index")
   end
   
   

@@ -1,4 +1,4 @@
-<% community_page_title("用户设置") %>
+<% community_page_title("资料可见性 - 用户设置") %>
 
 <% options = [["any", "任何人"], ["login", "已登录的会员"], ["friend", "我的朋友"], ["both_friend", "我的伙伴 (互相加为朋友)"]] %>
 
@@ -20,7 +20,7 @@
 		<% end %>
 		<% if @account_setting.errors.size > 0 %>
 			<p class="error_msg">
-				<%= list_model_validate_errors(@activity) %>
+				<%= list_model_validate_errors(@account_setting) %>
 			</p>
 		<% end %>
 		<% if flash[:message] %>

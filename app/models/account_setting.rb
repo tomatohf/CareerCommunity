@@ -72,6 +72,14 @@ class AccountSetting < ActiveRecord::Base
     :email_activity_invitation_notify => "true",
     :email_vote_invitation_notify => "true",
     
+    # module index page settings
+    # group
+    # "all" or "recent" or "join" or "admin"
+    :module_group_index => "recent",
+    # activity
+    # "all" or "week" or "recent" or "join" or "join_notbegin" or "create"
+    :module_activity_index => "all",
+    
     :dumy => ""
   }
   def self.default_value(name)
@@ -87,6 +95,14 @@ class AccountSetting < ActiveRecord::Base
   
   def self.valid_email_setting_values
     ["true", "false"]
+  end
+  
+  def self.valid_group_index_setting_values
+    ["all", "recent", "join", "admin"]
+  end
+  
+  def self.valid_activity_index_setting_values
+    ["all", "week", "recent", "join", "join_notbegin", "create"]
   end
     
   # end: valid setting values

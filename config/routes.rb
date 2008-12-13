@@ -106,6 +106,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :messages
   
   
+  map.connect "/groups/recent_index", :controller => "groups", :action => "recent_index"
   map.connect "/groups/list/:id/:page", :controller => "groups", :action => "list", :id => /\d+/, :page => /\d+/
   map.connect "/groups/list_admin/:id/:page", :controller => "groups", :action => "list_admin", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all/:page", :controller => "groups", :action => "all", :page => /\d+/
