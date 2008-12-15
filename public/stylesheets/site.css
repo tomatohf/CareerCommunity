@@ -427,7 +427,7 @@ select.dropdown_list, .dropdown_list select {
 .warning_msg {
 	background-image: url(/images/warning_small.png);
 	border: 1px dashed green;
-	color: black;
+	color: #333333;
 }
 
 .important_info_msg {

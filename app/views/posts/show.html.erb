@@ -14,10 +14,15 @@
 		<a href="/<%= pluralized_post_type %>/<%= @type_id %>">
 			<img src="<%= face_img_src(@type_image) %>" border="0" /></a>
 	</div>
+	
+	<div class="community_block">
+		<a href="/<%= pluralized_post_type %>/<%= @type_id %>">
+			返回<%= @type_label %> <%= type_name %></a>
+	</div>
 
 	<div class="community_block">
 		<a href="/<%= pluralized_post_type %>/post/<%= @type_id %>">
-			返回<%= @type_label %> <%= type_name %> 的全部讨论话题</a>
+			全部圈子讨论话题</a>
 	</div>
 	
 	<% if @access.include?(:member) %>

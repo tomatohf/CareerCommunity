@@ -59,7 +59,7 @@
 						<span class="form_info_s">(1000 字以内)</span>
 					</td>
 					<td>
-						<textarea id="group_desc" name="group_desc" class="text_field" cols="30" rows="3"><%= h(@group.desc) %></textarea>
+						<textarea id="group_desc" name="group_desc" class="text_field" cols="40" rows="4"><%= h(@group.desc) %></textarea>
 					</td>
 				</tr>
 				
@@ -71,12 +71,11 @@
 			            </label>
 					</td>
 					<td>
-						<textarea id="group_notice" name="group_notice" class="text_field" cols="30" rows="5"><%= h(@group.get_setting[:notice]) %></textarea>
+						<textarea id="group_notice" name="group_notice" class="text_field" cols="40" rows="5"><%= h(@group.get_setting[:notice]) %></textarea>
 					</td>
 				</tr>
 				
 				<% if superadmin?(session[:account_id]) %>
-					<% # only the first registered user can see this option %>
 					<% # it should be only Tomato %>
 					<tr>
 						<td>
@@ -135,6 +134,16 @@
 					</td>
 				</tr>
 				<% end %>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= check_box_tag :need_join_to_view_post_list, value = "true", @group.get_setting[:need_join_to_view_post_list] %>
+			            <label for="need_join_to_view_post_list">
+			                只有圈子成员可以查看圈内讨论话题列表
+			            </label>
+					</td>
+				</tr>
 				
 				<tr>
 					<td></td>

@@ -200,6 +200,7 @@ class GroupsController < ApplicationController
     group_setting = {
       :need_approve => (params[:need_approve] == "true"),
       :need_join_to_view_post => (params[:need_join_to_view_post] == "true"),
+      :need_join_to_view_post_list => (params[:need_join_to_view_post_list] == "true"),
       :notice => "欢迎来到圈子 #{@group.name} ~"
     }
     
@@ -238,7 +239,12 @@ class GroupsController < ApplicationController
       end
     end
     
+    @no_membership = (@relationship == "not_member") || (@relationship == "logout")
+    
     @group_setting = @group.get_setting
+    
+    need_join_to_view_post_list = @group_setting[:need_join_to_view_post_list]
+    @can_list_post = !(need_join_to_view_post_list && @no_membership)
     
     @new_members = GroupMember.agreed.find(
       :all,
@@ -254,7 +260,7 @@ class GroupsController < ApplicationController
       :conditions => ["group_id = ? and top = ?", @group_id, true],
       :include => [:account],
       :order => "responded_at DESC, created_at DESC"
-    )
+    ) if @can_list_post
     
     @group_posts = GroupPost.find(
       :all,
@@ -263,7 +269,7 @@ class GroupsController < ApplicationController
       :conditions => ["group_id = ? and top = ?", @group_id, false],
       :include => [:account],
       :order => "responded_at DESC, created_at DESC"
-    )
+    ) if @can_list_post
     
     @group_activities = Activity.uncancelled.find(
       :all,
@@ -295,24 +301,30 @@ class GroupsController < ApplicationController
     @group_id = params[:id]
     @group, @group_image = Group.get_group_with_image(@group_id)
     
+    need_join_to_view_post_list = @group.get_setting[:need_join_to_view_post_list]
+    
+    @can_view = !(need_join_to_view_post_list && (!GroupMember.is_group_member(@group_id, session[:account_id])))
+    
     @top_group_posts = GroupPost.find(
       :all,
       :select => "id, created_at, group_id, top, account_id, title, responded_at",
       :conditions => ["group_id = ? and top = ?", @group_id, true],
       :include => [:account],
       :order => "responded_at DESC, created_at DESC"
-    )
+    ) if @can_view
     
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    @group_posts = GroupPost.paginate(
-      :page => page,
-      :per_page => Post_List_Size,
-      :select => "id, created_at, group_id, top, account_id, title, responded_at",
-      :conditions => ["group_id = ? and top = ?", @group_id, false],
-      :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
-    )
+    if @can_view
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @group_posts = GroupPost.paginate(
+        :page => page,
+        :per_page => Post_List_Size,
+        :select => "id, created_at, group_id, top, account_id, title, responded_at",
+        :conditions => ["group_id = ? and top = ?", @group_id, false],
+        :include => [:account],
+        :order => "responded_at DESC, created_at DESC"
+      )
+    end
   end
   
   def activity
@@ -593,12 +605,14 @@ class GroupsController < ApplicationController
   def update_access
     need_approve = (params[:need_approve] == "true")
     need_join_to_view_post = (params[:need_join_to_view_post] == "true")
+    need_join_to_view_post_list = (params[:need_join_to_view_post_list] == "true")
     
     @group, @group_image = Group.get_group_with_image(@group_id)
     
     group_setting = {
       :need_approve => need_approve,
-      :need_join_to_view_post => need_join_to_view_post
+      :need_join_to_view_post => need_join_to_view_post,
+      :need_join_to_view_post_list => need_join_to_view_post_list
     }
     
     @group.update_setting(group_setting)

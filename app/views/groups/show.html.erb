@@ -2,7 +2,6 @@
 <% community_page_title(page_title) %>
 
 <% can_admin = @relationship == "master" || @relationship == "admin" %>
-<% no_membership = @relationship == "not_member" || @relationship == "logout" %>
 
 <div class="float_r group_container_r">
 	<div class="community_block align_c">
@@ -52,7 +51,7 @@
 		<% end %>
 	</div>
 	
-	<% unless no_membership %>
+	<% unless @no_membership %>
 		<div class="community_block">
 			<a href="/groups/invite/<%= @group_id %>">
 				<img src="/images/groups/qiao_small.png" border="0" />
@@ -70,7 +69,7 @@
 		<%= thin_hr %>
 	</div>
 	
-	<% if no_membership %>
+	<% if @no_membership %>
 		<div class="community_block align_c">
 			<% form_tag "/groups/#{@group_id}/join", :method => :post do %>
 				<input type="submit" value="加入这个圈子" class="button" />
@@ -192,47 +191,56 @@
 	<div class="community_title">
 		最近圈内讨论 ...
 	</div>
+	<% if @can_list_post %>
 	
-	<div class="community_block">
-		<div class="space_section_title">
-			<a class="float_r" title="收起" id="post_section_expand" href="#" onclick="collapse_section('post_section'); return false;">
-				<img src="/images/expand.png" border="0" /></a>
-			<a class="float_r" title="展开" id="post_section_collapse" href="#" onclick="expand_section('post_section'); return false;" style="display: none">
-				<img src="/images/collapse.png" border="0" /></a>
-			<% unless no_membership %>
-				<span class="float_r">
-					<a href="/group/posts/compose/<%= @group_id %>">发起新的讨论话题</a>
-					&nbsp;&nbsp;&nbsp;
-				</span>
-			<% end %>
+		<div class="community_block">
+			<div class="space_section_title">
+				<a class="float_r" title="收起" id="post_section_expand" href="#" onclick="collapse_section('post_section'); return false;">
+					<img src="/images/expand.png" border="0" /></a>
+				<a class="float_r" title="展开" id="post_section_collapse" href="#" onclick="expand_section('post_section'); return false;" style="display: none">
+					<img src="/images/collapse.png" border="0" /></a>
+				<% unless @no_membership %>
+					<span class="float_r">
+						<a href="/group/posts/compose/<%= @group_id %>">发起新的讨论话题</a>
+						&nbsp;&nbsp;&nbsp;
+					</span>
+				<% end %>
 			
-			<img class="float_l" src="/images/groups/post_small.png" border="0" />
-			&nbsp;&nbsp;&nbsp;
-			<a href="/groups/post/<%= @group_id %>">全部圈内讨论</a>
+				<img class="float_l" src="/images/groups/post_small.png" border="0" />
+				&nbsp;&nbsp;&nbsp;
+				<a href="/groups/post/<%= @group_id %>">全部圈内讨论</a>
+			</div>
+		
+			<div id="post_section" class="community_block">
+				<table cellpadding="0" cellspacing="5" class="main_part_w">
+					<thead>
+						<tr>
+							<td width="51%">话题</td>
+							<td width="6%" align="right">评论</td>
+							<td width="18%" align="right">发起人</td>
+							<td width="25%" align="right">最后参与</td>
+						</tr>
+					</thead>
+					<tbody>
+						<%= render :partial => "group_post", :collection => @top_group_posts %>
+						<%= render :partial => "group_post", :collection => @group_posts %>
+					</tbody>
+				</table>
+				<% unless @top_group_posts.size + @group_posts.size > 0 %>
+					<div class="form_info_l">
+						还没有讨论话题 ...
+					</div>
+				<% end %>
+			</div>
 		</div>
 		
-		<div id="post_section" class="community_block">
-			<table cellpadding="0" cellspacing="5" class="main_part_w">
-				<thead>
-					<tr>
-						<td width="51%">话题</td>
-						<td width="6%" align="right">评论</td>
-						<td width="18%" align="right">发起人</td>
-						<td width="25%" align="right">最后参与</td>
-					</tr>
-				</thead>
-				<tbody>
-					<%= render :partial => "group_post", :collection => @top_group_posts %>
-					<%= render :partial => "group_post", :collection => @group_posts %>
-				</tbody>
-			</table>
-			<% unless @top_group_posts.size + @group_posts.size > 0 %>
-				<div class="form_info_l">
-					还没有讨论话题 ...
-				</div>
-			<% end %>
-		</div>
-	</div>
+	<% else %>
+		
+		<p class="warning_msg">
+			根据圈子的设置, 只有圈子成员可以查看圈内讨论话题列表
+		</p>
+		
+	<% end %>
 	
 	
 	<div class="community_title">
@@ -245,7 +253,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="activity_section_collapse" href="#" onclick="expand_section('activity_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% unless no_membership %>
+			<% unless @no_membership %>
 				<span class="float_r">
 					<a href="#" onclick="document.getElementById('new_group_activity_form').submit(); return false;">
 						发起新的圈内活动</a>
@@ -280,7 +288,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="vote_section_collapse" href="#" onclick="expand_section('vote_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% unless no_membership %>
+			<% unless @no_membership %>
 				<span class="float_r">
 					<a href="#" onclick="document.getElementById('new_group_vote_topic_form').submit(); return false;">
 						发起新的圈内投票</a>
@@ -315,7 +323,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="bookmark_section_collapse" href="#" onclick="expand_section('bookmark_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% unless no_membership %>
+			<% unless @no_membership %>
 				<span class="float_r">
 					<a href="#" onclick="document.getElementById('new_group_bookmark_form').submit(); return false;">
 						添加新的圈内收藏</a>
@@ -360,7 +368,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="photo_section_collapse" href="#" onclick="expand_section('photo_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% unless no_membership %>
+			<% unless @no_membership %>
 				<span class="float_r">
 					<a href="/group/linked_photos/select/<%= @group_id %>">
 						添加新的圈子照片</a>

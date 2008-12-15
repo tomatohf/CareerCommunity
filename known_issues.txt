@@ -1,15 +1,17 @@
 ﻿照片按相册设置查看权限
 圈子内容更全面的 view 权限设置
-	
-	
+
+
+提问频道
+
+
+
 服务器运行情况报告
 性能监测
 	http://www.newrelic.com (目前不支持 Lighttpd + fcgi)
 	
-
 在设置里面自定义我的空间的内容的显示规则
 活动列表缓存的 活动状态 bug
-
 
 寻找 MSN Gtalk 好友
 邀请 MSN Gtalk 好友注册
@@ -27,6 +29,7 @@ Enhance 活动的功能
 		http://www.google.com/ig/api?hl=zh-cn&weather=,,,31238560,121412360
 		51地图 格式 x10, Google Map 格式 x1000000
 		http://www.google.com/ig/api?hl=zh_CN&weather=Shanghai
+		无法保证天气预报的准确度 ... , 因为无法保证活动地点的经纬度坐标的解析准确度 ... 
 
 
 求职小组 自定义圈子
