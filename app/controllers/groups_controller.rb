@@ -35,7 +35,9 @@ class GroupsController < ApplicationController
                                         :invite, :invite_member, :edit_master, :update_master,
                                         :photo_selector_for_group_image, :remove_activity, :remove_vote,
                                         :invite_contact, :import_contact, :select_contact,
-                                        :send_contact_invitations]
+                                        :send_contact_invitations,
+                                        :recent, :all_post, :all_activity, :all_vote, :all_bookmark,
+                                        :all_photo, :created_post, :commented_post]
   before_filter :check_limited, :only => [:create, :update_image, :update, :update_access, :join,
                                           :quit, :del_member, :add_admin, :del_admin,
                                           :approve_member, :reject_member, :approve_all,
@@ -53,9 +55,8 @@ class GroupsController < ApplicationController
   before_filter :check_group_member, :only => [:invite, :invite_member, :invite_contact, :import_contact,
                                                 :select_contact, :send_contact_invitations]
   
-  before_filter :check_login, :check_owner, :only => [:recent, :all_post, :all_activity, :all_vote,
-                                                      :all_bookmark, :all_photo, :created_post,
-                                                      :commented_post]
+  before_filter :check_owner, :only => [:recent, :all_post, :all_activity, :all_vote, :all_bookmark,
+                                        :all_photo, :created_post, :commented_post]
   
   before_filter :check_custom_group, :only => [:show]
   
@@ -223,6 +224,7 @@ class GroupsController < ApplicationController
       :need_approve => (params[:need_approve] == "true"),
       :need_join_to_view_post => (params[:need_join_to_view_post] == "true"),
       :need_join_to_view_post_list => (params[:need_join_to_view_post_list] == "true"),
+      :need_join_to_view_bookmark => (params[:need_join_to_view_bookmark] == "true"),
       :notice => "欢迎来到圈子 #{@group.name} ~"
     }
     
@@ -267,6 +269,9 @@ class GroupsController < ApplicationController
     
     need_join_to_view_post_list = @group_setting[:need_join_to_view_post_list]
     @can_list_post = !(need_join_to_view_post_list && @no_membership)
+    
+    need_join_to_view_bookmark = @group_setting[:need_join_to_view_bookmark]
+    @can_view_bookmark = !(need_join_to_view_bookmark && @no_membership)
     
     @new_members = GroupMember.agreed.find(
       :all,
@@ -430,17 +435,22 @@ class GroupsController < ApplicationController
     @group_id = params[:id]
     @group, @group_image = Group.get_group_with_image(@group_id)
     
-    @is_admin = GroupMember.is_group_admin(@group_id, session[:account_id])
+    need_join_to_view_bookmark = @group.get_setting[:need_join_to_view_bookmark]
+    @can_view_bookmark = !(need_join_to_view_bookmark && (!GroupMember.is_group_member(@group_id, session[:account_id])))
     
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    @bookmarks = GroupBookmark.paginate(
-      :page => page,
-      :per_page => Bookmark_List_Size,
-      :conditions => ["group_id = ?", @group_id],
-      :include => [:account => :profile_pic],
-      :order => "created_at DESC"
-    )
+    if @can_view_bookmark
+      @is_admin = GroupMember.is_group_admin(@group_id, session[:account_id])
+    
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @bookmarks = GroupBookmark.paginate(
+        :page => page,
+        :per_page => Bookmark_List_Size,
+        :conditions => ["group_id = ?", @group_id],
+        :include => [:account => :profile_pic],
+        :order => "created_at DESC"
+      )
+    end
   end
   
   def all_post
@@ -646,13 +656,15 @@ class GroupsController < ApplicationController
     need_approve = (params[:need_approve] == "true")
     need_join_to_view_post = (params[:need_join_to_view_post] == "true")
     need_join_to_view_post_list = (params[:need_join_to_view_post_list] == "true")
+    need_join_to_view_bookmark = (params[:need_join_to_view_bookmark] == "true")
     
     @group, @group_image = Group.get_group_with_image(@group_id)
     
     group_setting = {
       :need_approve => need_approve,
       :need_join_to_view_post => need_join_to_view_post,
-      :need_join_to_view_post_list => need_join_to_view_post_list
+      :need_join_to_view_post_list => need_join_to_view_post_list,
+      :need_join_to_view_bookmark => need_join_to_view_bookmark
     }
     
     @group.update_setting(group_setting)

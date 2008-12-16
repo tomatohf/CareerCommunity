@@ -316,46 +316,55 @@
 	<div class="community_title">
 		最新圈内收藏 ...
 	</div>
-	
-	<div class="community_block">
-		<div class="space_section_title">
-			<a class="float_r" title="收起" id="bookmark_section_expand" href="#" onclick="collapse_section('bookmark_section'); return false;">
-				<img src="/images/expand.png" border="0" /></a>
-			<a class="float_r" title="展开" id="bookmark_section_collapse" href="#" onclick="expand_section('bookmark_section'); return false;" style="display: none">
-				<img src="/images/collapse.png" border="0" /></a>
-			<% unless @no_membership %>
-				<span class="float_r">
-					<a href="#" onclick="document.getElementById('new_group_bookmark_form').submit(); return false;">
-						添加新的圈内收藏</a>
-					&nbsp;&nbsp;&nbsp;
-				</span>
-			<% end %>
+	<% if @can_view_bookmark %>
+
+		<div class="community_block">
+			<div class="space_section_title">
+				<a class="float_r" title="收起" id="bookmark_section_expand" href="#" onclick="collapse_section('bookmark_section'); return false;">
+					<img src="/images/expand.png" border="0" /></a>
+				<a class="float_r" title="展开" id="bookmark_section_collapse" href="#" onclick="expand_section('bookmark_section'); return false;" style="display: none">
+					<img src="/images/collapse.png" border="0" /></a>
+				<% unless @no_membership %>
+					<span class="float_r">
+						<a href="#" onclick="document.getElementById('new_group_bookmark_form').submit(); return false;">
+							添加新的圈内收藏</a>
+						&nbsp;&nbsp;&nbsp;
+					</span>
+				<% end %>
 			
-			<img class="float_l" src="/images/index/bookmark_icon.gif" border="0" />
-			&nbsp;&nbsp;&nbsp;
-			<a href="/groups/bookmark/<%= @group_id %>">全部圈内收藏</a>
+				<img class="float_l" src="/images/index/bookmark_icon.gif" border="0" />
+				&nbsp;&nbsp;&nbsp;
+				<a href="/groups/bookmark/<%= @group_id %>">全部圈内收藏</a>
+			</div>
+		
+			<div id="bookmark_section" class="community_block">
+				<% cache("#{GroupBookmark::FCKP_groups_show_bookmark}_#{@group_id}") do %>
+					<%
+						bookmarks = GroupBookmark.find(
+							:all,
+							:limit => GroupsController::Group_Bookmark_Num,
+							:conditions => ["group_id = ?", @group_id],
+							:order => "created_at DESC"
+						)
+					%>
+					<%= render :partial => "/bookmarks/bookmark_small", :collection => bookmarks %>
+
+					<% unless bookmarks.size > 0 %>
+						<div class="form_info_l">
+							还没有圈内收藏 ...
+						</div>
+					<% end %>
+				<% end %>
+			</div>
 		</div>
 		
-		<div id="bookmark_section" class="community_block">
-			<% cache("#{GroupBookmark::FCKP_groups_show_bookmark}_#{@group_id}") do %>
-				<%
-					bookmarks = GroupBookmark.find(
-						:all,
-						:limit => GroupsController::Group_Bookmark_Num,
-						:conditions => ["group_id = ?", @group_id],
-						:order => "created_at DESC"
-					)
-				%>
-				<%= render :partial => "/bookmarks/bookmark_small", :collection => bookmarks %>
-
-				<% unless bookmarks.size > 0 %>
-					<div class="form_info_l">
-						还没有圈内收藏 ...
-					</div>
-				<% end %>
-			<% end %>
-		</div>
-	</div>
+	<% else %>
+		
+		<p class="warning_msg">
+			根据圈子的设置, 只有圈子成员可以查看圈内收藏
+		</p>
+		
+	<% end %>
 	
 	
 	<div class="community_title">

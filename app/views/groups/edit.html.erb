@@ -135,6 +135,15 @@
 				</tr>
 				<% end %>
 				
+				
+				<tr>
+					<td colspan="2">
+						<div class="group_setting_category_label">
+							圈内讨论话题:
+						</div>
+					</td>
+				</tr>
+				
 				<tr>
 					<td></td>
 					<td>
@@ -154,6 +163,26 @@
 			            </label>
 					</td>
 				</tr>
+				
+				
+				<tr>
+					<td colspan="2">
+						<div class="group_setting_category_label">
+							圈内收藏:
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= check_box_tag :need_join_to_view_bookmark, value = "true", @group.get_setting[:need_join_to_view_bookmark] %>
+			            <label for="need_join_to_view_bookmark">
+			                只有圈子成员可以查看圈内收藏
+			            </label>
+					</td>
+				</tr>
+				
 				
 				<tr>
 					<td></td>
