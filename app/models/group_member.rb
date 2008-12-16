@@ -114,4 +114,9 @@ class GroupMember < ActiveRecord::Base
     )
   end
   
+  
+  def self.load_group_with_image(members)
+    preload_associations(members, [:group => [:image]])
+  end
+  
 end

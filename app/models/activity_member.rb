@@ -155,4 +155,9 @@ class ActivityMember < ActiveRecord::Base
     self.agreed.count(:conditions => ["activity_id = ?", activity_id])
   end
   
+  
+  def self.load_activity_with_image(members)
+    preload_associations(members, [:activity => [:image]])
+  end
+  
 end

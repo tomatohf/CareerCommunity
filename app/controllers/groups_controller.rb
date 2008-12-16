@@ -91,19 +91,29 @@ class GroupsController < ApplicationController
     
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
-    @group_members = GroupMember.agreed.find(
+    all_group_members = GroupMember.agreed.find(
       :all,
-      :limit => Group_Recent_List_Size,
       :conditions => ["account_id = ?", @owner_id],
-      :include => [:group => [:image]],
       :order => "join_at DESC"
     )
+    
+    joined_group_ids = []
+    @group_members = []
+    all_group_members.each_index do |i|
+      m = all_group_members[i]
+      
+      joined_group_ids << m.group_id
+      
+      @group_members << m if i < Group_Recent_List_Size
+    end
+    
+    GroupMember.load_group_with_image(@group_members)
     
     @group_posts = GroupPost.find(
       :all,
       :limit => Post_Recent_List_Size,
       :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.top, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.nick, accounts.email",
-      :conditions => ["group_id in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
+      :conditions => ["group_id in (?)", joined_group_ids],
       :include => [:account, :group],
       :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
     )
@@ -111,7 +121,7 @@ class GroupsController < ApplicationController
     @group_activities = Activity.uncancelled.find(
       :all,
       :limit => Activity_Recent_List_Size,
-      :conditions => ["in_group in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
+      :conditions => ["in_group in (?)", joined_group_ids],
       :include => [:image],
       :order => "begin_at DESC"
     )
@@ -119,7 +129,7 @@ class GroupsController < ApplicationController
     @group_vote_topics = VoteTopic.find(
       :all,
       :limit => Group_Vote_Num,
-      :conditions => ["group_id in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
+      :conditions => ["group_id in (?)", joined_group_ids],
       :include => [:account],
       :order => "created_at DESC"
     )
@@ -127,7 +137,7 @@ class GroupsController < ApplicationController
     @group_photos = GroupPhoto.find(
       :all,
       :limit => Photo_Recent_List_Size,
-      :conditions => ["group_id in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
+      :conditions => ["group_id in (?)", joined_group_ids],
       :include => [:photo],
       :order => "created_at DESC"
     )

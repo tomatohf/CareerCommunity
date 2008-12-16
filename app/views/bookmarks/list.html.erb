@@ -18,7 +18,7 @@
 	
 	<div class="community_block align_c">
 		»
-		<a href="/bookmarks/list_personal_index">
+		<a href="/bookmarks/list_personal_index" style="font-size: 14px;">
 			我的所有推荐</a>
 	</div>
 	
@@ -28,18 +28,6 @@
 
 	<h2><%= @page_title %></h2>
 	
-	<% if action_name == "personal" || action_name == "group" %>
-		<div class="community_block_narrow">
-			<a href="/bookmarks/personal"<%= %Q! class="link_selected"! if action_name == "personal" %>>
-				最新会员推荐</a>
-			
-			&nbsp;&nbsp;&nbsp;
-		
-			<a href="/bookmarks/group"<%= %Q! class="link_selected"! if action_name == "group" %>>
-				最新圈子收藏</a>
-		</div>
-	<% end %>
-	
 	<div class="community_block form_info_s">
 		共有
 		<b><%= @bookmarks.total_entries %></b>
@@ -47,7 +35,7 @@
 	</div>
 
 	<div class="community_block">
-		<%= render :partial => "bookmark", :collection => @bookmarks, :locals => {:can_del => @edit} %>
+		<%= render :partial => "personal_bookmark", :collection => @bookmarks, :locals => {:can_del => @edit, :show_face => true} %>
 	</div>
 	
 	<div class="community_block">

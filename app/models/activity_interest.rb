@@ -46,4 +46,9 @@ class ActivityInterest < ActiveRecord::Base
     )
   end
   
+  
+  def self.load_activity_with_image(interests)
+    preload_associations(interests, [:activity => [:image]])
+  end
+  
 end

@@ -118,27 +118,49 @@ class ActivitiesController < ApplicationController
     
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
-    @join_activity_members = ActivityMember.agreed.find(
+    all_activity_members = ActivityMember.agreed.find(
       :all,
-      :limit => Activity_Recent_List_Size,
       :conditions => ["account_id = ?", @owner_id],
-      :include => [:activity => [:image]],
       :order => "join_at DESC"
     )
     
-    @activity_interests = ActivityInterest.find(
+    joined_activity_ids = []
+    @join_activity_members = []
+    all_activity_members.each_index do |i|
+      m = all_activity_members[i]
+      
+      joined_activity_ids << m.activity_id
+      
+      @join_activity_members << m if i < Activity_Recent_List_Size
+    end
+    
+    ActivityMember.load_activity_with_image(@join_activity_members)
+    
+    
+    all_activity_interests = ActivityInterest.find(
       :all,
-      :limit => Activity_Recent_List_Size,
       :conditions => ["account_id = ?", @owner_id],
-      :include => [:activity => [:image]],
       :order => "created_at DESC"
     )
+    
+    activity_interest_ids = []
+    @activity_interests = []
+    all_activity_interests.each_index do |i|
+      interests = all_activity_interests[i]
+      
+      activity_interest_ids << interests.activity_id
+      
+      @activity_interests << interests if i < Activity_Recent_List_Size
+    end
+    
+    ActivityInterest.load_activity_with_image(@activity_interests)
+    
     
     @join_activity_posts = ActivityPost.find(
       :all,
       :limit => Post_Recent_List_Size,
       :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.nick",
-      :conditions => ["activity_id in (select activity_id from activity_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
+      :conditions => ["activity_id in (?)", joined_activity_ids],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
     )
@@ -147,7 +169,7 @@ class ActivitiesController < ApplicationController
       :all,
       :limit => Post_Recent_List_Size,
       :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.nick",
-      :conditions => ["activity_id in (select activity_id from activity_interests where account_id = ?)", @owner_id],
+      :conditions => ["activity_id in (?)", activity_interest_ids],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
     )
@@ -155,7 +177,7 @@ class ActivitiesController < ApplicationController
     @activity_photos = ActivityPhoto.find(
       :all,
       :limit => Photo_Recent_List_Size,
-      :conditions => ["activity_id in (select activity_id from activity_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
+      :conditions => ["activity_id in (?)", joined_activity_ids],
       :include => [:photo],
       :order => "created_at DESC"
     )

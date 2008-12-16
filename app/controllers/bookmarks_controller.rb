@@ -17,7 +17,7 @@ class BookmarksController < ApplicationController
   end
   
   def personal
-    @page_title = "最新会员推荐"
+    @page_title = "成员最新推荐"
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
@@ -25,21 +25,6 @@ class BookmarksController < ApplicationController
       :page => page,
       :per_page => Bookmark_List_Size,
       :include => [:account => [:profile_pic]],
-      :order => "created_at DESC"
-    )
-    
-    render :action => "list"
-  end
-  
-  def group
-    @page_title = "最新圈子收藏"
-    
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    @bookmarks = GroupBookmark.paginate(
-      :page => page,
-      :per_page => Bookmark_List_Size,
-      :include => [:account, {:group => [:image]}],
       :order => "created_at DESC"
     )
     
