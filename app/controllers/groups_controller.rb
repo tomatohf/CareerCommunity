@@ -12,6 +12,7 @@ class GroupsController < ApplicationController
   Group_Recent_List_Size = 24
   Post_Recent_List_Size = 25
   Activity_Recent_List_Size = 16
+  Bookmark_Recent_List_Size = 10
   Photo_Recent_List_Size = 15
   
   New_Member_Num = 15
@@ -133,6 +134,13 @@ class GroupsController < ApplicationController
       :include => [:account],
       :order => "created_at DESC"
     )
+    
+    @group_bookmarks = GroupBookmark.find(
+			:all,
+			:limit => Bookmark_Recent_List_Size,
+			:conditions => ["group_id in (?)", joined_group_ids],
+			:order => "created_at DESC"
+		)
     
     @group_photos = GroupPhoto.find(
       :all,
@@ -482,6 +490,24 @@ class GroupsController < ApplicationController
       :per_page => Vote_List_Size,
       :conditions => ["group_id in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
       :include => [:image, :account],
+      :order => "created_at DESC"
+    )
+  end
+  
+  def all_bookmark
+    @owner_id = params[:id]
+    
+    @edit = session[:account_id].to_s == @owner_id
+    
+    @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @bookmarks = GroupBookmark.paginate(
+      :page => page,
+      :per_page => Bookmark_List_Size,
+      :conditions => ["group_id in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
+      :include => [:account, {:group => :image}],
       :order => "created_at DESC"
     )
   end

@@ -1,0 +1,72 @@
+<% can_del = (group_bookmark.account_id == session[:account_id]) %>
+
+<%
+	account = group_bookmark.account
+	account_id = account.id
+	account_nick = account.get_nick
+%>
+
+<%
+	group = group_bookmark.group
+
+	group_id = group.id
+	group_name = group.name
+	group_image = group.get_image_url
+
+	Group.set_group_with_image_cache(group_id, group, group_image)
+%>
+
+
+<div class="bookmark">
+	
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 80px">
+				<div class="align_c">
+					<div>
+						<a href="/groups/<%= group_id %>">
+							<img src="<%= face_img_src(group_image) %>" border="0" /></a>
+					</div>
+					<div>
+						<a href="/groups/<%= group_id %>" class="account_nick_link">
+							<%= h(group_name) %></a>
+					</div>
+				</div>
+			</td>
+		
+			<td style="width: 20px;"></td>
+
+			<td valign="top">
+				<% bookmark_url = h(group_bookmark.get_display_url) %>
+				<div class="bookmark_title">
+					<% if can_del %>
+						<a class="float_r" title="删除" href="#" onclick="delete_bookmark(<%= group_bookmark.id %>); return false;">
+							<img src="/images/delete_small.gif" border="0" /></a>
+					<% end %>
+						
+					
+					<% bookmark_target_url = h(group_bookmark.url) %>
+					<a href="<%= bookmark_target_url %>" target="_blank" class="account_nick_link">
+						<%= h(group_bookmark.title) %>
+						<img src="/images/ext_link_small.gif" border="0" /></a>
+				</div>
+				<div class="form_info_s">
+					<%= h(group_bookmark.desc) %>
+					&nbsp;&nbsp;&nbsp;
+					(来自
+					<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+						<%= h(account_nick) %></a>
+					|
+					<%= format_datetime(group_bookmark.created_at) %>)
+				</div>
+				<div class="form_info_s">
+					<a href="<%= bookmark_target_url %>" target="_blank">
+						<%= bookmark_url %></a>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
+</div>
+
+

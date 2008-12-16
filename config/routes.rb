@@ -323,6 +323,7 @@ ActionController::Routing::Routes.draw do |map|
   
   
   map.connect "/bookmarks/list_personal_index", :controller => "bookmarks", :action => "list_personal_index"
+  map.connect "/bookmarks/list_group_index", :controller => "bookmarks", :action => "list_group_index"
   map.connect "/bookmarks/personal/:page", :controller => "bookmarks", :action => "personal", :page => /\d+/
   map.connect "/bookmarks/group/:page", :controller => "bookmarks", :action => "group", :page => /\d+/
   map.connect "/bookmarks/list_personal/:id/:page", :controller => "bookmarks", :action => "list_personal", :id => /\d+/, :page => /\d+/

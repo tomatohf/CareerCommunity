@@ -3,7 +3,7 @@ class BookmarksController < ApplicationController
   Bookmark_List_Size = 20
   
   layout "community"
-  before_filter :check_current_account, :only => [:list_personal_index]
+  before_filter :check_current_account, :only => [:list_personal_index, :list_group_index]
   before_filter :check_login, :only => [:new, :create, :destroy,
                                         :new_group_bookmark, :create_inline]
   before_filter :check_limited, :only => [:create, :destroy, :create_inline]
@@ -91,6 +91,10 @@ class BookmarksController < ApplicationController
     jump_to("/bookmarks/list_personal/#{session[:account_id]}")
   end
   
+  def list_group_index
+    jump_to("/groups/all_bookmark/#{session[:account_id]}")
+  end
+  
   def list_personal
     @owner_id = params[:id] && params[:id].strip
     @edit = (session[:account_id].to_s == @owner_id)
@@ -112,7 +116,7 @@ class BookmarksController < ApplicationController
     @bookmark.destroy
     
     jump_to_target = if @bookmark.kind_of?(GroupBookmark)
-      "/groups/bookmark/#{@bookmark.group_id}"
+      (@bookmark_type == "group_recent") ? "/groups/all_bookmark/#{@bookmark.account_id}" : "/groups/bookmark/#{@bookmark.group_id}"
     else
       "/bookmarks/list_personal/#{session[:account_id]}"
     end
@@ -178,10 +182,10 @@ class BookmarksController < ApplicationController
   
   def check_bookmark_access
     @bookmark_id = params[:id]
-    bookmark_type = params[:bookmark_type] && params[:bookmark_type].strip
+    @bookmark_type = params[:bookmark_type] && params[:bookmark_type].strip
     
-    @bookmark = PersonalBookmark.find(@bookmark_id) if bookmark_type == "personal"
-    @bookmark = GroupBookmark.find(@bookmark_id) if bookmark_type == "group"
+    @bookmark = PersonalBookmark.find(@bookmark_id) if @bookmark_type == "personal"
+    @bookmark = GroupBookmark.find(@bookmark_id) if @bookmark_type == "group" || @bookmark_type == "group_recent"
     
     jump_to("/errors/forbidden") unless (@bookmark && can_delete_bookmark(@bookmark))
   end

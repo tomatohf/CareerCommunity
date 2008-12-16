@@ -13,6 +13,7 @@
 	account_pic_url = account.get_profile_pic_url
 	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
 %>
+
 <div class="bookmark">
 	
 	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
@@ -42,8 +43,9 @@
 							<img src="/images/delete_small.gif" border="0" /></a>
 					<% end %>
 						
-						
-					<a href="<%= h(personal_bookmark.url) %>" target="_blank" class="account_nick_link">
+					
+					<% bookmark_target_url = h(personal_bookmark.url) %>
+					<a href="<%= bookmark_target_url %>" target="_blank" class="account_nick_link">
 						<%= h(personal_bookmark.title) %>
 						<img src="/images/ext_link_small.gif" border="0" /></a>
 				</div>
@@ -53,13 +55,12 @@
 					(<i><%= format_datetime(personal_bookmark.created_at) %></i>)
 				</div>
 				<div class="form_info_s">
-					<a href="<%= h(personal_bookmark.url) %>" target="_blank">
+					<a href="<%= bookmark_target_url %>" target="_blank">
 						<%= bookmark_url %></a>
 				</div>
 			</td>
 		</tr>
 	</table>
-	
 
 </div>
 
