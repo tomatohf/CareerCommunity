@@ -53,6 +53,10 @@ class GroupsController < ApplicationController
   before_filter :check_group_member, :only => [:invite, :invite_member, :invite_contact, :import_contact,
                                                 :select_contact, :send_contact_invitations]
   
+  before_filter :check_login, :check_owner, :only => [:recent, :all_post, :all_activity, :all_vote,
+                                                      :all_bookmark, :all_photo, :created_post,
+                                                      :commented_post]
+  
   before_filter :check_custom_group, :only => [:show]
   
   
@@ -1056,6 +1060,10 @@ class GroupsController < ApplicationController
     @group_id = params[:id]
     
     jump_to("/errors/forbidden") unless GroupMember.is_group_member(@group_id, session[:account_id])
+  end
+  
+  def check_owner
+    jump_to("/errors/forbidden") unless session[:account_id].to_s == params[:id]
   end
   
 end

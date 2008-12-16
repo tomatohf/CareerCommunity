@@ -23,7 +23,7 @@ module ApplicationHelper
   
   def thin_hr(color = "#EEEEEE")
     %Q{
-      <hr size="1" style="color: #{color}" />
+      <hr size="1" color="#{color}" style="color: #{color}" />
     }
   end
   
