@@ -15,6 +15,9 @@
 	need_join_to_view_notice = group_setting[:need_join_to_view_notice]
 	can_view_notice = !(need_join_to_view_notice && (!is_member))
 	
+	need_join_to_view_member = group_setting[:need_join_to_view_member]
+	can_view_member = !(need_join_to_view_member && (!is_member))
+	
 	
 	excerpts = build_excerpts(
 		riddle_client,
@@ -63,9 +66,21 @@
 					|
 					
 					圈主:
-					<a href="/spaces/show/<%= group.master_id %>" class="account_nick_link">
-						<%= excerpts[3] %></a>
+					<% if can_view_member %>
+						<a href="/spaces/show/<%= group.master_id %>" class="account_nick_link">
+							<%= excerpts[3] %></a>
+					<% else %>
+						<span class="form_info_s">
+							<i>(已隐藏)</i>
+						</span>
+					<% end %>
 				</div>
+				
+				<% unless can_view_member %>
+					<div class="form_info_s align_r">
+						<i>(按照其所在圈子的设置, 只有加入圈子后才可以查看圈子成员 ... )</i>
+					</div>
+				<% end %>
 			</td>
 		</tr>
 	</table>
