@@ -225,6 +225,8 @@ class GroupsController < ApplicationController
       :need_join_to_view_post => (params[:need_join_to_view_post] == "true"),
       :need_join_to_view_post_list => (params[:need_join_to_view_post_list] == "true"),
       :need_join_to_view_bookmark => (params[:need_join_to_view_bookmark] == "true"),
+      :need_join_to_view_member => (params[:need_join_to_view_member] == "true"),
+      :need_join_to_view_notice => (params[:need_join_to_view_notice] == "true"),
       :notice => "欢迎来到圈子 #{@group.name} ~"
     }
     
@@ -272,6 +274,12 @@ class GroupsController < ApplicationController
     
     need_join_to_view_bookmark = @group_setting[:need_join_to_view_bookmark]
     @can_view_bookmark = !(need_join_to_view_bookmark && @no_membership)
+    
+    need_join_to_view_member = @group_setting[:need_join_to_view_member]
+    @can_view_member = !(need_join_to_view_member && @no_membership)
+    
+    need_join_to_view_notice = @group_setting[:need_join_to_view_notice]
+    @can_view_notice = !(need_join_to_view_notice && @no_membership)
     
     @new_members = GroupMember.agreed.find(
       :all,
@@ -652,19 +660,16 @@ class GroupsController < ApplicationController
     render(:action => "edit")
   end
   
-  def update_access
-    need_approve = (params[:need_approve] == "true")
-    need_join_to_view_post = (params[:need_join_to_view_post] == "true")
-    need_join_to_view_post_list = (params[:need_join_to_view_post_list] == "true")
-    need_join_to_view_bookmark = (params[:need_join_to_view_bookmark] == "true")
-    
+  def update_access    
     @group, @group_image = Group.get_group_with_image(@group_id)
     
     group_setting = {
-      :need_approve => need_approve,
-      :need_join_to_view_post => need_join_to_view_post,
-      :need_join_to_view_post_list => need_join_to_view_post_list,
-      :need_join_to_view_bookmark => need_join_to_view_bookmark
+      :need_approve => (params[:need_approve] == "true"),
+      :need_join_to_view_post => (params[:need_join_to_view_post] == "true"),
+      :need_join_to_view_post_list => (params[:need_join_to_view_post_list] == "true"),
+      :need_join_to_view_bookmark => (params[:need_join_to_view_bookmark] == "true"),
+      :need_join_to_view_member => (params[:need_join_to_view_member] == "true"),
+      :need_join_to_view_notice => (params[:need_join_to_view_notice] == "true")
     }
     
     @group.update_setting(group_setting)
@@ -726,18 +731,23 @@ class GroupsController < ApplicationController
     @group_id ||= params[:id]
     @group, @group_image = Group.get_group_with_image(@group_id) unless @group
     
-    @master_id = @group.master_id
-    @master_nick_pic = Account.get_nick_and_pic(@master_id)
+    need_join_to_view_member = @group.get_setting[:need_join_to_view_member]
+    @can_view_member = !(need_join_to_view_member && (!GroupMember.is_group_member(@group_id, session[:account_id])))
     
-    @admin_members = GroupMember.get_group_admins(@group_id)
+    if @can_view_member
+      @master_id = @group.master_id
+      @master_nick_pic = Account.get_nick_and_pic(@master_id)
     
-    # check and ensure admins include group master
-    master_member = @admin_members.select {|m| (m.account_id == @master_id) && m.admin }[0]
-    GroupMember.add_account_to_group(@group_id, @master_id, true) unless master_member
+      @admin_members = GroupMember.get_group_admins(@group_id)
     
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    @members = GroupMember.paginate_group_members(@group_id, page, Member_Page_Size)
+      # check and ensure admins include group master
+      master_member = @admin_members.select {|m| (m.account_id == @master_id) && m.admin }[0]
+      GroupMember.add_account_to_group(@group_id, @master_id, true) unless master_member
+    
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @members = GroupMember.paginate_group_members(@group_id, page, Member_Page_Size)
+    end
   end
   
   def members_edit

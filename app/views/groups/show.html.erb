@@ -15,6 +15,10 @@
 		<% end %>
 	</div>
 	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
 	
 	
 	<% if can_admin %>
@@ -45,9 +49,11 @@
 				<img src="/images/groups/members_small.gif" border="0" />
 				管理圈子成员</a>
 		<% else %>
-			<a href="/groups/members/<%= @group_id %>">
-				<img src="/images/groups/members_small.gif" border="0" />
-				浏览所有成员</a>
+			<% if @can_view_member %>
+				<a href="/groups/members/<%= @group_id %>">
+					<img src="/images/groups/members_small.gif" border="0" />
+					浏览所有成员</a>
+			<% end %>
 		<% end %>
 	</div>
 	
@@ -161,7 +167,7 @@
 	<h2><%= page_title %></h2>
 	
 	<div class="community_block_narrow form_info_s">
-		<%= h(@group.desc) %>
+		<%= h(@group.desc) if @can_view_notice %>
 	</div>
 	
 	<div class="community_block">
@@ -183,7 +189,17 @@
 		</div>
 		
 		<div id="notice_section" class="community_block_narrow">
-			<%= simple_format(h(@group_setting[:notice])) %>
+			<% if @can_view_notice %>
+			
+				<%= simple_format(h(@group_setting[:notice])) %>
+				
+			<% else %>
+				
+				<div class="warning_msg">
+					根据圈子的设置, 只有圈子成员可以查看圈子的描述与公告
+				</div>
+				
+			<% end %>
 		</div>
 	</div>
 	

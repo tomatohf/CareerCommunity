@@ -1,13 +1,10 @@
 ﻿照片按相册设置查看权限
 
-圈子设置是否非圈子成员可以浏览圈子成员, 是否可以查看圈子描述和公告
+缓存 is_group_member 和 is_activity_member
 
 圈子内容更全面的 view 权限设置
 	相应的处理搜索结果
-
 圈内和全局分开后, 全局列表处显示 我参加的圈子的..的链接
-
-缓存 is_group_member 和 is_activity_member
 
 
 提问频道

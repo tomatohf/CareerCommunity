@@ -132,6 +132,26 @@
 							</td>
 						</tr>
 						
+						<tr>
+							<td></td>
+							<td>
+								<%= check_box_tag :need_join_to_view_member, value = "true", @group.get_setting[:need_join_to_view_member] %>
+					            <label for="need_join_to_view_member">
+					                只有加入圈子后才可以查看圈子成员
+					            </label>
+							</td>
+						</tr>
+						
+						<tr>
+							<td></td>
+							<td>
+								<%= check_box_tag :need_join_to_view_notice, value = "true", @group.get_setting[:need_join_to_view_notice] %>
+					            <label for="need_join_to_view_notice">
+					                只有圈子成员可以查看圈子的描述与公告
+					            </label>
+							</td>
+						</tr>
+						
 						
 						<tr>
 							<td colspan="2">
