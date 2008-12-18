@@ -27,7 +27,7 @@ class ActivityMember < ActiveRecord::Base
   
   
   
-  before_save { |activity_member|
+  after_save { |activity_member|
     if activity_member.join_at_was.nil? && activity_member.join_at.kind_of?(DateTime)
       AccountAction.create_new(activity_member.account_id, "join_activity", {
         :activity_id => activity_member.activity_id
