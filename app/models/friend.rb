@@ -33,9 +33,9 @@ class Friend < ActiveRecord::Base
     a_f_id = Cache.get("#{CKP_account_friend_ids}_#{account_id}".to_sym)
     
     unless a_f_id
-      a_f_id = self.get_all_by_account(account_id).collect { |f| f.friend_id }
+      friends = self.get_all_by_account(account_id)
       
-      Cache.set("#{CKP_account_friend_ids}_#{account_id}".to_sym, a_f_id, Cache_TTL)
+      a_f_id = self.set_account_friend_ids_cache(account_id, friends)
     end
     a_f_id
   end
@@ -44,6 +44,8 @@ class Friend < ActiveRecord::Base
     a_f_id = friends.collect { |f| f.friend_id }
     
     Cache.set("#{CKP_account_friend_ids}_#{account_id}".to_sym, a_f_id, Cache_TTL)
+    
+    a_f_id
   end
   
   def self.clear_account_friend_ids_cache(account_id)
@@ -55,9 +57,9 @@ class Friend < ActiveRecord::Base
     a_b_f_id = Cache.get("#{CKP_account_be_friend_ids}_#{account_id}".to_sym)
     
     unless a_b_f_id
-      a_b_f_id = self.get_all_by_friend(account_id).collect { |f| f.account_id }
+      be_friends = self.get_all_by_friend(account_id)
       
-      Cache.set("#{CKP_account_be_friend_ids}_#{account_id}".to_sym, a_b_f_id, Cache_TTL)
+      a_b_f_id = self.set_account_be_friend_ids_cache(account_id, be_friends)
     end
     a_b_f_id
   end
@@ -66,6 +68,8 @@ class Friend < ActiveRecord::Base
     a_b_f_id = be_friends.collect { |f| f.account_id }
     
     Cache.set("#{CKP_account_be_friend_ids}_#{account_id}".to_sym, a_b_f_id, Cache_TTL)
+    
+    a_b_f_id
   end
   
   def self.clear_account_be_friend_ids_cache(account_id)

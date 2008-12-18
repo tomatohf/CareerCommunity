@@ -115,6 +115,8 @@ class GroupsController < ApplicationController
     
     GroupMember.load_group_with_image(@group_members)
     
+    GroupMember.set_account_group_ids_cache(@owner_id, joined_group_ids)
+    
     @group_posts = GroupPost.find(
       :all,
       :limit => Post_Recent_List_Size,

@@ -15,10 +15,86 @@ class GroupMember < ActiveRecord::Base
         :group_id => group_member.group_id
       })
     end
+    
+    self.clear_account_group_ids_cache(group_member.account_id)
+    
+    self.clear_account_admin_group_ids_cache(group_member.account_id)
+  }
+  
+  after_destroy { |group_member|
+    self.clear_account_group_ids_cache(group_member.account_id)
+    
+    self.clear_account_admin_group_ids_cache(group_member.account_id) if group_member.admin
   }
   
   
+  
+  CKP_account_group_ids = :account_group_ids
+  CKP_account_admin_group_ids = :account_admin_group_ids
+  
+  
   named_scope :agreed, :conditions => { :accepted => true, :approved => true }
+  
+  
+  
+  def self.get_account_group_ids(account_id)
+    a_g_id = Cache.get("#{CKP_account_group_ids}_#{account_id}".to_sym)
+    
+    unless a_g_id
+      members = self.agreed.find(
+    	  :all,
+    		:conditions => ["account_id = ?", account_id],
+    		:order => "join_at DESC"
+    	)
+      
+      a_g_id = self.set_account_group_ids(account_id, members)
+    end
+    a_g_id
+  end
+  
+  def self.set_account_group_ids(account_id, members)
+    a_g_id = members.collect { |m| m.group_id }
+    
+    self.set_account_group_ids_cache(account_id, a_g_id)
+    
+    a_g_id
+  end
+  
+  def self.set_account_group_ids_cache(account_id, a_g_id)
+    Cache.set("#{CKP_account_group_ids}_#{account_id}".to_sym, a_g_id, Cache_TTL)
+  end
+  
+  def self.clear_account_group_ids_cache(account_id)
+    Cache.delete("#{CKP_account_group_ids}_#{account_id}".to_sym)
+  end
+  
+  
+  def self.get_account_admin_group_ids(account_id)
+    a_g_id = Cache.get("#{CKP_account_admin_group_ids}_#{account_id}".to_sym)
+    
+    unless a_g_id
+      admin_members = self.agreed.find(
+    	  :all,
+    		:conditions => ["account_id = ? and admin = ?", account_id, true],
+    		:order => "join_at DESC"
+    	)
+      
+      a_g_id = self.set_account_admin_group_ids(account_id, admin_members)
+    end
+    a_g_id
+  end
+  
+  def self.set_account_admin_group_ids(account_id, admin_members)
+    a_g_id = admin_members.collect { |m| m.group_id }
+    
+    Cache.set("#{CKP_account_admin_group_ids}_#{account_id}".to_sym, a_g_id, Cache_TTL)
+    
+    a_g_id
+  end
+  
+  def self.clear_account_admin_group_ids_cache(account_id)
+    Cache.delete("#{CKP_account_admin_group_ids}_#{account_id}".to_sym)
+  end
   
   
   
@@ -26,12 +102,22 @@ class GroupMember < ActiveRecord::Base
     self.accepted && self.approved
   end
   
-  def self.is_group_member(group_id, account_id)
+  def self.get_group_member(group_id, account_id)
     self.agreed.find(:first, :conditions => ["group_id = ? and account_id = ?", group_id, account_id])
   end
   
-  def self.is_group_admin(group_id, account_id)
+  def self.is_group_member(group_id, account_id)
+    group_ids = self.get_account_group_ids(account_id)
+    group_ids.include?(group_id.to_i)
+  end
+  
+  def self.get_group_admin(group_id, account_id)
     self.agreed.find(:first, :conditions => ["group_id = ? and account_id = ? and admin = ?", group_id, account_id, true])
+  end
+  
+  def self.is_group_admin(group_id, account_id)
+    group_ids = self.get_account_admin_group_ids(account_id)
+    group_ids.include?(group_id.to_i)
   end
   
   def self.get_by_group_and_account(group_id, account_id)

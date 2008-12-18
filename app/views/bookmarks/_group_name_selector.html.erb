@@ -5,21 +5,21 @@
 <%
 	owner_id = session[:account_id]
 	
-	group_members = GroupMember.agreed.find(
+	group_ids = GroupMember.get_account_group_ids(owner_id)
+	groups = Group.find(
 		:all,
-		:select => "group_members.id, group_members.group_id, groups.id, groups.name",
-		:conditions => ["account_id = ?", owner_id],
-		:include => [:group],
-		:order => "join_at DESC"
+		:select => "id, name",
+		:conditions => ["id in (?)", group_ids],
+		:order => "id DESC"
 	)
 %>
 
 <select id="group_id" name="group_id" class="dropdown_list">
-	<% group_members.each do |group_member| %>
-		<option value="<%= group_member.group.id %>"
-			<%= %Q! selected="selected"! if group_member.group.id == selected_group_id %>
+	<% groups.each do |group| %>
+		<option value="<%= group.id %>"
+			<%= %Q! selected="selected"! if group.id == selected_group_id %>
 		>
-			<%= h(group_member.group.name) %>
+			<%= h(group.name) %>
 		</option>
 	<% end %>
 </select>
