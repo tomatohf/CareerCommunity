@@ -8,21 +8,20 @@ class VotesController < ApplicationController
   
   Created_Topic_List_Size = 10
   
-  include CareerCommunity::Contact::InstanceMethods
   
   layout "community"
+  before_filter :check_current_account, :only => [:list_group_index]
   before_filter :check_login, :only => [:new, :new_in_group, :vote_groups, :create,
                                         :edit_image, :update_image,
                                         :create_comment, :delete_comment, :vote_to_option,
                                         :clear_vote_record, :edit, :update, :destroy,
                                         :edit_option, :create_new_option, :add_new_option,
                                         :delete_others_option, :invite, :invite_member,
-                                        :invite_contact, :import_contact, :select_contact,
-                                        :send_contact_invitations]
+                                        :invite_contact, :select_contact, :send_contact_invitations]
   before_filter :check_limited, :only => [:create, :update_image, :create_comment, :delete_comment,
                                           :vote_to_option, :clear_vote_record, :update, :destroy,
                                           :create_new_option, :delete_others_option, :invite_member,
-                                          :import_contact, :send_contact_invitations]
+                                          :send_contact_invitations]
   
   before_filter :check_vote_groups_account, :only => [:vote_groups]
   
@@ -31,10 +30,19 @@ class VotesController < ApplicationController
   
   before_filter :check_comment_owner, :only => [:delete_comment]
   
+  before_filter :check_vote_view_access, :only => [:show, :preview_topic, :refresh_vote_result]
+  before_filter :protect_vote_view_access, :only => [:create_comment, :invite, :invite_member,
+                                                      :invite_contact, :select_contact,
+                                                      :send_contact_invitations]
+  
   
   
   def index
     jump_to("/votes/latest")
+  end
+  
+  def list_group_index
+    jump_to("/groups/all_vote/#{session[:account_id]}")
   end
   
   def latest
@@ -242,8 +250,8 @@ class VotesController < ApplicationController
   end
   
   def show
-    @vote_topic_id = params[:id]
-    @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
+    # @vote_topic_id = params[:id]
+    # @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
     
     @chart_type = params[:chart_type]
     
@@ -505,38 +513,6 @@ class VotesController < ApplicationController
     @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
   end
   
-  def import_contact
-    user_id = params[:user_id] && params[:user_id].strip
-    user_pwd = params[:user_pwd]
-    type = params[:type] && params[:type].strip
-    
-    # check input
-    if !self.respond_to?("fetch_#{type}_contacts", true)
-      return render(:layout => false, :text => "")
-    elsif user_id.nil? || user_id == ""
-      return render(:layout => false, :text => "请输入你的帐号")
-    elsif user_pwd.nil? || user_pwd == ""
-      return render(:layout => false, :text => "请输入你的密码")
-    end
-    
-    contacts = []
-    begin
-      contacts = self.send("fetch_#{type}_contacts", user_id, user_pwd)
-    rescue Jabber::ClientAuthenticationFailure
-      return(render(:layout => false, :text => "帐号或密码错误"))
-    rescue Timeout::Error
-      return(render(:layout => false, :text => "操作超时, 请重试"))
-    rescue
-      return(render(:layout => false, :text => "发生错误, 请重试"))
-    end
-    
-    return(render(:layout => false, :text => "抱歉, 没有找到任何联系人")) unless contacts.size > 0
-    
-    session[:vote_invite_contacts_type] = type
-    session[:vote_invite_contacts] = contacts
-    render(:layout => false, :text => "true")
-  end
-  
   def select_contact
     @vote_topic_id = params[:id]
     
@@ -587,17 +563,17 @@ class VotesController < ApplicationController
   #==========
   
   def preview_topic
-    vote_topic_id = params[:id]
+    # vote_topic_id = params[:id]
     chart_type = params[:chart_type]
-    vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+    # vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
 
-    render(:partial => "topic_preview", :locals => {:vote_topic => vote_topic, :chart_type => chart_type})
+    render(:partial => "topic_preview", :locals => {:vote_topic => @vote_topic, :chart_type => chart_type})
   end
   
   def refresh_vote_result
-    topic_id = params[:id]
+    # topic_id = params[:id]
     chart_type = params[:chart_type]
-    graph = build_graph(topic_id, chart_type, :get_count_by_option)
+    graph = build_graph(@vote_topic_id, chart_type, :get_count_by_option)
     render(:xml => graph.to_xml)
   end
   
@@ -619,6 +595,92 @@ class VotesController < ApplicationController
   def check_comment_owner
     @vote_comment = VoteComment.find(params[:id])
     jump_to("/errors/forbidden") unless session[:account_id] == (@vote_comment.vote_topic && @vote_comment.vote_topic.account_id)
+  end
+  
+  def check_vote_view_access
+    @vote_topic_id = params[:id]
+    @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
+    
+    group_id = @vote_topic.group_id
+    if group_id && group_id > 0
+      @group, @group_image = Group.get_group_with_image(group_id)
+      
+      need_join_to_view_vote = @group.get_setting[:need_join_to_view_vote]
+      @can_not_view = need_join_to_view_vote && (!GroupMember.is_group_member(@group.id, session[:account_id]))
+      
+      if @can_not_view
+        if action_name == "show"
+          render :layout => true, :inline => %Q!
+            <% vote_topic_title = h(@vote_topic.title)%>
+
+            <% community_page_title(vote_topic_title) %>
+
+            <div class="float_r vote_container_r">
+
+            	<div class="community_block align_c">
+          			<a href="/groups/<%= @group.id %>">
+          				<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+          		</div>
+          		
+          		<div class="community_block align_c form_info_s">
+        				圈子 <a href="/groups/<%= @group.id %>"><%= h(@group.name) %></a> 的圈内投票
+          		</div>
+
+            </div>
+
+            <div class="vote_container_l">
+            	<h2>
+            		<%= vote_topic_title %>
+            	</h2>
+            	
+            	<p class="warning_msg">
+          			根据其所在圈子的设置, 只有圈子成员可以查看投票的具体内容
+          		</p>
+
+          		<p>
+          			<% form_tag "/groups/#{@group.id}/join", :method => :post do %>
+          				<input type="submit" value="我要加入圈子" class="button" />
+          			<% end %>
+          		</p>
+
+            </div>
+          !
+        else
+          render :layout => false, :inline => %Q!
+            <p class="warning_msg">
+        			根据圈子
+        			<a href="/groups/<%= @group.id %>">
+        				<%= h(@group.name) %></a>
+        			的设置, 只有圈子成员可以查看圈内投票
+        			<a href="/votes/<%= @vote_topic.id %>">
+        				<%= h(@vote_topic.title) %></a>
+        			的具体内容
+        		</p>
+
+        		<p>
+        			<% form_tag "/groups/#{@group.id}/join", :method => :post do %>
+        				<input type="submit" value="我要加入圈子" class="button" />
+        			<% end %>
+        		</p>
+          !
+        end
+      end
+    end
+  end
+  
+  def protect_vote_view_access
+    vote_topic_id = params[:id]
+    vote_topic = VoteTopic.get_vote_topic_with_image(vote_topic_id)[0]
+    
+    group_id = vote_topic.group_id
+    if group_id && group_id > 0
+      group = Group.get_group_with_image(group_id)[0]
+      
+      need_join_to_view_vote = group.get_setting[:need_join_to_view_vote]
+      can_not_view = need_join_to_view_vote && (!GroupMember.is_group_member(group.id, session[:account_id]))
+      
+      jump_to("/errors/forbidden") if can_not_view
+    end
   end
   
   

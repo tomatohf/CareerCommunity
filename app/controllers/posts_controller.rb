@@ -427,10 +427,10 @@ class PostsController < ApplicationController
       def get_access(current_account_id, poster_id, type_id)
         access = []
         if current_account_id
-          group_member = GroupMember.is_group_member(type_id, current_account_id)
-          if group_member
+          is_member = GroupMember.is_group_member(type_id, current_account_id)
+          if is_member
             access << :member
-            access << :admin if group_member.admin
+            access << :admin if GroupMember.is_group_admin(type_id, current_account_id)
           end
           access << :author if (poster_id == current_account_id)
         end

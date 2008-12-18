@@ -152,7 +152,6 @@ ActionController::Routing::Routes.draw do |map|
     :remove_activity => :post,
     :remove_vote => :post,
     
-    :import_contact => :post,
     :send_contact_invitations => :post
     
   }, :collection => {
@@ -241,7 +240,6 @@ ActionController::Routing::Routes.draw do |map|
     :cancel => :post,
     :recover => :post,
     
-    :import_contact => :post,
     :send_contact_invitations => :post,
     
     :cache_point => :post
@@ -281,6 +279,7 @@ ActionController::Routing::Routes.draw do |map|
   }
   
   
+  map.connect "/votes/list_group_index", :controller => "votes", :action => "list_group_index"
   map.connect "/votes/latest/:page", :controller => "votes", :action => "latest", :page => /\d+/
   map.connect "/votes/hotest/:page", :controller => "votes", :action => "hotest", :page => /\d+/
   map.connect "/votes/category/:id/:page", :controller => "votes", :action => "category", :id => /\d+/, :page => /\d+/
@@ -313,7 +312,6 @@ ActionController::Routing::Routes.draw do |map|
     
     :invite_member => :post,
     
-    :import_contact => :post,
     :send_contact_invitations => :post
     
   }

@@ -15,7 +15,11 @@ class CommunityController < ApplicationController
   
   Search_Match_Mode = :extended
   
+  include CareerCommunity::Contact::InstanceMethods
+  
   before_filter :check_login_for_community_index, :only => [:index]
+  
+  before_filter :check_login, :check_limited, :only => [:import_contact]
   
   def index
     @has_login = true
@@ -120,6 +124,42 @@ class CommunityController < ApplicationController
       
     !, :layout => false
   end
+  
+  
+  def import_contact
+    user_id = params[:user_id] && params[:user_id].strip
+    user_pwd = params[:user_pwd]
+    type = params[:type] && params[:type].strip
+    
+    from = params[:from] && params[:from].strip
+    
+    # check input
+    if !self.respond_to?("fetch_#{type}_contacts", true)
+      return render(:layout => false, :text => "")
+    elsif user_id.nil? || user_id == ""
+      return render(:layout => false, :text => "请输入你的帐号")
+    elsif user_pwd.nil? || user_pwd == ""
+      return render(:layout => false, :text => "请输入你的密码")
+    end
+    
+    contacts = []
+    begin
+      contacts = self.send("fetch_#{type}_contacts", user_id, user_pwd)
+    rescue Jabber::ClientAuthenticationFailure
+      return(render(:layout => false, :text => "帐号或密码错误"))
+    rescue Timeout::Error
+      return(render(:layout => false, :text => "操作超时, 请重试"))
+    rescue
+      return(render(:layout => false, :text => "发生错误, 请重试"))
+    end
+    
+    return(render(:layout => false, :text => "抱歉, 没有找到任何联系人")) unless contacts.size > 0
+    
+    session["#{from}_invite_contacts_type".to_sym] = type
+    session["#{from}_invite_contacts".to_sym] = contacts
+    render(:layout => false, :text => "true")
+  end
+  
   
   private
   

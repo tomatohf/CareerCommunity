@@ -23,8 +23,7 @@ class GroupsController < ApplicationController
   Group_Photo_Num = 15
   
   Group_Admin_Max_Count = 11
-  
-  include CareerCommunity::Contact::InstanceMethods
+
   
   layout "community"
   before_filter :check_current_account, :only => [:recent_index]
@@ -34,15 +33,14 @@ class GroupsController < ApplicationController
                                         :unapproved, :approve_member, :reject_member, :approve_all,
                                         :invite, :invite_member, :edit_master, :update_master,
                                         :photo_selector_for_group_image, :remove_activity, :remove_vote,
-                                        :invite_contact, :import_contact, :select_contact,
-                                        :send_contact_invitations,
+                                        :invite_contact, :select_contact, :send_contact_invitations,
                                         :recent, :all_post, :all_activity, :all_vote, :all_bookmark,
                                         :all_photo, :created_post, :commented_post]
   before_filter :check_limited, :only => [:create, :update_image, :update, :update_access, :join,
                                           :quit, :del_member, :add_admin, :del_admin,
                                           :approve_member, :reject_member, :approve_all,
                                           :invite_member, :update_master, :remove_activity, :remove_vote,
-                                          :import_contact, :send_contact_invitations]
+                                          :send_contact_invitations]
   
   before_filter :check_can_create_group, :only => [:new, :create]
   
@@ -52,7 +50,7 @@ class GroupsController < ApplicationController
                                               :remove_activity, :remove_vote]
   before_filter :check_group_master, :only => [:members_master, :add_admin, :del_admin, :edit_master, :update_master]
   
-  before_filter :check_group_member, :only => [:invite, :invite_member, :invite_contact, :import_contact,
+  before_filter :check_group_member, :only => [:invite, :invite_member, :invite_contact,
                                                 :select_contact, :send_contact_invitations]
   
   before_filter :check_owner, :only => [:recent, :all_post, :all_activity, :all_vote, :all_bookmark,
@@ -224,11 +222,6 @@ class GroupsController < ApplicationController
     
     group_setting = {
       :need_approve => (params[:need_approve] == "true"),
-      :need_join_to_view_post => (params[:need_join_to_view_post] == "true"),
-      :need_join_to_view_post_list => (params[:need_join_to_view_post_list] == "true"),
-      :need_join_to_view_bookmark => (params[:need_join_to_view_bookmark] == "true"),
-      :need_join_to_view_member => (params[:need_join_to_view_member] == "true"),
-      :need_join_to_view_notice => (params[:need_join_to_view_notice] == "true"),
       :notice => "欢迎来到圈子 #{@group.name} ~"
     }
     
@@ -262,8 +255,8 @@ class GroupsController < ApplicationController
       if @group.master_id == session[:account_id]
         @relationship = "master"
       else
-        group_member = GroupMember.is_group_member(@group_id, session[:account_id])
-        @relationship = group_member ? (group_member.admin ? "admin" : "member") : "not_member"
+        is_member = GroupMember.is_group_member(@group_id, session[:account_id])
+        @relationship = is_member ? (GroupMember.is_group_admin(@group_id, session[:account_id]) ? "admin" : "member") : "not_member"
       end
     end
     
@@ -671,7 +664,8 @@ class GroupsController < ApplicationController
       :need_join_to_view_post_list => (params[:need_join_to_view_post_list] == "true"),
       :need_join_to_view_bookmark => (params[:need_join_to_view_bookmark] == "true"),
       :need_join_to_view_member => (params[:need_join_to_view_member] == "true"),
-      :need_join_to_view_notice => (params[:need_join_to_view_notice] == "true")
+      :need_join_to_view_notice => (params[:need_join_to_view_notice] == "true"),
+      :need_join_to_view_vote => (params[:need_join_to_view_vote] == "true")
     }
     
     @group.update_setting(group_setting)
@@ -950,38 +944,6 @@ class GroupsController < ApplicationController
   
   def invite_contact
     @group, @group_image = Group.get_group_with_image(@group_id)
-  end
-  
-  def import_contact
-    user_id = params[:user_id] && params[:user_id].strip
-    user_pwd = params[:user_pwd]
-    type = params[:type] && params[:type].strip
-    
-    # check input
-    if !self.respond_to?("fetch_#{type}_contacts", true)
-      return render(:layout => false, :text => "")
-    elsif user_id.nil? || user_id == ""
-      return render(:layout => false, :text => "请输入你的帐号")
-    elsif user_pwd.nil? || user_pwd == ""
-      return render(:layout => false, :text => "请输入你的密码")
-    end
-    
-    contacts = []
-    begin
-      contacts = self.send("fetch_#{type}_contacts", user_id, user_pwd)
-    rescue Jabber::ClientAuthenticationFailure
-      return(render(:layout => false, :text => "帐号或密码错误"))
-    rescue Timeout::Error
-      return(render(:layout => false, :text => "操作超时, 请重试"))
-    rescue
-      return(render(:layout => false, :text => "发生错误, 请重试"))
-    end
-    
-    return(render(:layout => false, :text => "抱歉, 没有找到任何联系人")) unless contacts.size > 0
-    
-    session[:group_invite_contacts_type] = type
-    session[:group_invite_contacts] = contacts
-    render(:layout => false, :text => "true")
   end
   
   def select_contact

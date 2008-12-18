@@ -40,6 +40,10 @@ class VoteTopic < ActiveRecord::Base
   
   
   
+  named_scope :global, :conditions => ["group_id = ? or group_id = ?", 0, nil]
+  
+  
+  
   CKP_vote_topic_with_img = :vote_topic_with_img
   
   CKP_vote_invitations = :vote_invitations

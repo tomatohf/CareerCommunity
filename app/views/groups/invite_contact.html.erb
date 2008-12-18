@@ -37,6 +37,7 @@
 			var contact_form = $(type + "_contact_form");
 			
 			var params = contact_form.serialize();
+			params = "from=group&" + params;
 			
 			toggle_all_forms(false);
 			
@@ -48,7 +49,7 @@
 			error_field.update("");
 			
 			new Ajax.Request(
-				"/groups/<%= @group_id %>/import_contact",
+				"/community/import_contact",
 				{
 					asynchronous: true,
 					evalScripts: true,

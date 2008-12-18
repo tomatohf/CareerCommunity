@@ -24,16 +24,27 @@
 			<%= thin_hr %>
 		</div>
 		
-		<div class="community_block">
+		<div class="community_block align_c">
 			<a href="/groups/new">
 				<img src="/images/groups/new_group_small.gif" border="0" />
 				创建一个新的圈子</a>
 		</div>
 		
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+		
+		
 		<div class="community_block">
 			<a href="/activities/activity_groups/<%= session[:account_id] %>">
 				<img src="/images/activities/new_activity_in_group_small.gif" border="0" />
 				在圈子内发起活动</a>
+		</div>
+		
+		<div class="community_block">
+			<a href="/votes/vote_groups/<%= session[:account_id] %>">
+				<img src="/images/votes/new_vote_topic_small.gif" border="0" />
+				在圈子内发起投票话题</a>
 		</div>
 	<% end %>
 	

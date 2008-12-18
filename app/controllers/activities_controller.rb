@@ -21,8 +21,7 @@ class ActivitiesController < ApplicationController
   
   Activity_Admin_Max_Count = 11
   
-  include CareerCommunity::Contact::InstanceMethods
-  
+
   layout "community"
   before_filter :check_current_account, :only => [:recent_index]
   before_filter :check_login, :only => [:new, :new_in_groups, :create, :activity_groups,
@@ -34,14 +33,13 @@ class ActivitiesController < ApplicationController
                                         :add_interest, :del_interest, :photo_selector_for_activity_image,
                                         :members_info, :cancel, :recover,
                                         :members_master, :add_admin, :del_admin, :edit_master, :update_master,
-                                        :invite_contact, :import_contact, :select_contact,
-                                        :send_contact_invitations]
+                                        :invite_contact, :select_contact, :send_contact_invitations]
   before_filter :check_limited, :only => [:create, :update_image, :join, :quit,
                                           :edit, :update, :update_desc, :update_access, :del_member,
                                           :approve_member, :reject_member, :invite_member,
                                           :add_absent, :del_absent, :add_interest, :del_interest,
                                           :cancel, :recover, :add_admin, :del_admin, :update_master,
-                                          :import_contact, :send_contact_invitations]
+                                          :send_contact_invitations]
 
   before_filter :check_activity_groups_account, :only => [:activity_groups]
   
@@ -57,7 +55,7 @@ class ActivitiesController < ApplicationController
                                                   
   before_filter :check_activity_status_registering, :only => [:check_profile, :join, :quit,
                                                               :invite, :invite_member,
-                                                              :invite_contact, :import_contact, :select_contact,
+                                                              :invite_contact, :select_contact,
                                                               :send_contact_invitations]
   before_filter :check_activity_status_registered, :only => [:unapproved, :members_edit]
 #  before_filter :check_activity_status_ongoing, :only => [:edit_image, :update_image,
@@ -1266,38 +1264,6 @@ class ActivitiesController < ApplicationController
   
   def invite_contact
     
-  end
-  
-  def import_contact
-    user_id = params[:user_id] && params[:user_id].strip
-    user_pwd = params[:user_pwd]
-    type = params[:type] && params[:type].strip
-    
-    # check input
-    if !self.respond_to?("fetch_#{type}_contacts", true)
-      return render(:layout => false, :text => "")
-    elsif user_id.nil? || user_id == ""
-      return render(:layout => false, :text => "请输入你的帐号")
-    elsif user_pwd.nil? || user_pwd == ""
-      return render(:layout => false, :text => "请输入你的密码")
-    end
-    
-    contacts = []
-    begin
-      contacts = self.send("fetch_#{type}_contacts", user_id, user_pwd)
-    rescue Jabber::ClientAuthenticationFailure
-      return(render(:layout => false, :text => "帐号或密码错误"))
-    rescue Timeout::Error
-      return(render(:layout => false, :text => "操作超时, 请重试"))
-    rescue
-      return(render(:layout => false, :text => "发生错误, 请重试"))
-    end
-    
-    return(render(:layout => false, :text => "抱歉, 没有找到任何联系人")) unless contacts.size > 0
-    
-    session[:activity_invite_contacts_type] = type
-    session[:activity_invite_contacts] = contacts
-    render(:layout => false, :text => "true")
   end
   
   def select_contact

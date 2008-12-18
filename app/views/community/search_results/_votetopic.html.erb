@@ -8,11 +8,29 @@
 %>
 
 <%
-	vote_options = vote_topic.options
+	group = Group.get_group_with_image(vote_topic.group_id)[0] if (vote_topic.group_id && vote_topic.group_id > 0)
 	
-	VoteOption.set_vote_topic_options_cache(vote_topic_id, vote_options)
+	can_view = if group
+		is_member = GroupMember.is_group_member(group.id, session[:account_id])
+		group_setting = group.get_setting
+		
+		need_join_to_view_vote = group_setting[:need_join_to_view_vote]
+		!(need_join_to_view_vote && (!is_member))
+	else
+		true
+	end
+%>
+
+<%
+	option_titles = if can_view
+		vote_options = vote_topic.options
 	
-	option_titles = vote_options.collect { |vo| h(vo.title) }
+		VoteOption.set_vote_topic_options_cache(vote_topic_id, vote_options)
+	
+		vote_options.collect { |vo| h(vo.title) }
+	else
+		[]
+	end
 %>
 
 
@@ -25,7 +43,7 @@
 	
 	excerpts = build_excerpts(
 		riddle_client,
-		[h(vote_topic.title), h(vote_topic.desc), category_name, account_nick] + option_titles,
+		[h(vote_topic.title), can_view ? h(vote_topic.desc) : "", category_name, account_nick] + option_titles,
 		query,
 		"vote_topic_core"
 	)
@@ -46,6 +64,12 @@
 				<div class="search_result_title">
 					<a href="/votes/<%= vote_topic_id %>" class="account_nick_link">
 						<%= excerpts[0] %></a>
+						&nbsp;&nbsp;
+						
+						<span class="form_info_s" style="font-size: 12px;">
+							[<a href="/votes/category/<%= vote_topic.category_id %>">
+								<%= excerpts[2] %></a>]
+						</span>
 				</div>
 				
 				<div class="search_result_body">
@@ -76,6 +100,12 @@
 					</div>
 				</div>
 				
+				<% unless can_view %>
+					<div class="form_info_s">
+						<i>(按照其所在圈子的设置, 只有圈子成员可以查看圈内投票的具体内容 ... )</i>
+					</div>
+				<% end %>
+				
 				<div class="form_info_s search_result_info">
 					由
 					<a href="/spaces/show/<%= vote_topic.account_id %>" class="account_nick_link">
@@ -85,9 +115,13 @@
 					
 					|
 					
-					分类:
-					<a href="/votes/category/<%= vote_topic.category_id %>">
-						<%= excerpts[2] %></a>
+					<% if group %>
+						圈内投票:
+						<a href="/groups/<%= group.id %>">
+							<%= h(group.name) %></a>
+					<% else %>
+						全局投票
+					<% end %>
 				</div>
 			</td>
 		</tr>

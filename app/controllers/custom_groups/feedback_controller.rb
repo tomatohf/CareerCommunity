@@ -15,8 +15,8 @@ class CustomGroups::FeedbackController < CustomGroups::CustomGroupsController
       if @group.master_id == session[:account_id]
         @relationship = "master"
       else
-        group_member = GroupMember.is_group_member(@group_id, session[:account_id])
-        @relationship = group_member ? (group_member.admin ? "admin" : "member") : "not_member"
+        is_member = GroupMember.is_group_member(@group_id, session[:account_id])
+        @relationship = is_member ? (GroupMember.is_group_admin(@group_id, session[:account_id]) ? "admin" : "member") : "not_member"
       end
     end
     
