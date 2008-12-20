@@ -280,4 +280,41 @@ module ApplicationHelper
     end
   end
   
+  def show_activity_status_script(activity)
+    application_deadline_at = activity.application_deadline || activity.begin_at
+    
+		deadline_time = application_deadline_at.to_i * 1000
+		begin_time = activity.begin_at.to_i * 1000
+	  end_time = activity.end_at.to_i * 1000
+		
+    %Q!
+      function() {
+        var deadline_at = new Date();
+  			var begin_at = new Date();
+  			var end_at = new Date();
+        
+        deadline_at.setTime(#{deadline_time});
+  			begin_at.setTime(#{begin_time});
+  			end_at.setTime(#{end_time});
+
+      	now = new Date().getTime();
+
+  			if(now <= deadline_at) {
+  				return "报名中";
+  			}
+  			else if(now <= begin_at) {
+  				return "报名结束";
+  			}
+  			else if(now <= end_at) {
+  				return "进行中";
+  			}
+  			else {
+  				return "已结束";
+  			}
+  			
+  			return "";
+      }()
+    !
+  end
+  
 end

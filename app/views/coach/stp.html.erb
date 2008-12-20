@@ -24,9 +24,11 @@
 
 
 
+<br />
 <div class="align_c">
-	<img src="/images/coach/programs/STP.png" border="0" />
+	<img src="/images/coach/programs/STP.jpg" border="0" />
 </div>
+<br />
 
 
 <div class="coach_block" style="margin-top: 15px;">
@@ -44,6 +46,33 @@
 		%>
 		
 		<% features.each do |feature| %>
+			<li style="font-size: 14px; font-weight: bold; margin-top: 5px;">
+				<%= feature %>
+			</li>
+		<% end %>
+	</ul>
+</div>
+
+
+<div class="coach_block" style="margin-top: 30px;">
+	<h2>
+		2个月课程培训体系包括:
+	</h2>
+	
+	<ul>
+		<%
+			contents = [
+				"专业拜访技巧培训 -- 《获得认可的六脉神剑》",
+				"专业演讲技巧培训 -- 《八步成就演讲高手》",
+				"群体销售技巧培训 -- 《神奇的影响力法则》",
+				"时间与压力管理培训 -- 《高效能销售员》",
+				"商务沟通与激励培训 -- 《细节之中有魔鬼》",
+				"销售谈判技巧培训 -- 《赢》",
+				"销售职业生涯规划 -- 《从销售实习生到百万富翁》"
+			]
+		%>
+		
+		<% contents.each do |feature| %>
 			<li style="font-size: 14px; font-weight: bold; margin-top: 5px;">
 				<%= feature %>
 			</li>

@@ -45,30 +45,50 @@
 		活动负责人 ...
 	</div>
 	
-	<div class="community_block">
-		<div>
-			<a href="/spaces/show/<%= @master_id %>">
-				<img src="<%= face_img_src(@master_nick_pic[1]) %>" border="0" /></a>
+	<% if @can_view_member %>
+	
+		<div class="community_block">
+			<div>
+				<a href="/spaces/show/<%= @master_id %>">
+					<img src="<%= face_img_src(@master_nick_pic[1]) %>" border="0" /></a>
+			</div>
+			<div>
+				<a href="/spaces/show/<%= @master_id %>" class="account_nick_link">
+					<%= h(@master_nick_pic[0]) %></a>
+			</div>
 		</div>
-		<div>
-			<a href="/spaces/show/<%= @master_id %>" class="account_nick_link">
-				<%= h(@master_nick_pic[0]) %></a>
-		</div>
-	</div>
+		
+	<% else %>
+	
+		<p class="warning_msg">
+			根据活动的设置, 只有报名活动后才可以查看参加活动的成员
+		</p>
+		
+	<% end %>
 	
 	<div class="community_title">
 		管理员 ...
 	</div>
 	
-	<div class="community_block_narrow form_info_s">
-		有
-		<b><%= @admin_members.size %></b>
-		名管理员
-	</div>
+	<% if @can_view_member %>
 	
-	<div class="overflow_hidden">
-		<%= float_list(@admin_members, "member", :member, {:can_minus_admin => @is_master}, 3) %>
-	</div>
+		<div class="community_block_narrow form_info_s">
+			有
+			<b><%= @admin_members.size %></b>
+			名管理员
+		</div>
+	
+		<div class="overflow_hidden">
+			<%= float_list(@admin_members, "member", :member, {:can_minus_admin => @is_master}, 3) %>
+		</div>
+		
+	<% else %>
+	
+		<p class="warning_msg">
+			根据活动的设置, 只有报名活动后才可以查看参加活动的成员
+		</p>
+		
+	<% end %>
 	
 </div>
 
@@ -114,19 +134,29 @@
 		参加活动的成员 ...
 	</div>
 	
-	<div class="community_block_narrow form_info_s">
-		共有
-		<b><%= @members.total_entries %></b>
-		名成员报名参加
-	</div>
+	<% if @can_view_member %>
 	
-	<div class="community_block overflow_hidden">
-		<%= float_list(@members, "member", :member, {:can_del => @is_admin, :can_plus_admin => @is_master}, 6) %>
-	</div>
+		<div class="community_block_narrow form_info_s">
+			共有
+			<b><%= @members.total_entries %></b>
+			名成员报名参加
+		</div>
 	
-	<div class="community_block">
-		<%= paging_buttons(@members) %>
-	</div>
+		<div class="community_block overflow_hidden">
+			<%= float_list(@members, "member", :member, {:can_del => @is_admin, :can_plus_admin => @is_master}, 6) %>
+		</div>
+	
+		<div class="community_block">
+			<%= paging_buttons(@members) %>
+		</div>
+		
+	<% else %>
+
+		<p class="warning_msg">
+			根据活动的设置, 只有报名活动后才可以查看参加活动的成员
+		</p>
+
+	<% end %>
 	
 </div>
 

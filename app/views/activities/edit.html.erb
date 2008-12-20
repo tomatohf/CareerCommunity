@@ -1,5 +1,8 @@
-<% activity_type = (@in_groups && @in_groups.size > 0) ? "圈内" : "全局" %>
+<% is_group_activity = @in_groups && @in_groups.size > 0 %>
+<% activity_type = is_group_activity ? "圈内" : "全局" %>
 <% activity_title = h(@old_activity_title || @activity.get_title) %>
+
+<% need_join_to_view_of_group = @in_groups[0][0].get_setting[:need_join_to_view_activity] if is_group_activity %>
 
 <% page_title = "修改#{activity_type}活动 #{activity_title} 的信息" %>
 <% community_page_title(page_title) %>
@@ -31,7 +34,7 @@
 		<div>
 			<table cellpadding="0" cellspacing="10" class="main_part_w">
 				<% form_tag "/activities/#{@activity_id}", :method => :put do %>
-					<% if @in_groups && @in_groups.size > 0 %>
+					<% if is_group_activity %>
 						<tr>
 							<td>
 								<label>
@@ -220,11 +223,11 @@
 				</tr>
 				
 				
-				<% form_tag "/activities/#{@activity_id}/update_access", :method => :post do %>
+				<% form_tag "/activities/#{@activity_id}/update_access", :method => :post, :onsubmit => "document.getElementById('need_join_group_to_view').disabled = false;" do %>
 					<tr>
 						<td colspan="2">
 							<div class="community_title">
-								活动的报名设置 ...
+								活动的报名和权限设置 ...
 							</div>
 						</td>
 					</tr>
@@ -246,6 +249,36 @@
 				            </label>
 						</td>
 					</tr>
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= check_box_tag :need_join_to_view_member, value = "true", @activity.get_setting[:need_join_to_view_member] %>
+				            <label for="need_join_to_view_member">
+				                只有报名活动后才可以查看参加这个活动的成员
+				            </label>
+						</td>
+					</tr>
+					
+					<% if is_group_activity %>
+						<tr>
+							<td></td>
+							<td>
+								<%= check_box_tag :need_join_group_to_view, value = "true", need_join_to_view_of_group || @activity.get_setting[:need_join_group_to_view], :disabled => need_join_to_view_of_group %>
+					            <label for="need_join_group_to_view">
+									<span class="form_info_s">
+										(
+										圈内活动
+										<% if need_join_to_view_of_group %>
+										, 其所在圈子已设置	
+										<% end %>
+										)
+									</span>
+					                只有圈子成员可以查看此活动的具体内容
+					            </label>
+							</td>
+						</tr>
+					<% end %>
 					
 					<tr>
 						<td>

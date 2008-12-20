@@ -10,9 +10,26 @@
 
 <%
 	activity_setting = activity.get_setting
+	
+	need_join_group_to_view = activity.get_setting[:need_join_group_to_view]
+	group_id = activity.in_group
+	if group_id && group_id > 0
+		group = Group.get_group_with_image(group_id)[0]
+		need_join_to_view_activity = group.get_setting[:need_join_to_view_activity]
+		
+		need_check_group_member = need_join_to_view_activity || need_join_group_to_view
+	else
+		need_check_group_member = need_join_group_to_view
+	end
+	can_view = !(need_check_group_member && (!GroupMember.is_group_member(group.id, session[:account_id])))
+	
+	need_join_to_view_member = activity_setting[:need_join_to_view_member]
+	can_view_member = !(need_join_to_view_member && (!ActivityMember.is_activity_member(activity.id, session[:account_id])))
+	
+	
 	excerpts = build_excerpts(
 		riddle_client,
-		[h(activity.get_title), sanitize_tinymce(extract_text(activity_setting[:desc])), h(activity.place), h(activity_setting[:contact]), h(activity.master.get_nick)],
+		[h(activity.get_title), can_view ? sanitize_tinymce(extract_text(activity_setting[:desc])) : "", can_view ? h(activity.place) : "", can_view ? h(activity_setting[:contact]) : "", h(activity.master.get_nick)],
 		query,
 		"activity_core"
 	)
@@ -45,6 +62,12 @@
 					<div>
 						<%= excerpts[3] %>
 					</div>
+					
+					<% unless can_view %>
+						<span class="form_info_s">
+							<i>(按照活动及其所在圈子的设置, 只有活动所在的圈子的成员可以查看活动的具体内容 ... )</i>
+						</span>
+					<% end %>
 				</div>
 				
 				<div class="form_info_s search_result_info">
@@ -54,9 +77,21 @@
 					|
 					
 					负责人:
-					<a href="/spaces/show/<%= activity.master_id %>" class="account_nick_link">
-						<%= excerpts[4] %></a>
+					<% if can_view_member %>
+						<a href="/spaces/show/<%= activity.master_id %>" class="account_nick_link">
+							<%= excerpts[4] %></a>
+					<% else %>
+						<span class="form_info_s">
+							<i>(已隐藏)</i>
+						</span>
+					<% end %>
 				</div>
+				
+				<% unless can_view_member %>
+					<div class="form_info_s align_r">
+						<i>(按照其所在圈子的设置, 只有报名活动后才可以查看参加活动的成员 ... )</i>
+					</div>
+				<% end %>
 			</td>
 		</tr>
 	</table>

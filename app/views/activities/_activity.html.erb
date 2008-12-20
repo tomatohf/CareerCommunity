@@ -25,7 +25,11 @@
 				<% end %>
 				<div>
 					<span class="activity_info_label">
-						(<%= activity.get_status[1] %>)
+						<script language="JavaScript">
+							var status_label = <%= show_activity_status_script(activity) %>;
+							
+							document.write("(" + status_label + ")");
+						</script>
 					</span>
 					<span class="activity_title">
 						<a href="/activities/<%= activity.id %>">

@@ -19,7 +19,11 @@
 					<%= h(activity.get_title) %>
 				</a>
 				<span class="activity_info_label">
-					(<%= activity.get_status[1] %>-<%= activity.in_group && activity.in_group > 0 ? "圈内活动" : "全局活动" %>)
+					<script language="JavaScript">
+						var status_label = <%= show_activity_status_script(activity) %>;
+						
+						document.write("(" + status_label + "-<%= activity.in_group && activity.in_group > 0 ? "圈内活动" : "全局活动" %>)");
+					</script>
 				</span>
 			</td>
 		</tr>

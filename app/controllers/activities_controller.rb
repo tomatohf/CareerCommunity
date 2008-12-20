@@ -23,7 +23,7 @@ class ActivitiesController < ApplicationController
   
 
   layout "community"
-  before_filter :check_current_account, :only => [:recent_index]
+  before_filter :check_current_account, :only => [:recent_index, :list_group_index]
   before_filter :check_login, :only => [:new, :new_in_groups, :create, :activity_groups,
                                         :edit_image, :update_image, :check_profile, :join, :quit,
                                         :edit, :update, :update_desc, :update_access,
@@ -63,10 +63,12 @@ class ActivitiesController < ApplicationController
 
   before_filter :check_activity_update_absent, :only => [:absent, :absent_edit, :add_absent, :del_absent]
   
+  before_filter :check_activity_view_access, :only => [:show]
+  before_filter :protect_activity_view_access, :only => [:members, :interest]
+  
   
   
   ACKP_activities_all_list = :ac_activities_all_list
-  ACKP_activities_day_list = :ac_activities_day_list
   
   caches_action :all,
     :cache_path => Proc.new { |controller|
@@ -107,6 +109,10 @@ class ActivitiesController < ApplicationController
   
   def recent_index
     jump_to("/activities/recent/#{session[:account_id]}")
+  end
+  
+  def list_group_index
+    jump_to("/groups/all_activity/#{session[:account_id]}")
   end
   
   def recent
@@ -565,8 +571,8 @@ class ActivitiesController < ApplicationController
   end
   
   def show
-    @activity_id = params[:id]
-    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    # @activity_id = params[:id]
+    # @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
     
     @is_master = (@activity.master_id == session[:account_id])
     @is_member = has_login? && ActivityMember.is_activity_member(@activity_id, session[:account_id])
@@ -580,6 +586,11 @@ class ActivitiesController < ApplicationController
     
     in_group = @activity.in_group || 0
     @group, @group_image = Group.get_group_with_image(in_group) if in_group > 0
+    
+    @activity_setting = @activity.get_setting
+    
+    need_join_to_view_member = @activity_setting[:need_join_to_view_member]
+    @can_view_member = !(need_join_to_view_member && (!@is_member))
     
     @place_point = Activity.get_activity_place_point(@activity_id)
     
@@ -614,7 +625,7 @@ class ActivitiesController < ApplicationController
       :conditions => ["activity_id = ?", @activity_id],
       :include => [:account => [:profile_pic]],
       :order => "join_at DESC"
-    )
+    ) if @can_view_member
     
     @activity_photos = ActivityPhoto.find(
       :all,
@@ -906,7 +917,10 @@ class ActivitiesController < ApplicationController
       :check_mobile => (params[:check_mobile] == "true"),
       :check_real_name => (params[:check_real_name] == "true"),
       :check_gender => (params[:check_gender] == "true"),
-      :check_birthday => (params[:check_birthday] == "true")
+      :check_birthday => (params[:check_birthday] == "true"),
+      
+      :need_join_group_to_view => (params[:need_join_group_to_view] == "true"),
+      :need_join_to_view_member => (params[:need_join_to_view_member] == "true")
     }
     @activity.update_setting(activity_setting)
     
@@ -925,18 +939,25 @@ class ActivitiesController < ApplicationController
     @activity_id ||= params[:id]
     @activity, @activity_image = Activity.get_activity_with_image(@activity_id) unless @activity
     
-    @master_id = @activity.master_id
-    @master_nick_pic = Account.get_nick_and_pic(@master_id)
+    need_join_to_view_member = @activity.get_setting[:need_join_to_view_member]
+    @can_view_member = !(need_join_to_view_member && (!ActivityMember.is_activity_member(@activity_id, session[:account_id])))
     
-    @admin_members = ActivityMember.get_activity_admins(@activity_id)
+    if @can_view_member
     
-    # check and ensure admins include activity master
-    master_member = @admin_members.select {|m| (m.account_id == @master_id) && m.admin }[0]
-    ActivityMember.add_account_to_activity(@activity_id, @master_id, true) unless master_member
+      @master_id = @activity.master_id
+      @master_nick_pic = Account.get_nick_and_pic(@master_id)
     
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    @members = ActivityMember.paginate_activity_members(@activity_id, page, Member_Page_Size)
+      @admin_members = ActivityMember.get_activity_admins(@activity_id)
+    
+      # check and ensure admins include activity master
+      master_member = @admin_members.select {|m| (m.account_id == @master_id) && m.admin }[0]
+      ActivityMember.add_account_to_activity(@activity_id, @master_id, true) unless master_member
+    
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @members = ActivityMember.paginate_activity_members(@activity_id, page, Member_Page_Size)
+      
+    end
   end
   
   def members_edit
@@ -1443,6 +1464,75 @@ class ActivitiesController < ApplicationController
   def is_activity_member_beyond_limit(activity, include_equal = true)
     limit = activity.member_limit
     (limit && limit > 0) && (ActivityMember.count_activity_member(activity.id).send(include_equal ? ">=" : ">", limit))
+  end
+  
+  
+  def check_activity_view_access
+    @activity_id = params[:id]
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    
+    group_id = @activity.in_group
+    if group_id && group_id > 0
+      @group, @group_image = Group.get_group_with_image(group_id)
+      
+      need_join_to_view_activity = @group.get_setting[:need_join_to_view_activity]
+      need_join_group_to_view = @activity.get_setting[:need_join_group_to_view]
+      @can_not_view = (need_join_to_view_activity || need_join_group_to_view) && (!GroupMember.is_group_member(@group.id, session[:account_id]))
+      
+      if @can_not_view
+        render :layout => true, :inline => %Q!
+          <% activity_title = h(@activity.title)%>
+
+          <% community_page_title(activity_title) %>
+
+          <div class="float_r activity_container_r">
+
+          	<div class="community_block align_c">
+        			<a href="/groups/<%= @group.id %>">
+        				<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+        		</div>
+        		
+        		<div class="community_block align_c form_info_s">
+      				圈子 <a href="/groups/<%= @group.id %>"><%= h(@group.name) %></a> 的圈内活动
+        		</div>
+
+          </div>
+
+          <div class="activity_container_l">
+          	<h2>
+          		<%= activity_title %>
+          	</h2>
+          	
+          	<p class="warning_msg">
+        			根据活动及其所在圈子的设置, 只有活动所在的圈子的成员可以查看活动的具体内容
+        		</p>
+
+        		<p>
+        			<% form_tag "/groups/#{@group.id}/join", :method => :post do %>
+        				<input type="submit" value="我要加入圈子" class="button" />
+        			<% end %>
+        		</p>
+
+          </div>
+        !
+      end
+    end
+  end
+  
+  def protect_activity_view_access
+    activity_id = params[:id]
+    activity = Activity.get_activity_with_image(activity_id)[0]
+    
+    group_id = activity.in_group
+    if group_id && group_id > 0
+      group = Group.get_group_with_image(group_id)[0]
+      
+      need_join_to_view_activity = group.get_setting[:need_join_to_view_activity]
+      need_join_group_to_view = activity.get_setting[:need_join_group_to_view]
+      can_not_view = (need_join_to_view_activity || need_join_group_to_view) && (!GroupMember.is_group_member(group.id, session[:account_id]))
+      
+      jump_to("/errors/forbidden") if can_not_view
+    end
   end
   
   

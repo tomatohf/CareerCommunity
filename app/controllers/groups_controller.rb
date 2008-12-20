@@ -665,7 +665,8 @@ class GroupsController < ApplicationController
       :need_join_to_view_bookmark => (params[:need_join_to_view_bookmark] == "true"),
       :need_join_to_view_member => (params[:need_join_to_view_member] == "true"),
       :need_join_to_view_notice => (params[:need_join_to_view_notice] == "true"),
-      :need_join_to_view_vote => (params[:need_join_to_view_vote] == "true")
+      :need_join_to_view_vote => (params[:need_join_to_view_vote] == "true"),
+      :need_join_to_view_activity => (params[:need_join_to_view_activity] == "true")
     }
     
     @group.update_setting(group_setting)

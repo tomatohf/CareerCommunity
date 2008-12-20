@@ -1,9 +1,9 @@
 ﻿照片按相册设置查看权限
 
-圈子内容更全面的 view 权限设置
-	相应的处理搜索结果
-圈内和全局分开后, 全局列表处显示 我参加的圈子的..的链接
+cache is_activity_member, is_activity_admin, is_interest ...
 
+更全面的 view 权限设置
+	相应的处理搜索结果
 
 提问频道
 

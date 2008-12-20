@@ -186,7 +186,11 @@
 						<%= h(a.get_title) %>
 					</a>
 					<span class="activity_info_label">
-						(<%= a.get_status[1] %>-<%= a.in_group && a.in_group > 0 ? "圈内活动" : "全局活动" %>)
+						<script language="JavaScript">
+							var status_label = <%= show_activity_status_script(a) %>;
+							
+							document.write("(" + status_label + "-<%= a.in_group && a.in_group > 0 ? "圈内活动" : "全局活动" %>)");
+						</script>
 					</span>
 				</div>
 			<% end %>
@@ -282,7 +286,7 @@
 							<span class="activity_info_label">人均费用:</span>
 							<%= @activity.cost || "无" %>
 							
-							<% contact = @activity.get_setting[:contact] %>
+							<% contact = @activity_setting[:contact] %>
 							<% if contact && contact != "" %>
 								<br />
 								
@@ -375,7 +379,7 @@
 		</div>
 		
 		<div id="desc_section" class="tinymce_content">
-			<%= sanitize_tinymce(@activity.get_setting[:desc]) %>
+			<%= sanitize_tinymce(@activity_setting[:desc]) %>
 		</div>
 	</div>
 	
@@ -469,8 +473,12 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="join_section_collapse" href="#" onclick="expand_section('join_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<span class="float_r">
-				<a href="/activities/members/<%= @activity_id %>">全部报名参加活动的成员</a>
+			<span class="float_r form_info_s">
+				<% if @can_view_member %>
+					<a href="/activities/members/<%= @activity_id %>">全部报名参加活动的成员</a>
+				<% else %>
+					(已隐藏)
+				<% end %>
 				&nbsp;&nbsp;&nbsp;
 			</span>
 			
@@ -482,9 +490,19 @@
 		</div>
 		
 		<div id="join_section" class="overflow_hidden">
-			<%= float_list(@members, "member", :member, {}, 7) %>
+			<% if @can_view_member %>
+				
+				<%= float_list(@members, "member", :member, {}, 7) %>
 			
-			<div class="clear_l"></div>
+				<div class="clear_l"></div>
+				
+			<% else %>
+				
+				<p class="warning_msg" style="margin-left: 15px; margin-right: 15px;">
+					根据活动的设置, 只有报名活动后才可以查看参加活动的成员
+				</p>
+				
+			<% end %>
 		</div>
 	</div>
 	

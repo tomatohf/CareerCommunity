@@ -24,7 +24,7 @@
 		}
 	</style>
 	
-	<div style="background-color: #333333; color: #FFFFFF; font-size: 14px; font-weight: bold; text-align: center; margin-bottom: 2px;">
+	<div style="background-color: #555555; color: #FFFFFF; font-size: 14px; font-weight: bold; text-align: center; margin-bottom: 2px;">
 		近期乔布沙龙
 	</div>
 	<div class="sharon_container_Sep">
@@ -61,7 +61,7 @@
 			</table>
 		<% end %>
 	</div>
-	<div class="sharon_container_Sep" style="border-bottom: 5px solid #333333;">
+	<div class="sharon_container_Sep" style="border-bottom: 5px solid #555555;">
 
 	</div>
 	
@@ -412,11 +412,13 @@
 								<a href="/activities/<%= activity.id %>" target="_blank" title="<%= activity_title %>">
 									<%= truncate(activity_title, 22) %></a>
 
-								<!--
 								<span style="color: #999999;">
-									(<%= activity.get_status[1] %>)
+									<script language="JavaScript">
+										var status_label = <%= show_activity_status_script(activity) %>;
+										
+										document.write("(" + status_label + ")");
+									</script>
 								</span>
-								-->
 							</div>
 						<% end %>
 					<% end %>
