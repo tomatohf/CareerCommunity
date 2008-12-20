@@ -1,4 +1,5 @@
 ﻿照片按相册设置查看权限
+圈子图片和活动照片的 view 权限
 
 cache is_activity_member, is_activity_admin, is_interest ...
 
