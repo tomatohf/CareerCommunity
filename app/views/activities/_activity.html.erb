@@ -8,6 +8,22 @@
 	Activity.set_activity_with_image_cache(activity_id, activity, activity_image)
 %>
 
+<%
+	activity_setting = activity.get_setting
+	
+	need_join_group_to_view = activity.get_setting[:need_join_group_to_view]
+	group_id = activity.in_group
+	if group_id && group_id > 0
+		group = Group.get_group_with_image(group_id)[0]
+		need_join_to_view_activity = group.get_setting[:need_join_to_view_activity]
+		
+		need_check_group_member = need_join_to_view_activity || need_join_group_to_view
+	else
+		need_check_group_member = need_join_group_to_view
+	end
+	can_view = !(need_check_group_member && (!GroupMember.is_group_member(group.id, session[:account_id])))
+%>
+
 <div>
 	<table cellpadding="0" cellspacing="10" class="main_part_w">
 		<tr>
@@ -37,40 +53,64 @@
 						</a>
 					</span>
 				</div>
+				
+				<% if can_view %>
+				
+					<div>
+						<%= format_activity_time(activity.begin_at) %>
+						--
+						<%= format_activity_time(activity.end_at) %>
 					
-				<div>
-					<%= format_activity_time(activity.begin_at) %>
-					--
-					<%= format_activity_time(activity.end_at) %>
-					
-					<br />
-					
-					<span class="activity_info_label">地点:</span>
-					<%= h(activity.place) %>
-					
-					<br />
-					
-					<span class="activity_info_label">报名截止时间:</span>
-					<%= activity.application_deadline ? format_activity_time(activity.application_deadline) : "活动开始前" %>
-					
-					<br />
-					
-					<%= activity.in_group && activity.in_group > 0 ? "圈内活动" : "全局活动" %>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<span class="activity_info_label">人数限制:</span>
-					<%= (activity.member_limit && activity.member_limit > 0) ? activity.member_limit : "无" %>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<span class="activity_info_label">人均费用:</span>
-					<%= activity.cost || "无" %>
-					
-					<% contact = activity.get_setting[:contact] %>
-					<% if contact && contact != "" %>
 						<br />
+					
+						<span class="activity_info_label">地点:</span>
+						<%= h(activity.place) %>
+					
+						<br />
+					
+						<span class="activity_info_label">报名截止时间:</span>
+						<%= activity.application_deadline ? format_activity_time(activity.application_deadline) : "活动开始前" %>
+					
+						<br />
+					
+						<% if group_id && group_id > 0 %>
+							<span class="">
+								圈子
+								<a href="/groups/<%= group.id %>">
+									<%= h(group.name) %></a>
+								的圈内活动
+							</span>
 						
-						<span class="activity_info_label">联系方法:</span>
-						<%= h(contact) %>
-					<% end %>
-				</div>
+							<br />
+						<% end %>
+					
+					
+						<% unless group_id && group_id > 0 %>
+							全局活动	
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<% end %>
+						<span class="activity_info_label">人数限制:</span>
+						<%= (activity.member_limit && activity.member_limit > 0) ? activity.member_limit : "无" %>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<span class="activity_info_label">人均费用:</span>
+						<%= activity.cost || "无" %>
+					
+						<% contact = activity.get_setting[:contact] %>
+						<% if contact && contact != "" %>
+							<br />
+						
+							<span class="activity_info_label">联系方法:</span>
+							<%= h(contact) %>
+						<% end %>
+					</div>
+					
+				<% else %>
+					
+					<p class="warning_msg" style="margin-right: 20px;">
+    					根据活动及其所在圈子的设置, 只有活动所在的圈子的成员可以查看活动的具体内容
+		    		</p>
+					
+				<% end %>
 			</td>
 		</tr>
 	</table>
