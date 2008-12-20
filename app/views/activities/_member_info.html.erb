@@ -6,6 +6,8 @@
 	account_pic_url = account.get_profile_pic_url
 
 	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
+	
+	ActivityMember.set_activity_member_cache(member_info.activity_id, member_info.account_id, member_info) if member_info.kind_of?(ActivityMember)
 %>
 
 <% include_basic_profile = check_gender || check_birthday %>

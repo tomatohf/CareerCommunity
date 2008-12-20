@@ -13,19 +13,7 @@ class ActivityMember < ActiveRecord::Base
   
   FCKP_spaces_show_activity_member = :fc_spaces_show_activity_member
   
-  after_save { |activity_member|
-    self.clear_spaces_show_activity_member_cache(activity_member.account_id)
-  }
-  
-  after_destroy { |activity_member|
-    self.clear_spaces_show_activity_member_cache(activity_member.account_id)
-  }
-  
-  def self.clear_spaces_show_activity_member_cache(account_id)
-    Cache.delete(expand_cache_key("#{FCKP_spaces_show_activity_member}_#{account_id}"))
-  end
-  
-  
+  CKP_activity_member = :activity_member
   
   after_save { |activity_member|
     if activity_member.join_at_was.nil? && activity_member.join_at.kind_of?(DateTime)
@@ -33,10 +21,49 @@ class ActivityMember < ActiveRecord::Base
         :activity_id => activity_member.activity_id
       })
     end
+    
+    self.clear_spaces_show_activity_member_cache(activity_member.account_id)
+    
+    if activity_member.agreed
+      self.set_activity_member_cache(activity_member.activity_id, activity_member.account_id, activity_member)
+    else
+      self.clear_activity_member_cache(activity_member.activity_id, activity_member.account_id)
+    end
   }
+  
+  after_destroy { |activity_member|
+    self.clear_spaces_show_activity_member_cache(activity_member.account_id)
+    
+    self.clear_activity_member_cache(activity_member.activity_id, activity_member.account_id)
+  }
+  
+  def self.clear_spaces_show_activity_member_cache(account_id)
+    Cache.delete(expand_cache_key("#{FCKP_spaces_show_activity_member}_#{account_id}"))
+  end
   
   
   named_scope :agreed, :conditions => { :accepted => true, :approved => true }
+  
+  
+  
+  def self.get_activity_member(activity_id, account_id)
+    a_m = Cache.get("#{CKP_activity_member}_#{activity_id}_#{account_id}".to_sym)
+    
+    unless a_m
+      a_m = self.agreed.find(:first, :conditions => ["activity_id = ? and account_id = ?", activity_id, account_id])
+      
+      self.set_activity_member_cache(activity_id, account_id, a_m)
+    end
+    a_m
+  end
+  
+  def self.set_activity_member_cache(activity_id, account_id, member)
+    Cache.set("#{CKP_activity_member}_#{activity_id}_#{account_id}".to_sym, member && member.clear_association, Cache_TTL)
+  end
+  
+  def self.clear_activity_member_cache(activity_id, account_id)
+    Cache.delete("#{CKP_activity_member}_#{activity_id}_#{account_id}".to_sym)
+  end
   
   
   
@@ -45,11 +72,11 @@ class ActivityMember < ActiveRecord::Base
   end
   
   def self.is_activity_member(activity_id, account_id)
-    self.agreed.find(:first, :conditions => ["activity_id = ? and account_id = ?", activity_id, account_id])
+    self.get_activity_member(activity_id, account_id)
   end
   
   def self.is_activity_admin(activity_id, account_id)
-    self.agreed.find(:first, :conditions => ["activity_id = ? and account_id = ? and admin = ?", activity_id, account_id, true])
+    (member = self.get_activity_member(activity_id, account_id)) && member.admin
   end
   
   def self.get_by_activity_and_account(activity_id, account_id)
@@ -158,6 +185,14 @@ class ActivityMember < ActiveRecord::Base
   
   def self.load_activity_with_image(members)
     preload_associations(members, [:activity => [:image]])
+  end
+  
+  
+  def clear_association
+    copy = deep_copy(self)
+    copy.clear_association_cache
+    copy.clear_aggregation_cache
+    copy
   end
   
 end

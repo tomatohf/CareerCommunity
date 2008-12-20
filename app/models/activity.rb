@@ -117,6 +117,8 @@ class Activity < ActiveRecord::Base
 			:conditions => ["activity_id = ?", activity_id]
 		).each do |am|
 		  ActivityMember.clear_spaces_show_activity_member_cache(am.account_id)
+		  
+      ActivityMember.set_activity_member_cache(am.activity_id, am.account_id, am)
 	  end
 	  
 	  ActivityInterest.find(

@@ -1,6 +1,9 @@
 <% can_del &&= true %>
 
 <%
+	ActivityMember.set_activity_member_cache(activity.activity_id, activity.account_id, activity) if activity.kind_of?(ActivityMember)
+	
+	
 	activity = activity.activity unless activity.kind_of?(Activity)
 	activity_id = activity.id
 	activity_image = activity.get_image_url

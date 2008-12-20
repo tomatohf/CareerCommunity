@@ -14,6 +14,8 @@
 	account_pic_url = member.account.get_profile_pic_url
 	
 	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, member.account.email)
+	
+	ActivityMember.set_activity_member_cache(member.activity_id, member.account_id, member) if member.kind_of?(ActivityMember)
 %>
 
 <div class="friend_nick_pic">
