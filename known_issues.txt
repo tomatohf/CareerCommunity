@@ -2,9 +2,6 @@
 
 cache is_activity_member, is_activity_admin, is_interest ...
 
-更全面的 view 权限设置
-	相应的处理搜索结果
-
 提问频道
 
 功能模块(func_list)列表放圈子链接

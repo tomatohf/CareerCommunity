@@ -64,7 +64,12 @@ class ActivitiesController < ApplicationController
   before_filter :check_activity_update_absent, :only => [:absent, :absent_edit, :add_absent, :del_absent]
   
   before_filter :check_activity_view_access, :only => [:show]
-  before_filter :protect_activity_view_access, :only => [:members, :interest]
+  before_filter :protect_activity_view_access, :only => [:members, :interest,
+                                                          :check_profile, :join, :add_interest,
+                                                          :photo, :post, 
+                                                          :invite, :invite_member,
+                                                          :invite_contact, :select_contact,
+                                                          :send_contact_invitations]
   
   
   
@@ -592,6 +597,9 @@ class ActivitiesController < ApplicationController
     need_join_to_view_member = @activity_setting[:need_join_to_view_member]
     @can_view_member = !(need_join_to_view_member && (!@is_member))
     
+    need_join_to_add_post = @activity_setting[:need_join_to_add_post]
+    @can_add_post = !(need_join_to_add_post && (!@is_member))
+    
     @place_point = Activity.get_activity_place_point(@activity_id)
     
     @top_activity_posts = ActivityPost.find(
@@ -920,7 +928,9 @@ class ActivitiesController < ApplicationController
       :check_birthday => (params[:check_birthday] == "true"),
       
       :need_join_group_to_view => (params[:need_join_group_to_view] == "true"),
-      :need_join_to_view_member => (params[:need_join_to_view_member] == "true")
+      :need_join_to_view_member => (params[:need_join_to_view_member] == "true"),
+      :need_join_to_add_post => (params[:need_join_to_add_post] == "true"),
+      :need_join_to_view_post => (params[:need_join_to_view_post] == "true")
     }
     @activity.update_setting(activity_setting)
     
@@ -1531,7 +1541,7 @@ class ActivitiesController < ApplicationController
       need_join_group_to_view = activity.get_setting[:need_join_group_to_view]
       can_not_view = (need_join_to_view_activity || need_join_group_to_view) && (!GroupMember.is_group_member(group.id, session[:account_id]))
       
-      jump_to("/errors/forbidden") if can_not_view
+      jump_to("/activities/#{activity_id}") if can_not_view
     end
   end
   

@@ -144,15 +144,18 @@
 		</div>
 	<% end %>
 	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
 	
-	<div class="community_block">
-		<a href="/activity/posts/compose/<%= @activity_id %>">
-			<img src="/images/groups/add_post_small.png" border="0" />
-			发起新的讨论话题</a>
-	</div>
+	<% if @can_add_post %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+	
+		<div class="community_block">
+			<a href="/activity/posts/compose/<%= @activity_id %>">
+				<img src="/images/groups/add_post_small.png" border="0" />
+				发起新的讨论话题</a>
+		</div>
+	<% end %>
 	
 	<% if @is_member %>
 		<div class="community_block">
@@ -429,10 +432,12 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="post_section_collapse" href="#" onclick="expand_section('post_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<span class="float_r">
-				<a href="/activity/posts/compose/<%= @activity_id %>">发起新的讨论话题</a>
-				&nbsp;&nbsp;&nbsp;
-			</span>
+			<% if @can_add_post %>
+				<span class="float_r">
+					<a href="/activity/posts/compose/<%= @activity_id %>">发起新的讨论话题</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			<% end %>
 			
 			<img class="float_l" src="/images/groups/post_small.png" border="0" />
 			&nbsp;&nbsp;&nbsp;

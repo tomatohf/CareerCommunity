@@ -20,43 +20,52 @@
 			返回<%= @type_label %> <%= type_name %></a>
 	</div>
 
-	<div class="community_block">
-		<a href="/<%= pluralized_post_type %>/post/<%= @type_id %>">
-			全部圈子讨论话题</a>
-	</div>
-	
-	<% if @access.include?(:member) %>
-		<div class="community_block_narrow">
-			<%= thin_hr %>
-		</div>
-	
+	<% if @can_view %>
 		<div class="community_block">
-			<a href="/<%= @post_type %>/posts/compose/<%= @type_id %>">
-				<img src="/images/groups/add_post_small.png" border="0" />
-				发表新的讨论话题</a>
+			<a href="/<%= pluralized_post_type %>/post/<%= @type_id %>">
+				全部圈子讨论话题</a>
 		</div>
+	
+		<% if @access.include?(:can_compose) %>
+			<div class="community_block_narrow">
+				<%= thin_hr %>
+			</div>
+	
+			<div class="community_block">
+				<a href="/<%= @post_type %>/posts/compose/<%= @type_id %>">
+					<img src="/images/groups/add_post_small.png" border="0" />
+					发表新的讨论话题</a>
+			</div>
 		
-	<% else %>
+		<% elsif @post_type == "group" %>
+			<div class="community_block">
+				<% form_tag "/groups/#{@type_id}/join", :method => :post do %>
+					<input type="submit" value="加入圈子" class="button" />
+					后参与话题讨论
+				<% end %>
+			</div>
+		<% elsif @post_type == "activity" %>
+			<div class="community_block">
+				<% form_tag "/activities/#{@type_id}/check_profile", :method => :post do %>
+					<input type="submit" value="报名参加活动" class="button" />
+					后参与话题讨论
+				<% end %>
+			</div>
+		<% end %>
+	
+		<div class="community_title">
+			发起的其他话题 ...
+		</div>
+
 		<div class="community_block">
-			<% form_tag "/#{pluralized_post_type}/#{@type_id}/join", :method => :post do %>
-				<input type="submit" value="加入<%= @type_label %>" class="button" />
-				后参与话题讨论
+			<% @other_posts.each do |op| %>
+				<div>
+					» <a href="/<%= @post_type %>/posts/<%= op.id %>" class="account_nick_link"><%= h(op.title) %></a>
+				</div>
+				<div style="height: 10px;"></div>
 			<% end %>
 		</div>
 	<% end %>
-	
-	<div class="community_title">
-		发起的其他话题 ...
-	</div>
-
-	<div class="community_block">
-		<% @other_posts.each do |op| %>
-			<div>
-				» <a href="/<%= @post_type %>/posts/<%= op.id %>" class="account_nick_link"><%= h(op.title) %></a>
-			</div>
-			<div style="height: 10px;"></div>
-		<% end %>
-	</div>
 	
 </div>
 
@@ -175,7 +184,7 @@
 			条<span id="comment_list">评论</span> ...
 		</div>
 	
-		<% if @access.include?(:member) %>
+		<% if @access.include?(:can_compose) %>
 			<div class="community_block_narrow align_r">
 				<a href="#comment_new">添加评论</a>
 			</div>
@@ -183,6 +192,13 @@
 			<div class="community_block align_r">
 				<% form_tag "/groups/#{@type_id}/join", :method => :post do %>
 					<input type="submit" value="加入圈子" class="button" />
+					后添加评论
+				<% end %>
+			</div>
+		<% elsif @post_type == "activity" %>
+			<div class="community_block align_r">
+				<% form_tag "/activities/#{@type_id}/check_profile", :method => :post do %>
+					<input type="submit" value="报名参加活动" class="button" />
 					后添加评论
 				<% end %>
 			</div>
@@ -196,7 +212,7 @@
 			<%= paging_buttons(@comments) %>
 		</div>
 	
-		<% if @access.include?(:member) %>
+		<% if @access.include?(:can_compose) %>
 			<div class="community_block_narrow">
 				<span id="comment_new">添加评论 »</span>
 				<% form_tag "/#{@post_type}/posts/#{@post_id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('post_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
@@ -214,15 +230,23 @@
 		<p class="warning_msg">
 			根据<%= @type_label %>
 			<a href="/<%= pluralized_post_type %>/<%= @type_id %>">
-				<%= @type_name %></a>
-			的设置, 只有圈子成员可以查看圈内讨论话题的具体内容
+				<%= type_name %></a>
+			的设置, 只有成员可以查看讨论话题的具体内容
 		</p>
 		
-		<p>
-			<% form_tag "/#{pluralized_post_type}/#{@type_id}/join", :method => :post do %>
-				<input type="submit" value="我要加入<%= @type_label %>" class="button" />
-			<% end %>
-		</p>
+		<% if @post_type == "group" %>
+			<p>
+				<% form_tag "/groups/#{@type_id}/join", :method => :post do %>
+					<input type="submit" value="我要加入圈子" class="button" />
+				<% end %>
+			</p>
+		<% elsif @post_type == "activity" %>
+			<p>
+				<% form_tag "/activities/#{@type_id}/check_profile", :method => :post do %>
+					<input type="submit" value="我要报名参加活动" class="button" />
+				<% end %>
+			</p>
+		<% end %>
 		
 	<% end %>
 </div>

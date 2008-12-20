@@ -125,18 +125,18 @@ class PostsController < ApplicationController
       )
     
       @attachments = @post.attachments
+    
+      @other_posts = type_handler.get_post_class.find(
+        :all,
+        :limit => Same_Author_Post_Num,
+        :select => "id, created_at, #{type_handler.get_type_id}, account_id, title, responded_at",
+        :conditions => ["account_id = ? and #{type_handler.get_type_id} = ?", @post.account_id, @type_id],
+        :order => "responded_at DESC, created_at DESC"
+      )
+    
+      # should NOT cache the access check
+      @access = type_handler.get_access(session[:account_id], @post.account_id, @type_id)
     end
-    
-    @other_posts = type_handler.get_post_class.find(
-      :all,
-      :limit => Same_Author_Post_Num,
-      :select => "id, created_at, #{type_handler.get_type_id}, account_id, title, responded_at",
-      :conditions => ["account_id = ? and #{type_handler.get_type_id} = ?", @post.account_id, @type_id],
-      :order => "responded_at DESC, created_at DESC"
-    )
-    
-    # should NOT cache the access check
-    @access = type_handler.get_access(session[:account_id], @post.account_id, @type_id)
 
   end
   
@@ -429,14 +429,14 @@ class PostsController < ApplicationController
         if current_account_id
           is_member = GroupMember.is_group_member(type_id, current_account_id)
           if is_member
-            access << :member
+            access << :can_compose
             access << :admin if GroupMember.is_group_admin(type_id, current_account_id)
           end
           access << :author if (poster_id == current_account_id)
         end
         
         # to append access for check_compose_access
-        access << :member if (!access.include?(:member)) && get_group_self_check_compose_access_result(type_id, current_account_id)
+        access << :can_compose if (!access.include?(:can_compose)) && get_group_self_check_compose_access_result(type_id, current_account_id)
         
         access
       end
@@ -468,9 +468,27 @@ class PostsController < ApplicationController
       end
       
       def check_compose_access(type_id, account_id)
-        # ActivityMember.is_activity_member(type_id, account_id)
-        # everyone can add post in activity
-        true
+        activity = ::Activity.get_activity_with_image(type_id)[0]
+        
+        need_join_to_add_post = activity.get_setting[:need_join_to_add_post]
+        
+        if need_join_to_add_post
+          ActivityMember.is_activity_member(type_id, account_id)
+        else
+
+          group_id = activity.in_group
+          if group_id && group_id > 0
+            group = ::Group.get_group_with_image(group_id)[0]
+
+            need_join_to_view_activity = group.get_setting[:need_join_to_view_activity]
+            need_join_group_to_view = activity.get_setting[:need_join_group_to_view]
+
+            !((need_join_to_view_activity || need_join_group_to_view) && (!GroupMember.is_group_member(group.id, account_id)))
+          else
+            true
+          end
+          
+        end
       end
       
       def check_create_access(type_id, account_id)
@@ -494,17 +512,41 @@ class PostsController < ApplicationController
       end
       
       def check_view_access(type_id, account_id)
-        true
+        activity = ::Activity.get_activity_with_image(type_id)[0]
+        
+        need_join_to_view_post = activity.get_setting[:need_join_to_view_post]
+        
+        if need_join_to_view_post
+          ActivityMember.is_activity_member(type_id, account_id)
+        else
+
+          group_id = activity.in_group
+          if group_id && group_id > 0
+            group = ::Group.get_group_with_image(group_id)[0]
+
+            need_join_to_view_activity = group.get_setting[:need_join_to_view_activity]
+            need_join_group_to_view = activity.get_setting[:need_join_group_to_view]
+
+            !((need_join_to_view_activity || need_join_group_to_view) && (!GroupMember.is_group_member(group.id, account_id)))
+          else
+            true
+          end
+          
+        end
       end
       
       def check_attachment_access(type_id, account_id)
-        true
+        check_view_access(type_id, account_id)
       end
       
       def get_access(current_account_id, poster_id, type_id)
         access = []
         
-        access << :member # everyone can add post in activity
+        activity = ::Activity.get_activity_with_image(type_id)[0]
+        
+        need_join_to_add_post = activity.get_setting[:need_join_to_add_post]
+        
+        access << :can_compose unless need_join_to_add_post && (!ActivityMember.is_activity_member(type_id, current_account_id))
         
         if current_account_id
           access << :admin if ActivityMember.is_activity_admin(type_id, current_account_id)
