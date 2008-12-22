@@ -126,6 +126,8 @@ class Activity < ActiveRecord::Base
 			:conditions => ["activity_id = ?", activity_id]
 		).each do |ai|
 		  ActivityInterest.clear_spaces_show_activity_interest_cache(ai.account_id)
+		  
+		  ActivityInterest.set_activity_interest_cache(ai.activity_id, ai.account_id, ai)
 	  end
   end
   

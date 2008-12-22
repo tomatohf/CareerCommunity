@@ -3,6 +3,8 @@
 <%
 	ActivityMember.set_activity_member_cache(activity.activity_id, activity.account_id, activity) if activity.kind_of?(ActivityMember)
 	
+	ActivityInterest.set_activity_interest_cache(activity.activity_id, activity.account_id, activity) if activity.kind_of?(ActivityInterest)
+	
 	
 	activity = activity.activity unless activity.kind_of?(Activity)
 	activity_id = activity.id

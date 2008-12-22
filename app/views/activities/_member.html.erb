@@ -16,6 +16,8 @@
 	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, member.account.email)
 	
 	ActivityMember.set_activity_member_cache(member.activity_id, member.account_id, member) if member.kind_of?(ActivityMember)
+	
+	ActivityInterest.set_activity_interest_cache(member.activity_id, member.account_id, member) if member.kind_of?(ActivityInterest)
 %>
 
 <div class="friend_nick_pic">

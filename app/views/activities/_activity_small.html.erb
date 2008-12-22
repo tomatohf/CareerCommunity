@@ -6,6 +6,8 @@
 	Activity.set_activity_with_image_cache(activity_id, activity, activity_image)
 	
 	ActivityMember.set_activity_member_cache(activity_small.activity_id, activity_small.account_id, activity_small) if activity_small.kind_of?(ActivityMember)
+	
+	ActivityInterest.set_activity_interest_cache(activity_small.activity_id, activity_small.account_id, activity_small) if activity_small.kind_of?(ActivityInterest)
 %>
 
 <div>
