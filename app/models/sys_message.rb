@@ -129,9 +129,9 @@ class SysMessage < ActiveRecord::Base
             :owner_id => #{owner_id},
             :account_id => #{account_id},
             :comment_id => #{comment_id},
-            :comment_content => "#{comment_content}",
-            :account_nick => "#{account_nick}",
-            :account_pic_url => "#{account_pic_url}"
+            :comment_content => #{comment_content.inspect},
+            :account_nick => #{account_nick.inspect},
+            :account_pic_url => #{account_pic_url.inspect}
           })
         !
       end
@@ -150,8 +150,8 @@ class SysMessage < ActiveRecord::Base
           render(:partial => "/messages/sys/add_friend", :locals => {
             :not_friend => #{not_friend},
             :account_id => #{account_id},
-            :account_nick => "#{account_nick}",
-            :account_pic_url => "#{account_pic_url}"
+            :account_nick => #{account_nick.inspect},
+            :account_pic_url => #{account_pic_url.inspect}
           })
         !
       end
@@ -170,12 +170,12 @@ class SysMessage < ActiveRecord::Base
         %Q!
           render(:partial => "/messages/sys/join_group_request", :locals => {
             :requester_id => #{requester_id},
-            :requester_nick => "#{requester_nick}",
-            :requester_pic_url => "#{requester_pic_url}",
+            :requester_nick => #{requester_nick.inspect},
+            :requester_pic_url => #{requester_pic_url.inspect},
             
             :group_id => #{group_id},
-            :group_name => "#{group.name}",
-            :group_image => "#{group_image}"
+            :group_name => #{group.name.inspect},
+            :group_image => #{group_image.inspect}
           })
         !
       end
@@ -196,12 +196,12 @@ class SysMessage < ActiveRecord::Base
         %Q!
           render(:partial => "/messages/sys/approve_reject_join_group", :locals => {
             :admin_id => #{admin_id},
-            :admin_nick => "#{admin_nick}",
-            :admin_pic_url => "#{admin_pic_url}",
+            :admin_nick => #{admin_nick.inspect},
+            :admin_pic_url => #{admin_pic_url.inspect},
             
             :group_id => #{group_id},
-            :group_name => "#{group.name}",
-            :group_image => "#{group_image}",
+            :group_name => #{group.name.inspect},
+            :group_image => #{group_image.inspect},
             
             :approve => #{approve}
           })
@@ -224,14 +224,14 @@ class SysMessage < ActiveRecord::Base
         %Q!
           render(:partial => "/messages/sys/invite_join_group", :locals => {
             :inviter_id => #{inviter_id},
-            :inviter_nick => "#{inviter_nick}",
-            :inviter_pic_url => "#{inviter_pic_url}",
+            :inviter_nick => #{inviter_nick.inspect},
+            :inviter_pic_url => #{inviter_pic_url.inspect},
             
             :group_id => #{group_id},
-            :group_name => "#{group.name}",
-            :group_image => "#{group_image}",
+            :group_name => #{group.name.inspect},
+            :group_image => #{group_image.inspect},
             
-            :invitation_words => "#{invitation_words}"
+            :invitation_words => #{invitation_words.inspect}
           })
         !
       end
@@ -252,14 +252,14 @@ class SysMessage < ActiveRecord::Base
         %Q!
           render(:partial => "/messages/sys/invite_join_activity", :locals => {
             :inviter_id => #{inviter_id},
-            :inviter_nick => "#{inviter_nick}",
-            :inviter_pic_url => "#{inviter_pic_url}",
+            :inviter_nick => #{inviter_nick.inspect},
+            :inviter_pic_url => #{inviter_pic_url.inspect},
             
             :activity_id => #{activity_id},
-            :activity_title => "#{activity.get_title}",
-            :activity_image => "#{activity_image}",
+            :activity_title => #{activity.get_title.inspect},
+            :activity_image => #{activity_image.inspect},
             
-            :invitation_words => "#{invitation_words}"
+            :invitation_words => #{invitation_words.inspect}
           })
         !
       end
@@ -278,12 +278,12 @@ class SysMessage < ActiveRecord::Base
         %Q!
           render(:partial => "/messages/sys/join_activity_request", :locals => {
             :requester_id => #{requester_id},
-            :requester_nick => "#{requester_nick}",
-            :requester_pic_url => "#{requester_pic_url}",
+            :requester_nick => #{requester_nick.inspect},
+            :requester_pic_url => #{requester_pic_url.inspect},
             
             :activity_id => #{activity_id},
-            :activity_title => "#{activity.get_title}",
-            :activity_image => "#{activity_image}"
+            :activity_title => #{activity.get_title.inspect},
+            :activity_image => #{activity_image.inspect}
           })
         !
       end
@@ -297,8 +297,8 @@ class SysMessage < ActiveRecord::Base
         %Q!
           render(:partial => "/messages/sys/deleted_from_activity", :locals => {
             :activity_id => #{activity_id},
-            :activity_title => "#{activity.get_title}",
-            :activity_image => "#{activity_image}"
+            :activity_title => #{activity.get_title.inspect},
+            :activity_image => #{activity_image.inspect}
           })
         !
       end
@@ -319,12 +319,12 @@ class SysMessage < ActiveRecord::Base
         %Q!
           render(:partial => "/messages/sys/approve_reject_join_activity", :locals => {
             :admin_id => #{admin_id},
-            :admin_nick => "#{admin_nick}",
-            :admin_pic_url => "#{admin_pic_url}",
+            :admin_nick => #{admin_nick.inspect},
+            :admin_pic_url => #{admin_pic_url.inspect},
             
             :activity_id => #{activity_id},
-            :activity_title => "#{activity.get_title}",
-            :activity_image => "#{activity_image}",
+            :activity_title => #{activity.get_title.inspect},
+            :activity_image => #{activity_image.inspect},
             
             :approve => #{approve}
           })
@@ -347,14 +347,14 @@ class SysMessage < ActiveRecord::Base
         %Q!
           render(:partial => "/messages/sys/invite_join_vote", :locals => {
             :inviter_id => #{inviter_id},
-            :inviter_nick => "#{inviter_nick}",
-            :inviter_pic_url => "#{inviter_pic_url}",
+            :inviter_nick => #{inviter_nick.inspect},
+            :inviter_pic_url => #{inviter_pic_url.inspect},
             
             :vote_topic_id => #{vote_topic_id},
-            :vote_topic_title => "#{vote_topic.title}",
-            :vote_topic_image => "#{vote_topic_image}",
+            :vote_topic_title => #{vote_topic.title.inspect},
+            :vote_topic_image => #{vote_topic_image.inspect},
             
-            :invitation_words => "#{invitation_words}"
+            :invitation_words => #{invitation_words.inspect}
           })
         !
       end
