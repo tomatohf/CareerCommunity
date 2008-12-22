@@ -82,9 +82,9 @@ class AccountAction < ActiveRecord::Base
             :operator => #{operator},
             :owner_id => #{owner_id},
             :comment_id => #{comment_id},
-            :comment_content => "#{comment_content}",
-            :owner_nick => "#{owner_nick}",
-            :owner_pic_url => "#{owner_pic_url}",
+            :comment_content => #{comment_content.inspect},
+            :owner_nick => #{owner_nick.inspect},
+            :owner_pic_url => #{owner_pic_url.inspect},
             
             :save_space => #{save_space.inspect}
           })
@@ -103,8 +103,8 @@ class AccountAction < ActiveRecord::Base
           render(:partial => "/spaces/actions/add_friend", :locals => {
             :operator => #{operator},
             :friend_id => #{friend_id},
-            :friend_nick => "#{friend_nick}",
-            :friend_pic_url => "#{friend_pic_url}",
+            :friend_nick => #{friend_nick.inspect},
+            :friend_pic_url => #{friend_pic_url.inspect},
             
             :save_space => #{save_space.inspect}
           })
@@ -121,8 +121,8 @@ class AccountAction < ActiveRecord::Base
           render(:partial => "/spaces/actions/join_group", :locals => {
             :operator => #{operator},
             :group_id => #{group_id},
-            :group_name => "#{group.name}",
-            :group_image => "#{group_image}",
+            :group_name => #{group.name.inspect},
+            :group_image => #{group_image.inspect},
             :creator_id => #{group.creator_id},
             
             :save_space => #{save_space.inspect}
@@ -154,8 +154,8 @@ class AccountAction < ActiveRecord::Base
           render(:partial => "/spaces/actions/join_activity", :locals => {
             :operator => #{operator},
             :activity_id => #{activity_id},
-            :activity_title => "#{activity_title}",
-            :activity_image => "#{activity_image}",
+            :activity_title => #{activity_title.inspect},
+            :activity_image => #{activity_image.inspect},
             :creator_id => #{activity_creator_id},
             :activity_deleted => #{activity_deleted},
             
@@ -183,8 +183,8 @@ class AccountAction < ActiveRecord::Base
           render(:partial => "/spaces/actions/create_vote_topic", :locals => {
             :operator => #{operator},
             :vote_topic_id => #{vote_topic_id},
-            :vote_topic_title => "#{vote_topic_title}",
-            :vote_image => "#{vote_image}",
+            :vote_topic_title => #{vote_topic_title.inspect},
+            :vote_image => #{vote_image.inspect},
             :vote_topic_deleted => #{vote_topic_deleted},
             
             :save_space => #{save_space.inspect}
@@ -211,8 +211,8 @@ class AccountAction < ActiveRecord::Base
           render(:partial => "/spaces/actions/join_vote_topic", :locals => {
             :operator => #{operator},
             :vote_topic_id => #{vote_topic_id},
-            :vote_topic_title => "#{vote_topic_title}",
-            :vote_image => "#{vote_image}",
+            :vote_topic_title => #{vote_topic_title.inspect},
+            :vote_image => #{vote_image.inspect},
             :vote_topic_deleted => #{vote_topic_deleted},
             
             :save_space => #{save_space.inspect}
@@ -230,7 +230,7 @@ class AccountAction < ActiveRecord::Base
           render(:partial => "/spaces/actions/add_blog", :locals => {
             :operator => #{operator},
             :blog_id => #{blog_id},
-            :blog_title => "#{blog_title}",
+            :blog_title => #{blog_title.inspect},
           
             :save_space => #{save_space.inspect}
           })
@@ -249,11 +249,11 @@ class AccountAction < ActiveRecord::Base
         %Q!
           render(:partial => "/spaces/actions/add_bookmark", :locals => {
             :operator => #{operator},
-            :bookmark_class_name => "#{bookmark_class_name}",
+            :bookmark_class_name => #{bookmark_class_name.inspect},
             :bookmark_id => #{bookmark_id},
-            :bookmark_title => "#{bookmark_title}",
-            :bookmark_url => "#{bookmark_url}",
-            :bookmark_desc => "#{bookmark_desc}",
+            :bookmark_title => #{bookmark_title.inspect},
+            :bookmark_url => #{bookmark_url.inspect},
+            :bookmark_desc => #{bookmark_desc.inspect},
           
             :save_space => #{save_space.inspect}
           })

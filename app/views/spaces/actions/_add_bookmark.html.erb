@@ -3,7 +3,8 @@
 		<td>
 			<a href="/spaces/show/<%= operator[2] %>" class="account_nick_link">
 				<%= h(operator[0]) %></a>
-			推荐/收藏了
+			<%= bookmark_class_name.downcase.include?("group") ? "收藏" : "推荐" %>
+			了
 			<a href="<%= h(bookmark_url) %>" target="_blank" title="<%= h(bookmark_desc) %>">
 				<%= h(bookmark_title) %>
 				<img src="/images/ext_link_small.gif" border="0" /></a>
