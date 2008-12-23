@@ -69,21 +69,29 @@
 		
 		<%# if activity_status[0] <= Activity::Status::Ongoing[0] %>
 			<div class="community_block">
-				<a href="/activities/<%= @activity_id %>/edit">修改活动的信息</a>
+				<a href="/activities/<%= @activity_id %>/edit">
+					<img src="/images/groups/edit_small.gif" border="0" />
+					修改活动的信息</a>
 			</div>
 			
 			<div class="community_block">
-				<a href="/activities/<%= @activity_id %>/edit_image">设置活动的图标</a>
+				<a href="/activities/<%= @activity_id %>/edit_image">
+					<img src="/images/groups/edit_image_small.gif" border="0" />
+					设置活动的图标</a>
 			</div>
 		<%# end %>
 		
 		<div class="community_block">
-			<a href="/activities/members_info/<%= @activity_id %>">统计报名参加活动成员的信息</a>
+			<a href="/activities/members_info/<%= @activity_id %>">
+				<img src="/images/activities/members_info_small.gif" border="0" />
+				统计报名参加活动成员的信息</a>
 		</div>
 		
 		<% if activity_status[0] <= Activity::Status::Registered[0] %>
 			<div class="community_block">
-				<a href="/activities/unapproved/<%= @activity_id %>">处理报名参加活动的申请</a>
+				<a href="/activities/unapproved/<%= @activity_id %>">
+					<img src="/images/groups/approve_member_small.gif" border="0" />
+					处理报名参加活动的申请</a>
 			</div>
 		<% end %>
 	<% end %>
@@ -139,7 +147,7 @@
 	<% if activity_status[0] >= Activity::Status::Ongoing[0] %>
 		<div class="community_block">
 			<a href="/activities/<%= @is_admin ? "absent_edit" : "absent" %>/<%= @activity_id %>">
-				<img src="/images/activities/edit_absent_small.png" border="0" />
+				<img src="/images/activities/edit_absent_small.png" border="0" width="16" height="14" />
 				<%= @is_admin ? "编辑" : "查看" %>活动的缺席成员</a>
 		</div>
 	<% end %>

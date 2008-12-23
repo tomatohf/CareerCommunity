@@ -23,12 +23,20 @@
 	
 	<% if can_admin %>
 		<div class="community_block">
-			<a href="/groups/<%= @group_id %>/edit">修改圈子的设置</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="/groups/<%= @group_id %>/edit_image">设置圈子的图标</a>
+			<a href="/groups/<%= @group_id %>/edit">
+				<img src="/images/groups/edit_small.gif" border="0" />
+				修改圈子的设置</a>
+			
+			&nbsp;
+			
+			<a href="/groups/<%= @group_id %>/edit_image">
+				<img src="/images/groups/edit_image_small.gif" border="0" />
+				设置圈子的图标</a>
 		</div>
 		<div class="community_block">
-			<a href="/groups/unapproved/<%= @group_id %>">处理加入圈子的申请</a>
+			<a href="/groups/unapproved/<%= @group_id %>">
+				<img src="/images/groups/approve_member_small.gif" border="0" />
+				处理加入圈子的申请</a>
 		</div>
 		<% if @relationship == "master" %>
 			<div class="community_block">

@@ -17,17 +17,25 @@
 
 	<% if @edit %>
 		<div class="community_block align_c">
-			<a href="/votes/<%= @vote_topic_id %>/edit">修改投票的设置</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="/votes/<%= @vote_topic_id %>/edit_image">设置投票的图标</a>
+			<a href="/votes/<%= @vote_topic_id %>/edit">
+				<img src="/images/groups/edit_small.gif" border="0" />
+				修改投票的设置</a>
+			&nbsp;&nbsp;&nbsp;
+			<a href="/votes/<%= @vote_topic_id %>/edit_image">
+				<img src="/images/groups/edit_image_small.gif" border="0" />
+				设置投票的图标</a>
 		</div>
 		
 		<% form_tag "/votes/#{@vote_topic_id}", :method => :delete, :id => "vote_topic_delete_form" do %>
 		<% end %>
 		<div class="community_block align_c">
-			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('vote_topic_delete_form').submit();}; return false;">删除这个投票</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="/votes/<%= @vote_topic_id %>/edit_option">管理投票选项</a>
+			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('vote_topic_delete_form').submit();}; return false;">
+				<img src="/images/delete_small.gif" border="0" />
+				删除这个投票</a>
+			&nbsp;&nbsp;&nbsp;
+			<a href="/votes/<%= @vote_topic_id %>/edit_option">
+				<img src="/images/votes/edit_option_small.gif" border="0" />
+				管理投票选项</a>
 		</div>
 	<% end %>
 	
