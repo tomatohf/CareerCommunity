@@ -6,8 +6,8 @@ class CustomGroups::FeedbackController < CustomGroups::CustomGroupsController
   
 
   def show
-    @group_id = params[:id]
-    @group, @group_image = Group.get_group_with_image(@group_id)
+    # @group_id = params[:id]
+    # @group, @group_image = Group.get_group_with_image(@group_id)
     
     # should NOT cache the relationship check
     @relationship = "logout"
