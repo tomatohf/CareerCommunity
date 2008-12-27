@@ -180,7 +180,7 @@
 	</div>
 	
 	<div class="community_block">
-		<%= render(:partial => "/common/comment", :collection => @photo_comments, :locals => {:can_del => @edit}) %>
+		<%= render(:partial => "/common/comment", :collection => @photo_comments, :locals => {:can_del => @edit, :counter_shift => calculate_counter_shift(@photo_comments)}) %>
 	</div>
 	
 	<div class="community_block">

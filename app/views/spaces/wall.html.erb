@@ -56,7 +56,7 @@
 	<% end %>
 	
 	<div class="community_block">
-		<%= render(:partial => "/common/comment", :collection => @space_comments, :locals => {:can_del => @edit}) %>
+		<%= render(:partial => "/common/comment", :collection => @space_comments, :locals => {:can_del => @edit, :counter_shift => calculate_counter_shift(@space_comments)}) %>
 	</div>
 	
 	<div class="community_block">

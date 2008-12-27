@@ -99,6 +99,7 @@ class CreateJobTargets < ActiveRecord::Migration
       "求职信",
       "网申",
       "简历",
+      "笔试",
       "面试",
       "实习",
       "试用期",

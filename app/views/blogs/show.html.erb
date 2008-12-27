@@ -104,7 +104,7 @@
 	</div>
 
 	<div class="community_block">
-		<%= render(:partial => "/common/comment", :collection => @blog_comments, :locals => {:can_del => @edit}) %>
+		<%= render(:partial => "/common/comment", :collection => @blog_comments, :locals => {:can_del => @edit, :counter_shift => calculate_counter_shift(@blog_comments)}) %>
 	</div>
 	
 	<div class="community_block">

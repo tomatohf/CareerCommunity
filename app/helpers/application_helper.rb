@@ -317,4 +317,8 @@ module ApplicationHelper
     !
   end
   
+  def calculate_counter_shift(collection)
+    (collection.current_page - 1) * collection.per_page
+  end
+  
 end

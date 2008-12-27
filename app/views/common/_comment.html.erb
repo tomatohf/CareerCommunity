@@ -1,4 +1,5 @@
 <% can_del &&= true %>
+<% counter_shift ||= 0 %>
 
 <% account_id = comment.account.id %>
 <% account_nick = comment.account.get_nick %>
@@ -12,10 +13,19 @@
 
 <div class="comment_container">
 	<div class="comment_title">
-		<% if can_del %>
-			<a class="float_r" title="删除" href="#" onclick="delete_comment(<%= comment.id %>); return false;">
-				<img src="/images/delete_small.gif" border="0" /></a>
-		<% end %>
+		<div class="float_r form_info_s">
+			
+			<b>
+				<%= counter_shift + comment_counter %>
+			</b>
+			楼
+			&nbsp;&nbsp;&nbsp;
+			
+			<% if can_del %>
+				<a title="删除" href="#" onclick="delete_comment(<%= comment.id %>); return false;">
+					<img src="/images/delete_small.gif" border="0" /></a>
+			<% end %>
+		</div>
 		
 		<b>
 			<a href="/spaces/show/<%= account_id %>" class="account_nick_link">

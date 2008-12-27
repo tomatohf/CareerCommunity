@@ -208,7 +208,7 @@
 	</div>
 
 	<div class="community_block">
-		<%= render(:partial => "vote_comment", :collection => @vote_comments, :locals => {:can_del => @edit, :voted_records => @voted_records}) %>
+		<%= render(:partial => "vote_comment", :collection => @vote_comments, :locals => {:can_del => @edit, :voted_records => @voted_records, :counter_shift => calculate_counter_shift(@vote_comments)}) %>
 	</div>
 	
 	<div class="community_block">
