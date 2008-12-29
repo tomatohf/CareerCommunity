@@ -18,7 +18,12 @@
 		
 		<% activity_post_title = h(activity_post.title) %>
 		<a href="/activity/posts/<%= activity_post.id %>" title="<%= activity_post_title %>" class="account_nick_link">
-			<%= truncate(activity_post_title) %></a>
+			<%= truncate(activity_post_title) %>
+			<% if activity_post.good %>
+				&nbsp;
+				<img src="/images/groups/good_small.gif" border="0" alt="精华" title="精华" />
+			<% end %>
+			</a>
 	</td>
 	
 	<td align="right">

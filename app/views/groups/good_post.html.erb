@@ -1,0 +1,114 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "圈子 #{group_name} 的精华区" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	<div class="community_title">
+		圈子 ...
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+	</div>
+
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/post/<%= @group_id %>">
+			全部圈子讨论话题</a>
+	</div>
+	
+	
+	<!--
+	<div class="community_title">
+		订阅圈子讨论 ...
+	</div>
+	
+	<div class="community_block">
+
+	</div>
+	-->
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<% if @can_view %>
+
+		<div class="community_block_narrow form_info_s">
+			精华区内共有
+			<b><%= @group_posts.total_entries + @top_group_posts.size %></b>
+			个讨论话题
+		</div>
+
+		<% if @top_group_posts.size > 0 %>
+			<div class="community_title">
+				精华区置顶的话题 ...
+			</div>
+		
+			<div class="community_block">
+				<table cellpadding="0" cellspacing="5" class="main_part_w">
+					<thead>
+						<tr>
+							<td width="52%">话题</td>
+							<td width="6%" align="right">评论</td>
+							<td width="19%" align="right">发起人</td>
+							<td width="23%" align="right">最后参与</td>
+						</tr>
+					</thead>
+					<tbody>
+						<%= render :partial => "group_post", :collection => @top_group_posts %>
+					</tbody>
+				</table>
+			</div>
+		<% end %>
+	
+		<div class="community_title">
+			精华区所有话题 ...
+		</div>
+	
+		<div class="community_block">
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<thead>
+					<tr>
+						<td width="52%">话题</td>
+						<td width="6%" align="right">评论</td>
+						<td width="19%" align="right">发起人</td>
+						<td width="23%" align="right">最后参与</td>
+					</tr>
+				</thead>
+				<tbody>
+					<%= render :partial => "group_post", :collection => @group_posts %>
+				</tbody>
+			</table>
+		</div>
+	
+		<div class="community_block">
+			<%= paging_buttons(@group_posts) %>
+		</div>
+		
+	<% else %>
+	
+		<br />
+		
+		<p class="warning_msg">
+			根据圈子
+			<a href="/groups/<%= @group_id %>">
+				<%= group_name %></a>
+			的设置, 只有圈子成员可以查看圈内讨论话题列表
+		</p>
+		
+		<p>
+			<% form_tag "/groups/#{@group_id}/join", :method => :post do %>
+				<input type="submit" value="我要加入这个圈子" class="button" />
+			<% end %>
+		</p>
+		
+	<% end %>
+</div>
+

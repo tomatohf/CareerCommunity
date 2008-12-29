@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 14) do
+ActiveRecord::Schema.define(:version => 15) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.text     "setting"
     t.boolean  "delta"
     t.boolean  "cancelled",                                                         :default => false
+    t.boolean  "online",                                                            :default => false
   end
 
   add_index "activities", ["created_at"], :name => "index_activities_on_created_at"
@@ -191,6 +192,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.boolean  "top",                        :default => false
     t.datetime "responded_at"
     t.boolean  "delta"
+    t.boolean  "good",                       :default => false
   end
 
   add_index "activity_posts", ["created_at"], :name => "index_activity_posts_on_created_at"
@@ -449,6 +451,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.boolean  "top",                        :default => false
     t.datetime "responded_at"
     t.boolean  "delta"
+    t.boolean  "good",                       :default => false
   end
 
   add_index "group_posts", ["created_at"], :name => "index_group_posts_on_created_at"

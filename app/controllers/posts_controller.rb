@@ -20,7 +20,7 @@ class PostsController < ApplicationController
   before_filter :check_create_comment_access, :only => [:create_comment]
   before_filter :check_delete_comment_access, :only => [:delete_comment]
   before_filter :check_destroy_access, :only => [:destroy]
-  before_filter :check_top_access, :only => [:top, :untop]
+  before_filter :check_top_access, :only => [:top, :untop, :good, :ungood]
   before_filter :check_attachment_access, :only => [:attachment]
   
   
@@ -191,6 +191,24 @@ class PostsController < ApplicationController
   def untop
     if @post.top
       @post.top = false
+      @post.save
+    end
+    
+    jump_to("/#{@post_type}/posts/#{@post.id}")
+  end
+  
+  def good
+    unless @post.good
+      @post.good = true
+      @post.save
+    end
+    
+    jump_to("/#{@post_type}/posts/#{@post.id}")
+  end
+  
+  def ungood
+    if @post.good
+      @post.good = false
       @post.save
     end
     

@@ -44,6 +44,10 @@ class ActivityPost < ActiveRecord::Base
   }
   
   
+  
+  named_scope :good, :conditions => { :good => true }
+  
+  
   CKP_group_post = :group_post
   
   

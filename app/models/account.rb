@@ -188,7 +188,7 @@ class Account < ActiveRecord::Base
       # has paid user can create three groups
       count += 3
     else
-      if 6.months.ago > self.created_at
+      if 1.years.ago > self.created_at
         # has registered 6 months
         count += 1
       end

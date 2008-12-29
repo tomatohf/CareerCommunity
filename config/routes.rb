@@ -115,6 +115,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/groups/members_master/:id/:page", :controller => "groups", :action => "members_master", :id => /\d+/, :page => /\d+/
   map.connect "/groups/unapproved/:id/:page", :controller => "groups", :action => "unapproved", :id => /\d+/, :page => /\d+/
   map.connect "/groups/post/:id/:page", :controller => "groups", :action => "post", :id => /\d+/, :page => /\d+/
+  map.connect "/groups/good_post/:id/:page", :controller => "groups", :action => "good_post", :id => /\d+/, :page => /\d+/
   map.connect "/groups/activity/:id/:page", :controller => "groups", :action => "activity", :id => /\d+/, :page => /\d+/
   map.connect "/groups/vote/:id/:page", :controller => "groups", :action => "vote", :id => /\d+/, :page => /\d+/
   map.connect "/groups/photo/:id/:page", :controller => "groups", :action => "photo", :id => /\d+/, :page => /\d+/
@@ -169,6 +170,9 @@ ActionController::Routing::Routes.draw do |map|
     :top => :post,
     :untop => :post,
     
+    :good => :post,
+    :ungood => :post,
+    
     :new_attachment => :get,
     :create_attachment => :post,
     :delete_attachment => :post
@@ -185,6 +189,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/activities/list_attend/:id/:page", :controller => "activities", :action => "list_attend", :id => /\d+/, :page => /\d+/
   map.connect "/activities/list_absent/:id/:page", :controller => "activities", :action => "list_absent", :id => /\d+/, :page => /\d+/
   map.connect "/activities/post/:id/:page", :controller => "activities", :action => "post", :id => /\d+/, :page => /\d+/
+  map.connect "/activities/good_post/:id/:page", :controller => "activities", :action => "good_post", :id => /\d+/, :page => /\d+/
   map.connect "/activities/created_post/:id/:page", :controller => "activities", :action => "created_post", :id => /\d+/, :page => /\d+/
   map.connect "/activities/commented_post/:id/:page", :controller => "activities", :action => "commented_post", :id => /\d+/, :page => /\d+/
   map.connect "/activities/photo/:id/:page", :controller => "activities", :action => "photo", :id => /\d+/, :page => /\d+/

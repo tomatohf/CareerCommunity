@@ -23,7 +23,12 @@
 	<% if @can_view %>
 		<div class="community_block">
 			<a href="/<%= pluralized_post_type %>/post/<%= @type_id %>">
-				全部圈子讨论话题</a>
+				全部<%= @type_label %>讨论话题</a>
+		</div>
+		
+		<div class="community_block">
+			<a href="/<%= pluralized_post_type %>/good_post/<%= @type_id %>">
+				查看<%= @type_label %>的精华区</a>
 		</div>
 	
 		<% if @access.include?(:can_compose) %>
@@ -70,6 +75,13 @@
 </div>
 
 <div class="blog_container_l">
+	<% if @post.good %>
+		<div class="float_r">
+			<img src="/images/groups/good_small.gif" border="0" alt="精华" title="精华" />
+			精华
+		</div>
+	<% end %>
+	
 	<h2><%= page_title %></h2>
 	
 	<div class="community_block form_info_s">
@@ -106,6 +118,10 @@
 			<% top_action = @post.top ? "untop" : "top" %>
 			<% form_tag "/#{@post_type}/posts/#{@post_id}/#{top_action}", :method => :post, :id => "adjust_top_form" do %>
 			<% end %>
+			
+			<% good_action = @post.good ? "ungood" : "good" %>
+			<% form_tag "/#{@post_type}/posts/#{@post_id}/#{good_action}", :method => :post, :id => "adjust_good_form" do %>
+			<% end %>
 	
 			<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
 			<% end %>
@@ -127,6 +143,11 @@
 				<% end %>
 			
 				<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('post_delete_form').submit();}; return false;">删除</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<% end %>
+			
+			<% if @access.include?(:admin) %>
+				<a href="#" onclick="document.getElementById('adjust_good_form').submit(); return false;"><%= @post.good ? "从精华区移除" : "放入精华区" %></a>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<% end %>
 			

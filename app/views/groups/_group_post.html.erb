@@ -17,7 +17,12 @@
 		
 		<% group_post_title = h(group_post.title) %>
 		<a href="/group/posts/<%= group_post.id %>" title="<%= group_post_title %>" class="account_nick_link">
-			<%= truncate(group_post_title) %></a>
+			<%= truncate(group_post_title) %>
+			<% if group_post.good %>
+				&nbsp;
+				<img src="/images/groups/good_small.gif" border="0" alt="精华" title="精华" />
+			<% end %>
+			</a>
 	</td>
 	
 	<td align="right">
