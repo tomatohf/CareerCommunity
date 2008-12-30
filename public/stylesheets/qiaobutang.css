@@ -454,6 +454,11 @@ div.course_menus a:hover {
 	margin-right: 150px;
 	width: 700px;
 }
+/* ie6 fixed */
+*html .index_community_container {
+	margin-right: 150px;
+	width: 698px;
+}
 
 .index_community_container a {
 	text-decoration: none;

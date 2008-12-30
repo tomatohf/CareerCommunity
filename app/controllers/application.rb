@@ -73,11 +73,11 @@ class ApplicationController < ActionController::Base
 #  end
 
 
-  before_filter :check_ie6, :except => [:ie6_warning, :confirm_using_ie6]
+  # before_filter :check_ie6, :except => [:ie6_warning, :confirm_using_ie6]
   def check_ie6
     unless session[:confirmed_using_ie6] == "true"
       user_agent = request.env["HTTP_USER_AGENT"] || ""
-      if user_agent.include?("IE") && user_agent.include?("6.")
+      if user_agent =~ /IE\s6/
         # using MSIE 6
         save_original_address
         jump_to("/index/ie6_warning")
