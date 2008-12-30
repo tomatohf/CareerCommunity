@@ -28,7 +28,7 @@
 	<% end %>
 	
 	
-	<% unless @activity.cancelled %>
+	<% unless @activity.cancelled || @activity_setting[:hide_map] || @activity.online %>
 		<div class="community_block_narrow">
 			<%= thin_hr %>
 		</div>
@@ -67,7 +67,7 @@
 			<%= thin_hr %>
 		</div>
 		
-		<%# if activity_status[0] <= Activity::Status::Ongoing[0] %>
+		<%# if @activity.online || activity_status[0] <= Activity::Status::Ongoing[0] %>
 			<div class="community_block">
 				<a href="/activities/<%= @activity_id %>/edit">
 					<img src="/images/groups/edit_small.gif" border="0" />
@@ -81,13 +81,15 @@
 			</div>
 		<%# end %>
 		
-		<div class="community_block">
-			<a href="/activities/members_info/<%= @activity_id %>">
-				<img src="/images/activities/members_info_small.gif" border="0" />
-				统计报名参加活动成员的信息</a>
-		</div>
+		<% unless @activity.online %>
+			<div class="community_block">
+				<a href="/activities/members_info/<%= @activity_id %>">
+					<img src="/images/activities/members_info_small.gif" border="0" />
+					统计报名参加活动成员的信息</a>
+			</div>
+		<% end %>
 		
-		<% if activity_status[0] <= Activity::Status::Registered[0] %>
+		<% if @activity.online || activity_status[0] <= Activity::Status::Registered[0] %>
 			<div class="community_block">
 				<a href="/activities/unapproved/<%= @activity_id %>">
 					<img src="/images/groups/approve_member_small.gif" border="0" />
@@ -110,7 +112,7 @@
 	</div>
 	
 	
-	<% if @is_admin && activity_status[0] <= Activity::Status::Registered[0] %>
+	<% if @is_admin && (@activity.online || activity_status[0] <= Activity::Status::Registered[0]) %>
 		<div class="community_block">
 			<a href="/activities/members_edit/<%= @activity_id %>">
 				<img src="/images/groups/members_small.gif" border="0" />
@@ -130,7 +132,7 @@
 			浏览对活动感兴趣的成员</a>
 	</div>
 	
-	<% if activity_status[0] <= Activity::Status::Registering[0] %>
+	<% if @activity.online || activity_status[0] <= Activity::Status::Registering[0] %>
 		<div class="community_block">
 			<a href="/activities/invite/<%= @activity_id %>">
 				<img src="/images/groups/qiao_small.png" border="0" />
@@ -144,7 +146,7 @@
 		</div>
 	<% end %>
 	
-	<% if activity_status[0] >= Activity::Status::Ongoing[0] %>
+	<% if (!@activity.online) && activity_status[0] >= Activity::Status::Ongoing[0] %>
 		<div class="community_block">
 			<a href="/activities/<%= @is_admin ? "absent_edit" : "absent" %>/<%= @activity_id %>">
 				<img src="/images/activities/edit_absent_small.png" border="0" width="16" height="14" />
@@ -185,7 +187,7 @@
 				@created_activities = Activity.uncancelled.find(
 					:all,
 					:limit => ActivitiesController::Same_Creator_Activity_Num,
-					:select => "id, created_at, creator_id, title, cancelled, begin_at, end_at, application_deadline, in_group",
+					:select => "id, created_at, creator_id, title, cancelled, online, begin_at, end_at, application_deadline, in_group",
 					:conditions => ["creator_id = ?", @creator_id],
 					:order => "created_at DESC"
 				)
@@ -200,7 +202,7 @@
 						<script language="JavaScript">
 							var status_label = <%= show_activity_status_script(a) %>;
 							
-							document.write("(" + status_label + "-<%= a.in_group && a.in_group > 0 ? "圈内活动" : "全局活动" %>)");
+							document.write("(" + status_label + "-<%= a.in_group && a.in_group > 0 ? "圈内" : "全局" %><%= a.online ? "线上活动" : "活动" %>)");
 						</script>
 					</span>
 				</div>
@@ -269,6 +271,12 @@
 				<tr>
 					<td align="left" valign="top">
 						<div>
+							<% if @activity.online %>
+								<strong>线上活动</strong>
+
+								<br />
+							<% end %>
+							
 							<span class="activity_info_label">开始时间:</span>
 							<%= format_activity_time(@activity.begin_at) %>
 							
@@ -277,40 +285,44 @@
 							<span class="activity_info_label">结束时间:</span>
 							<%= format_activity_time(@activity.end_at) %>
 							
-							<br />
+							<% unless @activity.online %>
 							
-							<span class="activity_info_label">地点:</span>
-							<%= activity_place %>
-							
-							<br />
-							
-							<span class="activity_info_label">报名截止:</span>
-							<%= @activity.application_deadline ? format_activity_time(@activity.application_deadline) : "活动开始前" %>
-							
-							<br />
-							
-							<span class="activity_info_label">人数限制:</span>
-							<%= (@activity.member_limit && @activity.member_limit > 0) ? @activity.member_limit : "无" %>
-							
-							<br />
-							
-							<span class="activity_info_label">人均费用:</span>
-							<%= @activity.cost || "无" %>
-							
-							<% contact = @activity_setting[:contact] %>
-							<% if contact && contact != "" %>
 								<br />
+							
+								<span class="activity_info_label">地点:</span>
+								<%= activity_place %>
+							
+								<br />
+							
+								<span class="activity_info_label">报名截止:</span>
+								<%= @activity.get_application_deadline ? format_activity_time(@activity.get_application_deadline) : "活动开始前" %>
+							
+								<br />
+							
+								<span class="activity_info_label">人数限制:</span>
+								<%= (@activity.member_limit && @activity.member_limit > 0) ? @activity.member_limit : "无" %>
+							
+								<br />
+							
+								<span class="activity_info_label">人均费用:</span>
+								<%= @activity.cost || "无" %>
+							
+								<% contact = @activity_setting[:contact] %>
+								<% if contact && contact != "" %>
+									<br />
 								
-								<span class="activity_info_label">联系方法:</span>
-								<%= h(contact) %>
+									<span class="activity_info_label">联系方法:</span>
+									<%= h(contact) %>
+								<% end %>
+								
 							<% end %>
 						</div>
 					</td>
 					
-					<td align="left" valign="middle" style="width: 200px;">
+					<td align="center" valign="middle" style="width: 200px;">
 						<% face_image_url = @activity_image || "" %>
-						<% face_image_url = face_image_url.gsub("thumb_48", "thumb_200") if face_image_url.include?("thumb_48") %>
-						<% if @is_admin # && activity_status[0] <= Activity::Status::Ongoing[0] %>
+						<% face_image_url = face_image_url.gsub("thumb_48", @activity.online ? "thumb_120" : "thumb_200") if face_image_url.include?("thumb_48") %>
+						<% if @is_admin # && (@activity.online || activity_status[0] <= Activity::Status::Ongoing[0]) %>
 							<a href="/activities/<%= @activity_id %>/edit_image">
 								<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>
 						<% else %>
@@ -325,7 +337,7 @@
 							活动 <%= activity_status[1] %>
 						</div>
 						
-						<% if activity_status[0] <= Activity::Status::Registering[0] %>
+						<% if @activity.online || activity_status[0] <= Activity::Status::Registering[0] %>
 							<% if @is_member %>	
 								<% if @is_master %>
 									<% unless @activity.cancelled %>
@@ -375,7 +387,7 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="desc_section_collapse" href="#" onclick="expand_section('desc_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% if @is_admin # && activity_status[0] <= Activity::Status::Ongoing[0] %>
+			<% if @is_admin # && (@activity.online || activity_status[0] <= Activity::Status::Ongoing[0]) %>
 				<span class="float_r">
 					<a href="/activities/<%= @activity_id %>/edit#edit_activity_desc">编辑活动的描述</a>
 					&nbsp;&nbsp;&nbsp;
@@ -548,14 +560,16 @@
 	
 	
 	<% if @is_admin %>
-		<div>
-			<% form_tag "/activities/#{@activity_id}/cache_point", :method => :post, :target => "point_cache_operator", :id => "do_cache_form" do %>
-				<input type="hidden" name="point_lat" id="point_lat" value="" />
-				<input type="hidden" name="point_lng" id="point_lng" value="" />
-			<% end %>
-		</div>
+		<% unless @activity.cancelled || @activity_setting[:hide_map] || @activity.online %>
+			<div>
+				<% form_tag "/activities/#{@activity_id}/cache_point", :method => :post, :target => "point_cache_operator", :id => "do_cache_form" do %>
+					<input type="hidden" name="point_lat" id="point_lat" value="" />
+					<input type="hidden" name="point_lng" id="point_lng" value="" />
+				<% end %>
+			</div>
 	
-		<iframe name="point_cache_operator" id="point_cache_operator" style="display:none"></iframe>
+			<iframe name="point_cache_operator" id="point_cache_operator" style="display:none"></iframe>
+		<% end %>
 	<% end %>
 	
 </div>
@@ -584,7 +598,7 @@
 
 
 
-<% unless @activity.cancelled %>
+<% unless @activity.cancelled || @activity_setting[:hide_map] || @activity.online %>
 	<script src="http://ditu.google.cn/maps?file=api&v=2&hl=zh&key=ABQIAAAAx5FxwPteEaekBa2OsGoGMhRhWPLdTYHlYKadOx9YMcM4H2s8ERRt0O5IDG1pAtx2TxjX-UMGlI5CLA" type="text/javascript"></script>
 
 	<script type="text/javascript">

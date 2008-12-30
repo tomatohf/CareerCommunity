@@ -491,6 +491,8 @@ class ActivitiesController < ApplicationController
   def create
     @activity = Activity.new(:creator_id => session[:account_id], :master_id => session[:account_id])
     
+    @activity.online = (params[:activity_online] == "true")
+    
     # NOT handle the case of multiple groups
     activity_groups_id = params[:activity_groups] || []
     @activity.in_group = activity_groups_id.size > 0 ?  activity_groups_id[0] : 0
@@ -753,7 +755,7 @@ class ActivitiesController < ApplicationController
     @check_real_name = activity_setting[:check_real_name]
     @check_gender = activity_setting[:check_gender]
     @check_birthday = activity_setting[:check_birthday]
-    if (!@check_mobile) && (!@check_real_name) && (!@check_gender) && (!@check_birthday)
+    if @activity.online || ((!@check_mobile) && (!@check_real_name) && (!@check_gender) && (!@check_birthday))
       join
       render(:action => "join") unless (@performed_render || @performed_redirect)
       return
@@ -885,6 +887,8 @@ class ActivitiesController < ApplicationController
     
     @old_activity_title = @activity.get_title
     
+    @activity.online = (params[:activity_online] == "true")
+    
     @in_groups = [Group.get_group_with_image(@activity.in_group)] if @activity.in_group && @activity.in_group > 0
     
     @activity.title = params[:activity_title] && params[:activity_title].strip
@@ -954,7 +958,8 @@ class ActivitiesController < ApplicationController
       :need_join_group_to_view => (params[:need_join_group_to_view] == "true"),
       :need_join_to_view_member => (params[:need_join_to_view_member] == "true"),
       :need_join_to_add_post => (params[:need_join_to_add_post] == "true"),
-      :need_join_to_view_post => (params[:need_join_to_view_post] == "true")
+      :need_join_to_view_post => (params[:need_join_to_view_post] == "true"),
+      :hide_map => (params[:hide_map] == "true")
     }
     @activity.update_setting(activity_setting)
     
@@ -1471,21 +1476,21 @@ class ActivitiesController < ApplicationController
     @activity_id = params[:id]
     @activity, @activity_image = Activity.get_activity_with_image(@activity_id) unless @activity
     
-    jump_to("/activities/#{@activity_id}") unless is_before_status?(Activity::Status::Registering)
+    jump_to("/activities/#{@activity_id}") unless @activity.online || is_before_status?(Activity::Status::Registering)
   end
   
   def check_activity_status_registered
     @activity_id = params[:id]
     @activity, @activity_image = Activity.get_activity_with_image(@activity_id) unless @activity
     
-    jump_to("/activities/#{@activity_id}") unless is_before_status?(Activity::Status::Registered)
+    jump_to("/activities/#{@activity_id}") unless @activity.online || is_before_status?(Activity::Status::Registered)
   end
   
   def check_activity_status_ongoing
     @activity_id = params[:id]
     @activity, @activity_image = Activity.get_activity_with_image(@activity_id) unless @activity
     
-    jump_to("/activities/#{@activity_id}") unless is_before_status?(Activity::Status::Ongoing)
+    jump_to("/activities/#{@activity_id}") unless @activity.online || is_before_status?(Activity::Status::Ongoing)
   end
   
   def check_activity_update_absent

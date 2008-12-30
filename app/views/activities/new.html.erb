@@ -39,6 +39,19 @@
 						</tr>
 					<% end %>
 					
+					
+					<tr>
+						<td>
+							<label for="activity_online">
+				                <b>这是线上活动</b>
+								:
+				            </label>
+						</td>
+						<td>
+							<%= check_box_tag :activity_online, value = "true", @activity.online, :onclick => "toggle_activity_online(this.checked)" %>
+						</td>
+					</tr>
+					
 					<tr>
 						<td style="width: 100px">
 							<label for="activity_title">
@@ -51,7 +64,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="activity_place_row">
 						<td>
 							<label for="activity_place">
 						        活动地点(<span style="color: red;">*</span>)
@@ -87,7 +100,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="activity_application_deadline_row">
 						<td>
 							<label for="activity_application_deadline">
 						        报名截止时间
@@ -95,7 +108,7 @@
 						    </label>
 						</td>
 						<td>
-							<input type="text" id="activity_application_deadline" name="activity_application_deadline" class="text_field" size="15" value="<%= format_calendar_datetime(@activity.application_deadline) %>" autocomplete="off" />
+							<input type="text" id="activity_application_deadline" name="activity_application_deadline" class="text_field" size="15" value="<%= format_calendar_datetime(@activity.get_application_deadline) %>" autocomplete="off" />
 							<a href="#" onclick="document.getElementById('activity_application_deadline').onclick(); return false;">
 								<img src="/images/activities/calendar_small.gif" title="选择报名截止时间" border="0" /></a>
 								
@@ -106,7 +119,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="activity_member_limit_row">
 						<td>
 							<label for="activity_member_limit">
 						        人数限制
@@ -123,7 +136,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="activity_cost_row">
 						<td>
 							<label for="activity_cost">
 						        人均费用
@@ -135,7 +148,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="activity_contact_row">
 						<td>
 							<label for="activity_contact">
 						        联系方法
@@ -186,15 +199,15 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="activity_check_info_row">
 						<td>
 							希望报名者填写
 							:
 						</td>
 						<td></td>
 					</tr>
-					
-					<tr>
+				
+					<tr id="activity_check_cell_row">
 						<td></td>
 						<td>
 							<%= check_box_tag :check_mobile, value = "true", @activity.get_setting[:check_mobile] %>
@@ -203,8 +216,8 @@
 				            </label>
 						</td>
 					</tr>
-					
-					<tr>
+				
+					<tr id="activity_check_name_row">
 						<td></td>
 						<td>
 							<%= check_box_tag :check_real_name, value = "true", @activity.get_setting[:check_real_name] %>
@@ -213,8 +226,8 @@
 				            </label>
 						</td>
 					</tr>
-					
-					<tr>
+				
+					<tr id="activity_check_sex_row">
 						<td></td>
 						<td>
 							<%= check_box_tag :check_gender, value = "true", @activity.get_setting[:check_gender] %>
@@ -223,8 +236,8 @@
 				            </label>
 						</td>
 					</tr>
-					
-					<tr>
+				
+					<tr id="activity_check_birth_row">
 						<td></td>
 						<td>
 							<%= check_box_tag :check_birthday, value = "true", @activity.get_setting[:check_birthday] %>
@@ -251,6 +264,32 @@
 	</div>
 </div>
 
+
+
+<script language="JavaScript" type="text/javascript">
+
+	function toggle_activity_online(online) {
+		var elements = [
+			document.getElementById("activity_place_row"),
+			document.getElementById("activity_application_deadline_row"),
+			document.getElementById("activity_member_limit_row"),
+			document.getElementById("activity_cost_row"),
+			document.getElementById("activity_contact_row"),
+			document.getElementById("activity_check_info_row"),
+			document.getElementById("activity_check_cell_row"),
+			document.getElementById("activity_check_name_row"),
+			document.getElementById("activity_check_sex_row"),
+			document.getElementById("activity_check_birth_row")
+		];
+		
+		for(var i=0; i<elements.length; i++) {
+			elements[i].style.display = online ? "none" : "";
+		}
+	}
+	
+	toggle_activity_online(<%= @activity.online %>);
+
+</script>
 
 
 <script language="JavaScript" type="text/javascript" src="/lib/tiny_mce/tiny_mce.js"></script>

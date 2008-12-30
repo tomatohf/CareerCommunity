@@ -61,53 +61,81 @@
 				
 				<% if can_view %>
 				
-					<div>
-						<%= format_activity_time(activity.begin_at) %>
-						--
-						<%= format_activity_time(activity.end_at) %>
+					<% if activity.online %>
+						<div>
+							<strong>线上活动</strong>
+							
+							<br />
+							
+							<span class="activity_info_label">开始时间:</span>
+							<%= format_activity_time(activity.begin_at) %>
+							
+							<br />
+							
+							<span class="activity_info_label">结束时间:</span>
+							<%= format_activity_time(activity.end_at) %>
 					
-						<br />
+							<br />
 					
-						<span class="activity_info_label">地点:</span>
-						<%= h(activity.place) %>
-					
-						<br />
-					
-						<span class="activity_info_label">报名截止时间:</span>
-						<%= activity.application_deadline ? format_activity_time(activity.application_deadline) : "活动开始前" %>
-					
-						<br />
-					
-						<% if group_id && group_id > 0 %>
-							<span class="">
+							<% if group_id && group_id > 0 %>
 								圈子
 								<a href="/groups/<%= group.id %>">
 									<%= h(group.name) %></a>
 								的圈内活动
-							</span>
+							<% else %>
+								全局活动	
+							<% end %>							
+						</div>
 						
+					<% else %>
+						
+						<div>
+							<%= format_activity_time(activity.begin_at) %>
+							--
+							<%= format_activity_time(activity.end_at) %>
+					
 							<br />
-						<% end %>
+					
+							<span class="activity_info_label">地点:</span>
+							<%= h(activity.place) %>
+					
+							<br />
+					
+							<span class="activity_info_label">报名截止时间:</span>
+							<%= activity.get_application_deadline ? format_activity_time(activity.get_application_deadline) : "活动开始前" %>
+					
+							<br />
+					
+							<% if group_id && group_id > 0 %>
+								圈子
+								<a href="/groups/<%= group.id %>">
+									<%= h(group.name) %></a>
+								的圈内活动
+						
+								<br />
+							<% end %>
 					
 					
-						<% unless group_id && group_id > 0 %>
-							全局活动	
+							<% unless group_id && group_id > 0 %>
+								全局活动	
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<% end %>
+							<span class="activity_info_label">人数限制:</span>
+							<%= (activity.member_limit && activity.member_limit > 0) ? activity.member_limit : "无" %>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<% end %>
-						<span class="activity_info_label">人数限制:</span>
-						<%= (activity.member_limit && activity.member_limit > 0) ? activity.member_limit : "无" %>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<span class="activity_info_label">人均费用:</span>
-						<%= activity.cost || "无" %>
+							<span class="activity_info_label">人均费用:</span>
+							<%= activity.cost || "无" %>
 					
-						<% contact = activity.get_setting[:contact] %>
-						<% if contact && contact != "" %>
-							<br />
+							<% contact = activity.get_setting[:contact] %>
+							<% if contact && contact != "" %>
+								<br />
 						
-							<span class="activity_info_label">联系方法:</span>
-							<%= h(contact) %>
-						<% end %>
-					</div>
+								<span class="activity_info_label">联系方法:</span>
+								<%= h(contact) %>
+							<% end %>
+						</div>
+						
+					<% end %>
 					
 				<% else %>
 					

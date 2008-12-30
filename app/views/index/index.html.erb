@@ -410,7 +410,7 @@
 								:all,
 								:limit => 5,
 								:conditions => ["creator_id in (?) and cancelled = ?", IndexController::Index_Activity_Account_Id_Scope, false],
-								:select => "id, created_at, creator_id, cancelled, title, begin_at, end_at, application_deadline",
+								:select => "id, created_at, creator_id, cancelled, online, title, begin_at, end_at, application_deadline",
 								:order => "created_at DESC"
 						    )
 						%>

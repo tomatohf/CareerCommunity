@@ -31,7 +31,7 @@ class Activity < ActiveRecord::Base
   
   validates_presence_of :title, :message => "请输入 活动的标题"
   
-  validates_presence_of :place, :message => "请输入 活动的地点"
+  # validates_presence_of :place, :message => "请输入 活动的地点"
   
   validates_presence_of :begin_at, :message => "请输入正确的 活动开始时间"
   validates_presence_of :end_at, :message => "请输入正确的 活动结束时间"
@@ -46,13 +46,16 @@ class Activity < ActiveRecord::Base
   def validate
     now = DateTime.now
     
-    if application_deadline
-      errors.add :application_deadline, "报名截止时间已成为过去" if application_deadline_changed? && (application_deadline < now)
-      errors.add :begin_at, "报名截止时间比活动开始时间晚" if begin_at && begin_at < application_deadline
+    if get_application_deadline
+      errors.add :application_deadline, "报名截止时间已成为过去" if application_deadline_changed? && (get_application_deadline < now)
+      errors.add :begin_at, "报名截止时间比活动开始时间晚" if begin_at && begin_at < get_application_deadline
     else
       errors.add :begin_at, "活动开始时间已成为过去" if begin_at_changed? && (begin_at && begin_at < now)
     end
     errors.add :begin_at, "活动结束时间比活动开始时间早" if begin_at && end_at && begin_at > end_at
+    
+    
+    errors.add :place, "请输入 活动的地点" unless online || (place && place != "")
   end
   
   
@@ -229,7 +232,7 @@ class Activity < ActiveRecord::Base
   end
   
   def get_status
-    application_deadline_at = application_deadline || begin_at
+    application_deadline_at = get_application_deadline || begin_at
     now = DateTime.now
     
     if now <= application_deadline_at
@@ -241,6 +244,11 @@ class Activity < ActiveRecord::Base
     else
       Status::Finished
     end
+  end
+  
+  def get_application_deadline
+    RAILS_DEFAULT_LOGGER.info "++++++++++++ #{self.inspect}"
+    self.online ? nil : application_deadline
   end
   
   

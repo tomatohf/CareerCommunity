@@ -281,7 +281,7 @@ module ApplicationHelper
   end
   
   def show_activity_status_script(activity)
-    application_deadline_at = activity.application_deadline || activity.begin_at
+    application_deadline_at = activity.get_application_deadline || activity.begin_at
     
 		deadline_time = application_deadline_at.to_i * 1000
 		begin_time = activity.begin_at.to_i * 1000
