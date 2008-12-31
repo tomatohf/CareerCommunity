@@ -7,11 +7,13 @@ var EmotionsDialog = {
 
 	insert : function(file, title) {
 		var ed = tinyMCEPopup.editor, dom = ed.dom;
+		
+		var displayed_title = (title && title != "") ? ed.getLang(title) : "";
 
 		tinyMCEPopup.execCommand('mceInsertContent', false, dom.createHTML('img', {
 			src : tinyMCEPopup.getWindowArg('plugin_url') + '/img/' + file,
-			alt : ed.getLang(title),
-			title : ed.getLang(title),
+			alt : displayed_title,
+			title : displayed_title,
 			border : 0
 		}));
 
