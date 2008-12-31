@@ -373,6 +373,20 @@ ActionController::Routing::Routes.draw do |map|
     :unstar_target => :post
     
   }
+  
+  
+  map.connect "/:picture_type/pictures/:id/comment/:page", :controller => "pictures", :action => "show", :id => /\d+/, :page => /\d+/
+  map.resources :pictures, :path_prefix => "/:picture_type", :member => {
+    :create_comment => :post,
+    :delete_comment => :post,
+    
+    :top => :post,
+    :untop => :post,
+    
+    :good => :post,
+    :ungood => :post
+  }
+  map.connect "/:picture_type/pictures/:action/:id", :controller => "pictures"
 
   
   
