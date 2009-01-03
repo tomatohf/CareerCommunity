@@ -4,10 +4,17 @@ class PicturesController < ApplicationController
   
   before_filter :prepare_picture_type
   
-  before_filter :check_login, :only => []
+  before_filter :check_login, :only => [:upload]
   before_filter :check_limited, :only => []
   
+  before_filter :check_create_access, :only => [:upload]
   
+  
+  
+  def upload
+    @type_name, @type_image = @type_handler.get_type_with_image(@type_id)
+    @type_label = @type_handler.get_type_label
+  end
   
   
   
@@ -20,6 +27,15 @@ class PicturesController < ApplicationController
   def get_type_handler(picture_type)
     type_class = picture_type.downcase.capitalize
     eval("Types::#{type_class}").instance
+  end
+  
+  def check_create_access
+    @type_id = params[:id] && params[:id].strip
+    @type_handler = get_type_handler(@picture_type)
+    
+    account_id = session[:account_id]
+    
+    jump_to("/errors/forbidden") unless @type_handler.check_create_access(@type_id, account_id)
   end
   
   
@@ -62,6 +78,10 @@ class PicturesController < ApplicationController
         "圈子"
       end
       
+      def check_create_access(group_id, account_id)
+        GroupMember.is_group_member(group_id, account_id)
+      end
+      
     end
     
     
@@ -74,6 +94,10 @@ class PicturesController < ApplicationController
       
       def get_type_label
         "活动"
+      end
+      
+      def check_create_access(activity_id, account_id)
+        ActivityMember.is_activity_member(activity_id, account_id)
       end
       
     end

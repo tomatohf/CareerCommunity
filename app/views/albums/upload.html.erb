@@ -6,6 +6,17 @@
 	
 	<div class="community_block_narrow">
 		<img id="cover_photo" src="<%= @album.get_cover_photo_img_src(:thumb_80) %>" border="0" />
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+		返回 -
+		<a href="/albums/<%= @album.id %>"><%= h(@album.name) %></a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="/albums">我的相册列表</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		或者
+		&nbsp;
+		<a href="/albums/new">创建一个新相册</a>
 	</div>
 	
 	<div class="community_title">
@@ -21,103 +32,13 @@
 		</p>
 	<% end %>
 	
-	<p id="loading_swfupload" class="community_block_narrow">
-		正在加载 高级上传功能 ...
-		<img src="/images/loading_small.gif" />
-	</p>
+	<%= render :partial => "/common/upload", :locals => {:downgrade_link => "/albums/#{@album.id}/upload_simple", :upload_action => "/albums/#{@album.id}/create_photo", :file_size_limit => 3} %>
 	
-	<div id="fail_message" class="community_block_narrow" style="display: none;">
-		<p class="error_msg">
-			无法加载 高级上传功能 ...
-		</p>
-		
-		<ul>
-			<li>
-				这可能是因为缺少必要的 Flash Player 版本
-			</li>
-			<li>
-				使用 高级上传功能 需要安装 Flash Player <b style="color: red;">9.0.28</b> 或更高的版本
-			</li>
-			<li>
-				你可以到 <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" target="_blank">Adobe 官方网站</a> 安装最新版本的 Flash Player
-			</li>
-		</ul>
-		
-		<h3>
-			只能试试看
-			<a href="/albums/<%= @album.id %>/upload_simple">简单上传功能</a> 了
-		</h3>
-		
-		<p class="form_info_l">
-			使用 高级上传功能 可以
-			<b>批量上传图片</b>
-			, 并
-			<b>实时查看上传进度与结果</b>
-			, 消除了简单上传功能带来的不便与麻烦
-			<br />
-			因此强烈建议
-			<a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" target="_blank">安装最新版本的 Flash Player</a>
-			, 并使用 高级上传功能 来为相册添加照片
-		</p>
-		
-		<div>
-			<a href="http://www.adobe.com/go/getflashplayer" target="_blank">
-				<img src="/images/get_flash_player.gif" border="0" alt="获取 Adobe Flash 播放器" /></a>
-		</div>
+	<div class="community_block_narrow">
+		<a href="/albums/<%= @album.id %>">
+			返回这个相册</a>
 	</div>
 	
-	<div id="upload_queue_container" class="float_r main_part_w">
-	</div>
-	
-	<div id="rich_upload_control_block" class="community_block_narrow clear_r" style="display: none;">
-		<p>
-			<span id="upload_file_queue_count" class="upload_photo_stat_number">0</span>
-			个图片正在等待上传
-			&nbsp;|&nbsp;&nbsp;
-			<span id="upload_file_successful_count" class="upload_photo_stat_number">0</span>
-			个图片已完成上传
-			&nbsp;|&nbsp;&nbsp;
-			<span id="upload_file_error_count" class="upload_photo_stat_number">0</span>
-			个图片上传失败
-		</p>
-		
-		<div>
-			<span style="position:relative; top: 6px;">
-				<button id="add_file_button" class="button add_file_button icon_button"<%= %q{ disabled="disabled"} if @account_limited %>>选择图片文件</button>
-			</span>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button id="upload_file_button" class="button upload_file_button icon_button">开始上传</button>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button id="stop_upload_file_button" class="button stop_upload_file_button icon_button">停止上传</button>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			上传遇到问题? 试试看
-			<a href="/albums/<%= @album.id %>/upload_simple">简单上传功能</a>
-		</div>
-		
-		<br />
-
-		<div class="form_info_l">
-			首先选择你要上传的照片文件, 
-			<b>可以一次选中多个文件</b>,
-			然后开始上传
-		</div>
-		<div class="form_info_l">
-			同一时间等待上传的图片个数不能超过
-			<b>50</b>
-			个
-		</div>
-		
-		<p>
-			返回 -
-			<a href="/albums/<%= @album.id %>"><%= h(@album.name) %></a>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="/albums">我的相册列表</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			或者
-			&nbsp;
-			<a href="/albums/new">创建一个新相册</a>
-		</p>
-	</div>
 	
 	<br />
 	<br />
@@ -131,203 +52,4 @@
 	</div>
 </div>
 
-<script language="JavaScript" src="/lib/jquery/jquery-pack.js"></script>
-<script language="JavaScript" src="/lib/SWFUpload/swfupload.js"></script>
-<script language="JavaScript" src="/lib/SWFUpload/swfupload.swfobject.js"></script>
-
-<script type="text/javascript" language="JavaScript">
-	function is_double_byte_char(c){
-		var pattern = /[^\x00-\xff]/;
-		return pattern.test(c);
-	}
-	
-	function str_clip(str, len){
-		var c_count = 0;
-		var total_len = 0;
-		for(var i = 0; i < str.length; i++){
-			var c = str.charAt(i);
-			var c_len = is_double_byte_char(c) ? 2 : 1;
-			total_len += c_len;
-			if(total_len > len){
-				break;
-			}
-			else{
-				c_count += 1;
-			}
-		}
-		
-		var clip = str;
-		if(str.length > c_count){
-			clip = str.substr(0, c_count) + "...";
-		}
-		
-		return clip;
-	}
-	
-	var Upload = {
-		// The total number of files queued with SWFUpload
-		files_queued_count: 0,
-		
-		file_dialog_complete: function(num_selected, num_queued)
-		{
-			
-		},
-	
-		file_queued: function(file)
-		{
-			div = $("<div></div>").attr({ "id": file.id, "class": "uploaded_photo" });
-			div.append($("<div></div>").attr("class", "uploaded_photo_name").html(str_clip(file.name, 10)));
-			div.append($("<div></div>").attr("class", "uploaded_photo_status").append("等待中").append("&nbsp;")
-				.append("(<a href=\"#\" onclick=\"Upload.cancel_upload('" + file.id + "');return false;\">删除</a>)"));
-			div.append($("<div></div>").attr("class", "uploaded_photo_progress").append($("<div></div>")));
-			
-			$("#upload_queue_container").append(div);
-			
-			$("#upload_file_queue_count").html(swfu.getStats().files_queued + "");
-		},
-		
-		cancel_upload: function(file_id) {
-			swfu.cancelUpload(file_id);
-			$("#" + file_id).remove();
-			$("#upload_file_queue_count").html(swfu.getStats().files_queued + "");
-		},
-	
-		upload_start: function(file)
-		{
-			$("#" + file.id + " div.uploaded_photo_status").html("上传中...");
-		},
-		
-		/* 
-			Note: The Linux Flash Player fires a single uploadProgress event after the entire file has 
-			been uploaded. This is a bug in the Linux Flash Player that we cannot work around.
-		*/
-		upload_progress: function(file, bytes, total)
-		{
-			percent = Math.ceil((bytes / total) * 100);
-			$("#" + file.id + " div.uploaded_photo_progress div").width(percent + "%");
-		},
-		
-		upload_error: function(file, code, message)
-		{
-			if(code == SWFUpload.UPLOAD_ERROR.UPLOAD_STOPPED){
-				$("#" + file.id).html($("<div></div>").attr("class", "uploaded_photo_name").html(str_clip(file.name, 10)))
-					.append($("<div></div>").attr("class", "uploaded_photo_status").append("等待中").append("&nbsp;")
-					.append("(<a href=\"#\" onclick=\"Upload.cancel_upload('" + file.id + "');return false;\">删除</a>)"))
-					.append($("<div></div>").attr("class", "uploaded_photo_progress").append($("<div></div>")));
-			}else{
-				$("#" + file.id).html("上传失败")
-					.append("<br />")
-					.append("再试一次吧")
-					.append("<br />")
-					.append("(<a href=\"#\" onclick=\"Upload.cancel_upload('" + file.id + "');return false;\">删除</a>)");
-			}
-		},
-		
-		upload_success: function(file, data)
-		{
-			$("#" + file.id).html(data);
-		},
-	
-		upload_complete: function(file)
-		{
-			var stats = swfu.getStats();
-			$("#upload_file_queue_count").html(stats.files_queued + "");
-			$("#upload_file_successful_count").html(stats.successful_uploads + "");
-			$("#upload_file_error_count").html(stats.upload_errors + "");
-			
-			if(!swfu_stopped){
-				// Start Next Upload
-				swfu.startUpload();
-			}
-		},
-		
-		swfupload_loaded: function() {
-			$("#loading_swfupload").hide();
-			$("#fail_message").hide();
-			$("#rich_upload_control_block").show();
-		},
-		
-		swfupload_pre_load: function() {
-			$("#fail_message").hide();
-			$("#loading_swfupload").show();
-			$("#rich_upload_control_block").show();
-		},
-		
-		swfupload_load_failed: function() {
-			$("#loading_swfupload").hide();
-			$("#rich_upload_control_block").hide();
-			$("#fail_message").show();
-		}
-	}
-</script>
-
-<script type="text/javascript" language="JavaScript">
-	var swfu_stopped = true;
-	
-	var swfu;
-	
-	SWFUpload.onload = function(){
-		// Setup SWFU object
-		var settings = {
-			upload_url: "/albums/<%= @album.id %>/create_photo?_session_id_4_swf=<%= session.session_id %>",
-			flash_url: "/lib/SWFUpload/swfupload.swf",
-			prevent_swf_caching: true,
-			file_post_name: "Filedata",
-
-			file_queue_limit: 50,
-			file_size_limit: "<%= 3.megabyte %> B",
-			file_types: "*.jpg;*.jpeg;*.gif;*.png;*.bmp",
-			file_types_description: "图片文件",
-
-			// event handlers
-			swfupload_loaded_handler : Upload.swfupload_loaded,
-			file_queued_handler: Upload.file_queued,
-			file_dialog_complete_handler: Upload.file_dialog_complete,
-			upload_start_handler: Upload.upload_start,
-			upload_progress_handler: Upload.upload_progress,
-			upload_error_handler: Upload.upload_error,
-			upload_success_handler: Upload.upload_success,
-			upload_complete_handler: Upload.upload_complete,
-			
-			post_params: {
-				authenticity_token: encodeURIComponent("<%= form_authenticity_token %>")
-			},
-
-			debug: false, // Set to true to find out why things aren't working
-			
-			// SWFObject settings
-			minimum_flash_version: "9.0.28",
-			swfupload_pre_load_handler: Upload.swfupload_pre_load,
-			swfupload_load_failed_handler: Upload.swfupload_load_failed,
-			
-			
-			// for Flash Player 10 and swfupload v2.2
-			button_placeholder_id: "add_file_button",
-			button_image_url: "/lib/SWFUpload/add_file_button.jpg",
-			
-			//button_text: "选择图片文件",
-			//button_text_top_padding: 0,
-			//button_text_left_padding: 0,
-			
-			button_width: 92,
-			button_height: 20,
-			
-			button_disabled: <%= @account_limited.to_s %>,
-			button_cursor: SWFUpload.CURSOR.HAND
-		};
-		
-		swfu = new SWFUpload(settings);
-	}
-	
-	$(document).ready(function() {
-		// Add Event Handlers
-		$("#add_file_button").click(function() { swfu.selectFiles(); });
-		$("#upload_file_button").click(function() { swfu.startUpload(); swfu_stopped = false; });
-		$("#stop_upload_file_button").click(function() { swfu.stopUpload(); swfu_stopped = true; });
-		
-		$("#fail_message").hide();
-		$("#rich_upload_control_block").hide();
-		$("#loading_swfupload").show();
-	});
-</script>
 
