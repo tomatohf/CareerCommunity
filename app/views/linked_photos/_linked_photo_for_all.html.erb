@@ -18,9 +18,7 @@
 		<div>
 			<a href="/spaces/show/<%= account.id %>" class="account_nick_link" target="_blank">
 				<%= h(account.get_nick) %></a>
-			添加到
-		</div>
-		<div>
+			链接到
 			<a href="/<%= type.to_s.pluralize %>/<%= type_obj.id %>" title="<%= type_text %>" class="account_nick_link" target="_blank">
 				<%= truncate(type_text, 20) %>
 			</a>

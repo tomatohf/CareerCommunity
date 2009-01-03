@@ -9,4 +9,10 @@ class GroupPhoto < ActiveRecord::Base
   
   validates_presence_of :account_id, :group_id, :photo_id
   
+  
+  
+  CKP_count = :group_photo_count
+  Count_Cache_Group_Field = :group_id
+  include CareerCommunity::CountCacheable
+  
 end

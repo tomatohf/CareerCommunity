@@ -30,7 +30,10 @@ module Paperclip
         :id           => lambda{|attachment,style| attachment.instance.id },
         
         # added by Tomato
-        :album_id     => lambda{|attachment,style| attachment.instance.album_id },
+        :album_id     => lambda{|attachment,style| attachment.instance.respond_to?("album_id", false) ? attachment.instance.album_id : "" },
+        :created_year => lambda{|attachment,style| attachment.instance.created_at.year },
+        :created_month => lambda{|attachment,style| attachment.instance.created_at.month },
+        :created_mday => lambda{|attachment,style| attachment.instance.created_at.mday },
         
         :id_partition => lambda do |attachment, style|
                            ("%09d" % attachment.instance.id).scan(/\d{3}/).join("/")
@@ -42,3 +45,5 @@ module Paperclip
     
   end
 end
+
+

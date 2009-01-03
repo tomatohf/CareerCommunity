@@ -1,7 +1,7 @@
 <% type_name = h(@type_name) %>
 <% pluralized_linked_photo_type = @linked_photo_type.pluralize %>
 
-<% page_title = "添加 #{@type_label} #{type_name} 的照片" %>
+<% page_title = "链接照片到 #{@type_label} #{type_name}" %>
 <% community_page_title(page_title) %>
 
 <div class="album_container">
@@ -13,7 +13,7 @@
 	<h2><%= page_title %></h2>
 	
 	<div class="community_block_narrow form_info_s">
-		从相册中选择要添加到 <%= @type_label %>
+		从相册中选择要链接到 <%= @type_label %>
 		<a href="/<%= pluralized_linked_photo_type %>/<%= @type_id %>">
 			<%= type_name %></a>
 		的照片

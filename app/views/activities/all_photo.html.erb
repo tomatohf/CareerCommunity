@@ -1,6 +1,6 @@
 <% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
 
-<% page_title = "#{owner_name} 参加的活动的全部活动照片" %>
+<% page_title = "链接到 #{owner_name} 参加的活动的全部照片" %>
 <% community_page_title(page_title) %>
 
 <div class="float_r">
@@ -25,7 +25,7 @@
 	<div class="community_block_narrow form_info_s">
 		共有
 		<b><%= @all_photos.total_entries %></b>
-		张活动照片,
+		张链接到我参加的活动的照片,
 		<a href="/activities/recent/<%= @owner_id %>">
 			返回 <%= owner_name %> 的活动近况
 		</a>

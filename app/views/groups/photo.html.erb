@@ -1,6 +1,6 @@
 <% group_name = h(@group.name) %>
 
-<% page_title = "圈子 #{group_name} 的照片" %>
+<% page_title = "链接到圈子 #{group_name} 的照片" %>
 <% community_page_title(page_title) %>
 
 <div class="float_r">
@@ -14,7 +14,7 @@
 	<div class="community_block_narrow form_info_s">
 		共有
 		<b><%= @group_photos.total_entries %></b>
-		张圈子照片,
+		张链接到圈子的照片,
 		<a href="/groups/<%= @group_id %>">
 			返回圈子 <%= group_name %></a>
 	</div>

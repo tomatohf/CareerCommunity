@@ -116,17 +116,23 @@
 				<img src="/images/votes/new_vote_topic_small.gif" border="0" />
 				发起新的圈内投票</a>
 		</div>
-		
-		<div class="community_block">
-			<a href="/group/linked_photos/select/<%= @group_id %>">
-				<img src="/images/activities/new_photo_small.gif" border="0" />
-				添加新的圈子照片</a>
-		</div>
-		
+
 		<div class="community_block">
 			<a href="#" onclick="document.getElementById('new_group_bookmark_form').submit(); return false;">
 				<img src="/images/bookmarks/new_bookmark_small.gif" border="0" />
 				添加新的圈内收藏</a>
+		</div>
+		
+		<div class="community_block">
+			<a href="/group/pictures/upload/<%= @group_id %>">
+				<img src="/images/activities/new_picture_small.gif" border="0" />
+				上传新的圈子专属照片</a>
+		</div>
+		
+		<div class="community_block">
+			<a href="/group/linked_photos/select/<%= @group_id %>">
+				<img src="/images/activities/new_photo_small.gif" border="0" />
+				链接新的照片到圈子</a>
 		</div>
 	<% end %>
 	
@@ -402,6 +408,42 @@
 	
 	<div class="community_block">
 		<div class="space_section_title">
+			<a class="float_r" title="收起" id="picture_section_expand" href="#" onclick="collapse_section('picture_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="picture_section_collapse" href="#" onclick="expand_section('picture_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<% unless @no_membership %>
+				<span class="float_r">
+					<a href="/group/pictures/upload/<%= @group_id %>">上传新的圈子专属照片</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			<% end %>
+			
+			<img class="float_l" src="/images/activities/picture_small.gif" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<strong>圈子专属照片</strong>
+			<%# if @group_pictures.size > 0 %>
+				&nbsp;
+				(
+					<a href="/activities/picture/<%= @group_id %>">全部 <%= @all_group_picture_count %> 张</a>
+				)
+			<%# end %>
+		</div>
+		
+		<div id="picture_section" class="overflow_hidden">
+			<%= float_list(@group_pictures, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 6) %>
+			<% unless @group_pictures.size > 0 %>
+				<div class="form_info_l">
+					还没有圈子专属照片 ...
+				</div>
+			<% end %>
+
+			<div class="clear_l"></div>
+		</div>
+		
+		
+		
+		<div class="space_section_title">
 			<a class="float_r" title="收起" id="photo_section_expand" href="#" onclick="collapse_section('photo_section'); return false;">
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="photo_section_collapse" href="#" onclick="expand_section('photo_section'); return false;" style="display: none">
@@ -409,21 +451,27 @@
 			<% unless @no_membership %>
 				<span class="float_r">
 					<a href="/group/linked_photos/select/<%= @group_id %>">
-						添加新的圈子照片</a>
+						链接新的照片到圈子</a>
 					&nbsp;&nbsp;&nbsp;
 				</span>
 			<% end %>
 			
 			<img class="float_l" src="/images/activities/photo_small.png" border="0" />
 			&nbsp;&nbsp;&nbsp;
-			<a href="/groups/photo/<%= @group_id %>">全部圈子照片</a>
+			<strong>链接到圈子的照片</strong>
+			<% if @group_photos.size > 0 %>
+				&nbsp;
+				(
+					<a href="/groups/photo/<%= @group_id %>">全部 <%= @all_group_photo_count %> 张</a>
+				)
+			<% end %>
 		</div>
 		
 		<div id="photo_section" class="overflow_hidden">
 			<%= float_list(@group_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
 			<% unless @group_photos.size > 0 %>
 				<div class="form_info_l">
-					还没有圈子照片 ...
+					还没有链接到圈子的照片 ...
 				</div>
 			<% end %>
 			

@@ -13,14 +13,14 @@ class GroupsController < ApplicationController
   Post_Recent_List_Size = 25
   Activity_Recent_List_Size = 16
   Bookmark_Recent_List_Size = 10
-  Photo_Recent_List_Size = 15
+  Photo_Recent_List_Size = 10
   
   New_Member_Num = 15
   Group_Post_Num = 20
   Group_Activity_Num = 10
   Group_Vote_Num = 10
   Group_Bookmark_Num = 10
-  Group_Photo_Num = 15
+  Group_Photo_Num = 5
   
   Group_Admin_Max_Count = 11
 
@@ -324,6 +324,10 @@ class GroupsController < ApplicationController
       :include => [:photo],
       :order => "created_at DESC"
     )
+    @all_group_photo_count = GroupPhoto.get_count(@group_id) if @group_photos.size > 0
+    
+    @group_pictures = []
+    @all_group_picture_count = 1528 # GroupPicture.get_count(@group_id) if @group_pictures.size > 0
     
   end
   
@@ -458,6 +462,7 @@ class GroupsController < ApplicationController
     @group_photos = GroupPhoto.paginate(
       :page => page,
       :per_page => Photo_List_Size,
+      :total_entries => GroupPhoto.get_count(@group_id),
       :conditions => ["group_id = ?", @group_id],
       :include => [:photo, :account],
       :order => "created_at DESC"

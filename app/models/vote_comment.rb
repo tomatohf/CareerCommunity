@@ -12,50 +12,8 @@ class VoteComment < ActiveRecord::Base
   
   
   
-  after_destroy { |vote_comment|
-    self.decrease_count_cache(vote_comment.vote_topic_id)
-  }
-  
-  after_create { |vote_comment|
-    self.increase_count_cache(vote_comment.vote_topic_id)
-  }
-  
-  
-  
   CKP_count = :vote_comment_count
-  
-  
-  
-  def self.get_count(vote_topic_id)
-    c = Cache.get("#{CKP_count}_#{vote_topic_id}".to_sym)
-    unless c
-      c = self.count(:conditions => ["vote_topic_id = ?", vote_topic_id])
-      
-      Cache.set("#{CKP_count}_#{vote_topic_id}".to_sym, c, Cache_TTL)
-    end
-    c
-  end
-  
-  def self.increase_count_cache(vote_topic_id, count = 1)
-    c = Cache.get("#{CKP_count}_#{vote_topic_id}".to_sym)
-    if c
-      updated_c = c.to_i + count
-      
-      Cache.set("#{CKP_count}_#{vote_topic_id}".to_sym, updated_c, Cache_TTL)
-    end
-  end
-  
-  def self.decrease_count_cache(vote_topic_id, count = 1)
-    c = Cache.get("#{CKP_count}_#{vote_topic_id}".to_sym)
-    if c
-      updated_c = c.to_i - count
-      
-      Cache.set("#{CKP_count}_#{vote_topic_id}".to_sym, updated_c, Cache_TTL)
-    end
-  end
-  
-  def self.clear_count_cache(vote_topic_id)
-    Cache.delete("#{CKP_count}_#{vote_topic_id}".to_sym)
-  end
+  Count_Cache_Group_Field = :vote_topic_id
+  include CareerCommunity::CountCacheable
   
 end

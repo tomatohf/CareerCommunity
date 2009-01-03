@@ -9,4 +9,10 @@ class ActivityPhoto < ActiveRecord::Base
   
   validates_presence_of :account_id, :activity_id, :photo_id
   
+  
+  
+  CKP_count = :activity_photo_count
+  Count_Cache_Group_Field = :activity_id
+  include CareerCommunity::CountCacheable
+  
 end

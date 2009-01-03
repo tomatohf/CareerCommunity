@@ -1,6 +1,6 @@
 <% activity_title = h(@activity.get_title) %>
 
-<% page_title = "活动 #{activity_title} 的照片" %>
+<% page_title = "链接到活动 #{activity_title} 的照片" %>
 <% community_page_title(page_title) %>
 
 <div class="float_r">
@@ -14,7 +14,7 @@
 	<div class="community_block_narrow form_info_s">
 		共有
 		<b><%= @activity_photos.total_entries %></b>
-		张活动照片,
+		张链接到活动的照片,
 		<a href="/activities/<%= @activity_id %>">
 			返回活动 <%= activity_title %></a>
 	</div>

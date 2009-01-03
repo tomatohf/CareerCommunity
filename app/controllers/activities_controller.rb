@@ -9,11 +9,11 @@ class ActivitiesController < ApplicationController
   
   Activity_Recent_List_Size = 6
   Post_Recent_List_Size = 15
-  Photo_Recent_List_Size = 15
+  Photo_Recent_List_Size = 10
 
   Activity_Post_Num = 20
   New_Member_Num = 14
-  Activity_Photo_Num = 12
+  Activity_Photo_Num = 6
   
   Activity_Group_Max_Count = 6
   
@@ -644,6 +644,10 @@ class ActivitiesController < ApplicationController
       :include => [:photo],
       :order => "created_at DESC"
     )
+    @all_activity_photo_count = ActivityPhoto.get_count(@activity_id) if @activity_photos.size > 0
+    
+    @activity_pictures = []
+    @all_activity_picture_count = 1528 # ActivityPicture.get_count(@activity_id) if @activity_pictures.size > 0
     
     # @created_activities value is set in view ...
   end
@@ -719,6 +723,7 @@ class ActivitiesController < ApplicationController
     @activity_photos = ActivityPhoto.paginate(
       :page => page,
       :per_page => Photo_List_Size,
+      :total_entries => ActivityPhoto.get_count(@activity_id),
       :conditions => ["activity_id = ?", @activity_id],
       :include => [:photo, :account],
       :order => "created_at DESC"

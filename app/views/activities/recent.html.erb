@@ -148,27 +148,26 @@
 				参加的活动的讨论话题
 			</b>
 		</div>
-		
-		<div id="join_post_section" class="community_block">
-			<table cellpadding="0" cellspacing="5" class="main_part_w">
-				<thead>
-					<tr>
-						<td width="51%">话题</td>
-						<td width="6%" align="right">评论</td>
-						<td width="18%" align="right">发起人</td>
-						<td width="25%" align="right">最后参与</td>
-					</tr>
-				</thead>
-				<tbody>
-					<%= render :partial => "activity_post", :collection => @join_activity_posts, :locals => {:hide_top => true} %>
-				</tbody>
-			</table>
-			<% unless @join_activity_posts.size > 0 %>
-				<div class="form_info_l">
-					还没有讨论话题 ...
-				</div>
-			<% end %>
-		</div>
+	</div>
+	<div id="join_post_section" class="community_block">
+		<table cellpadding="0" cellspacing="5" class="main_part_w">
+			<thead>
+				<tr>
+					<td width="51%">话题</td>
+					<td width="6%" align="right">评论</td>
+					<td width="18%" align="right">发起人</td>
+					<td width="25%" align="right">最后参与</td>
+				</tr>
+			</thead>
+			<tbody>
+				<%= render :partial => "activity_post", :collection => @join_activity_posts, :locals => {:hide_top => true} %>
+			</tbody>
+		</table>
+		<% unless @join_activity_posts.size > 0 %>
+			<div class="form_info_l">
+				还没有讨论话题 ...
+			</div>
+		<% end %>
 	</div>
 	
 	<div class="community_block">
@@ -188,27 +187,26 @@
 				感兴趣的活动的讨论话题
 			</b>
 		</div>
-		
-		<div id="interest_post_section" class="community_block">
-			<table cellpadding="0" cellspacing="5" class="main_part_w">
-				<thead>
-					<tr>
-						<td width="51%">话题</td>
-						<td width="5%" align="right">评论</td>
-						<td width="21%" align="right">发起人</td>
-						<td width="23%" align="right">最后参与</td>
-					</tr>
-				</thead>
-				<tbody>
-					<%= render :partial => "activity_post", :collection => @interest_activity_posts, :locals => {:hide_top => true} %>
-				</tbody>
-			</table>
-			<% unless @interest_activity_posts.size > 0 %>
-				<div class="form_info_l">
-					还没有讨论话题 ...
-				</div>
-			<% end %>
-		</div>
+	</div>
+	<div id="interest_post_section" class="community_block">
+		<table cellpadding="0" cellspacing="5" class="main_part_w">
+			<thead>
+				<tr>
+					<td width="51%">话题</td>
+					<td width="5%" align="right">评论</td>
+					<td width="21%" align="right">发起人</td>
+					<td width="23%" align="right">最后参与</td>
+				</tr>
+			</thead>
+			<tbody>
+				<%= render :partial => "activity_post", :collection => @interest_activity_posts, :locals => {:hide_top => true} %>
+			</tbody>
+		</table>
+		<% unless @interest_activity_posts.size > 0 %>
+			<div class="form_info_l">
+				还没有讨论话题 ...
+			</div>
+		<% end %>
 	</div>
 	
 	
@@ -222,17 +220,28 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="photo_section_collapse" href="#" onclick="expand_section('photo_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			
+			<span class="float_r">
+				<a href="/activities/all_photo/<%= @owner_id %>">链接到我参加的活动的全部照片</a>
+				&nbsp;&nbsp;&nbsp;
+			</span>
+
 			<img class="float_l" src="/images/activities/photo_small.png" border="0" />
 			&nbsp;&nbsp;&nbsp;
-			<a href="/activities/all_photo/<%= @owner_id %>">参加的活动的全部活动照片</a>
+			<strong>链接到我参加的活动的照片</strong>
 		</div>
 		
 		<div id="photo_section" class="community_block overflow_hidden">
 			<%= float_list(@activity_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
 		</div>
+		
+		<% unless @activity_photos.size > 0 %>
+			<div class="form_info_l">
+				还没有链接到我参加的活动的照片 ...
+			</div>
+		<% end %>
+		
+		<div class="clear_l"></div>
 	</div>
-	<div class="clear_l"></div>
 	
 </div>
 
