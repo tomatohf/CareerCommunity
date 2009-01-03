@@ -1,0 +1,103 @@
+<p id="loading_swfupload" class="community_block_narrow">
+	正在加载 高级上传功能 ...
+	<img src="/images/loading_small.gif" />
+</p>
+
+<div id="fail_message" class="community_block_narrow" style="display: none;">
+	<p class="error_msg">
+		无法加载 高级上传功能 ...
+	</p>
+	
+	<ul>
+		<li>
+			这可能是因为缺少必要的 Flash Player 版本
+		</li>
+		<li>
+			使用 高级上传功能 需要安装 Flash Player <b style="color: red;">9.0.28</b> 或更高的版本
+		</li>
+		<li>
+			你可以到 <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" target="_blank">Adobe 官方网站</a> 安装最新版本的 Flash Player
+		</li>
+	</ul>
+	
+	<h3>
+		只能试试看
+		<a href="<%= downgrade_link %>">简单上传功能</a> 了
+	</h3>
+	
+	<p class="form_info_l">
+		使用 高级上传功能 可以
+		<b>批量上传图片</b>
+		, 并
+		<b>实时查看上传进度与结果</b>
+		, 消除了简单上传功能带来的不便与麻烦
+		<br />
+		因此强烈建议
+		<a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" target="_blank">安装最新版本的 Flash Player</a>
+		, 并使用 高级上传功能 来为相册添加照片
+	</p>
+	
+	<div>
+		<a href="http://www.adobe.com/go/getflashplayer" target="_blank">
+			<img src="/images/get_flash_player.gif" border="0" alt="获取 Adobe Flash 播放器" /></a>
+	</div>
+</div>
+
+<div id="upload_queue_container" class="float_r main_part_w">
+</div>
+
+<div id="rich_upload_control_block" class="community_block_narrow clear_r" style="display: none;">
+	<p>
+		<span id="upload_file_queue_count" class="upload_photo_stat_number">0</span>
+		个图片正在等待上传
+		&nbsp;|&nbsp;&nbsp;
+		<span id="upload_file_successful_count" class="upload_photo_stat_number">0</span>
+		个图片已完成上传
+		&nbsp;|&nbsp;&nbsp;
+		<span id="upload_file_error_count" class="upload_photo_stat_number">0</span>
+		个图片上传失败
+	</p>
+	
+	<div>
+		<span style="position:relative; top: 6px;">
+			<button id="add_file_button" class="button add_file_button icon_button"<%= %q{ disabled="disabled"} if @account_limited %>>选择图片文件</button>
+		</span>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button id="upload_file_button" class="button upload_file_button icon_button">开始上传</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button id="stop_upload_file_button" class="button stop_upload_file_button icon_button">停止上传</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		上传遇到问题? 试试看
+		<a href="<%= downgrade_link %>">简单上传功能</a>
+	</div>
+	
+	<br />
+
+	<div class="form_info_l">
+		首先选择你要上传的照片文件, 
+		<b>可以一次选中多个文件</b>,
+		然后开始上传
+	</div>
+	<div class="form_info_l">
+		同一时间等待上传的图片个数不能超过
+		<b>50</b>
+		个
+	</div>
+</div>
+
+
+
+<script language="JavaScript" src="/lib/jquery/jquery-pack.js"></script>
+<script language="JavaScript" src="/lib/SWFUpload/swfupload.js"></script>
+<script language="JavaScript" src="/lib/SWFUpload/swfupload.swfobject.js"></script>
+
+<script type="text/javascript" language="JavaScript">
+	var upload_action = "<%= upload_action %>?_session_id_4_swf=<%= session.session_id %>";
+	var file_size_limitation = "<%= file_size_limit.megabyte %> B";
+	var form_token = "<%= form_authenticity_token %>";
+	var is_account_limited = <%= @account_limited.to_s %>;
+</script>
+
+<script language="JavaScript" src="/javascripts/upload.js"></script>
+
+
