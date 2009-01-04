@@ -6,9 +6,10 @@
 
 <div class="album_container">
 	<div class="community_block float_r">
-		<a href="/<%= pluralized_picture_type %>/<%= @type_id %>">
-			返回<%= @type_label %> <%= type_name %>
+		<a href="/<%= pluralized_picture_type %>/<%= @type_id %>" class="account_nick_link">
+			返回<%= @type_label %> <%= type_name %></a>
 			&nbsp;
+		<a href="/<%= pluralized_picture_type %>/<%= @type_id %>">
 			<img src="<%= face_img_src(@type_image) %>" border="0" /></a>
 	</div>
 	
@@ -24,14 +25,26 @@
 	
 	<div class="community_block_narrow">
 		<div class="form_info_l">
-			你可以上传 JPG, JPEG, GIF, PNG 或 BMP 格式的图片, 每个文件大小可以到 <b>3 M</b>
+			你可以上传 JPG, JPEG, GIF, PNG 或 BMP 格式的图片
+		</div>
+		
+		<div class="form_info_l">
+			每个文件大小可以到 <b>3 M</b>
 		</div>
 	</div>
 	
 	<br />
 	
 	
-	<%= render :partial => "/common/upload", :locals => {:downgrade_link => "/albums/1/upload_simple", :upload_action => "/albums/1/create_photo", :file_size_limit => 3} %>
+	<%= render :partial => "/common/upload", :locals => {:downgrade_link => "/#{@picture_type}/pictures/upload_simple/#{@type_id}", :upload_action => "/albums/1/create_photo", :file_size_limit => 3} %>
+	
+	
+	<br />
+	
+	<div class="community_block_narrow">
+		<a href="/<%= pluralized_picture_type %>/picture/<%= @type_id %>">
+			返回这个<%= @type_label %>的全部专属照片</a>
+	</div>
 	
 </div>
 

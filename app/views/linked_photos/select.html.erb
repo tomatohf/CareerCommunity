@@ -12,6 +12,19 @@
 	
 	<h2><%= page_title %></h2>
 	
+	<div class="community_block_narrow">
+		<div class="form_info_l">
+			注意: 链接到<%= @type_label %>的照片任何人均可以查看,
+			<br />
+			如果你希望<%= @type_label %>可以设置其查看权限, 请通过
+			<a href="/<%= @linked_photo_type %>/pictures/upload/<%= @type_id %>">
+				上传<%= @type_label %>专属照片</a>
+			来添加照片
+		</div>
+	</div>
+	
+	<br />
+	
 	<div class="community_block_narrow form_info_s">
 		从相册中选择要链接到 <%= @type_label %>
 		<a href="/<%= pluralized_linked_photo_type %>/<%= @type_id %>">

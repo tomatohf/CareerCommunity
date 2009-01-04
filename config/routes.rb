@@ -385,6 +385,10 @@ ActionController::Routing::Routes.draw do |map|
     
     :good => :post,
     :ungood => :post
+  }, :collection => {
+    
+    :create_simple => :post
+    
   }
   map.connect "/:picture_type/pictures/:action/:id", :controller => "pictures"
 
