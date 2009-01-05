@@ -136,6 +136,7 @@ class PostsController < ApplicationController
     
       # should NOT cache the access check
       @access = type_handler.get_access(session[:account_id], @post.account_id, @type_id)
+      @access << :can_add_comment
     end
 
   end
@@ -428,7 +429,7 @@ class PostsController < ApplicationController
       end
       
       def check_create_comment_access(type_id, account_id)
-        check_compose_access(type_id, account_id)
+        check_view_access(type_id, account_id)
       end
       
       def check_delete_comment_access(type_id, account_id)
@@ -526,7 +527,7 @@ class PostsController < ApplicationController
       end
       
       def check_create_comment_access(type_id, account_id)
-        check_compose_access(type_id, account_id)
+        check_view_access(type_id, account_id)
       end
       
       def check_delete_comment_access(type_id, account_id)

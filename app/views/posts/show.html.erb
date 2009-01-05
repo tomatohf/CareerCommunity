@@ -50,14 +50,14 @@
 			<div class="community_block">
 				<% form_tag "/groups/#{@type_id}/join", :method => :post do %>
 					<input type="submit" value="加入圈子" class="button" />
-					后参与话题讨论
+					后发起讨论话题
 				<% end %>
 			</div>
 		<% elsif @post_type == "activity" %>
 			<div class="community_block">
 				<% form_tag "/activities/#{@type_id}/check_profile", :method => :post do %>
 					<input type="submit" value="报名参加活动" class="button" />
-					后参与话题讨论
+					后发起讨论话题
 				<% end %>
 			</div>
 		<% end %>
@@ -207,23 +207,13 @@
 			条<span id="comment_list">评论</span> ...
 		</div>
 	
-		<% if @access.include?(:can_compose) %>
+		<% if @access.include?(:can_add_comment) %>
 			<div class="community_block_narrow align_r">
 				<a href="#comment_new">添加评论</a>
 			</div>
-		<% elsif @post_type == "group" %>
+		<% else %>
 			<div class="community_block align_r">
-				<% form_tag "/groups/#{@type_id}/join", :method => :post do %>
-					<input type="submit" value="加入圈子" class="button" />
-					后添加评论
-				<% end %>
-			</div>
-		<% elsif @post_type == "activity" %>
-			<div class="community_block align_r">
-				<% form_tag "/activities/#{@type_id}/check_profile", :method => :post do %>
-					<input type="submit" value="报名参加活动" class="button" />
-					后添加评论
-				<% end %>
+				<span class="form_info_l">无权添加评论 ...</span>
 			</div>
 		<% end %>
 	
@@ -235,7 +225,7 @@
 			<%= paging_buttons(@comments) %>
 		</div>
 	
-		<% if @access.include?(:can_compose) %>
+		<% if @access.include?(:can_add_comment) %>
 			<div class="community_block_narrow">
 				<span id="comment_new">添加评论 »</span>
 				<% form_tag "/#{@post_type}/posts/#{@post_id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('post_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>

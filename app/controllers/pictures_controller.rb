@@ -13,6 +13,8 @@ class PicturesController < ApplicationController
   before_filter :check_update_access, :only => [:update]
   before_filter :check_destroy_access, :only => [:destroy]
   before_filter :check_top_access, :only => [:top, :untop, :good, :ungood]
+  before_filter :check_create_comment_access, :only => [:create_comment]
+  before_filter :check_delete_comment_access, :only => [:delete_comment]
   
   
   
@@ -97,6 +99,10 @@ class PicturesController < ApplicationController
     
     picture = type_handler.get_picture_class.get_picture(picture_id)
     
+    type_id = picture.send(type_handler.get_type_id)
+    
+    return jump_to("/#{@picture_type.pluralize}/#{type_id}") unless type_handler.check_view_access(type_id, session[:account_id])
+    
     if ENV["RAILS_ENV"] == "production"
       # invoke the x-sendfile of lighttpd to download file
       response.headers["Content-Type"] = picture.image_content_type
@@ -126,7 +132,7 @@ class PicturesController < ApplicationController
     @type_name, @type_image = type_handler.get_type_with_image(@type_id)
     @type_label = type_handler.get_type_label
     
-    @can_view = true
+    @can_view = type_handler.check_view_access(@type_id, session[:account_id])
     
     if @can_view
       page = params[:page]
@@ -140,6 +146,7 @@ class PicturesController < ApplicationController
       )
       
       @access = type_handler.get_access(session[:account_id], @picture.account_id, @type_id)
+      @access << :can_add_comment
     end
   end
   
@@ -191,6 +198,35 @@ class PicturesController < ApplicationController
     end
     
     jump_to("/#{@picture_type}/pictures/#{@picture.id}")
+  end
+  
+  def create_comment
+    comment = @type_handler.get_picture_comment_class.new(:account_id => session[:account_id])
+    
+    content = params[:picture_comment]
+    
+    comment_saved = false
+    if content
+      comment.content = content.strip
+      comment.send("#{@type_handler.get_type_picture_id}=", @picture.id)
+      if comment.save
+        comment_saved = true
+        
+        @picture.responded_at = comment.created_at
+        @picture.save
+      end
+    end
+    
+    total_count = @type_handler.get_picture_comment_class.get_count(comment.send("#{@type_handler.get_type_picture_id}"))
+    last_page = total_count > 0 ? (total_count.to_f/Comment_Page_Size).ceil : 1
+    
+    jump_to("/#{@picture_type}/pictures/#{@picture.id}/comment/#{last_page}#{"#comment_#{comment.id}" if comment_saved}")
+  end
+  
+  def delete_comment
+    @picture_comment.destroy
+    
+    jump_to("/#{@picture_type}/pictures/#{@picture_id}")
   end
   
   
@@ -246,6 +282,31 @@ class PicturesController < ApplicationController
     jump_to("/errors/forbidden") unless @type_handler.check_top_access(type_id, account_id)
   end
   
+  def check_create_comment_access
+    @type_handler = get_type_handler(@picture_type)
+    
+    @picture = @type_handler.get_picture_class.get_picture(params[:id])
+    type_id = @picture.send(@type_handler.get_type_id)
+    
+    account_id = session[:account_id]
+    
+    jump_to("/errors/forbidden") unless @type_handler.check_create_comment_access(type_id, account_id)
+  end
+  
+  def check_delete_comment_access
+    @type_handler = get_type_handler(@picture_type)
+    
+    @picture_comment = @type_handler.get_picture_comment_class.find(params[:id])
+    @picture_id = @picture_comment.send("#{@type_handler.get_type_picture_id}")
+    
+    @picture = @type_handler.get_picture_class.get_picture(@picture_id)
+    type_id = @picture.send(@type_handler.get_type_id)
+    
+    account_id = session[:account_id]
+    
+    jump_to("/errors/forbidden") unless @type_handler.check_delete_comment_access(type_id, account_id)
+  end
+  
   
   
   module Types
@@ -298,6 +359,21 @@ class PicturesController < ApplicationController
         check_destroy_access(group_id, account_id)
       end
       
+      def check_view_access(group_id, account_id)
+        group = ::Group.get_group_with_image(group_id)[0]
+        need_join_to_view_picture = group.get_setting[:need_join_to_view_picture]
+        
+        !(need_join_to_view_picture && (!GroupMember.is_group_member(group_id, account_id)))
+      end
+      
+      def check_create_comment_access(group_id, account_id)
+        check_view_access(group_id, account_id)
+      end
+      
+      def check_delete_comment_access(group_id, account_id)
+        check_destroy_access(group_id, account_id)
+      end
+      
       def get_access(current_account_id, uploader_id, group_id)
         access = []
         
@@ -336,6 +412,38 @@ class PicturesController < ApplicationController
       end
       
       def check_top_access(activity_id, account_id)
+        check_destroy_access(activity_id, account_id)
+      end
+      
+      def check_view_access(activity_id, account_id)
+        activity = ::Activity.get_activity_with_image(activity_id)[0]
+        
+        need_join_to_view_picture = activity.get_setting[:need_join_to_view_picture]
+        
+        if need_join_to_view_picture
+          ActivityMember.is_activity_member(activity_id, account_id)
+        else
+
+          group_id = activity.in_group
+          if group_id && group_id > 0
+            group = ::Group.get_group_with_image(group_id)[0]
+
+            need_join_to_view_activity = group.get_setting[:need_join_to_view_activity]
+            need_join_group_to_view = activity.get_setting[:need_join_group_to_view]
+
+            !((need_join_to_view_activity || need_join_group_to_view) && (!GroupMember.is_group_member(group.id, account_id)))
+          else
+            true
+          end
+          
+        end
+      end
+      
+      def check_create_comment_access(activity_id, account_id)
+        check_view_access(activity_id, account_id)
+      end
+      
+      def check_delete_comment_access(activity_id, account_id)
         check_destroy_access(activity_id, account_id)
       end
       

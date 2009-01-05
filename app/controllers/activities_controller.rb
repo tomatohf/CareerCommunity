@@ -69,7 +69,8 @@ class ActivitiesController < ApplicationController
   before_filter :check_activity_view_access, :only => [:show]
   before_filter :protect_activity_view_access, :only => [:members, :interest,
                                                           :check_profile, :join, :add_interest,
-                                                          :photo, :post, :good_post, 
+                                                          :photo, :post, :good_post,
+                                                          :picture, :good_picture,
                                                           :invite, :invite_member,
                                                           :invite_contact, :select_contact,
                                                           :send_contact_invitations]
