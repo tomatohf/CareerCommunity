@@ -69,32 +69,32 @@
 		<% end %>
 	<% end %>
 	
-	<div>
-		<a target="_blank" href="<%= @photo.image.url %>">
-			<img src="/images/show_big.gif" border="0" alt="原图" title="原图" /></a>
-	</div>
-			
 	<div class="community_block photo_view_container">
-		<div class="align_r">
+		<div class="float_l">
+			<a target="_blank" href="<%= @photo.image.url %>">
+				<img src="/images/show_big.gif" border="0" alt="原图" title="原图" /></a>
+		</div>
+		
+		<p class="align_r">
 			<a href="/photos/<%= @pre_photo.id %>">« 上一张</a>
 			&nbsp;
 			-
 			&nbsp;
 			<a href="/photos/<%= @next_photo.id %>">下一张 »</a>
-		</div>
+		</p>
 			
 		<div class="photo_view">
 			<a href="/photos/<%= @next_photo.id %>">
 				<img src="<%= @photo.image.url(:normal) %>" border="0" title="点击查看下一张" /></a>
 		</div>
 		
-		<div class="align_r">
+		<p class="align_r">
 			<a href="/photos/<%= @pre_photo.id %>">« 上一张</a>
 			&nbsp;
 			-
 			&nbsp;
 			<a href="/photos/<%= @next_photo.id %>">下一张 »</a>
-		</div>
+		</p>
 	
 		<div class="community_block_narrow">
 			<span id="photo_title_section">

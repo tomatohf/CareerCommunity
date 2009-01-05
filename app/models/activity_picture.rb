@@ -48,10 +48,14 @@ class ActivityPicture < ActiveRecord::Base
   
   after_destroy { |picture|
     self.clear_picture_cache(picture.id)
+    
+    self.clear_pictures_id_cache(picture.activity_id)
   }
   
   after_save { |picture|
     self.clear_picture_cache(picture.id)
+    
+    self.clear_pictures_id_cache(picture.activity_id)
   }
   
   
@@ -61,6 +65,8 @@ class ActivityPicture < ActiveRecord::Base
   
   
   CKP_activity_picture = :activity_picture
+  
+  CKP_activity_pictures_id = :activity_pictures_id
   
   
   
@@ -95,6 +101,27 @@ class ActivityPicture < ActiveRecord::Base
   
   def self.clear_picture_cache(picture_id)
     Cache.delete("#{CKP_activity_picture}_#{picture_id}".to_sym)
+  end
+  
+  
+  def self.get_pictures_id(activity_id)
+    pictures_id = Cache.get("#{CKP_activity_pictures_id}_#{activity_id}".to_sym)
+    
+    unless pictures_id
+      pictures_id = self.find(
+        :all,
+        :select => "id",
+        :conditions => ["activity_id = ?", activity_id],
+        :order => "responded_at DESC, created_at DESC"
+      ).collect { |p| p.id }
+      
+      Cache.set("#{CKP_activity_pictures_id}_#{activity_id}".to_sym, pictures_id, Cache_TTL)
+    end
+    pictures_id
+  end
+  
+  def self.clear_pictures_id_cache(activity_id)
+    Cache.delete("#{CKP_activity_pictures_id}_#{activity_id}".to_sym)
   end
   
   

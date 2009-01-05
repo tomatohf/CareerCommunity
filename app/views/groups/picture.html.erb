@@ -30,7 +30,7 @@
 		</div>
 		
 		<div class="community_block">
-			<%= render(:partial => "small_comment", :collection => @new_comments, :locals => {}) %>
+			<%= render(:partial => "/pictures/small_comment", :collection => @new_comments, :locals => {:picture_type => :group}) %>
 		</div>
 	<% end %>
 	

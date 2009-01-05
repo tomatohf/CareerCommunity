@@ -94,32 +94,34 @@
 			
 		<div class="community_block photo_view_container">
 			<div class="float_l">
-				<a target="_blank" href="<%= @picture.image.url %>">
+				<a target="_blank" href="<%= @picture.image.url %>" id="photo_section">
 					<img src="/images/show_big.gif" border="0" alt="原图" title="原图" /></a>
 			</div>
 			
-			<div class="align_r">
-				<a href="">« 上一张</a>
+			<p class="align_r">
+				<a href="/<%= @picture_type %>/pictures/<%= @pre_picture_id %>#photo_section">« 上一张</a>
 				&nbsp;
 				-
+				第<%= @current_picture_index + 1 %>张 / 共<%= @picture_count %>张
+				-
 				&nbsp;
-				<a href="">下一张 »</a>
-			</div>
+				<a href="/<%= @picture_type %>/pictures/<%= @next_picture_id %>#photo_section">下一张 »</a>
+			</p>
 			
 			<div class="photo_view">
-				<a href="">
+				<a href="/<%= @picture_type %>/pictures/<%= @next_picture_id %>#photo_section">
 					<img src="<%= @picture.image.url(:normal) %>" border="0" title="点击查看下一张" /></a>
 			</div>
 		
-			<div class="align_r">
-				<a href="">« 上一张</a>
+			<p class="align_r">
+				<a href="/<%= @picture_type %>/pictures/<%= @pre_picture_id %>#photo_section">« 上一张</a>
 				&nbsp;
 				-
-				第6张 / 共10张
+				第<%= @current_picture_index + 1 %>张 / 共<%= @picture_count %>张
 				-
 				&nbsp;
-				<a href="">下一张 »</a>
-			</div>
+				<a href="/<%= @picture_type %>/pictures/<%= @next_picture_id %>#photo_section">下一张 »</a>
+			</p>
 	
 			<div class="community_block_narrow">
 				<span id="picture_title_section">

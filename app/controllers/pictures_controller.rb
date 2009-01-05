@@ -124,7 +124,9 @@ class PicturesController < ApplicationController
     
     type_handler = get_type_handler(@picture_type)
     
-    @picture = type_handler.get_picture_class.get_picture(@picture_id)
+    picture_class = type_handler.get_picture_class
+    
+    @picture = picture_class.get_picture(@picture_id)
     
     @uploader_nick_pic = Account.get_nick_and_pic(@picture.account_id)
     
@@ -147,6 +149,12 @@ class PicturesController < ApplicationController
       
       @access = type_handler.get_access(session[:account_id], @picture.account_id, @type_id)
       @access << :can_add_comment
+      
+      pictures_id = picture_class.get_pictures_id(@type_id)
+      @picture_count = pictures_id.size
+      @current_picture_index = pictures_id.index(@picture.id)
+      @next_picture_id = pictures_id[@current_picture_index + 1 < @picture_count ? @current_picture_index + 1 : 0]
+      @pre_picture_id = pictures_id[@current_picture_index - 1 < 0 ? @picture_count - 1 : @current_picture_index - 1]
     end
   end
   

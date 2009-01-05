@@ -37,10 +37,14 @@ class GroupPicture < ActiveRecord::Base
   
   after_destroy { |picture|
     self.clear_picture_cache(picture.id)
+    
+    self.clear_pictures_id_cache(picture.group_id)
   }
   
   after_save { |picture|
     self.clear_picture_cache(picture.id)
+    
+    self.clear_pictures_id_cache(picture.group_id)
   }
   
   
@@ -50,6 +54,8 @@ class GroupPicture < ActiveRecord::Base
   
   
   CKP_group_picture = :group_picture
+  
+  CKP_group_pictures_id = :group_pictures_id
   
   
   
@@ -84,6 +90,27 @@ class GroupPicture < ActiveRecord::Base
   
   def self.clear_picture_cache(picture_id)
     Cache.delete("#{CKP_group_picture}_#{picture_id}".to_sym)
+  end
+  
+  
+  def self.get_pictures_id(group_id)
+    pictures_id = Cache.get("#{CKP_group_pictures_id}_#{group_id}".to_sym)
+    
+    unless pictures_id
+      pictures_id = self.find(
+        :all,
+        :select => "id",
+        :conditions => ["group_id = ?", group_id],
+        :order => "responded_at DESC, created_at DESC"
+      ).collect { |p| p.id }
+      
+      Cache.set("#{CKP_group_pictures_id}_#{group_id}".to_sym, pictures_id, Cache_TTL)
+    end
+    pictures_id
+  end
+  
+  def self.clear_pictures_id_cache(group_id)
+    Cache.delete("#{CKP_group_pictures_id}_#{group_id}".to_sym)
   end
   
   
