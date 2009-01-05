@@ -1,0 +1,67 @@
+<% activity_title = h(@activity.get_title) %>
+
+<% page_title = "活动 #{activity_title} 的全部专属照片" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r picture_container_r">
+	
+	<div class="community_title">
+		活动 ...
+	</div>
+	
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">
+			<img src="<%= face_img_src(@activity_image) %>" border="0" /></a>
+	</div>
+
+	<div class="community_block">
+		<a href="/activities/<%= @activity_id %>">返回活动 <%= activity_title %></a>
+	</div>
+	
+	<% if @can_view %>
+		<div class="community_block">
+			<a href="/activities/good_picture/<%= @activity_id %>">
+				查看活动的专属照片的精华区</a>
+		</div>
+		
+		
+		<div class="community_title">
+			最近评论 ...
+		</div>
+		
+		<div class="community_block">
+			<%= render(:partial => "small_comment", :collection => @new_comments, :locals => {}) %>
+		</div>
+	<% end %>
+	
+</div>
+
+<div class="picture_container_l">
+	<h2><%= page_title %></h2>
+	
+	<% if @can_view %>
+	
+		<div class="community_block_narrow form_info_s">
+			共有
+			<b><%= @activity_pictures.total_entries %></b>
+			张活动专属照片
+		</div>
+
+		<div class="overflow_hidden">
+			<%= float_list(@activity_pictures, "/pictures/picture", :picture, {:picture_type => :activity}, 3) %>
+		</div>
+	
+		<div class="community_block">
+			<%= paging_buttons(@activity_pictures) %>
+		</div>
+		
+	<% else %>
+	
+		<p class="warning_msg">
+			根据活动的设置, 只有报名参加活动的成员可以查看活动专属照片
+		</p>
+	
+	<% end %>
+</div>
+
+

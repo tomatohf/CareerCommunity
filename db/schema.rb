@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 15) do
+ActiveRecord::Schema.define(:version => 16) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -152,6 +152,43 @@ ActiveRecord::Schema.define(:version => 15) do
   add_index "activity_photos", ["photo_id"], :name => "index_activity_photos_on_photo_id"
   add_index "activity_photos", ["account_id"], :name => "index_activity_photos_on_account_id"
   add_index "activity_photos", ["delta"], :name => "index_activity_photos_on_delta"
+
+  create_table "activity_picture_comments", :force => true do |t|
+    t.integer  "activity_picture_id", :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",          :limit => 11
+    t.string   "content",             :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "activity_picture_comments", ["activity_picture_id"], :name => "index_activity_picture_comments_on_activity_picture_id"
+  add_index "activity_picture_comments", ["account_id"], :name => "index_activity_picture_comments_on_account_id"
+  add_index "activity_picture_comments", ["created_at"], :name => "index_activity_picture_comments_on_created_at"
+  add_index "activity_picture_comments", ["delta"], :name => "index_activity_picture_comments_on_delta"
+
+  create_table "activity_pictures", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "activity_id",        :limit => 11
+    t.integer  "account_id",         :limit => 11
+    t.string   "title",              :limit => 1000
+    t.boolean  "top",                                :default => false
+    t.boolean  "good",                               :default => false
+    t.datetime "responded_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size",    :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "activity_pictures", ["created_at"], :name => "index_activity_pictures_on_created_at"
+  add_index "activity_pictures", ["activity_id"], :name => "index_activity_pictures_on_activity_id"
+  add_index "activity_pictures", ["account_id"], :name => "index_activity_pictures_on_account_id"
+  add_index "activity_pictures", ["top"], :name => "index_activity_pictures_on_top"
+  add_index "activity_pictures", ["good"], :name => "index_activity_pictures_on_good"
+  add_index "activity_pictures", ["responded_at"], :name => "index_activity_pictures_on_responded_at"
+  add_index "activity_pictures", ["delta"], :name => "index_activity_pictures_on_delta"
 
   create_table "activity_post_attachments", :force => true do |t|
     t.datetime "created_at"
@@ -411,6 +448,43 @@ ActiveRecord::Schema.define(:version => 15) do
   add_index "group_photos", ["photo_id"], :name => "index_group_photos_on_photo_id"
   add_index "group_photos", ["account_id"], :name => "index_group_photos_on_account_id"
   add_index "group_photos", ["delta"], :name => "index_group_photos_on_delta"
+
+  create_table "group_picture_comments", :force => true do |t|
+    t.integer  "group_picture_id", :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",       :limit => 11
+    t.string   "content",          :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "group_picture_comments", ["group_picture_id"], :name => "index_group_picture_comments_on_group_picture_id"
+  add_index "group_picture_comments", ["account_id"], :name => "index_group_picture_comments_on_account_id"
+  add_index "group_picture_comments", ["created_at"], :name => "index_group_picture_comments_on_created_at"
+  add_index "group_picture_comments", ["delta"], :name => "index_group_picture_comments_on_delta"
+
+  create_table "group_pictures", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "group_id",           :limit => 11
+    t.integer  "account_id",         :limit => 11
+    t.string   "title",              :limit => 1000
+    t.boolean  "top",                                :default => false
+    t.boolean  "good",                               :default => false
+    t.datetime "responded_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size",    :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "group_pictures", ["created_at"], :name => "index_group_pictures_on_created_at"
+  add_index "group_pictures", ["group_id"], :name => "index_group_pictures_on_group_id"
+  add_index "group_pictures", ["account_id"], :name => "index_group_pictures_on_account_id"
+  add_index "group_pictures", ["top"], :name => "index_group_pictures_on_top"
+  add_index "group_pictures", ["good"], :name => "index_group_pictures_on_good"
+  add_index "group_pictures", ["responded_at"], :name => "index_group_pictures_on_responded_at"
+  add_index "group_pictures", ["delta"], :name => "index_group_pictures_on_delta"
 
   create_table "group_post_attachments", :force => true do |t|
     t.datetime "created_at"

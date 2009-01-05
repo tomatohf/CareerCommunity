@@ -1,0 +1,22 @@
+<% account = picture.account %>
+
+<% comment_count = "#{picture_type.to_s.camelize}PictureComment".constantize.get_count(picture.id) %>
+
+<div class="linked_photo">
+	<div class="align_c">
+		<a href="/<%= picture_type %>/pictures/<%= picture.id %>" title="<%= h(picture.title) %>">
+			<img src="<%= picture.image.url(:thumb_160) %>" border="0" /></a>
+	</div>
+	
+	<div class="form_info_s" style="margin-top: 5px;">
+		来自
+		<a href="/spaces/show/<%= account.id %>" class="account_nick_link">
+			<%= h(account.get_nick) %></a>
+			
+		&nbsp;&nbsp;&nbsp;
+		|
+		<a href="/<%= picture_type %>/pictures/<%= picture.id %>#comment_list" class="account_nick_link">
+			回帖(<%= comment_count %>)</a>
+	</div>
+</div>
+

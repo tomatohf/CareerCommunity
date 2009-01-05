@@ -256,12 +256,20 @@ class PostsController < ApplicationController
   
   def attachment
     
-    # invoke the x-sendfile of lighttpd to download file
-    response.headers["Content-Type"] = @attachment.attachment_content_type
-    response.headers["Content-Disposition"] = %Q!attachment; filename="#{@attachment.attachment_file_name}"!
-    response.headers["Content-Length"] = @attachment.attachment_file_size
-    response.headers["X-LIGHTTPD-send-file"] = @attachment.attachment.path
-    render :nothing => true
+    if ENV["RAILS_ENV"] == "production"
+      # invoke the x-sendfile of lighttpd to download file
+      response.headers["Content-Type"] = @attachment.attachment_content_type
+      response.headers["Content-Disposition"] = %Q!attachment; filename="#{@attachment.attachment_file_name}"!
+      response.headers["Content-Length"] = @attachment.attachment_file_size
+      response.headers["X-LIGHTTPD-send-file"] = @attachment.attachment.path
+      render :nothing => true
+    else
+      send_file(
+        @attachment.attachment.path,
+        :type => @attachment.attachment_content_type,
+        :disposition => %Q!attachment; filename="#{@attachment.attachment_file_name}"!
+      )
+    end
   end
   
   

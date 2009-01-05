@@ -8,6 +8,7 @@ class GroupsController < ApplicationController
   Vote_List_Size = 6
   Bookmark_List_Size = 20
   Photo_List_Size = 30
+  Picture_List_Size = 15
   
   Group_Recent_List_Size = 24
   Post_Recent_List_Size = 25
@@ -23,6 +24,8 @@ class GroupsController < ApplicationController
   Group_Photo_Num = 5
   
   Group_Admin_Max_Count = 11
+  
+  New_Comment_Size = 30
 
   
   layout "community"
@@ -270,6 +273,9 @@ class GroupsController < ApplicationController
     need_join_to_view_bookmark = @group_setting[:need_join_to_view_bookmark]
     @can_view_bookmark = !(need_join_to_view_bookmark && @no_membership)
     
+    need_join_to_view_picture = @group_setting[:need_join_to_view_picture]
+    @can_view_picture = !(need_join_to_view_picture && @no_membership)
+    
     need_join_to_view_member = @group_setting[:need_join_to_view_member]
     @can_view_member = !(need_join_to_view_member && @no_membership)
     
@@ -326,8 +332,13 @@ class GroupsController < ApplicationController
     )
     @all_group_photo_count = GroupPhoto.get_count(@group_id) if @group_photos.size > 0
     
-    @group_pictures = []
-    @all_group_picture_count = 1528 # GroupPicture.get_count(@group_id) if @group_pictures.size > 0
+    @group_pictures = GroupPicture.find(
+      :all,
+      :limit => Group_Photo_Num,
+      :conditions => ["group_id = ?", @group_id],
+      :order => "responded_at DESC, created_at DESC"
+    )
+    @all_group_picture_count = GroupPicture.get_count(@group_id) if @group_pictures.size > 0
     
   end
   
@@ -387,6 +398,62 @@ class GroupsController < ApplicationController
         :conditions => ["group_id = ? and top = ?", @group_id, false],
         :include => [:account],
         :order => "responded_at DESC, created_at DESC"
+      )
+    end
+  end
+  
+  def picture
+    @group_id = params[:id]
+    @group, @group_image = Group.get_group_with_image(@group_id)
+    
+    need_join_to_view_picture = @group.get_setting[:need_join_to_view_picture]
+    @can_view = !(need_join_to_view_picture && (!GroupMember.is_group_member(@group_id, session[:account_id])))
+    
+    if @can_view
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @group_pictures = GroupPicture.paginate(
+        :page => page,
+        :per_page => Picture_List_Size,
+        :conditions => ["group_id = ?", @group_id],
+        :include => [:account],
+        :order => "responded_at DESC, created_at DESC"
+      )
+      
+      @new_comments = GroupPictureComment.find(
+        :all,
+        :limit => New_Comment_Size,
+        :conditions => ["group_picture_id in (select id from group_pictures where group_id = ?)", @group_id],
+        :include => [:account => [:profile_pic]],
+        :order => "updated_at DESC"
+      )
+    end
+  end
+  
+  def good_picture
+    @group_id = params[:id]
+    @group, @group_image = Group.get_group_with_image(@group_id)
+    
+    need_join_to_view_picture = @group.get_setting[:need_join_to_view_picture]
+    @can_view = !(need_join_to_view_picture && (!GroupMember.is_group_member(@group_id, session[:account_id])))
+    
+    if @can_view
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @group_pictures = GroupPicture.good.paginate(
+        :page => page,
+        :per_page => Picture_List_Size,
+        :conditions => ["group_id = ?", @group_id],
+        :include => [:account],
+        :order => "responded_at DESC, created_at DESC"
+      )
+      
+      @new_comments = GroupPictureComment.find(
+        :all,
+        :limit => New_Comment_Size,
+        :conditions => ["group_picture_id in (select id from group_pictures where group_id = ? and good = ?)", @group_id, true],
+        :include => [:account => [:profile_pic]],
+        :order => "updated_at DESC"
       )
     end
   end
@@ -701,7 +768,8 @@ class GroupsController < ApplicationController
       :need_join_to_view_member => (params[:need_join_to_view_member] == "true"),
       :need_join_to_view_notice => (params[:need_join_to_view_notice] == "true"),
       :need_join_to_view_vote => (params[:need_join_to_view_vote] == "true"),
-      :need_join_to_view_activity => (params[:need_join_to_view_activity] == "true")
+      :need_join_to_view_activity => (params[:need_join_to_view_activity] == "true"),
+      :need_join_to_view_picture => (params[:need_join_to_view_picture] == "true")
     }
     
     @group.update_setting(group_setting)

@@ -1,4 +1,4 @@
-class CreateActivityGroupPictures < ActiveRecord::Migration
+class ActivityGroupPictures < ActiveRecord::Migration
   def self.up
     
     # activity_pictures table

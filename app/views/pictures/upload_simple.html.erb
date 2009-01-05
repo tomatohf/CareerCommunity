@@ -57,7 +57,7 @@
 			<p class="error_msg"><%= flash[:error_msg] %></p>
 		<% end %>
 	
-		<% form_tag "/#{@picture_type}/pictures/create_simple", :method => :post, :multipart => true do %>
+		<% form_tag "/#{@picture_type}/pictures/#{@type_id}/create_picture_simple", :method => :post, :multipart => true do %>
 			<table cellpadding="0" cellspacing="15">
 				<thead>
 					<tr class="table_header">

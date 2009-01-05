@@ -2,6 +2,7 @@ class ActivitiesController < ApplicationController
   
   Activity_List_Size = 15
   Post_List_Size = 50
+  Picture_List_Size = 15
   Photo_List_Size = 30
   Member_Page_Size = 30
   Unapprove_Page_Size = 30
@@ -20,6 +21,8 @@ class ActivitiesController < ApplicationController
   Same_Creator_Activity_Num = 10
   
   Activity_Admin_Max_Count = 11
+  
+  New_Comment_Size = 30
   
 
   layout "community"
@@ -599,6 +602,9 @@ class ActivitiesController < ApplicationController
     need_join_to_view_member = @activity_setting[:need_join_to_view_member]
     @can_view_member = !(need_join_to_view_member && (!@is_member))
     
+    need_join_to_view_picture = @activity_setting[:need_join_to_view_picture]
+    @can_view_picture = !(need_join_to_view_picture && (!@is_member))
+    
     need_join_to_add_post = @activity_setting[:need_join_to_add_post]
     @can_add_post = !(need_join_to_add_post && (!@is_member))
     
@@ -646,8 +652,13 @@ class ActivitiesController < ApplicationController
     )
     @all_activity_photo_count = ActivityPhoto.get_count(@activity_id) if @activity_photos.size > 0
     
-    @activity_pictures = []
-    @all_activity_picture_count = 1528 # ActivityPicture.get_count(@activity_id) if @activity_pictures.size > 0
+    @activity_pictures = ActivityPicture.find(
+      :all,
+      :limit => Activity_Photo_Num,
+      :conditions => ["activity_id = ?", @activity_id],
+      :order => "responded_at DESC, created_at DESC"
+    )
+    @all_activity_picture_count = ActivityPicture.get_count(@activity_id) if @activity_pictures.size > 0
     
     # @created_activities value is set in view ...
   end
@@ -710,6 +721,62 @@ class ActivitiesController < ApplicationController
       :include => [:account],
       :order => "responded_at DESC, created_at DESC"
     )
+  end
+  
+  def picture
+    @activity_id = params[:id]
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    
+    need_join_to_view_picture = @activity.get_setting[:need_join_to_view_picture]
+    @can_view = !(need_join_to_view_picture && (!ActivityMember.is_activity_member(@activity_id, session[:account_id])))
+    
+    if @can_view
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @activity_pictures = ActivityPicture.paginate(
+        :page => page,
+        :per_page => Picture_List_Size,
+        :conditions => ["activity_id = ?", @activity_id],
+        :include => [:account],
+        :order => "responded_at DESC, created_at DESC"
+      )
+      
+      @new_comments = ActivityPictureComment.find(
+        :all,
+        :limit => New_Comment_Size,
+        :conditions => ["activity_picture_id in (select id from activity_pictures where activity_id = ?)", @activity_id],
+        :include => [:account => [:profile_pic]],
+        :order => "updated_at DESC"
+      )
+    end
+  end
+  
+  def good_picture
+    @activity_id = params[:id]
+    @activity, @activity_image = Activity.get_activity_with_image(@activity_id)
+    
+    need_join_to_view_picture = @activity.get_setting[:need_join_to_view_picture]
+    @can_view = !(need_join_to_view_picture && (!ActivityMember.is_activity_member(@activity_id, session[:account_id])))
+    
+    if @can_view
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @activity_pictures = ActivityPicture.good.paginate(
+        :page => page,
+        :per_page => Picture_List_Size,
+        :conditions => ["activity_id = ?", @activity_id],
+        :include => [:account],
+        :order => "responded_at DESC, created_at DESC"
+      )
+      
+      @new_comments = ActivityPictureComment.find(
+        :all,
+        :limit => New_Comment_Size,
+        :conditions => ["activity_picture_id in (select id from activity_pictures where activity_id = ? and good = ?)", @activity_id, true],
+        :include => [:account => [:profile_pic]],
+        :order => "updated_at DESC"
+      )
+    end
   end
   
   def photo
@@ -964,6 +1031,7 @@ class ActivitiesController < ApplicationController
       :need_join_to_view_member => (params[:need_join_to_view_member] == "true"),
       :need_join_to_add_post => (params[:need_join_to_add_post] == "true"),
       :need_join_to_view_post => (params[:need_join_to_view_post] == "true"),
+      :need_join_to_view_picture => (params[:need_join_to_view_picture] == "true"),
       :hide_map => (params[:hide_map] == "true")
     }
     @activity.update_setting(activity_setting)

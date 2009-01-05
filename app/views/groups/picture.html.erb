@@ -1,0 +1,67 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "圈子 #{group_name} 的全部专属照片" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r picture_container_r">
+	
+	<div class="community_title">
+		圈子 ...
+	</div>
+	
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+	</div>
+
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	
+	<% if @can_view %>
+		<div class="community_block">
+			<a href="/groups/good_picture/<%= @group_id %>">
+				查看圈子的专属照片的精华区</a>
+		</div>
+		
+		
+		<div class="community_title">
+			最近评论 ...
+		</div>
+		
+		<div class="community_block">
+			<%= render(:partial => "small_comment", :collection => @new_comments, :locals => {}) %>
+		</div>
+	<% end %>
+	
+</div>
+
+<div class="picture_container_l">
+	<h2><%= page_title %></h2>
+	
+	<% if @can_view %>
+	
+		<div class="community_block_narrow form_info_s">
+			共有
+			<b><%= @group_pictures.total_entries %></b>
+			张圈子专属照片
+		</div>
+
+		<div class="overflow_hidden">
+			<%= float_list(@group_pictures, "/pictures/picture", :picture, {:picture_type => :group}, 3) %>
+		</div>
+	
+		<div class="community_block">
+			<%= paging_buttons(@group_pictures) %>
+		</div>
+		
+	<% else %>
+	
+		<p class="warning_msg">
+			根据圈子的设置, 只有报名参加圈子的成员可以查看圈子专属照片
+		</p>
+	
+	<% end %>
+</div>
+
+

@@ -1352,6 +1352,24 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	color: #888888;
 }
 
+.picture_container_l {
+	margin-left: 150px;
+	margin-right: 250px;
+	padding: 0px 10px;
+}
+
+.picture_container_r {
+	width: 250px;
+}
+
+.linked_photo {
+	float: left;
+	margin: 10px;
+	padding: 1px;
+	width: 160px;
+	border: 1px dotted #C2E3EF;
+}
+
 
 
 

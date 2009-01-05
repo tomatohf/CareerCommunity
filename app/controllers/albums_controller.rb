@@ -123,7 +123,7 @@ class AlbumsController < ApplicationController
   def create_photo
     if has_login?
       if check_album_owner(false)
-        unless is_limited?(@account_limited)
+        unless is_limited?(session[:limited])
           photo = Photo.new(:swfupload_file => params[:Filedata], :album_id => @album.id, :account_id => session[:account_id])
           if photo.save
             render(:text => %Q!<a target="_blank" href="/photos/#{photo.id}" title="点击查看照片"><img src="#{photo.image.url(:thumb_80)}" border="0" /></a>!)

@@ -116,6 +116,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/groups/unapproved/:id/:page", :controller => "groups", :action => "unapproved", :id => /\d+/, :page => /\d+/
   map.connect "/groups/post/:id/:page", :controller => "groups", :action => "post", :id => /\d+/, :page => /\d+/
   map.connect "/groups/good_post/:id/:page", :controller => "groups", :action => "good_post", :id => /\d+/, :page => /\d+/
+  map.connect "/groups/picture/:id/:page", :controller => "groups", :action => "picture", :id => /\d+/, :page => /\d+/
+  map.connect "/groups/good_picture/:id/:page", :controller => "groups", :action => "good_picture", :id => /\d+/, :page => /\d+/
   map.connect "/groups/activity/:id/:page", :controller => "groups", :action => "activity", :id => /\d+/, :page => /\d+/
   map.connect "/groups/vote/:id/:page", :controller => "groups", :action => "vote", :id => /\d+/, :page => /\d+/
   map.connect "/groups/photo/:id/:page", :controller => "groups", :action => "photo", :id => /\d+/, :page => /\d+/
@@ -190,6 +192,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/activities/list_absent/:id/:page", :controller => "activities", :action => "list_absent", :id => /\d+/, :page => /\d+/
   map.connect "/activities/post/:id/:page", :controller => "activities", :action => "post", :id => /\d+/, :page => /\d+/
   map.connect "/activities/good_post/:id/:page", :controller => "activities", :action => "good_post", :id => /\d+/, :page => /\d+/
+  map.connect "/activities/picture/:id/:page", :controller => "activities", :action => "picture", :id => /\d+/, :page => /\d+/
+  map.connect "/activities/good_picture/:id/:page", :controller => "activities", :action => "good_picture", :id => /\d+/, :page => /\d+/
   map.connect "/activities/created_post/:id/:page", :controller => "activities", :action => "created_post", :id => /\d+/, :page => /\d+/
   map.connect "/activities/commented_post/:id/:page", :controller => "activities", :action => "commented_post", :id => /\d+/, :page => /\d+/
   map.connect "/activities/photo/:id/:page", :controller => "activities", :action => "photo", :id => /\d+/, :page => /\d+/
@@ -375,8 +379,10 @@ ActionController::Routing::Routes.draw do |map|
   }
   
   
+  map.connect "/:picture_type/pictures/image/:id/:style", :controller => "pictures", :action => "image", :id => /\d+/
   map.connect "/:picture_type/pictures/:id/comment/:page", :controller => "pictures", :action => "show", :id => /\d+/, :page => /\d+/
   map.resources :pictures, :path_prefix => "/:picture_type", :member => {
+    
     :create_comment => :post,
     :delete_comment => :post,
     
@@ -384,10 +390,12 @@ ActionController::Routing::Routes.draw do |map|
     :untop => :post,
     
     :good => :post,
-    :ungood => :post
-  }, :collection => {
+    :ungood => :post,
     
-    :create_simple => :post
+    :create_picture => :post,
+    :create_picture_simple => :post
+    
+  }, :collection => {
     
   }
   map.connect "/:picture_type/pictures/:action/:id", :controller => "pictures"

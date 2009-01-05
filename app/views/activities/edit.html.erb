@@ -341,6 +341,25 @@
 					</tr>
 					
 					
+					<tr>
+						<td colspan="2">
+							<div class="group_setting_category_label">
+								活动专属照片:
+							</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td>
+							<%= check_box_tag :need_join_to_view_picture, value = "true", @activity.get_setting[:need_join_to_view_picture] %>
+				            <label for="need_join_to_view_picture">
+				                只有参加活动的成员可以查看活动专属照片
+				            </label>
+						</td>
+					</tr>
+					
+					
 					<tr id="activity_check_info_row">
 						<td>
 							希望报名者填写

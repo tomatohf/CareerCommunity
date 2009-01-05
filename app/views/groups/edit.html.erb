@@ -245,6 +245,25 @@
 				
 				
 				<tr>
+					<td colspan="2">
+						<div class="group_setting_category_label">
+							圈子专属照片:
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= check_box_tag :need_join_to_view_picture, value = "true", @group.get_setting[:need_join_to_view_picture] %>
+			            <label for="need_join_to_view_picture">
+			                只有圈子成员可以查看圈子专属照片
+			            </label>
+					</td>
+				</tr>
+				
+				
+				<tr>
 					<td></td>
 					<td>
 						<%= submit_tag "更新圈子访问权限", :class => "button", :disabled => @account_limited %>

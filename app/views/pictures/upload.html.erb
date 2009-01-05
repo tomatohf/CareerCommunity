@@ -36,7 +36,7 @@
 	<br />
 	
 	
-	<%= render :partial => "/common/upload", :locals => {:downgrade_link => "/#{@picture_type}/pictures/upload_simple/#{@type_id}", :upload_action => "/albums/1/create_photo", :file_size_limit => 3} %>
+	<%= render :partial => "/common/upload", :locals => {:downgrade_link => "/#{@picture_type}/pictures/upload_simple/#{@type_id}", :upload_action => "/#{@picture_type}/pictures/#{@type_id}/create_picture", :file_size_limit => 3} %>
 	
 	
 	<br />

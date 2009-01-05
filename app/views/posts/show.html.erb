@@ -21,6 +21,10 @@
 	</div>
 
 	<% if @can_view %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+		
 		<div class="community_block">
 			<a href="/<%= pluralized_post_type %>/post/<%= @type_id %>">
 				全部<%= @type_label %>讨论话题</a>
@@ -149,9 +153,7 @@
 			<% if @access.include?(:admin) %>
 				<a href="#" onclick="document.getElementById('adjust_good_form').submit(); return false;"><%= @post.good ? "从精华区移除" : "放入精华区" %></a>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<% end %>
-			
-			<% if @access.include?(:admin) %>
+				
 				<a href="#" onclick="document.getElementById('adjust_top_form').submit(); return false;"><%= @post.top ? "取消置顶" : "置顶" %></a>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<% end %>

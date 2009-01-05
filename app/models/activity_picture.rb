@@ -1,5 +1,7 @@
 class ActivityPicture < ActiveRecord::Base
   
+  include CareerCommunity::Util
+  
   belongs_to :activity, :class_name => "Activity", :foreign_key => "activity_id"
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   
@@ -44,6 +46,24 @@ class ActivityPicture < ActiveRecord::Base
   
   
   
+  after_destroy { |picture|
+    self.clear_picture_cache(picture.id)
+  }
+  
+  after_save { |picture|
+    self.clear_picture_cache(picture.id)
+  }
+  
+  
+  
+  named_scope :good, :conditions => { :good => true }
+  named_scope :top, :conditions => { :top => true }
+  
+  
+  CKP_activity_picture = :activity_picture
+  
+  
+  
   CKP_count = :activity_picture_count
   Count_Cache_Group_Field = :activity_id
   include CareerCommunity::CountCacheable
@@ -54,6 +74,35 @@ class ActivityPicture < ActiveRecord::Base
   def swfupload_file=(data)
     data.content_type = MIME::Types.type_for(data.original_filename).to_s if data
     self.image = data
+  end
+  
+  
+  
+  def self.get_picture(picture_id)
+    picture = Cache.get("#{CKP_activity_picture}_#{picture_id}".to_sym)
+    
+    unless picture
+      picture = self.find(picture_id)
+      
+      self.set_picture_cache(picture_id, picture)
+    end
+    picture
+  end
+  
+  def self.set_picture_cache(picture_id, picture)
+    Cache.set("#{CKP_activity_picture}_#{picture_id}".to_sym, picture.clear_association, Cache_TTL)
+  end
+  
+  def self.clear_picture_cache(picture_id)
+    Cache.delete("#{CKP_activity_picture}_#{picture_id}".to_sym)
+  end
+  
+  
+  def clear_association
+    copy = deep_copy(self)
+    copy.clear_association_cache
+    copy.clear_aggregation_cache
+    copy
   end
   
 end

@@ -346,7 +346,6 @@
 	</div>
 	
 	
-	<% if @can_view_bookmark %>
 	<div class="community_title">
 		最新圈内收藏 ...
 	</div>
@@ -399,7 +398,6 @@
 		</p>
 		
 	<% end %>
-	<% end %>
 	
 	
 	<div class="community_title">
@@ -407,39 +405,50 @@
 	</div>
 	
 	<div class="community_block">
-		<div class="space_section_title">
-			<a class="float_r" title="收起" id="picture_section_expand" href="#" onclick="collapse_section('picture_section'); return false;">
-				<img src="/images/expand.png" border="0" /></a>
-			<a class="float_r" title="展开" id="picture_section_collapse" href="#" onclick="expand_section('picture_section'); return false;" style="display: none">
-				<img src="/images/collapse.png" border="0" /></a>
-			<% unless @no_membership %>
-				<span class="float_r">
-					<a href="/group/pictures/upload/<%= @group_id %>">上传新的圈子专属照片</a>
-					&nbsp;&nbsp;&nbsp;
-				</span>
-			<% end %>
-			
-			<img class="float_l" src="/images/activities/picture_small.gif" border="0" />
-			&nbsp;&nbsp;&nbsp;
-			<strong>圈子专属照片</strong>
-			<%# if @group_pictures.size > 0 %>
-				&nbsp;
-				(
-					<a href="/activities/picture/<%= @group_id %>">全部 <%= @all_group_picture_count %> 张</a>
-				)
-			<%# end %>
-		</div>
 		
-		<div id="picture_section" class="overflow_hidden">
-			<%= float_list(@group_pictures, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 6) %>
-			<% unless @group_pictures.size > 0 %>
-				<div class="form_info_l">
-					还没有圈子专属照片 ...
-				</div>
-			<% end %>
+		<% if @can_view_bookmark %>
+		
+			<div class="space_section_title">
+				<a class="float_r" title="收起" id="picture_section_expand" href="#" onclick="collapse_section('picture_section'); return false;">
+					<img src="/images/expand.png" border="0" /></a>
+				<a class="float_r" title="展开" id="picture_section_collapse" href="#" onclick="expand_section('picture_section'); return false;" style="display: none">
+					<img src="/images/collapse.png" border="0" /></a>
+				<% unless @no_membership %>
+					<span class="float_r">
+						<a href="/group/pictures/upload/<%= @group_id %>">上传新的圈子专属照片</a>
+						&nbsp;&nbsp;&nbsp;
+					</span>
+				<% end %>
+			
+				<img class="float_l" src="/images/activities/picture_small.gif" border="0" />
+				&nbsp;&nbsp;&nbsp;
+				<strong>圈子专属照片</strong>
+				<% if @group_pictures.size > 0 %>
+					&nbsp;
+					(
+						<a href="/groups/picture/<%= @group_id %>">全部 <%= @all_group_picture_count %> 张</a>
+					)
+				<% end %>
+			</div>
+		
+			<div id="picture_section" class="overflow_hidden">
+				<%= float_list(@group_pictures, "/pictures/picture_small", :picture_small, {:picture_type => :group}, 5) %>
+				<% unless @group_pictures.size > 0 %>
+					<div class="form_info_l">
+						还没有圈子专属照片 ...
+					</div>
+				<% end %>
 
-			<div class="clear_l"></div>
-		</div>
+				<div class="clear_l"></div>
+			</div>
+			
+		<% else %>
+		
+			<p class="warning_msg">
+				根据圈子的设置, 只有圈子成员可以查看圈子专属照片
+			</p>
+		
+		<% end %>
 		
 		
 		

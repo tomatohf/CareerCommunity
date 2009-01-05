@@ -53,10 +53,6 @@
 </div>
 
 <div class="photo_container_l">
-	<div class="float_r">
-		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/photos/#{@photo.id}", :title => (@photo.title && @photo.title != "") ? "照片: #{h(@photo.title)}" : ""} %>
-	</div>
-	
 	<h2><%= page_title %></h2>
 	
 	<% if @edit %>
@@ -127,6 +123,10 @@
 				<%= format_date(@photo.created_at) %>  创建
 			</div>
 		</div>
+	</div>
+	
+	<div class="community_block align_r">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/photos/#{@photo.id}", :title => (@photo.title && @photo.title != "") ? "照片: #{h(@photo.title)}" : ""} %>
 	</div>
 	
 	<% if @edit %>
