@@ -66,7 +66,6 @@ class CreateGroups < ActiveRecord::Migration
       t.column :updated_at, :datetime
       
       t.column :photo_id, :integer
-      t.column :pic_url, :string
       
       
       # enable sphinx delta index

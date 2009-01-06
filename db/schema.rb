@@ -94,7 +94,6 @@ ActiveRecord::Schema.define(:version => 16) do
     t.integer  "activity_id", :limit => 11
     t.datetime "updated_at"
     t.integer  "photo_id",    :limit => 11
-    t.string   "pic_url"
     t.boolean  "delta"
   end
 
@@ -405,7 +404,6 @@ ActiveRecord::Schema.define(:version => 16) do
     t.integer  "group_id",   :limit => 11
     t.datetime "updated_at"
     t.integer  "photo_id",   :limit => 11
-    t.string   "pic_url"
     t.boolean  "delta"
   end
 
@@ -731,7 +729,6 @@ ActiveRecord::Schema.define(:version => 16) do
     t.integer  "account_id", :limit => 11
     t.datetime "updated_at"
     t.integer  "photo_id",   :limit => 11
-    t.string   "pic_url"
     t.boolean  "delta"
   end
 
@@ -908,7 +905,6 @@ ActiveRecord::Schema.define(:version => 16) do
     t.integer  "vote_topic_id", :limit => 11
     t.datetime "updated_at"
     t.integer  "photo_id",      :limit => 11
-    t.string   "pic_url"
     t.boolean  "delta"
   end
 

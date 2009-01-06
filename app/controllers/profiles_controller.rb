@@ -256,9 +256,8 @@ class ProfilesController < ApplicationController
       if @profile.photo_id && @profile.photo_id != old_photo_id
         photo = @profile.photo
         if photo && photo.account_id == @profile.account_id
-          @profile.pic_url = photo.image.url(:thumb_48)
           if @profile.save
-            Account.update_account_nick_pic_cache(session[:account_id], :pic => @profile.pic_url)
+            Account.update_account_nick_pic_cache(session[:account_id], :pic => photo.image.url(:thumb_48))
             flash.now[:message] = "已成功保存"
           else
             flash.now[:error_msg] = "操作失败, 再试一次吧"

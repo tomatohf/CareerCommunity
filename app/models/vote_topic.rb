@@ -93,21 +93,8 @@ class VoteTopic < ActiveRecord::Base
   
   
   def get_image_url
-    pic_url = self.image && self.image.pic_url
-    
-    unless Pathname.new("#{RAILS_ROOT}/public#{pic_url}").exist?
-      pic_url = nil
-      photo_id = self.image.photo_id
-      if photo_id
-        photo = Photo.find(photo_id)
-        pic_url = photo.image.url(:thumb_48)
-        self.image.pic_url = pic_url
-        self.image.save
-      else
-        self.image.destroy
-      end
-    end
-    pic_url
+    vote_image = self.image
+    vote_image && Photo.find(vote_image.photo_id).image.url(:thumb_48)
   end
   
   def self.get_vote_topic_with_image(vote_topic_id)

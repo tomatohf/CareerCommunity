@@ -9,16 +9,16 @@ class Photo < ActiveRecord::Base
 
   has_one :covered_album, :class_name => "Album", :foreign_key => "cover_photo_id", :dependent => :nullify
 
-  has_one :pic_profile, :class_name => "PicProfile", :foreign_key => "photo_id", :dependent => :destroy
+  has_many :pic_profile, :class_name => "PicProfile", :foreign_key => "photo_id", :dependent => :destroy
   
-  has_one :group_image, :class_name => "GroupImage", :foreign_key => "photo_id", :dependent => :destroy
+  has_many :group_image, :class_name => "GroupImage", :foreign_key => "photo_id", :dependent => :destroy
 
-  has_one :activity_image, :class_name => "ActivityImage", :foreign_key => "photo_id", :dependent => :destroy
+  has_many :activity_image, :class_name => "ActivityImage", :foreign_key => "photo_id", :dependent => :destroy
   
   has_many :activity_photos, :class_name => "ActivityPhoto", :foreign_key => "photo_id", :dependent => :destroy
   has_many :group_photos, :class_name => "GroupPhoto", :foreign_key => "photo_id", :dependent => :destroy
   
-  has_one :vote_image, :class_name => "VoteImage", :foreign_key => "photo_id", :dependent => :destroy
+  has_many :vote_image, :class_name => "VoteImage", :foreign_key => "photo_id", :dependent => :destroy
   
   
   
@@ -27,26 +27,6 @@ class Photo < ActiveRecord::Base
   after_destroy { |photo|
     # clean album cover photo
     Album.clear_album_cover_photo_cache(photo.album_id)
-    
-    # clean account pic 
-    PicProfile.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |pp|
-      Account.clear_account_nick_pic_cache(pp.account_id)
-    end
-    
-    # clean group image
-    GroupImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |gi|
-      Group.clear_group_with_image_cache(gi.group_id)
-    end
-    
-    # clean activity image
-    ActivityImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |ai|
-      Activity.clear_activity_with_image_cache(ai.activity_id)
-    end
-    
-    # clean vote topic image
-    VoteImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |vi|
-      VoteTopic.clear_vote_topic_with_image_cache(vi.vote_topic_id)
-    end
     
     # clean the album photos
     Album.clear_album_photos_cache(photo.album_id)
@@ -70,33 +50,6 @@ class Photo < ActiveRecord::Base
   after_update { |photo|
     
     if photo.album_id_changed?
-      new_image_url = photo.image.url(:thumb_48)
-    
-      # clean account pic 
-      PicProfile.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |pp|
-        Account.update_account_nick_pic_cache(pp.account_id, :pic => new_image_url)
-      end
-      PicProfile.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", photo.id])
-
-      # clean group image
-      GroupImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |gi|
-        Group.update_group_with_image_cache(gi.group_id, :group_img => new_image_url)
-      end
-      GroupImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", photo.id])
-
-      # clean activity image
-      ActivityImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |ai|
-        Activity.update_activity_with_image_cache(ai.activity_id, :activity_img => new_image_url)
-      end
-      ActivityImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", photo.id])
-    
-      # clean vote topic image
-      VoteImage.find(:all, :conditions => ["photo_id = ?", photo.id]).each do |vi|
-        VoteTopic.update_vote_topic_with_image_cache(vi.vote_topic_id, :vote_img => new_image_url)
-      end
-      VoteImage.update_all("pic_url = '#{new_image_url}'", ["photo_id = ?", photo.id])
-      
-      
       
       old_album_id = photo.album_id_was
       
@@ -123,8 +76,10 @@ class Photo < ActiveRecord::Base
     :thumb_80 => "80x80>",
     :thumb_48 => "48x48#"
   },
-    :url => "/system/files/:class_:attachment/:album_id/:id/:style_:id.:extension",
-    :path => ":rails_root/public/system/files/:class_:attachment/:album_id/:id/:style_:id.:extension",
+    #:url => "/system/files/:class_:attachment/:album_id/:id/:style_:id.:extension",
+    #:path => ":rails_root/public/system/files/:class_:attachment/:album_id/:id/:style_:id.:extension",
+    :url => "/system/files/:class_:attachment/:created_year/:created_month/:created_mday/:id/:style_:id.:extension",
+    :path => ":rails_root/public/system/files/:class_:attachment/:created_year/:created_month/:created_mday/:id/:style_:id.:extension",
     :storage => :filesystem,
     :whiny_thumbnails => false # to avoid displaying internal errors
 

@@ -9,6 +9,12 @@ class GroupImage < ActiveRecord::Base
   
   
   
+  after_destroy { |image|
+    Group.clear_group_with_image_cache(image.group_id)
+  }
+  
+  
+  
   def self.get_by_group(group_id)
     self.find(:first, :conditions => ["group_id = ?", group_id])
   end

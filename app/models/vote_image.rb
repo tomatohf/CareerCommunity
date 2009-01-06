@@ -9,6 +9,12 @@ class VoteImage < ActiveRecord::Base
   
   
   
+  after_destroy { |image|
+    VoteTopic.clear_vote_with_image_cache(image.vote_topic_id)
+  }
+  
+  
+  
   def self.get_by_vote_topic(vote_topic_id)
     self.find(:first, :conditions => ["vote_topic_id = ?", vote_topic_id])
   end

@@ -206,9 +206,8 @@ class VotesController < ApplicationController
     if vote_image.photo_id && vote_image.photo_id != old_photo_id
       photo = vote_image.photo
       if photo && photo.account_id == session[:account_id]
-        vote_image.pic_url = photo.image.url(:thumb_48)
         if vote_image.save
-          VoteTopic.update_vote_topic_with_image_cache(@vote_topic_id, :vote_img => vote_image.pic_url)
+          VoteTopic.update_vote_topic_with_image_cache(@vote_topic_id, :vote_img => photo.image.url(:thumb_48))
           flash.now[:message] = "已成功保存"
         else
           flash.now[:error_msg] = "操作失败, 再试一次吧"

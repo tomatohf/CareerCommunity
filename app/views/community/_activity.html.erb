@@ -1,6 +1,6 @@
 <div class="community_index_activity">
 	<div class="image_part">
-		<% face_image_url = activity.pic_url || "" %>
+		<% face_image_url = Photo.find(activity.photo_id).image.url(:thumb_48) || "" %>
 		<% face_image_url.gsub!("thumb_48", "thumb_80") if face_image_url.include?("thumb_48") %>
 		<a href="/activities/<%= activity.id %>">
 			<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>

@@ -202,21 +202,8 @@ class Account < ActiveRecord::Base
   end
   
   def get_profile_pic_url
-    pic_url = self.profile_pic && self.profile_pic.pic_url
-    
-    unless Pathname.new("#{RAILS_ROOT}/public#{pic_url}").exist?
-      pic_url = nil
-      photo_id = self.profile_pic.photo_id
-      if photo_id
-        photo = Photo.find(photo_id)
-        pic_url = photo.image.url(:thumb_48)
-        self.profile_pic.pic_url = pic_url
-        self.profile_pic.save
-      else
-        self.profile_pic.destroy
-      end
-    end
-    pic_url
+    pic_profile = self.profile_pic
+    pic_profile && Photo.find(pic_profile.photo_id).image.url(:thumb_48)
   end
   
   def self.get_nick_and_pic(account_id)

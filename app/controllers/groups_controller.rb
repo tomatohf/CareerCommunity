@@ -703,9 +703,8 @@ class GroupsController < ApplicationController
     if group_image.photo_id && group_image.photo_id != old_photo_id
       photo = group_image.photo
       if photo && photo.account_id == session[:account_id]
-        group_image.pic_url = photo.image.url(:thumb_48)
         if group_image.save
-          Group.update_group_with_image_cache(@group_id, :group_img => group_image.pic_url)
+          Group.update_group_with_image_cache(@group_id, :group_img => photo.image.url(:thumb_48))
           flash.now[:message] = "已成功保存"
         else
           flash.now[:error_msg] = "操作失败, 再试一次吧"

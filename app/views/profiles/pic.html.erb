@@ -24,7 +24,7 @@
 		<% form_for @profile, :url => "", :html => { :method => :post, :onsubmit => "on_pic_profile_submit(this);return false;" } do |f| %>
 			<span id="current_pic_label">当前头像:</span>
 			<div class="pic_profile_current_pic_photo">
-				<img id="current_pic" src="<%= face_img_src(@profile.pic_url) %>" border="0" />
+				<img id="current_pic" src="<%= face_img_src(@profile.photo && @profile.photo.image.url(:thumb_48)) %>" border="0" />
 				<input id="photo_id" name="photo_id" type="hidden" value="<%= @profile.photo_id %>" />
 			</div>
 			

@@ -6,7 +6,6 @@ class ActivityPostAttachment < ActiveRecord::Base
   # paperclip
   has_attached_file :attachment,
     :url => "/activity/posts/attachment/:id",
-    #:path => ":rails_root/files/post_attachments/activity/:id/:basename.:extension",
     :path => ":rails_root/files/activity_post_attachments/:created_year/:created_month/:created_mday/:id/:basename.:extension",
     :storage => :filesystem,
     :whiny_thumbnails => false # to avoid displaying internal errors

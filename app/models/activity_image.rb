@@ -19,6 +19,8 @@ class ActivityImage < ActiveRecord::Base
   }
   
   after_destroy { |activity_image|
+    Activity.clear_activity_with_image_cache(activity_image.activity_id)
+    
     Activity.clear_activities_all_cache
     Activity.clear_spaces_show_activity_cache(activity_image.activity_id)
   }

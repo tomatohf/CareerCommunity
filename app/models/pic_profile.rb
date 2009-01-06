@@ -9,4 +9,10 @@ class PicProfile < ActiveRecord::Base
 
   validates_presence_of :account_id
   
+  
+  
+  after_destroy { |pic_profile|
+    Account.clear_account_nick_pic_cache(pic_profile.account_id)
+  }
+  
 end

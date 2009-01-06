@@ -563,9 +563,8 @@ class ActivitiesController < ApplicationController
     if activity_image.photo_id && activity_image.photo_id != old_photo_id
       photo = activity_image.photo
       if photo && photo.account_id == session[:account_id]
-        activity_image.pic_url = photo.image.url(:thumb_48)
         if activity_image.save
-          Activity.update_activity_with_image_cache(@activity_id, :activity_img => activity_image.pic_url)
+          Activity.update_activity_with_image_cache(@activity_id, :activity_img => photo.image.url(:thumb_48))
           flash.now[:message] = "已成功保存"
         else
           flash.now[:error_msg] = "操作失败, 再试一次吧"
