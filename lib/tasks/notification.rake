@@ -6,10 +6,32 @@ namespace :notification do
     ServiceApplication.clear_to_be_notified_service_applications_cache
     
     if sa.size > 0
-      begin
-        Postman.deliver_course_application_remind(sa)
-      rescue
+      sa.sort! { |x, y| x.service_id <=> y.service_id }
+      
+      group_value = sa.first.service_id
+      groups = []
+      group = []
+      
+      sa.each do |a|
+        if a.service_id != group_value
+          groups << group
+          
+          group = []
+          group_value = a.service_id
+        end
+        
+        group << a
       end
+      
+      groups << group
+      
+      groups.each do |g|
+        begin
+          Postman.deliver_course_application_remind(g) if g.size > 0
+        rescue
+        end
+      end
+      
     end
   end
   

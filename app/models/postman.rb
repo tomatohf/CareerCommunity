@@ -61,7 +61,7 @@ class Postman < ActionMailer::Base
     )
     
     from(self.class.from)
-    subject("[#{DateTime.now.strftime("%Y-%m-%d")}] 有 #{course_applications.size} 个需要回应的报名课程/咨询详情的记录")
+    subject("有 #{course_applications.size} 个人要 #{Service.find(course_applications.first.service_id)}")
     body(:course_applications => course_applications)
   end
   
