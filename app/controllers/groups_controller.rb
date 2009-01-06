@@ -121,7 +121,7 @@ class GroupsController < ApplicationController
     @group_posts = GroupPost.find(
       :all,
       :limit => Post_Recent_List_Size,
-      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.top, group_posts.good, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.nick, accounts.email",
+      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.top, group_posts.good, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.email, accounts.nick, accounts.email",
       :conditions => ["group_id in (?)", joined_group_ids],
       :include => [:account, :group],
       :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
@@ -570,7 +570,7 @@ class GroupsController < ApplicationController
     @all_posts = GroupPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.nick",
+      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.email, accounts.nick",
       :conditions => ["group_id in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
       :include => [:account, :group],
       :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
@@ -643,7 +643,7 @@ class GroupsController < ApplicationController
     @all_photos = GroupPhoto.paginate(
       :page => page,
       :per_page => Photo_List_Size,
-      :select => "group_photos.id, group_photos.created_at, group_photos.group_id, group_photos.account_id, group_photos.photo_id, groups.name, accounts.nick, photos.*",
+      :select => "group_photos.id, group_photos.created_at, group_photos.group_id, group_photos.account_id, group_photos.photo_id, groups.name, accounts.email, accounts.nick, photos.*",
       :conditions => ["group_id in (select group_id from group_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
       :include => [:photo, :account, :group],
       :order => "group_photos.created_at DESC"
@@ -662,7 +662,7 @@ class GroupsController < ApplicationController
     @created_posts = GroupPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.nick",
+      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.email, accounts.nick",
       :conditions => ["account_id = ?", @owner_id],
       :include => [:account, :group],
       :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
@@ -681,7 +681,7 @@ class GroupsController < ApplicationController
     @commented_posts = GroupPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.nick",
+      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.email, accounts.nick",
       :conditions => ["group_posts.id in (select group_post_id from group_post_comments where account_id = ?)", @owner_id],
       :include => [:account, :group],
       :order => "group_posts.responded_at DESC, group_posts.created_at DESC"

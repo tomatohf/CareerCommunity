@@ -234,7 +234,6 @@ class Activity < ActiveRecord::Base
   end
   
   def get_application_deadline
-    RAILS_DEFAULT_LOGGER.info "++++++++++++ #{self.inspect}"
     self.online ? nil : application_deadline
   end
   
