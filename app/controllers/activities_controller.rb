@@ -561,7 +561,7 @@ class ActivitiesController < ApplicationController
     
     # validate the photo
     if activity_image.photo_id && activity_image.photo_id != old_photo_id
-      photo = activity_image.photo
+      photo = activity_image.photo_id && Photo.get_photo(activity_image.photo_id)
       if photo && photo.account_id == session[:account_id]
         if activity_image.save
           Activity.update_activity_with_image_cache(@activity_id, :activity_img => photo.image.url(:thumb_48))

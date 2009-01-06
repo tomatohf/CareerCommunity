@@ -3,6 +3,8 @@
 <% account = linked_photo_for_all.account %>
 <% photo = linked_photo_for_all.photo %>
 
+<% # Photo.set_photo_cache(photo.id, photo) fails because of "no marshal_dump is defined for class Proc" %>
+
 <% comment_count = PhotoComment.get_count(photo.id) %>
 
 <% type_obj = linked_photo_for_all.send(type) %>

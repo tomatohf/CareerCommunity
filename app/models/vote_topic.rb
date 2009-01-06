@@ -94,7 +94,7 @@ class VoteTopic < ActiveRecord::Base
   
   def get_image_url
     vote_image = self.image
-    vote_image && Photo.find(vote_image.photo_id).image.url(:thumb_48)
+    vote_image && Photo.get_photo(vote_image.photo_id).image.url(:thumb_48)
   end
   
   def self.get_vote_topic_with_image(vote_topic_id)

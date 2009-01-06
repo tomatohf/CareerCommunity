@@ -1,4 +1,4 @@
-﻿cache Photo.find
+﻿all picture
 
 
 post 分类

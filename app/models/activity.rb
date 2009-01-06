@@ -142,7 +142,7 @@ class Activity < ActiveRecord::Base
   
   def get_image_url
     activity_image = self.image
-    activity_image && Photo.find(activity_image.photo_id).image.url(:thumb_48)
+    activity_image && Photo.get_photo(activity_image.photo_id).image.url(:thumb_48)
   end
   
   require_dependency "activity_member"

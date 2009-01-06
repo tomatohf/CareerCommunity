@@ -4,6 +4,8 @@
 <% account = linked_photo.account %>
 <% photo = linked_photo.photo %>
 
+<% Photo.set_photo_cache(photo.id, photo) %>
+
 <% comment_count = PhotoComment.get_count(photo.id) %>
 
 <div class="linked_photo" id="linked_photo_<%= linked_photo.id %>">

@@ -16,7 +16,7 @@ class PhotosController < ApplicationController
   end
   
   def show
-    @photo ||= Photo.find(params[:id])
+    @photo = Photo.get_photo(params[:id])
     
     @edit = (@photo.account_id == session[:account_id])
     
@@ -140,7 +140,7 @@ class PhotosController < ApplicationController
   end
   
   def check_photo_owner
-    @photo = Photo.find(params[:id])
+    @photo = Photo.get_photo(params[:id])
     @photo.account_id == session[:account_id]
   end
   
@@ -150,7 +150,7 @@ class PhotosController < ApplicationController
   
   def check_comment_owner
     @photo_comment = PhotoComment.find(params[:id])
-    jump_to("/errors/forbidden") unless session[:account_id] == (@photo_comment.photo && @photo_comment.photo.account_id)
+    jump_to("/errors/forbidden") unless session[:account_id] == (@photo_comment.photo_id && Photo.get_photo(@photo_comment.photo_id).account_id)
   end
   
 end

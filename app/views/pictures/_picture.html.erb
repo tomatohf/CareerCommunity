@@ -2,7 +2,7 @@
 
 <% comment_count = "#{picture_type.to_s.camelize}PictureComment".constantize.get_count(picture.id) %>
 
-<div class="linked_photo">
+<div class="picture">
 	<div class="align_c">
 		<a href="/<%= picture_type %>/pictures/<%= picture.id %>" title="<%= h(picture.title) %>">
 			<img src="<%= picture.image.url(:thumb_160) %>" border="0" /></a>

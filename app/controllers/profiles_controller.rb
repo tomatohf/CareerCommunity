@@ -254,7 +254,7 @@ class ProfilesController < ApplicationController
       
       # validate the photo
       if @profile.photo_id && @profile.photo_id != old_photo_id
-        photo = @profile.photo
+        photo = @profile.photo_id && Photo.get_photo(@profile.photo_id)
         if photo && photo.account_id == @profile.account_id
           if @profile.save
             Account.update_account_nick_pic_cache(session[:account_id], :pic => photo.image.url(:thumb_48))

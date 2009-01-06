@@ -25,6 +25,8 @@ class Photo < ActiveRecord::Base
   FCKP_spaces_show_photo = :fc_spaces_show_photo
 
   after_destroy { |photo|
+    self.clear_photo_cache(photo.id)
+    
     # clean album cover photo
     Album.clear_album_cover_photo_cache(photo.album_id)
     
@@ -36,6 +38,8 @@ class Photo < ActiveRecord::Base
   }
   
   after_save { |photo|
+    self.clear_photo_cache(photo.id)
+    
     Album.clear_album_photos_cache(photo.album_id)
     
     
@@ -101,10 +105,43 @@ class Photo < ActiveRecord::Base
   
   
   
+  CKP_photo = :album_photo
+  
+  
+  
   # Fix the mime types. Make sure to require the mime-types gem
   def swfupload_file=(data)
     data.content_type = MIME::Types.type_for(data.original_filename).to_s if data
     self.image = data
+  end
+  
+  
+  
+  def self.get_photo(photo_id)
+    photo = Cache.get("#{CKP_photo}_#{photo_id}".to_sym)
+    
+    unless photo
+      photo = self.find(photo_id)
+      
+      self.set_photo_cache(photo_id, photo)
+    end
+    photo
+  end
+  
+  def self.set_photo_cache(photo_id, photo)
+    Cache.set("#{CKP_photo}_#{photo_id}".to_sym, photo.clear_association, Cache_TTL)
+  end
+  
+  def self.clear_photo_cache(photo_id)
+    Cache.delete("#{CKP_photo}_#{photo_id}".to_sym)
+  end
+  
+  
+  def clear_association
+    copy = deep_copy(self)
+    copy.clear_association_cache
+    copy.clear_aggregation_cache
+    copy
   end
   
 end

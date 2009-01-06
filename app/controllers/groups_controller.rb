@@ -701,7 +701,7 @@ class GroupsController < ApplicationController
     
     # validate the photo
     if group_image.photo_id && group_image.photo_id != old_photo_id
-      photo = group_image.photo
+      photo = group_image.photo_id && Photo.get_photo(group_image.photo_id)
       if photo && photo.account_id == session[:account_id]
         if group_image.save
           Group.update_group_with_image_cache(@group_id, :group_img => photo.image.url(:thumb_48))

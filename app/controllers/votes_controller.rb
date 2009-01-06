@@ -204,7 +204,7 @@ class VotesController < ApplicationController
     
     # validate the photo
     if vote_image.photo_id && vote_image.photo_id != old_photo_id
-      photo = vote_image.photo
+      photo = vote_image.photo_id && Photo.get_photo(vote_image.photo_id)
       if photo && photo.account_id == session[:account_id]
         if vote_image.save
           VoteTopic.update_vote_topic_with_image_cache(@vote_topic_id, :vote_img => photo.image.url(:thumb_48))

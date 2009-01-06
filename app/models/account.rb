@@ -203,7 +203,7 @@ class Account < ActiveRecord::Base
   
   def get_profile_pic_url
     pic_profile = self.profile_pic
-    pic_profile && Photo.find(pic_profile.photo_id).image.url(:thumb_48)
+    pic_profile && Photo.get_photo(pic_profile.photo_id).image.url(:thumb_48)
   end
   
   def self.get_nick_and_pic(account_id)

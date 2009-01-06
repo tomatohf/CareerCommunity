@@ -70,7 +70,7 @@ class Group < ActiveRecord::Base
   
   def get_image_url
     group_image = self.image
-    group_image && Photo.find(group_image.photo_id).image.url(:thumb_48)
+    group_image && Photo.get_photo(group_image.photo_id).image.url(:thumb_48)
   end
   
   require_dependency "group_member"
