@@ -1,0 +1,57 @@
+<% owner_name = @edit ? "我" : h(@owner_nick_pic[0]) %>
+
+<% page_title = "#{owner_name} 参加的活动的全部专属照片" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r picture_container_r">
+	
+	<% if @edit %>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>">我的空间</a>
+		</div>
+	<% else %>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>">
+				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block">
+			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
+				<%= owner_name %></a>
+		</div>
+	<% end %>
+	
+
+	<div class="community_title">
+		最近评论 ...
+	</div>
+	
+	<div class="community_block">
+		<%= render(:partial => "/pictures/small_comment", :collection => @new_comments, :locals => {:picture_type => :activity}) %>
+	</div>
+	
+</div>
+
+<div class="picture_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @all_pictures.total_entries %></b>
+		张参加的活动的专属照片,
+		<a href="/activities/recent/<%= @owner_id %>">
+			返回 <%= owner_name %> 的活动近况
+		</a>
+	</div>
+
+	<div class="overflow_hidden">
+		<%= float_list(@all_pictures, "/pictures/picture", :picture, {:picture_type => :activity}, 3) %>
+	</div>
+
+	<div class="community_block">
+		<%= paging_buttons(@all_pictures) %>
+	</div>
+
+</div>
+
+

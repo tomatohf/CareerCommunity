@@ -126,6 +126,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/groups/all_activity/:id/:page", :controller => "groups", :action => "all_activity", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_vote/:id/:page", :controller => "groups", :action => "all_vote", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_photo/:id/:page", :controller => "groups", :action => "all_photo", :id => /\d+/, :page => /\d+/
+  map.connect "/groups/all_picture/:id/:page", :controller => "groups", :action => "all_picture", :id => /\d+/, :page => /\d+/
   map.connect "/groups/all_bookmark/:id/:page", :controller => "groups", :action => "all_bookmark", :id => /\d+/, :page => /\d+/
   map.connect "/groups/created_post/:id/:page", :controller => "groups", :action => "created_post", :id => /\d+/, :page => /\d+/
   map.connect "/groups/commented_post/:id/:page", :controller => "groups", :action => "commented_post", :id => /\d+/, :page => /\d+/
@@ -207,6 +208,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/activities/all_join_post/:id/:page", :controller => "activities", :action => "all_join_post", :id => /\d+/, :page => /\d+/
   map.connect "/activities/all_interest_post/:id/:page", :controller => "activities", :action => "all_interest_post", :id => /\d+/, :page => /\d+/
   map.connect "/activities/all_photo/:id/:page", :controller => "activities", :action => "all_photo", :id => /\d+/, :page => /\d+/
+  map.connect "/activities/all_picture/:id/:page", :controller => "activities", :action => "all_picture", :id => /\d+/, :page => /\d+/
   map.connect "/activities/coming_day/:page", :controller => "activities", :action => "coming_day", :page => /\d+/
   map.connect "/activities/coming_week/:page", :controller => "activities", :action => "coming_week", :page => /\d+/
   map.connect "/activities/coming_month/:page", :controller => "activities", :action => "coming_month", :page => /\d+/

@@ -240,18 +240,47 @@
 	
 	<div class="community_block">
 		<div class="space_section_title">
+			<a class="float_r" title="收起" id="picture_section_expand" href="#" onclick="collapse_section('picture_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="picture_section_collapse" href="#" onclick="expand_section('picture_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			<span class="float_r">
+				<a href="/groups/all_picture/<%= @owner_id %>">参加的圈子的全部专属照片</a>
+				&nbsp;&nbsp;&nbsp;
+			</span>
+			
+			<img class="float_l" src="/images/activities/picture_small.gif" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<strong>参加的圈子的专属照片</strong>
+		</div>
+		
+		<div id="picture_section" class="community_block overflow_hidden">
+			<%= float_list(@group_pictures, "/pictures/picture_small", :picture_small, {:picture_type => :group}, 5) %>
+			
+			<% unless @group_pictures.size > 0 %>
+				<div class="form_info_l">
+					还没有圈子专属照片 ...
+				</div>
+			<% end %>
+			
+			<div class="clear_l"></div>
+		</div>
+		
+		
+		
+		<div class="space_section_title">
 			<a class="float_r" title="收起" id="photo_section_expand" href="#" onclick="collapse_section('photo_section'); return false;">
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="photo_section_collapse" href="#" onclick="expand_section('photo_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
 			<span class="float_r">
-				<a href="/groups/all_photo/<%= @owner_id %>">链接到我参加的圈子的全部照片</a>
+				<a href="/groups/all_photo/<%= @owner_id %>">链接到参加的圈子的全部照片</a>
 				&nbsp;&nbsp;&nbsp;
 			</span>
 			
 			<img class="float_l" src="/images/activities/photo_small.png" border="0" />
 			&nbsp;&nbsp;&nbsp;
-			<strong>链接到我参加的圈子的照片</strong>
+			<strong>链接到参加的圈子的照片</strong>
 		</div>
 		
 		<div id="photo_section" class="community_block overflow_hidden">
@@ -259,7 +288,7 @@
 			
 			<% unless @group_photos.size > 0 %>
 				<div class="form_info_l">
-					还没有链接到我参加的圈子的照片 ...
+					还没有链接到参加的圈子的照片 ...
 				</div>
 			<% end %>
 			

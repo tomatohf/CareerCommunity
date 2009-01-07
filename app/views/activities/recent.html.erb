@@ -51,10 +51,12 @@
 		</a>
 	</div>
 	
-	<div class="community_block">
-		<a href="/activities/list_group_index">
-			我参加的圈子的全部圈内活动</a>
-	</div>
+	<% if @edit %>
+		<div class="community_block">
+			<a href="/activities/list_group_index">
+				我参加的圈子的全部圈内活动</a>
+		</div>
+	<% end %>
 	
 	<div class="community_block_narrow">
 		<%= thin_hr %>
@@ -215,19 +217,50 @@
 	</div>
 	
 	<div class="community_block">
+		<% if @edit %>
+			<div class="space_section_title">
+				<a class="float_r" title="收起" id="picture_section_expand" href="#" onclick="collapse_section('picture_section'); return false;">
+					<img src="/images/expand.png" border="0" /></a>
+				<a class="float_r" title="展开" id="picture_section_collapse" href="#" onclick="expand_section('picture_section'); return false;" style="display: none">
+					<img src="/images/collapse.png" border="0" /></a>
+				<span class="float_r">
+					<a href="/activities/all_picture/<%= @owner_id %>">参加的活动的全部专属照片</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			
+				<img class="float_l" src="/images/activities/picture_small.gif" border="0" />
+				&nbsp;&nbsp;&nbsp;
+				<strong>参加的活动的专属照片</strong>
+			</div>
+		
+			<div id="picture_section" class="community_block overflow_hidden">
+				<%= float_list(@activity_pictures, "/pictures/picture_small", :picture_small, {:picture_type => :activity}, 5) %>
+			
+				<% unless @activity_pictures.size > 0 %>
+					<div class="form_info_l">
+						还没有活动专属照片 ...
+					</div>
+				<% end %>
+			
+				<div class="clear_l"></div>
+			</div>
+		<% end %>
+		
+		
+		
 		<div class="space_section_title">
 			<a class="float_r" title="收起" id="photo_section_expand" href="#" onclick="collapse_section('photo_section'); return false;">
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="photo_section_collapse" href="#" onclick="expand_section('photo_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
 			<span class="float_r">
-				<a href="/activities/all_photo/<%= @owner_id %>">链接到我参加的活动的全部照片</a>
+				<a href="/activities/all_photo/<%= @owner_id %>">链接到参加的活动的全部照片</a>
 				&nbsp;&nbsp;&nbsp;
 			</span>
 
 			<img class="float_l" src="/images/activities/photo_small.png" border="0" />
 			&nbsp;&nbsp;&nbsp;
-			<strong>链接到我参加的活动的照片</strong>
+			<strong>链接到参加的活动的照片</strong>
 		</div>
 		
 		<div id="photo_section" class="community_block overflow_hidden">
@@ -236,7 +269,7 @@
 		
 		<% unless @activity_photos.size > 0 %>
 			<div class="form_info_l">
-				还没有链接到我参加的活动的照片 ...
+				还没有链接到参加的活动的照片 ...
 			</div>
 		<% end %>
 		

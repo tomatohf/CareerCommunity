@@ -10,7 +10,8 @@ class ActivitiesController < ApplicationController
   
   Activity_Recent_List_Size = 6
   Post_Recent_List_Size = 15
-  Photo_Recent_List_Size = 10
+  Photo_Recent_List_Size = 5
+  Picture_Recent_List_Size = 10
 
   Activity_Post_Num = 20
   New_Member_Num = 14
@@ -74,6 +75,8 @@ class ActivitiesController < ApplicationController
                                                           :invite, :invite_member,
                                                           :invite_contact, :select_contact,
                                                           :send_contact_invitations]
+                                                          
+  before_filter :check_owner, :only => [:all_picture]
   
   
   
@@ -195,6 +198,13 @@ class ActivitiesController < ApplicationController
       :order => "created_at DESC"
     )
     
+    @activity_pictures = ActivityPicture.find(
+      :all,
+      :limit => Picture_Recent_List_Size,
+      :conditions => ["activity_id in (?)", joined_activity_ids],
+      :order => "responded_at DESC, created_at DESC"
+    )
+    
   end
   
   def list_join
@@ -309,7 +319,7 @@ class ActivitiesController < ApplicationController
     @created_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
       :conditions => ["account_id = ?", @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
@@ -328,7 +338,7 @@ class ActivitiesController < ApplicationController
     @commented_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
       :conditions => ["activity_posts.id in (select activity_post_id from activity_post_comments where account_id = ?)", @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
@@ -349,7 +359,7 @@ class ActivitiesController < ApplicationController
     @all_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
       :conditions => ["activity_id in (select activity_id from activity_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
@@ -372,7 +382,7 @@ class ActivitiesController < ApplicationController
     @all_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
       :conditions => ["activity_id in (select activity_id from activity_interests where account_id = ?)", @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
@@ -813,6 +823,43 @@ class ActivitiesController < ApplicationController
       :conditions => ["activity_id in (select activity_id from activity_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
       :include => [:photo, :account, :activity],
       :order => "activity_photos.created_at DESC"
+    )
+  end
+  
+  def all_picture
+    @owner_id = params[:id]
+    
+    @edit = session[:account_id].to_s == @owner_id
+    
+    @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
+    
+    activity_members = ActivityMember.agreed.find(
+      :all,
+      :conditions => ["account_id = ?", @owner_id],
+      :order => "join_at DESC"
+    )
+    joined_activity_ids = activity_members.collect do |member|
+      ActivityMember.set_activity_member_cache(member.activity_id, member.account_id, member)
+      
+      member.activity_id
+    end
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @all_pictures = ActivityPicture.paginate(
+      :page => page,
+      :per_page => Picture_List_Size,
+      :conditions => ["activity_id in (?)", joined_activity_ids],
+      :include => [:account],
+      :order => "responded_at DESC, created_at DESC"
+    )
+    
+    @new_comments = ActivityPictureComment.find(
+      :all,
+      :limit => New_Comment_Size,
+      :conditions => ["activity_picture_id in (select id from activity_pictures where activity_id in (?))", joined_activity_ids],
+      :include => [:account => [:profile_pic]],
+      :order => "updated_at DESC"
     )
   end
   
@@ -1645,6 +1692,10 @@ class ActivitiesController < ApplicationController
       
       jump_to("/activities/#{activity_id}") if can_not_view
     end
+  end
+  
+  def check_owner
+    jump_to("/errors/forbidden") unless session[:account_id].to_s == params[:id]
   end
   
   
