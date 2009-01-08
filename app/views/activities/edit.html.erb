@@ -245,23 +245,25 @@
 						</td>
 					</tr>
 					
-					<tr>
-						<td>
-							活动设置
-							:
-						</td>
-						<td></td>
-					</tr>
+					<% unless @activity.online %>
+						<tr>
+							<td>
+								活动设置
+								:
+							</td>
+							<td></td>
+						</tr>
 					
-					<tr>
-						<td></td>
-						<td>
-							<%= check_box_tag :hide_map, value = "true", @activity.get_setting[:hide_map] %>
-				            <label for="hide_map">
-				                不要显示地图
-				            </label>
-						</td>
-					</tr>
+						<tr>
+							<td></td>
+							<td>
+								<%= check_box_tag :hide_map, value = "true", @activity.get_setting[:hide_map] %>
+					            <label for="hide_map">
+					                不要显示地图
+					            </label>
+							</td>
+						</tr>
+					<% end %>
 					
 					<tr>
 						<td>
