@@ -33,6 +33,20 @@
 	</div>
 	
 	<div class="community_block">
+		<% form_tag "/community/search", :method => :get do %>
+			<input type="text" name="query" class="text_field" style="width: 50%" />
+			<input type="hidden" name="scope" value="activity" />
+
+			&nbsp;
+			<input type="submit" value="搜索活动" class="button" />
+		<% end %>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
 		<div id="calendar_container"></div>
 	</div>
 	
