@@ -4,8 +4,9 @@
 	
 	<div class="album_photo_img">
 		<% photo_show_url = "/photos/#{album_photo.id}" %>
-		<a href="<%= photo_show_url %>" title="<%= album_photo.title %>">
-			<img src="<%= album_photo.image.url(:thumb_120) %>" border="0" alt="<%= album_photo.title %>" /></a>
+		<% photo_title = h(album_photo.title) %>
+		<a href="<%= photo_show_url %>" title="<%= photo_title %>">
+			<img src="<%= album_photo.image.url(:thumb_120) %>" border="0" alt="<%= photo_title %>" /></a>
 	</div>
 	
 	<% if edit %>
@@ -30,7 +31,7 @@
 		<!--
 		<a href="#">标签</a>
 		-->
-		<a rel="lightbox[album]" href="<%= album_photo.image.url(:big) %>" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='<%= photo_show_url %>'&gt;查看&lt;/a&gt; &lt;br /&gt; <%= album_photo.title %> &lt;br /&gt;">浏览</a>
+		<a rel="lightbox[album]" href="<%= album_photo.image.url(:big) %>" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='<%= photo_show_url %>'&gt;查看&lt;/a&gt; &lt;br /&gt; <%= photo_title %> &lt;br /&gt;">浏览</a>
 	</div>
 
 </div>

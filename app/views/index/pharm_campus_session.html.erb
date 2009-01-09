@@ -47,7 +47,7 @@
 			<% photos.each_index do |j| %>
 				<% ap = photos[j] %>
 				<div class="activity_photo_<%= dir %>">
-					<a href="<%= ap.photo.image.url(:big) %>" rel="lightbox[activity]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='/photos/<%= ap.photo.id %>'&gt;查看/评论&lt;/a&gt; &lt;br /&gt; <%= ap.photo.title %> &lt;br /&gt;">
+					<a href="<%= ap.photo.image.url(:big) %>" rel="lightbox[activity]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='/photos/<%= ap.photo.id %>'&gt;查看/评论&lt;/a&gt; &lt;br /&gt; <%= h(ap.photo.title) %> &lt;br /&gt;">
 						<img src="<%= ap.photo.image.url(:thumb_80) %>" border="0" /></a>
 				</div>
 				<% if j == 3 %>

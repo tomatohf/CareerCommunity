@@ -3,7 +3,7 @@
 <% # Photo.set_photo_cache(photo.id, photo) fails because of "no marshal_dump is defined for class Proc" %>
 
 <div class="linked_photo_small">
-	<a href="/photos/<%= photo.id %>" title="<%= photo.title %>" target="_blank">
+	<a href="/photos/<%= photo.id %>" title="<%= h(photo.title) %>" target="_blank">
 		<img src="<%= photo.image.url(:thumb_80) %>" border="0" /></a>
 </div>
 

@@ -38,14 +38,14 @@
 	
 	<div class="community_block align_c">
 		<a href="/photos/<%= @pre_photo.id %>">
-			<img src="<%= @pre_photo.image.url(:thumb_120) %>" title="<%= @pre_photo.title %>" border="0" /></a>
+			<img src="<%= @pre_photo.image.url(:thumb_120) %>" title="<%= h(@pre_photo.title) %>" border="0" /></a>
 		<br />
 		<a href="/photos/<%= @pre_photo.id %>">« 上一张</a>
 	</div>
 	
 	<div class="community_block align_c">
 		<a href="/photos/<%= @next_photo.id %>">
-			<img src="<%= @next_photo.image.url(:thumb_120) %>" title="<%= @next_photo.title %>" border="0" /></a>
+			<img src="<%= @next_photo.image.url(:thumb_120) %>" title="<%= h(@next_photo.title) %>" border="0" /></a>
 		<br />
 		<a href="/photos/<%= @next_photo.id %>">下一张 »</a>
 		<br />

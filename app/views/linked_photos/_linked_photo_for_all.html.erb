@@ -12,7 +12,7 @@
 
 <div class="linked_photo" id="linked_photo_<%= linked_photo_for_all.id %>">
 	<div class="align_c">
-		<a href="<%= photo.image.url(:big) %>" rel="lightbox[activity]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='/photos/<%= photo.id %>'&gt;查看/评论&lt;/a&gt; &lt;br /&gt; <%= photo.title %> &lt;br /&gt;">
+		<a href="<%= photo.image.url(:big) %>" rel="lightbox[activity]" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张 | &lt;a target='_blank' href='/photos/<%= photo.id %>'&gt;查看/评论&lt;/a&gt; &lt;br /&gt; <%= h(photo.title) %> &lt;br /&gt;">
 			<img src="<%= photo.image.url(:thumb_120) %>" border="0" /></a>
 	</div>
 	

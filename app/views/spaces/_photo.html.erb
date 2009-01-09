@@ -1,5 +1,7 @@
 <% Photo.set_photo_cache(photo.id, photo) %>
 
+<% photo_title = h(photo.title) %>
+
 <div class="space_photo">
-	<a target="_blank" href="/photos/<%= photo.id %>" title="<%= photo.title %>"><img src="<%= photo.image.url(:thumb_80) %>" border="0" alt="<%= photo.title %>" /></a>
+	<a target="_blank" href="/photos/<%= photo.id %>" title="<%= photo_title %>"><img src="<%= photo.image.url(:thumb_80) %>" border="0" alt="<%= photo_title %>" /></a>
 </div>
