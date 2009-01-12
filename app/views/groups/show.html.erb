@@ -150,15 +150,23 @@
 	
 	
 	
-	<div class="community_title">
-		新加入成员 ...
-	</div>
+	<% if @can_view_member %>
+		<div class="community_title">
+			新加入成员 ...
+		</div>
 	
-	<div class="overflow_hidden">
-		<%= float_list(@new_members, "new_member", :new_member, {}, 3) %>
+		<div class="overflow_hidden">
+			<%= float_list(@new_members, "new_member", :new_member, {}, 3) %>
 		
-		<div class="clear_l"></div>
-	</div>
+			<div class="clear_l"></div>
+		</div>
+		<div class="align_r">
+			(
+			<a href="/groups/members/<%= @group_id %>">
+				查看全部成员</a>
+			)
+		</div>
+	<% end %>
 	
 	
 	<!--

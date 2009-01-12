@@ -47,10 +47,10 @@ class Activity < ActiveRecord::Base
     now = DateTime.now
     
     if get_application_deadline
-      errors.add :application_deadline, "报名截止时间已成为过去" if application_deadline_changed? && (get_application_deadline < now)
+      # errors.add :application_deadline, "报名截止时间已成为过去" if application_deadline_changed? && (get_application_deadline < now)
       errors.add :begin_at, "报名截止时间比活动开始时间晚" if begin_at && begin_at < get_application_deadline
     else
-      errors.add :begin_at, "活动开始时间已成为过去" if begin_at_changed? && (begin_at && begin_at < now)
+      # errors.add :begin_at, "活动开始时间已成为过去" if begin_at_changed? && (begin_at && begin_at < now)
     end
     errors.add :begin_at, "活动结束时间比活动开始时间早" if begin_at && end_at && begin_at > end_at
     
