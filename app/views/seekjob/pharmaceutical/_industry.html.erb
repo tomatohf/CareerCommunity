@@ -2,7 +2,7 @@
 	<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
 		<div class="index_container_l_section">
 			<div class="index_container_l_section_content">
-				<a href="#pharmaceutical_top_20">世界医药公司排名20强</a>&nbsp;&nbsp;&nbsp;
+				<a href="#pharmaceutical_rank">2008财富杂志世界医药公司排名</a>&nbsp;&nbsp;&nbsp;
 				<a href="#medical_instrument_top_50">医疗器械工业企业销售排名50强</a>&nbsp;&nbsp;&nbsp;
 				<a href="#domestic_medical_instrument_top_30">国内医药公司排名30强</a>
 			</div>
@@ -18,41 +18,34 @@
 					<a href="#top">回页首</a>
 					&nbsp;
 				</span>
-				<span id="pharmaceutical_top_20">世界医药公司排名20强</span> »
+				<span id="pharmaceutical_rank">2008财富杂志世界医药公司排名</span> »
 			</div>
 
 			<div class="index_container_l_section_content">
 				<table border="0" cellspacing="15" cellpadding="0">
 					<tr>
-						<th>位次</th>
-						<th>公司名称</th>
-						<th>中文名称</th>
-						<th>国别</th>
-						<th>营收 (百万美元)</th>
+						<th>排名</th>
+						<th>中文常用名称</th>
+						<th>总部所在地</th>
+						<th>主要业务</th>
+						<th>营业收入(2007年/百万美元)</th>
 					</tr>
 					
 					<%
 						[
-							%w{1 Pfizer 辉瑞 美国 $45,083},
-							[2, "GlaxoSmithKline", "葛兰素史克", "英国", "$37,003"],
-							%w{3 Sanofi-Aventis 赛诺菲-安万特 法国 $35,643},
-							%w{4 AstraZeneca 阿斯利康 英国 $25,741},
-							%w{5 Novartis 诺华 瑞士 $23,532},
-							%w{6 Merck 默沙东(默克) 美国 $23,425},
-							[7, "Johnson & Johnson", "强生", "美国", "$23,267"],
-							%w{8 Roche 罗氏 瑞士 $19,300},
-							%w{9 Wyeth 惠氏 美国 $15,683},
-							[10, "Eli Lilly & Co.", "礼来", "美国", "$14,816"],
-							[11, "Bristol-Myers Squibb", "百时美施贵宝", "美国", "$13,861"],
-							[12, "Abbott Laboratories", "雅培", "美国", "$12,395"],
-							%w{13 Schering-Plough 先灵葆雅 美国 $10,461},
-							%w{14 Boehringer-Ingelheim 勃林格殷格翰 德国 $10,440},
-							%w{15 Takeda 武田 日本 $9,793},
-							[16, "Bayer AG", "拜耳", "德国", "$8,518"],
-							%w{17 Astellas 安斯泰来 日本 $7,862},
-							%w{18 Daiichi-Sankyo 第一制药 日本 $7,166},
-							%w{19 Eisai 卫材 日本 $5,589},
-							[20, "Merck KgA", "默克KGa", "德国", "$4,674"]
+							%w{1 强生 美国 制药 53,324.00},
+							%w{2 辉瑞 美国 制药 52,415.00},
+							%w{3 葛兰素史克 英国 制药 42,730.60},
+							%w{4 拜耳 德国 化工,制药 39,899.20},
+							%w{5 诺华 瑞士 制药 37,020.00},
+							%w{6 赛诺菲安万特 法国 制药 36,998.40},
+							%w{7 罗氏 瑞士 制药 34,702.80},
+							%w{8 阿斯利康 英国 制药 26,475.00},
+							%w{9 默克(默沙东) 美国 制药 22,636.00},
+							%w{10 雅培 美国 制药 22,476.30},
+							%w{11 惠氏 美国 制药 20,350.70},
+							%w{12 百时美施贵宝 美国 制药 17,914.00},
+							%w{13 礼来大药厂 美国 制药 15,691.00}
 						].each do |row|
 					%>
 						<tr>
