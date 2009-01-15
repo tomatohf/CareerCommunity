@@ -9,7 +9,7 @@
 
 <div>
 	<input type="hidden" id="<%= color_picker_text_field_id %>" name="<%= color_picker_text_field_id %>" value="<%= color_value %>" />
-	<div id="<%= color_picker_text_view_id %>" style="border: 2px outset; width: 15px; height: 15px; background-color: #<%= color_value %>;" title="设置选项代表色" onclick="toggle_color_picker('<%= color_picker_id %>'); return false;"></div>
+	<div id="<%= color_picker_text_view_id %>" style="border: 2px outset #888888; width: 15px; height: 15px; background-color: #<%= color_value %>; cursor: pointer;" title="设置选项代表色" onclick="toggle_color_picker('<%= color_picker_id %>'); return false;"></div>
 	
 	<div id="<%= color_picker_id %>" style="position: absolute; display: none;">
         <%= render :partial => "/common/color_picker", :locals => {:cell_size => cell_size, :click_handler => "on_option_color_selected", :args => args} %>
