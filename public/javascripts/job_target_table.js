@@ -1083,7 +1083,7 @@ function update_step_status(step_id, target_id, new_status_id, new_status_name, 
 		function(response) {
 			if(response.responseText.trim() == "true") {
 				// update dom
-				Ext.get("step_" + step_id).dom.style.color = "#" + new_status_color;
+				Ext.get("step_status_" + step_id).dom.style.backgroundColor = "#" + new_status_color;
 				
 				// update data
 				steps["step_" + step_id].status_id = new_status_id;

@@ -1,10 +1,5 @@
 ﻿
 
-enable 投票客户端, 放到工具箱里面
-
-
-
-
 
 缓存 activity/group show/recent pages
 
@@ -26,6 +21,8 @@ post 及其他 的 浏览次数
 
 寻找 MSN Gtalk 好友
 邀请 MSN Gtalk 好友注册
+
+enable 投票客户端, 放到工具箱里面
 
 
 

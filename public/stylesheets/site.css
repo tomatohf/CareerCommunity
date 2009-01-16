@@ -1289,26 +1289,44 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .step {
+	color: #333333;
+	
 	background-color: #EFEFEF;
 	border-right: 1px solid #AAAAAA;
 	border-bottom: 1px solid #AAAAAA;
 
 	margin: 5px 0px 5px 0px;
-	padding: 5px 10px;
+	padding: 5px 0px;
 	
-	height: 30px;
+	width: 80px;
+	height: 12px;
 	
 	cursor: pointer;
-	text-align: center;
+	text-align: left;
 }
 
 .step_current {
+	color: #000000;
+	
 	background-color: #DDDDDD;
+	border-right: 1px solid #666666;
+	border-bottom: 1px solid #666666;
+}
+
+.step_status {
+	width: 8px;
+	height: 8px;
+	
+	margin: 2px;
 }
 
 .step_dd_over {
 	margin-left: 5px;
 	background: #EEEEEE url(/images/job_targets/put_left_arrow_small.gif) no-repeat -1px center;
+}
+
+.step_dd_over .step_status {
+	height: 0px;
 }
 
 .bigger_job_targets_container {

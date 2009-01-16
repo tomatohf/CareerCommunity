@@ -1,11 +1,21 @@
-<div class="float_l step<%= " step_current" if (step.id == target.current_job_step_id) %>" id="step_<%= step.id %>"<%= %Q! style="color: ##{status.color};"! if status %>>
+<div class="float_l step<%= " step_current" if (step.id == target.current_job_step_id) %>" id="step_<%= step.id %>">
+	<div id="step_status_<%= step.id %>" class="float_l step_status"<%= %Q! style="background-color: ##{status.color};"! if status %>>
+		
+	</div>
+	
 	<div>
+		<span id="step_process_<%= step.id %>">
+			<%= h(process.name) %>
+		</span>
+	</div>
+	
+	<div style="display: none;">
 		<span id="step_label_<%= step.id %>">
 			<%= h(step.label) %>
 		</span>
 	</div>
 	
-	<div>
+	<div style="display: none;">
 		<span id="step_begin_<%= step.id %>">
 			<%= step.begin_at && step.begin_at.strftime("%m.%d") %>
 		</span>

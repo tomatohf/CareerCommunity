@@ -14,7 +14,7 @@
 	end
 	
 	current_step = nil
-	ordered_steps = target.get_info[:step_order].collect { |sid|
+	ordered_steps = (target.get_info[:step_order] || []).collect { |sid|
 		sobj = nil
 		begin
 			sobj = JobStep.get_step(sid)
