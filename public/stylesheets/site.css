@@ -1273,6 +1273,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 
 .target_text {
 	font-size: 14px;
+	font-weight: bold;
 }
 
 .target_star, .target_starred {
@@ -1289,13 +1290,12 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .step {
-	color: #333333;
+	color: #000000;
 	
 	background-color: #EFEFEF;
-	border-right: 1px solid #AAAAAA;
-	border-bottom: 1px solid #AAAAAA;
+	border: 1px solid #DDDDDD;
 
-	margin: 5px 0px 5px 0px;
+	margin: 5px 2px 5px 0px;
 	padding: 5px 0px;
 	
 	width: 80px;
@@ -1306,11 +1306,10 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .step_current {
-	color: #000000;
+	font-weight: bold;
 	
-	background-color: #DDDDDD;
-	border-right: 1px solid #666666;
-	border-bottom: 1px solid #666666;
+	background-color: #CCCCCC;
+	border: 1px solid #999999;
 }
 
 .step_status {
