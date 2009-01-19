@@ -771,7 +771,20 @@ function show_step_menu(evt, target, options) {
 	);
 	
 	
-	if(current_step_mapping["" + target_id] != "" + step_id) {
+	if(current_step_mapping["" + target_id] == "" + step_id) {
+		menu_items.push("-");
+		menu_items.push(
+			{
+				//id: "",
+				text: "取消当前步骤",
+				icon: "/images/job_targets/clear_small.png",
+				handler: function(item, e) {
+					set_current_step("", target_id);
+				}
+			}
+		);
+	}
+	else {
 		menu_items.push("-");
 		menu_items.push(
 			{
@@ -1040,10 +1053,15 @@ function set_current_step(step_id, target_id) {
 				
 				// set new current step
 				current_step_mapping["" + target_id] = "" + step_id;
-				Ext.get("step_" + step_id).addClass("step_current");
 				
+				var current_end_at = "";
+				if(step_id && step_id != "") {
+					Ext.get("step_" + step_id).addClass("step_current");
+					
+					current_end_at = steps["step_" + step_id].end_at;
+				}
 				// update grid store
-				update_grid_store_for_current_end_date("" + target_id, steps["step_" + step_id].end_at);
+				update_grid_store_for_current_end_date("" + target_id, current_end_at);
 				
 				return true;
 			}

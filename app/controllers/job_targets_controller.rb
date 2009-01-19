@@ -267,6 +267,12 @@ class JobTargetsController < ApplicationController
   def set_current_step
     step_id = params[:step_id] && params[:step_id].strip
     
+    unless step_id && step_id != ""
+      # to clear the current step of target
+      @target.current_job_step_id = nil
+      return render(:layout => false, :text => @target.save.to_s)
+    end
+    
     step = JobStep.get_step(step_id)
     
     if (step.account_id == session[:account_id]) && step.job_target_id == @target.id
