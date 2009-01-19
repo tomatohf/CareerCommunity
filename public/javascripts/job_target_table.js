@@ -1006,6 +1006,12 @@ function update_step_label(step_id, target_id, new_label) {
 			if(response.responseText.trim() == "true") {
 				// update dom
 				Ext.get("step_label_" + step_id).update(new_label, false);
+				if(new_label && new_label != "") {
+					Ext.get("step_process_" + step_id).dom.style.display = "none";
+				}
+				else {
+					Ext.get("step_process_" + step_id).dom.style.display = "";
+				}
 				
 				// update data
 				steps["step_" + step_id].label = new_label;
@@ -1042,7 +1048,7 @@ function update_step_process(step_id, target_id, new_process_id, new_process_nam
 		function(response) {
 			if(response.responseText.trim() == "true") {
 				// update dom
-				Ext.get("step_process_" + step_id).update("("+new_process_name+")", false);
+				Ext.get("step_process_" + step_id).update(new_process_name, false);
 				
 				// update data
 				steps["step_" + step_id].process_id = new_process_id;

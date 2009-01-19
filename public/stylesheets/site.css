@@ -1298,11 +1298,10 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	margin: 5px 2px 5px 0px;
 	padding: 5px 0px;
 	
-	width: 80px;
+	width: 90px;
 	height: 12px;
 	
 	cursor: pointer;
-	text-align: left;
 }
 
 .step_current {
@@ -1312,11 +1311,27 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	border: 1px solid #999999;
 }
 
+.step_text {
+	width: 48px;
+	
+	overflow: hidden;
+}
+
 .step_status {
 	width: 8px;
 	height: 8px;
 	
-	margin: 2px;
+	margin: 2px 4px 0px 2px;
+}
+
+.step_info {
+	color: #333333;
+	font-size: 9px;
+	font-style: italic;
+	
+	margin: -5px 2px 0px 1px;
+	
+	text-align: right;
 }
 
 .step_dd_over {
