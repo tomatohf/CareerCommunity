@@ -318,12 +318,19 @@ class JobTargetsController < ApplicationController
     step = JobStep.get_step(step_id)
     
     if (step.account_id == session[:account_id]) && step.job_target_id == @target.id
+      unless new_status_id && new_status_id != ""
+        # to clear the status of step
+        step.job_status_id = nil
+        return render(:layout => false, :text => step.save.to_s)
+      end
+      
       status = JobStatus.get_status(new_status_id)
       if status.account_id.nil? || status.account_id == 0 || status.account_id == session[:account_id]
         step.job_status_id = status.id
     
         return render(:layout => false, :text => step.save.to_s)
       end
+      
     end
     
     render :layout => false, :text => "false"

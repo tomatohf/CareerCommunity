@@ -560,10 +560,12 @@ function show_step_menu(evt, target, options) {
 			disabled: true
 		},
 		
+		/*
 		{
 			text: "开始日期: " + (begin_date ? begin_date.format("y-m-d") : "<i>未设置</i>"),
 			disabled: true
 		},
+		*/
 		
 		{
 			text: "结束日期: " + (end_date ? end_date.format("y-m-d") : "<i>未设置</i>"),
@@ -581,6 +583,7 @@ function show_step_menu(evt, target, options) {
 	}
 	
 	menu_items.push("-");
+	/*
 	menu_items.push(
 		{
 			text: "设置开始日期",
@@ -595,6 +598,7 @@ function show_step_menu(evt, target, options) {
 			)
 		}
 	);
+	*/
 	
 	menu_items.push(
 		{
@@ -608,6 +612,17 @@ function show_step_menu(evt, target, options) {
 					}
 				}
 			)
+		}
+	);
+	
+	menu_items.push(
+		{
+			text: "清除结束日期",
+			icon: "/images/job_targets/clear_date_small.gif",
+			handler: function(item, e){
+				update_step_date(step_id, target_id, "", "begin");
+				update_step_date(step_id, target_id, "", "end");
+			}
 		}
 	);
 	
@@ -641,6 +656,17 @@ function show_step_menu(evt, target, options) {
 		}
 	}
 	var status_items = [];
+	status_items.push(
+		{
+			text: "清除状态",
+			icon: "/images/job_targets/clear_small.png",
+			status_id: "",
+			status_name: "",
+			status_color: "",
+			handler: set_status_handler
+		}
+	);
+	status_items.push("-");
 	status_items.push("系统添加的状态:");
 	status_items.push("-");
 	for(var i=0; i<system_statuses.length; i++) {
@@ -1132,7 +1158,12 @@ function update_step_status(step_id, target_id, new_status_id, new_status_name, 
 		function(response) {
 			if(response.responseText.trim() == "true") {
 				// update dom
-				Ext.get("step_status_" + step_id).dom.style.backgroundColor = "#" + new_status_color;
+				var status_bg_color = "";
+				new_status_color = new_status_color || "";
+				if(new_status_color != "") {
+					status_bg_color = "#" + new_status_color;
+				}
+				Ext.get("step_status_" + step_id).dom.style.backgroundColor = status_bg_color;
 				
 				// update data
 				steps["step_" + step_id].status_id = new_status_id;
@@ -1335,22 +1366,26 @@ function update_step_date(step_id, target_id, date, at) {
 			params: {
 				step_id: String(step_id),
 				at: at,
-				date: date.format("Y-m-d"),
+				date: (date && date != "") ? date.format("Y-m-d") : "",
 				authenticity_token: form_authenticity_token
 			}
 		},
 		
 		function(response) {
 			if(response.responseText.trim() == "true") {
+				date = date || "";
+				
 				// update dom
-				Ext.get("step_" + at + "_" + step_id).update(date.format("m.d"), false);
+				if(at == "end") {
+					Ext.get("step_" + at + "_" + step_id).update((date != "") ? date.format("m.d") : "", false);
+				}
 				
 				// update data
-				steps["step_" + step_id][at + "_at"] = date.getTime();
+				steps["step_" + step_id][at + "_at"] = (date != "") ? date.getTime() : "";
 				
 				// update grid store
 				if((current_step_mapping["" + target_id] == ("" + step_id)) && (at == "end")) {
-					update_grid_store_for_current_end_date("" + target_id, date && date.getTime());
+					update_grid_store_for_current_end_date("" + target_id, (date != "") ? date.getTime() : "");
 				}
 				else {
 					update_grid_store_for_steps("" + target_id);
