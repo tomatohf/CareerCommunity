@@ -539,8 +539,49 @@ function show_step_menu(evt, target, options) {
 	var process_id = step.process_id;
 	var process_name = processes["" + process_id].name;
 	var status_id = step.status_id;
+	var status = statuses["" + status_id];
+	
+	var begin_date = null;
+	if(step.begin_at && step.begin_at != "") {
+		begin_date = new Date()
+		begin_date.setTime(step.begin_at);
+	}
+	
+	var end_date = null;
+	if(step.end_at && step.end_at != "") {
+		end_date = new Date();
+		end_date.setTime(step.end_at);
+	}
 	
 	menu_items = [
+		{
+			text: "所属流程: " + process_name,
+			icon: "/images/job_targets/info_small.png",
+			disabled: true
+		},
+		
+		{
+			text: "开始日期: " + (begin_date ? begin_date.format("y-m-d") : "<i>未设置</i>"),
+			disabled: true
+		},
+		
+		{
+			text: "结束日期: " + (end_date ? end_date.format("y-m-d") : "<i>未设置</i>"),
+			disabled: true
+		}
+	];
+	
+	if(status) {
+		menu_items.push(
+			{
+				text: "当前状态: " + status.name,
+				disabled: true
+			}
+		);
+	}
+	
+	menu_items.push("-");
+	menu_items.push(
 		{
 			text: "设置开始日期",
 			icon: "/images/job_targets/begin_date_icon.gif",
@@ -552,8 +593,10 @@ function show_step_menu(evt, target, options) {
 					}
 				}
 			)
-		},
-		
+		}
+	);
+	
+	menu_items.push(
 		{
 			text: "设置结束日期",
 			icon: "/images/job_targets/end_date_icon.gif",
@@ -566,7 +609,7 @@ function show_step_menu(evt, target, options) {
 				}
 			)
 		}
-	];
+	);
 	
 	
 	menu_items.push("-");
