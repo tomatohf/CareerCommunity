@@ -1,4 +1,4 @@
-﻿
+﻿发送求职管家的提醒邮件
 
 
 缓存 activity/group show/recent pages
