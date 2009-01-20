@@ -372,6 +372,7 @@ ActionController::Routing::Routes.draw do |map|
     :del_step => :post,
     :create_step => :post,
     :update_step_date => :post,
+    :update_step_remind_date => :post,
     :update_step_status => :post,
     :close_target => :post,
     :open_target => :post,

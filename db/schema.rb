@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 16) do
+ActiveRecord::Schema.define(:version => 17) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -636,6 +636,7 @@ ActiveRecord::Schema.define(:version => 16) do
     t.datetime "begin_at"
     t.datetime "end_at"
     t.boolean  "delta"
+    t.datetime "remind_at"
   end
 
   add_index "job_steps", ["created_at"], :name => "index_job_steps_on_created_at"

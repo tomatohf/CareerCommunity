@@ -33,7 +33,8 @@
 					status_id: "<%= sobj.job_status_id %>",
 					label: "<%= h(sobj.label) %>",
 					begin_at: "<%= sobj.begin_at && (sobj.begin_at.to_i * 1000) %>",
-					end_at: "<%= sobj.end_at && (sobj.end_at.to_i * 1000) %>"
+					end_at: "<%= sobj.end_at && (sobj.end_at.to_i * 1000) %>",
+					remind_at: "<%= sobj.remind_at && (sobj.remind_at.to_i * 1000) %>"
 				};
 			</script>
 <%

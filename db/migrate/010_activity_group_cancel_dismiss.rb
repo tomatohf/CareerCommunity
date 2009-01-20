@@ -10,7 +10,7 @@ class ActivityGroupCancelDismiss < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column(:groups, :dismissed)
-    remove_column(:activities, :cancelled)
+    remove_column :groups, :dismissed
+    remove_column :activities, :cancelled
   end
 end

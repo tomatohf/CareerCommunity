@@ -9,16 +9,17 @@ class JobTargetsController < ApplicationController
   before_filter :check_limited, :only => [:new_for_position, :create, :add_account_process, :add_steps,
                                           :adjust_step_order, :set_current_step, :update_step_label,
                                           :update_step_process, :update_step_status, :del_step,
-                                          :create_step, :update_step_date, :create_account_process,
-                                          :create_account_status, :close_target, :open_target, :destroy,
-                                          :star_target, :unstar_target]
+                                          :create_step, :update_step_date, :update_step_remind_date,
+                                          :create_account_process, :create_account_status, :close_target,
+                                          :open_target, :destroy, :star_target, :unstar_target]
   
   before_filter :check_account_access, :only => [:list, :list_closed]
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
                                                 :update_step_label, :update_step_process,
                                                 :update_step_status, :del_step, :create_step,
-                                                :update_step_date, :close_target, :open_target, :destroy,
-                                                :star_target, :unstar_target]
+                                                :update_step_date, :update_step_remind_date,
+                                                :close_target, :open_target, :destroy, :star_target,
+                                                :unstar_target]
   
   before_filter :do_protection
   
@@ -405,6 +406,21 @@ class JobTargetsController < ApplicationController
     
     if (step.account_id == session[:account_id]) && step.job_target_id == @target.id
       step.send("#{at == "begin" ? "begin_at" : "end_at"}=", new_date)
+    
+      return render(:layout => false, :text => step.save.to_s)
+    end
+    
+    render :layout => false, :text => "false"
+  end
+  
+  def update_step_remind_date
+    step_id = params[:step_id] && params[:step_id].strip
+    remind_date = params[:date] && params[:date].strip
+    
+    step = JobStep.get_step(step_id)
+    
+    if (step.account_id == session[:account_id]) && step.job_target_id == @target.id
+      step.remind_at = remind_date
     
       return render(:layout => false, :text => step.save.to_s)
     end

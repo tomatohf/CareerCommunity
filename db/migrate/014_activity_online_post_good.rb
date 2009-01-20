@@ -11,8 +11,8 @@ class ActivityOnlinePostGood < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column(:activity_posts, :good)
-    remove_column(:group_posts, :good)
-    remove_column(:activities, :online)
+    remove_column :activity_posts, :good
+    remove_column :group_posts, :good
+    remove_column :activities, :online
   end
 end

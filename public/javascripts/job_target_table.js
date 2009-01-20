@@ -630,6 +630,37 @@ function show_step_menu(evt, target, options) {
 	menu_items.push("-");
 	menu_items.push(
 		{
+			text: "设置提醒日期",
+			icon: "/images/job_targets/remind_small.gif",
+			hideOnClick: false,
+			menu: new Ext.menu.DateMenu(
+				{
+					handler: function(dp, date){
+						update_step_remind_date(step_id, target_id, date);
+					}
+				}
+			)
+		}
+	);
+	var remind_date = null;
+	if(step.remind_at && step.remind_at != "") {
+		remind_date = new Date();
+		remind_date.setTime(step.remind_at);
+	}
+	menu_items.push(
+		{
+			text: "清除提醒: " + (remind_date ? remind_date.format("y-m-d") : "<i>未设置</i>"),
+			icon: "/images/job_targets/clear_remind_small.gif",
+			handler: function(item, e){
+				update_step_remind_date(step_id, target_id, "");
+			}
+		}
+	);
+	
+	
+	menu_items.push("-");
+	menu_items.push(
+		{
 			//id: "",
 			text: "删除",
 			icon: "/images/delete_small.gif",
@@ -1419,6 +1450,45 @@ function update_step_date(step_id, target_id, date, at) {
 			title: "设置步骤日期",
 			msg: "设置步骤日期失败! 请重试 ...",
 			minWidth: 250
+		}
+	);
+}
+
+
+function update_step_remind_date(step_id, target_id, date) {
+	ajax_request(
+		{
+			url: "/job_targets/" + target_id + "/update_step_remind_date",
+			params: {
+				step_id: String(step_id),
+				date: (date && date != "") ? date.format("Y-m-d") : "",
+				authenticity_token: form_authenticity_token
+			}
+		},
+		
+		function(response) {
+			if(response.responseText.trim() == "true") {
+				date = date || "";
+				
+				// update dom
+				Ext.get("step_remind_" + step_id).dom.style.display = (date != "") ? "" : "none";
+				
+				// update data
+				steps["step_" + step_id]["remind_at"] = (date != "") ? date.getTime() : "";
+				
+				// update grid store
+				update_grid_store_for_steps("" + target_id);
+				
+				return true;
+			}
+			
+			return false;
+		},
+		
+		{
+			title: "设置步骤提醒日期",
+			msg: "设置步骤提醒日期失败! 请重试 ...",
+			minWidth: 300
 		}
 	);
 }
