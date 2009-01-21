@@ -289,6 +289,10 @@ function create_table_grid() {
 				"-",
 				
 				"->",
+				
+				"<span id='opera_context_menu_warning' class='form_info_l'></span>",
+				
+				"-",
 			
 				"共有 <b><span id='unclosed_target_count'>" + target_count + "</span></b> 条未关闭的目标"
 			]
@@ -345,117 +349,133 @@ function create_table_grid() {
 
 
 
-	grid.addListener(
-		"cellcontextmenu",
-		function(grid, row_index, cell_index, e) {
-			e.preventDefault();
+	var grid_cell_right_click_handler = function(grid, row_index, cell_index, e) {
+		e.preventDefault();
+	
+		var store = grid.getStore();
+		var record = store.getAt(row_index);
+	
+		var steps_dom = record.data.column_5;
 		
-			var store = grid.getStore();
-			var record = store.getAt(row_index);
+		var steps_element = get_element_from_html(steps_dom);
+		var target_id = steps_element.id.substr("step_group_".length);
 		
-			var steps_dom = record.data.column_5;
-			
-			var steps_element = get_element_from_html(steps_dom);
-			var target_id = steps_element.id.substr("step_group_".length);
-			
-			var menu_items = [];
-			
-			
-			var add_step_handler = function(item, e) {
-				new_step(target_id, item.process_id, item.text);
-			}
-			var process_items = [];
-			process_items.push("系统添加的流程:");
-			process_items.push("-");
-			for(var i=0; i<system_processes.length; i++) {
-				var process = system_processes[i];
-				process_items.push(
-					{
-						text: process.name,
-						process_id: process.id,
-						handler: add_step_handler
-					}
-				);
-			}
-			process_items.push("-");
-			process_items.push("自己添加的流程:");
-			process_items.push("-");
-			for(var i=0; i<account_processes.length; i++) {
-				var process = account_processes[i];
-				process_items.push(
-					{
-						text: process.name,
-						process_id: process.id,
-						handler: add_step_handler
-					}
-				);
-			}
-			
-			menu_items.push(
-				{
-					//id: "",
-					text: "添加新的步骤",
-					//icon: "",
-					hideOnClick: false,
-					menu: {
-						items: process_items
-					}
-				}
-			);
-			
-			
-			menu_items.push("-");
-			
-			var target_starred = (record.data.column_0 == 1);
-			menu_items.push(
-				{
-					//id: "",
-					text: target_starred ? "取消星标" : "添加星标",
-					icon: "/images/job_targets/" + (target_starred ? "unstarred_icon" : "starred_icon") + ".png",
-					handler: function() {
-						if(target_starred) {
-							update_target_star(target_id, false, store, record);
-						}
-						else {
-							update_target_star(target_id, true, store, record);
-						}
-					}
-				}
-			);
-			
-			
-			menu_items.push("-");
-			
-			menu_items.push(
-				{
-					//id: "",
-					text: "关闭此目标",
-					icon: "/images/job_targets/close_target_icon.gif",
-					handler: function() {
-						Ext.Msg.confirm(
-							"关闭目标",
-							"确定要关闭这条目标么?",
-							function(btn) {
-								if (btn == "yes") {
-									close_target(target_id, store, record);
-								}
-							}
-						);
-					}
-				}
-			);
+		var menu_items = [];
 		
-			var cell_menu_obj = new Ext.menu.Menu(
-				{
-					//id: "",
-					items: menu_items,
-					shadow: "frame"
-				}
-			);
 		
-		    cell_menu_obj.showAt(e.getXY());
+		var add_step_handler = function(item, e) {
+			new_step(target_id, item.process_id, item.text);
 		}
-	);
+		var process_items = [];
+		process_items.push("系统添加的流程:");
+		process_items.push("-");
+		for(var i=0; i<system_processes.length; i++) {
+			var process = system_processes[i];
+			process_items.push(
+				{
+					text: process.name,
+					process_id: process.id,
+					handler: add_step_handler
+				}
+			);
+		}
+		process_items.push("-");
+		process_items.push("自己添加的流程:");
+		process_items.push("-");
+		for(var i=0; i<account_processes.length; i++) {
+			var process = account_processes[i];
+			process_items.push(
+				{
+					text: process.name,
+					process_id: process.id,
+					handler: add_step_handler
+				}
+			);
+		}
+		
+		menu_items.push(
+			{
+				//id: "",
+				text: "添加新的步骤",
+				//icon: "",
+				hideOnClick: false,
+				menu: {
+					items: process_items
+				}
+			}
+		);
+		
+		
+		menu_items.push("-");
+		
+		var target_starred = (record.data.column_0 == 1);
+		menu_items.push(
+			{
+				//id: "",
+				text: target_starred ? "取消星标" : "添加星标",
+				icon: "/images/job_targets/" + (target_starred ? "unstarred_icon" : "starred_icon") + ".png",
+				handler: function() {
+					if(target_starred) {
+						update_target_star(target_id, false, store, record);
+					}
+					else {
+						update_target_star(target_id, true, store, record);
+					}
+				}
+			}
+		);
+		
+		
+		menu_items.push("-");
+		
+		menu_items.push(
+			{
+				//id: "",
+				text: "关闭此目标",
+				icon: "/images/job_targets/close_target_icon.gif",
+				handler: function() {
+					Ext.Msg.confirm(
+						"关闭目标",
+						"确定要关闭这条目标么?",
+						function(btn) {
+							if (btn == "yes") {
+								close_target(target_id, store, record);
+							}
+						}
+					);
+				}
+			}
+		);
+	
+		var cell_menu_obj = new Ext.menu.Menu(
+			{
+				//id: "",
+				items: menu_items,
+				shadow: "frame"
+			}
+		);
+	
+	    cell_menu_obj.showAt(e.getXY());
+	}
+	
+	if (Ext.isOpera){ 
+		grid.addListener(
+			"cellmousedown",
+			function(grid, row_index, cell_index, e) {
+				if (Ext.isOpera) {
+					if (e.button == 2 || e.altKey) {
+						grid_cell_right_click_handler(grid, row_index, cell_index, e);
+					}
+				}
+			}
+		);
+	}
+	else {
+		grid.addListener(
+			"cellcontextmenu",
+			grid_cell_right_click_handler
+		);
+	}
 	
 	
 	
@@ -471,6 +491,11 @@ function create_table_grid() {
 	grid.render();
 	
 	reconfig_steps();
+	
+	// display opera context menu warning
+	if(Ext.isOpera) {
+		Ext.get("opera_context_menu_warning").update("Opera 用户请使用 ALT + 鼠标左键 显示菜单", false);
+	}
 	
 }
 
@@ -502,14 +527,31 @@ function reconfig_step(step_dom_id) {
 	
 	if(step_dom) {
 		// create step menu
-		step_dom.addListener(
-			"contextmenu",
-			show_step_menu,
-			null,
-			{
-				step_id: step_id
-			}
-		);
+		var event_option_obj = {
+			step_id: step_id
+		};
+		if (Ext.isOpera){ 
+			step_dom.addListener(
+				"mousedown",
+				function(evt, target, options) {
+					if (Ext.isOpera) {
+						if (evt.button == 2 || evt.altKey) {
+							show_step_menu(evt, target, options);
+						}
+					}
+				},
+				null,
+				event_option_obj
+			);
+		}
+		else {
+			step_dom.addListener(
+				"contextmenu",
+				show_step_menu,
+				null,
+				event_option_obj
+			);
+		}
 	
 	
 		// create step double click action
