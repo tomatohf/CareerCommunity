@@ -87,10 +87,10 @@ JobTownGrid = function(table_id, config) {
 								html += "<div class='target_info'>";
 								
 								if(value == VERY_LARGE_DATE) {
-									html += "<font color='grey'><i>未设置</i></font>";;
+									html += "<font color='#808080'><i>未设置</i></font>";;
 								}
 								else if(value > VERY_LARGE_DATE) {
-									html += "<font color='red'>已过去</font>";
+									html += "<font color='#FF0000'>已过去</font>";
 								}
 								else {
 									now = new Date();
@@ -690,7 +690,7 @@ function show_step_menu(evt, target, options) {
 	status_items.push(
 		{
 			text: "清除状态",
-			icon: "/images/job_targets/clear_small.png",
+			icon: "/images/job_targets/clear_status_icon.gif",
 			status_id: "",
 			status_name: "",
 			status_color: "",
@@ -735,7 +735,7 @@ function show_step_menu(evt, target, options) {
 		{
 			//id: "set_status_menu",
 			text: "改变步骤的状态",
-			//icon: "/images/job_targets/",
+			icon: "/images/job_targets/set_status_icon.gif",
 			hideOnClick: false,
 			menu: {
 				items: status_items
@@ -782,7 +782,7 @@ function show_step_menu(evt, target, options) {
 		{
 			//id: "set_process_menu",
 			text: "设置步骤的流程",
-			//icon: "/images/job_targets/",
+			icon: "/images/job_targets/set_process_icon.gif",
 			hideOnClick: false,
 			menu: {
 				items: process_items
@@ -808,7 +808,7 @@ function show_step_menu(evt, target, options) {
 			{
 				//id: "",
 				text: "取消当前步骤",
-				icon: "/images/job_targets/clear_small.png",
+				icon: "/images/job_targets/clear_current_step_icon.gif",
 				handler: function(item, e) {
 					set_current_step("", target_id);
 				}
