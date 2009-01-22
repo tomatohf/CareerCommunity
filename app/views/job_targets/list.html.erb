@@ -18,7 +18,26 @@
 	<h2><%= page_title %></h2>
 	
 	<br />
+	
+	<% if general_admin?(session[:account_id]) %>
+		<div class="community_block align_r" style="word-spacing: 10px;">
+			<a href="#">
+				管理系统添加的公司</a>
+				
+			<a href="#">
+				管理系统添加的职位</a>
+				
+			<a href="#">
+				管理系统添加的流程</a>
+					
+			<a href="#">
+				管理系统添加的状态</a>
+		</div>
+	<% end %>
+	
 	<br />
+
+
 	
 	<div id="loading_container" class="community_block" style="padding-left: 50px;">
 		<img src="/images/loading_small.gif" />

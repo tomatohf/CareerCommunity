@@ -265,6 +265,26 @@ function create_table_grid() {
 				
 				"-",
 				
+				{
+					//id: "",
+					text: "管理自己添加的流程 <img border='0' src='/images/ext_link_small.gif' />",
+					handler: function() {
+						window.location.href = "";
+					}
+				},
+				
+				"-",
+				
+				{
+					//id: "",
+					text: "管理自己添加的状态 <img border='0' src='/images/ext_link_small.gif' />",
+					handler: function() {
+						window.location.href = "";
+					}
+				},
+				
+				"-",
+				
 				"->",
 				
 				"今天是 <b>" + new Date().format("Y年m月d日") + "</b>"
@@ -278,7 +298,7 @@ function create_table_grid() {
 			items: [
 				{
 					//id: "",
-					text: "所有已关闭的目标",
+					text: "所有已关闭的目标 <img border='0' src='/images/ext_link_small.gif' />",
 					icon: "/images/job_targets/closed_targets_icon.png",
 					cls: "x-btn-text-icon",
 					handler: function() {
