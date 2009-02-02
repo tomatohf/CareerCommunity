@@ -451,6 +451,31 @@ function create_table_grid() {
 		menu_items.push(
 			{
 				//id: "",
+				text: "改变目标的公司",
+				//icon: "",
+				handler: function() {
+					alert("to be done ...");
+				}
+			}
+		);
+		
+		menu_items.push(
+			{
+				//id: "",
+				text: "改变目标的职位",
+				//icon: "",
+				handler: function() {
+					alert("to be done ...");
+				}
+			}
+		);
+		
+		
+		menu_items.push("-");
+		
+		menu_items.push(
+			{
+				//id: "",
 				text: "关闭此目标",
 				icon: "/images/job_targets/close_target_icon.gif",
 				handler: function() {
