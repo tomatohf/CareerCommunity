@@ -1145,9 +1145,8 @@ class GroupsController < ApplicationController
   def update_master
     new_master_id = params[:new_master_id] && params[:new_master_id].strip
     
-    admin_member = GroupMember.is_group_admin(@group_id, new_master_id)
-    if admin_member
-      @group.master_id = admin_member.account_id
+    if GroupMember.is_group_admin(@group_id, new_master_id)
+      @group.master_id = new_master_id
       if @group.save
         Group.update_group_with_image_cache(@group_id, :group => @group)
       end
