@@ -1,10 +1,10 @@
-atom_feed(:language => "zh_CN", :schema_date => 2009, "xmlns:app" => "http://www.w3.org/2007/app") do |feed|
+atom_feed(:url => "aaa", :language => "zh_CN", :schema_date => 2009, "xmlns:app" => "http://www.w3.org/2007/app") do |feed|
   
   feed.title("圈子 #{h(@group.name)} 的讨论话题 - 乔布圈")
   feed.updated(@posts.first && @posts.first.updated_at)
 
   for post in @posts
-    feed.entry(post) do |entry|
+    feed.entry(post, :url => "/group/posts/#{post.id}") do |entry|
       entry.title(h(post.title))
       
       entry.url("http://qiaobutang.com/group/posts/#{post.id}")
@@ -17,9 +17,10 @@ atom_feed(:language => "zh_CN", :schema_date => 2009, "xmlns:app" => "http://www
       entry_content += %Q!<img src="/images/groups/good_small.gif" border="0" alt="精华" title="精华" />
   			                    &nbsp;&nbsp;&nbsp;! if post.good
   			                    
-      entry_content += %Q!<a href="/spaces/show/#{post.account_id}">
-  			                    #{h(post.account.get_nick)}</a>
-  			                    &nbsp;&nbsp;
+      entry_content += %Q!由
+                            &nbsp;
+                            <a href="/spaces/show/#{post.account_id}">#{h(post.account.get_nick)}</a>
+  			                    &nbsp;
   			                    发表!
       
       entry_content += sanitize_tinymce(post.content)
