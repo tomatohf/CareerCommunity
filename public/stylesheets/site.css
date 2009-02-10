@@ -1406,6 +1406,16 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	border: 1px dotted #C2E3EF;
 }
 
+.talk_container_l {
+	margin-left: 150px;
+	margin-right: 350px;
+	padding: 0px 20px;
+}
+
+.talk_container_r {
+	width: 320px;
+}
+
 
 
 

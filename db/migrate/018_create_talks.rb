@@ -27,7 +27,8 @@ class CreateTalks < ActiveRecord::Migration
     create_table :talks, :force => true do |t|
       t.column :created_at, :datetime
       t.column :updated_at, :datetime
-      t.column :account_id, :integer
+      t.column :creator_id, :integer
+      t.column :updater_id, :integer
       
       t.column :title, :string
       t.column :info, :text
@@ -46,7 +47,8 @@ class CreateTalks < ActiveRecord::Migration
       t.column :delta, :boolean
     end
     add_index :talks, :created_at
-    add_index :talks, :account_id
+    add_index :talks, :creator_id
+    add_index :talks, :updater_id
     add_index :talks, :sn
     add_index :talks, :begin_at
     add_index :talks, :end_at
@@ -69,6 +71,9 @@ class CreateTalks < ActiveRecord::Migration
     add_index :talk_reporters, :talk_id
     add_index :talk_reporters, :created_at
     add_index :talk_reporters, :delta
+    # reserve first 1000 ID
+    ActiveRecord::Base.connection.execute("INSERT INTO talk_reporters (id) VALUES (1000)")
+    ActiveRecord::Base.connection.execute("DELETE FROM talk_reporters WHERE id = 1000")
     
     # talk_talkers table
     create_table :talk_talkers, :force => true do |t|
@@ -85,17 +90,47 @@ class CreateTalks < ActiveRecord::Migration
     add_index :talk_talkers, :created_at
     add_index :talk_talkers, :talker_id
     add_index :talk_talkers, :delta
+    # reserve first 1000 ID
+    ActiveRecord::Base.connection.execute("INSERT INTO talk_talkers (id) VALUES (1000)")
+    ActiveRecord::Base.connection.execute("DELETE FROM talk_talkers WHERE id = 1000")
+    
+    # talk_question_categories table
+    create_table :talk_question_categories, :force => true do |t|
+      t.column :talk_id, :integer
+      t.column :created_at, :datetime
+      t.column :updated_at, :datetime
+      t.column :creator_id, :integer
+      t.column :updater_id, :integer
+      
+      t.column :name, :string
+      
+      t.column :desc, :string, :limit => 1000
+      
+      
+      # enable sphinx delta index
+      t.column :delta, :boolean
+    end
+    add_index :talk_question_categories, :created_at
+    add_index :talk_question_categories, :talk_id
+    add_index :talk_question_categories, :creator_id
+    add_index :talk_question_categories, :updater_id
+    # reserve first 1000 ID
+    ActiveRecord::Base.connection.execute("INSERT INTO talk_question_categories (id) VALUES (1000)")
+    ActiveRecord::Base.connection.execute("DELETE FROM talk_question_categories WHERE id = 1000")
     
     # talk_questions table
     create_table :talk_questions, :force => true do |t|
       t.column :talk_id, :integer
       t.column :created_at, :datetime
       t.column :updated_at, :datetime
-      t.column :account_id, :integer
+      t.column :creator_id, :integer
+      t.column :updater_id, :integer
       
       t.column :question, :string
       
       t.column :summary, :string
+      
+      t.column :category_id, :integer
       
       
       # enable sphinx delta index
@@ -103,15 +138,21 @@ class CreateTalks < ActiveRecord::Migration
     end
     add_index :talk_questions, :talk_id
     add_index :talk_questions, :created_at
-    add_index :talk_questions, :account_id
+    add_index :talk_questions, :creator_id
+    add_index :talk_questions, :updater_id
+    add_index :talk_questions, :category_id
     add_index :talk_questions, :delta
+    # reserve first 1000 ID
+    ActiveRecord::Base.connection.execute("INSERT INTO talk_questions (id) VALUES (1000)")
+    ActiveRecord::Base.connection.execute("DELETE FROM talk_questions WHERE id = 1000")
     
     # talk_answers table
     create_table :talk_answers, :force => true do |t|
       t.column :talk_id, :integer
       t.column :created_at, :datetime
       t.column :updated_at, :datetime
-      t.column :account_id, :integer
+      t.column :creator_id, :integer
+      t.column :updater_id, :integer
       
       t.column :question_id, :integer
       t.column :talker_id, :integer
@@ -126,10 +167,14 @@ class CreateTalks < ActiveRecord::Migration
     end
     add_index :talk_answers, :talk_id
     add_index :talk_answers, :created_at
-    add_index :talk_answers, :account_id
+    add_index :talk_answers, :creator_id
+    add_index :talk_answers, :updater_id
     add_index :talk_answers, :question_id
     add_index :talk_answers, :talker_id
     add_index :talk_answers, :delta
+    # reserve first 1000 ID
+    ActiveRecord::Base.connection.execute("INSERT INTO talk_answers (id) VALUES (1000)")
+    ActiveRecord::Base.connection.execute("DELETE FROM talk_answers WHERE id = 1000")
     
     # talkers table
     create_table :talkers, :force => true do |t|
@@ -180,6 +225,9 @@ class CreateTalks < ActiveRecord::Migration
     add_index :talk_comments, :account_id
     add_index :talk_comments, :created_at
     add_index :talk_comments, :delta
+    # reserve first 1000 ID
+    ActiveRecord::Base.connection.execute("INSERT INTO talk_comments (id) VALUES (1000)")
+    ActiveRecord::Base.connection.execute("DELETE FROM talk_comments WHERE id = 1000")
     
     
     # talk_question_tags

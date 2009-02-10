@@ -141,9 +141,15 @@ module ApplicationHelper
   
   def general_admin?(account_id)
     # 1002 - MaXiao
-    # 1004 - Kai
+    # 1004 - Kai (LuLuXiu)
     
     superadmin?(account_id) || account_id == 1002 || account_id == 1004
+  end
+  
+  def talk_editor?(account_id)
+    # 1019 - Kai
+    
+    general_admin?(account_id) || account_id == 1019
   end
   
   def tag_cloud_font_styling (total, lowest, highest, options={})

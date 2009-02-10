@@ -404,6 +404,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/:picture_type/pictures/:action/:id", :controller => "pictures"
   
   
+  map.connect "/talks/p/:page", :controller => "talks", :action => "index", :page => /\d+/
   map.resources :talks, :collection => {
     
   }, :member => {

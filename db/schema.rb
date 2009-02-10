@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 17) do
+ActiveRecord::Schema.define(:version => 18) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -572,6 +572,18 @@ ActiveRecord::Schema.define(:version => 17) do
   add_index "hobby_profiles", ["account_id"], :name => "index_hobby_profiles_on_account_id"
   add_index "hobby_profiles", ["delta"], :name => "index_hobby_profiles_on_delta"
 
+  create_table "industries", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id", :limit => 11,   :default => 0
+    t.string   "name"
+    t.string   "desc",       :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "industries", ["created_at"], :name => "index_industries_on_created_at"
+  add_index "industries", ["account_id"], :name => "index_industries_on_account_id"
+
   create_table "job_positions", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -870,6 +882,182 @@ ActiveRecord::Schema.define(:version => 17) do
   add_index "sys_messages", ["has_read"], :name => "index_sys_messages_on_has_read"
   add_index "sys_messages", ["msg_type"], :name => "index_sys_messages_on_msg_type"
   add_index "sys_messages", ["delta"], :name => "index_sys_messages_on_delta"
+
+  create_table "talk_answers", :force => true do |t|
+    t.integer  "talk_id",     :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creator_id",  :limit => 11
+    t.integer  "updater_id",  :limit => 11
+    t.integer  "question_id", :limit => 11
+    t.integer  "talker_id",   :limit => 11
+    t.text     "answer"
+    t.string   "summary"
+    t.boolean  "delta"
+  end
+
+  add_index "talk_answers", ["talk_id"], :name => "index_talk_answers_on_talk_id"
+  add_index "talk_answers", ["created_at"], :name => "index_talk_answers_on_created_at"
+  add_index "talk_answers", ["creator_id"], :name => "index_talk_answers_on_creator_id"
+  add_index "talk_answers", ["updater_id"], :name => "index_talk_answers_on_updater_id"
+  add_index "talk_answers", ["question_id"], :name => "index_talk_answers_on_question_id"
+  add_index "talk_answers", ["talker_id"], :name => "index_talk_answers_on_talker_id"
+  add_index "talk_answers", ["delta"], :name => "index_talk_answers_on_delta"
+
+  create_table "talk_comments", :force => true do |t|
+    t.integer  "talk_id",    :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id", :limit => 11
+    t.string   "content",    :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "talk_comments", ["talk_id"], :name => "index_talk_comments_on_talk_id"
+  add_index "talk_comments", ["account_id"], :name => "index_talk_comments_on_account_id"
+  add_index "talk_comments", ["created_at"], :name => "index_talk_comments_on_created_at"
+  add_index "talk_comments", ["delta"], :name => "index_talk_comments_on_delta"
+
+  create_table "talk_question_categories", :force => true do |t|
+    t.integer  "talk_id",    :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creator_id", :limit => 11
+    t.integer  "updater_id", :limit => 11
+    t.string   "name"
+    t.string   "desc",       :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "talk_question_categories", ["created_at"], :name => "index_talk_question_categories_on_created_at"
+  add_index "talk_question_categories", ["talk_id"], :name => "index_talk_question_categories_on_talk_id"
+  add_index "talk_question_categories", ["creator_id"], :name => "index_talk_question_categories_on_creator_id"
+  add_index "talk_question_categories", ["updater_id"], :name => "index_talk_question_categories_on_updater_id"
+
+  create_table "talk_question_tags", :force => true do |t|
+    t.string  "name"
+    t.boolean "delta"
+  end
+
+  add_index "talk_question_tags", ["name"], :name => "index_talk_question_tags_on_name"
+  add_index "talk_question_tags", ["delta"], :name => "index_talk_question_tags_on_delta"
+
+  create_table "talk_questions", :force => true do |t|
+    t.integer  "talk_id",     :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creator_id",  :limit => 11
+    t.integer  "updater_id",  :limit => 11
+    t.string   "question"
+    t.string   "summary"
+    t.integer  "category_id", :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "talk_questions", ["talk_id"], :name => "index_talk_questions_on_talk_id"
+  add_index "talk_questions", ["created_at"], :name => "index_talk_questions_on_created_at"
+  add_index "talk_questions", ["creator_id"], :name => "index_talk_questions_on_creator_id"
+  add_index "talk_questions", ["updater_id"], :name => "index_talk_questions_on_updater_id"
+  add_index "talk_questions", ["category_id"], :name => "index_talk_questions_on_category_id"
+  add_index "talk_questions", ["delta"], :name => "index_talk_questions_on_delta"
+
+  create_table "talk_questions_talk_question_tags", :id => false, :force => true do |t|
+    t.integer "talk_question_id",     :limit => 11
+    t.integer "talk_question_tag_id", :limit => 11
+  end
+
+  add_index "talk_questions_talk_question_tags", ["talk_question_id"], :name => "index_talk_questions_talk_question_tags_on_talk_question_id"
+  add_index "talk_questions_talk_question_tags", ["talk_question_tag_id"], :name => "index_talk_questions_talk_question_tags_on_talk_question_tag_id"
+
+  create_table "talk_reporters", :force => true do |t|
+    t.integer  "talk_id",    :limit => 11
+    t.datetime "created_at"
+    t.string   "name"
+    t.boolean  "delta"
+  end
+
+  add_index "talk_reporters", ["talk_id"], :name => "index_talk_reporters_on_talk_id"
+  add_index "talk_reporters", ["created_at"], :name => "index_talk_reporters_on_created_at"
+  add_index "talk_reporters", ["delta"], :name => "index_talk_reporters_on_delta"
+
+  create_table "talk_talkers", :force => true do |t|
+    t.integer  "talk_id",    :limit => 11
+    t.datetime "created_at"
+    t.integer  "talker_id",  :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "talk_talkers", ["talk_id"], :name => "index_talk_talkers_on_talk_id"
+  add_index "talk_talkers", ["created_at"], :name => "index_talk_talkers_on_created_at"
+  add_index "talk_talkers", ["talker_id"], :name => "index_talk_talkers_on_talker_id"
+  add_index "talk_talkers", ["delta"], :name => "index_talk_talkers_on_delta"
+
+  create_table "talkers", :force => true do |t|
+    t.string  "real_name",  :limit => 50
+    t.boolean "gender"
+    t.string  "age"
+    t.string  "company"
+    t.string  "position"
+    t.string  "experience", :limit => 1000
+    t.string  "email"
+    t.string  "mobile",     :limit => 25
+    t.string  "phone",      :limit => 25
+    t.string  "msn"
+    t.string  "gtalk"
+    t.string  "qq",         :limit => 20
+    t.string  "skype"
+    t.string  "other",      :limit => 1000
+    t.boolean "delta"
+  end
+
+  add_index "talkers", ["real_name"], :name => "index_talkers_on_real_name"
+  add_index "talkers", ["delta"], :name => "index_talkers_on_delta"
+
+  create_table "talks", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creator_id", :limit => 11
+    t.integer  "updater_id", :limit => 11
+    t.string   "title"
+    t.text     "info"
+    t.string   "sn"
+    t.string   "place"
+    t.datetime "begin_at"
+    t.datetime "end_at"
+    t.boolean  "delta"
+  end
+
+  add_index "talks", ["created_at"], :name => "index_talks_on_created_at"
+  add_index "talks", ["creator_id"], :name => "index_talks_on_creator_id"
+  add_index "talks", ["updater_id"], :name => "index_talks_on_updater_id"
+  add_index "talks", ["sn"], :name => "index_talks_on_sn"
+  add_index "talks", ["begin_at"], :name => "index_talks_on_begin_at"
+  add_index "talks", ["end_at"], :name => "index_talks_on_end_at"
+  add_index "talks", ["delta"], :name => "index_talks_on_delta"
+
+  create_table "talks_companies", :id => false, :force => true do |t|
+    t.integer "talk_id",    :limit => 11
+    t.integer "company_id", :limit => 11
+  end
+
+  add_index "talks_companies", ["talk_id"], :name => "index_talks_companies_on_talk_id"
+  add_index "talks_companies", ["company_id"], :name => "index_talks_companies_on_company_id"
+
+  create_table "talks_industries", :id => false, :force => true do |t|
+    t.integer "talk_id",     :limit => 11
+    t.integer "industry_id", :limit => 11
+  end
+
+  add_index "talks_industries", ["talk_id"], :name => "index_talks_industries_on_talk_id"
+  add_index "talks_industries", ["industry_id"], :name => "index_talks_industries_on_industry_id"
+
+  create_table "talks_job_positions", :id => false, :force => true do |t|
+    t.integer "talk_id",         :limit => 11
+    t.integer "job_position_id", :limit => 11
+  end
+
+  add_index "talks_job_positions", ["talk_id"], :name => "index_talks_job_positions_on_talk_id"
+  add_index "talks_job_positions", ["job_position_id"], :name => "index_talks_job_positions_on_job_position_id"
 
   create_table "timezones", :force => true do |t|
     t.string  "name"
