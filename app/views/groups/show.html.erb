@@ -1,4 +1,6 @@
-<% page_title = h(@group.name) %>
+<% group_name = h(@group.name) %>
+
+<% page_title = group_name %>
 <% community_page_title(page_title) %>
 
 <% can_admin = @relationship == "master" || @relationship == "admin" %>
@@ -169,15 +171,15 @@
 	<% end %>
 	
 	
-	<!--
 	<div class="community_title">
-		订阅圈子讨论 ...
+		订阅圈子讨论话题 ...
 	</div>
 	
-	<div class="community_block">
-
+	<div class="community_block align_c">
+		<br />
+		<a href="/groups/feed/<%= @group_id %>.atom">
+			<img src="/images/feed_icon.gif" border="0" alt="订阅圈子<%= group_name %>的讨论话题" title="订阅圈子<%= group_name %>的讨论话题" /></a>
 	</div>
-	-->
 	
 </div>
 

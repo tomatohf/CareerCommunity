@@ -37,11 +37,19 @@ class GroupPost < ActiveRecord::Base
   
   after_destroy { |post|
     self.clear_post_cache(post.id)
+    
+    self.clear_posts_group_feed_cache(post.group_id)
   }
   
   after_save { |post|
     self.set_post_cache(post.id, post)
+    
+    self.clear_posts_group_feed_cache(post.group_id)
   }
+  
+  def self.clear_posts_group_feed_cache(group_id)
+    Cache.delete(expand_cache_key("#{GroupsController::ACKP_posts_group_feed}_#{group_id}.atom"))
+  end
   
   
   

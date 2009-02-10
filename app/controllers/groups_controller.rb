@@ -64,6 +64,41 @@ class GroupsController < ApplicationController
   
   
   
+  ACKP_posts_group_feed = :ac_posts_group_feed
+  
+  caches_action :feed,
+    :cache_path => Proc.new { |controller|
+      group_id = controller.params[:id]
+      "#{ACKP_posts_group_feed}_#{group_id}"
+    },
+    :if => Proc.new { |controller|
+      controller.request.format.atom?
+    }
+  
+  
+  
+  def feed
+    @group_id = params[:id]
+
+    respond_to do |format|
+      format.html { jump_to("/groups/#{@group_id}") }
+
+      format.atom {
+        @group, group_image = Group.get_group_with_image(@group_id)
+
+        @posts = GroupPost.find(
+          :all,
+          :limit => Post_List_Size,
+          :conditions => ["group_id = ?", @group_id],
+          :include => [:account],
+          :order => "responded_at DESC, created_at DESC"
+        )
+
+        render :layout => false
+      }
+    end
+  end
+    
   # ! current account needed !
   def index
     return jump_to("/groups/all") unless has_login?
