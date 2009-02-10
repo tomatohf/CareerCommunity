@@ -402,6 +402,13 @@ ActionController::Routing::Routes.draw do |map|
     
   }
   map.connect "/:picture_type/pictures/:action/:id", :controller => "pictures"
+  
+  
+  map.resources :talks, :collection => {
+    
+  }, :member => {
+    
+  }
 
   
   
