@@ -1,0 +1,150 @@
+<% talk_title = h(@talk.get_title) %>
+
+<% page_title = "修改访谈录 #{talk_title}" %>
+<% community_page_title(page_title) %>
+
+<div class="talk_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+
+		<% if flash[:message] %>
+			<p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @talk.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@talk) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/talks/#{@talk.id}", :method => :put do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td style="width: 100px">
+							<label for="talk_title">
+						        访谈标题(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talk_title" name="talk_title" class="text_field" size="60" value="<%= h(@talk.title) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talk_sn">
+						        访谈编号(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talk_sn" name="talk_sn" class="text_field" size="50" value="<%= h(@talk.sn) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talk_place">
+						        访谈地点
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talk_place" name="talk_place" class="text_field" size="60" value="<%= h(@talk.place) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talk_begin_at">
+						        访谈开始时间
+								:
+						    </label>
+						</td>
+						<td>
+							<%=
+								select_datetime(
+									@talk.begin_at,
+									:include_blank => true,
+									:use_month_numbers => true,
+									:start_year => 2009,
+									:end_year => 2019,
+									:time_separator => "&nbsp; : &nbsp;",
+									:datetime_separator => "&nbsp; -- &nbsp;",
+									:prefix => "talk_begin_at"
+								)
+							%>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talk_end_at">
+						        访谈结束时间
+								:
+						    </label>
+						</td>
+						<td>
+							<%=
+								select_datetime(
+									@talk.end_at,
+									:include_blank => true,
+									:use_month_numbers => true,
+									:start_year => 2009,
+									:end_year => 2019,
+									:time_separator => "&nbsp; : &nbsp;",
+									:datetime_separator => "&nbsp; -- &nbsp;",
+									:prefix => "talk_end_at"
+								)
+							%>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talk_desc">
+						        访谈描述
+								:
+						    </label>
+						</td>
+						<td>
+							<textarea id="talk_desc" name="talk_desc" class="text_field" cols="60" rows="5"><%= h(@talk.get_info[:desc]) %></textarea>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talk_summary">
+						        访谈总结
+								:
+						    </label>
+						</td>
+						<td>
+							<textarea id="talk_summary" name="talk_summary" class="text_field" cols="60" rows="3"><%= h(@talk.get_info[:summary]) %></textarea>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "修改访谈录", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/talks/<%= @talk.id %>/manage">
+								返回管理访谈录 <%= talk_title %></a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+

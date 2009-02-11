@@ -42,6 +42,8 @@ class CreateTalks < ActiveRecord::Migration
       t.column :begin_at, :datetime
       t.column :end_at, :datetime
       
+      t.column :published, :boolean, :default => false
+      
       
       # enable sphinx delta index
       t.column :delta, :boolean
@@ -52,6 +54,7 @@ class CreateTalks < ActiveRecord::Migration
     add_index :talks, :sn
     add_index :talks, :begin_at
     add_index :talks, :end_at
+    add_index :talks, :published
     add_index :talks, :delta
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO talks (id) VALUES (1000)")

@@ -1024,6 +1024,7 @@ ActiveRecord::Schema.define(:version => 18) do
     t.string   "place"
     t.datetime "begin_at"
     t.datetime "end_at"
+    t.boolean  "published",                :default => false
     t.boolean  "delta"
   end
 
@@ -1033,6 +1034,7 @@ ActiveRecord::Schema.define(:version => 18) do
   add_index "talks", ["sn"], :name => "index_talks_on_sn"
   add_index "talks", ["begin_at"], :name => "index_talks_on_begin_at"
   add_index "talks", ["end_at"], :name => "index_talks_on_end_at"
+  add_index "talks", ["published"], :name => "index_talks_on_published"
   add_index "talks", ["delta"], :name => "index_talks_on_delta"
 
   create_table "talks_companies", :id => false, :force => true do |t|

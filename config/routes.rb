@@ -409,6 +409,8 @@ ActionController::Routing::Routes.draw do |map|
     
   }, :member => {
     
+    :manage => :get
+    
   }
 
   

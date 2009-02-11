@@ -2,16 +2,10 @@
 <% community_page_title(page_title) %>
 
 <div class="float_r talk_container_r">
-	<% if talk_editor?(session[:account_id]) %>
-		<div class="community_block align_c">
-			<a href="/talks/new">
-				添加新的访谈录</a>
-		</div>
-	<% else %>
-		<div class="community_block align_c">
-			<img src="/images/talks/qiaobutang_talk_logo.png" border="0" />
-		</div>
-	<% end %>
+	
+	<div class="community_block align_c">
+		<img src="/images/talks/qiaobutang_talk_logo.png" border="0" />
+	</div>
 	
 	<% if @new_comments.size > 0 %>
 		<div class="community_title">
@@ -31,16 +25,20 @@
 	
 	<h2><%= page_title %></h2>
 	
-	<div class="community_block_narrow form_info_s">
-		每周三发布, 敬请期待下一期 2009-02-28
-	</div>
+	
+	<% if talk_editor?(session[:account_id]) %>
+		<div class="align_r">
+			<a href="/talks/new">
+				添加新的访谈录</a>
+		</div>
+	<% end %>
 
 	<div class="community_block">
 		<%= render(:partial => "talk", :collection => @talks) %>
 	</div>
 	
 	<div class="community_block">
-		<%#= paging_buttons(@talks) %>
+		<%= paging_buttons(@talks) %>
 	</div>
 </div>
 
