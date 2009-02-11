@@ -24,16 +24,36 @@ class Talk < ActiveRecord::Base
   
   
   
-  # CKP_<some_key> = :<value>
+  CKP_talk = :talk
   
   after_save { |talk|
-    
+    self.set_talk_cache(talk)
   }
   
   after_destroy { |talk|
-    
+    self.clear_talk_cache(talk.id)
   }
   
+  
+  
+  def self.get_talk(talk_id)
+    t = Cache.get("#{CKP_talk}_#{talk_id}".to_sym)
+    
+    unless t
+      t = self.find(talk_id)
+      
+      self.set_talk_cache(t)
+    end
+    t
+  end
+  
+  def self.set_talk_cache(talk)
+    Cache.set("#{CKP_talk}_#{talk.id}".to_sym, talk.clear_association, Cache_TTL)
+  end
+  
+  def self.clear_talk_cache(talk_id)
+    Cache.delete("#{CKP_talk}_#{talk_id}".to_sym)
+  end
   
   
   def get_title

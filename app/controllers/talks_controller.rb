@@ -69,11 +69,11 @@ class TalksController < ApplicationController
   end
   
   def edit
-    @talk = Talk.find(params[:id])
+    @talk = Talk.get_talk(params[:id])
   end
   
   def update
-    @talk = Talk.find(params[:id])
+    @talk = Talk.get_talk(params[:id])
     @talk.updater_id = session[:account_id]
     
     @talk.title = params[:talk_title] && params[:talk_title].strip
@@ -102,7 +102,9 @@ class TalksController < ApplicationController
   end
   
   def manage
-    @talk = Talk.find(params[:id])
+    @talk = Talk.get_talk(params[:id])
+    
+    
   end
   
   
