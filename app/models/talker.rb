@@ -14,14 +14,32 @@ class Talker < ActiveRecord::Base
   
   
   CKP_talker = :talker
+  CKP_all_talker_names = :all_talker_names
   
   after_save { |talker|
     self.set_talker_cache(talker)
+    
+    self.clear_talk_talker_related_cache(talker.id)
+    
+    self.clear_all_talker_names_cache
   }
   
   after_destroy { |talker|
     self.clear_talker_cache(talker.id)
+    
+    self.clear_talk_talker_related_cache(talker.id)
+    
+    self.clear_all_talker_names_cache
   }
+  
+  def self.clear_talk_talker_related_cache(talker_id)
+    TalkTalker.find(
+      :all,
+      :conditions => ["talker_id = ?", talker_id]
+    ).each do |talk_talker|
+      TalkTalker.clear_talk_talkers_cache(talk_talker.talk_id)
+    end
+  end
   
   
   
@@ -34,6 +52,7 @@ class Talker < ActiveRecord::Base
   end
   
   
+  require_dependency "talk_talker"
   def self.get_talker(talker_id)
     t = Cache.get("#{CKP_talker}_#{talker_id}".to_sym)
     
@@ -51,6 +70,27 @@ class Talker < ActiveRecord::Base
   
   def self.clear_talker_cache(talker_id)
     Cache.delete("#{CKP_talker}_#{talker_id}".to_sym)
+  end
+  
+  def self.get_all_talker_names
+    a_t_n = Cache.get(CKP_all_talker_names)
+    
+    unless a_t_n
+      a_t_n = self.find(
+        :all,
+        :select => "id, real_name, nick",
+        :order => "created_at DESC"
+      ).collect { |talker|
+        [talker.id, talker.get_name]
+      }
+      
+      Cache.set(CKP_all_talker_names, a_t_n, Cache_TTL)
+    end
+    a_t_n
+  end
+  
+  def self.clear_all_talker_names_cache
+    Cache.delete(CKP_all_talker_names)
   end
   
 end

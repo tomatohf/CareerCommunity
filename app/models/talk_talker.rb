@@ -20,6 +20,7 @@ class TalkTalker < ActiveRecord::Base
   
   
   
+  require_dependency "talker"
   def self.get_talk_talkers(talk_id)
     t_t = Cache.get("#{CKP_talk_talkers}_#{talk_id}".to_sym)
     
@@ -29,7 +30,9 @@ class TalkTalker < ActiveRecord::Base
         :conditions => ["talk_id = ?", talk_id],
         :include => [:talker]
       ).collect do |talk_talker|
-        [talk_talker.id, talk_talker.talker]
+        talker = talk_talker.talker
+        Talker.set_talker_cache(talker)
+        [talk_talker.id, talker]
       end
       
       Cache.set("#{CKP_talk_talkers}_#{talk_id}".to_sym, t_t, Cache_TTL)

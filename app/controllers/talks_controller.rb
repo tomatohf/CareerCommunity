@@ -112,6 +112,7 @@ class TalksController < ApplicationController
     @talk = Talk.get_talk(params[:id])
     
     @reporters = TalkReporter.get_talk_reporters(@talk.id)
+    @talkers = TalkTalker.get_talk_talkers(@talk.id)
   end
   
   def add_reporter
@@ -140,11 +141,28 @@ class TalksController < ApplicationController
   end
   
   def add_talker
+    talk_id = params[:id]
+    talker_id = params[:talker_id]
     
+    talk_talker = TalkTalker.new(
+      :talk_id => talk_id,
+      :talker_id => talker_id
+    )
+    
+    talk_talker.save
+    
+    jump_to("/talks/#{talk_id}/manage")
   end
   
   def del_talker
+    talk_id = params[:id]
+    talk_talker_id = params[:talk_talker_id]
     
+    talk_talker = TalkTalker.find(talk_talker_id)
+    
+    talk_talker.destroy if talk_talker.talk_id.to_s == talk_id
+    
+    jump_to("/talks/#{talk_id}/manage")
   end
   
   def talker_index
