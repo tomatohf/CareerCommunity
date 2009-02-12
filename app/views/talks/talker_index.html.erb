@@ -1,0 +1,62 @@
+<% page_title = "管理受访人" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 120px;" do %>
+		<div class="action_bar">
+			<a href="/talks/talker_new" style="font-weight: bold;">
+				添加受访人</a>
+		</div>
+	<% end %>
+</div>
+
+<div class="talk_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow">
+		<a href="/talks">返回访谈录列表</a>
+	</div>
+	
+	<% form_tag "", :method => :post, :id => "delete_talker_form" do %>
+	<% end %>
+	
+	<div class="community_block">
+		<%= render(:partial => "talker", :collection => @talkers) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@talkers) %>
+	</div>
+</div>
+
+
+
+<script language="JavaScript">
+	function expand_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "";
+		document.getElementById(expand_icon).style.display = "";
+		document.getElementById(collapse_icon).style.display = "none";
+	}
+	
+	function collapse_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "none";
+		document.getElementById(expand_icon).style.display = "none";
+		document.getElementById(collapse_icon).style.display = "";
+	}
+	
+	function delete_talker(talker_id) {
+		if(confirm("确定要删除此受访人么 ?")) {
+			del_form = document.getElementById("delete_talker_form");
+			del_form.action = "/talks/" + talker_id + "/talker_destroy";
+			del_form.submit();
+		}
+	}
+</script>
+
+

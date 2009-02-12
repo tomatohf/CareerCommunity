@@ -1,0 +1,224 @@
+<% page_title = "添加新的受访人" %>
+<% community_page_title(page_title) %>
+
+<div class="talk_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @talker.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@talker) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/talks/talker_create", :method => :post do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td style="width: 100px">
+							<label for="talker_real_name">
+						        真实姓名(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_real_name" name="talker_real_name" class="text_field" size="30" value="<%= h(@talker.real_name) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_gender">
+				                性别
+								:
+				            </label>
+						</td>
+						<td>
+							<select name="talker_gender" id="talker_gender" class="dropdown_list">
+								<option value=""<%= " selected=\"selected\"" if @talker.gender.nil? %>></option>
+								<option value="true"<%= " selected=\"selected\"" if @talker.gender == true %>>男 - ♂</option>
+								<option value="false"<%= " selected=\"selected\"" if @talker.gender == false %>>女 - ♀</option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_age">
+						        年龄
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_age" name="talker_age" class="text_field" size="30" value="<%= h(@talker.age) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_nick">
+						        昵称
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_nick" name="talker_nick" class="text_field" size="30" value="<%= h(@talker.nick) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_company">
+						        公司
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_company" name="talker_company" class="text_field" size="30" value="<%= h(@talker.company) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_position">
+						        职位
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_position" name="talker_position" class="text_field" size="30" value="<%= h(@talker.position) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_email">
+						        Email
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_email" name="talker_email" class="text_field" size="30" value="<%= h(@talker.email) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_mobile">
+						        手机
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_mobile" name="talker_mobile" class="text_field" size="30" value="<%= h(@talker.mobile) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_phone">
+						        电话
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_phone" name="talker_phone" class="text_field" size="30" value="<%= h(@talker.phone) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_msn">
+						        MSN
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_msn" name="talker_msn" class="text_field" size="30" value="<%= h(@talker.msn) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_gtalk">
+						        Gtalk
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_gtalk" name="talker_gtalk" class="text_field" size="30" value="<%= h(@talker.gtalk) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_qq">
+						        QQ
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_qq" name="talker_qq" class="text_field" size="30" value="<%= h(@talker.qq) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_skype">
+						        Skype
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talker_skype" name="talker_skype" class="text_field" size="30" value="<%= h(@talker.skype) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_experience">
+						        经历和经验
+								:
+						    </label>
+						</td>
+						<td>
+							<textarea id="talker_experience" name="talker_experience" class="text_field" cols="60" rows="5"><%= h(@talker.experience) %></textarea>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talker_other">
+						        其它
+								:
+						    </label>
+						</td>
+						<td>
+							<textarea id="talker_other" name="talker_other" class="text_field" cols="60" rows="3"><%= h(@talker.other) %></textarea>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "添加受访人", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/talks">返回访谈录列表</a>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/talks/talker_index">返回管理受访人</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+

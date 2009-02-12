@@ -2,6 +2,7 @@ class TalksController < ApplicationController
   
   Comment_Page_Size = 100
   Talk_Page_Size = 10
+  Talker_Page_Size = 20
   
   New_Comment_Size = 30
   
@@ -9,14 +10,14 @@ class TalksController < ApplicationController
   layout "community"
   before_filter :check_login, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                         :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
-                                        :talker_edit, :talker_update, :talker_destroy]
+                                        :talker, :talker_edit, :talker_update, :talker_destroy]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_create, :talker_update,
                                           :talker_destroy]
   
   before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
-                                          :talker_edit, :talker_update, :talker_destroy]
+                                          :talker, :talker_edit, :talker_update, :talker_destroy]
   
   
   
@@ -147,27 +148,112 @@ class TalksController < ApplicationController
   end
   
   def talker_index
-    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @talkers = Talker.paginate(
+      :page => page,
+      :per_page => Talker_Page_Size,
+      :order => "created_at DESC"
+    )
   end
   
   def talker_new
-    
+    @talker = Talker.new
   end
   
   def talker_create
+    @talker = Talker.new()
     
+    @talker.real_name = params[:talker_real_name] && params[:talker_real_name].strip
+    @talker.gender = case params[:talker_gender]
+      when "true"
+        true
+      when "false"
+        false
+      else
+        nil
+    end
+    @talker.age = params[:talker_age] && params[:talker_age].strip
+    @talker.nick = params[:talker_nick] && params[:talker_nick].strip
+    
+    @talker.company = params[:talker_company] && params[:talker_company].strip
+    @talker.position = params[:talker_position] && params[:talker_position].strip
+    
+    @talker.email = params[:talker_email] && params[:talker_email].strip
+    @talker.mobile = params[:talker_mobile] && params[:talker_mobile].strip
+    @talker.phone = params[:talker_phone] && params[:talker_phone].strip
+    
+    @talker.msn = params[:talker_msn] && params[:talker_msn].strip
+    @talker.gtalk = params[:talker_gtalk] && params[:talker_gtalk].strip
+    @talker.qq = params[:talker_qq] && params[:talker_qq].strip
+    @talker.skype = params[:talker_skype] && params[:talker_skype].strip
+    
+    @talker.experience = params[:talker_experience] && params[:talker_experience].strip
+    
+    @talker.other = params[:talker_other] && params[:talker_other].strip
+    
+    if @talker.save
+      jump_to("/talks/talker_index")
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+      render :action => "talker_new"
+    end
+  end
+  
+  def talker
+    @talker = Talker.get_talker(params[:id])
   end
   
   def talker_edit
-    
+    @talker = Talker.get_talker(params[:id])
   end
   
   def talker_update
+    @talker = Talker.get_talker(params[:id])
     
+    @talker.real_name = params[:talker_real_name] && params[:talker_real_name].strip
+    @talker.gender = case params[:talker_gender]
+      when "true"
+        true
+      when "false"
+        false
+      else
+        nil
+    end
+    @talker.age = params[:talker_age] && params[:talker_age].strip
+    @talker.nick = params[:talker_nick] && params[:talker_nick].strip
+    
+    @talker.company = params[:talker_company] && params[:talker_company].strip
+    @talker.position = params[:talker_position] && params[:talker_position].strip
+    
+    @talker.email = params[:talker_email] && params[:talker_email].strip
+    @talker.mobile = params[:talker_mobile] && params[:talker_mobile].strip
+    @talker.phone = params[:talker_phone] && params[:talker_phone].strip
+    
+    @talker.msn = params[:talker_msn] && params[:talker_msn].strip
+    @talker.gtalk = params[:talker_gtalk] && params[:talker_gtalk].strip
+    @talker.qq = params[:talker_qq] && params[:talker_qq].strip
+    @talker.skype = params[:talker_skype] && params[:talker_skype].strip
+    
+    @talker.experience = params[:talker_experience] && params[:talker_experience].strip
+    
+    @talker.other = params[:talker_other] && params[:talker_other].strip
+    
+    if @talker.save
+      flash.now[:message] = "已成功保存"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+
+    render :action => "talker_edit"
   end
   
   def talker_destroy
+    @talker = Talker.get_talker(params[:id])
     
+    @talker.destroy
+    
+    jump_to("/talks/talker_index")
   end
   
   

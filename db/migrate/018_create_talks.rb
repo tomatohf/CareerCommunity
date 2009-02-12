@@ -192,8 +192,6 @@ class CreateTalks < ActiveRecord::Migration
       t.column :company, :string
       t.column :position, :string
       
-      t.column :experience, :string, :limit => 1000
-      
       t.column :email, :string
       t.column :mobile, :string, :limit => 25
       t.column :phone, :string, :limit => 25
@@ -202,6 +200,8 @@ class CreateTalks < ActiveRecord::Migration
       t.column :gtalk, :string
       t.column :qq, :string, :limit => 20
       t.column :skype, :string
+      
+      t.column :experience, :string, :limit => 1000
       
       t.column :other, :string, :limit => 1000
       

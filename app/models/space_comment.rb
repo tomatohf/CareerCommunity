@@ -16,11 +16,11 @@ class SpaceComment < ActiveRecord::Base
   FCKP_spaces_show_wall = :fc_spaces_show_wall
   
   after_save { |space_comment|
-    self.clear_spaces_show_wall_cache(space_comment.account_id)
+    self.clear_spaces_show_wall_cache(space_comment.owner_id)
   }
   
   after_destroy { |space_comment|
-    self.clear_spaces_show_wall_cache(space_comment.account_id)
+    self.clear_spaces_show_wall_cache(space_comment.owner_id)
   }
   
   def self.clear_spaces_show_wall_cache(account_id)

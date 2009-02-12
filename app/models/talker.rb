@@ -1,5 +1,7 @@
 class Talker < ActiveRecord::Base
   
+  validates_presence_of :real_name, :message => "请输入 真实姓名"
+  
   validates_length_of :real_name, :maximum => 50, :message => "真实姓名 超过长度限制", :allow_nil => true
   validates_length_of :experience, :maximum => 1000, :message => "经历 超过长度限制", :allow_nil => true
   
@@ -23,6 +25,15 @@ class Talker < ActiveRecord::Base
   
   
   
+  def get_name
+    the_name = self.real_name
+    
+    the_name += " (#{self.nick})" if self.nick && self.nick != ""
+    
+    the_name
+  end
+  
+  
   def self.get_talker(talker_id)
     t = Cache.get("#{CKP_talker}_#{talker_id}".to_sym)
     
@@ -35,7 +46,7 @@ class Talker < ActiveRecord::Base
   end
   
   def self.set_talker_cache(talker)
-    Cache.set("#{CKP_talker}_#{talker.id}".to_sym, talker.clear_association, Cache_TTL)
+    Cache.set("#{CKP_talker}_#{talker.id}".to_sym, talker, Cache_TTL)
   end
   
   def self.clear_talker_cache(talker_id)

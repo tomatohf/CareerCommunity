@@ -1,0 +1,114 @@
+<% Talker.set_talker_cache(talker) %>
+
+<div>
+	<div class="space_section_title">
+		<a class="float_r" title="收起" id="talker_<%= talker.id %>_section_expand" href="#" onclick="collapse_section('talker_<%= talker.id %>_section'); return false;" style="display: none">
+			<img src="/images/expand.png" border="0" /></a>
+		<a class="float_r" title="展开" id="talker_<%= talker.id %>_section_collapse" href="#" onclick="expand_section('talker_<%= talker.id %>_section'); return false;">
+			<img src="/images/collapse.png" border="0" /></a>
+		
+		<span class="float_r">
+			<a href="/talks/<%= talker.id %>/talker_edit">
+				修改</a>
+			&nbsp;&nbsp;
+			
+			<a href="#" onclick="delete_talker(<%= talker.id %>); return false;">
+				删除</a>
+			&nbsp;&nbsp;
+			
+			<a href="/talks/talker/<%= talker.id %>">
+				显示</a>
+			&nbsp;&nbsp;
+			
+			&nbsp;&nbsp;&nbsp;
+		</span>
+		
+		&nbsp;
+		<b>
+			<%= h(talker.get_name) %>
+		</b>
+	</div>
+	
+	<div id="talker_<%= talker.id %>_section" class="overflow_hidden" style="padding: 0px 10px 15px 10px; display: none">
+		
+		<div>
+			<span class="activity_info_label">公司:</span>
+			<%= h(talker.company) %>
+			
+			&nbsp;&nbsp;&nbsp;
+			
+			<span class="activity_info_label">职位:</span>
+			<%= h(talker.position) %>
+		</div>
+		
+		<div>
+			<span class="activity_info_label">真实姓名:</span>
+			<%= h(talker.real_name) %>
+			
+			&nbsp;&nbsp;&nbsp;
+			
+			<span class="activity_info_label">昵称:</span>
+			<%= h(talker.nick) %>
+			
+			&nbsp;&nbsp;&nbsp;
+			
+			<span class="activity_info_label">性别:</span>
+			<%= talker.gender ? "男-♂" : "女-♀" unless talker.gender.nil? %>
+			
+			&nbsp;&nbsp;&nbsp;
+			
+			<span class="activity_info_label">年龄:</span>
+			<%= h(talker.age) %>
+		</div>
+		
+		<div>
+			<span class="activity_info_label">Email:</span>
+			<%= h(talker.email) %>
+			
+			&nbsp;&nbsp;&nbsp;
+			
+			<span class="activity_info_label">手机:</span>
+			<%= h(talker.mobile) %>
+			
+			&nbsp;&nbsp;&nbsp;
+			
+			<span class="activity_info_label">电话:</span>
+			<%= h(talker.phone) %>
+		</div>
+		
+		<div>
+			<span class="activity_info_label">MSN:</span>
+			<%= h(talker.msn) %>
+			
+			&nbsp;&nbsp;&nbsp;
+			
+			<span class="activity_info_label">Gtalk:</span>
+			<%= h(talker.gtalk) %>
+			
+			&nbsp;&nbsp;&nbsp;
+			
+			<span class="activity_info_label">QQ:</span>
+			<%= h(talker.qq) %>
+			
+			&nbsp;&nbsp;&nbsp;
+			
+			<span class="activity_info_label">Skype:</span>
+			<%= h(talker.skype) %>
+		</div>
+		
+		<div>
+			<span class="activity_info_label">经历和经验:</span>
+		</div>
+		<div>
+			<%= simple_format(h(talker.experience)) %>
+		</div>
+		
+		<div>
+			<span class="activity_info_label">其它:</span>
+		</div>
+		<div>
+			<%= simple_format(h(talker.other)) %>
+		</div>
+		
+	</div>
+</div>
