@@ -993,21 +993,24 @@ ActiveRecord::Schema.define(:version => 18) do
   add_index "talk_talkers", ["delta"], :name => "index_talk_talkers_on_delta"
 
   create_table "talkers", :force => true do |t|
-    t.string  "real_name",  :limit => 50
-    t.boolean "gender"
-    t.string  "age"
-    t.string  "company"
-    t.string  "position"
-    t.string  "experience", :limit => 1000
-    t.string  "email"
-    t.string  "mobile",     :limit => 25
-    t.string  "phone",      :limit => 25
-    t.string  "msn"
-    t.string  "gtalk"
-    t.string  "qq",         :limit => 20
-    t.string  "skype"
-    t.string  "other",      :limit => 1000
-    t.boolean "delta"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "real_name",  :limit => 50
+    t.boolean  "gender"
+    t.string   "age"
+    t.string   "nick"
+    t.string   "company"
+    t.string   "position"
+    t.string   "experience", :limit => 1000
+    t.string   "email"
+    t.string   "mobile",     :limit => 25
+    t.string   "phone",      :limit => 25
+    t.string   "msn"
+    t.string   "gtalk"
+    t.string   "qq",         :limit => 20
+    t.string   "skype"
+    t.string   "other",      :limit => 1000
+    t.boolean  "delta"
   end
 
   add_index "talkers", ["real_name"], :name => "index_talkers_on_real_name"

@@ -407,9 +407,23 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/talks/p/:page", :controller => "talks", :action => "index", :page => /\d+/
   map.resources :talks, :collection => {
     
+    :talker_index => :get,
+    :talker_new => :get,
+    :talker_create => :post
+    
   }, :member => {
     
-    :manage => :get
+    :manage => :get,
+    
+    :add_reporter => :post,
+    :del_reporter => :post,
+    
+    :add_talker => :post,
+    :del_talker => :post,
+    
+    :talker_edit => :get,
+    :talker_update => :post,
+    :talker_destroy => :post
     
   }
 

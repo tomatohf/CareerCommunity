@@ -181,9 +181,13 @@ class CreateTalks < ActiveRecord::Migration
     
     # talkers table
     create_table :talkers, :force => true do |t|
+      t.column :created_at, :datetime
+      t.column :updated_at, :datetime
+      
       t.column :real_name, :string, :limit => 50
       t.column :gender, :boolean
       t.column :age, :string
+      t.column :nick, :string
       
       t.column :company, :string
       t.column :position, :string
@@ -295,6 +299,7 @@ class CreateTalks < ActiveRecord::Migration
     drop_table :talkers
     drop_table :talk_answers
     drop_table :talk_questions
+    drop_table :talk_question_categories
     drop_table :talk_talkers
     drop_table :talk_reporters
     drop_table :talks

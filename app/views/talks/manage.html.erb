@@ -6,16 +6,34 @@
 <div class="float_r talk_container_r">
 	
 	<div class="community_title">
-		管理此次访谈录的访谈员
+		此次访谈录的访谈员
 	</div>
 	
-	<div class="community_block">
-		
+	<div class="community_block align_r">
+		<% form_tag "/talks/#{@talk.id}/add_reporter", :method => :post do %>
+			<input type="text" name="reporter_name" class="text_field" />
+			&nbsp;
+			<input type="submit" value="添加访谈员" class="button" />
+		<% end %>
+	</div>
+	
+	<div class="community_block align_r">
+		<% @reporters.each do |reporter| %>
+			<% form_tag "/talks/#{@talk.id}/del_reporter", :method => :post do %>
+				<span style="font-size: 14px; font-weight: bold;">
+					<%= h(reporter[1]) %>
+				</span>
+				
+				<input type="hidden" name="reporter_id" value="<%= reporter[0] %>" class="text_field" />
+				&nbsp;
+				<input type="submit" value="删除此访谈员" class="button" />
+			<% end %>
+		<% end %>
 	</div>
 	
 	
 	<div class="community_title">
-		管理此次访谈录的受访人
+		此次访谈录的受访人
 	</div>
 	
 	<div class="community_block">

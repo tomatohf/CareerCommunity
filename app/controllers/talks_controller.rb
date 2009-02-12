@@ -7,10 +7,16 @@ class TalksController < ApplicationController
   
   
   layout "community"
-  before_filter :check_login, :only => [:new, :create, :edit, :update, :manage]
-  before_filter :check_limited, :only => [:create, :update]
+  before_filter :check_login, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
+                                        :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
+                                        :talker_edit, :talker_update, :talker_destroy]
+  before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
+                                          :add_talker, :del_talker, :talker_create, :talker_update,
+                                          :talker_destroy]
   
-  before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage]
+  before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
+                                          :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
+                                          :talker_edit, :talker_update, :talker_destroy]
   
   
   
@@ -49,10 +55,10 @@ class TalksController < ApplicationController
     @talk.place = params[:talk_place] && params[:talk_place].strip
     
     ba = params[:talk_begin_at]
-    @talk.begin_at = Time.local(ba[:year], ba[:month], ba[:day], ba[:hour], ba[:minute])
+    @talk.begin_at = Time.local(ba[:year], ba[:month], ba[:day], ba[:hour], ba[:minute]) rescue nil
     
     ea = params[:talk_end_at]
-    @talk.end_at = Time.local(ea[:year], ea[:month], ea[:day], ea[:hour], ea[:minute])
+    @talk.end_at = Time.local(ea[:year], ea[:month], ea[:day], ea[:hour], ea[:minute]) rescue nil
     
     talk_info = {
       :desc => params[:talk_desc],
@@ -81,10 +87,10 @@ class TalksController < ApplicationController
     @talk.place = params[:talk_place] && params[:talk_place].strip
     
     ba = params[:talk_begin_at]
-    @talk.begin_at = Time.local(ba[:year], ba[:month], ba[:day], ba[:hour], ba[:minute])
+    @talk.begin_at = Time.local(ba[:year], ba[:month], ba[:day], ba[:hour], ba[:minute]) rescue nil
     
     ea = params[:talk_end_at]
-    @talk.end_at = Time.local(ea[:year], ea[:month], ea[:day], ea[:hour], ea[:minute])
+    @talk.end_at = Time.local(ea[:year], ea[:month], ea[:day], ea[:hour], ea[:minute]) rescue nil
     
     talk_info = {
       :desc => params[:talk_desc],
@@ -104,6 +110,63 @@ class TalksController < ApplicationController
   def manage
     @talk = Talk.get_talk(params[:id])
     
+    @reporters = TalkReporter.get_talk_reporters(@talk.id)
+  end
+  
+  def add_reporter
+    talk_id = params[:id]
+    reporter_name = params[:reporter_name] && params[:reporter_name].strip
+    
+    talk_reporter = TalkReporter.new(
+      :talk_id => talk_id,
+      :name => reporter_name
+    )
+    
+    talk_reporter.save
+    
+    jump_to("/talks/#{talk_id}/manage")
+  end
+  
+  def del_reporter
+    talk_id = params[:id]
+    reporter_id = params[:reporter_id] && params[:reporter_id].strip
+    
+    talk_reporter = TalkReporter.find(reporter_id)
+    
+    talk_reporter.destroy if talk_reporter.talk_id.to_s == talk_id
+    
+    jump_to("/talks/#{talk_id}/manage")
+  end
+  
+  def add_talker
+    
+  end
+  
+  def del_talker
+    
+  end
+  
+  def talker_index
+    
+  end
+  
+  def talker_new
+    
+  end
+  
+  def talker_create
+    
+  end
+  
+  def talker_edit
+    
+  end
+  
+  def talker_update
+    
+  end
+  
+  def talker_destroy
     
   end
   
