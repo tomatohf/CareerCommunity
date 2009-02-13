@@ -10,14 +10,6 @@
 	</div>
 	
 	<div class="community_block align_r">
-		<% form_tag "/talks/#{@talk.id}/add_reporter", :method => :post do %>
-			<input type="text" name="reporter_name" class="text_field" />
-			&nbsp;
-			<input type="submit" value="添加访谈员" class="button" />
-		<% end %>
-	</div>
-	
-	<div class="community_block align_r">
 		<% @reporters.each do |reporter| %>
 			<% form_tag "/talks/#{@talk.id}/del_reporter", :method => :post, :onsubmit => "if(confirm('确定要删除此访谈员么 ?')) { return true; }; return false;" do %>
 				<span style="font-size: 14px; font-weight: bold;">
@@ -31,21 +23,17 @@
 		<% end %>
 	</div>
 	
+	<div class="community_block align_r">
+		<% form_tag "/talks/#{@talk.id}/add_reporter", :method => :post do %>
+			<input type="text" name="reporter_name" class="text_field" />
+			&nbsp;
+			<input type="submit" value="添加访谈员" class="button" />
+		<% end %>
+	</div>
+	
 	
 	<div class="community_title">
 		此次访谈录的受访人
-	</div>
-	
-	<div class="community_block align_r">
-		<% form_tag "/talks/#{@talk.id}/add_talker", :method => :post do %>
-			<select name="talker_id" id="talker_id" class="dropdown_list">
-				<% Talker.get_all_talker_names.each do |talker| %>
-					<option value="<%= talker[0] %>"><%= h(talker[1]) %></option>
-				<% end %>
-			</select>
-			&nbsp;
-			<input type="submit" value="增加此受访人" class="button" />
-		<% end %>
 	</div>
 	
 	<div class="community_block align_r">
@@ -66,6 +54,18 @@
 	</div>
 	
 	<div class="community_block align_r">
+		<% form_tag "/talks/#{@talk.id}/add_talker", :method => :post do %>
+			<select name="talker_id" id="talker_id" class="dropdown_list">
+				<% Talker.get_all_talker_names.each do |talker| %>
+					<option value="<%= talker[0] %>"><%= h(talker[1]) %></option>
+				<% end %>
+			</select>
+			&nbsp;
+			<input type="submit" value="增加此受访人" class="button" />
+		<% end %>
+	</div>
+	
+	<div class="community_block align_r">
 		<a href="/talks/talker_index" target="_blank">
 			管理现有的受访人</a>
 			
@@ -75,14 +75,177 @@
 			添加新的受访人</a>
 	</div>
 	
+	
+	<div class="community_title">
+		此次访谈录的章节
+	</div>
+	
+	<div>
+		<% @question_categories.each do |category| %>
+			<% form_tag "/talks/#{@talk.id}/del_question_category", :method => :post, :onsubmit => "if(confirm('确定要删除此章节么 ?')) { return true; }; return false;" do %>
+				<li class="community_block">
+					<div>
+						<span class="float_r">
+							<input type="submit" value="删除此章节" class="button" />
+							&nbsp;
+							<a href="/talks/<%= category.id %>/question_category_edit">
+								修改</a>
+						</span>
+
+						<span class="activity_info_label">名称:</span>
+						<%= h(category.name) %>
+
+						<input type="hidden" name="question_category_id" value="<%= category.id %>" />
+						&nbsp;
+					</div>
+
+
+					<div>
+						<span class="activity_info_label">描述:</span>
+						<%= h(category.desc) %>
+					</div>
+				</li>
+			<% end %>
+		<% end %>
+	</div>
+	
+	<div class="community_block">
+		<% form_tag "/talks/#{@talk.id}/add_question_category", :method => :post do %>
+			<table cellpadding="0" cellspacing="2" class="main_part_w">
+				<tr>
+					<td>
+						<label for="category_name">
+					        章节名称(<span style="color: red;">*</span>)
+							:
+					    </label>
+					</td>
+					<td>
+						<input type="text" id="category_name" name="category_name" class="text_field" size="25" />
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="category_desc">
+					        章节描述
+							:
+					    </label>
+					</td>
+					<td>
+						<textarea id="category_desc" name="category_desc" class="text_field" cols="25" rows="2"></textarea>
+					</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" value="添加章节" class="button" />
+						&nbsp;
+						<span class="form_info_l">
+							请按出现顺序添加
+						</span>
+					</td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+	
 </div>
 
 <div class="talk_container_l">
 	<h2><%= page_title %></h2>
 	
 	
-	<div class="community_block">
-		
+	<div>
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="talk_info_section_expand" href="#" onclick="collapse_section('talk_info_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="talk_info_section_collapse" href="#" onclick="expand_section('talk_info_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+
+			<span class="float_r">
+				<a href="#" onclick="//">
+					删除</a>
+				&nbsp;
+
+				<a href="/talks/<%= @talk.id %>/edit">
+					修改</a>
+				&nbsp;
+				
+				<% if @talk.published %>
+					<a href="#">
+						取消发布</a>
+				<% else %>
+					<a href="#">
+						发布出去</a>
+				<% end %>
+				&nbsp;
+
+				<a href="#">
+					预览</a>
+
+				&nbsp;
+			</span>
+
+			<span class="activity_info_label">编号:</span>
+			<%= h(@talk.sn) %>
+		</div>
+
+		<div id="talk_info_section" class="overflow_hidden">
+			<div>
+				<span class="activity_info_label">标题:</span>
+				<%= h(@talk.title) %>
+
+				&nbsp;&nbsp;&nbsp;
+
+				<span class="activity_info_label">地点:</span>
+				<%= h(@talk.place) %>
+			</div>
+			
+			<div>
+				<span class="activity_info_label">开始时间:</span>
+				<%= @talk.begin_at && format_datetime(@talk.begin_at) %>
+
+				&nbsp;&nbsp;&nbsp;
+
+				<span class="activity_info_label">结束时间:</span>
+				<%= @talk.end_at && format_datetime(@talk.end_at) %>
+			</div>
+			
+			<div>
+				<span class="activity_info_label">描述:</span>
+				<%= h(@talk_info[:desc]) %>
+			</div>
+			
+			<% if @talk_info[:summary] && @talk_info[:summary] != "" %>
+				<div>
+					<span class="activity_info_label">总结:</span>
+					<%= h(@talk_info[:summary]) %>
+				</div>
+			<% end %>
+		</div>
 	</div>
 </div>
+
+
+
+<script language="JavaScript">
+	function expand_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "";
+		document.getElementById(expand_icon).style.display = "";
+		document.getElementById(collapse_icon).style.display = "none";
+	}
+	
+	function collapse_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "none";
+		document.getElementById(expand_icon).style.display = "none";
+		document.getElementById(collapse_icon).style.display = "";
+	}
+</script>
 

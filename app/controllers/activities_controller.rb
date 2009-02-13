@@ -1548,9 +1548,8 @@ class ActivitiesController < ApplicationController
   def update_master
     new_master_id = params[:new_master_id] && params[:new_master_id].strip
     
-    admin_member = ActivityMember.is_activity_admin(@activity_id, new_master_id)
-    if admin_member
-      @activity.master_id = admin_member.account_id
+    if ActivityMember.is_activity_admin(@activity_id, new_master_id)
+      @activity.master_id = new_master_id
       @activity.save
     end
     

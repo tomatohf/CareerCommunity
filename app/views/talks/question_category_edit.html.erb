@@ -1,0 +1,65 @@
+<% page_title = "修改访谈录的章节" %>
+<% community_page_title(page_title) %>
+
+<div class="talk_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+
+		<% if flash[:message] %>
+			<p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @question_category.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@question_category) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/talks/#{@question_category.id}/question_category_update", :method => :post do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td style="width: 100px;">
+							<label for="category_name">
+						        章节名称(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="category_name" name="category_name" class="text_field" size="50" value="<%= h(@question_category.name) %>" />
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="category_desc">
+						        章节描述
+								:
+						    </label>
+						</td>
+						<td>
+							<textarea id="category_desc" name="category_desc" class="text_field" cols="50" rows="5"><%= h(@question_category.desc) %></textarea>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "修改章节", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/talks/<%= @question_category.talk_id %>/manage">返回管理章节所在的访谈录</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+

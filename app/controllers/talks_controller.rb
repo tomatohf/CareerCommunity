@@ -10,14 +10,19 @@ class TalksController < ApplicationController
   layout "community"
   before_filter :check_login, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                         :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
-                                        :talker, :talker_edit, :talker_update, :talker_destroy]
+                                        :talker, :talker_edit, :talker_update, :talker_destroy,
+                                        :add_question_category, :del_question_category,
+                                        :question_category_edit, :question_category_update]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_create, :talker_update,
-                                          :talker_destroy]
+                                          :talker_destroy, :add_question_category, :del_question_category,
+                                          :question_category_update]
   
   before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
-                                          :talker, :talker_edit, :talker_update, :talker_destroy]
+                                          :talker, :talker_edit, :talker_update, :talker_destroy,
+                                          :add_question_category, :del_question_category,
+                                          :question_category_edit, :question_category_update]
   
   
   
@@ -110,9 +115,12 @@ class TalksController < ApplicationController
   
   def manage
     @talk = Talk.get_talk(params[:id])
+    @talk_info = @talk.get_info
     
     @reporters = TalkReporter.get_talk_reporters(@talk.id)
     @talkers = TalkTalker.get_talk_talkers(@talk.id)
+    
+    @question_categories = TalkQuestionCategory.get_talk_question_categories(@talk.id)
   end
   
   def add_reporter
@@ -272,6 +280,55 @@ class TalksController < ApplicationController
     @talker.destroy
     
     jump_to("/talks/talker_index")
+  end
+  
+  def add_question_category
+    talk_id = params[:id]
+    category_name = params[:category_name] && params[:category_name].strip
+    category_desc = params[:category_desc] && params[:category_desc].strip
+    
+    question_category = TalkQuestionCategory.new(
+      :talk_id => talk_id,
+      :creator_id => session[:account_id],
+      :updater_id => session[:account_id],
+      :name => category_name,
+      :desc => category_desc
+    )
+    
+    question_category.save
+    
+    jump_to("/talks/#{talk_id}/manage")
+  end
+  
+  def del_question_category
+    talk_id = params[:id]
+    question_category_id = params[:question_category_id]
+    
+    question_category = TalkQuestionCategory.find(question_category_id)
+    
+    question_category.destroy if question_category.talk_id.to_s == talk_id
+    
+    jump_to("/talks/#{talk_id}/manage")
+  end
+  
+  def question_category_edit
+    @question_category = TalkQuestionCategory.find(params[:id])
+  end
+  
+  def question_category_update
+    @question_category = TalkQuestionCategory.find(params[:id])
+    @question_category.updater_id = session[:account_id]
+    
+    @question_category.name = params[:category_name] && params[:category_name].strip
+    @question_category.desc = params[:category_desc] && params[:category_desc].strip
+    
+    if @question_category.save
+      flash.now[:message] = "已成功保存"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+
+    render :action => "question_category_edit"
   end
   
   

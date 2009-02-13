@@ -422,6 +422,12 @@ ActionController::Routing::Routes.draw do |map|
     :add_talker => :post,
     :del_talker => :post,
     
+    :add_question_category => :post,
+    :del_question_category => :post,
+    
+    :question_category_edit => :get,
+    :question_category_update => :post,
+    
     :talker_edit => :get,
     :talker_update => :post,
     :talker_destroy => :post
