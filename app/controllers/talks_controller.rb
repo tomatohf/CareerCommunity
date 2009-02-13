@@ -12,17 +12,17 @@ class TalksController < ApplicationController
                                         :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
                                         :talker, :talker_edit, :talker_update, :talker_destroy,
                                         :add_question_category, :del_question_category,
-                                        :question_category_edit, :question_category_update]
+                                        :question_category_edit, :question_category_update, :add_question]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_create, :talker_update,
                                           :talker_destroy, :add_question_category, :del_question_category,
-                                          :question_category_update]
+                                          :question_category_update, :add_question]
   
   before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
                                           :talker, :talker_edit, :talker_update, :talker_destroy,
                                           :add_question_category, :del_question_category,
-                                          :question_category_edit, :question_category_update]
+                                          :question_category_edit, :question_category_update, :add_question]
   
   
   
@@ -121,6 +121,8 @@ class TalksController < ApplicationController
     @talkers = TalkTalker.get_talk_talkers(@talk.id)
     
     @question_categories = TalkQuestionCategory.get_talk_question_categories(@talk.id)
+    
+    @questions = TalkQuestion.get_talk_questions(@talk.id)
   end
   
   def add_reporter
@@ -329,6 +331,26 @@ class TalksController < ApplicationController
     end
 
     render :action => "question_category_edit"
+  end
+  
+  def add_question
+    talk_id = params[:id]
+    question_question = params[:question_question] && params[:question_question].strip
+    question_category = params[:question_category] && params[:question_category].strip
+    question_summary = params[:question_summary] && params[:question_summary].strip
+    
+    question = TalkQuestion.new(
+      :talk_id => talk_id,
+      :creator_id => session[:account_id],
+      :updater_id => session[:account_id],
+      :question => question_question,
+      :category_id => question_category,
+      :summary => question_summary
+    )
+    
+    question.save
+    
+    jump_to("/talks/#{talk_id}/manage")
   end
   
   

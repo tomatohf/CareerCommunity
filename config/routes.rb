@@ -430,7 +430,9 @@ ActionController::Routing::Routes.draw do |map|
     
     :talker_edit => :get,
     :talker_update => :post,
-    :talker_destroy => :post
+    :talker_destroy => :post,
+    
+    :add_question => :post
     
   }
 
