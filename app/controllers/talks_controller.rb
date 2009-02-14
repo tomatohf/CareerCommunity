@@ -15,13 +15,14 @@ class TalksController < ApplicationController
                                         :add_question_category, :del_question_category,
                                         :question_category_edit, :question_category_update, :add_question,
                                         :question_edit, :question_update, :answer_new, :answer_create,
-                                        :answer_edit, :answer_update, :answer, :answer_destroy]
+                                        :answer_edit, :answer_update, :answer, :answer_destroy,
+                                        :question_destroy]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_create, :talker_update,
                                           :talker_destroy, :publish, :cancel_publish,
                                           :add_question_category, :del_question_category,
                                           :question_category_update, :add_question, :question_update,
-                                          :answer_create, :answer_update, :answer_destroy]
+                                          :answer_create, :answer_update, :answer_destroy, :question_destroy]
   
   before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
@@ -30,7 +31,8 @@ class TalksController < ApplicationController
                                           :add_question_category, :del_question_category,
                                           :question_category_edit, :question_category_update, :add_question,
                                           :question_edit, :question_update, :answer_new, :answer_create,
-                                          :answer_edit, :answer_update, :answer, :answer_destroy]
+                                          :answer_edit, :answer_update, :answer, :answer_destroy,
+                                          :question_destroy]
   
   
   
@@ -50,6 +52,10 @@ class TalksController < ApplicationController
       :include => [:account => [:profile_pic]],
       :order => "updated_at DESC"
     )
+    
+  end
+  
+  def show
     
   end
   
@@ -413,6 +419,14 @@ class TalksController < ApplicationController
     end
 
     render :action => "question_edit"
+  end
+  
+  def question_destroy
+    @question = TalkQuestion.get_question(params[:id])
+    
+    @question.destroy
+    
+    jump_to("/talks/#{@question.talk_id}/manage")
   end
   
   def answer_new

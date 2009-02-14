@@ -257,20 +257,21 @@
 					<img src="/images/collapse.png" border="0" /></a>
 
 				<span class="float_r">
-					<a href="#" onclick="//">
-						删除</a>
+					<% form_tag "/talks/#{question.id}/question_destroy", :method => :post, :onsubmit => "if(confirm('确定要删除此问题及其回答么 ?')) { return true; }; return false;" do %>
+						<input type="submit" value="删除" class="button" />
 
-					&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;
 
-					<a href="/talks/<%= question.id %>/question_edit">
-						修改</a>
+						<a href="/talks/<%= question.id %>/question_edit">
+							修改</a>
 						
-					&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;
 
-					<a href="/talks/<%= question.id %>/answer_new">
-						添加回答</a>
+						<a href="/talks/<%= question.id %>/answer_new">
+							添加回答</a>
 
-					&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;
+					<% end %>
 				</span>
 
 				问题 <%= question_index + 1 %>

@@ -439,6 +439,7 @@ ActionController::Routing::Routes.draw do |map|
     
     :question_edit => :get,
     :question_update => :post,
+    :question_destroy => :post,
     
     :answer_new => :get,
     :answer_create => :post,
