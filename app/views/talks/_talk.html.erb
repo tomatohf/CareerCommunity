@@ -1,6 +1,23 @@
 <% Talk.set_talk_cache(talk) %>
 
+<% comment_count = TalkComment.get_count(talk.id) %>
+
 <div>
-	<%= h(talk.title) %>
+	<a href="/talks/<%= talk.id %>">
+		<%= h(talk.title) %></a>
+		
+	&nbsp;&nbsp;&nbsp;
+	|
+	&nbsp;&nbsp;&nbsp;
+	
+	<a href="/talks/<%= talk.id %>#comment_list">
+		评论(<%= comment_count %>)</a>
+		
+	<% if talk_editor?(session[:account_id]) %>
+		&nbsp;&nbsp;&nbsp;
+
+		<a href="/talks/<%= talk.id %>/manage">
+			管理</a>
+	<% end %>
 </div>
 

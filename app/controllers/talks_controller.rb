@@ -16,13 +16,14 @@ class TalksController < ApplicationController
                                         :question_category_edit, :question_category_update, :add_question,
                                         :question_edit, :question_update, :answer_new, :answer_create,
                                         :answer_edit, :answer_update, :answer, :answer_destroy,
-                                        :question_destroy]
+                                        :question_destroy, :create_comment, :delete_comment]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_create, :talker_update,
                                           :talker_destroy, :publish, :cancel_publish,
                                           :add_question_category, :del_question_category,
                                           :question_category_update, :add_question, :question_update,
-                                          :answer_create, :answer_update, :answer_destroy, :question_destroy]
+                                          :answer_create, :answer_update, :answer_destroy, :question_destroy,
+                                          :create_comment, :delete_comment]
   
   before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
@@ -32,7 +33,9 @@ class TalksController < ApplicationController
                                           :question_category_edit, :question_category_update, :add_question,
                                           :question_edit, :question_update, :answer_new, :answer_create,
                                           :answer_edit, :answer_update, :answer, :answer_destroy,
-                                          :question_destroy]
+                                          :question_destroy, :delete_comment]
+                                          
+  before_filter :check_talk_publish, :only => [:show]
   
   
   
@@ -56,7 +59,43 @@ class TalksController < ApplicationController
   end
   
   def show
+    @edit = is_talk_editor?
     
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @talk_comments = @talk.comments.paginate(
+      :page => page,
+      :per_page => Comment_Page_Size,
+      :total_entries => TalkComment.get_count(@talk.id),
+      :order => "updated_at ASC"
+    )
+  end
+  
+  def create_comment
+    comment = TalkComment.new(:account_id => session[:account_id])
+    
+    content = params[:talk_comment]
+    talk_id = params[:id]
+    
+    comment_saved = false
+    if talk_id && content
+      comment.content = content.strip
+      comment.talk_id = talk_id
+      comment_saved = comment.save
+    end
+    
+    total_count = TalkComment.get_count(comment.talk_id)
+    last_page = total_count > 0 ? (total_count.to_f/Comment_Page_Size).ceil : 1
+    
+    jump_to("/talks/#{comment.talk_id}/comment/#{last_page}#{"#comment_#{comment.id}" if comment_saved}")
+  end
+  
+  def delete_comment
+    @talk_comment = TalkComment.find(params[:id])
+    
+    @talk_comment.destroy
+    
+    jump_to("/talks/#{@talk_comment.talk_id}")
   end
   
   
@@ -497,10 +536,19 @@ class TalksController < ApplicationController
   
   private
   
-  def check_editor
-    jump_to("/errors/forbidden") unless ApplicationController.helpers.talk_editor?(session[:account_id])
+  def is_talk_editor?
+    ApplicationController.helpers.talk_editor?(session[:account_id])
   end
   
+  def check_editor
+    jump_to("/errors/forbidden") unless is_talk_editor?
+  end
+  
+  def check_talk_publish
+    @talk = Talk.get_talk(params[:id])
+    
+    jump_to("/errors/forbidden") unless @talk.published || is_talk_editor?
+  end  
   
 end
 

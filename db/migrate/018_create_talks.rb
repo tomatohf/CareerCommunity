@@ -239,28 +239,28 @@ class CreateTalks < ActiveRecord::Migration
     ActiveRecord::Base.connection.execute("DELETE FROM talk_comments WHERE id = 1000")
     
     
-    # talk_question_tags
-    create_table :talk_question_tags, :force => true do |t|
+    # job_tags
+    create_table :job_tags, :force => true do |t|
       t.column :name, :string
       
       
       # enable sphinx delta index
       t.column :delta, :boolean
     end
-    add_index :talk_question_tags, :name
-    add_index :talk_question_tags, :delta
+    add_index :job_tags, :name
+    add_index :job_tags, :delta
     # reserve first 1000 ID
-    ActiveRecord::Base.connection.execute("INSERT INTO talk_question_tags (id) VALUES (1000)")
-    ActiveRecord::Base.connection.execute("DELETE FROM talk_question_tags WHERE id = 1000")
+    ActiveRecord::Base.connection.execute("INSERT INTO job_tags (id) VALUES (1000)")
+    ActiveRecord::Base.connection.execute("DELETE FROM job_tags WHERE id = 1000")
 
-    # talk_questions_talk_question_tags table
+    # talk_questions_job_tags table
     # create the talk_question relationship table
-    create_table :talk_questions_talk_question_tags, :id => false, :force => true do |t|
+    create_table :talk_questions_job_tags, :id => false, :force => true do |t|
       t.column :talk_question_id, :integer
-      t.column :talk_question_tag_id, :integer
+      t.column :job_tag_id, :integer
     end
-    add_index :talk_questions_talk_question_tags, :talk_question_id
-    add_index :talk_questions_talk_question_tags, :talk_question_tag_id
+    add_index :talk_questions_job_tags, :talk_question_id
+    add_index :talk_questions_job_tags, :job_tag_id
     
     
     # talks_companies table
@@ -294,8 +294,8 @@ class CreateTalks < ActiveRecord::Migration
     drop_table :talks_job_positions
     drop_table :talks_companies
     
-    drop_table :talk_questions_talk_question_tags
-    drop_table :talk_question_tags
+    drop_table :talk_questions_job_tags
+    drop_table :job_tags
     
     drop_table :talk_comments
     drop_table :talkers

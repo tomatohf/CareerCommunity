@@ -657,6 +657,14 @@ ActiveRecord::Schema.define(:version => 18) do
   add_index "job_steps", ["job_process_id"], :name => "index_job_steps_on_job_process_id"
   add_index "job_steps", ["job_status_id"], :name => "index_job_steps_on_job_status_id"
 
+  create_table "job_tags", :force => true do |t|
+    t.string  "name"
+    t.boolean "delta"
+  end
+
+  add_index "job_tags", ["name"], :name => "index_job_tags_on_name"
+  add_index "job_tags", ["delta"], :name => "index_job_tags_on_delta"
+
   create_table "job_targets", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -934,14 +942,6 @@ ActiveRecord::Schema.define(:version => 18) do
   add_index "talk_question_categories", ["creator_id"], :name => "index_talk_question_categories_on_creator_id"
   add_index "talk_question_categories", ["updater_id"], :name => "index_talk_question_categories_on_updater_id"
 
-  create_table "talk_question_tags", :force => true do |t|
-    t.string  "name"
-    t.boolean "delta"
-  end
-
-  add_index "talk_question_tags", ["name"], :name => "index_talk_question_tags_on_name"
-  add_index "talk_question_tags", ["delta"], :name => "index_talk_question_tags_on_delta"
-
   create_table "talk_questions", :force => true do |t|
     t.integer  "talk_id",     :limit => 11
     t.datetime "created_at"
@@ -961,13 +961,13 @@ ActiveRecord::Schema.define(:version => 18) do
   add_index "talk_questions", ["category_id"], :name => "index_talk_questions_on_category_id"
   add_index "talk_questions", ["delta"], :name => "index_talk_questions_on_delta"
 
-  create_table "talk_questions_talk_question_tags", :id => false, :force => true do |t|
-    t.integer "talk_question_id",     :limit => 11
-    t.integer "talk_question_tag_id", :limit => 11
+  create_table "talk_questions_job_tags", :id => false, :force => true do |t|
+    t.integer "talk_question_id", :limit => 11
+    t.integer "job_tag_id",       :limit => 11
   end
 
-  add_index "talk_questions_talk_question_tags", ["talk_question_id"], :name => "index_talk_questions_talk_question_tags_on_talk_question_id"
-  add_index "talk_questions_talk_question_tags", ["talk_question_tag_id"], :name => "index_talk_questions_talk_question_tags_on_talk_question_tag_id"
+  add_index "talk_questions_job_tags", ["talk_question_id"], :name => "index_talk_questions_job_tags_on_talk_question_id"
+  add_index "talk_questions_job_tags", ["job_tag_id"], :name => "index_talk_questions_job_tags_on_job_tag_id"
 
   create_table "talk_reporters", :force => true do |t|
     t.integer  "talk_id",    :limit => 11

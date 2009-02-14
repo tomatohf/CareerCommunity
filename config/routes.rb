@@ -406,6 +406,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.connect "/talks/p/:page", :controller => "talks", :action => "index", :page => /\d+/
   map.connect "/talks/talker_index/p/:page", :controller => "talks", :action => "talker_index", :page => /\d+/
+  map.connect "/talks/:id/comment/:page", :controller => "talks", :action => "show", :id => /\d+/, :page => /\d+/
   map.resources :talks, :collection => {
     
     :talker_index => :get,
@@ -413,6 +414,9 @@ ActionController::Routing::Routes.draw do |map|
     :talker_create => :post
     
   }, :member => {
+    
+    :create_comment => :post,
+    :delete_comment => :post,
     
     :publish => :post,
     :cancel_publish => :post,

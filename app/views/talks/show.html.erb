@@ -1,0 +1,77 @@
+<% talk_title = @talk.get_title %>
+
+<% page_title = "#{talk_title} - 周三访谈录" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r talk_container_r">
+
+</div>
+
+<div class="talk_container_l">
+	<h2><%= page_title %></h2>
+	
+
+	<div class="community_block">
+		
+	</div>
+	
+	
+	
+	<div class="align_r">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/talks/#{@talk.id}", :title => page_title} %>
+	</div>
+	
+	<% if @edit %>
+		<div class="community_block_narrow">
+			<a href="/talks/<%= @talk.id %>/manage">管理</a>
+		</div>
+	<% end %>
+	
+	<div class="community_title">
+		共有
+		<b>
+			<%= @talk_comments.total_entries %>
+		</b>
+		条<span id="comment_list">评论</span> ...
+	</div>
+	
+	<% if @edit %>
+		<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_comment(comment_id) {
+				if(confirm("确定要删除评论么 ?")) {
+					del_form = document.getElementById("delete_comment_form");
+					del_form.action = "/talks/" + comment_id + "/delete_comment";
+					del_form.submit();
+				}
+			}
+		</script>
+	<% end %>
+	
+	<div class="community_block_narrow align_r">
+		<a href="#comment_new">添加评论</a>
+	</div>
+
+	<div class="community_block">
+		<%= render(:partial => "/common/comment", :collection => @talk_comments, :locals => {:can_del => @edit, :counter_shift => calculate_counter_shift(@talk_comments)}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@talk_comments) %>
+	</div>
+	
+	<div class="community_block_narrow">
+		<span id="comment_new">添加评论 »</span>
+		<% form_tag "/talks/#{@talk.id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('talk_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
+			<textarea id="talk_comment" name="talk_comment" class="text_field" cols="50" rows="5"></textarea>
+			
+			<div style="margin-top: 5px;">
+				<input type="submit" value="发表评论" class="button" />
+			</div>
+		<% end %>
+	</div>
+	
+</div>
+

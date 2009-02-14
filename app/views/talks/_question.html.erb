@@ -1,0 +1,96 @@
+<div class="space_section_title">
+	<a class="float_r" title="收起" id="talk_question_<%= question.id %>_section_expand" href="#" onclick="collapse_section('talk_question_<%= question.id %>_section'); return false;">
+		<img src="/images/expand.png" border="0" /></a>
+	<a class="float_r" title="展开" id="talk_question_<%= question.id %>_section_collapse" href="#" onclick="expand_section('talk_question_<%= question.id %>_section'); return false;" style="display: none">
+		<img src="/images/collapse.png" border="0" /></a>
+
+	<span class="float_r">
+		<% form_tag "/talks/#{question.id}/question_destroy", :method => :post, :onsubmit => "if(confirm('确定要删除此问题及其回答么 ?')) { return true; }; return false;" do %>
+			<input type="submit" value="删除" class="button" />
+
+			&nbsp;&nbsp;
+
+			<a href="/talks/<%= question.id %>/question_edit">
+				修改</a>
+			
+			&nbsp;&nbsp;
+
+			<a href="/talks/<%= question.id %>/job_tags">
+				管理标签</a>
+				
+			&nbsp;&nbsp;
+
+			<a href="/talks/<%= question.id %>/answer_new">
+				添加回答</a>
+
+			&nbsp;&nbsp;
+		<% end %>
+	</span>
+
+	问题 <%= question_counter + 1 %>
+</div>
+
+<div id="talk_question_<%= question.id %>_section">
+	<div>
+		<span class="activity_info_label">问题:</span>
+		<%= h(question.question) %>
+		
+		&nbsp;&nbsp;
+		
+		<span class="activity_info_label">所在章节:</span>
+		<%= h(@question_categories_mapping[question.category_id].name) %>
+	</div>
+	
+	<div>
+		<span class="activity_info_label">点评:</span>
+		<%= h(question.summary) %>
+	</div>
+	
+	<div>
+		<span class="activity_info_label">标签:</span>
+		<%= "" %>
+	</div>
+	
+	<div>
+		<span class="activity_info_label">所有回答:</span>
+	</div>
+	
+	<div>
+		<% TalkAnswer.get_talk_question_answers(question.id).each do |answer| %>
+			<div>
+				<span style="font-weight: bold;">
+					<%= h(@talkers_mapping[answer.talker_id].get_name) %>
+				</span>
+				<span class="activity_info_label">回答说:</span>
+				<%= h(truncate(answer.answer, 50)) %>
+			</div>
+			
+			<div>
+				<span class="activity_info_label">点评:</span>
+				<%= h(answer.summary) %>
+			</div>
+			
+			<div style="padding-left: 20px;">
+				<% form_tag "/talks/#{answer.id}/answer_destroy", :method => :post, :onsubmit => "if(confirm('确定要删除此回答么 ?')) { return true; }; return false;" do %>
+					<input type="submit" value="删除" class="button" />
+					
+					&nbsp;&nbsp;&nbsp;
+
+					<a href="/talks/<%= answer.id %>/answer_edit">
+						修改</a>
+
+					&nbsp;&nbsp;&nbsp;
+
+					<a href="/talks/answer/<%= answer.id %>">
+						完整显示回答内容</a>
+				<% end %>
+			</div>
+			
+			<div class="community_block_narrow">
+				<%= thin_hr %>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+
