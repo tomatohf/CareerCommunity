@@ -11,18 +11,26 @@ class TalksController < ApplicationController
   before_filter :check_login, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                         :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
                                         :talker, :talker_edit, :talker_update, :talker_destroy,
+                                        :publish, :cancel_publish,
                                         :add_question_category, :del_question_category,
-                                        :question_category_edit, :question_category_update, :add_question]
+                                        :question_category_edit, :question_category_update, :add_question,
+                                        :question_edit, :question_update, :answer_new, :answer_create,
+                                        :answer_edit, :answer_update, :answer, :answer_destroy]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_create, :talker_update,
-                                          :talker_destroy, :add_question_category, :del_question_category,
-                                          :question_category_update, :add_question]
+                                          :talker_destroy, :publish, :cancel_publish,
+                                          :add_question_category, :del_question_category,
+                                          :question_category_update, :add_question, :question_update,
+                                          :answer_create, :answer_update, :answer_destroy]
   
   before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
                                           :talker, :talker_edit, :talker_update, :talker_destroy,
+                                          :publish, :cancel_publish,
                                           :add_question_category, :del_question_category,
-                                          :question_category_edit, :question_category_update, :add_question]
+                                          :question_category_edit, :question_category_update, :add_question,
+                                          :question_edit, :question_update, :answer_new, :answer_create,
+                                          :answer_edit, :answer_update, :answer, :answer_destroy]
   
   
   
@@ -33,7 +41,7 @@ class TalksController < ApplicationController
     @talks = Talk.published.paginate(
       :page => page,
       :per_page => Talk_Page_Size,
-      :order => "created_at DESC"
+      :order => "publish_at DESC"
     )
     
     @new_comments = TalkComment.find(
@@ -113,6 +121,29 @@ class TalksController < ApplicationController
     render :action => "edit"
   end
   
+  def publish
+    talk = Talk.get_talk(params[:id])
+    talk.updater_id = session[:account_id]
+    
+    talk.published = true
+    talk.publish_at = DateTime.now
+    
+    talk.save
+    
+    jump_to("/talks/#{talk.id}/manage")
+  end
+  
+  def cancel_publish
+    talk = Talk.get_talk(params[:id])
+    talk.updater_id = session[:account_id]
+    
+    talk.published = false
+    
+    talk.save
+    
+    jump_to("/talks/#{talk.id}/manage")
+  end
+  
   def manage
     @talk = Talk.get_talk(params[:id])
     @talk_info = @talk.get_info
@@ -123,6 +154,16 @@ class TalksController < ApplicationController
     @question_categories = TalkQuestionCategory.get_talk_question_categories(@talk.id)
     
     @questions = TalkQuestion.get_talk_questions(@talk.id)
+    
+    @talkers_mapping = {}
+    @talkers.each do |talker|
+      @talkers_mapping[talker[1].id] = talker[1]
+    end
+    
+    @question_categories_mapping = {}
+    @question_categories.each do |category|
+      @question_categories_mapping[category.id] = category
+    end
   end
   
   def add_reporter
@@ -351,6 +392,92 @@ class TalksController < ApplicationController
     question.save
     
     jump_to("/talks/#{talk_id}/manage")
+  end
+  
+  def question_edit
+    @question = TalkQuestion.get_question(params[:id])
+  end
+  
+  def question_update
+    @question = TalkQuestion.get_question(params[:id])
+    @question.updater_id = session[:account_id]
+    
+    @question.question = params[:question_question] && params[:question_question].strip
+    @question.category_id = params[:question_category] && params[:question_category].strip
+    @question.summary = params[:question_summary] && params[:question_summary].strip
+    
+    if @question.save
+      flash.now[:message] = "已成功保存"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+
+    render :action => "question_edit"
+  end
+  
+  def answer_new
+    @question = TalkQuestion.get_question(params[:id])
+    @answer = TalkAnswer.new
+  end
+  
+  def answer_create
+    @question = TalkQuestion.get_question(params[:id])
+    @answer = TalkAnswer.new(
+      :creator_id => session[:account_id],
+      :updater_id => session[:account_id],
+      :talk_id => @question.talk_id,
+      :question_id => @question.id
+    )
+    
+    @answer.talker_id = params[:answer_talker]
+    
+    @answer.answer = params[:answer_answer] && params[:answer_answer].strip
+    @answer.summary = params[:answer_summary] && params[:answer_summary].strip
+    
+    if @answer.save
+      jump_to("/talks/#{@question.talk_id}/manage")
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+      render :action => "answer_new"
+    end
+  end
+  
+  def answer_edit
+    @answer = TalkAnswer.get_answer(params[:id])
+    @question = TalkQuestion.get_question(@answer.question_id)
+  end
+  
+  def answer_update
+    @answer = TalkAnswer.get_answer(params[:id])
+    @question = TalkQuestion.get_question(@answer.question_id)
+    
+    @answer.updater_id = session[:account_id]
+    
+    @answer.talker_id = params[:answer_talker]
+    
+    @answer.answer = params[:answer_answer] && params[:answer_answer].strip
+    @answer.summary = params[:answer_summary] && params[:answer_summary].strip
+    
+    if @answer.save
+      flash.now[:message] = "已成功保存"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+
+    render :action => "answer_edit"
+  end
+  
+  def answer
+    @answer = TalkAnswer.get_answer(params[:id])
+    @question = TalkQuestion.get_question(@answer.question_id)
+  end
+  
+  def answer_destroy
+    @answer = TalkAnswer.get_answer(params[:id])
+    
+    @answer.destroy
+    
+    jump_to("/talks/#{@answer.talk_id}/manage")
   end
   
   

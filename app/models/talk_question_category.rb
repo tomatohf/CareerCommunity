@@ -5,6 +5,8 @@ class TalkQuestionCategory < ActiveRecord::Base
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"
   belongs_to :updater, :class_name => "Account", :foreign_key => "updater_id"
   
+  has_many :questions, :class_name => "TalkQuestion", :foreign_key => "category_id", :dependent => :nullify
+  
   
   validates_presence_of :talk_id, :creator_id, :updater_id
   

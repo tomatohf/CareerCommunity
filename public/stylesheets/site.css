@@ -339,9 +339,10 @@ div.auto_complete ul li {
 }
 
 select.dropdown_list, .dropdown_list select {
-	border-style: dotted;
+	border-style: solid;
 	border-width: 1px;
-	border-color: #A3988C;
+	border-color: #BDC7D8;
+	padding: 1px 2px;
 }
 
 .fieldset {
@@ -353,6 +354,7 @@ select.dropdown_list, .dropdown_list select {
 .search_input {
 	background-image: url(/images/index/search.png);
 	background-repeat: no-repeat;
+	background-position: 0px -2px;
 	padding-left: 25px;
 }
 
@@ -1408,7 +1410,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 
 .talk_container_l {
 	margin-left: 150px;
-	margin-right: 350px;
+	margin-right: 320px;
 	padding: 0px 20px;
 }
 

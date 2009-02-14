@@ -414,6 +414,9 @@ ActionController::Routing::Routes.draw do |map|
     
   }, :member => {
     
+    :publish => :post,
+    :cancel_publish => :post,
+    
     :manage => :get,
     
     :add_reporter => :post,
@@ -432,7 +435,17 @@ ActionController::Routing::Routes.draw do |map|
     :talker_update => :post,
     :talker_destroy => :post,
     
-    :add_question => :post
+    :add_question => :post,
+    
+    :question_edit => :get,
+    :question_update => :post,
+    
+    :answer_new => :get,
+    :answer_create => :post,
+    
+    :answer_edit => :get,
+    :answer_update => :post,
+    :answer_destroy => :post
     
   }
 

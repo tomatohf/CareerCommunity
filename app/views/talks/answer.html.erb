@@ -1,0 +1,58 @@
+<% page_title = "问题 #{h(@question.question)} 的回答" %>
+<% community_page_title(page_title) %>
+
+<div class="talk_container">
+	<h2><%= page_title %></h2>
+
+	<div class="community_block">
+		<a href="/talks/<%= @question.talk_id %>/manage">返回管理所在的访谈录</a>
+	</div>
+	
+	<div class="community_block">
+		
+		<table cellpadding="0" cellspacing="10" class="main_part_w">
+			<tr>
+				<td style="width: 75px">
+					<label for="answer_talker">
+				        受访人
+						:
+				    </label>
+				</td>
+				<td>
+					<%= h(Talker.get_talker(@answer.talker_id).get_name) %>
+				</td>
+			</tr>
+			
+			<tr>
+				<td valign="top">
+					<label for="answer_answer">
+		                回答说
+						:
+		            </label>
+				</td>
+				<td>
+					<div style="width: 500px;">
+						<%= h(@answer.answer) %>
+					</div>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<label for="answer_summary">
+				        点评
+						:
+				    </label>
+				</td>
+				<td>
+					<div style="width: 500px;">
+						<%= h(@answer.summary) %>
+					</div>
+				</td>
+			</tr>
+		</table>
+		
+	</div>
+</div>
+
+

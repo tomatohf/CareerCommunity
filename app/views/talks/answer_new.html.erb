@@ -1,0 +1,83 @@
+<% page_title = "添加对问题 #{h(@question.question)} 的回答" %>
+<% community_page_title(page_title) %>
+
+<div class="talk_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @answer.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@answer) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/talks/#{@question.id}/answer_create", :method => :post do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td style="width: 90px">
+							<label for="answer_talker">
+						        受访人(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<select name="answer_talker" id="answer_talker" class="dropdown_list">
+								<% TalkTalker.get_talk_talkers(@question.talk_id).each do |talk_talker| %>
+									<% talker = talk_talker[1] %>
+									<option value="<%= talker.id %>"<%= %Q! selected="selected"! if talker.id == @answer.talker_id %>><%= h(talker.get_name) %></option>
+								<% end %>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td valign="top">
+							<label for="answer_answer">
+				                回答说(<span style="color: red;">*</span>)
+								:
+				            </label>
+						</td>
+						<td>
+							<textarea id="answer_answer" name="answer_answer" class="text_field" cols="80" rows="15"><%= h(@answer.answer) %></textarea>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="answer_summary">
+						        点评
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="answer_summary" name="answer_summary" class="text_field" size="75" value="<%= h(@answer.summary) %>" />
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "添加回答", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<span class="form_info_l">
+								请按出现顺序添加
+							</span>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/talks/<%= @question.talk_id %>/manage">返回管理所在的访谈录</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+

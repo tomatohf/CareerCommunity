@@ -1,0 +1,80 @@
+<% page_title = "修改访谈录的问题" %>
+<% community_page_title(page_title) %>
+
+<div class="talk_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+
+		<% if flash[:message] %>
+			<p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @question.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@question) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/talks/#{@question.id}/question_update", :method => :post do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td style="width: 100px;">
+							<label for="question_question">
+						        访谈问题(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="question_question" name="question_question" class="text_field" size="30" value="<%= h(@question.question) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="question_category">
+						        所在章节
+								:
+						    </label>
+						</td>
+						<td>
+							<select name="question_category" id="question_category" class="dropdown_list">
+								<% TalkQuestionCategory.get_talk_question_categories(@question.talk_id).each do |category| %>
+									<option value="<%= category.id %>"<%= %Q! selected="selected"! if @question.category_id == category.id %>><%= h(category.name) %></option>
+								<% end %>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="question_summary">
+						        点评
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="question_summary" name="question_summary" class="text_field" size="40" value="<%= h(@question.summary) %>" />
+						</td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "修改问题", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/talks/<%= @question.talk_id %>/manage">返回管理章节所在的访谈录</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+
