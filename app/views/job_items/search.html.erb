@@ -1,29 +1,23 @@
-<% page_title = "管理系统添加的#{@item_label}" %>
+<% page_title = "系统添加的#{@item_label}的搜索结果" %>
 <% community_page_title(page_title) %>
-
-<div class="float_r">
-	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 120px;" do %>
-		<div class="action_bar">
-			<a href="/<%= @item_type %>/job_items/new" style="font-weight: bold;">
-				添加<%= @item_label %></a>
-		</div>
-	<% end %>
-</div>
 
 <div class="job_item_container">
 	<h2><%= page_title %></h2>
 	
 	
 	<div class="community_block_narrow form_info_s">
-		共有
-		<b><%= @items.total_entries %></b>
-		个
-		<%= @item_label %>
+		共搜索到
+		<b><%= @items.size %></b>
+		个结果
+		,
+		&nbsp;&nbsp;&nbsp;
+		<a href="/<%= @item_type %>/job_items">
+			返回全部<%= @item_label %>列表</a>
 	</div>
 	
 	<div class="community_block align_r">
 		<% form_tag "/#{@item_type}/job_items/search", :method => :get do %>
-			<input type="text" name="item_tip" class="text_field search_input" size="30" />
+			<input type="text" name="item_tip" class="text_field search_input" size="30" value="<%= h(@item_tip) %>" />
 			&nbsp;&nbsp;&nbsp;
 			<input type="submit" value="搜索<%= @item_label %>" class="button" />
 		<% end %>

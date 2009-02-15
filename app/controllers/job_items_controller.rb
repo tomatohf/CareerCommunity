@@ -7,10 +7,10 @@ class JobItemsController < ApplicationController
   
   before_filter :prepare_item_type
   
-  before_filter :check_login, :only => [:index, :show, :new, :create, :edit, :update, :destroy]
+  before_filter :check_login
   before_filter :check_limited, :only => [:create, :update, :destroy]
   
-  before_filter :check_editor, :only => [:index, :show, :new, :create, :edit, :update, :destroy]
+  before_filter :check_editor
   
   
   
@@ -83,6 +83,28 @@ class JobItemsController < ApplicationController
     @item.destroy
     
     jump_to("/#{@item_type}/job_items")
+  end
+  
+  def search
+    @item_tip = params[:item_tip] && params[:item_tip].strip
+    
+    return jump_to("/#{@item_type}/job_items") unless @item_tip && @item_tip.size > 0
+    
+    @item_label = get_item_label
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @items = get_item_class.system.search(
+      @item_tip,
+      :page => page,
+      :per_page => Item_Page_Size,
+      :match_mode => CommunityController::Search_Match_Mode,
+      :order => "@relevance DESC, created_at DESC",
+      :field_weights => {
+        :name => 3,
+        :desc => 2
+      }
+    ).compact
   end
   
   
