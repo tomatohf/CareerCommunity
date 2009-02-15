@@ -21,17 +21,18 @@
 	
 	<% if general_admin?(session[:account_id]) %>
 		<div class="community_block align_r" style="word-spacing: 10px;">
-			<a href="#">
-				管理系统添加的公司</a>
+			管理系统添加的:
+			<a href="/company/job_items" target="_blank">
+				公司</a>
 				
-			<a href="#">
-				管理系统添加的职位</a>
+			<a href="/job_position/job_items" target="_blank">
+				职位</a>
 				
-			<a href="#">
-				管理系统添加的流程</a>
+			<a href="#" target="_blank">
+				流程</a>
 					
-			<a href="#">
-				管理系统添加的状态</a>
+			<a href="#" target="_blank">
+				状态</a>
 		</div>
 	<% end %>
 	

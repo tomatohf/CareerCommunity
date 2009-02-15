@@ -265,19 +265,35 @@ function create_table_grid() {
 				
 				"-",
 				
+				"管理自己添加的:",
+				
 				{
 					//id: "",
-					text: "管理自己添加的流程 <img border='0' src='/images/ext_link_small.gif' />",
+					text: "公司 <img border='0' src='/images/ext_link_small.gif' />",
 					handler: function() {
 						window.location.href = "";
 					}
 				},
 				
-				"-",
+				{
+					//id: "",
+					text: "职位 <img border='0' src='/images/ext_link_small.gif' />",
+					handler: function() {
+						window.location.href = "";
+					}
+				},
 				
 				{
 					//id: "",
-					text: "管理自己添加的状态 <img border='0' src='/images/ext_link_small.gif' />",
+					text: "流程 <img border='0' src='/images/ext_link_small.gif' />",
+					handler: function() {
+						window.location.href = "";
+					}
+				},
+				
+				{
+					//id: "",
+					text: "状态 <img border='0' src='/images/ext_link_small.gif' />",
 					handler: function() {
 						window.location.href = "";
 					}

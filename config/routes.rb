@@ -453,6 +453,14 @@ ActionController::Routing::Routes.draw do |map|
     :answer_destroy => :post
     
   }
+  
+  
+  map.connect "/:item_type/job_items/p/:page", :controller => "job_items", :action => "index", :page => /\d+/
+  map.resources :job_items, :path_prefix => "/:item_type", :collection => {
+    
+  }, :member => {
+    
+  }
 
   
   

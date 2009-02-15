@@ -1,0 +1,62 @@
+<% item_name = h(@item.name) %>
+
+<% page_title = "#{@item_label} #{item_name}" %>
+<% community_page_title(page_title) %>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+
+	<div class="community_block_narrow">
+		<% form_tag "/#{@item_type}/job_items/#{@item.id}", :method => :delete, :onsubmit => "if(confirm('确定要删除 #{item_name} 么 ?')) { return true; }; return false;" do %>
+			<a href="/<%= @item_type %>/job_items/<%= @item.id %>/edit">
+				修改详细信息</a>
+
+			&nbsp;&nbsp;&nbsp;&nbsp;
+
+			<input type="submit" value="删除" class="button" />
+		<% end %>
+	</div>
+	
+	<div class="community_block">
+		
+		<table cellpadding="0" cellspacing="10" class="main_part_w">
+			<tr>
+				<td style="width: 100px" class="activity_info_label">
+					<%= @item_label %>的名称
+					:
+				</td>
+				<td style="font-size: 14px;">
+					<strong><%= item_name %></strong>
+				</td>
+			</tr>
+			
+			<tr>
+				<td colspan="2" class="activity_info_label">
+					<%= @item_label %>的英文名, 别名 或 其他常用名
+					:
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					
+				</td>
+				<td>
+					<%= h(@item.desc) %>
+				</td>
+			</tr>
+			
+			
+			<tr>
+				<td></td>
+				<td>
+					<a href="/<%= @item_type %>/job_items">返回<%= @item_label %>列表</a>
+				</td>
+			</tr>
+		</table>
+		
+	</div>
+</div>
+
+

@@ -10,6 +10,10 @@ class JobStatus < ActiveRecord::Base
   
   
   
+  named_scope :system, :conditions => ["account_id = ? or account_id = ?", 0, nil]
+  
+  
+  
   CKP_system_statuses = :system_job_statuses
   CKP_account_statuses = :account_job_statuses
   CKP_status = :job_status
@@ -40,7 +44,7 @@ class JobStatus < ActiveRecord::Base
     s_s = Cache.get(CKP_system_statuses)
     
     unless s_s
-      s_s = self.find(:all, :conditions => ["account_id = ? or account_id = ?", nil, 0])
+      s_s = self.system.find(:all)
       
       # set individual job status cache
       s_s.each { |s| self.set_status_cache(s) }

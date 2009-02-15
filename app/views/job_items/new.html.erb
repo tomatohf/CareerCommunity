@@ -1,0 +1,67 @@
+<% page_title = "添加新的#{@item_label}" %>
+<% community_page_title(page_title) %>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @item.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@item) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/#{@item_type}/job_items", :method => :post do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td style="width: 100px">
+							<label for="item_name">
+						        <%= @item_label %>的名称(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="item_name" name="item_name" class="text_field" size="50" value="<%= h(@item.name) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2">
+							<label for="item_desc">
+						        <%= @item_label %>的英文名, 别名 或 其他常用名
+								:
+						    </label>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+						</td>
+						<td>
+							<textarea id="item_desc" name="item_desc" class="text_field" cols="60" rows="5"><%= h(@item.desc) %></textarea>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "添加", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/<%= @item_type %>/job_items">返回<%= @item_label %>列表</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+

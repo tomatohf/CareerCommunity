@@ -12,6 +12,10 @@ class JobProcess < ActiveRecord::Base
   
   
   
+  named_scope :system, :conditions => ["account_id = ? or account_id = ?", 0, nil]
+  
+  
+  
   CKP_system_processes = :system_job_processes
   CKP_account_processes = :account_job_processes
   CKP_process = :job_process
@@ -42,7 +46,7 @@ class JobProcess < ActiveRecord::Base
     s_p = Cache.get(CKP_system_processes)
     
     unless s_p
-      s_p = self.find(:all, :conditions => ["account_id = ? or account_id = ?", nil, 0])
+      s_p = self.system.find(:all)
       
       # set individual job process cache
       s_p.each { |p| self.set_process_cache(p) }

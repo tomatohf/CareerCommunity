@@ -1,0 +1,33 @@
+<% page_title = "管理系统添加的#{@item_label}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 120px;" do %>
+		<div class="action_bar">
+			<a href="/<%= @item_type %>/job_items/new" style="font-weight: bold;">
+				添加<%= @item_label %></a>
+		</div>
+	<% end %>
+</div>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @items.total_entries %></b>
+		个
+		<%= @item_label %>
+	</div>
+	
+	<div class="community_block">
+		<%= render :partial => "job_item", :collection => @items %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@items) %>
+	</div>
+</div>
+
+

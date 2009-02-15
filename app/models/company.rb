@@ -16,10 +16,14 @@ class Company < ActiveRecord::Base
   
   validates_presence_of :name, :message => "请输入 名称"
   
-  validates_uniqueness_of :name, :case_sensitive => false, :message => "名称 已经存在"
+  validates_uniqueness_of :name, :case_sensitive => false, :scope => :account_id, :message => "名称 已经存在"
   
   validates_length_of :name, :maximum => 256, :message => "名称 超过长度限制", :allow_nil => false
   validates_length_of :desc, :maximum => 1000, :message => "别名或其他常用名 超过长度限制", :allow_nil => true
+  
+  
+  
+  named_scope :system, :conditions => ["account_id = ? or account_id = ?", 0, nil]
   
   
   
