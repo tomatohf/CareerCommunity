@@ -100,7 +100,7 @@
 		%>
 		<% all_scope_items.each do |key, value| %>
 			<% item_results = eval("@#{key.to_s.pluralize}") %>
-			<% if item_results && item_results.total_entries > 0 %>
+			<% if item_results && item_results.total_entries && item_results.total_entries > 0 %>
 				<div class="community_block">
 					<div>
 						<a class="float_r" title="收起" id="<%= key %>_section_expand" href="#" onclick="collapse_section('<%= key %>_section'); return false;">

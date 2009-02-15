@@ -450,7 +450,11 @@ ActionController::Routing::Routes.draw do |map|
     
     :answer_edit => :get,
     :answer_update => :post,
-    :answer_destroy => :post
+    :answer_destroy => :post,
+    
+    :select_job_item => :any,
+    :add_job_item => :post,
+    :del_job_item => :post
     
   }
   

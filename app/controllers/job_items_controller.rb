@@ -2,6 +2,10 @@ class JobItemsController < ApplicationController
   
   Item_Page_Size = 50
   
+  Search_Match_Mode = CommunityController::Search_Match_Mode
+  Search_Sort_Order = "@relevance DESC, created_at DESC"
+  Search_Field_Weights = { :name => 3, :desc => 2 }
+  
   
   layout "community"
   
@@ -98,12 +102,9 @@ class JobItemsController < ApplicationController
       @item_tip,
       :page => page,
       :per_page => Item_Page_Size,
-      :match_mode => CommunityController::Search_Match_Mode,
-      :order => "@relevance DESC, created_at DESC",
-      :field_weights => {
-        :name => 3,
-        :desc => 2
-      }
+      :match_mode => Search_Match_Mode,
+      :order => Search_Sort_Order,
+      :field_weights => Search_Field_Weights
     ).compact
   end
   

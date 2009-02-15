@@ -16,14 +16,15 @@ class TalksController < ApplicationController
                                         :question_category_edit, :question_category_update, :add_question,
                                         :question_edit, :question_update, :answer_new, :answer_create,
                                         :answer_edit, :answer_update, :answer, :answer_destroy,
-                                        :question_destroy, :create_comment, :delete_comment]
+                                        :question_destroy, :create_comment, :delete_comment,
+                                        :select_job_item, :add_job_item, :del_job_item]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_create, :talker_update,
                                           :talker_destroy, :publish, :cancel_publish,
                                           :add_question_category, :del_question_category,
                                           :question_category_update, :add_question, :question_update,
                                           :answer_create, :answer_update, :answer_destroy, :question_destroy,
-                                          :create_comment, :delete_comment]
+                                          :create_comment, :delete_comment, :add_job_item, :del_job_item]
   
   before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
@@ -33,7 +34,8 @@ class TalksController < ApplicationController
                                           :question_category_edit, :question_category_update, :add_question,
                                           :question_edit, :question_update, :answer_new, :answer_create,
                                           :answer_edit, :answer_update, :answer, :answer_destroy,
-                                          :question_destroy, :delete_comment]
+                                          :question_destroy, :delete_comment, :select_job_item,
+                                          :add_job_item, :del_job_item]
                                           
   before_filter :check_talk_publish, :only => [:show]
   
@@ -533,6 +535,46 @@ class TalksController < ApplicationController
     jump_to("/talks/#{@answer.talk_id}/manage")
   end
   
+  def select_job_item
+    @item_type = params[:type]
+    @query = params[:query] && params[:query].strip
+    
+    @talk = Talk.get_talk(params[:id])
+    
+    @item_label = case @item_type
+      when "company"
+        "公司"
+      when "job_position"
+        "职位"
+      when "industry"
+        "行业"
+      else
+        nil
+    end
+    
+    if @query && @query != ""
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @items = @item_type.camelize.constantize.system.search(
+        @query,
+        :page => page,
+        :per_page => JobItemsController::Item_Page_Size,
+        :match_mode => JobItemsController::Search_Match_Mode,
+        :order => JobItemsController::Search_Sort_Order,
+        :field_weights => JobItemsController::Search_Field_Weights
+      ).compact
+    end
+    
+  end
+  
+  def add_job_item
+    
+  end
+  
+  def del_job_item
+    
+  end
+  
   
   private
   
@@ -548,7 +590,7 @@ class TalksController < ApplicationController
     @talk = Talk.get_talk(params[:id])
     
     jump_to("/errors/forbidden") unless @talk.published || is_talk_editor?
-  end  
+  end
   
 end
 

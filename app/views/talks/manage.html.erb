@@ -18,84 +18,65 @@
 	<br />
 	
 	<div class="space_section_title">
-		<a class="float_r" title="收起" id="talk_reporters_section_expand" href="#" onclick="collapse_section('talk_reporters_section'); return false;">
+		<a class="float_r" title="收起" id="talk_companies_section_expand" href="#" onclick="collapse_section('talk_companies_section'); return false;">
 			<img src="/images/expand.png" border="0" /></a>
-		<a class="float_r" title="展开" id="talk_reporters_section_collapse" href="#" onclick="expand_section('talk_reporters_section'); return false;" style="display: none">
+		<a class="float_r" title="展开" id="talk_companies_section_collapse" href="#" onclick="expand_section('talk_companies_section'); return false;" style="display: none">
 			<img src="/images/collapse.png" border="0" /></a>
 			
-		此次访谈录的访谈员
+		<span class="float_r">
+			<a href="/talks/<%= @talk.id %>/select_job_item?type=company">
+				添加公司</a>
+
+			&nbsp;&nbsp;
+		</span>
+			
+		此次访谈录的公司
 	</div>
-	<div id="talk_reporters_section">
+	<div id="talk_companies_section">
 		<div class="community_block align_r">
-			<% @reporters.each do |reporter| %>
-				<% form_tag "/talks/#{@talk.id}/del_reporter", :method => :post, :onsubmit => "if(confirm('确定要删除此访谈员么 ?')) { return true; }; return false;" do %>
-					<span style="font-size: 14px; font-weight: bold;">
-						<%= h(reporter[1]) %>
-					</span>
-
-					<input type="hidden" name="reporter_id" value="<%= reporter[0] %>" />
-					&nbsp;
-					<input type="submit" value="删除此访谈员" class="button" />
-				<% end %>
-			<% end %>
-		</div>
-
-		<div class="community_block align_r">
-			<% form_tag "/talks/#{@talk.id}/add_reporter", :method => :post do %>
-				<input type="text" name="reporter_name" class="text_field" />
-				&nbsp;
-				<input type="submit" value="添加访谈员" class="button" />
-			<% end %>
+			
 		</div>
 	</div>
-	
 	
 	<div class="space_section_title">
-		<a class="float_r" title="收起" id="talk_talkers_section_expand" href="#" onclick="collapse_section('talk_talkers_section'); return false;">
+		<a class="float_r" title="收起" id="talk_job_positions_section_expand" href="#" onclick="collapse_section('talk_job_positions_section'); return false;">
 			<img src="/images/expand.png" border="0" /></a>
-		<a class="float_r" title="展开" id="talk_talkers_section_collapse" href="#" onclick="expand_section('talk_talkers_section'); return false;" style="display: none">
+		<a class="float_r" title="展开" id="talk_job_positions_section_collapse" href="#" onclick="expand_section('talk_job_positions_section'); return false;" style="display: none">
 			<img src="/images/collapse.png" border="0" /></a>
 			
-		此次访谈录的受访人
+		<span class="float_r">
+			<a href="/talks/<%= @talk.id %>/select_job_item?type=job_position">
+				添加职位</a>
+
+			&nbsp;&nbsp;
+		</span>
+			
+		此次访谈录的职位
 	</div>
-	<div id="talk_talkers_section">
+	<div id="talk_job_positions_section">
 		<div class="community_block align_r">
-			<% @talkers.each do |talker| %>
-				<% form_tag "/talks/#{@talk.id}/del_talker", :method => :post, :onsubmit => "if(confirm('确定要移除此受访人么 ?')) { return true; }; return false;" do %>
-					<span style="font-size: 14px; font-weight: bold;">
-						<%= h(talker[1].get_name) %>
-					</span>
-				
-					<input type="hidden" name="talk_talker_id" value="<%= talker[0] %>" />
-					&nbsp;
-					<input type="submit" value="移除此受访人" class="button" />
-					&nbsp;
-					<a href="/talks/<%= talker[1].id %>/talker_edit" target="_blank">
-						修改信息</a>
-				<% end %>
-			<% end %>
+			
 		</div>
+	</div>
 	
-		<div class="community_block align_r">
-			<% form_tag "/talks/#{@talk.id}/add_talker", :method => :post do %>
-				<select name="talker_id" id="talker_id" class="dropdown_list">
-					<% Talker.get_all_talker_names.each do |talker| %>
-						<option value="<%= talker[0] %>"><%= h(talker[1]) %></option>
-					<% end %>
-				</select>
-				&nbsp;
-				<input type="submit" value="增加此受访人" class="button" />
-			<% end %>
-		</div>
-		
-		<div class="community_block align_r">
-			<a href="/talks/talker_index" target="_blank">
-				管理现有的受访人</a>
+	<div class="space_section_title">
+		<a class="float_r" title="收起" id="talk_industries_section_expand" href="#" onclick="collapse_section('talk_industries_section'); return false;">
+			<img src="/images/expand.png" border="0" /></a>
+		<a class="float_r" title="展开" id="talk_industries_section_collapse" href="#" onclick="expand_section('talk_industries_section'); return false;" style="display: none">
+			<img src="/images/collapse.png" border="0" /></a>
+			
+		<span class="float_r">
+			<a href="/talks/<%= @talk.id %>/select_job_item?type=industry">
+				添加行业</a>
 
-			&nbsp;&nbsp;&nbsp;
-
-			<a href="/talks/talker_new" target="_blank">
-				添加新的受访人</a>
+			&nbsp;&nbsp;
+		</span>
+			
+		此次访谈录的行业
+	</div>
+	<div id="talk_industries_section">
+		<div class="community_block align_r">
+			
 		</div>
 	</div>
 	
@@ -177,6 +158,88 @@
 					</tr>
 				</table>
 			<% end %>
+		</div>
+	</div>
+	
+	<div class="space_section_title">
+		<a class="float_r" title="收起" id="talk_reporters_section_expand" href="#" onclick="collapse_section('talk_reporters_section'); return false;">
+			<img src="/images/expand.png" border="0" /></a>
+		<a class="float_r" title="展开" id="talk_reporters_section_collapse" href="#" onclick="expand_section('talk_reporters_section'); return false;" style="display: none">
+			<img src="/images/collapse.png" border="0" /></a>
+			
+		此次访谈录的访谈员
+	</div>
+	<div id="talk_reporters_section">
+		<div class="community_block align_r">
+			<% @reporters.each do |reporter| %>
+				<% form_tag "/talks/#{@talk.id}/del_reporter", :method => :post, :onsubmit => "if(confirm('确定要删除此访谈员么 ?')) { return true; }; return false;" do %>
+					<span style="font-size: 14px; font-weight: bold;">
+						<%= h(reporter[1]) %>
+					</span>
+
+					<input type="hidden" name="reporter_id" value="<%= reporter[0] %>" />
+					&nbsp;
+					<input type="submit" value="删除此访谈员" class="button" />
+				<% end %>
+			<% end %>
+		</div>
+
+		<div class="community_block align_r">
+			<% form_tag "/talks/#{@talk.id}/add_reporter", :method => :post do %>
+				<input type="text" name="reporter_name" class="text_field" />
+				&nbsp;
+				<input type="submit" value="添加访谈员" class="button" />
+			<% end %>
+		</div>
+	</div>
+	
+	
+	<div class="space_section_title">
+		<a class="float_r" title="收起" id="talk_talkers_section_expand" href="#" onclick="collapse_section('talk_talkers_section'); return false;">
+			<img src="/images/expand.png" border="0" /></a>
+		<a class="float_r" title="展开" id="talk_talkers_section_collapse" href="#" onclick="expand_section('talk_talkers_section'); return false;" style="display: none">
+			<img src="/images/collapse.png" border="0" /></a>
+			
+		此次访谈录的受访人
+	</div>
+	<div id="talk_talkers_section">
+		<div class="community_block align_r">
+			<% @talkers.each do |talker| %>
+				<% form_tag "/talks/#{@talk.id}/del_talker", :method => :post, :onsubmit => "if(confirm('确定要移除此受访人么 ?')) { return true; }; return false;" do %>
+					<span style="font-size: 14px; font-weight: bold;">
+						<%= h(talker[1].get_name) %>
+					</span>
+				
+					<input type="hidden" name="talk_talker_id" value="<%= talker[0] %>" />
+					&nbsp;
+					<input type="submit" value="移除此受访人" class="button" />
+					&nbsp;
+					<a href="/talks/<%= talker[1].id %>/talker_edit" target="_blank">
+						修改信息</a>
+				<% end %>
+			<% end %>
+		</div>
+	
+		<div class="community_block align_r">
+			<% form_tag "/talks/#{@talk.id}/add_talker", :method => :post do %>
+				<select name="talker_id" id="talker_id" class="dropdown_list">
+					<% Talker.get_all_talker_names.each do |talker| %>
+						<option value="<%= talker[0] %>"><%= h(talker[1]) %></option>
+					<% end %>
+				</select>
+				&nbsp;
+				<input type="submit" value="增加此受访人" class="button" />
+			<% end %>
+		</div>
+		
+		<div class="community_block align_r">
+			<a href="/talks/talker_index" target="_blank">
+				管理现有的受访人</a>
+
+			&nbsp;&nbsp;&nbsp;
+
+			<a href="/talks/talker_new" target="_blank">
+				添加新的受访人</a>
 		</div>
 	</div>
 	
