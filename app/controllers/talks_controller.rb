@@ -1,7 +1,7 @@
 class TalksController < ApplicationController
   
   Comment_Page_Size = 100
-  Talk_Page_Size = 10
+  Talk_Page_Size = 30
   Talker_Page_Size = 20
   
   New_Comment_Size = 30
@@ -19,7 +19,7 @@ class TalksController < ApplicationController
                                         :question_destroy, :create_comment, :delete_comment,
                                         :select_job_item, :add_job_item, :del_job_item,
                                         :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
-                                        :destroy]
+                                        :destroy, :unpublished]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_create, :talker_update,
                                           :talker_destroy, :publish, :cancel_publish,
@@ -41,7 +41,7 @@ class TalksController < ApplicationController
                                           :question_destroy, :delete_comment, :select_job_item,
                                           :add_job_item, :del_job_item,
                                           :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
-                                          :destroy]
+                                          :destroy, :unpublished]
                                           
   before_filter :check_talk_publish, :only => [:show]
   
@@ -58,6 +58,8 @@ class TalksController < ApplicationController
       :per_page => Talk_Page_Size,
       :order => "publish_at DESC"
     )
+    
+    @latest_talk = @talks.shift if page.to_i < 2 && @talks.size > 0
     
     @new_comments = TalkComment.find(
       :all,
@@ -662,6 +664,18 @@ class TalksController < ApplicationController
     question.job_tags.delete(job_tag)
     
     jump_to("/talks/#{question.id}/job_tags")
+  end
+  
+  def unpublished
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @talks = Talk.unpublished.paginate(
+      :page => page,
+      :per_page => Talk_Page_Size,
+      :order => "publish_at DESC"
+    )
+    
   end
   
   

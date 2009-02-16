@@ -2,22 +2,34 @@
 
 <% comment_count = TalkComment.get_count(talk.id) %>
 
-<div>
-	<a href="/talks/<%= talk.id %>">
-		<%= h(talk.title) %></a>
+<div class="form_info_s">
+	<a href="/talks/<%= talk.id %>" class="account_nick_link" style="font-size: 14px;" title="<%= h(talk.get_info[:desc]) %>">
+		<strong><%= h(talk.title) %></strong></a>
 		
 	&nbsp;&nbsp;&nbsp;
 	|
-	&nbsp;&nbsp;&nbsp;
+	&nbsp;
 	
-	<a href="/talks/<%= talk.id %>#comment_list">
+	<%= format_date(talk.publish_at) %> 发布
+		
+	&nbsp;
+	|
+	&nbsp;
+	
+	<a href="/talks/<%= talk.id %>#comment_list" class="account_nick_link">
 		评论(<%= comment_count %>)</a>
 		
 	<% if talk_editor?(session[:account_id]) %>
-		&nbsp;&nbsp;&nbsp;
+		&nbsp;
+		|
+		&nbsp;
 
-		<a href="/talks/<%= talk.id %>/manage">
+		<a href="/talks/<%= talk.id %>/manage" class="account_nick_link">
 			管理</a>
 	<% end %>
+</div>
+
+<div style="padding: 0px 30px;">
+	<%= thin_hr %>
 </div>
 

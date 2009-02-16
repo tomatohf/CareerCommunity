@@ -1,0 +1,51 @@
+<% page_title = "尚未发布的访谈录" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r talk_container_r">
+	
+	<div class="community_block align_c">
+		<img src="/images/talks/qiaobutang_talk_logo.png" border="0" />
+	</div>
+	
+	<% if talk_editor?(session[:account_id]) %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+		
+		<div class="community_block">
+			<a href="/talks/new">
+				添加新的访谈录</a>
+		</div>
+		
+		<div class="community_block">
+			<a href="/talks/talker_index">
+				管理受访人</a>
+		</div>
+		
+		<div class="community_block">
+			<a href="/talks">
+				已经发布的访谈录列表</a>
+		</div>
+	<% end %>
+	
+</div>
+
+<div class="talk_container_l">
+	<h2><%= page_title %></h2>
+	
+
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @talks.total_entries %></b>
+		篇尚未发布的访谈录
+	</div>
+	
+	<div class="community_block">
+		<%= render(:partial => "talk", :collection => @talks) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@talks) %>
+	</div>
+</div>
+
