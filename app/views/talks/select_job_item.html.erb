@@ -20,7 +20,7 @@
 	
 	<div class="community_block align_r">
 		<% form_tag "/talks/#{@talk.id}/select_job_item", :method => :get do %>
-			<input type="text" name="query" class="text_field search_input" size="30" value="<%= h(@item_tip) %>" />
+			<input type="text" name="query" class="text_field search_input" size="30" value="<%= h(@query) %>" />
 			<input type="hidden" name="type" value="<%= @item_type %>" />
 			&nbsp;&nbsp;&nbsp;
 			<input type="submit" value="搜索<%= @item_label %>" class="button" />
@@ -32,6 +32,11 @@
 	</div>
 	
 	<% if @items %>
+		<% form_tag "/talks/#{@talk.id}/add_job_item", :method => :post, :id => "add_form" do %>
+			<input type="hidden" name="item_type" value="<%= @item_type %>" />
+			<input type="hidden" name="item_id" id="item_id" />
+		<% end %>
+	
 		<div class="community_block">
 			<%= render :partial => "job_targets/item", :collection => @items %>
 		</div>
@@ -47,7 +52,10 @@
 <script language="JavaScript" type="text/javascript">
 
 	function select_item(item_id) {
-		alert(item_id);
+		if(confirm("确定要添加此<%= @item_label %>么 ?")) {
+			document.getElementById("item_id").value = item_id;
+			document.getElementById("add_form").submit();
+		}
 	}
 
 </script>

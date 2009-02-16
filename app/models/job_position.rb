@@ -14,6 +14,16 @@ class JobPosition < ActiveRecord::Base
   
   
   
+  has_and_belongs_to_many :talks,
+                          :foreign_key => "job_position_id",
+                          :association_foreign_key => "talk_id",
+                          :join_table => "talks_job_positions",
+                          #:order => "created_at DESC",
+                          :after_add => Proc.new { |job_position, talk| JobPosition.clear_talk_job_positions_cache(talk.id) },
+                          :after_remove => Proc.new { |job_position, talk| JobPosition.clear_talk_job_positions_cache(talk.id) }
+  
+  
+  
   validates_presence_of :name, :message => "请输入 名称"
   
   validates_uniqueness_of :name, :case_sensitive => false, :scope => :account_id, :message => "名称 已经存在"
@@ -30,15 +40,30 @@ class JobPosition < ActiveRecord::Base
   CKP_account_positions = :account_positions
   CKP_position = :position
   
+  CKP_talk_job_positions = :talk_job_positions
+  
   after_save { |position|
+    self.clear_talk_related_cache(position.id)
+    
     self.clear_account_positions_cache(position.account_id) if position.account_id && position.account_id > 0
+    
     self.set_position_cache(position)
   }
   
   after_destroy { |position|
+    self.clear_talk_related_cache(position.id)
+    
     self.clear_account_positions_cache(position.account_id) if position.account_id && position.account_id > 0
+    
     self.clear_position_cache(position.id)
   }
+  
+  def self.clear_talk_related_cache(position_id)
+    job_position = JobPosition.get_position(position_id)
+    job_position.talks.each do |talk|
+      self.clear_talk_job_positions_cache(talk.id)
+    end
+  end
   
   
   
@@ -64,7 +89,6 @@ class JobPosition < ActiveRecord::Base
   
   require_dependency "job_target"
   require_dependency "job_step"
-  require_dependency "company"
   def self.get_position(position_id)
     p = Cache.get("#{CKP_position}_#{position_id}".to_sym)
     
@@ -75,6 +99,9 @@ class JobPosition < ActiveRecord::Base
     end
     p
   end
+  class << self
+    alias_method :get_job_position, :get_position
+  end
   
   def self.set_position_cache(position)
     Cache.set("#{CKP_position}_#{position.id}".to_sym, position, Cache_TTL)
@@ -82,6 +109,28 @@ class JobPosition < ActiveRecord::Base
   
   def self.clear_position_cache(position_id)
     Cache.delete("#{CKP_position}_#{position_id}".to_sym)
+  end
+  
+  
+  def self.get_talk_job_positions(talk_id)
+    jps = Cache.get("#{CKP_talk_job_positions}_#{talk_id}".to_sym)
+    
+    unless jps
+      talk = Talk.get_talk(talk_id)
+      
+      jps = []
+      talk.job_positions.each { |jp|
+        self.set_position_cache(jp)
+        jps << jp
+      }
+      
+      Cache.set("#{CKP_talk_job_positions}_#{talk_id}".to_sym, jps, Cache_TTL)
+    end
+    jps
+  end
+  
+  def self.clear_talk_job_positions_cache(talk_id)
+    Cache.delete("#{CKP_talk_job_positions}_#{talk_id}".to_sym)
   end
   
   

@@ -14,6 +14,16 @@ class Industry < ActiveRecord::Base
   
   
   
+  has_and_belongs_to_many :talks,
+                          :foreign_key => "industry_id",
+                          :association_foreign_key => "talk_id",
+                          :join_table => "talks_industries",
+                          #:order => "created_at DESC",
+                          :after_add => Proc.new { |industry, talk| Industry.clear_talk_industries_cache(talk.id) },
+                          :after_remove => Proc.new { |industry, talk| Industry.clear_talk_industries_cache(talk.id) }
+  
+  
+  
   validates_presence_of :name, :message => "请输入 名称"
   
   validates_uniqueness_of :name, :case_sensitive => false, :scope => :account_id, :message => "名称 已经存在"
@@ -30,15 +40,30 @@ class Industry < ActiveRecord::Base
   CKP_account_industries = :account_industries
   CKP_industry = :industry
   
+  CKP_talk_industries = :talk_industries
+  
   after_save { |industry|
+    self.clear_talk_related_cache(industry.id)
+    
     self.clear_account_industries_cache(industry.account_id) if industry.account_id && industry.account_id > 0
+    
     self.set_industry_cache(industry)
   }
   
   after_destroy { |industry|
+    self.clear_talk_related_cache(industry.id)
+    
     self.clear_account_industries_cache(industry.account_id) if industryindustry.account_id && industry.account_id > 0
+    
     self.clear_industry_cache(industry.id)
   }
+  
+  def self.clear_talk_related_cache(industry_id)
+    industry = Industry.get_industry(industry_id)
+    industry.talks.each do |talk|
+      self.clear_talk_industries_cache(talk.id)
+    end
+  end
   
   
   
@@ -64,7 +89,6 @@ class Industry < ActiveRecord::Base
   
   require_dependency "job_target"
   require_dependency "job_step"
-  require_dependency "job_position"
   def self.get_industry(industry_id)
     c = Cache.get("#{CKP_industry}_#{industry_id}".to_sym)
     
@@ -82,6 +106,28 @@ class Industry < ActiveRecord::Base
   
   def self.clear_industry_cache(industry_id)
     Cache.delete("#{CKP_industry}_#{industry_id}".to_sym)
+  end
+  
+  
+  def self.get_talk_industries(talk_id)
+    is = Cache.get("#{CKP_talk_industries}_#{talk_id}".to_sym)
+    
+    unless is
+      talk = Talk.get_talk(talk_id)
+      
+      is = []
+      talk.industries.each { |i|
+        self.set_industry_cache(i)
+        is << i
+      }
+      
+      Cache.set("#{CKP_talk_industries}_#{talk_id}".to_sym, is, Cache_TTL)
+    end
+    is
+  end
+  
+  def self.clear_talk_industries_cache(talk_id)
+    Cache.delete("#{CKP_talk_industries}_#{talk_id}".to_sym)
   end
   
   

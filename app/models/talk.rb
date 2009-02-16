@@ -8,6 +8,29 @@ class Talk < ActiveRecord::Base
   belongs_to :updater, :class_name => "Account", :foreign_key => "updater_id"
   
   
+  has_and_belongs_to_many :companies,
+                          :foreign_key => "talk_id",
+                          :association_foreign_key => "company_id",
+                          :join_table => "talks_companies",
+                          #:order => "created_at DESC",
+                          :after_add => Proc.new { |talk, company| Company.clear_talk_companies_cache(talk.id) },
+                          :after_remove => Proc.new { |talk, company| Company.clear_talk_companies_cache(talk.id) }
+  has_and_belongs_to_many :job_positions,
+                          :foreign_key => "talk_id",
+                          :association_foreign_key => "job_position_id",
+                          :join_table => "talks_job_positions",
+                          #:order => "created_at DESC",
+                          :after_add => Proc.new { |talk, job_position| JobPosition.clear_talk_job_positions_cache(talk.id) },
+                          :after_remove => Proc.new { |talk, job_position| JobPosition.clear_talk_job_positions_cache(talk.id) }
+  has_and_belongs_to_many :industries,
+                          :foreign_key => "talk_id",
+                          :association_foreign_key => "industry_id",
+                          :join_table => "talks_industries",
+                          #:order => "created_at DESC",
+                          :after_add => Proc.new { |talk, industry| Industry.clear_talk_industries_cache(talk.id) },
+                          :after_remove => Proc.new { |talk, industry| Industry.clear_talk_industries_cache(talk.id) }
+  
+  
   validates_presence_of :creator_id, :updater_id
   
   validates_presence_of :title, :message => "请输入 标题"

@@ -134,12 +134,7 @@ class JobItemsController < ApplicationController
   end
   
   def get_item_instance(id)
-    case @item_type
-      when "job_position"
-        JobPosition.get_position(id)
-      else
-        get_item_class.send("get_#{@item_type}", params[:id])
-    end
+    get_item_class.send("get_#{@item_type}", id)
   end
   
   

@@ -198,6 +198,10 @@ class TalksController < ApplicationController
     @reporters = TalkReporter.get_talk_reporters(@talk.id)
     @talkers = TalkTalker.get_talk_talkers(@talk.id)
     
+    @companies = Company.get_talk_companies(@talk.id)
+    @job_positions = JobPosition.get_talk_job_positions(@talk.id)
+    @industries = Industry.get_talk_industries(@talk.id)
+    
     @question_categories = TalkQuestionCategory.get_talk_question_categories(@talk.id)
     
     @questions = TalkQuestion.get_talk_questions(@talk.id)
@@ -528,11 +532,11 @@ class TalksController < ApplicationController
   end
   
   def answer_destroy
-    @answer = TalkAnswer.get_answer(params[:id])
+    answer = TalkAnswer.get_answer(params[:id])
     
-    @answer.destroy
+    answer.destroy
     
-    jump_to("/talks/#{@answer.talk_id}/manage")
+    jump_to("/talks/#{answer.talk_id}/manage")
   end
   
   def select_job_item
@@ -568,11 +572,29 @@ class TalksController < ApplicationController
   end
   
   def add_job_item
+    talk = Talk.get_talk(params[:id])
+    item_type = params[:item_type]
+    item_id = params[:item_id]
     
+    item = item_type.camelize.constantize.send("get_#{item_type}", item_id)
+    
+    talk_items = talk.send(item_type.pluralize)
+    
+    talk_items << item unless talk_items.exists?(item)
+    
+    jump_to("/talks/#{talk.id}/manage")
   end
   
   def del_job_item
+    talk = Talk.get_talk(params[:id])
+    item_type = params[:item_type]
+    item_id = params[:item_id]
     
+    item = item_type.camelize.constantize.send("get_#{item_type}", item_id)
+    
+    talk.send(item_type.pluralize).delete(item)
+    
+    jump_to("/talks/#{talk.id}/manage")
   end
   
   

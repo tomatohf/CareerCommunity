@@ -34,7 +34,18 @@
 	</div>
 	<div id="talk_companies_section">
 		<div class="community_block align_r">
-			
+			<% @companies.each do |company| %>
+				<% form_tag "/talks/#{@talk.id}/del_job_item", :method => :post, :onsubmit => "if(confirm('确定要删除此公司么 ?')) { return true; }; return false;" do %>
+					<span style="font-size: 14px; font-weight: bold;" title="<%= h(company.desc) %>">
+						<%= h(company.name) %>
+					</span>
+
+					<input type="hidden" name="item_id" value="<%= company.id %>" />
+					<input type="hidden" name="item_type" value="company" />
+					&nbsp;
+					<input type="submit" value="删除此公司" class="button" />
+				<% end %>
+			<% end %>
 		</div>
 	</div>
 	
@@ -55,7 +66,18 @@
 	</div>
 	<div id="talk_job_positions_section">
 		<div class="community_block align_r">
-			
+			<% @job_positions.each do |job_position| %>
+				<% form_tag "/talks/#{@talk.id}/del_job_item", :method => :post, :onsubmit => "if(confirm('确定要删除此职位么 ?')) { return true; }; return false;" do %>
+					<span style="font-size: 14px; font-weight: bold;" title="<%= h(job_position.desc) %>">
+						<%= h(job_position.name) %>
+					</span>
+
+					<input type="hidden" name="item_id" value="<%= job_position.id %>" />
+					<input type="hidden" name="item_type" value="job_position" />
+					&nbsp;
+					<input type="submit" value="删除此职位" class="button" />
+				<% end %>
+			<% end %>
 		</div>
 	</div>
 	
@@ -76,7 +98,18 @@
 	</div>
 	<div id="talk_industries_section">
 		<div class="community_block align_r">
-			
+			<% @industries.each do |industry| %>
+				<% form_tag "/talks/#{@talk.id}/del_job_item", :method => :post, :onsubmit => "if(confirm('确定要删除此行业么 ?')) { return true; }; return false;" do %>
+					<span style="font-size: 14px; font-weight: bold;" title="<%= h(industry.desc) %>">
+						<%= h(industry.name) %>
+					</span>
+
+					<input type="hidden" name="item_id" value="<%= industry.id %>" />
+					<input type="hidden" name="item_type" value="industry" />
+					&nbsp;
+					<input type="submit" value="删除此行业" class="button" />
+				<% end %>
+			<% end %>
 		</div>
 	</div>
 	
