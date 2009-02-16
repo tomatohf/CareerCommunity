@@ -49,6 +49,18 @@ class TalksController < ApplicationController
   
   
   
+  ACKP_talks_feed = :ac_talks_feed
+  
+  caches_action :feed,
+    :cache_path => Proc.new { |controller|
+      ACKP_talks_feed.to_s
+    },
+    :if => Proc.new { |controller|
+      controller.request.format.atom?
+    }
+  
+  
+  
   def index
     
     page = params[:page]
@@ -68,6 +80,22 @@ class TalksController < ApplicationController
       :order => "updated_at DESC"
     )
     
+  end
+  
+  def feed
+    respond_to do |format|
+      format.html { jump_to("/talks") }
+      
+      format.atom {
+        @talks = Talk.published.find(
+          :all,
+          :limit => Talk_Page_Size,
+          :order => "publish_at DESC"
+        )
+        
+        render :layout => false
+      }
+    end
   end
   
   def show

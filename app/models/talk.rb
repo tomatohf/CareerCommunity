@@ -57,11 +57,19 @@ class Talk < ActiveRecord::Base
   
   after_save { |talk|
     self.set_talk_cache(talk)
+    
+    clear_talks_feed_cache
   }
   
   after_destroy { |talk|
     self.clear_talk_cache(talk.id)
+    
+    clear_talks_feed_cache
   }
+  
+  def self.clear_talks_feed_cache
+    Cache.delete(expand_cache_key("#{TalksController::ACKP_talks_feed}.atom"))
+  end
   
   
   

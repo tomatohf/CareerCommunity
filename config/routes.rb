@@ -416,6 +416,8 @@ ActionController::Routing::Routes.draw do |map|
     
     :unpublished => :get,
     
+    :feed => :get,
+    
     :auto_complete_for_job_tags => :post
     
   }, :member => {
