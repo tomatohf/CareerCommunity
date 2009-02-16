@@ -4,6 +4,12 @@ class Talk < ActiveRecord::Base
   
   has_many :comments, :class_name => "TalkComment", :foreign_key => "talk_id", :dependent => :destroy
   
+  has_many :reporters, :class_name => "TalkReporter", :foreign_key => "talk_id", :dependent => :destroy
+  has_many :talk_talkers, :class_name => "TalkTalker", :foreign_key => "talk_id", :dependent => :destroy
+  
+  has_many :question_categories, :class_name => "TalkQuestionCategory", :foreign_key => "talk_id", :dependent => :destroy
+  has_many :questions, :class_name => "TalkQuestion", :foreign_key => "talk_id", :dependent => :destroy
+  
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"
   belongs_to :updater, :class_name => "Account", :foreign_key => "updater_id"
   

@@ -18,7 +18,8 @@ class TalksController < ApplicationController
                                         :answer_edit, :answer_update, :answer, :answer_destroy,
                                         :question_destroy, :create_comment, :delete_comment,
                                         :select_job_item, :add_job_item, :del_job_item,
-                                        :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags]
+                                        :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
+                                        :destroy]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_create, :talker_update,
                                           :talker_destroy, :publish, :cancel_publish,
@@ -26,7 +27,8 @@ class TalksController < ApplicationController
                                           :question_category_update, :add_question, :question_update,
                                           :answer_create, :answer_update, :answer_destroy, :question_destroy,
                                           :create_comment, :delete_comment, :add_job_item, :del_job_item,
-                                          :add_job_tag, :del_job_tag, :auto_complete_for_job_tags]
+                                          :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
+                                          :destroy]
   
   before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
@@ -38,7 +40,8 @@ class TalksController < ApplicationController
                                           :answer_edit, :answer_update, :answer, :answer_destroy,
                                           :question_destroy, :delete_comment, :select_job_item,
                                           :add_job_item, :del_job_item,
-                                          :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags]
+                                          :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
+                                          :destroy]
                                           
   before_filter :check_talk_publish, :only => [:show]
   
@@ -171,6 +174,14 @@ class TalksController < ApplicationController
     end
 
     render :action => "edit"
+  end
+  
+  def destroy
+    talk = Talk.get_talk(params[:id])
+    
+    talk.destroy
+    
+    jump_to("/talks")
   end
   
   def publish

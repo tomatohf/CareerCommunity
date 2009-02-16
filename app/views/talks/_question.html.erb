@@ -38,7 +38,7 @@
 	
 	<div>
 		<span class="activity_info_label">所在章节:</span>
-		<%= h(@question_categories_mapping[question.category_id].name) %>
+		<%= h(@question_categories_mapping[question.category_id] && @question_categories_mapping[question.category_id].name) %>
 	</div>
 	
 	<div>
@@ -88,7 +88,7 @@
 
 					<a href="/talks/answer/<%= answer.id %>">
 						完整显示回答内容</a>
-				<% end %>
+				<% end %>\
 			</div>
 			
 			<div class="community_block_narrow">

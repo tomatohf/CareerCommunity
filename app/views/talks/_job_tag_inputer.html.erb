@@ -1,0 +1,47 @@
+<% form_tag action, :method => :post do %>
+	<table cellpadding="0" cellspacing="10" class="main_part_w">
+		<tr>
+			<td>
+				<label for="tag_names">
+	                标签(<span style="color: red;">*</span>)
+					:
+	            </label>
+			</td>
+			<td style="height: 30px">
+				<input type="text" id="tag_names" name="tag_names" class="text_field" size="40" />
+				&nbsp;
+				<img src="/images/loading_small.gif" id="operating_indicator" style="display: none;" />
+				<div id="tag_names_auto_complete" class="auto_complete" style="display: none;" />
+				<script language="JavaScript">
+					var tag_names_autocompleter = new Ajax.Autocompleter(
+						"tag_names", 
+						"tag_names_auto_complete", 
+						"/talks/auto_complete_for_job_tags", 
+						{
+							indicator: "operating_indicator", 
+							select: "select",
+							tokens: [","]
+						}
+					);
+					
+					// to fix the firefox Chinese input method issue
+					// firefox can not triggle keypress event when using Chinese input method
+					Event.observe($("tag_names"), "keyup", tag_names_autocompleter.onKeyPress.bindAsEventListener(tag_names_autocompleter));
+				</script>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><div class="form_info_l">多个标签请用逗号(,)分隔. 例如: 压力,薪资</div></td>
+		</tr>
+		
+		<tr>
+			<td></td>
+			<td>
+				<%= submit_tag "添加标签", :class => "button", :disabled => @account_limited %>
+			</td>
+		</tr>
+	</table>
+<% end %>
+
+

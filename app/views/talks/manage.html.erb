@@ -5,17 +5,16 @@
 
 <div class="float_r talk_container_r">
 	
-	<div class="community_block_narrow">
+	<div class="community_block">
 		<a href="/talks">
 			返回周三访谈录列表</a>
-			
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		
+	</div>
+	
+	<div class="community_block">
 		<a href="#">
 			返回未发布的访谈录列表</a>
 	</div>
-	
-	<br />
+
 	
 	<div class="space_section_title">
 		<a class="float_r" title="收起" id="talk_companies_section_expand" href="#" onclick="collapse_section('talk_companies_section'); return false;">
@@ -285,6 +284,12 @@
 	<% form_tag "/talks/#{@talk.id}/#{@talk.published ? 'cancel_publish' : 'publish'}", :method => :post, :id => "talk_publish_form", :onsubmit => " { return true; }; return false;" do %>
 	<% end %>
 	
+	<div class="community_block">
+		<% form_tag "/talks/#{@talk.id}", :method => :delete, :onsubmit => "if(confirm('确定要删除此访谈录的全部数据么 ? 一旦删除将不可恢复!!!')) { return true; }; return false;" do %>
+			<input type="submit" value="删除整篇访谈录...慎入" class="button" />
+		<% end %>
+	</div>
+	
 	<div>
 		<div class="space_section_title">
 			<a class="float_r" title="收起" id="talk_info_section_expand" href="#" onclick="collapse_section('talk_info_section'); return false;">
@@ -293,10 +298,6 @@
 				<img src="/images/collapse.png" border="0" /></a>
 
 			<span class="float_r">
-				<a href="#" onclick="//">
-					删除</a>
-				&nbsp;
-
 				<a href="/talks/<%= @talk.id %>/edit">
 					修改</a>
 				&nbsp;

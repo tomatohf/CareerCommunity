@@ -1,0 +1,59 @@
+<% page_title = "管理问题 #{h(@question.question)} 的标签" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r talk_container_r">
+
+</div>
+
+<div class="talk_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block">
+		<a href="/talks/<%= @question.talk_id %>/manage">返回管理所在的访谈录</a>
+	</div>
+	
+	<div class="community_title">
+		现有的标签 ...
+	</div>
+	
+	<div class="community_block">
+		<div class="community_block_narrow form_info_s">
+			已经有
+			<b><%= @job_tags.size %></b>
+			个标签
+		</div>
+	</div>
+	
+	<div class="community_block_narrow">
+		<% @job_tags.each do |tag| %>
+			<li>
+				<div class="community_block">
+					<% form_tag "/talks/#{@question.id}/del_job_tag", :method => :post, :onsubmit => "if(confirm('确定要删除此标签么 ?')) { return true; }; return false;" do %>
+						<span style="font-size: 14px; font-weight: bold;">
+							<%= h(tag.name) %>
+						</span>
+
+						<input type="hidden" name="job_tag_id" value="<%= tag.id %>" />
+						&nbsp;&nbsp;&nbsp;
+						<input type="submit" value="删除此标签" class="button" />
+					<% end %>
+				</div>
+			</li>
+		<% end %>
+	</div>
+	
+	<div class="community_title">
+		添加新的标签 ...
+	</div>
+	
+	<script language="JavaScript" src="/lib/protopack/protoculous-packer.js"></script>
+	
+	<div class="community_block">
+		
+		<%= render(:partial => "job_tag_inputer", :locals => {:action => "/talks/#{@question.id}/add_job_tag"}) %>
+		
+	</div>
+</div>
+
+
