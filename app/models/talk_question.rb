@@ -1,5 +1,15 @@
 class TalkQuestion < ActiveRecord::Base
   
+  has_and_belongs_to_many :job_tags,
+                          :foreign_key => "talk_question_id",
+                          :association_foreign_key => "job_tag_id",
+                          :join_table => "talk_questions_job_tags",
+                          #:order => "created_at DESC",
+                          :after_add => Proc.new { |talk_question, job_tag| JobTag.clear_talk_question_tags_cache(talk_question.id) },
+                          :after_remove => Proc.new { |talk_question, job_tag| JobTag.clear_talk_question_tags_cache(talk_question.id) }
+                          
+                          
+                          
   belongs_to :talk, :class_name => "Talk", :foreign_key => "talk_id"
   
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"

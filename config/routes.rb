@@ -411,7 +411,9 @@ ActionController::Routing::Routes.draw do |map|
     
     :talker_index => :get,
     :talker_new => :get,
-    :talker_create => :post
+    :talker_create => :post,
+    
+    :auto_complete_for_job_tags => :post
     
   }, :member => {
     
@@ -454,7 +456,11 @@ ActionController::Routing::Routes.draw do |map|
     
     :select_job_item => :any,
     :add_job_item => :post,
-    :del_job_item => :post
+    :del_job_item => :post,
+    
+    :job_tags => :get,
+    :add_job_tag => :post,
+    :del_job_tag => :post
     
   }
   

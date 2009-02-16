@@ -48,7 +48,12 @@
 	
 	<div>
 		<span class="activity_info_label">标签:</span>
-		<%= "" %>
+		<% JobTag.get_talk_question_tags(question.id).each do |tag| %>
+			&nbsp;&nbsp;
+			<a href="javascript: alert('链接到所有打有此标签的访谈问题列表'); return false;" class="account_nick_link">
+				<%= h(tag.name) %></a>
+			,
+		<% end %>
 	</div>
 	
 	<div>

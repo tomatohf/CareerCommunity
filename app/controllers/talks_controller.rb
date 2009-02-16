@@ -17,14 +17,16 @@ class TalksController < ApplicationController
                                         :question_edit, :question_update, :answer_new, :answer_create,
                                         :answer_edit, :answer_update, :answer, :answer_destroy,
                                         :question_destroy, :create_comment, :delete_comment,
-                                        :select_job_item, :add_job_item, :del_job_item]
+                                        :select_job_item, :add_job_item, :del_job_item,
+                                        :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_create, :talker_update,
                                           :talker_destroy, :publish, :cancel_publish,
                                           :add_question_category, :del_question_category,
                                           :question_category_update, :add_question, :question_update,
                                           :answer_create, :answer_update, :answer_destroy, :question_destroy,
-                                          :create_comment, :delete_comment, :add_job_item, :del_job_item]
+                                          :create_comment, :delete_comment, :add_job_item, :del_job_item,
+                                          :add_job_tag, :del_job_tag, :auto_complete_for_job_tags]
   
   before_filter :check_editor, :only => [:new, :create, :edit, :update, :manage, :add_reporter, :del_reporter,
                                           :add_talker, :del_talker, :talker_index, :talker_new, :talker_create,
@@ -35,9 +37,12 @@ class TalksController < ApplicationController
                                           :question_edit, :question_update, :answer_new, :answer_create,
                                           :answer_edit, :answer_update, :answer, :answer_destroy,
                                           :question_destroy, :delete_comment, :select_job_item,
-                                          :add_job_item, :del_job_item]
+                                          :add_job_item, :del_job_item,
+                                          :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags]
                                           
   before_filter :check_talk_publish, :only => [:show]
+  
+  skip_before_filter :verify_authenticity_token, :only => [:auto_complete_for_job_tags]
   
   
   
@@ -595,6 +600,57 @@ class TalksController < ApplicationController
     talk.send(item_type.pluralize).delete(item)
     
     jump_to("/talks/#{talk.id}/manage")
+  end
+  
+  def job_tags
+    @question = TalkQuestion.get_question(params[:id])
+    @job_tags = JobTag.get_talk_question_tags(@question.id)
+  end
+  
+  def auto_complete_for_job_tags
+    partial_tag_names = params[:tag_names] && params[:tag_names].strip
+
+    @names = JobTag.find(
+      :all,
+      :limit => 20,
+      :conditions => ["name like ?", "%#{partial_tag_names}%"]
+    ).collect do |tag|
+      tag.name
+    end
+    
+    render(:layout => false, :template => "/profiles/auto_complete_for_name.html.erb")
+  end
+  
+  def add_job_tag
+    question = TalkQuestion.get_question(params[:id])
+    
+    tag_names = params[:tag_names] && params[:tag_names].strip
+    
+    if tag_names && tag_names != ""
+      tag_names.split(",").each do |tag_name|
+        tag_name = tag_name && tag_name.strip
+        
+        if tag_name && tag_name != ""
+          tag = JobTag.get_tag(tag_name)
+          
+          question_job_tags = question.job_tags
+          question_job_tags << tag unless question_job_tags.exists?(tag)
+        end
+      end
+    end
+    
+    jump_to("/talks/#{question.id}/job_tags")
+  end
+  
+  def del_job_tag
+    question = TalkQuestion.get_question(params[:id])
+    job_tag_id = params[:job_tag_id]
+    
+    job_tag = JobTag.find(job_tag_id)
+    
+    question.job_tags.delete(job_tag)
+    
+    jump_to("/talks/#{question.id}/job_tags")
   end
   
   
