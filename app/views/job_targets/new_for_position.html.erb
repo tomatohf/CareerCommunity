@@ -41,11 +41,38 @@
 	
 	
 	<div class="community_block_narrow" id="specify_position_from_system" style="display: none;">
-		<div class="community_block">
-			职位搜索框 和 职位 搜索的结果
+		<div class="community_block_narrow form_info_s">
+			搜索并选择要添加的职位
+			<% if @found_system_job_positions %>
+				,
+				&nbsp;&nbsp;&nbsp;
+				搜索到
+				<b><%= @found_system_job_positions.size %></b>
+				个职位
+			<% end %>
 		</div>
 		
 		<div class="community_block">
+			<% form_tag "/job_targets/new_for_position", :method => :get do %>
+				<input type="text" name="query" class="text_field search_input" size="25" value="<%= h(@query) %>" />
+				&nbsp;&nbsp;&nbsp;
+				<input type="submit" value="搜索职位" class="button" />
+
+				<% if general_admin?(session[:account_id]) %>
+					&nbsp;&nbsp;&nbsp;
+					<a href="/job_position/job_items" target="_blank">
+						管理系统添加的职位</a>
+				<% end %>
+			<% end %>
+		</div>
+		
+		<div class="community_block">
+			<% if @found_system_job_positions %>
+				<%= render :partial => "item", :collection => @found_system_job_positions %>
+			<% end %>
+		</div>
+		
+		<div class="community_block align_r">
 			<a href="#" onclick="select_position_from_new(); return false;">
 				系统还没有添加要找的职位? 那么先自己添加一个吧</a>
 		</div>

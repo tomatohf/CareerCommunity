@@ -60,10 +60,24 @@ class JobTargetsController < ApplicationController
   
   def new
     @company_from = "system"
+    
+    @query = params[:query] && params[:query].strip
+    if @query && @query != ""
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @found_system_companies = Company.system.search(
+        @query,
+        :page => page,
+        :per_page => JobItemsController::Item_Page_Size,
+        :match_mode => JobItemsController::Search_Match_Mode,
+        :order => JobItemsController::Search_Sort_Order,
+        :field_weights => JobItemsController::Search_Field_Weights
+      ).compact
+    end
   end
   
   def new_for_position
-    company_id = params[:company_id] && params[:company_id].strip
+    company_id = (params[:company_id] && params[:company_id].strip) || session[:new_target_company_id]
     
     if company_id && company_id != ""
       company = Company.get_company(company_id)
@@ -99,6 +113,20 @@ class JobTargetsController < ApplicationController
     session[:new_target_company_name] = company.name
     
     @position_from = "system"
+    
+    @query = params[:query] && params[:query].strip
+    if @query && @query != ""
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @found_system_job_positions = JobPosition.system.search(
+        @query,
+        :page => page,
+        :per_page => JobItemsController::Item_Page_Size,
+        :match_mode => JobItemsController::Search_Match_Mode,
+        :order => JobItemsController::Search_Sort_Order,
+        :field_weights => JobItemsController::Search_Field_Weights
+      ).compact
+    end
     
   end
   

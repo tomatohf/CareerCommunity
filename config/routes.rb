@@ -355,7 +355,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/job_targets/list_closed/:id/:page", :controller => "job_targets", :action => "list_closed", :id => /\d+/, :page => /\d+/
   map.resources :job_targets, :collection => {
     
-    :new_for_position => :post,
+    :new_for_position => :any,
     
     :add_account_process => :post,
     :create_account_process => :post,
