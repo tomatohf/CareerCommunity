@@ -24,12 +24,16 @@ class TalkQuestionCategory < ActiveRecord::Base
     self.set_category_cache(question_category)
     
     self.clear_talk_question_categories_cache(question_category.talk_id)
+    
+    Talk.clear_reader_content_cache(question_category.talk_id)
   }
   
   after_destroy { |question_category|
     self.clear_category_cache(question_category.id)
     
     self.clear_talk_question_categories_cache(question_category.talk_id)
+    
+    Talk.clear_reader_content_cache(question_category.talk_id)
   }
   
   

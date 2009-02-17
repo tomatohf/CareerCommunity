@@ -23,12 +23,16 @@ class TalkAnswer < ActiveRecord::Base
     self.set_answer_cache(answer)
     
     self.clear_talk_question_answers_cache(answer.question_id)
+    
+    Talk.clear_reader_content_cache(answer.talk_id)
   }
   
   after_destroy { |answer|
     self.clear_answer_cache(answer.id)
     
     self.clear_talk_question_answers_cache(answer.question_id)
+    
+    Talk.clear_reader_content_cache(answer.talk_id)
   }
   
   

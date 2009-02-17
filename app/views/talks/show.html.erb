@@ -46,12 +46,34 @@
 	<h2><%= page_title %></h2>
 	
 
-	<div class="community_block">
+	<div>
+		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+			id="TalkReader" width="100%" height="500px"
+			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
 		
+			<param name="movie" value="/swf/TalkReader.swf?talk=<%= @talk.id %>" />
+			<param name="quality" value="high" />
+			<param name="bgcolor" value="#b2b2b2" />
+			<param name="allowScriptAccess" value="sameDomain" />
+			<param name="allowFullScreen" value="true" />
+		
+			<embed src="/swf/TalkReader.swf?talk=<%= @talk.id %>"
+				quality="high" bgcolor="#b2b2b2"
+				width="100%" height="500px" name="TalkReader" align="middle"
+				play="true"
+				loop="false"
+				quality="high"
+				allowScriptAccess="sameDomain"
+				allowFullScreen="true"
+				type="application/x-shockwave-flash"
+				pluginspage="http://www.adobe.com/go/getflashplayer">
+			</embed>
+		</object>
 	</div>
 	
 	
-	<div class="align_r">
+	<br />
+	<div class="community_block align_r">
 		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/talks/#{@talk.id}", :title => page_title} %>
 	</div>
 	

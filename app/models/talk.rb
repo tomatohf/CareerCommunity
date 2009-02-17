@@ -54,17 +54,22 @@ class Talk < ActiveRecord::Base
   
   
   CKP_talk = :talk
+  CKP_reader_content = :talk_reader_content
   
   after_save { |talk|
     self.set_talk_cache(talk)
     
     clear_talks_feed_cache
+    
+    self.clear_reader_content_cache(talk.id)
   }
   
   after_destroy { |talk|
     self.clear_talk_cache(talk.id)
     
     clear_talks_feed_cache
+    
+    self.clear_reader_content_cache(talk.id)
   }
   
   def self.clear_talks_feed_cache
@@ -90,6 +95,19 @@ class Talk < ActiveRecord::Base
   
   def self.clear_talk_cache(talk_id)
     Cache.delete("#{CKP_talk}_#{talk_id}".to_sym)
+  end
+  
+  
+  def self.get_reader_content(talk_id)
+    Cache.get("#{CKP_reader_content}_#{talk_id}".to_sym)
+  end
+  
+  def self.set_reader_content_cache(talk_id, content)
+    Cache.set("#{CKP_reader_content}_#{talk_id}".to_sym, content, Cache_TTL)
+  end
+  
+  def self.clear_reader_content_cache(talk_id)
+    Cache.delete("#{CKP_reader_content}_#{talk_id}".to_sym)
   end
   
   

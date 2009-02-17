@@ -38,6 +38,8 @@ class Talker < ActiveRecord::Base
       :conditions => ["talker_id = ?", talker_id]
     ).each do |talk_talker|
       TalkTalker.clear_talk_talkers_cache(talk_talker.talk_id)
+      
+      Talk.clear_reader_content_cache(talk_talker.talk_id)
     end
   end
   
