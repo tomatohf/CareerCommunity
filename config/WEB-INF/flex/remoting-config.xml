@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service"
+    class="flex.messaging.services.RemotingService"
+    messageTypes="flex.messaging.messages.RemotingMessage">
+
+    <default-channels>
+        <channel ref="my-amf"/>
+    </default-channels>
+    
+    <destination id="TalkShowService">
+        <properties>
+            <source>talk/ShowService</source>
+        </properties>
+    </destination>
+
+</service>
