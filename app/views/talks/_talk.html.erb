@@ -10,11 +10,13 @@
 	|
 	&nbsp;
 	
-	<%= format_date(talk.publish_at) %> 发布
+	<% if talk.published %>
+		<%= format_date(talk.publish_at) %> 发布
 		
-	&nbsp;
-	|
-	&nbsp;
+		&nbsp;
+		|
+		&nbsp;
+	<% end %>
 	
 	<a href="/talks/<%= talk.id %>#comment_list" class="account_nick_link">
 		评论(<%= comment_count %>)</a>

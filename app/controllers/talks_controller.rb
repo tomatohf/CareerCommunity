@@ -602,9 +602,10 @@ class TalksController < ApplicationController
         nil
     end
     
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    
     if @query && @query != ""
-      page = params[:page]
-      page = 1 unless page =~ /\d+/
       @items = @item_type.camelize.constantize.system.search(
         @query,
         :page => page,
@@ -613,6 +614,12 @@ class TalksController < ApplicationController
         :order => JobItemsController::Search_Sort_Order,
         :field_weights => JobItemsController::Search_Field_Weights
       ).compact
+    else
+      @items = @item_type.camelize.constantize.system.find(
+        :all,
+        :limit => JobItemsController::Item_Page_Size,
+        :order => "created_at DESC"
+      )
     end
     
   end

@@ -9,7 +9,8 @@
 		搜索并选择要添加的<%= @item_label %>,
 		<% if @items %>
 			&nbsp;&nbsp;&nbsp;
-			搜索到
+			当前
+			<%= (@query && @query != "") ? "搜索到" : "列出最新添加的" %>
 			<b><%= @items.size %></b>
 			个结果,
 		<% end %>
@@ -42,7 +43,7 @@
 		</div>
 	
 		<div class="community_block">
-			<%= paging_buttons(@items) %>
+			<%= paging_buttons(@items) if (@query && @query != "") %>
 		</div>
 	<% end %>
 	

@@ -6,7 +6,7 @@ class ShowService
   def show(talk_id)
     talk = Talk.get_talk(talk_id)
     
-    return "" unless talk.published
+    return "" unless talk.published || ApplicationController.helpers.talk_editor?(RequestContext.get_session[:account_id])
     
     talk_content = Talk.get_reader_content(talk_id)
     
