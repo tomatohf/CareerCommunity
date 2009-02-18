@@ -97,6 +97,12 @@
 		&nbsp;&nbsp;&nbsp;
 		发表于
 		<%= format_datetime(@post.created_at) %>
+		
+		&nbsp;&nbsp;&nbsp;
+		查看:
+		<b>
+			<%= ViewCounter.increase_count("#{@post_type}_post".to_sym, @post.id) %>
+		</b>
 	</div>
 	
 	

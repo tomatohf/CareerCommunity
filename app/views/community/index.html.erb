@@ -88,6 +88,18 @@
 	
 	
 	<div class="community_title">
+		最新访谈录 ...
+	</div>
+	<div class="community_block">
+		<%= render(:partial => "/talks/talk", :collection => @new_talks, :locals => {:small => true}) %>
+		
+		<div class="align_r">
+			<a href="/talks" class="more_part">« 更多访谈录</a>
+		</div>
+	</div>
+	
+	
+	<div class="community_title">
 		最新活动 ...
 	</div>
 	<div class="overflow_hidden" style="margin-top: 10px;">

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 18) do
+ActiveRecord::Schema.define(:version => 19) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -1074,6 +1074,20 @@ ActiveRecord::Schema.define(:version => 18) do
 
   add_index "timezones", ["name"], :name => "index_timezones_on_name"
   add_index "timezones", ["delta"], :name => "index_timezones_on_delta"
+
+  create_table "view_counters", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "counter_key", :limit => 11
+    t.integer  "view_count",  :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "view_counters", ["updated_at"], :name => "index_view_counters_on_updated_at"
+  add_index "view_counters", ["created_at"], :name => "index_view_counters_on_created_at"
+  add_index "view_counters", ["counter_key"], :name => "index_view_counters_on_counter_key"
+  add_index "view_counters", ["view_count"], :name => "index_view_counters_on_view_count"
+  add_index "view_counters", ["delta"], :name => "index_view_counters_on_delta"
 
   create_table "vote_categories", :force => true do |t|
     t.string  "name"

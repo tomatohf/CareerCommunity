@@ -50,6 +50,13 @@
 	<div class="community_block form_info_s">
 		发表于
 		<%= format_datetime(@blog.created_at) %>
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+		查看:
+		<b>
+			<%= ViewCounter.increase_count(:blog, @blog.id) %>
+		</b>
 	</div>
 	
 	<div class="tinymce_content">

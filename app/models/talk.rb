@@ -56,24 +56,30 @@ class Talk < ActiveRecord::Base
   CKP_talk = :talk
   CKP_reader_content = :talk_reader_content
   
+  FCKP_index_talk = :fc_index_talk
+  
   after_save { |talk|
     self.set_talk_cache(talk)
-    
-    clear_talks_feed_cache
-    
     self.clear_reader_content_cache(talk.id)
+    
+    self.clear_talks_feed_cache
+    self.clear_index_talk_cache
   }
   
   after_destroy { |talk|
     self.clear_talk_cache(talk.id)
-    
-    clear_talks_feed_cache
-    
     self.clear_reader_content_cache(talk.id)
+    
+    self.clear_talks_feed_cache
+    self.clear_index_talk_cache
   }
   
   def self.clear_talks_feed_cache
     Cache.delete(expand_cache_key("#{TalksController::ACKP_talks_feed}.atom"))
+  end
+  
+  def self.clear_index_talk_cache
+    Cache.delete(expand_cache_key(FCKP_index_talk))
   end
   
   

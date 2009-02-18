@@ -39,6 +39,10 @@
 			<a href="/blogs/<%= owner_blog.id %>/edit">修改</a>
 		<% end %>
 		
+		|
+		查看:<b><%= ViewCounter.get_count(:blog, owner_blog.id) %></b>
+		|
+		
 		最后更新于
 		<%= format_datetime(owner_blog.updated_at) %>
 	</div>

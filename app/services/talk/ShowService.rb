@@ -8,6 +8,10 @@ class ShowService
     
     return "" unless talk.published || ApplicationController.helpers.talk_editor?(RequestContext.get_session[:account_id])
     
+    
+    # increase view count
+    ViewCounter.increase_count(:talk, talk.id) if talk.published
+    
     talk_content = Talk.get_reader_content(talk_id)
     
     unless talk_content

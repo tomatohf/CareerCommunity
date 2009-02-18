@@ -305,6 +305,39 @@
 				</div>
 				
 				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+					<div class="align_c" style="margin-bottom: 12px;">
+						<a href="/talks">
+							<img src="/images/talks/qiaobutang_talk_logo.png" border="0" alt="周三访谈录" title="周三访谈录" /></a>
+					</div>
+					<% cache(Talk::FCKP_index_talk) do %>
+						<%
+							talks = Talk.published.find(
+								:all,
+								:limit => 5,
+								:order => "updated_at DESC"
+						    )
+						%>
+					
+						<% talks.each do |talk| %>
+							<div class="form_info_s talk">
+								<a href="/talks/<%= talk.id %>" target="_blank" title="<%= h(talk.get_info[:desc]) %>">
+									<%= truncate(h(talk.get_title), 22) %></a>
+							
+								<span style="color: #999999;">
+									(<%= talk.publish_at.strftime("%m.%d") %>)
+								</span>
+							</div>
+						<% end %>
+					<% end %>
+				
+					<div style="text-align: right;">
+						<a href="/talks" target="_blank" style="color: #333333; font-size: 12px;">
+							更多周三访谈录
+							<img src="/images/real_index/more_icon.png" border="0" /></a>
+					</div>
+				</div>
+				
+				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
 					<div style="font-weight: bold;">
 						活动/沙龙
 					</div>

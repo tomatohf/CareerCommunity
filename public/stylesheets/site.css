@@ -1418,9 +1418,24 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	width: 320px;
 }
 
+.talk_show_container_l {
+	margin-left: 150px;
+	margin-right: 250px;
+	padding: 0px 10px;
+}
+
+.talk_show_container_r {
+	width: 250px;
+}
+
 .talk_container {
 	margin-left: 150px;
 	padding: 0px 20px;
+}
+
+.talk {
+	padding-left: 20px;
+	background: transparent url(/images/index/talk_icon.png) no-repeat scroll left 2px;
 }
 
 .job_item_container {

@@ -3,7 +3,7 @@
 <% page_title = "#{talk_title} - 周三访谈录" %>
 <% community_page_title(page_title) %>
 
-<div class="float_r talk_container_r">
+<div class="float_r talk_show_container_r">
 	
 	<div class="community_block align_c">
 		<img src="/images/talks/qiaobutang_talk_logo.png" border="0" />
@@ -42,10 +42,33 @@
 	
 </div>
 
-<div class="talk_container_l">
+<div class="talk_show_container_l">
 	<h2><%= page_title %></h2>
 	
 
+	<div class="community_block">
+		<span class="float_r">
+			<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/talks/#{@talk.id}", :title => page_title} %>
+		</span>
+		
+		
+		<% if @edit %>
+			<a href="/talks/<%= @talk.id %>/manage">
+				管理这篇访谈录</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<% end %>
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+		查看:
+		<b>
+			<%= ViewCounter.get_count(:talk, @talk.id) %>
+		</b>
+	</div>
+	
+	<br />
+	
+	
 	<div>
 		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
 			id="TalkReader" width="100%" height="500px"
@@ -72,17 +95,6 @@
 	</div>
 	
 	
-	<br />
-	<div class="community_block align_r">
-		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/talks/#{@talk.id}", :title => page_title} %>
-	</div>
-	
-	<% if @edit %>
-		<div class="community_block_narrow">
-			<a href="/talks/<%= @talk.id %>/manage">
-				管理这篇访谈录</a>
-		</div>
-	<% end %>
 	
 	<div class="community_title">
 		共有

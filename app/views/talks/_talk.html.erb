@@ -1,22 +1,37 @@
+<% small &&= true %>
+
 <% Talk.set_talk_cache(talk) %>
 
 <% comment_count = TalkComment.get_count(talk.id) %>
 
-<div class="form_info_s">
-	<a href="/talks/<%= talk.id %>" class="account_nick_link" style="font-size: 14px;" title="<%= h(talk.get_info[:desc]) %>">
+<div class="form_info_s talk">
+	<a href="/talks/<%= talk.id %>" class="account_nick_link"<%= %Q! style="font-size: 14px;"! unless small %> title="<%= h(talk.get_info[:desc]) %>">
 		<strong><%= h(talk.title) %></strong></a>
 		
-	&nbsp;&nbsp;&nbsp;
+	&nbsp;
 	|
 	&nbsp;
 	
 	<% if talk.published %>
-		<%= format_date(talk.publish_at) %> 发布
+		<% if small %>
+			<%= talk.publish_at.strftime("%m.%d") %>
+		<% else %>
+			<%= format_date(talk.publish_at) %> 发布
+		<% end %>
 		
 		&nbsp;
 		|
 		&nbsp;
 	<% end %>
+	
+	查看:
+	<b>
+		<%= ViewCounter.get_count(:talk, talk.id) %>
+	</b>
+	
+	&nbsp;
+	|
+	&nbsp;
 	
 	<a href="/talks/<%= talk.id %>#comment_list" class="account_nick_link">
 		评论(<%= comment_count %>)</a>
@@ -31,7 +46,9 @@
 	<% end %>
 </div>
 
-<div style="padding: 0px 30px;">
-	<%= thin_hr %>
-</div>
+<% unless small %>
+	<div style="padding: 0px 30px;">
+		<%= thin_hr %>
+	</div>
+<% end %>
 

@@ -2,6 +2,7 @@ class CommunityController < ApplicationController
   
   New_Account_Size = 9
   New_Action_Size = 15
+  New_Talk_Size = 5
   New_Activity_Size = 10
   New_Group_Size = 12
   New_Activity_Post_Size = 10
@@ -40,6 +41,12 @@ class CommunityController < ApplicationController
       :limit => New_Action_Size,
       :include => [:account => [:profile_pic]],
       :order => "created_at DESC"
+    )
+    
+    @new_talks = Talk.published.find(
+      :all,
+      :limit => New_Talk_Size,
+      :order => "publish_at DESC"
     )
     
     @new_activities = Activity.uncancelled.find(
