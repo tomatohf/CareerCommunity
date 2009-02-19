@@ -24,7 +24,92 @@
 	</div>
 		
 	<div class="community_block">
+		<div class="align_r">
+			<a href="#" onclick="toggle_elements(['embed_section']); return false;">
+				显示/隐藏 嵌入代码</a>
+		</div>
 		
+		<div id="embed_section">
+			<div style="padding-left: 30px;">
+				<strong>Flash 地址:</strong>
+			</div>
+			<div class="align_r">
+				<input type="text" value="http://www.qiaobutang.com/swf/TalkReader.swf?talk=<%= @talk.id %>" class="text_field" style="width: 200px; padding: 3px 6px;" onclick="this.select();" readonly="true" />
+			</div>
+			
+			<div style="padding-left: 30px; margin-top: 5px;">
+				<strong>HTML 代码:</strong>
+			</div>
+			<div class="align_r" id="embed_html_code">
+				<input type="text" class="text_field" style="width: 200px; padding: 3px 6px;" onclick="this.select();" readonly="true" id="embed_html_code_value" />
+			</div>
+			<div id="custom_size_link" style="padding-left: 30px;">
+				<a href="#" onclick="toggle_elements(['custom_size_link', 'set_size_links', 'embed_html_code', 'embed_size_section']); return false;">
+					自定义大小</a>
+			</div>
+			<div id="embed_size_section" style="padding-left: 30px; display: none;">
+				<div>
+					宽度:
+					&nbsp;
+					<input type="text" class="text_field" size="5" id="embed_width" value="100%" />
+					
+					&nbsp;&nbsp;&nbsp;
+					
+					<input id="full_width_check" type="checkbox" onclick="var width_input = document.getElementById('embed_width'); if(this.checked){width_input.value='100%'; width_input.disabled=true;}else{width_input.disabled=false;}" />
+					<label for="full_width_check">宽度撑满容器</label>
+				</div>
+				<div>
+					高度:
+					&nbsp;
+					<input type="text" class="text_field" size="5" id="embed_height" value="500" />
+				</div>
+				<div id="set_size_links" style="padding-left: 40px; display: none;">
+					<a href="#" onclick="toggle_elements(['custom_size_link', 'set_size_links', 'embed_html_code', 'embed_size_section']); set_embed_html(document.getElementById('embed_width').value, document.getElementById('embed_height').value); return false;">
+						确定</a>
+						
+					&nbsp;&nbsp;
+						
+					<a href="#" onclick="toggle_elements(['custom_size_link', 'set_size_links', 'embed_html_code', 'embed_size_section']); return false;">
+						取消</a>
+						
+					&nbsp;&nbsp;
+						
+					<a href="#" onclick="document.getElementById('embed_width').value = '100%', document.getElementById('embed_height').value = '500'; return false;">
+						重置为默认值</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script language="JavaScript">
+		function toggle_elements(element_ids) {
+			for(var i=0; i<element_ids.length; i++) {
+				var element_id = element_ids[i]
+				var ele = document.getElementById(element_id);
+				ele.style.display = (ele.style.display == 'none') ? '' : 'none';
+			}
+		}
+
+		function set_embed_html(width, height) {
+			var html = "";
+			html += "<embed";
+			html += " width=\"" + width + "\"";
+			html += " height=\"" + height + "\"";
+			html += " src=\"http://www.qiaobutang.com/swf/TalkReader.swf?talk=<%= @talk.id %>\"";
+			html += " quality=\"high\"";
+			html += " bgcolor=\"#b2b2b2\"";
+			html += " align=\"middle\"";
+			html += " allowFullScreen=\"true\"";
+			html += " type=\"application/x-shockwave-flash\"";
+			html += "></embed>";
+
+			document.getElementById("embed_html_code_value").value = html;
+		}
+		
+		set_embed_html("100%", "500");
+	</script>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
 	</div>
 	
 </div>
