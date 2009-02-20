@@ -146,7 +146,7 @@
 	
 	<div>
 		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-			id="TalkReader" width="100%" height="500px"
+			id="TalkReaderObject" width="100%" height="500px"
 			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
 		
 			<param name="movie" value="/swf/TalkReader.swf?talk=<%= @talk.id %>" />
@@ -155,7 +155,7 @@
 			<param name="allowScriptAccess" value="sameDomain" />
 			<param name="allowFullScreen" value="true" />
 		
-			<embed src="/swf/TalkReader.swf?talk=<%= @talk.id %>"
+			<embed id="TalkReaderEmbed" src="/swf/TalkReader.swf?talk=<%= @talk.id %>"
 				quality="high" bgcolor="#b2b2b2"
 				width="100%" height="500" name="TalkReader" align="middle"
 				play="true"
@@ -218,4 +218,17 @@
 	</div>
 	
 </div>
+
+
+
+<script language="JavaScript">
+	// set focus to the reader
+	if(!!(window.attachEvent && !window.opera)) {
+		// IE
+		document.getElementById("TalkReaderObject").focus();
+	}
+	else {
+		document.getElementById("TalkReaderEmbed").focus();
+	}
+</script>
 
