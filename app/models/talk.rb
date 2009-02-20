@@ -1,5 +1,29 @@
 class Talk < ActiveRecord::Base
   
+  define_index do
+    # fields
+    indexes :title, :info
+    
+    indexes question_categories.name, :as => :question_categories_name
+    indexes question_categories.desc, :as => :question_categories_desc
+    
+    indexes questions.question, :as => :questions_question
+    indexes questions.summary, :as => :questions_summary
+    
+    indexes answers.answer, :as => :answers_answer
+    indexes answers.summary, :as => :answers_summary
+    
+    indexes comments.content, :as => :comments_content
+    
+
+    # attributes
+    has :created_at, :updated_at, :publish_at
+    
+    set_property :delta => true
+    
+    # set_property :field_weights => {:field => number}
+  end
+  
   include CareerCommunity::Util
   
   has_many :comments, :class_name => "TalkComment", :foreign_key => "talk_id", :dependent => :destroy
@@ -9,6 +33,7 @@ class Talk < ActiveRecord::Base
   
   has_many :question_categories, :class_name => "TalkQuestionCategory", :foreign_key => "talk_id", :dependent => :destroy
   has_many :questions, :class_name => "TalkQuestion", :foreign_key => "talk_id", :dependent => :destroy
+  has_many :answers, :class_name => "TalkAnswer", :foreign_key => "talk_id", :dependent => :destroy
   
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"
   belongs_to :updater, :class_name => "Account", :foreign_key => "updater_id"

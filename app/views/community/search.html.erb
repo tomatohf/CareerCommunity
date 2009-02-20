@@ -6,26 +6,27 @@
 	</div>
 
 	<%
-		search_scopes = {
-			:all => "全部",
-			:account => "成员",
-			:group => "圈子",
-			:group_post => "圈子话题",
-			:activity => "活动",
-			:activity_post => "活动话题",
-			:recruitment => "招聘信息",
-			:vote => "投票",
-			:blog => "博客"
+		search_scopes = [
+			[:all, "全部"],
+			[:account, "成员"],
+			[:blog, "博客"],
+			[:group, "圈子"],
+			[:group_post, "圈子话题"],
+			[:activity, "活动"],
+			[:activity_post, "活动话题"],
+			[:recruitment, "招聘信息"],
+			[:vote, "投票"],
+			[:talk, "访谈录"]
 			# ,
-			# :qa => "问答",
-		}
+			# [:qa, "问答"],
+		]
 	%>
 	<div class="community_block">
 		<ul>
-			<% search_scopes.each do |key, value| %>
+			<% search_scopes.each do |scope| %>
 				<li>
-					<a href="#" onclick="submit_search_form('<%= key %>'); return false;"<%= " class=\"link_selected\"" if @scope == key.to_s %>>
-						<%= value %></a>
+					<a href="#" onclick="submit_search_form('<%= scope[0] %>'); return false;"<%= " class=\"link_selected\"" if @scope == scope[0].to_s %>>
+						<%= scope[1] %></a>
 				</li>
 			<% end %>
 		</ul>
@@ -42,19 +43,17 @@
 				<select name="scope" class="dropdown_list" id="scope_select">
 					<option value="all"<%= " selected=\"selected\"" if @scope == "all" %>>选择搜索范围</option>
 					<option value="account"<%= " selected=\"selected\"" if @scope == "account" %>>成员</option>
+					<option value="blog"<%= " selected=\"selected\"" if @scope == "blog" %>>博客</option>
 					<option value="group"<%= " selected=\"selected\"" if @scope == "group" %>>圈子</option>
 					<option value="group_post"<%= " selected=\"selected\"" if @scope == "group_post" %>>圈子话题</option>
 					<option value="activity"<%= " selected=\"selected\"" if @scope == "activity" %>>活动</option>
 					<option value="activity_post"<%= " selected=\"selected\"" if @scope == "activity_post" %>>活动话题</option>
 					<option value="recruitment"<%= " selected=\"selected\"" if @scope == "recruitment" %>>招聘信息</option>
 					<option value="vote"<%= " selected=\"selected\"" if @scope == "vote" %>>投票</option>
-					<option value="blog"<%= " selected=\"selected\"" if @scope == "blog" %>>博客</option>
+					<option value="talk"<%= " selected=\"selected\"" if @scope == "talk" %>>访谈录</option>
 					<!--
 					<option value="qa"<%= " selected=\"selected\"" if @scope == "qa" %>>问答</option>
-					-->
-					<!--
 					<option value="idea"<%= " selected=\"selected\"" if @scope == "idea" %>>想法</option>
-					<option value="share"<%= " selected=\"selected\"" if @scope == "share" %>>分享</option>
 					-->
 				</select>
 				<input type="text" name="query" id="query_input" class="text_field search_input" size="35" value="<%= h(@query) %>" />
@@ -94,7 +93,7 @@
 				:activity_post => "活动话题",
 				:group => "圈子",
 				:group_post => "圈子话题",
-				:recruitment => "招聘信息",
+				:talk => "访谈录",
 				:vote => "投票"
 			}
 		%>

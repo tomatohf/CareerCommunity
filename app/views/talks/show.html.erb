@@ -6,7 +6,8 @@
 <div class="float_r talk_show_container_r">
 	
 	<div class="community_block align_c">
-		<img src="/images/talks/qiaobutang_talk_logo.png" border="0" />
+		<a href="/talks">
+			<img src="/images/talks/qiaobutang_talk_logo.png" border="0" /></a>
 	</div>
 	
 	<div class="community_block_narrow">
@@ -110,6 +111,86 @@
 	
 	<div class="community_block_narrow">
 		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_block">
+		<!--
+		<div class="align_r">
+			<a href="#" onclick="toggle_elements(['share_section']); return false;">
+				显示/隐藏 分享&amp;推荐</a>
+		</div>
+		-->
+		
+		<div id="share_section" style="padding-left: 5px;">
+			<table cellpadding="0" cellspacing="10" class="main_part_w">
+				<tr>
+					<td align="left">
+						<a title="推荐到 豆瓣" class="account_nick_link" href="javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:'',r='http://www.douban.com/recommend/?url='+e(d.location.href)+'&title='+e(d.title)+'&sel='+e(s)+'&v=1',x=function(){if(!window.open(r,'douban','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r+'&r=1'};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()">
+							<img alt="推荐到 豆瓣" src="/images/talks/share/douban.png" border="0" />
+							推荐到豆瓣</a>
+					</td>
+					
+					<td align="left">
+						<a title="分享到 校内" class="account_nick_link" href="javascript:void((function(s,d,e){var f='http://www.xiaonei.com/share/buttonshare.do?link=',u=d.location,l=d.title,p=[e(u),'&title=',e(l)].join('');function a(){if(!window.open([f,p].join(''),'xnshare',['toolbar=0,status=0,resizable=1,width=626,height=436,left=',(s.width-626)/2,',top=',(s.height-436)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();})(screen,document,encodeURIComponent));">
+							<img src="/images/talks/share/xiaonei.png" alt="分享到 校内" border="0" />
+							分享到校内</a>
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<td align="left">
+						<a target="_blank" title="分享到 Twitter" class="account_nick_link" href="http://twitter.com/home?status=<%= page_title %>   http://www.qiaobutang.com/talks/<%= @talk.id %>">
+							<img src="/images/talks/share/twitter.png" alt="分享到 Twitter" border="0" />
+							分享到Twitter</a>
+					</td>
+					
+					<td align="left">
+						<a title="分享到 饭否" class="account_nick_link" href="javascript:var d=document,w=window,f='http://fanfou.com/share',l=d.location,e=encodeURIComponent,p='?u='+e(l.href)+'?t='+e(d.title)+'?d='+e(w.getSelection?w.getSelection().toString():d.getSelection?d.getSelection():d.selection.createRange().text)+'?s=bl';if(!w.open(f+'r'+p,'sharer','toolbar=0,status=0,width=600,height=400')){l.href=f+'.new'+p;}void(0)">
+							<img src="/images/talks/share/fanfou.gif" alt="分享到 饭否" border="0" />
+							分享到饭否</a>
+					</td>
+				</tr>
+				
+				<tr>
+					<td align="left">
+						<a title="分享到 Google Reader" class="account_nick_link" href="javascript:var b=document.body;var GR________bookmarklet_domain='http://www.google.com';if(b&&!document.xmlVersion){void(z=document.createElement('script'));void(z.src='http://www.google.com/reader/ui/link-bookmarklet.js');void(b.appendChild(z));}else{}">
+							<img alt="分享到 Google Reader" src="/images/talks/share/greader.png" border="0" style="margin-right: 2px;" />
+							Google Reader</a>
+					</td>
+					
+					<td align="left">
+						<a title="分享到 FriendFeed" class="account_nick_link" href="javascript:void((function(){var e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('src','http://friendfeed.com/share/bookmarklet/javascript');document.body.appendChild(e)})())">
+							<img alt="分享到 FriendFeed" src="/images/talks/share/friendfeed.png" border="0" style="margin-right: 2px;" />
+							FriendFeed</a>
+					</td>
+				</tr>
+				
+				<tr>
+					<td align="left">
+						<a title="分享到 Facebook" class="account_nick_link" href="javascript:var d=document,f='http://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1235124721&u='+e(l.href)+'&t='+e(d.title);1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0)">
+							<img alt="分享到 Facebook" src="/images/talks/share/facebook.png" border="0" />
+							分享到Facebook</a>
+					</td>
+					
+					<td align="left">
+						<a title="分享到 海内" class="account_nick_link" href="javascript:void((function(s,d,e,t,v){var f='http://www.hainei.com/share.proxy?a=',u=d.location,l=d.title,p=['&src=bookmark&url=',e(u),'&title=',e(l),'&v=',v,'&i=',t].join('');function a(){if(!window.open([f,'bmlet',p].join(''),'hnsharer',['toolbar=0,status=0,resizable=1,width=626,height=436,left=',(s.width-626)/2,',top=',(s.height-436)/2].join('')))u.href=[f,'newurl',p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else a();})(screen,document,encodeURIComponent,1235120363,1));">
+							<img src="/images/talks/share/hainei.png" alt="分享到 海内" border="0" />
+							分享到海内</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_block">
+		
 	</div>
 	
 </div>

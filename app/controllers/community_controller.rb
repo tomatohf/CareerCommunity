@@ -179,8 +179,33 @@ class CommunityController < ApplicationController
     @activity_posts = search_activity_post(query, 1, Search_All_Result_Page_Size)
     @groups = search_group(query, 1, Search_All_Result_Page_Size)
     @group_posts = search_group_post(query, 1, Search_All_Result_Page_Size)
-    @recruitments = search_recruitment(query, 1, Search_All_Result_Page_Size)
     @votes = search_vote(query, 1, Search_All_Result_Page_Size)
+    @talks = search_talk(query, 1, Search_All_Result_Page_Size)
+  end
+  
+  def search_talk(query, page, per_page)
+    Talk.published.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, publish_at DESC",
+      :field_weights => {
+        :title => 10,
+        :info => 8,
+        
+        :question_categories_name => 6,
+        :question_categories_desc => 6,
+        
+        :questions_question => 8,
+        :questions_summary => 6,
+        
+        :answers_answer => 8,
+        :answers_summary => 6,
+        
+        :comments_content => 1
+      }
+    )
   end
   
   def search_vote(query, page, per_page)

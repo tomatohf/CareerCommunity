@@ -4,7 +4,8 @@
 <div class="float_r talk_container_r">
 	
 	<div class="community_block align_c">
-		<img src="/images/talks/qiaobutang_talk_logo.png" border="0" />
+		<a href="/talks">
+			<img src="/images/talks/qiaobutang_talk_logo.png" border="0" /></a>
 	</div>
 	
 	<% if talk_editor?(session[:account_id]) %>
@@ -31,6 +32,51 @@
 				尚未发布的访谈录</a>
 		</div>
 	<% end %>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block align_c" style="color: #888888;">
+		和业内资深人士 500 强 HR
+		<br />
+		一起聊他们的求职历程 ...
+		<br />
+		每一个问题, 都没有简单的答案
+		<br />
+		每一个答案, 都没有空洞的说教
+		<br />
+		我们全部的努力, 只希望哪怕只有一段话
+		<br />
+		能为你拓展一个新的角度, 在那时
+		<br />
+		你会在心里, 对我们的访谈嘉宾说一声
+		<br />
+		
+		<img border="0" src="/images/left_quote.gif" style="width: 10px; height: 8px;"/>
+		听君一席话，胜读十年书
+		<img border="0" src="/images/right_quote.gif" style="width: 10px; height: 12px;"/>
+		
+		<img src="/images/index/talk_icon.png" border="0" />
+	</div>
+	
+	<div class="community_block align_r" style="color: #888888; margin-right: 50px;">
+		<i>乔布堂.访谈录工作组</i>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block align_c">
+		<% form_tag "/community/search", :method => :get do %>
+			<input type="text" name="query" class="text_field" size="25" />
+			<input type="hidden" name="scope" value="talk" />
+
+			&nbsp;
+			<input type="submit" value="搜索访谈录" class="button" />
+		<% end %>
+	</div>
 	
 	<div class="community_block_narrow">
 		<%= thin_hr %>
@@ -65,7 +111,7 @@
 			<a href="/talks/<%= @latest_talk.id %>#comment_list">
 				评论(<%= TalkComment.get_count(@latest_talk.id) %>)</a>
 		</div>
-		<div style="padding: 0px 15px; color: #555555; text-indent: 25px;">
+		<div style="padding: 0px 15px; color: #444444; text-indent: 25px;">
 			<%= simple_format(h(@latest_talk.get_info[:desc])) %>
 		</div>
 		<div class="align_r" style="padding-right: 20px;">

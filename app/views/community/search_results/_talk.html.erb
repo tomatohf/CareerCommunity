@@ -1,0 +1,46 @@
+<% talk = result %>
+
+<%
+	talk_info = talk.get_info
+	
+	excerpts = build_excerpts(
+		riddle_client,
+		[h(talk.title), h(talk_info[:desc]), h(talk_info[:summary])],
+		query,
+		"talk_core"
+	)
+%>
+
+<%
+	talk_title = excerpts[0]
+	talk_desc = excerpts[1]
+	talk_summary = excerpts[2]
+%>
+
+<div class="recruitment_container">
+	<div class="recruitment_title">
+		<a href="/talks/<%= talk.id %>" class="account_nick_link">
+			<%= talk_title %></a>
+	</div>
+	
+	<div class="align_r">
+		<span class="form_info_s">
+			发布时间:
+		</span>
+		<span class="recruitment_info_highlight">
+			<b>
+				<%= format_date(talk.publish_at) %>
+			</b>
+		</span>
+	</div>
+	
+	<div class="recruitment_content">
+		<%= talk_desc %>
+	</div>
+	
+	<div class="recruitment_content">
+		<%= talk_summary %>
+	</div>
+</div>
+
+

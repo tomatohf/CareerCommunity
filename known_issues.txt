@@ -1,12 +1,14 @@
 ﻿招聘信息相关网页放广告
 设置: 首页 -> 默认首页 或 我的空间
 
-搜索访谈录
+
 访谈录复杂的文本格式支持
-访谈录列表页放 help 信息 和 软文
-统计 embed 的 swf 的来源
+统计 embed 的 swf 的来源 : ExternalInterface.call("window.location.href.toString");
 访谈录显示相关文章
 访谈录客户端阅读器? AIR ?
+
+将访谈录开发成 APP
+将活动功能包装成一个 APP
 
 发送求职管家的提醒邮件
 
@@ -46,7 +48,6 @@ enable 投票客户端, 放到工具箱里面
 	删除添加的流程 和 状态 - 处理已经关联的步骤
 
 
-将活动功能包装成一个 APP
 Enhance 活动的功能
 	- 天气情况调用
 		http://www.google.com/ig/api?hl=zh-cn&weather=,,,31238560,121412360

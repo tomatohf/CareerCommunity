@@ -4,7 +4,7 @@ class TalksController < ApplicationController
   Talk_Page_Size = 30
   Talker_Page_Size = 20
   
-  New_Comment_Size = 30
+  New_Comment_Size = 15
   
   
   layout "community"
