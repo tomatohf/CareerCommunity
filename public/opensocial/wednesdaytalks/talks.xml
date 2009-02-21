@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+	<ModulePrefs title="Hello World!">
+		<Require feature="opensocial-0.8" />
+	</ModulePrefs>
+	
+	<Content type="html">
+		<![CDATA[
+			Hello, world!
+			
+			
+			
+			<hr />
+			
+			
+			
+			<div id="my_info_container"></div>
+			
+			<script type="text/javascript">
+
+				function getData() {
+					var req = opensocial.newDataRequest();
+					req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER), 'viewer');
+					req.send(onLoadMyInfo);
+				};
+
+				function onLoadMyInfo(dataResponse) {
+				    var viewer = dataResponse.get('viewer').getData();
+				    var html = 'ID：'+viewer.getId()+'<br />'; 
+				    html += '我的名字 ' + viewer.getDisplayName()+'<br />';
+				    html += '<img src="' + viewer.getField(opensocial.Person.Field.THUMBNAIL_URL) + '" />'+'<br />';
+					document.getElementById("my_info_container").innerHTML = html;
+				};
+				
+				gadgets.util.registerOnLoadHandler(getData);
+
+			</script>
+			
+		]]>
+	</Content>
+</Module>
+
+
