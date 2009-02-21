@@ -2,13 +2,13 @@
 设置: 首页 -> 默认首页 或 我的空间
 
 
+将访谈录开发成 APP
+将活动功能包装成一个 APP
+
 访谈录复杂的文本格式支持
 统计 embed 的 swf 的来源 : ExternalInterface.call("window.location.href.toString");
 访谈录显示相关文章
 访谈录客户端阅读器? AIR ?
-
-将访谈录开发成 APP
-将活动功能包装成一个 APP
 
 发送求职管家的提醒邮件
 

@@ -15,7 +15,7 @@
 			ed.addButton("albumphotobtn", {
 				title : "从相册中插入照片",
 				cmd : "tomatoAlbumPhoto",
-				image : "/images/index/pic_icon.png"
+				image : "/images/index/pic_icon.gif"
 			});
 		},
 
