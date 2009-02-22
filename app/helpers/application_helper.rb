@@ -327,4 +327,8 @@ module ApplicationHelper
     (collection.current_page - 1) * collection.per_page
   end
   
+  def just_output(*args, &block)
+    concat(capture(&block), block.binding)
+  end
+  
 end

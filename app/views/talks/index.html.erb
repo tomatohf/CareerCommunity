@@ -114,7 +114,7 @@
 	<h2><%= page_title %></h2>
 	
 	
-	<% cache("#{Talk::FCKP_talk_index_talks}_#{@page}") do %>
+	<% send((talk_editor?(session[:account_id]) ? :just_output : :cache), "#{Talk::FCKP_talk_index_talks}_#{@page}") do %>
 		<%
 			talks = Talk.published.paginate(
 		      :page => @page,
