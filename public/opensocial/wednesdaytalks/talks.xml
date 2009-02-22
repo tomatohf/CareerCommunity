@@ -7,14 +7,82 @@
 	
 	<Content type="html">
 		<![CDATA[
-			<script type="text/javascript" src="/opensocial/wednesdaytalks/talks.js"></script>
-			
 			<div id="talk_list">
 				
 			</div>
 			
+			
+			
+			<style type="text/css">
+				
+			</style>
+			
 			<script type="text/javascript">
-				gadgets.util.registerOnLoadHandler(init);
+				function load_talk_list(page) {
+					page = page || 1
+
+					var params = {};
+					params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+					params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
+
+					gadgets.io.makeRequest(
+						"http://www.qiaobutang.com/talks/p/" + page + ".json",
+						on_talk_list_load,
+						params
+					);
+				}
+
+				function on_talk_list_load(resp) {
+					var html = "";
+
+					var paging_html = get_paging_info_html(resp.data.paging_info);
+
+					for(var i=0; i<resp.data.talks.length; i++) {
+						var talk = resp.data.talks[i];
+
+						html += "<div>";
+						html += 	talk.title;
+						html += "</div>";
+					}
+
+					html += paging_html;
+
+					document.getElementById("talk_list").innerHTML = html;
+				}
+
+				function get_paging_info_html(paging_info) {
+					var html = "";
+
+					html += "<div style='text-align: center;'>";
+
+					var previous_page = paging_info.previous_page
+					if(previous_page != null) {
+						html += 	"<a href='#' onclick='load_talk_list(" + previous_page + "); return false;'>« 上一页</a>";
+					} else {
+						html += 	"<span>上一页</span>";
+					}
+
+					html += 		" - 第" + paging_info.current_page + "页 / 共" + paging_info.total_pages + "页 - ";
+
+					var next_page = paging_info.next_page;
+					if(next_page != null) {
+						html += 	"<a href='#' onclick='load_talk_list(" + next_page + "); return false;'>下一页 »</a>";
+					} else {
+						html += 	"<span>下一页</span>";
+					}
+
+					html += "</div>";
+
+					return html;
+				}
+
+
+
+				gadgets.util.registerOnLoadHandler(
+					function() {
+						load_talk_list();
+					}
+				);
 			</script>
 		]]>
 	</Content>

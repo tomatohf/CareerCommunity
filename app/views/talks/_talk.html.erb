@@ -1,12 +1,13 @@
 <% small &&= true %>
+<% highlight_latest &&= true %>
 
 <% Talk.set_talk_cache(talk) %>
 
 <% comment_count = TalkComment.get_count(talk.id) %>
 
-<% if (@page.to_i < 2) && (talk_counter < 2) %>
+<% if highlight_latest && (@page.to_i < 2) && (talk_counter < 2) %>
 
-	<%= render(:partial => "latest_talk", :object => talk) %>
+	<%= render(:partial => "/talks/latest_talk", :object => talk) %>
 
 <% else %>
 
