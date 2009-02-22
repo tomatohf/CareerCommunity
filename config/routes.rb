@@ -404,7 +404,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/:picture_type/pictures/:action/:id", :controller => "pictures"
   
   
-  map.connect "/talks/p/:page", :controller => "talks", :action => "index", :page => /\d+/
+  map.connect "/talks/p/:page.:format", :controller => "talks", :action => "index", :page => /\d+/
   map.connect "/talks/unpublished/p/:page", :controller => "talks", :action => "unpublished", :page => /\d+/
   map.connect "/talks/talker_index/p/:page", :controller => "talks", :action => "talker_index", :page => /\d+/
   map.connect "/talks/:id/comment/:page", :controller => "talks", :action => "show", :id => /\d+/, :page => /\d+/

@@ -1,0 +1,38 @@
+<% if latest_talk %>
+	<div class="align_c" style="font-size: 16px;">
+		<a href="/talks/<%= latest_talk.id %>" class="account_nick_link">
+			<strong><%= h(latest_talk.title) %></strong></a>
+	</div>
+	<div class="align_r" style="padding-right: 20px;">
+		<a href="/talks/<%= latest_talk.id %>#comment_list">
+			评论(<%= TalkComment.get_count(latest_talk.id) %>)</a>
+	</div>
+	<div style="padding: 0px 15px; color: #444444; text-indent: 25px;">
+		<%= simple_format(h(latest_talk.get_info[:desc])) %>
+	</div>
+	<div class="align_r" style="padding-right: 20px;">
+		<%= format_date(latest_talk.publish_at) %> 发布
+		
+		&nbsp;&nbsp;&nbsp;
+		|
+		&nbsp;&nbsp;&nbsp;
+		
+		查看:
+		<b>
+			<%= ViewCounter.get_count(:talk, latest_talk.id) %>
+		</b>
+		
+		<% if talk_editor?(session[:account_id]) %>
+			&nbsp;&nbsp;&nbsp;
+			|
+			&nbsp;&nbsp;&nbsp;
+			
+			<a href="/talks/<%= latest_talk.id %>/manage">
+				管理</a>
+		<% end %>
+	</div>
+
+	<div class="community_title">
+		更多 ...
+	</div>
+<% end %>

@@ -82,6 +82,8 @@ class Talk < ActiveRecord::Base
   CKP_reader_content = :talk_reader_content
   
   FCKP_index_talk = :fc_index_talk
+  FCKP_talk_index_talks = :fc_talk_index_talks
+  CKP_all_talks_json_list = :all_talks_json_list
   
   after_save { |talk|
     self.set_talk_cache(talk)
@@ -89,6 +91,8 @@ class Talk < ActiveRecord::Base
     
     self.clear_talks_feed_cache
     self.clear_index_talk_cache
+    
+    self.clear_list_all_talks_cache
   }
   
   after_destroy { |talk|
@@ -97,6 +101,8 @@ class Talk < ActiveRecord::Base
     
     self.clear_talks_feed_cache
     self.clear_index_talk_cache
+    
+    self.clear_list_all_talks_cache
   }
   
   def self.clear_talks_feed_cache
@@ -105,6 +111,16 @@ class Talk < ActiveRecord::Base
   
   def self.clear_index_talk_cache
     Cache.delete(expand_cache_key(FCKP_index_talk))
+  end
+  
+  def self.clear_list_all_talks_cache
+    talks_count = self.published.count
+    page_count = talks_count > 0 ? (talks_count.to_f/TalksController::Talk_Page_Size).ceil : 1
+
+    1.upto(page_count) { |i|
+      Cache.delete(expand_cache_key("#{FCKP_talk_index_talks}_#{i}"))
+      Cache.delete(expand_cache_key("#{CKP_all_talks_json_list}_#{i}"))
+    }
   end
   
   

@@ -1,0 +1,34 @@
+<% 
+	cache("#{Talk::CKP_all_talks_json_list}_#{@page}") do
+		talks = Talk.published.paginate(
+	      :page => @page,
+	      :per_page => TalksController::Talk_Page_Size,
+	      :order => "publish_at DESC"
+	    )
+	
+		list_info = {
+			:paging_info => {
+				:current_page => talks.current_page,
+				:per_page => talks.per_page,
+				:total_entries => talks.total_entries,
+				:total_pages => talks.total_pages,
+				:next_page => talks.next_page,
+				:previous_page => talks.previous_page
+			},
+			
+			:talks => talks.collect do |talk|
+				talk_info = talk.get_info
+				{
+					:title => h(talk.title),
+					:desc => h(talk_info[:desc]),
+					:summary => h(talk_info[:summary]),
+					:publish_time => format_date(talk.publish_at)
+				}
+			end
+		}
+		
+%>
+<%= list_info.to_json %>
+<% end %>
+
+

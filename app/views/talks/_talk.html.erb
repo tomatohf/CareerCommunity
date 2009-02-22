@@ -4,51 +4,59 @@
 
 <% comment_count = TalkComment.get_count(talk.id) %>
 
-<div class="form_info_s talk">
-	<a href="/talks/<%= talk.id %>" class="account_nick_link"<%= %Q! style="font-size: 14px;"! unless small %> title="<%= h(talk.get_info[:desc]) %>">
-		<strong><%= h(talk.title) %></strong></a>
+<% if (@page.to_i < 2) && (talk_counter < 2) %>
+
+	<%= render(:partial => "latest_talk", :object => talk) %>
+
+<% else %>
+
+	<div class="form_info_s talk">
+		<a href="/talks/<%= talk.id %>" class="account_nick_link"<%= %Q! style="font-size: 14px;"! unless small %> title="<%= h(talk.get_info[:desc]) %>">
+			<strong><%= h(talk.title) %></strong></a>
 		
-	&nbsp;
-	|
-	&nbsp;
+		&nbsp;
+		|
+		&nbsp;
 	
-	<% if talk.published %>
-		<% if small %>
-			<%= talk.publish_at.strftime("%m.%d") %>
-		<% else %>
-			<%= format_date(talk.publish_at) %> 发布
+		<% if talk.published %>
+			<% if small %>
+				<%= talk.publish_at.strftime("%m.%d") %>
+			<% else %>
+				<%= format_date(talk.publish_at) %> 发布
+			<% end %>
+		
+			&nbsp;
+			|
+			&nbsp;
 		<% end %>
-		
+	
+		查看:
+		<b>
+			<%= ViewCounter.get_count(:talk, talk.id) %>
+		</b>
+	
 		&nbsp;
 		|
 		&nbsp;
-	<% end %>
 	
-	查看:
-	<b>
-		<%= ViewCounter.get_count(:talk, talk.id) %>
-	</b>
-	
-	&nbsp;
-	|
-	&nbsp;
-	
-	<a href="/talks/<%= talk.id %>#comment_list" class="account_nick_link">
-		评论(<%= comment_count %>)</a>
+		<a href="/talks/<%= talk.id %>#comment_list" class="account_nick_link">
+			评论(<%= comment_count %>)</a>
 		
-	<% if talk_editor?(session[:account_id]) %>
-		&nbsp;
-		|
-		&nbsp;
+		<% if talk_editor?(session[:account_id]) %>
+			&nbsp;
+			|
+			&nbsp;
 
-		<a href="/talks/<%= talk.id %>/manage" class="account_nick_link">
-			管理</a>
-	<% end %>
-</div>
-
-<% unless small %>
-	<div style="padding: 0px 30px;">
-		<%= thin_hr %>
+			<a href="/talks/<%= talk.id %>/manage" class="account_nick_link">
+				管理</a>
+		<% end %>
 	</div>
+
+	<% unless small %>
+		<div style="padding: 0px 30px;">
+			<%= thin_hr %>
+		</div>
+	<% end %>
+	
 <% end %>
 
