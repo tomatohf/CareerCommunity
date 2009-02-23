@@ -19,6 +19,7 @@
 			:talks => talks.collect do |talk|
 				talk_info = talk.get_info
 				{
+					:talk_id => talk.id,
 					:title => h(talk.title),
 					:desc => h(talk_info[:desc]),
 					:summary => h(talk_info[:summary]),

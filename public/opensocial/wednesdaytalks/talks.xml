@@ -7,15 +7,97 @@
 	
 	<Content type="html">
 		<![CDATA[
-			<div id="talk_list">
+			<style type="text/css">
+				.out_container {
+					padding: 10px;
+					font-size: 12px;
+					line-height: 150%;
+				}
 				
+				.out_container a {
+					color: #3B5998;
+					text-decoration: none;
+				}
+				
+				.out_container a:hover {
+					text-decoration: underline;
+				}
+				
+				.align_c {
+					text-align: center;
+				}
+				
+				.align_r {
+					text-align: right;
+				}
+				
+				.text_field {
+					border: 1px solid #BDC7D8;
+					padding: 3px;
+					vertical-align: middle;
+				}
+			</style>
+			
+			
+			
+			<div class="out_container">
+				<div style="float: right; width: 210px;">
+					<div>
+						<a href="/talks" target="_blank" title="乔布堂 周三访谈录">
+							<img src="http://www.qiaobutang.com/images/talks/qiaobutang_talk_logo.png" border="0" /></a>
+					</div>
+
+					<div class="align_c" style="color: #888888; margin-top: 10px; padding-top: 10px; border-top: 1px solid #EEEEEE;">
+						<div>
+							和业内资深人士 500 强 HR
+							<br />
+							一起聊他们的求职历程 ...
+							<br />
+							每一个问题, 都没有简单的答案
+							<br />
+							每一个答案, 都没有空洞的说教
+							<br />
+							我们全部的努力,
+							<br />
+							只希望哪怕只有一段话
+							<br />
+							能为你拓展一个新的角度
+							<br />
+
+							<img border="0" src="http://www.qiaobutang.com/images/left_quote.gif" style="width: 10px; height: 8px;"/>
+							听君一席话，胜读十年书
+							<img border="0" src="http://www.qiaobutang.com/images/right_quote.gif" style="width: 10px; height: 12px;"/>
+						</div>
+						
+						<div style="margin-top: 10px;">
+							<i>乔布堂.访谈录工作组</i>
+						</div>
+					</div>
+
+					<div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #EEEEEE;">
+						<div class="align_c">
+							<input type="text" id="query_talks" name="query_talks" size="20" class="text_field" />
+						</div>
+
+						<div class="align_r" style="margin-top: 5px; margin-right: 15px;">
+							<a href="#" onclick="return false;">
+								搜索访谈录</a>
+						</div>
+					</div>
+				</div>
+				
+				<div style="margin-right: 210px; padding: 5px;">
+					<div id="talk_list">
+
+					</div>
+					
+					<div id="talk_reader" style="display: none;">
+
+					</div>
+				</div>
 			</div>
 			
 			
-			
-			<style type="text/css">
-				
-			</style>
 			
 			<script type="text/javascript">
 				function load_talk_list(page) {
@@ -30,6 +112,30 @@
 						on_talk_list_load,
 						params
 					);
+					
+					show_talk_list();
+				}
+				
+				function show_talk_reader(talk_id) {
+					if(talk_id != null && talk_id > 0) {
+					
+						document.getElementById("talk_list").style.display = "none";
+						var talk_reader_container = document.getElementById("talk_reader");
+						talk_reader_container.style.display = "";
+					
+						var return_list_html = get_return_list_html();
+						var html = "";
+						html += return_list_html;
+						html += get_swf_html(talk_id);
+						html += return_list_html;
+						
+						talk_reader_container.innerHTML = html;
+					}
+				}
+				
+				function show_talk_list() {
+					document.getElementById("talk_reader").style.display = "none";
+					document.getElementById("talk_list").style.display = "";
 				}
 
 				function on_talk_list_load(resp) {
@@ -41,7 +147,12 @@
 						var talk = resp.data.talks[i];
 
 						html += "<div>";
-						html += 	talk.title;
+						html += 	"<div style='margin-top: 5px;'>";
+						html += 		"<a style='font-size: 14px; font-weight: bold;' href='#' onclick='show_talk_reader(" + talk.talk_id + "); return false;'>" + talk.title + "</a>";
+						html += 	"</div>";
+						html += 	"<div style='padding: 2px 10px; color: #666666;'>";
+						html += 		talk.desc;
+						html += 	"</div>";
 						html += "</div>";
 					}
 
@@ -53,7 +164,7 @@
 				function get_paging_info_html(paging_info) {
 					var html = "";
 
-					html += "<div style='text-align: center;'>";
+					html += "<div class='align_c'>";
 
 					var previous_page = paging_info.previous_page
 					if(previous_page != null) {
@@ -73,6 +184,43 @@
 
 					html += "</div>";
 
+					return html;
+				}
+
+				function get_return_list_html() {
+					var html = "";
+
+					html += "<div class='align_r' style='margin-right: 50px;'>";
+					html += 	"<a style='font-size: 16px;' href='#' onclick='show_talk_list(); return false;'>返回访谈录列表</a>";
+					html += "</div>";
+
+					return html;
+				}
+				
+				function get_swf_html(talk_id) {
+					var html = "";
+					html += "<div style='margin: 10px 0px;'>";
+					html += 	"<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000'";
+					html += 	" id='TalkReaderObject' width='100%' height='500'";
+					html += 	" codebase='http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab'";
+					html += 	">";
+					html += 		"<param name='movie' value='http://www.qiaobutang.com/swf/TalkReader.swf?talk=" + talk_id + "' />";
+					html += 		"<param name='quality' value='high' />";
+					html += 		"<param name='bgcolor' value='#b2b2b2' />";
+					html += 		"<param name='allowScriptAccess' value='sameDomain' />";
+					html += 		"<param name='allowFullScreen' value='true' />";
+					html += 		"<param name='wmode' value='transparent' />";
+					html +=			"<embed id='TalkReaderEmbed'";
+					html += 		" src='http://www.qiaobutang.com/swf/TalkReader.swf?talk=" + talk_id + "'";
+					html += 		" quality='high' bgcolor='#b2b2b2'";
+					html += 		" width='100%' height='500' name='TalkReader' align='middle'";
+					html += 		" play='true' loop='false'";
+					html += 		" allowScriptAccess='sameDomain' allowFullScreen='true'";
+					html += 		" wmode='transparent' type='application/x-shockwave-flash'";
+					html += 		" pluginspage='http://www.adobe.com/go/getflashplayer'";
+					html += 		">";
+					html += 	"</object>";
+					html += "</div>";
 					return html;
 				}
 
