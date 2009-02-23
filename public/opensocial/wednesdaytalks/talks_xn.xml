@@ -251,9 +251,64 @@
 				
 				
 				
+				function load_viewer() {
+					var req = opensocial.newDataRequest();
+					
+					req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
+					
+					req.send(on_load_viewer);
+				}
+				
+				function on_load_viewer(resp) {
+					var viewer = resp.get("viewer").getData();
+					
+					create_enter_activity(viewer);
+				}
+				
+				function create_enter_activity(viewer) {
+					var activity = opensocial.newActivity();
+					
+					var params = {};
+					
+					var view_html = "";
+					view_html += "<a href='";
+					view_html += 	"http://xiaonei.com/profile.do?id=" + viewer.getId();
+					view_html += 	"'>";
+					view_html += 		viewer.getDisplayName();
+					view_html += "</a>";
+					
+					var app_url = "http://apps.xiaonei.com/wednesdaytalks";
+					
+					var talks_html = "";
+					talks_html += "<a href='" + app_url + "'>";
+					talks_html += 	"周三访谈录";
+					talks_html += "</a>";
+					
+					var goto_talks_html = "";
+					goto_talks_html += "<a href='" + app_url + "'>";
+					goto_talks_html += 	"我也去看周三访谈录";
+					goto_talks_html += "</a>";
+					
+					params[opensocial.Activity.Field.TITLE] = "好好学习, 天天向上, " + view_html + " 阅读了 " + talks_html + ". 听君一席话，胜读十年书, " + goto_talks_html + " ...";
+					
+					var activity = opensocial.newActivity(params);
+					
+					opensocial.requestCreateActivity(
+						activity,
+						opensocial.CreateActivityPriority.LOW,
+						function(resp) {
+							// do nothing
+						}
+					);
+				}
+
+
+
 				gadgets.util.registerOnLoadHandler(
 					function() {
 						load_talk_list();
+						
+						load_viewer();
 					}
 				);
 			</script>
