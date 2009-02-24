@@ -1,8 +1,10 @@
 ﻿乔布圈放课程和访谈录的广告
 
 
-发送求职管家的提醒邮件
+改变添加自己添加的公司和职位的方式, 相应的调整添加求职目标的部分
 改变求职目标的 公司 和 职位
+
+发送求职管家的提醒邮件
 
 
 统计 embed 的 swf 的来源 : ExternalInterface.call("window.location.href.toString");

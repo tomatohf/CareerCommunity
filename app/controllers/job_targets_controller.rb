@@ -13,7 +13,8 @@ class JobTargetsController < ApplicationController
                                           :create_account_process, :create_account_status, :close_target,
                                           :open_target, :destroy, :star_target, :unstar_target,
                                           :create_system_status, :status_update, :status_destroy,
-                                          :create_system_process, :process_update, :process_destroy]
+                                          :create_system_process, :process_update, :process_destroy,
+                                          :account_job_item_update, :account_job_item_destroy]
   
   before_filter :check_account_access, :only => [:list, :list_closed, :account_status, :account_process,
                                                   :account_job_item]
@@ -21,6 +22,7 @@ class JobTargetsController < ApplicationController
                                                 :system_process, :create_system_process]
   before_filter :check_status_change, :only => [:status_update, :status_destroy]
   before_filter :check_process_change, :only => [:process_update, :process_destroy]
+  before_filter :check_account_job_item_change, :only => [:account_job_item_update, :account_job_item_destroy]
   
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
                                                 :update_step_label, :update_step_process,
@@ -574,16 +576,37 @@ class JobTargetsController < ApplicationController
   
   def account_job_item
     @item_type = params[:item_type]
+    @item_label = get_job_item_label(@item_type)
         
     @items = @item_type.camelize.constantize.send("get_account_#{@item_type.pluralize}", @account_id)
   end
   
   def account_job_item_update
-    # to be checked ...
+    @item.name = params[:item_name] && params[:item_name].strip
+    @item.desc = params[:item_desc] && params[:item_desc].strip
+    @item.save
+    
+    jump_to("/job_targets/account_job_item/#{@item.account_id}?item_type=#{@item_type}")
   end
   
   def account_job_item_destroy
-    # to be checked ...
+    # check there is no job target using this item(company or job position)
+    target_count = JobTarget.count(
+      :conditions => ["#{@item_type}_id = ?", @item.id]
+    )
+    
+    item_account_id = @item.account_id
+    
+    if target_count > 0
+      # just set warning message
+      item_label = get_job_item_label(@item_type)
+      flash[:error_msg] = "删除#{item_label}失败... 还有 #{target_count} 条求职目标与此#{item_label}相关联. 只能删除已经不与任何求职目标关联的#{item_label}."
+    else
+      # do destroy
+      @item.destroy
+    end
+    
+    jump_to("/job_targets/account_job_item/#{item_account_id}?item_type=#{@item_type}")
   end
   
   
@@ -645,6 +668,26 @@ class JobTargetsController < ApplicationController
     end
     
     return jump_to("/errors/forbidden") unless valid
+  end
+  
+  def check_account_job_item_change
+    @item_type = params[:item_type]
+
+    item_id = params[:id]
+    @item = @item_type.camelize.constantize.send("get_#{@item_type}", item_id)
+    
+    jump_to("/errors/forbidden") unless @item.account_id == session[:account_id]
+  end
+  
+  def get_job_item_label(item_type)
+    case item_type
+      when "company"
+        "公司"
+      when "job_position"
+        "职位"
+      else
+        nil
+    end
   end
   
 end

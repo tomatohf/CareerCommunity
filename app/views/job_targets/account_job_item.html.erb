@@ -1,0 +1,107 @@
+<% page_title = "管理 自己添加的#{@item_label}" %>
+<% community_page_title(page_title) %>
+
+<div class="blog_container">
+	<a href="/job_targets/list/<%= session[:account_id] %>" class="float_r">
+		<img src="/images/job_targets/steward_small.png" border="0" alt="求职管家" />
+		返回我的求职目标</a>
+		
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		有
+		<b><%= @items.size %></b>
+		个 <%= "自己添加的#{@item_label}" %>
+	</div>
+	
+	<div class="community_block">
+		
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		
+		
+		
+		<% form_tag "", :method => :post, :id => "delete_item_form" do %>
+			<input type="hidden" name="item_type" value="<%= @item_type %>" />
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_item(item_id) {
+				if(confirm("确定要删除这个<%= @item_label %>么 ?")) {
+					del_form = document.getElementById("delete_item_form");
+					del_form.action = "/job_targets/" + item_id + "/account_job_item_destroy";
+					del_form.submit();
+				}
+			}
+			
+			function toggle_item_edit(item_id) {
+				var toggle_item_edit_link = document.getElementById("toggle_item_edit_link_" + item_id);
+				var in_edit = (toggle_item_edit_link.style.display == "none");
+				
+				toggle_item_edit_link.style.display = in_edit ? "": "none";
+				document.getElementById("update_item_btn_" + item_id).style.display = in_edit ? "none" : "";
+				
+				document.getElementById("item_name_show_" + item_id).style.display = in_edit ? "" : "none";
+				document.getElementById("item_name_edit_" + item_id).style.display = in_edit ? "none" : "";
+				
+				document.getElementById("item_desc_show_" + item_id).style.display = in_edit ? "" : "none";
+				document.getElementById("item_desc_edit_" + item_id).style.display = in_edit ? "none" : "";
+			}
+		</script>
+		
+		<% @items.each do |item| %>
+			<% item_name = h(item.name) %>
+			<% item_desc = h(item.desc) %>
+
+			<div class="job_item">
+				
+				<% form_tag "/job_targets/#{item.id}/account_job_item_update", :method => :post do %>
+
+					<div style="font-weight: bold; font-size: 14px;">
+						<input type="hidden" name="item_type" value="<%= @item_type %>" />
+						<span id="item_name_show_<%= item.id %>">
+							<%= item_name %>
+						</span>
+						
+						<input type="text" name="item_name" value="<%= item_name %>" class="text_field" id="item_name_edit_<%= item.id %>" size="75" style="display: none;" />
+					</div>
+
+					<div class="community_block form_info_s">
+						<span id="item_desc_show_<%= item.id %>">
+							<%= item_desc %>
+						</span>
+						
+						<textarea name="item_desc" value="<%= item_desc %>" class="text_field" id="item_desc_edit_<%= item.id %>" cols="75" rows="3" style="display: none;"><%= item_desc %></textarea>
+					</div>
+
+					<div class="align_r">
+						<span id="toggle_item_edit_link_<%= item.id %>" style="font-size: 14px;">
+							<a href="#" onclick="delete_item(<%= item.id %>); return false;">
+								删除</a>
+								
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							
+							<a href="#" onclick="toggle_item_edit(<%= item.id %>); return false;">
+							修改</a>
+						</span>
+							
+						<span id="update_item_btn_<%= item.id %>" style="display: none;">
+							<input type="submit" value="更新" class="button" />
+							&nbsp;&nbsp;&nbsp;
+							<a href="#" onclick="toggle_item_edit(<%= item.id %>); return false;">
+								先不修改了</a>
+						</span>
+					</div>
+					
+				<% end %>
+
+			</div>
+		<% end %>
+		
+	</div>
+	
+</div>
+
+

@@ -389,7 +389,10 @@ ActionController::Routing::Routes.draw do |map|
     :status_destroy => :post,
     
     :process_update => :post,
-    :process_destroy => :post
+    :process_destroy => :post,
+    
+    :account_job_item_update => :post,
+    :account_job_item_destroy => :post
     
   }
   
