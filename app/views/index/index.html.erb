@@ -384,7 +384,7 @@
 						<%
 							group_posts = GroupPost.find(
 								:all,
-								:limit => 25,
+								:limit => 20,
 								:conditions => ["group_posts.group_id in (?)", IndexController::Index_Group_Post_Group_Id_Scope],
 								:select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.title",
 								:include => [:group],
@@ -421,7 +421,7 @@
 						<%
 							vote_topics = VoteTopic.find(
 								:all,
-								:limit => 9,
+								:limit => 5,
 								:select => "id, created_at, title, category_id",
 								:order => "created_at DESC"
 						    )

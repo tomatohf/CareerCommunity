@@ -1,7 +1,6 @@
 class JobStatus < ActiveRecord::Base
   
-  # no need ...
-  # has_many :steps, :class_name => "JobStep", :foreign_key => "job_status_id", :dependent => :nullify
+  has_many :steps, :class_name => "JobStep", :foreign_key => "job_status_id", :dependent => :nullify
   
   
   validates_presence_of :name, :message => "请输入 名称"

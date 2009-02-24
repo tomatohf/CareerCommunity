@@ -11,11 +11,13 @@
 	</div>
 	
 	<div class="align_r">
-		<% form_tag "/#{@item_type}/job_items/#{job_item.id}", :method => :delete, :onsubmit => "if(confirm('确定要删除 #{item_name} 么 ?')) { return true; }; return false;" do %>
+		<%# form_tag "/#{@item_type}/job_items/#{job_item.id}", :method => :delete, :onsubmit => "if(confirm('确定要删除 #{item_name} 么 ?')) { return true; }; return false;" do %>
 
+			<% if false %>
 			&nbsp;&nbsp;
 
 			<input type="submit" value="删除" class="button" />
+			<% end %>
 
 			&nbsp;&nbsp;
 
@@ -27,7 +29,7 @@
 			<a href="/<%= @item_type %>/job_items/<%= job_item.id %>">
 				显示</a>
 
-		<% end %>
+		<%# end %>
 	</div>
 	
 </div>

@@ -1,7 +1,6 @@
 class JobProcess < ActiveRecord::Base
   
-  # no need ...
-  # has_many :steps, :class_name => "JobStep", :foreign_key => "job_process_id", :dependent => :destroy
+  has_many :steps, :class_name => "JobStep", :foreign_key => "job_process_id", :dependent => :destroy
   
   
   validates_presence_of :name, :message => "请输入 名称"

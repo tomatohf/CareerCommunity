@@ -1,0 +1,170 @@
+<% is_system = action_name.include?("system") %>
+<% kind_label = is_system ? "系统添加的状态" : "自己添加的状态" %>
+
+<% page_title = "管理 #{kind_label}" %>
+<% community_page_title(page_title) %>
+
+<div class="blog_container">
+	<a href="/job_targets/list/<%= session[:account_id] %>" class="float_r">
+		<img src="/images/job_targets/steward_small.png" border="0" alt="求职管家" />
+		返回我的求职目标</a>
+		
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		有
+		<b><%= @statuses.size %></b>
+		个 <%= kind_label %>
+	</div>
+	
+	<div class="community_block_narrow">
+		
+		<% form_tag "", :method => :post, :id => "delete_status_form" do %>
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_status(status_id) {
+				if(confirm("确定要删除这个状态么 ?")) {
+					del_form = document.getElementById("delete_status_form");
+					del_form.action = "/job_targets/" + status_id + "/status_destroy";
+					del_form.submit();
+				}
+			}
+			
+			function toggle_status_edit(status_id) {
+				var toggle_status_edit_link = document.getElementById("toggle_status_edit_link_" + status_id);
+				var in_edit = (toggle_status_edit_link.style.display == "none");
+				
+				toggle_status_edit_link.style.display = in_edit ? "": "none";
+				document.getElementById("update_status_btn_" + status_id).style.display = in_edit ? "none" : "";
+				
+				document.getElementById("status_name_show_" + status_id).style.display = in_edit ? "" : "none";
+				document.getElementById("status_name_edit_" + status_id).style.display = in_edit ? "none" : "";
+				
+				document.getElementById("status_color_show_" + status_id).style.display = in_edit ? "" : "none";
+				document.getElementById("status_color_edit_" + status_id).style.display = in_edit ? "none" : "";
+				
+				document.getElementById("color_picker_" + status_id).style.display = "none";
+			}
+			
+			function toggle_color_picker(status_id) {
+				var color_picker = document.getElementById("color_picker_" + status_id);
+				
+				color_picker.style.display = (color_picker.style.display == "none") ? "" : "none";
+			}
+			
+			function on_option_color_selected(color, status_id) {
+				document.getElementById("status_color_value_" + status_id).value = color;
+		        document.getElementById("status_color_visual_" + status_id).style.backgroundColor = "#" + color;
+				document.getElementById("color_picker_" + status_id).style.display = "none";
+			}
+		</script>
+		
+		<table cellpadding="0" cellspacing="10" border="0" class="main_part_w">
+			<thead>
+				<tr class="table_header">
+					<th>删除</th>
+					<th>状态的名称</th>
+					<th>状态的颜色</th>
+					<td></td>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<% @statuses.each do |status| %>
+					
+					<% form_tag "/job_targets/#{status.id}/status_update", :method => :post do %>
+						<tr>
+							<td align="left" valign="middle" style="width: 40px;">
+								<a title="删除" href="#" onclick="delete_status(<%= status.id %>); return false;">
+									<img src="/images/delete_small.gif" border="0" /></a>
+							</td>
+						
+							<td align="left" valign="middle" style="font-size: 14px; width: 200px;">
+								<% h_status_name = h(status.name) %>
+								<span id="status_name_show_<%= status.id %>">
+									<%= h_status_name %>
+								</span>
+								
+								<input type="text" class="text_field" id="status_name_edit_<%= status.id %>" name="status_name" value="<%= h_status_name %>" style="display: none;" />
+							</td>
+						
+							<td align="center" valign="middle" style="width: 80px;">
+								<% h_status_color = h(status.color) %>
+								
+								<div id="status_color_show_<%= status.id %>" style="border: 1px solid #D2D2D2; width: 15px; height: 15px; background-color: #<%= h_status_color %>;"></div>
+								
+								<div id="status_color_edit_<%= status.id %>" style="display: none;">
+									<input type="hidden" id="status_color_value_<%= status.id %>" name="status_color" value="<%= h_status_color %>" />
+									<div id="status_color_visual_<%= status.id %>" style="border: 2px outset #888888; width: 15px; height: 15px; background-color: #<%= h_status_color %>; cursor: pointer;" title="设置状态的颜色" onclick="toggle_color_picker(<%= status.id %>); return false;"></div>
+
+									<div id="color_picker_<%= status.id %>" style="position: absolute; display: none;">
+								        <%= render :partial => "/common/color_picker", :locals => {:cell_size => 10, :click_handler => "on_option_color_selected", :args => [status.id]} %>
+								    </div>
+								</div>
+							</td>
+						
+							<td style="padding-left: 50px;">
+								<a href="#" onclick="toggle_status_edit(<%= status.id %>); return false;" id="toggle_status_edit_link_<%= status.id %>">
+									修改状态</a>
+									
+								<span id="update_status_btn_<%= status.id %>" style="display: none;">
+									<input type="submit" value="更新" class="button" />
+									&nbsp;&nbsp;&nbsp;
+									<a href="#" onclick="toggle_status_edit(<%= status.id %>); return false;">
+										先不修改了</a>
+								</span>
+							</td>
+						</tr>
+					<% end %>
+					
+				<% end %>
+			</tbody>
+		</table>
+		
+	</div>
+	
+	
+	<% if is_system %>
+		<div class="community_title">
+			添加新的状态 ...
+		</div>
+
+		<div class="community_block">
+			<% form_tag "/job_targets/create_system_status", :method => :post do %>
+				<table cellpadding="0" cellspacing="10" border="0" class="main_part_w">
+					<tr class="table_header">
+						<th>新状态的名称</th>
+						<th>新状态的颜色</th>
+						<td></td>
+					</tr>
+					<tr>
+						<td align="left" valign="middle" style="font-size: 14px; width: 200px;">
+							<input type="text" class="text_field" name="status_name" />
+						</td>
+				
+						<td align="center" valign="middle" style="width: 100px;">
+							<% random_init_color = get_random_init_color %>
+							<div>
+								<input type="hidden" id="status_color_value_new" name="status_color" value="<%= random_init_color %>" />
+								<div id="status_color_visual_new" style="border: 2px outset #888888; width: 15px; height: 15px; background-color: #<%= random_init_color %>; cursor: pointer;" title="设置状态的颜色" onclick="toggle_color_picker('new'); return false;"></div>
+
+								<div id="color_picker_new" style="position: absolute; display: none;">
+							        <%= render :partial => "/common/color_picker", :locals => {:cell_size => 10, :click_handler => "on_option_color_selected", :args => ["'new'"]} %>
+							    </div>
+							</div>
+						</td>
+				
+						<td style="padding-left: 50px;">
+							<input type="submit" value="添加" class="button" />
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+	<% end %>
+	
+</div>
+
+

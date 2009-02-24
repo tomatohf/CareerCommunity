@@ -1,0 +1,124 @@
+<% is_system = action_name.include?("system") %>
+<% kind_label = is_system ? "系统添加的流程" : "自己添加的流程" %>
+
+<% page_title = "管理 #{kind_label}" %>
+<% community_page_title(page_title) %>
+
+<div class="blog_container">
+	<a href="/job_targets/list/<%= session[:account_id] %>" class="float_r">
+		<img src="/images/job_targets/steward_small.png" border="0" alt="求职管家" />
+		返回我的求职目标</a>
+		
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		有
+		<b><%= @processes.size %></b>
+		个 <%= kind_label %>
+	</div>
+	
+	<div class="community_block_narrow">
+		
+		<% form_tag "", :method => :post, :id => "delete_process_form" do %>
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_process(process_id) {
+				if(confirm("确定要删除这个流程么 ? 与这个流程相关联的步骤也都将被删除 !")) {
+					del_form = document.getElementById("delete_process_form");
+					del_form.action = "/job_targets/" + process_id + "/process_destroy";
+					del_form.submit();
+				}
+			}
+			
+			function toggle_process_edit(process_id) {
+				var toggle_process_edit_link = document.getElementById("toggle_process_edit_link_" + process_id);
+				var in_edit = (toggle_process_edit_link.style.display == "none");
+				
+				toggle_process_edit_link.style.display = in_edit ? "": "none";
+				document.getElementById("update_process_btn_" + process_id).style.display = in_edit ? "none" : "";
+				
+				document.getElementById("process_name_show_" + process_id).style.display = in_edit ? "" : "none";
+				document.getElementById("process_name_edit_" + process_id).style.display = in_edit ? "none" : "";
+			}
+		</script>
+		
+		<table cellpadding="0" cellspacing="10" border="0" class="main_part_w">
+			<thead>
+				<tr class="table_header">
+					<th>删除</th>
+					<th>流程的名称</th>
+					<td></td>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<% @processes.each do |process| %>
+					
+					<% form_tag "/job_targets/#{process.id}/process_update", :method => :post do %>
+						<tr>
+							<td align="left" valign="middle" style="width: 40px;">
+								<a title="删除" href="#" onclick="delete_process(<%= process.id %>); return false;">
+									<img src="/images/delete_small.gif" border="0" /></a>
+							</td>
+						
+							<td align="left" valign="middle" style="font-size: 14px; width: 200px;">
+								<% h_process_name = h(process.name) %>
+								<span id="process_name_show_<%= process.id %>">
+									<%= h_process_name %>
+								</span>
+								
+								<input type="text" class="text_field" id="process_name_edit_<%= process.id %>" name="process_name" value="<%= h_process_name %>" style="display: none;" />
+							</td>
+						
+							<td style="padding-left: 50px;">
+								<a href="#" onclick="toggle_process_edit(<%= process.id %>); return false;" id="toggle_process_edit_link_<%= process.id %>">
+									修改流程</a>
+									
+								<span id="update_process_btn_<%= process.id %>" style="display: none;">
+									<input type="submit" value="更新" class="button" />
+									&nbsp;&nbsp;&nbsp;
+									<a href="#" onclick="toggle_process_edit(<%= process.id %>); return false;">
+										先不修改了</a>
+								</span>
+							</td>
+						</tr>
+					<% end %>
+					
+				<% end %>
+			</tbody>
+		</table>
+		
+	</div>
+	
+	
+	<% if is_system %>
+		<div class="community_title">
+			添加新的流程 ...
+		</div>
+
+		<div class="community_block">
+			<% form_tag "/job_targets/create_system_process", :method => :post do %>
+				<table cellpadding="0" cellspacing="10" border="0" class="main_part_w">
+					<tr class="table_header">
+						<th>新流程的名称</th>
+						<td></td>
+					</tr>
+					<tr>
+						<td align="left" valign="middle" style="font-size: 14px; width: 200px;">
+							<input type="text" class="text_field" name="process_name" />
+						</td>
+				
+						<td style="padding-left: 50px;">
+							<input type="submit" value="添加" class="button" />
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+	<% end %>
+	
+</div>
+
+

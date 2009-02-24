@@ -82,12 +82,12 @@ class JobItemsController < ApplicationController
     render :action => "edit"
   end
   
-  def destroy
-    @item = get_item_instance(params[:id])
-    @item.destroy
-    
-    jump_to("/#{@item_type}/job_items")
-  end
+  #def destroy
+  #  @item = get_item_instance(params[:id])
+  #  @item.destroy
+  #  
+  #  jump_to("/#{@item_type}/job_items")
+  #end
   
   def search
     @item_tip = params[:item_tip] && params[:item_tip].strip

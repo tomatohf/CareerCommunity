@@ -5,15 +5,22 @@ class JobTargetsController < ApplicationController
   layout "community"
   before_filter :check_current_account, :only => [:index]
   # generally, all action should require login to view
-  before_filter :check_login #, :only => [:list]
+  before_filter :check_login #, :only => []
   before_filter :check_limited, :only => [:new_for_position, :create, :add_account_process, :add_steps,
                                           :adjust_step_order, :set_current_step, :update_step_label,
                                           :update_step_process, :update_step_status, :del_step,
                                           :create_step, :update_step_date, :update_step_remind_date,
                                           :create_account_process, :create_account_status, :close_target,
-                                          :open_target, :destroy, :star_target, :unstar_target]
+                                          :open_target, :destroy, :star_target, :unstar_target,
+                                          :create_system_status, :status_update, :status_destroy,
+                                          :create_system_process, :process_update, :process_destroy]
   
-  before_filter :check_account_access, :only => [:list, :list_closed]
+  before_filter :check_account_access, :only => [:list, :list_closed, :account_status, :account_process]
+  before_filter :check_general_admin, :only => [:system_status, :create_system_status,
+                                                :system_process, :create_system_process]
+  before_filter :check_status_change, :only => [:status_update, :status_destroy]
+  before_filter :check_process_change, :only => [:process_update, :process_destroy]
+  
   before_filter :check_target_owner, :only => [:add_steps, :adjust_step_order, :set_current_step,
                                                 :update_step_label, :update_step_process,
                                                 :update_step_status, :del_step, :create_step,
@@ -492,6 +499,79 @@ class JobTargetsController < ApplicationController
   end
   
   
+  def system_status
+    @statuses = JobStatus.get_system_statuses
+    
+    render(:action => "status_list")
+  end
+  
+  def account_status
+    @statuses = JobStatus.get_account_statuses(@account_id)
+    
+    render(:action => "status_list")
+  end
+  
+  def status_update
+    @status.name = params[:status_name] && params[:status_name].strip
+    @status.color = params[:status_color]
+    @status.save
+    
+    jump_to(@is_account_status ? "/job_targets/account_status/#{session[:account_id]}" : "/job_targets/system_status")
+  end
+  
+  def status_destroy
+    @status.destroy
+    
+    jump_to(@is_account_status ? "/job_targets/account_status/#{session[:account_id]}" : "/job_targets/system_status")
+  end
+  
+  def create_system_status
+    status = JobStatus.new(:account_id => 0)
+    
+    status.name = params[:status_name] && params[:status_name].strip
+    status.color = params[:status_color]
+    
+    status.save
+    
+    jump_to("/job_targets/system_status")
+  end
+  
+  def system_process
+    @processes = JobProcess.get_system_processes
+    
+    render(:action => "process_list")
+  end
+  
+  def account_process
+    @processes = JobProcess.get_account_processes(@account_id)
+    
+    render(:action => "process_list")
+  end
+  
+  def process_update
+    @process.name = params[:process_name] && params[:process_name].strip
+    @process.save
+    
+    jump_to(@is_account_process ? "/job_targets/account_process/#{session[:account_id]}" : "/job_targets/system_process")
+  end
+  
+  def process_destroy
+    @process.destroy
+    
+    jump_to(@is_account_process ? "/job_targets/account_process/#{session[:account_id]}" : "/job_targets/system_process")
+  end
+  
+  def create_system_process
+    process = JobProcess.new(:account_id => 0)
+    
+    process.name = params[:process_name] && params[:process_name].strip
+    
+    process.save
+    
+    jump_to("/job_targets/system_process")
+  end
+  
+  
   
   private
   
@@ -510,6 +590,47 @@ class JobTargetsController < ApplicationController
     jump_to("/errors/forbidden") unless @target.account_id == session[:account_id]
   end
   
+  def check_general_admin
+    jump_to("/errors/forbidden") unless ApplicationController.helpers.general_admin?(session[:account_id])
+  end
+  
+  def check_status_change
+    status_id = params[:id]
+    
+    @status = JobStatus.get_status(status_id)
+    status_account_id = @status.account_id
+    
+    valid = false
+    @is_account_status = status_account_id && (status_account_id > 0)
+    if @is_account_status
+      # account status ...
+      valid = (session[:account_id] == status_account_id)
+    else
+      # system status ...
+      valid = ApplicationController.helpers.general_admin?(session[:account_id])
+    end
+    
+    return jump_to("/errors/forbidden") unless valid
+  end
+  
+  def check_process_change
+    process_id = params[:id]
+    
+    @process = JobProcess.get_process(process_id)
+    process_account_id = @process.account_id
+    
+    valid = false
+    @is_account_process = process_account_id && (process_account_id > 0)
+    if @is_account_process
+      # account process ...
+      valid = (session[:account_id] == process_account_id)
+    else
+      # system process ...
+      valid = ApplicationController.helpers.general_admin?(session[:account_id])
+    end
+    
+    return jump_to("/errors/forbidden") unless valid
+  end
   
 end
 

@@ -287,7 +287,7 @@ function create_table_grid() {
 					//id: "",
 					text: "流程 <img border='0' src='/images/ext_link_small.gif' />",
 					handler: function() {
-						window.location.href = "";
+						window.location.href = "/job_targets/account_process/" + current_user_id;
 					}
 				},
 				
@@ -295,7 +295,7 @@ function create_table_grid() {
 					//id: "",
 					text: "状态 <img border='0' src='/images/ext_link_small.gif' />",
 					handler: function() {
-						window.location.href = "";
+						window.location.href = "/job_targets/account_status/" + current_user_id;
 					}
 				},
 				

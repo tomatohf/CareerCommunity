@@ -359,7 +359,13 @@ ActionController::Routing::Routes.draw do |map|
     
     :add_account_process => :post,
     :create_account_process => :post,
-    :create_account_status => :post
+    :create_account_status => :post,
+    
+    :system_status => :get,
+    :create_system_status => :post,
+    
+    :system_process => :get,
+    :create_system_process => :post
     
   }, :member => {
     
@@ -377,7 +383,13 @@ ActionController::Routing::Routes.draw do |map|
     :close_target => :post,
     :open_target => :post,
     :star_target => :post,
-    :unstar_target => :post
+    :unstar_target => :post,
+    
+    :status_update => :post,
+    :status_destroy => :post,
+    
+    :process_update => :post,
+    :process_destroy => :post
     
   }
   
