@@ -143,22 +143,14 @@
 	<h2><%= page_title %></h2>
 	
 	
-	<% send((talk_editor?(session[:account_id]) ? :just_output : :cache), "#{Talk::FCKP_talk_index_talks}_#{@page}") do %>
-		<%
-			talks = Talk.published.paginate(
-		      :page => @page,
-		      :per_page => TalksController::Talk_Page_Size,
-		      :order => "publish_at DESC"
-		    )
-		%>
-		<div class="community_block">
-			<%= render(:partial => "talk", :collection => talks, :locals => {:page => @page, :highlight_latest => true}) %>
-		</div>
-		
-		<div class="community_block">
-			<%= paging_buttons(talks) %>
-		</div>
-	<% end %>
+	
+	<div class="community_block">
+		<%= render(:partial => "talk", :collection => @talks, :locals => {:page => @page, :highlight_latest => true}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@talks) %>
+	</div>
 	
 </div>
 

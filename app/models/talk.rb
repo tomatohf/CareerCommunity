@@ -80,9 +80,9 @@ class Talk < ActiveRecord::Base
   
   CKP_talk = :talk
   CKP_reader_content = :talk_reader_content
+  CKP_talk_index_talks = :talk_index_talks
   
   FCKP_index_talk = :fc_index_talk
-  FCKP_talk_index_talks = :fc_talk_index_talks
   CKP_all_talks_json_list = :all_talks_json_list
   
   after_save { |talk|
@@ -118,12 +118,27 @@ class Talk < ActiveRecord::Base
     page_count = talks_count > 0 ? (talks_count.to_f/TalksController::Talk_Page_Size).ceil : 1
 
     1.upto(page_count) { |i|
-      Cache.delete(expand_cache_key("#{FCKP_talk_index_talks}_#{i}"))
+      Cache.delete(expand_cache_key("#{CKP_talk_index_talks}_#{i}"))
       Cache.delete(expand_cache_key("#{CKP_all_talks_json_list}_#{i}"))
     }
   end
   
   
+  
+  def self.get_talk_index_talks(page = 1)
+    talks = Cache.get("#{CKP_talk_index_talks}_#{page}".to_sym)
+    
+    unless talks
+      talks = Talk.published.paginate(
+		    :page => page,
+	      :per_page => TalksController::Talk_Page_Size,
+	      :order => "publish_at DESC"
+	    )
+      
+      Cache.get("#{CKP_talk_index_talks}_#{page}".to_sym, talks)
+    end
+    talks
+  end
   
   def self.get_talk(talk_id)
     t = Cache.get("#{CKP_talk}_#{talk_id}".to_sym)

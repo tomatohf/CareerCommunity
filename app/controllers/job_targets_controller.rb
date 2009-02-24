@@ -15,7 +15,8 @@ class JobTargetsController < ApplicationController
                                           :create_system_status, :status_update, :status_destroy,
                                           :create_system_process, :process_update, :process_destroy]
   
-  before_filter :check_account_access, :only => [:list, :list_closed, :account_status, :account_process]
+  before_filter :check_account_access, :only => [:list, :list_closed, :account_status, :account_process,
+                                                  :account_job_item]
   before_filter :check_general_admin, :only => [:system_status, :create_system_status,
                                                 :system_process, :create_system_process]
   before_filter :check_status_change, :only => [:status_update, :status_destroy]
@@ -569,6 +570,20 @@ class JobTargetsController < ApplicationController
     process.save
     
     jump_to("/job_targets/system_process")
+  end
+  
+  def account_job_item
+    @item_type = params[:item_type]
+        
+    @items = @item_type.camelize.constantize.send("get_account_#{@item_type.pluralize}", @account_id)
+  end
+  
+  def account_job_item_update
+    # to be checked ...
+  end
+  
+  def account_job_item_destroy
+    # to be checked ...
   end
   
   

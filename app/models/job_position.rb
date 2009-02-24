@@ -101,6 +101,7 @@ class JobPosition < ActiveRecord::Base
   end
   class << self
     alias_method :get_job_position, :get_position
+    alias_method :get_account_job_positions, :get_account_positions
   end
   
   def self.set_position_cache(position)

@@ -66,12 +66,12 @@ class TalksController < ApplicationController
     @page = params[:page]
     @page = 1 unless @page =~ /\d+/
     
-    # @talks are cached in view
-    
     # @new_comments are cached in view
     
     respond_to do |format|
-      format.html {}
+      format.html {
+        @talks = Talk.get_talk_index_talks(@page)
+      }
       
       format.json {
         render :layout => false

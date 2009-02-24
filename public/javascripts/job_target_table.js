@@ -271,7 +271,7 @@ function create_table_grid() {
 					//id: "",
 					text: "公司 <img border='0' src='/images/ext_link_small.gif' />",
 					handler: function() {
-						window.location.href = "";
+						window.location.href = "/job_targets/account_job_item/" + current_user_id + "?item_type=company";
 					}
 				},
 				
@@ -279,7 +279,7 @@ function create_table_grid() {
 					//id: "",
 					text: "职位 <img border='0' src='/images/ext_link_small.gif' />",
 					handler: function() {
-						window.location.href = "";
+						window.location.href = "/job_targets/account_job_item/" + current_user_id + "?item_type=job_position";
 					}
 				},
 				
