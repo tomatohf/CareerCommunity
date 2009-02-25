@@ -108,7 +108,7 @@ class Activity < ActiveRecord::Base
     page_count = activity_count > 0 ? (activity_count.to_f/ActivitiesController::Activity_List_Size).ceil : 1
 
     1.upto(page_count) { |i|
-      Cache.delete(expand_cache_key("#{CKP_activities_all_list}_#{i}"))
+      Cache.delete("#{CKP_activities_all_list}_#{i}")
     }
   end
   

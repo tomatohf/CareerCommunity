@@ -83,7 +83,7 @@ class Talk < ActiveRecord::Base
   CKP_talk_index_talks = :talk_index_talks
   
   FCKP_index_talk = :fc_index_talk
-  CKP_all_talks_json_list = :all_talks_json_list
+  FCKP_all_talks_json_list = :fc_all_talks_json_list
   
   after_save { |talk|
     self.set_talk_cache(talk)
@@ -118,8 +118,8 @@ class Talk < ActiveRecord::Base
     page_count = talks_count > 0 ? (talks_count.to_f/TalksController::Talk_Page_Size).ceil : 1
 
     1.upto(page_count) { |i|
-      Cache.delete(expand_cache_key("#{CKP_talk_index_talks}_#{i}"))
-      Cache.delete(expand_cache_key("#{CKP_all_talks_json_list}_#{i}"))
+      Cache.delete("#{CKP_talk_index_talks}_#{i}")
+      Cache.delete(expand_cache_key("#{FCKP_all_talks_json_list}_#{i}"))
     }
   end
   

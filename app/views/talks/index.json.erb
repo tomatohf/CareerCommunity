@@ -1,5 +1,5 @@
 <% 
-	cache("#{Talk::CKP_all_talks_json_list}_#{@page}") do
+	cache("#{Talk::FCKP_all_talks_json_list}_#{@page}") do
 		talks = Talk.published.paginate(
 	      :page => @page,
 	      :per_page => TalksController::Talk_Page_Size,

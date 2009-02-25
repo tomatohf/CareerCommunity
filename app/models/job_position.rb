@@ -89,6 +89,7 @@ class JobPosition < ActiveRecord::Base
   
   require_dependency "job_target"
   require_dependency "job_step"
+  require_dependency "company"
   def self.get_position(position_id)
     p = Cache.get("#{CKP_position}_#{position_id}".to_sym)
     

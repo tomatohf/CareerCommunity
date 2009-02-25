@@ -365,7 +365,9 @@ ActionController::Routing::Routes.draw do |map|
     :create_system_status => :post,
     
     :system_process => :get,
-    :create_system_process => :post
+    :create_system_process => :post,
+    
+    :create_account_item => :post
     
   }, :member => {
     

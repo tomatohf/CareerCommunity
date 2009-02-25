@@ -16,40 +16,49 @@
 	</div>
 	
 	<div class="community_block">
-		
 		<% if flash[:error_msg] %>
 			<p class="error_msg"><%= flash[:error_msg] %></p>
 		<% end %>
-		
-		
+	</div>
+	
+	<div class="community_block_narrow">
+		<a style="font-size: 14px;" href="#" onclick="toggle_item_add(); return false;" id="add_item_link">
+			添加新的<%= @item_label %></a>
+			
+		<div id="add_item_form" style="display: none;">
+			<% form_tag "/job_targets/create_account_item", :method => :post do %>
+				<div>
+					<%= @item_label %>的名称
+					:
+					<br />
+					<input type="text" name="item_name" class="text_field" size="50" />
+					
+					<input type="hidden" name="item_type" value="<%= @item_type %>" />
+				</div>
+				
+				<div>
+					<%= @item_label %>的英文名, 别名 或 其他常用名:   
+					<br />
+					<input type="text" name="item_desc" class="text_field" size="50" />
+					
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					
+					<span>
+						<input type="submit" value="添加" class="button" />
+						&nbsp;&nbsp;&nbsp;
+						<a href="#" onclick="toggle_item_add(); return false;">
+							先不添加了</a>
+					</span>
+				</div>
+			<% end %>
+		</div>
+	</div>
+	
+	<div class="community_block" style="border-top: 1px solid #EEEEEE; margin-top: 10px;">
 		
 		<% form_tag "", :method => :post, :id => "delete_item_form" do %>
 			<input type="hidden" name="item_type" value="<%= @item_type %>" />
 		<% end %>
-		
-		<script language="JavaScript">
-			function delete_item(item_id) {
-				if(confirm("确定要删除这个<%= @item_label %>么 ?")) {
-					del_form = document.getElementById("delete_item_form");
-					del_form.action = "/job_targets/" + item_id + "/account_job_item_destroy";
-					del_form.submit();
-				}
-			}
-			
-			function toggle_item_edit(item_id) {
-				var toggle_item_edit_link = document.getElementById("toggle_item_edit_link_" + item_id);
-				var in_edit = (toggle_item_edit_link.style.display == "none");
-				
-				toggle_item_edit_link.style.display = in_edit ? "": "none";
-				document.getElementById("update_item_btn_" + item_id).style.display = in_edit ? "none" : "";
-				
-				document.getElementById("item_name_show_" + item_id).style.display = in_edit ? "" : "none";
-				document.getElementById("item_name_edit_" + item_id).style.display = in_edit ? "none" : "";
-				
-				document.getElementById("item_desc_show_" + item_id).style.display = in_edit ? "" : "none";
-				document.getElementById("item_desc_edit_" + item_id).style.display = in_edit ? "none" : "";
-			}
-		</script>
 		
 		<% @items.each do |item| %>
 			<% item_name = h(item.name) %>
@@ -103,5 +112,39 @@
 	</div>
 	
 </div>
+
+
+
+<script language="JavaScript">
+	function delete_item(item_id) {
+		if(confirm("确定要删除这个<%= @item_label %>么 ?")) {
+			del_form = document.getElementById("delete_item_form");
+			del_form.action = "/job_targets/" + item_id + "/account_job_item_destroy";
+			del_form.submit();
+		}
+	}
+	
+	function toggle_item_edit(item_id) {
+		var toggle_item_edit_link = document.getElementById("toggle_item_edit_link_" + item_id);
+		var in_edit = (toggle_item_edit_link.style.display == "none");
+		
+		toggle_item_edit_link.style.display = in_edit ? "": "none";
+		document.getElementById("update_item_btn_" + item_id).style.display = in_edit ? "none" : "";
+		
+		document.getElementById("item_name_show_" + item_id).style.display = in_edit ? "" : "none";
+		document.getElementById("item_name_edit_" + item_id).style.display = in_edit ? "none" : "";
+		
+		document.getElementById("item_desc_show_" + item_id).style.display = in_edit ? "" : "none";
+		document.getElementById("item_desc_edit_" + item_id).style.display = in_edit ? "none" : "";
+	}
+	
+	function toggle_item_add() {
+		var add_form = document.getElementById("add_item_form");
+		var in_edit = !(add_form.style.display == "none")
+		
+		add_form.style.display = in_edit ? "none" : "";
+		document.getElementById("add_item_link").style.display = in_edit ? "" : "none";
+	}
+</script>
 
 

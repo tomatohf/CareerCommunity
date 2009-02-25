@@ -1,5 +1,7 @@
 class TalkComment < ActiveRecord::Base
   
+  include CareerCommunity::Util
+  
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :talk, :class_name => "Talk", :foreign_key => "talk_id"
 

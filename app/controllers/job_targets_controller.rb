@@ -14,7 +14,8 @@ class JobTargetsController < ApplicationController
                                           :open_target, :destroy, :star_target, :unstar_target,
                                           :create_system_status, :status_update, :status_destroy,
                                           :create_system_process, :process_update, :process_destroy,
-                                          :account_job_item_update, :account_job_item_destroy]
+                                          :account_job_item_update, :account_job_item_destroy,
+                                          :create_account_item]
   
   before_filter :check_account_access, :only => [:list, :list_closed, :account_status, :account_process,
                                                   :account_job_item]
@@ -607,6 +608,21 @@ class JobTargetsController < ApplicationController
     end
     
     jump_to("/job_targets/account_job_item/#{item_account_id}?item_type=#{@item_type}")
+  end
+  
+  def create_account_item
+    @item_type = params[:item_type]
+    item = @item_type.camelize.constantize.new(
+      :account_id => session[:account_id],
+      :name => params[:item_name] && params[:item_name].strip,
+      :desc => params[:item_desc] && params[:item_desc].strip
+    )
+    
+    item.save
+    
+    flash[:error_msg] = ApplicationController.helpers.list_model_validate_errors(item) if (item.errors.size > 0)
+    
+    jump_to("/job_targets/account_job_item/#{session[:account_id]}?item_type=#{@item_type}")
   end
   
   
