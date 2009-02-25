@@ -80,18 +80,6 @@ class ActivitiesController < ApplicationController
   
   
   
-  ACKP_activities_all_list = :ac_activities_all_list
-  
-  caches_action :all,
-    :cache_path => Proc.new { |controller|
-      page = controller.params[:page]
-      page = 1 unless page =~ /\d+/
-      
-      "#{ACKP_activities_all_list}_#{page}"
-    }
-  
-  
-  
   def index
     return jump_to("/activities/all") unless has_login?
     
@@ -396,12 +384,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.uncancelled.paginate(
-      :page => page,
-      :per_page => Activity_List_Size,
-      :include => [:image],
-      :order => "created_at DESC"
-    )
+    @activities = Activity.get_activities_all_list(page)
     
     render(:action => "day")
   end

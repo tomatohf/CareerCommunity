@@ -11,8 +11,10 @@
 
 <% else %>
 
+	<% talk_desc = h(talk.get_info[:desc]) %>
+
 	<div class="form_info_s talk">
-		<a href="/talks/<%= talk.id %>" class="account_nick_link"<%= %Q! style="font-size: 14px;"! unless small %> title="<%= h(talk.get_info[:desc]) %>">
+		<a href="/talks/<%= talk.id %>" class="account_nick_link"<%= %Q! style="font-size: 14px;"! unless small %> title="<%= talk_desc if small %>">
 			<strong><%= h(talk.title) %></strong></a>
 		
 		&nbsp;
@@ -51,7 +53,14 @@
 			<a href="/talks/<%= talk.id %>/manage" class="account_nick_link">
 				管理</a>
 		<% end %>
+		
 	</div>
+	
+	<% unless small %>
+		<div style="padding: 0px 15px; color: #666666">
+			<%= truncate(talk_desc, 200) %>
+		</div>
+	<% end %>
 
 	<% unless small %>
 		<div style="padding: 0px 30px;">

@@ -1438,6 +1438,10 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	background: transparent url(/images/index/talk_icon.png) no-repeat scroll left 2px;
 }
 
+.latest_talk {
+	background: transparent url(/images/talks/latest_talk.png) no-repeat scroll left top;
+}
+
 .job_item_container {
 	margin-left: 150px;
 	padding: 0px 20px;

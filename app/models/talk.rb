@@ -129,13 +129,13 @@ class Talk < ActiveRecord::Base
     talks = Cache.get("#{CKP_talk_index_talks}_#{page}".to_sym)
     
     unless talks
-      talks = Talk.published.paginate(
+      talks = self.published.paginate(
 		    :page => page,
 	      :per_page => TalksController::Talk_Page_Size,
 	      :order => "publish_at DESC"
 	    )
       
-      Cache.get("#{CKP_talk_index_talks}_#{page}".to_sym, talks)
+      Cache.set("#{CKP_talk_index_talks}_#{page}".to_sym, talks)
     end
     talks
   end

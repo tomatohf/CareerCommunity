@@ -71,6 +71,8 @@ class Activity < ActiveRecord::Base
   
   CKP_activity_place_point = :activity_place_point
   
+  CKP_activities_all_list = :activities_all_list
+  
   FCKP_activities_show_created_activity = :fc_activities_show_created_activity
   
   FCKP_index_activity = :fc_index_activity
@@ -106,7 +108,7 @@ class Activity < ActiveRecord::Base
     page_count = activity_count > 0 ? (activity_count.to_f/ActivitiesController::Activity_List_Size).ceil : 1
 
     1.upto(page_count) { |i|
-      Cache.delete(expand_cache_key("#{ActivitiesController::ACKP_activities_all_list}_#{i}"))
+      Cache.delete(expand_cache_key("#{CKP_activities_all_list}_#{i}"))
     }
   end
   
@@ -139,6 +141,23 @@ class Activity < ActiveRecord::Base
   end
   
   
+  
+  require_dependency "activity_image"
+  def self.get_activities_all_list(page = 1)
+    activities = Cache.get("#{CKP_activities_all_list}_#{page}".to_sym)
+    
+    unless activities
+      activities = self.uncancelled.paginate(
+		    :page => page,
+	      :per_page => ActivitiesController::Activity_List_Size,
+	      :include => [:image],
+	      :order => "created_at DESC"
+	    )
+      
+      Cache.set("#{CKP_activities_all_list}_#{page}".to_sym, activities)
+    end
+    activities
+  end
   
   def get_image_url
     activity_image = self.image
