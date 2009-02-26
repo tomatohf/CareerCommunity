@@ -60,6 +60,8 @@ class GroupsController < ApplicationController
   before_filter :check_owner, :only => [:recent, :all_post, :all_activity, :all_vote, :all_bookmark,
                                         :all_photo, :all_picture, :created_post, :commented_post]
   
+  before_filter :check_view_feed, :only => [:feed]
+    
   before_filter :check_custom_group, :only => [:show]
   
   
@@ -78,14 +80,10 @@ class GroupsController < ApplicationController
   
   
   def feed
-    @group_id = params[:id]
-
     respond_to do |format|
       format.html { jump_to("/groups/#{@group_id}") }
 
       format.atom {
-        @group, group_image = Group.get_group_with_image(@group_id)
-
         @posts = GroupPost.find(
           :all,
           :limit => Post_List_Size,
@@ -313,6 +311,9 @@ class GroupsController < ApplicationController
     need_join_to_view_post_list = @group_setting[:need_join_to_view_post_list]
     @can_list_post = !(need_join_to_view_post_list && @no_membership)
     
+    need_join_to_view_post = @group_setting[:need_join_to_view_post]
+    @can_view_post = !(need_join_to_view_post && @no_membership)
+    
     need_join_to_view_bookmark = @group_setting[:need_join_to_view_bookmark]
     @can_view_bookmark = !(need_join_to_view_bookmark && @no_membership)
     
@@ -389,9 +390,14 @@ class GroupsController < ApplicationController
     @group_id = params[:id]
     @group, @group_image = Group.get_group_with_image(@group_id)
     
-    need_join_to_view_post_list = @group.get_setting[:need_join_to_view_post_list]
+    group_setting = @group.get_setting
+    not_member = !GroupMember.is_group_member(@group_id, session[:account_id])
     
-    @can_view = !(need_join_to_view_post_list && (!GroupMember.is_group_member(@group_id, session[:account_id])))
+    need_join_to_view_post_list = group_setting[:need_join_to_view_post_list]
+    @can_view = !(need_join_to_view_post_list && not_member)
+    
+    need_join_to_view_post = group_setting[:need_join_to_view_post]
+    @can_view_post = !(need_join_to_view_post && not_member)
     
     @top_group_posts = GroupPost.find(
       :all,
@@ -1233,6 +1239,16 @@ class GroupsController < ApplicationController
   
   def check_owner
     jump_to("/errors/forbidden") unless session[:account_id].to_s == params[:id]
+  end
+  
+  def check_view_feed
+    @group_id = params[:id]
+    @group, group_image = Group.get_group_with_image(@group_id)
+    
+    need_join_to_view_post = @group.get_setting[:need_join_to_view_post]
+    can_view_post = !(need_join_to_view_post && (!GroupMember.is_group_member(@group_id, session[:account_id])))
+    
+    jump_to("/errors/forbidden") unless can_view_post
   end
   
 end

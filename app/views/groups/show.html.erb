@@ -171,15 +171,17 @@
 	<% end %>
 	
 	
-	<div class="community_title">
-		订阅圈子讨论话题 ...
-	</div>
+	<% if @can_view_post %>
+		<div class="community_title">
+			订阅圈子讨论话题 ...
+		</div>
 	
-	<div class="community_block align_c">
-		<br />
-		<a href="/groups/feed/<%= @group_id %>.atom">
-			<img src="/images/feed_icon.gif" border="0" alt="订阅圈子<%= group_name %>的讨论话题" title="订阅圈子<%= group_name %>的讨论话题" /></a>
-	</div>
+		<div class="community_block align_c">
+			<br />
+			<a href="/groups/feed/<%= @group_id %>.atom">
+				<img src="/images/feed_icon.gif" border="0" alt="订阅圈子<%= group_name %>的讨论话题" title="订阅圈子<%= group_name %>的讨论话题" /></a>
+		</div>
+	<% end %>
 	
 </div>
 
