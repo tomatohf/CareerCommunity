@@ -25,20 +25,20 @@
 		<a href="/recruitments">返回招聘信息列表</a>
 	</div>
 	
-	<div class="community_title">
-		标签 ...
-	</div>
 	
-	<div class="community_block">
-		<% tags = @recruitment.recruitment_tags %>
-		<% if tags.size > 0 %>
-			<div class="recruitment_tags">
-				<% tags.each do |tag|%>
-					<a href="/recruitments/tag?name=<%= h(tag.name) %>" class="account_nick_link"><%= h(tag.name) %></a>
-				<% end %>
-			</div>
-		<% end %>
+	
+	<div style="border-top: 1px solid #EEEEEE; padding-top: 10px;">
+		<div class="community_block align_c">
+			<a href="/talks" target="_blank">
+				<img src="/images/ad/talk_colorful.gif" border="0" /></a>
+		</div>
+		
+		<div class="community_block align_c">
+			<a href="/coach/courses" target="_blank">
+				<img src="/images/ad/course_colorful.gif" border="0" /></a>
+		</div>
 	</div>
+
 	
 	<div class="community_title">
 		所有标签 ...
@@ -46,6 +46,26 @@
 	
 	<div class="community_block">
 		<%= render(:partial => "recruitment_tag_cloud") %>
+	</div>
+	
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="align_c">
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-3439613867319084";
+		/* 250x250, 招聘信息页面右侧 */
+		google_ad_slot = "5019021815";
+		google_ad_width = 250;
+		google_ad_height = 250;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
 	</div>
 	
 </div>
@@ -80,6 +100,16 @@
 		<%= format_date(@recruitment.publish_time) %>
 	</div>
 	
+	<% tags = @recruitment.recruitment_tags %>
+	<% if tags.size > 0 %>
+		<div class="align_r" style="word-spacing: 10px;">
+			<% tags.each do |tag|%>
+				<a href="/recruitments/tag?name=<%= h(tag.name) %>" class="account_nick_link"><%= h(tag.name) %></a>
+			<% end %>
+		</div>
+	<% end %>
+	
+	
 	<div class="community_block tinymce_content">
 		<%= sanitize_tinymce(@recruitment.content) %>
 	</div>
@@ -91,6 +121,25 @@
 	<div class="community_block align_r form_info_s">
 		信息来源:
 		<a href="<%= @recruitment.source_link %>" target="_blank"><%= @recruitment.source_link %></a>
+	</div>
+	
+	
+	
+	<div style="height: 50px; margin-bottom: 10px; border-bottom: 1px solid #EEEEEE;">
+		
+	</div>
+	<div class="community_block">
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-3439613867319084";
+		/* 468x60 */
+		google_ad_slot = "0991456068";
+		google_ad_width = 468;
+		google_ad_height = 60;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
 	</div>
 	
 </div>
