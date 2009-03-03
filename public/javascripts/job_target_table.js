@@ -470,7 +470,7 @@ function create_table_grid() {
 				text: "改变目标的公司",
 				//icon: "",
 				handler: function() {
-					alert("to be done ...");
+					window.location.href = "/job_targets/" + target_id + "/edit_target_job_item?item_type=company";
 				}
 			}
 		);
@@ -481,7 +481,7 @@ function create_table_grid() {
 				text: "改变目标的职位",
 				//icon: "",
 				handler: function() {
-					alert("to be done ...");
+					window.location.href = "/job_targets/" + target_id + "/edit_target_job_item?item_type=job_position";
 				}
 			}
 		);

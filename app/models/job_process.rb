@@ -78,7 +78,7 @@ class JobProcess < ActiveRecord::Base
     Cache.delete("#{CKP_account_processes}_#{account_id}".to_sym)
   end
   
-  
+  require_dependency "account"
   def self.get_process(process_id)
     p = Cache.get("#{CKP_process}_#{process_id}".to_sym)
     

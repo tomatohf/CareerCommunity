@@ -15,7 +15,7 @@ class JobTargetsController < ApplicationController
                                           :create_system_status, :status_update, :status_destroy,
                                           :create_system_process, :process_update, :process_destroy,
                                           :account_job_item_update, :account_job_item_destroy,
-                                          :create_account_item]
+                                          :create_account_item, :update_target_job_item]
   
   before_filter :check_account_access, :only => [:list, :list_closed, :account_status, :account_process,
                                                   :account_job_item]
@@ -30,7 +30,8 @@ class JobTargetsController < ApplicationController
                                                 :update_step_status, :del_step, :create_step,
                                                 :update_step_date, :update_step_remind_date,
                                                 :close_target, :open_target, :destroy, :star_target,
-                                                :unstar_target]
+                                                :unstar_target,
+                                                :edit_target_job_item, :update_target_job_item]
   
   before_filter :do_protection
   
@@ -623,6 +624,47 @@ class JobTargetsController < ApplicationController
     flash[:error_msg] = ApplicationController.helpers.list_model_validate_errors(item) if (item.errors.size > 0)
     
     jump_to("/job_targets/account_job_item/#{session[:account_id]}?item_type=#{@item_type}")
+  end
+  
+  
+  def edit_target_job_item
+    @item_type = params[:item_type]
+    @item_label = get_job_item_label(@item_type)
+    
+    @company = Company.get_company(@target.company_id)
+    @position = JobPosition.get_position(@target.job_position_id)
+    
+    @query = params[:query]
+    item_class = @item_type.camelize.constantize
+    if @query && @query != ""
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @found_system_companies = item_class.system.search(
+        @query,
+        :page => page,
+        :per_page => JobItemsController::Item_Page_Size,
+        :match_mode => JobItemsController::Search_Match_Mode,
+        :order => JobItemsController::Search_Sort_Order,
+        :field_weights => JobItemsController::Search_Field_Weights
+      ).compact
+    end
+
+    @account_items = item_class.send("get_account_#{@item_type.pluralize}", session[:account_id])
+  end
+  
+  def update_target_job_item
+    item_type = params[:item_type]
+    item_id = params[:item_id]
+    
+    item = item_type.camelize.constantize.send("get_#{item_type}", item_id)
+    
+    # check if new job item can be used by target owner
+    if item.account_id.nil? || (item.account_id == 0) || item.account_id == @target.account_id
+      @target.send("#{item_type}_id=", item.id)
+      @target.save
+    end
+    
+    jump_to("/job_targets/list/#{@target.account_id}")
   end
   
   

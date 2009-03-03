@@ -30,25 +30,40 @@
 				<div>
 					<%= @item_label %>的名称
 					:
-					<br />
-					<input type="text" name="item_name" class="text_field" size="50" />
 					
-					<input type="hidden" name="item_type" value="<%= @item_type %>" />
+					<div class="community_block_narrow">
+						<div class="form_info_l">
+							例如: 国际商用机器有限公司
+						</div>
+						
+						
+						<input type="text" name="item_name" class="text_field" size="50" />
+
+						<input type="hidden" name="item_type" value="<%= @item_type %>" />
+					</div>
 				</div>
 				
-				<div>
-					<%= @item_label %>的英文名, 别名 或 其他常用名:   
-					<br />
-					<input type="text" name="item_desc" class="text_field" size="50" />
+				<div style="margin-top: 10px;">
+					<%= @item_label %>的英文名, 别名 或 其他常用名
+					:
 					
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					
-					<span>
-						<input type="submit" value="添加" class="button" />
-						&nbsp;&nbsp;&nbsp;
-						<a href="#" onclick="toggle_item_add(); return false;">
-							先不添加了</a>
-					</span>
+					<div class="community_block_narrow">
+						<div class="form_info_l">
+							例如: IBM
+						</div>
+						
+						
+						<input type="text" name="item_desc" class="text_field" size="50" />
+
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+						<span>
+							<input type="submit" value="添加" class="button" />
+							&nbsp;&nbsp;&nbsp;
+							<a href="#" onclick="toggle_item_add(); return false;">
+								先不添加了</a>
+						</span>
+					</div>
 				</div>
 			<% end %>
 		</div>
@@ -58,6 +73,12 @@
 		
 		<% form_tag "", :method => :post, :id => "delete_item_form" do %>
 			<input type="hidden" name="item_type" value="<%= @item_type %>" />
+		<% end %>
+		
+		<% unless @items.size > 0 %>
+			<div class="form_info_l">
+				还没有添加过<%= @item_label %> ...
+			</div>
 		<% end %>
 		
 		<% @items.each do |item| %>

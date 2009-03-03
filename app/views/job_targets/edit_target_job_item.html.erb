@@ -1,0 +1,131 @@
+<% page_title = "改变求职目标的 #{@item_label}" %>
+<% community_page_title(page_title) %>
+
+	
+<div class="blog_container">
+	<a href="/job_targets/list/<%= session[:account_id] %>" class="float_r">
+		<img src="/images/job_targets/steward_small.png" border="0" alt="求职管家" />
+		返回我的求职目标</a>
+		
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+		<div class="community_block_narrow">
+			<span class="form_info_s">当前目标公司:</span>
+			&nbsp;
+			<strong><%= h(@company.name) %></strong>
+		</div>
+		
+		<div class="community_block_narrow">
+			<span class="form_info_s">当前目标职位:</span>
+			&nbsp;
+			<strong><%= h(@position.name) %></strong>
+		</div>
+	</div>
+	
+	
+	<div class="community_block">
+		<div class="info_msg float_r" style="width: 200px; color: #666666;">
+			友情提醒: 使用系统添加的<%= @item_label %>可获得更多的关联信息噢~
+		</div>
+		
+		
+		<input type="radio" value="system" name="item_from" id="item_from_system" checked="checked" onclick="change_item_from(this.value);" />
+		<label for="item_from_system">
+			从系统添加的<%= @item_label %>中选择
+		</label>
+	
+		&nbsp;&nbsp;
+		&nbsp;&nbsp;
+		
+		<input type="radio" value="mine" name="item_from" id="item_from_mine" onclick="change_item_from(this.value);" />
+		<label for="item_from_mine">
+			从自己曾添加的<%= @item_label %>中选择
+		</label>
+		
+	</div>
+	
+	
+	<div class="community_block_narrow" id="specify_item_from_system" style="display: none;">
+		<div class="community_block_narrow form_info_s">
+			搜索并选择要添加的<%= @item_label %>
+			<% if @found_system_companies %>
+				,
+				&nbsp;&nbsp;&nbsp;
+				搜索到
+				<b><%= @found_system_companies.size %></b>
+				个<%= @item_label %>
+			<% end %>
+		</div>
+		
+		<div class="community_block">
+			<% form_tag "/job_targets/#{@target.id}/#{action_name}", :method => :get do %>
+				<input type="text" name="query" class="text_field search_input" size="25" value="<%= h(@query) %>" />
+				<input type="hidden" name="item_type" id="item_type" value="<%= @item_type %>" />
+				&nbsp;&nbsp;&nbsp;
+				<input type="submit" value="搜索<%= @item_label %>" class="button" />
+			<% end %>
+		</div>
+		
+		<div class="community_block">
+			<% if @found_system_companies %>
+				<%= render :partial => "item", :collection => @found_system_companies %>
+			<% end %>
+		</div>
+		
+		<div class="community_block align_r">
+			<a href="#" onclick="select_item_from_mine(); return false;">
+				系统还没有添加要找的<%= @item_label %>? 试试从自己添加的<%= @item_label %>中选择</a>
+		</div>
+	</div>
+	
+	<div class="community_block_narrow" id="specify_item_from_mine" style="display: none;">
+		<% unless @account_items.size > 0 %>
+			<div class="form_info_l">
+				还没有添加过<%= @item_label %> ...
+			</div>
+		<% end %>
+		
+		<%= render :partial => "item", :collection => @account_items %>
+		
+		<div class="community_block align_r">
+			<a href="/job_targets/account_job_item/<%= session[:account_id] %>?item_type=<%= @item_type %>">
+				管理/添加 自己添加的<%= @item_label %></a>
+		</div>
+	</div>
+	
+	
+	<% form_tag "/job_targets/#{@target.id}/update_target_job_item", :method => :post, :id => "item_id_form" do %>
+		<input type="hidden" name="item_id" id="item_id" value="" />
+		<input type="hidden" name="item_type" id="item_type" value="<%= @item_type %>" />
+	<% end %>
+	
+</div>
+
+
+<script language="JavaScript" type="text/javascript">
+
+	function select_item(item_id) {
+		if(confirm("确定要将求职目标改变为此 <%= @item_label %> 么 ?")) {
+			document.getElementById("item_id").value = item_id;
+			document.getElementById("item_id_form").submit();
+		}
+	}
+	
+	function select_item_from_mine() {
+		var radio = document.getElementById("item_from_mine");
+		radio.checked = true;
+		radio.onclick();
+	}
+
+	function change_item_from(item_from) {
+		document.getElementById("specify_item_from_system").style.display = "none";
+		document.getElementById("specify_item_from_mine").style.display = "none";
+		
+		document.getElementById("specify_item_from_" + item_from).style.display = "";
+	}
+	
+	change_item_from("system");
+</script>
+
+
