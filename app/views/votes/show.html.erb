@@ -152,11 +152,11 @@
 		</span>
 	</h2>
 	
-	<div class="form_info_s">
-		<%= h(@vote_topic.desc) %>
+	<div style="color: #666666;">
+		<%= simple_format(h(@vote_topic.desc)) %>
 	</div>
 	
-	<div>
+	<div style="margin-top: 10px;">
 		<% option_info, total_count, show_legend_color = get_text_result_info_for_vote(@vote_topic_id) %>
 		<%= render :partial => "text_result", :locals => {:option_info => option_info, :total_count => total_count, :show_legend_color => show_legend_color, :vote_topic => @vote_topic} %>
 	</div>
