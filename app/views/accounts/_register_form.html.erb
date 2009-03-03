@@ -14,7 +14,7 @@
 			<input type="text" id="account_email" name="account_email" class="text_field" size="<%= input_size %>" value="<%= account.email %>" />
 
 			<%= image_tag "info_small.gif", :border=> 0, :alt => "信息" %>
-			<span class="form_info_s">不可更改的标识</span>
+			<span class="form_info_s">登录用的标识</span>
 		</div>
 		
 		<div>
@@ -26,7 +26,7 @@
 			<input type="password" id="account_password" name="account_password" class="text_field" size="<%= input_size %>" value="<%= account.new_record? ? h(account.password) : '' %>" />
 			
 			<%= image_tag "info_small.gif", :border=> 0, :alt => "信息" %>
-			<span class="form_info_s">遗忘后可被找回</span>
+			<span class="form_info_s">遗忘后可找回</span>
 		</div>
 		
 		<% unless simple %>

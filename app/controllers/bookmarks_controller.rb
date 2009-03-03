@@ -144,7 +144,7 @@ class BookmarksController < ApplicationController
     @bookmark.url = url
     @bookmark.desc = desc
     
-    if validate_bookmark_url(@bookmark.is_absolute_url ? @bookmark.url : "http://qiaobutang.com" + @bookmark.url)
+    if validate_bookmark_url(@bookmark.is_absolute_url ? @bookmark.url : "http://www.qiaobutang.com" + @bookmark.url)
       if @bookmark.save
         # record account action
         AccountAction.create_new(session[:account_id], "add_bookmark", {

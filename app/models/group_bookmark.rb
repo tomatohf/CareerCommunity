@@ -38,7 +38,7 @@ class GroupBookmark < ActiveRecord::Base
   end
   
   def get_display_url
-    is_absolute_url ? url : "http://qiaobutang.com" + url
+    is_absolute_url ? url : "http://www.qiaobutang.com" + url
   end
   
   

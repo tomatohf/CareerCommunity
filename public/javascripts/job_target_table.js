@@ -733,7 +733,7 @@ function show_step_menu(evt, target, options) {
 	menu_items.push("-");
 	menu_items.push(
 		{
-			text: "设置提醒日期",
+			text: "设置邮件提醒日期",
 			icon: "/images/job_targets/remind_small.gif",
 			hideOnClick: false,
 			menu: new Ext.menu.DateMenu(

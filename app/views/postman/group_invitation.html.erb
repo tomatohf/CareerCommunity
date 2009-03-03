@@ -6,7 +6,7 @@
 
 	<% h_invitor_nick = h(@invitor_nick) %>
 	<p>
-		<%= h_invitor_nick %>(<a href="http://qiaobutang.com/spaces/show/<%= @invitor_account_id %>" target="_blank">http://qiaobutang.com/spaces/show/<%= @invitor_account_id %></a>) 邀请你加入圈子 <%= h(@group.name) %>, 你可以到 <a href="http://qiaobutang.com/groups/<%= @group.id %>" target="_blank">http://qiaobutang.com/groups/<%= @group.id %></a> 查看圈子的详情和加入这个圈子
+		<%= h_invitor_nick %>(<a href="http://www.qiaobutang.com/spaces/show/<%= @invitor_account_id %>" target="_blank">http://www.qiaobutang.com/spaces/show/<%= @invitor_account_id %></a>) 邀请你加入圈子 <%= h(@group.name) %>, 你可以到 <a href="http://www.qiaobutang.com/groups/<%= @group.id %>" target="_blank">http://www.qiaobutang.com/groups/<%= @group.id %></a> 查看圈子的详情和加入这个圈子
 	</p>
 
 	<% if @invitation_words && @invitation_words != "" %>
@@ -31,16 +31,16 @@
 	<br />
 	<font color="#B3ABA2">
 		<div>
-			乔布堂: <a href="http://qiaobutang.com" target="_blank">http://qiaobutang.com</a>
+			乔布堂: <a href="http://www.qiaobutang.com" target="_blank">http://www.qiaobutang.com</a>
 		</div>
 		<div>
-			乔布圈: <a href="http://qiaobuquan.com" target="_blank">http://qiaobuquan.com</a>
+			乔布圈: <a href="http://www.qiaobuquan.com" target="_blank">http://www.qiaobuquan.com</a>
 		</div>
 
 		---
 	
 		<div>
-			若你不想收到此类邮件邀请, 可登录乔布圈进行设置: <a href="http://qiaobutang.com/account_settings/email/<%= @account_id %>" target="_blank">http://qiaobutang.com/account_settings/email/<%= @account_id %></a>
+			若你不想收到此类邮件邀请, 可登录乔布圈进行设置: <a href="http://www.qiaobutang.com/account_settings/email/<%= @account_id %>" target="_blank">http://www.qiaobutang.com/account_settings/email/<%= @account_id %></a>
 		</div>
 	</font>
 	

@@ -7,7 +7,7 @@ atom_feed(:language => "zh_CN", :schema_date => 2009, "xmlns:app" => "http://www
     feed.entry(talk) do |entry|
       entry.title(h(talk.title))
       
-      entry.url("http://qiaobutang.com/talks/#{talk.id}")
+      entry.url("http://www.qiaobutang.com/talks/#{talk.id}")
       
       entry.published(talk.publish_at)
       entry.updated(talk.publish_at)

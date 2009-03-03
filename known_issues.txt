@@ -1,5 +1,9 @@
 ﻿改变求职目标的 公司 和 职位
 
+talk reader
+	点最大化失败则跳转到 qiaobutang 页面
+	空的那个 button 那里显示阅读次数
+
 
 发送求职管家的提醒邮件
 
@@ -68,7 +72,7 @@ Enhance 活动的功能
 
 
 
-new recruitment vendors - guolairen, www.xyzp.net(卖我网)
+new recruitment vendors - guolairen, www.xyzp.net(卖我网), http://www.jobyoo.com
 
 highlight 活动日历上有活动的日子
 

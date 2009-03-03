@@ -223,7 +223,7 @@ class Activity < ActiveRecord::Base
     Activity.uncancelled.paginate(
       :page => page,
       :per_page => per_page,
-      :conditions => ["begin_at > ? and begin_at < ?", first, last],
+      :conditions => ["begin_at >= ? and begin_at < ?", first, last],
       :include => [:image],
       :order => "begin_at ASC"
     )
