@@ -1,0 +1,56 @@
+<div>
+	
+	<p>
+		Hi <%= h(@account.get_nick) %>,
+	</p>
+	
+	<p>
+		你有一个求职步骤提醒:
+		<br />
+		<br />
+		
+		目标公司:   <strong><%= @company_name %></strong>
+		<br />
+		
+		目标职位:   <strong><%= @position_name %></strong>
+		<br />
+		
+		<% if @step_name && @step_name != "" %>
+			步骤名称:   <strong><%= @step_name %></strong>
+			<br />
+		<% end %>
+		
+		所在流程:   <strong><%= @process_name %></strong>
+		<br />
+	</p>
+	
+	<p>
+		<a href="http://www.qiaobutang.com/job_targets/list/<%= @account.id %>" target="_blank">
+			<span style="font-size: 14px; font-weight: bold;">去我的求职目标列表</span></a>
+		
+		<br />
+		
+		<a href="http://www.qiaobutang.com/job_targets/list/<%= @account.id %>" target="_blank">
+			http://www.qiaobutang.com/job_targets/list/<%= @account.id %></a>
+	</p>
+	
+	
+	
+	<br />
+	<br />
+	<br />
+	<font color="#B3ABA2">
+		<div>
+			---
+		</div>
+		<div>
+			乔布堂: <a href="http://www.qiaobutang.com" target="_blank">http://www.qiaobutang.com</a>
+		</div>
+		<div>
+			乔布圈: <a href="http://www.qiaobuquan.com" target="_blank">http://www.qiaobuquan.com</a>
+		</div>
+	</font>
+	
+</div>
+
+

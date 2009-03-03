@@ -3,9 +3,8 @@
 talk reader
 	点最大化失败则跳转到 qiaobutang 页面
 	空的那个 button 那里显示阅读次数
-
-
-发送求职管家的提醒邮件
+	直接跳到 top, 而非滚动
+	
 
 
 统计 embed 的 swf 的来源 : ExternalInterface.call("window.location.href.toString");

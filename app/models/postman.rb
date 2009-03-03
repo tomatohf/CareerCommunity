@@ -214,4 +214,33 @@ class Postman < ActionMailer::Base
     content_type "text/html"
   end
   
+  
+  
+  def step_email_remind(account, step, process, target, company, position)
+    recipients(
+      [
+        account.email
+      ]
+    )
+    
+    from(self.class.from)
+    
+    step_name = step.label
+    process_name = process.name
+    step_display_name = (step_name && step_name != "") ? "#{step_name}(#{process_name})" : process_name
+    
+    company_name = company.name
+    position_name = position.name
+    
+    subject("[求职步骤提醒] #{step_display_name} / #{company_name} / #{position_name}")
+    body(
+      :step_name => step_name,
+      :process_name => process_name.id,
+      :company_name => company_name,
+      :position_name => position_name,
+      :account => account
+    )
+    content_type "text/html"
+  end
+  
 end
