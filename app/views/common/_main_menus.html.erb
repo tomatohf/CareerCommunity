@@ -17,7 +17,8 @@
 								["/", "首页"],
 								["/methodology", "乔布哲学"],
 								["/coach", "乔布教练"],
-								["/seekjob", "死磕乔布"],
+								#["/seekjob", "死磕乔布"],
+								["/talks", "周三访谈录"],
 								["/community", "乔布圈"]
 							]
 						%>
@@ -32,7 +33,7 @@
 									onmouseover="this.className='menu_selected'"
 									onmouseout="this.className=''"
 									<% end %>
-									<% if menu[0] == "/community" %>
+									<% if (menu[0] == "/community") || (menu[0] == "/talks") %>
 									target="_blank"
 									<% end %>
 									>

@@ -1,5 +1,9 @@
-﻿new recruitment vendors - yingjiesheng.com, guolairen.com, www.xyzp.net(卖我网), http://www.jobyoo.com
-	
+﻿Voting
+	enable 匿名投票功能, 同时启用嵌入投票客户端
+	给 VoteClient.swf 搜身 - 减小 SWF 文件大小
+
+new recruitment vendors - yingjiesheng.com, guolairen.com, www.xyzp.net(卖我网), http://www.jobyoo.com
+
 
 
 统计 embed 的 swf 的来源 : ExternalInterface.call("window.location.href.toString");
@@ -90,11 +94,6 @@ Ruby Patch of the GC for Rails
 好友动态 & 系统消息
 	显示的时候 用户查询的 N+1 问题
 
-
-
-Voting
-	给 VoteClient.swf 搜身 - 减小 SWF 文件大小
-
 	
 
 
@@ -103,9 +102,6 @@ Flash 做个很炫很酷的照片演示，并且可支持离开网站使用
 嵌入图片，使用 Ming ... and Ming-Ruby ?
 http://www.libming.org/
 http://madscientist.jp/~ikegami/ruby/ming/
-
-
-Vote client ???
 
 
 

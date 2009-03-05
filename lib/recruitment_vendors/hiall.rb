@@ -130,7 +130,10 @@ module RecruitmentVendor
       title_elements = content_div.search("/h1")
       if title_elements.size > 0
         h1_element = title_elements[0]
-        r.title = h1_element.inner_html
+        
+        h1_sub_div_elements = h1_element.search("//div")
+        r.title = h1_sub_div_elements[0].inner_html if h1_sub_div_elements.size > 0
+        
         h1_element.search("").remove
       end
       
