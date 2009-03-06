@@ -12,13 +12,18 @@ class VoteRecord < ActiveRecord::Base
   CKP_count_by_option = :vote_record_count_by_option
   CKP_voter_count = :vote_record_voter_count
   CKP_voted_records = :vote_record_account_voted_records
+  CKP_voted_records_by_ip = :vote_record_ip_voted_records
   
   after_destroy { |vote_record|
     self.decrease_count_by_option_cache(vote_record.vote_option_id)
     
     self.clear_voter_count_cache(vote_record.vote_topic_id)
     
-    self.clear_voted_records_cache(vote_record.vote_topic_id, vote_record.account_id)
+    if (vote_record.account_id == 0)
+      self.clear_voted_records_by_ip_cache(vote_record.vote_topic_id, vote_record.voter_ip)
+    else
+      self.clear_voted_records_cache(vote_record.vote_topic_id, vote_record.account_id)
+    end
   }
   
   after_save { |vote_record|
@@ -26,7 +31,11 @@ class VoteRecord < ActiveRecord::Base
     
     self.clear_voter_count_cache(vote_record.vote_topic_id)
     
-    self.clear_voted_records_cache(vote_record.vote_topic_id, vote_record.account_id)
+    if (vote_record.account_id == 0)
+      self.clear_voted_records_by_ip_cache(vote_record.vote_topic_id, vote_record.voter_ip)
+    else
+      self.clear_voted_records_cache(vote_record.vote_topic_id, vote_record.account_id)
+    end
   }
   
   
@@ -54,11 +63,37 @@ class VoteRecord < ActiveRecord::Base
   def self.clear_voted_records_cache(topic_id, account_id)
     Cache.delete("#{CKP_voted_records}_#{topic_id}_#{account_id}".to_sym)
   end
+  
+  
+  def self.get_voted_records_by_ip(topic_id, ip = "")
+    ip.strip!
     
+    vr = Cache.get("#{CKP_voted_records_by_ip}_#{topic_id}_#{ip}".to_sym)
+    unless vr
+      vr = self.find(:all, :conditions => ["vote_topic_id = ? and account_id = ? and voter_ip = ?", topic_id, 0, ip]).collect do |record|
+        [record.vote_option_id]
+      end
+      
+      Cache.set("#{CKP_voted_records_by_ip}_#{topic_id}_#{ip}".to_sym, vr, Cache_TTL)
+    end
+    vr
+  end
+  
+  def self.clear_voted_records_by_ip_cache(topic_id, ip = "")
+    ip.strip!
+    
+    Cache.delete("#{CKP_voted_records_by_ip}_#{topic_id}_#{ip}".to_sym)
+  end
+  
+  
   def self.get_voter_count(topic_id)
     c = Cache.get("#{CKP_voter_count}_#{topic_id}".to_sym)
     unless c
-      c = self.count(:distinct => true, :select => "account_id", :conditions => ["vote_topic_id = ?", topic_id])
+      c = self.count(
+        :distinct => true,
+        :select => "account_id, voter_ip",
+        :conditions => ["vote_topic_id = ?", topic_id]
+      )
       
       Cache.set("#{CKP_voter_count}_#{topic_id}".to_sym, c, Cache_TTL)
     end

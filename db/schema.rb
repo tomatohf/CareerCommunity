@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 19) do
+ActiveRecord::Schema.define(:version => 20) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -1167,6 +1167,7 @@ ActiveRecord::Schema.define(:version => 19) do
     t.integer  "group_id",           :limit => 11,   :default => 0
     t.boolean  "delta"
     t.boolean  "allow_clear_record",                 :default => false
+    t.boolean  "allow_anonymous",                    :default => false
   end
 
   add_index "vote_topics", ["created_at"], :name => "index_vote_topics_on_created_at"
@@ -1175,5 +1176,6 @@ ActiveRecord::Schema.define(:version => 19) do
   add_index "vote_topics", ["multiple"], :name => "index_vote_topics_on_multiple"
   add_index "vote_topics", ["allow_add_option"], :name => "index_vote_topics_on_allow_add_option"
   add_index "vote_topics", ["delta"], :name => "index_vote_topics_on_delta"
+  add_index "vote_topics", ["allow_anonymous"], :name => "index_vote_topics_on_allow_anonymous"
 
 end

@@ -1,16 +1,26 @@
 <%
-	group_id = vote_topic.group_id || 0
-	group, group_image = Group.get_group_with_image(group_id) if group_id > 0
-	
 	has_login = session[:account_id] && session[:account_id] > 0
 	
-	not_group_member = has_login && group && (!GroupMember.is_group_member(group.id, session[:account_id]))
-	
-	voted_records = VoteRecord.get_voted_records(vote_topic.id, session[:account_id])
+	if has_login
+		voted_records = VoteRecord.get_voted_records(vote_topic.id, session[:account_id])
+	else
+		voted_records = vote_topic.allow_anonymous ? VoteRecord.get_voted_records_by_ip(vote_topic.id, request.remote_ip) : []
+	end
 	voted_option_ids = voted_records.collect { |r| r[0] }
 	voted = voted_records.size > 0
 	
-	can_vote = has_login && (!not_group_member) && (!voted)
+	if has_login || vote_topic.allow_anonymous
+		group_id = vote_topic.group_id || 0
+		group, group_image = Group.get_group_with_image(group_id) if group_id > 0
+	end
+	
+	if has_login
+		not_group_member = group && (!GroupMember.is_group_member(group.id, session[:account_id]))
+		
+		can_vote = (!not_group_member) && (!voted)
+	else
+		can_vote = vote_topic.allow_anonymous && (!group) && (!voted)
+	end
 %>
 
 <% multiple = vote_topic.multiple %>
@@ -79,16 +89,19 @@
 
 <% unless can_vote %>
 	<div class="align_r form_info_s">
-		<% if (!has_login) %>
-			<a href="/accounts/logon">登录</a> 后参与投票
-		<% elsif not_group_member %>
-			只有圈子成员可以参加此圈内投票
-		<% elsif voted %>
+		<% if voted %>
 			<% form_tag "/votes/#{vote_topic.id}/clear_vote_record", :method => :post, :id => "clear_vote_#{vote_topic.id}_record_form" do %>
-				已经投过票了
+				<%= "所在的 IP 地址" unless has_login %>已经投过票了
 				<% if vote_topic.allow_clear_record %>
 					, <a href="#" onclick="if(confirm('确定要重新投票么 ?')) { document.getElementById('clear_vote_<%= vote_topic.id %>_record_form').submit(); }; return false;">我要改变主意</a>
 				<% end %>
+			<% end %>
+		<% else %>
+			<% if has_login || vote_topic.allow_anonymous %>
+				只有圈子成员可以参加此圈内投票
+			<% else %>
+				此投票话题被设置为禁止匿名投票,
+				请 <a href="/accounts/logon">登录</a> 后参与投票
 			<% end %>
 		<% end %>
 	</div>

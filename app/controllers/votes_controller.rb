@@ -13,13 +13,15 @@ class VotesController < ApplicationController
   before_filter :check_current_account, :only => [:list_group_index]
   before_filter :check_login, :only => [:new, :new_in_group, :vote_groups, :create,
                                         :edit_image, :update_image,
-                                        :create_comment, :delete_comment, :vote_to_option,
-                                        :clear_vote_record, :edit, :update, :destroy,
+                                        :create_comment, :delete_comment,
+                                        #:vote_to_option, :clear_vote_record,
+                                        :edit, :update, :destroy,
                                         :edit_option, :create_new_option, :add_new_option,
                                         :delete_others_option, :invite, :invite_member,
                                         :invite_contact, :select_contact, :send_contact_invitations]
   before_filter :check_limited, :only => [:create, :update_image, :create_comment, :delete_comment,
-                                          :vote_to_option, :clear_vote_record, :update, :destroy,
+                                          #:vote_to_option, :clear_vote_record,
+                                          :update, :destroy,
                                           :create_new_option, :delete_others_option, :invite_member,
                                           :send_contact_invitations]
   
@@ -148,6 +150,7 @@ class VotesController < ApplicationController
     @vote_topic.multiple = (params[:vote_topic_multiple] == "true")
     @vote_topic.allow_add_option = (params[:vote_topic_allow_add_option] == "true")
     @vote_topic.allow_clear_record = (params[:vote_topic_allow_clear_record] == "true")
+    @vote_topic.allow_anonymous = (params[:vote_topic_allow_anonymous] == "true")
     
     # collect vote options
     @option_titles = {}
@@ -291,50 +294,64 @@ class VotesController < ApplicationController
   
   def vote_to_option
     option_ids = params[:option_ids] || []
+    option_ids.uniq!
     
     if option_ids.size > 0
+      has_login = has_login?
+      
       vote_topic_id = params[:id]
       vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
-    
-      group_id = vote_topic.group_id || 0
-      group, group_image = Group.get_group_with_image(group_id) if group_id > 0
-      not_group_member = group && (!GroupMember.is_group_member(group.id, session[:account_id]))
       
-      unless not_group_member
+      if has_login || vote_topic.allow_anonymous
+      
+        group_id = vote_topic.group_id || 0
+        group, group_image = Group.get_group_with_image(group_id) if group_id > 0
         
-        records = VoteRecord.get_voted_records(vote_topic_id, session[:account_id])
-        unless records.size > 0
+        pass_group_check = (!group) || (has_login && GroupMember.is_group_member(group.id, session[:account_id]))
+      
+        if pass_group_check
+          request_remote_ip = request.remote_ip
           
-          to_be_saved_ids = []
-          if vote_topic.multiple
-            to_be_saved_ids = option_ids
-          else
-            to_be_saved_ids << option_ids[0]
-          end
+          if has_login
+        		records = VoteRecord.get_voted_records(vote_topic.id, session[:account_id])
+        	else
+        		records = VoteRecord.get_voted_records_by_ip(vote_topic.id, request_remote_ip)
+        	end
+        
+          unless records.size > 0
           
-          vote_option_ids = VoteOption.get_vote_topic_options(vote_topic_id).collect { |o| o[0].to_s }
-          
-          has_record_saved = false
-          to_be_saved_ids.each do |option_id|
-            if vote_option_ids.include?(option_id)
-              vote_record = VoteRecord.new(
-                :account_id => session[:account_id],
-                :vote_topic_id => vote_topic_id,
-                :vote_option_id => option_id,
-                :voter_ip => request.remote_ip
-              )
-              vote_record_saved = vote_record.save
-              
-              has_record_saved ||= vote_record_saved
+            to_be_saved_ids = []
+            if vote_topic.multiple
+              to_be_saved_ids = option_ids
+            else
+              to_be_saved_ids << option_ids[0]
             end
+          
+            vote_option_ids = VoteOption.get_vote_topic_options(vote_topic_id).collect { |o| o[0].to_s }
+          
+            has_record_saved = false
+            to_be_saved_ids.each do |option_id|
+              if vote_option_ids.include?(option_id)
+                vote_record = VoteRecord.new(
+                  :account_id => has_login ? session[:account_id] : 0,
+                  :vote_topic_id => vote_topic_id,
+                  :vote_option_id => option_id,
+                  :voter_ip => request_remote_ip
+                )
+                vote_record_saved = vote_record.save
+              
+                has_record_saved ||= vote_record_saved
+              end
+            end
+          
+            # record account action
+            AccountAction.create_new(session[:account_id], "join_vote_topic", {
+              :vote_topic_id => vote_topic_id,
+              :voter_ip => request_remote_ip
+            }) if has_login && has_record_saved
+          
           end
-          
-          # record account action
-          AccountAction.create_new(session[:account_id], "join_vote_topic", {
-            :vote_topic_id => vote_topic_id,
-            :voter_ip => request.remote_ip
-          }) if has_record_saved
-          
+        
         end
         
       end
@@ -350,12 +367,28 @@ class VotesController < ApplicationController
     
     vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
     
-    VoteRecord.find(
-      :all,
-      :conditions => ["vote_topic_id = ? and account_id = ?", vote_topic_id, session[:account_id]]
-    ).each { |record| record.destroy } if vote_topic.allow_clear_record
     
-    jump_to("/votes/#{vote_topic_id}")
+    if has_login?
+      records = VoteRecord.find(
+        :all,
+        :conditions => [
+          "vote_topic_id = ? and account_id = ?",
+          vote_topic.id, session[:account_id]
+        ]
+      )
+    else
+      records = VoteRecord.find(
+        :all,
+        :conditions => [
+          "vote_topic_id = ? and account_id = ? and voter_ip = ?",
+          vote_topic.id, 0, request.remote_ip
+        ]
+      )
+    end
+    
+    records.each { |record| record.destroy } if vote_topic.allow_clear_record
+    
+    jump_to("/votes/#{vote_topic.id}")
   end
   
   def edit
@@ -367,6 +400,7 @@ class VotesController < ApplicationController
     @vote_topic.multiple = (params[:vote_topic_multiple] == "true")
     @vote_topic.allow_add_option = (params[:vote_topic_allow_add_option] == "true")
     @vote_topic.allow_clear_record = (params[:vote_topic_allow_clear_record] == "true")
+    @vote_topic.allow_anonymous = (params[:vote_topic_allow_anonymous] == "true")
     
     if @vote_topic.save
       VoteTopic.update_vote_topic_with_image_cache(@vote_topic_id, :vote_topic => @vote_topic)

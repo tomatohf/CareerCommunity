@@ -1,5 +1,5 @@
 ﻿Voting
-	enable 匿名投票功能, 同时启用嵌入投票客户端
+	启用嵌入投票客户端
 	给 VoteClient.swf 搜身 - 减小 SWF 文件大小
 
 new recruitment vendors - yingjiesheng.com, guolairen.com, www.xyzp.net(卖我网), http://www.jobyoo.com

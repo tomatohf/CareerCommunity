@@ -71,6 +71,16 @@
 					</tr>
 					
 					<tr>
+						<td colspan="2">
+							<label for="vote_topic_allow_anonymous">
+								允许未登录用户匿名投票
+								:
+							</label>
+							<%= check_box_tag :vote_topic_allow_anonymous, value = "true", @vote_topic.allow_anonymous %>
+						</td>
+					</tr>
+					
+					<tr>
 						<td>
 							<label>
 						        分类(<span style="color: red;">*</span>)
