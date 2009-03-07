@@ -210,18 +210,10 @@ function create_table_grid() {
 					icon: "/images/job_targets/hide_left_icon.gif",
 					cls: "x-btn-icon",
 					enableToggle: true,
-					pressed: false,
-					tooltip: "隐藏左边的功能列表栏, 增大求职目标列表的宽度",
+					pressed: !Ext.get("func_list_container").isVisible(),
+					tooltip: "显示/隐藏左边的功能列表栏, 缩小/增大求职目标列表的宽度",
 					toggleHandler: function(item, pressed) {
-						var left_part = Ext.get("func_list_container");
-						left_part.enableDisplayMode("");
-						left_part.setVisible(!pressed);
-						if(pressed) {
-							Ext.get("job_target_list_page").addClass("bigger_job_targets_container");
-						}
-						else {
-							Ext.get("job_target_list_page").removeClass("bigger_job_targets_container");
-						}
+						toggle_func_list(!pressed);
 					}
 				},
 				

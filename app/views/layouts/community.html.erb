@@ -136,7 +136,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="content_body">
+				<div class="content_body" id="content_body_container">
 					<%= yield %>
 				</div>
 				<div class="clear"></div>
@@ -171,7 +171,17 @@
 <script id="interval_loader" src="/community/interval" language="JavaScript" type="text/javascript"></script>
 
 <script language="JavaScript" type="text/javascript">
-	function refresh_interval_loader(){
+	function toggle_func_list(show) {
+		var func_ele = document.getElementById("func_list_container");
+		var content_ele = document.getElementById("content_body_container");
+		if(show == null) {
+			show = (func_ele.style.display == "none");
+		}
+		func_ele.style.display = show ? "" : "none";
+		content_ele.style.marginLeft = show ? "150px" : "0px";
+	}
+	
+	function refresh_interval_loader() {
 		var interval_loader_element = document.getElementById("interval_loader");
 		var interval_loader_parent = interval_loader_element.parentNode;
 		interval_loader_parent.removeChild(interval_loader_element);

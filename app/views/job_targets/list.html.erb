@@ -13,7 +13,7 @@
 	<% end %>
 </div>
 	
-<div class="blog_container" id="job_target_list_page">
+<div>
 	<img class="float_l" style="margin: 0px 10px;" src="/images/job_targets/steward_small.png" border="0" alt="求职管家" />
 	<h2><%= page_title %></h2>
 	
@@ -35,8 +35,6 @@
 				状态</a>
 		</div>
 	<% end %>
-	
-	<br />
 
 
 	
@@ -124,6 +122,8 @@
 
 		Ext.onReady(
 			function() {
+				toggle_func_list(false);
+				
 				Ext.get("table_container").show(true);
 				create_table_grid();
 

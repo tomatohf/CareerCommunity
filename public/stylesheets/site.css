@@ -362,7 +362,9 @@ select.dropdown_list, .dropdown_list select {
 
 .content_body {
 	font-size: 12px;
+	margin-left: 150px;
 }
+
 .register_form input, .login_form input, .div_form input, .div_form textarea {
 	margin: 5px 0px 5px 10px;
 	padding: 2px;
@@ -379,7 +381,7 @@ select.dropdown_list, .dropdown_list select {
 }
 
 .community_container_l {
-	margin-left: 150px;
+	
 	margin-right: 300px;
 	padding: 0px 20px
 }
@@ -460,12 +462,10 @@ select.dropdown_list, .dropdown_list select {
 }
 
 .profile_container {
-	margin-left: 150px;
 	padding: 0px 20px;
 }
 
 .profile_container_l {
-	margin-left: 150px;
 	margin-right: 250px;
 	padding: 0px 20px
 }
@@ -527,12 +527,10 @@ th.table_header, .table_header th {
 }
 
 .album_container {
-	margin-left: 150px;
 	padding: 0px 10px
 }
 
 .album_container_l {
-	margin-left: 150px;
 	margin-right: 200px;
 	padding: 0px 20px;
 }
@@ -542,7 +540,6 @@ th.table_header, .table_header th {
 }
 
 .photo_container_l {
-	margin-left: 150px;
 	margin-right: 180px;
 	padding: 0px 20px;
 }
@@ -791,12 +788,10 @@ a.browser_album_link:hover {
 }
 
 .blog_container {
-	margin-left: 150px;
 	padding: 0px 10px;
 }
 
 .blog_container_l {
-	margin-left: 150px;
 	margin-right: 200px;
 	padding: 0px 20px;
 }
@@ -810,7 +805,6 @@ a.browser_album_link:hover {
 }
 
 .blog_small_container_l {
-	margin-left: 150px;
 	margin-right: 300px;
 	padding: 0px 30px;
 }
@@ -868,7 +862,6 @@ a.owner_blog_title:hover {
 }
 
 .friend_container_l {
-	margin-left: 150px;
 	margin-right: 150px;
 	padding: 0px 20px;
 }
@@ -966,7 +959,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .group_container_l {
-	margin-left: 150px;
 	margin-right: 250px;
 	padding: 0px 20px
 }
@@ -981,7 +973,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .activity_container_l {
-	margin-left: 150px;
 	margin-right: 210px;
 	padding: 0px 10px;
 }
@@ -1087,7 +1078,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .recruitment_container_l {
-	margin-left: 150px;
 	margin-right: 280px;
 	padding: 0px 40px 0px 20px;
 }
@@ -1115,7 +1105,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .vote_container {
-	margin-left: 150px;
 	padding: 0px 0px 0px 10px;
 }
 
@@ -1165,7 +1154,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .vote_container_l {
-	margin-left: 150px;
 	margin-right: 300px;
 	padding: 0px 20px;
 }
@@ -1175,7 +1163,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .account_setting_container_l {
-	margin-left: 150px;
 	margin-right: 250px;
 	padding: 0px 20px
 }
@@ -1189,12 +1176,10 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .bookmark_container {
-	margin-left: 150px;
 	padding: 0px 20px;
 }
 
 .bookmark_container_l {
-	margin-left: 150px;
 	margin-right: 200px;
 	padding: 0px 20px;
 }
@@ -1349,10 +1334,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	height: 0px;
 }
 
-.bigger_job_targets_container {
-	margin-left: 5px;
-}
-
 .contact_form_item {
 	padding-bottom: 10px;
 	border-bottom: 1px dashed #DDDDDD;
@@ -1391,7 +1372,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .picture_container_l {
-	margin-left: 150px;
 	margin-right: 250px;
 	padding: 0px 10px;
 }
@@ -1409,7 +1389,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .talk_container_l {
-	margin-left: 150px;
 	margin-right: 320px;
 	padding: 0px 20px;
 }
@@ -1419,7 +1398,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .talk_show_container_l {
-	margin-left: 150px;
 	margin-right: 250px;
 	padding: 0px 10px;
 }
@@ -1429,7 +1407,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .talk_container {
-	margin-left: 150px;
 	padding: 0px 20px;
 }
 
@@ -1443,7 +1420,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .job_item_container {
-	margin-left: 150px;
 	padding: 0px 20px;
 }
 
