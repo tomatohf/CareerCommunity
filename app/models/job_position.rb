@@ -59,7 +59,7 @@ class JobPosition < ActiveRecord::Base
   }
   
   def self.clear_talk_related_cache(position_id)
-    job_position = JobPosition.get_position(position_id)
+    job_position = self.get_position(position_id)
     job_position.talks.each do |talk|
       self.clear_talk_job_positions_cache(talk.id)
     end

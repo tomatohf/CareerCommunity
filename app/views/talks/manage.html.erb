@@ -114,6 +114,49 @@
 	
 	
 	<div class="space_section_title">
+		<a class="float_r" title="收起" id="talk_job_processes_section_expand" href="#" onclick="collapse_section('talk_job_processes_section'); return false;">
+			<img src="/images/expand.png" border="0" /></a>
+		<a class="float_r" title="展开" id="talk_job_processes_section_collapse" href="#" onclick="expand_section('talk_job_processes_section'); return false;" style="display: none">
+			<img src="/images/collapse.png" border="0" /></a>
+			
+			
+		此次访谈录涉及到的求职流程
+	</div>
+	<div id="talk_job_processes_section">
+		<div class="community_block align_r">
+			<% @job_processes.each do |job_process| %>
+				<% form_tag "/talks/#{@talk.id}/del_job_process", :method => :post, :onsubmit => "if(confirm('确定要删除此求职流程么 ?')) { return true; }; return false;" do %>
+					<span style="font-size: 14px; font-weight: bold;">
+						<%= h(job_process.name) %>
+					</span>
+
+					<input type="hidden" name="job_process_id" value="<%= job_process.id %>" />
+					&nbsp;
+					<input type="submit" value="移除此求职流程" class="button" />
+				<% end %>
+			<% end %>
+		</div>
+	
+		<div class="community_block align_r">
+			<% form_tag "/talks/#{@talk.id}/add_job_process", :method => :post do %>
+				<select name="job_process_id" class="dropdown_list">
+					<% JobProcess.get_system_processes.each do |job_process| %>
+						<option value="<%= job_process.id %>" style="padding: 0px 10px;"><%= h(job_process.name) %></option>
+					<% end %>
+				</select>
+				&nbsp;
+				<input type="submit" value="增加此求职流程" class="button" />
+			<% end %>
+		</div>
+		
+		<div class="community_block align_r">
+			<a href="/job_targets/system_process" target="_blank">
+				管理现有的系统添加的求职流程</a>
+		</div>
+	</div>
+	
+	
+	<div class="space_section_title">
 		<a class="float_r" title="收起" id="talk_categories_section_expand" href="#" onclick="collapse_section('talk_categories_section'); return false;">
 			<img src="/images/expand.png" border="0" /></a>
 		<a class="float_r" title="展开" id="talk_categories_section_collapse" href="#" onclick="expand_section('talk_categories_section'); return false;" style="display: none">

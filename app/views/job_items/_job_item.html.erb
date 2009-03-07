@@ -10,13 +10,20 @@
 		<%= h(job_item.desc) %>
 	</div>
 	
+	<% if @item_type == "company" %>
+		<div class="form_info_s" style="margin-top: 5px;">
+			所在行业:
+			
+		</div>
+	<% end %>
+	
 	<div class="align_r">
 		<%# form_tag "/#{@item_type}/job_items/#{job_item.id}", :method => :delete, :onsubmit => "if(confirm('确定要删除 #{item_name} 么 ?')) { return true; }; return false;" do %>
 
 			<% if false %>
-			&nbsp;&nbsp;
+				&nbsp;&nbsp;
 
-			<input type="submit" value="删除" class="button" />
+				<input type="submit" value="删除" class="button" />
 			<% end %>
 
 			&nbsp;&nbsp;

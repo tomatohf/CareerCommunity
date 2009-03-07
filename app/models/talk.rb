@@ -60,6 +60,13 @@ class Talk < ActiveRecord::Base
                           #:order => "created_at DESC",
                           :after_add => Proc.new { |talk, industry| Industry.clear_talk_industries_cache(talk.id) },
                           :after_remove => Proc.new { |talk, industry| Industry.clear_talk_industries_cache(talk.id) }
+  has_and_belongs_to_many :job_processes,
+                          :foreign_key => "talk_id",
+                          :association_foreign_key => "job_process_id",
+                          :join_table => "talks_job_processes",
+                          #:order => "created_at DESC",
+                          :after_add => Proc.new { |talk, job_process| JobProcess.clear_talk_job_processes_cache(talk.id) },
+                          :after_remove => Proc.new { |talk, job_process| JobProcess.clear_talk_job_processes_cache(talk.id) }
   
   
   validates_presence_of :creator_id, :updater_id

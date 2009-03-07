@@ -59,7 +59,7 @@ class Industry < ActiveRecord::Base
   }
   
   def self.clear_talk_related_cache(industry_id)
-    industry = Industry.get_industry(industry_id)
+    industry = self.get_industry(industry_id)
     industry.talks.each do |talk|
       self.clear_talk_industries_cache(talk.id)
     end

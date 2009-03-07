@@ -485,7 +485,10 @@ ActionController::Routing::Routes.draw do |map|
     
     :job_tags => :get,
     :add_job_tag => :post,
-    :del_job_tag => :post
+    :del_job_tag => :post,
+    
+    :add_job_process => :post,
+    :del_job_process => :post
     
   }
   

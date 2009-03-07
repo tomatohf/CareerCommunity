@@ -18,6 +18,7 @@ class TalksController < ApplicationController
                                         :answer_edit, :answer_update, :answer, :answer_destroy,
                                         :question_destroy, :create_comment, :delete_comment,
                                         :select_job_item, :add_job_item, :del_job_item,
+                                        :add_job_process, :del_job_process,
                                         :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
                                         :destroy, :unpublished]
   before_filter :check_limited, :only => [:create, :update, :add_reporter, :del_reporter,
@@ -27,6 +28,7 @@ class TalksController < ApplicationController
                                           :question_category_update, :add_question, :question_update,
                                           :answer_create, :answer_update, :answer_destroy, :question_destroy,
                                           :create_comment, :delete_comment, :add_job_item, :del_job_item,
+                                          :add_job_process, :del_job_process,
                                           :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
                                           :destroy]
   
@@ -39,7 +41,7 @@ class TalksController < ApplicationController
                                           :question_edit, :question_update, :answer_new, :answer_create,
                                           :answer_edit, :answer_update, :answer, :answer_destroy,
                                           :question_destroy, :delete_comment, :select_job_item,
-                                          :add_job_item, :del_job_item,
+                                          :add_job_item, :del_job_item, :add_job_process, :del_job_process,
                                           :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
                                           :destroy, :unpublished]
                                           
@@ -245,6 +247,7 @@ class TalksController < ApplicationController
     @companies = Company.get_talk_companies(@talk.id)
     @job_positions = JobPosition.get_talk_job_positions(@talk.id)
     @industries = Industry.get_talk_industries(@talk.id)
+    @job_processes = JobProcess.get_talk_job_processes(@talk.id)
     
     @question_categories = TalkQuestionCategory.get_talk_question_categories(@talk.id)
     
@@ -644,6 +647,28 @@ class TalksController < ApplicationController
     item = item_type.camelize.constantize.send("get_#{item_type}", item_id)
     
     talk.send(item_type.pluralize).delete(item)
+    
+    jump_to("/talks/#{talk.id}/manage")
+  end
+  
+  def add_job_process
+    talk = Talk.get_talk(params[:id])
+    job_process_id = params[:job_process_id]
+    
+    job_process = JobProcess.get_process(job_process_id)
+    talk_job_processes = talk.job_processes
+    talk_job_processes << job_process unless talk_job_processes.exists?(job_process)
+    
+    jump_to("/talks/#{talk.id}/manage")
+  end
+  
+  def del_job_process
+    talk = Talk.get_talk(params[:id])
+    job_process_id = params[:job_process_id]
+    
+    job_process = JobProcess.get_process(job_process_id)
+    
+    talk.job_processes.delete(job_process)
     
     jump_to("/talks/#{talk.id}/manage")
   end

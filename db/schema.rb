@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20) do
+ActiveRecord::Schema.define(:version => 21) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -1065,6 +1065,14 @@ ActiveRecord::Schema.define(:version => 20) do
 
   add_index "talks_job_positions", ["talk_id"], :name => "index_talks_job_positions_on_talk_id"
   add_index "talks_job_positions", ["job_position_id"], :name => "index_talks_job_positions_on_job_position_id"
+
+  create_table "talks_job_processes", :id => false, :force => true do |t|
+    t.integer "talk_id",        :limit => 11
+    t.integer "job_process_id", :limit => 11
+  end
+
+  add_index "talks_job_processes", ["talk_id"], :name => "index_talks_job_processes_on_talk_id"
+  add_index "talks_job_processes", ["job_process_id"], :name => "index_talks_job_processes_on_job_process_id"
 
   create_table "timezones", :force => true do |t|
     t.string  "name"

@@ -59,7 +59,7 @@ class Company < ActiveRecord::Base
   }
   
   def self.clear_talk_related_cache(company_id)
-    company = Company.get_company(company_id)
+    company = self.get_company(company_id)
     company.talks.each do |talk|
       self.clear_talk_companies_cache(talk.id)
     end

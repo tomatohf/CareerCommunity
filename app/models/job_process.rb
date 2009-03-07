@@ -1,5 +1,15 @@
 class JobProcess < ActiveRecord::Base
   
+  has_and_belongs_to_many :talks,
+                          :foreign_key => "job_process_id",
+                          :association_foreign_key => "talk_id",
+                          :join_table => "talks_job_processes",
+                          #:order => "created_at DESC",
+                          :after_add => Proc.new { |job_process, talk| JobProcess.clear_talk_job_processes_cache(talk.id) },
+                          :after_remove => Proc.new { |job_process, talk| JobProcess.clear_talk_job_processes_cache(talk.id) }
+
+
+
   has_many :steps, :class_name => "JobStep", :foreign_key => "job_process_id", :dependent => :destroy
   
   
@@ -19,7 +29,11 @@ class JobProcess < ActiveRecord::Base
   CKP_account_processes = :account_job_processes
   CKP_process = :job_process
   
+  CKP_talk_job_processes = :talk_job_processes
+  
   after_destroy { |process|
+    self.clear_talk_related_cache(process.id)
+    
     if process.account_id && process.account_id > 0
       self.clear_account_processes_cache(process.account_id)
     else
@@ -30,6 +44,8 @@ class JobProcess < ActiveRecord::Base
   }
   
   after_save { |process|
+    self.clear_talk_related_cache(process.id)
+    
     if process.account_id && process.account_id > 0
       self.clear_account_processes_cache(process.account_id)
     else
@@ -38,6 +54,13 @@ class JobProcess < ActiveRecord::Base
     
     self.set_process_cache(process)
   }
+  
+  def self.clear_talk_related_cache(job_process_id)
+    job_process = self.get_process(job_process_id)
+    job_process.talks.each do |talk|
+      self.clear_talk_job_processes_cache(talk.id)
+    end
+  end
   
   
   
@@ -96,6 +119,28 @@ class JobProcess < ActiveRecord::Base
   
   def self.clear_process_cache(process_id)
     Cache.delete("#{CKP_process}_#{process_id}".to_sym)
+  end
+  
+  
+  def self.get_talk_job_processes(talk_id)
+    jps = Cache.get("#{CKP_talk_job_processes}_#{talk_id}".to_sym)
+    
+    unless jps
+      talk = Talk.get_talk(talk_id)
+      
+      jps = []
+      talk.job_processes.each { |jp|
+        self.set_process_cache(jp)
+        jps << jp
+      }
+      
+      Cache.set("#{CKP_talk_job_processes}_#{talk_id}".to_sym, jps, Cache_TTL)
+    end
+    jps
+  end
+  
+  def self.clear_talk_job_processes_cache(talk_id)
+    Cache.delete("#{CKP_talk_job_processes}_#{talk_id}".to_sym)
   end
   
   
