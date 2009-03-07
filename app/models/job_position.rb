@@ -43,23 +43,22 @@ class JobPosition < ActiveRecord::Base
   CKP_talk_job_positions = :talk_job_positions
   
   after_save { |position|
-    self.clear_talk_related_cache(position.id)
+    self.set_position_cache(position)
+    
+    self.clear_talk_related_cache(position)
     
     self.clear_account_positions_cache(position.account_id) if position.account_id && position.account_id > 0
-    
-    self.set_position_cache(position)
   }
   
   after_destroy { |position|
-    self.clear_talk_related_cache(position.id)
+    self.clear_position_cache(position.id)
+    
+    self.clear_talk_related_cache(position)
     
     self.clear_account_positions_cache(position.account_id) if position.account_id && position.account_id > 0
-    
-    self.clear_position_cache(position.id)
   }
   
-  def self.clear_talk_related_cache(position_id)
-    job_position = self.get_position(position_id)
+  def self.clear_talk_related_cache(job_position)
     job_position.talks.each do |talk|
       self.clear_talk_job_positions_cache(talk.id)
     end

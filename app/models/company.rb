@@ -21,6 +21,20 @@ class Company < ActiveRecord::Base
                           #:order => "created_at DESC",
                           :after_add => Proc.new { |company, talk| Company.clear_talk_companies_cache(talk.id) },
                           :after_remove => Proc.new { |company, talk| Company.clear_talk_companies_cache(talk.id) }
+
+  has_and_belongs_to_many :industries,
+                          :foreign_key => "company_id",
+                          :association_foreign_key => "industry_id",
+                          :join_table => "companies_industries",
+                          #:order => "created_at DESC",
+                          :after_add => Proc.new { |company, industry|
+                            Company.clear_industry_companies_cache(industry.id)
+                            Industry.clear_company_industries_cache(company.id)
+                          },
+                          :after_remove => Proc.new { |company, industry|
+                            Company.clear_industry_companies_cache(industry.id)
+                            Industry.clear_company_industries_cache(company.id)
+                          }
   
   
   
@@ -42,26 +56,35 @@ class Company < ActiveRecord::Base
   
   CKP_talk_companies = :talk_companies
   
+  CKP_industry_companies = :industry_companies
+  
   after_save { |company|
-    self.clear_talk_related_cache(company.id)
+    self.set_company_cache(company)
+    
+    self.clear_talk_related_cache(company)
+    self.clear_industry_related_cache(company)
     
     self.clear_account_companies_cache(company.account_id) if company.account_id && company.account_id > 0
-    
-    self.set_company_cache(company)
   }
   
   after_destroy { |company|
-    self.clear_talk_related_cache(company.id)
+    self.clear_company_cache(company.id)
+    
+    self.clear_talk_related_cache(company)
+    self.clear_industry_related_cache(company)
     
     self.clear_account_companies_cache(company.account_id) if company.account_id && company.account_id > 0
-    
-    self.clear_company_cache(company.id)
   }
   
-  def self.clear_talk_related_cache(company_id)
-    company = self.get_company(company_id)
+  def self.clear_talk_related_cache(company)
     company.talks.each do |talk|
       self.clear_talk_companies_cache(talk.id)
+    end
+  end
+  
+  def self.clear_industry_related_cache(company)
+    company.industries.each do |industry|
+      self.clear_industry_companies_cache(industry.id)
     end
   end
   
@@ -129,6 +152,28 @@ class Company < ActiveRecord::Base
   
   def self.clear_talk_companies_cache(talk_id)
     Cache.delete("#{CKP_talk_companies}_#{talk_id}".to_sym)
+  end
+  
+  
+  def self.get_industry_companies(industry_id)
+    cs = Cache.get("#{CKP_industry_companies}_#{industry_id}".to_sym)
+    
+    unless cs
+      industry = Industry.get_industry(industry_id)
+      
+      cs = []
+      industry.companies.each { |c|
+        self.set_company_cache(c)
+        cs << c
+      }
+      
+      Cache.set("#{CKP_industry_companies}_#{industry_id}".to_sym, cs, Cache_TTL)
+    end
+    cs
+  end
+  
+  def self.clear_industry_companies_cache(industry_id)
+    Cache.delete("#{CKP_industry_companies}_#{industry_id}".to_sym)
   end
   
   

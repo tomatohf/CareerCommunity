@@ -32,31 +32,30 @@ class JobProcess < ActiveRecord::Base
   CKP_talk_job_processes = :talk_job_processes
   
   after_destroy { |process|
-    self.clear_talk_related_cache(process.id)
+    self.clear_process_cache(process.id)
+    
+    self.clear_talk_related_cache(process)
     
     if process.account_id && process.account_id > 0
       self.clear_account_processes_cache(process.account_id)
     else
       self.clear_system_processes_cache
     end
-    
-    self.clear_process_cache(process.id)
   }
   
   after_save { |process|
-    self.clear_talk_related_cache(process.id)
+    self.set_process_cache(process)
+    
+    self.clear_talk_related_cache(process)
     
     if process.account_id && process.account_id > 0
       self.clear_account_processes_cache(process.account_id)
     else
       self.clear_system_processes_cache
     end
-    
-    self.set_process_cache(process)
   }
   
-  def self.clear_talk_related_cache(job_process_id)
-    job_process = self.get_process(job_process_id)
+  def self.clear_talk_related_cache(job_process)
     job_process.talks.each do |talk|
       self.clear_talk_job_processes_cache(talk.id)
     end

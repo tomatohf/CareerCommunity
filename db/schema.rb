@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 21) do
+ActiveRecord::Schema.define(:version => 22) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -332,6 +332,14 @@ ActiveRecord::Schema.define(:version => 21) do
   end
 
   add_index "companies", ["created_at"], :name => "index_companies_on_created_at"
+
+  create_table "companies_industries", :id => false, :force => true do |t|
+    t.integer "company_id",  :limit => 11
+    t.integer "industry_id", :limit => 11
+  end
+
+  add_index "companies_industries", ["company_id"], :name => "index_companies_industries_on_company_id"
+  add_index "companies_industries", ["industry_id"], :name => "index_companies_industries_on_industry_id"
 
   create_table "contact_profiles", :force => true do |t|
     t.integer  "account_id", :limit => 11

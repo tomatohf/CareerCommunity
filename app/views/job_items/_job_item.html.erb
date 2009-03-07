@@ -4,18 +4,31 @@
 	
 	<div style="font-weight: bold; font-size: 14px;">
 		<%= item_name %>
+		
+		<% if (@item_type == "company") %>
+			<% industries = job_item.industries %>
+			<% Industry.set_company_industries_cache(job_item.id, industries) %>
+
+			<% if industries.size > 0 %>
+				<span class="form_info_s" style="font-weight: normal; font-size: 12px;">
+					&nbsp;
+					(所在行业:
+
+					<% industries.each do |industry| %>
+						&nbsp;&nbsp;
+
+						<a href="/industry/job_items/<%= industry.id %>" target="_blank">
+							<%= h(industry.name) %></a>
+					<% end %>
+					)
+				</span>
+			<% end %>
+		<% end %>
 	</div>
 	
 	<div class="community_block_narrow form_info_s">
 		<%= h(job_item.desc) %>
 	</div>
-	
-	<% if @item_type == "company" %>
-		<div class="form_info_s" style="margin-top: 5px;">
-			所在行业:
-			
-		</div>
-	<% end %>
 	
 	<div class="align_r">
 		<%# form_tag "/#{@item_type}/job_items/#{job_item.id}", :method => :delete, :onsubmit => "if(confirm('确定要删除 #{item_name} 么 ?')) { return true; }; return false;" do %>
@@ -24,6 +37,13 @@
 				&nbsp;&nbsp;
 
 				<input type="submit" value="删除" class="button" />
+			<% end %>
+			
+			<% if @item_type == "company" %>
+				&nbsp;&nbsp;
+
+				<a href="/<%= @item_type %>/job_items/<%= job_item.id %>/manage_company_industries">
+					管理这个公司所在的行业</a>
 			<% end %>
 
 			&nbsp;&nbsp;

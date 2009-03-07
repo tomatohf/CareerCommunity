@@ -12,7 +12,8 @@ class JobItemsController < ApplicationController
   before_filter :prepare_item_type
   
   before_filter :check_login
-  before_filter :check_limited, :only => [:create, :update, :destroy]
+  before_filter :check_limited, :only => [:create, :update, :destroy,
+                                          :add_company_industry, :del_company_industry]
   
   before_filter :check_editor
   
@@ -23,11 +24,16 @@ class JobItemsController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @items = get_item_class.system.paginate(
+    
+    options = {
       :page => page,
       :per_page => Item_Page_Size,
       :order => "created_at DESC"
-    )
+    }
+    
+    options[:include] = [:industries] if (@item_type == "company")
+    
+    @items = get_item_class.system.paginate(options)
   end
   
   def show
@@ -106,6 +112,53 @@ class JobItemsController < ApplicationController
       :order => Search_Sort_Order,
       :field_weights => Search_Field_Weights
     ).compact
+  end
+  
+  def manage_company_industries
+    @company = Company.get_company(params[:id])
+    @company_industries = Industry.get_company_industries(@company.id) || []
+    
+    @query = params[:query] && params[:query].strip
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    
+    if @query && @query != ""
+      @industries = Industry.system.search(
+        @query,
+        :page => page,
+        :per_page => JobItemsController::Item_Page_Size,
+        :match_mode => JobItemsController::Search_Match_Mode,
+        :order => JobItemsController::Search_Sort_Order,
+        :field_weights => JobItemsController::Search_Field_Weights
+      ).compact
+    else
+      @industries = Industry.system.find(
+        :all,
+        :limit => JobItemsController::Item_Page_Size,
+        :order => "created_at DESC"
+      )
+    end
+  end
+  
+  def add_company_industry
+    company = Company.get_company(params[:id])
+    industry = Industry.get_industry(params[:industry_id])
+    
+    company_industries = company.industries
+    
+    company_industries << industry unless company_industries.exists?(industry)
+    
+    jump_to("/company/job_items/#{company.id}/manage_company_industries")
+  end
+  
+  def del_company_industry
+    company = Company.get_company(params[:id])
+    industry = Industry.get_industry(params[:industry_id])
+    
+    company.industries.delete(industry)
+    
+    jump_to("/company/job_items/#{company.id}/manage_company_industries")
   end
   
   

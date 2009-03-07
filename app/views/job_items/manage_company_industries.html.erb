@@ -1,0 +1,110 @@
+<% company_name = h(@company.name) %>
+
+<% page_title = "管理公司 #{company_name} 所在的行业" %>
+<% community_page_title(page_title) %>
+
+<div class="job_item_container">
+	<div class="float_r">
+		<a href="/company/job_items">
+			返回管理系统添加的公司</a>
+	</div>
+	
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_title">
+		当前所在的行业 ...
+	</div>
+	
+	<div class="community_block">
+		<% if @company_industries.size > 0 %>
+			<% form_tag "/company/job_items/#{@company.id}/del_company_industry", :method => :post, :id => "remove_form" do %>
+				<input type="hidden" name="industry_id" id="remove_industry_id" />
+			<% end %>
+		<% else %>
+			<div class="form_info_l">
+				还没有所在的行业 ...
+			</div>
+		<% end %>
+		
+		<% @company_industries.each do |industry| %>
+			<% industry_name = h(industry.name) %>
+			<span style="font-size: 14px; font-weight: bold;" title="<%= h(industry.desc) %>">
+				<%= industry_name %>
+			</span>
+			<span class="form_info_s">
+				<a title="删除行业 <%= industry_name %>" href="#" onclick="remove_industry(<%= industry.id %>); return false;">
+						<img src="/images/delete_small.gif" border="0" /></a>
+						
+				&nbsp;&nbsp;&nbsp;
+				|
+				&nbsp;&nbsp;&nbsp;
+			</span>
+		<% end %>
+	</div>
+	
+	
+	
+	<div class="community_title">
+		添加新的行业 ...
+	</div>
+	
+	<div class="community_block_narrow form_info_s">
+		搜索并选择要添加的行业,
+		<% if @industries %>
+			&nbsp;&nbsp;&nbsp;
+			当前
+			<%= (@query && @query != "") ? "搜索到" : "列出最新添加的" %>
+			<b><%= @industries.size %></b>
+			个行业,
+		<% end %>
+	</div>
+	
+	<div class="community_block align_r">
+		<% form_tag "/company/job_items/#{@company.id}/manage_company_industries", :method => :get do %>
+			<input type="text" name="query" class="text_field search_input" size="30" value="<%= h(@query) %>" />
+			&nbsp;&nbsp;&nbsp;
+			<input type="submit" value="搜索行业" class="button" />
+			
+			&nbsp;&nbsp;&nbsp;
+			<a href="/industry/job_items" target="_blank">
+				管理系统添加的行业</a>
+		<% end %>
+	</div>
+	
+	<% if @industries %>
+		<% form_tag "/company/job_items/#{@company.id}/add_company_industry", :method => :post, :id => "add_form" do %>
+			<input type="hidden" name="industry_id" id="industry_id" />
+		<% end %>
+	
+		<div class="community_block">
+			<%= render :partial => "/job_targets/item", :collection => @industries %>
+		</div>
+	
+		<div class="community_block">
+			<%= paging_buttons(@industries) if (@query && @query != "") %>
+		</div>
+	<% end %>
+	
+</div>
+
+
+<script language="JavaScript" type="text/javascript">
+
+	function select_item(industry_id) {
+		if(confirm("确定要添加此行业么 ?")) {
+			document.getElementById("industry_id").value = industry_id;
+			document.getElementById("add_form").submit();
+		}
+	}
+	
+	function remove_industry(industry_id) {
+		if(confirm("确定要移除此行业么 ?")) {
+			document.getElementById("remove_industry_id").value = industry_id;
+			document.getElementById("remove_form").submit();
+		}
+	}
+
+</script>
+
+

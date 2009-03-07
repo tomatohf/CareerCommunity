@@ -500,6 +500,10 @@ ActionController::Routing::Routes.draw do |map|
     
   }, :member => {
     
+    :manage_company_industries => :get,
+    :add_company_industry => :post,
+    :del_company_industry => :post
+    
   }
 
   
