@@ -14,6 +14,7 @@ class JobItemsController < ApplicationController
   before_filter :check_login
   before_filter :check_limited, :only => [:create, :update, :destroy,
                                           :add_company_industry, :del_company_industry,
+                                          :add_job_position_info_item, :del_job_position_info_item,
                                           :info_create, :info_update, :info_destroy]
   
   before_filter :check_editor
@@ -168,6 +169,8 @@ class JobItemsController < ApplicationController
     @item = get_item_instance(params[:id])
     
     @infos = get_item_info_class.send("get_#{@item_type}_infos_title", @item.id)
+    
+    JobPositionInfo.load_industries_and_companies(@infos) if (@item_type == "job_position")
   end
   
   def info_new
@@ -237,6 +240,55 @@ class JobItemsController < ApplicationController
     @info.destroy
     
     jump_to("/#{@item_type}/job_items/#{item_id}/info")
+  end
+  
+  
+  def manage_job_position_info_items
+    @info = JobPositionInfo.find(params[:id])
+    
+    @item_label = get_item_label
+    
+    @query = params[:query] && params[:query].strip
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    
+    if @query && @query != ""
+      @items = get_item_class.system.search(
+        @query,
+        :page => page,
+        :per_page => JobItemsController::Item_Page_Size,
+        :match_mode => JobItemsController::Search_Match_Mode,
+        :order => JobItemsController::Search_Sort_Order,
+        :field_weights => JobItemsController::Search_Field_Weights
+      ).compact
+    else
+      @items = get_item_class.system.find(
+        :all,
+        :limit => JobItemsController::Item_Page_Size,
+        :order => "created_at DESC"
+      )
+    end
+  end
+  
+  def add_job_position_info_item
+    info = JobPositionInfo.find(params[:id])
+    item = get_item_instance(params[:item_id])
+    
+    info_items = info.send(@item_type.pluralize)
+    
+    info_items << item unless info_items.exists?(item)
+    
+    jump_to("/job_position/job_items/#{info.job_position_id}/info")
+  end
+  
+  def del_job_position_info_item
+    info = JobPositionInfo.find(params[:id])
+    item = get_item_instance(params[:item_id])
+    
+    info.send(@item_type.pluralize).delete(item)
+    
+    jump_to("/job_position/job_items/#{info.job_position_id}/info")
   end
   
   

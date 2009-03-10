@@ -33,13 +33,13 @@ class IndustryInfo < ActiveRecord::Base
     unless infos
       infos = self.find(
         :all,
-        :select => "title",
+        :select => "id, title",
         :conditions => ["industry_id = ?", industry_id]
       ).collect do |info|
         [info.id, info.title]
       end
       
-      Cache.set("#{CKP_industry_infos_title}_#{industry_id.id}".to_sym, infos, Cache_TTL)
+      Cache.set("#{CKP_industry_infos_title}_#{industry_id}".to_sym, infos, Cache_TTL)
     end
     infos
   end

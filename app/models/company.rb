@@ -35,6 +35,10 @@ class Company < ActiveRecord::Base
                             Company.clear_industry_companies_cache(industry.id)
                             Industry.clear_company_industries_cache(company.id)
                           }
+  has_and_belongs_to_many :job_position_infos,
+                          :foreign_key => "company_id",
+                          :association_foreign_key => "job_position_info_id",
+                          :join_table => "job_position_infos_companies"
   
   
   

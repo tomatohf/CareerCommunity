@@ -28,31 +28,128 @@
 	
 	<br />
 	
-	<% @infos.each do |info| %>
+	<% @infos.each do |info_data| %>
+		<% info = (@item_type == "job_position") ? [info_data.id, info_data.title] : info_data %>
 		<% info_title = h(info[1]) %>
 		<div class="community_block" style="border-bottom: 1px dashed #DADADA;" onmouseover="this.style.backgroundColor='#EAEAEA';" onmouseout="this.style.backgroundColor='#FFFFFF';">
-			<% form_tag "/#{@item_type}/job_items/#{info[0]}/info_destroy", :method => :post, :onsubmit => "if(confirm('确定要删除信息 #{info_title} 么 ?')) { return true; }; return false;" do %>
-				<span class="float_r">
-					<input type="submit" value="删除" class="button" />
-					
-					&nbsp;&nbsp;&nbsp;&nbsp;
-				
-					<a href="/<%= @item_type %>/job_items/<%= info[0] %>/info_edit">
-						修改</a>
-				
-					&nbsp;&nbsp;
-				
-					<a href="#">
-						显示</a>
-				</span>
+			<div class="community_block">
+				<% form_tag "/#{@item_type}/job_items/#{info[0]}/info_destroy", :method => :post, :onsubmit => "if(confirm('确定要删除信息 #{info_title} 么 ?')) { return true; }; return false;" do %>
+					<span class="float_r">
+						<% if @item_type == "job_position" %>
+							添加涉及的:
+							&nbsp;
+							<a href="/industry/job_items/<%= info[0] %>/manage_job_position_info_items">
+								行业</a>
+							&nbsp;
+							<a href="/company/job_items/<%= info[0] %>/manage_job_position_info_items">
+								公司</a>
+
+							&nbsp;&nbsp;
+							|
+							&nbsp;&nbsp;
+						<% end %>
+
+						<input type="submit" value="删除" class="button" />
+
+						&nbsp;&nbsp;&nbsp;
+
+						<a href="/<%= @item_type %>/job_items/<%= info[0] %>/info_edit">
+							修改</a>
+
+						&nbsp;&nbsp;
+
+						<a href="#">
+							显示</a>
+					</span>
+
+					<a href="#" style="font-size: 14px; font-weight: bold;">
+						<%= info_title %></a>
+
+				<% end %>
+			</div>
 			
-				<a href="#" style="font-size: 14px; font-weight: bold;">
-					<%= info_title %></a>
+			<% if @item_type == "job_position" %>
+				
+				<%
+					info_industries = info_data.industries
+					info_companies = info_data.companies
+				%>
+				
+				<% if info_industries.size > 0 %>
+					<% form_tag "/industry/job_items/#{info_data.id}/del_job_position_info_item", :method => :post, :id => "remove_industry_form" do %>
+						<input type="hidden" name="item_id" id="remove_industry_id" />
+					<% end %>
 					
+					<div class="community_block_narrow form_info_s">
+						涉及的行业:
+						<% info_industries.each do |industry| %>
+							<% industry_name = h(industry.name) %>
+							
+							&nbsp;&nbsp;&nbsp;
+							
+							<a href="/industry/job_items/<%= industry.id %>" target="_blank" title="<%= h(industry.desc) %>">
+								<%= industry_name %></a>
+							<span class="form_info_s">
+								<a title="删除行业 <%= industry_name %>" href="#" onclick="remove_industry(<%= industry.id %>); return false;">
+										<img src="/images/delete_small.gif" border="0" /></a>
+
+								&nbsp;&nbsp;&nbsp;
+								|
+								
+							</span>
+						<% end %>
+					</div>
+				<% end %>
+				
+				<% if info_companies.size > 0 %>
+					<% form_tag "/company/job_items/#{info_data.id}/del_job_position_info_item", :method => :post, :id => "remove_company_form" do %>
+						<input type="hidden" name="item_id" id="remove_company_id" />
+					<% end %>
+					
+					<div class="community_block_narrow form_info_s">
+						涉及的公司:
+						<% info_companies.each do |company| %>
+							<% company_name = h(company.name) %>
+							
+							&nbsp;&nbsp;&nbsp;
+							
+							<a href="/company/job_items/<%= company.id %>" target="_blank" title="<%= h(company.desc) %>">
+								<%= company_name %></a>
+							<span class="form_info_s">
+								<a title="删除公司 <%= company_name %>" href="#" onclick="remove_company(<%= company.id %>); return false;">
+										<img src="/images/delete_small.gif" border="0" /></a>
+
+								&nbsp;&nbsp;&nbsp;
+								|
+								
+							</span>
+						<% end %>
+					</div>
+				<% end %>
+				
 			<% end %>
 		</div>
 	<% end %>
 	
 </div>
+
+
+<script language="JavaScript" type="text/javascript">
+
+	function remove_industry(industry_id) {
+		if(confirm("确定要移除此行业么 ?")) {
+			document.getElementById("remove_industry_id").value = industry_id;
+			document.getElementById("remove_industry_form").submit();
+		}
+	}
+	
+	function remove_company(company_id) {
+		if(confirm("确定要移除此公司么 ?")) {
+			document.getElementById("remove_company_id").value = company_id;
+			document.getElementById("remove_company_form").submit();
+		}
+	}
+
+</script>
 
 

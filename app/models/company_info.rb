@@ -39,7 +39,7 @@ class CompanyInfo < ActiveRecord::Base
         [info.id, info.title]
       end
       
-      Cache.set("#{CKP_company_infos_title}_#{company_id.id}".to_sym, infos, Cache_TTL)
+      Cache.set("#{CKP_company_infos_title}_#{company_id}".to_sym, infos, Cache_TTL)
     end
     infos
   end

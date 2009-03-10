@@ -509,7 +509,11 @@ ActionController::Routing::Routes.draw do |map|
     :info_create => :post,
     :info_edit => :get,
     :info_update => :post,
-    :info_destroy => :post
+    :info_destroy => :post,
+    
+    :manage_job_position_info_items => :get,
+    :add_job_position_info_item => :post,
+    :del_job_position_info_item => :post
     
   }
 

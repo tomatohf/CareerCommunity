@@ -7,6 +7,17 @@ class JobPositionInfo < ActiveRecord::Base
   
   
   
+  has_and_belongs_to_many :industries,
+                          :foreign_key => "job_position_info_id",
+                          :association_foreign_key => "industry_id",
+                          :join_table => "job_position_infos_industries"
+  has_and_belongs_to_many :companies,
+                          :foreign_key => "job_position_info_id",
+                          :association_foreign_key => "company_id",
+                          :join_table => "job_position_infos_companies"
+  
+  
+  
   validates_presence_of :job_position_id, :creator_id, :updater_id
   
   validates_presence_of :title, :message => "请输入 标题"
@@ -33,19 +44,22 @@ class JobPositionInfo < ActiveRecord::Base
     unless infos
       infos = self.find(
         :all,
-        :select => "title",
+        :select => "id, title",
         :conditions => ["job_position_id = ?", job_position_id]
-      ).collect do |info|
-        [info.id, info.title]
-      end
+      )
       
-      Cache.set("#{CKP_job_position_infos_title}_#{job_position_id.id}".to_sym, infos, Cache_TTL)
+      Cache.set("#{CKP_job_position_infos_title}_#{job_position_id}".to_sym, infos, Cache_TTL)
     end
     infos
   end
   
   def self.clear_job_position_infos_title_cache(job_position_id)
     Cache.delete("#{CKP_job_position_infos_title}_#{job_position_id}".to_sym)
+  end
+  
+  
+  def self.load_industries_and_companies(infos)
+    preload_associations(infos, [:industries, :companies])
   end
   
 end
