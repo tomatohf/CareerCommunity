@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 22) do
+ActiveRecord::Schema.define(:version => 23) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -341,6 +341,24 @@ ActiveRecord::Schema.define(:version => 22) do
   add_index "companies_industries", ["company_id"], :name => "index_companies_industries_on_company_id"
   add_index "companies_industries", ["industry_id"], :name => "index_companies_industries_on_industry_id"
 
+  create_table "company_infos", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creator_id", :limit => 11
+    t.integer  "updater_id", :limit => 11
+    t.string   "title"
+    t.text     "content"
+    t.integer  "company_id", :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "company_infos", ["created_at"], :name => "index_company_infos_on_created_at"
+  add_index "company_infos", ["updated_at"], :name => "index_company_infos_on_updated_at"
+  add_index "company_infos", ["creator_id"], :name => "index_company_infos_on_creator_id"
+  add_index "company_infos", ["updater_id"], :name => "index_company_infos_on_updater_id"
+  add_index "company_infos", ["company_id"], :name => "index_company_infos_on_company_id"
+  add_index "company_infos", ["delta"], :name => "index_company_infos_on_delta"
+
   create_table "contact_profiles", :force => true do |t|
     t.integer  "account_id", :limit => 11
     t.datetime "updated_at"
@@ -591,6 +609,128 @@ ActiveRecord::Schema.define(:version => 22) do
 
   add_index "industries", ["created_at"], :name => "index_industries_on_created_at"
   add_index "industries", ["account_id"], :name => "index_industries_on_account_id"
+
+  create_table "industry_infos", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creator_id",  :limit => 11
+    t.integer  "updater_id",  :limit => 11
+    t.string   "title"
+    t.text     "content"
+    t.integer  "industry_id", :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "industry_infos", ["created_at"], :name => "index_industry_infos_on_created_at"
+  add_index "industry_infos", ["updated_at"], :name => "index_industry_infos_on_updated_at"
+  add_index "industry_infos", ["creator_id"], :name => "index_industry_infos_on_creator_id"
+  add_index "industry_infos", ["updater_id"], :name => "index_industry_infos_on_updater_id"
+  add_index "industry_infos", ["industry_id"], :name => "index_industry_infos_on_industry_id"
+  add_index "industry_infos", ["delta"], :name => "index_industry_infos_on_delta"
+
+  create_table "job_info_categories", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.string   "desc",               :limit => 1000
+    t.integer  "parent_category_id", :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "job_info_categories", ["created_at"], :name => "index_job_info_categories_on_created_at"
+  add_index "job_info_categories", ["updated_at"], :name => "index_job_info_categories_on_updated_at"
+  add_index "job_info_categories", ["parent_category_id"], :name => "index_job_info_categories_on_parent_category_id"
+
+  create_table "job_infos", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creator_id", :limit => 11
+    t.integer  "updater_id", :limit => 11
+    t.string   "title"
+    t.text     "content"
+    t.boolean  "general",                  :default => false
+    t.boolean  "delta"
+  end
+
+  add_index "job_infos", ["created_at"], :name => "index_job_infos_on_created_at"
+  add_index "job_infos", ["updated_at"], :name => "index_job_infos_on_updated_at"
+  add_index "job_infos", ["creator_id"], :name => "index_job_infos_on_creator_id"
+  add_index "job_infos", ["updater_id"], :name => "index_job_infos_on_updater_id"
+  add_index "job_infos", ["delta"], :name => "index_job_infos_on_delta"
+
+  create_table "job_infos_companies", :id => false, :force => true do |t|
+    t.integer "job_info_id", :limit => 11
+    t.integer "company_id",  :limit => 11
+  end
+
+  add_index "job_infos_companies", ["job_info_id"], :name => "index_job_infos_companies_on_job_info_id"
+  add_index "job_infos_companies", ["company_id"], :name => "index_job_infos_companies_on_company_id"
+
+  create_table "job_infos_industries", :id => false, :force => true do |t|
+    t.integer "job_info_id", :limit => 11
+    t.integer "industry_id", :limit => 11
+  end
+
+  add_index "job_infos_industries", ["job_info_id"], :name => "index_job_infos_industries_on_job_info_id"
+  add_index "job_infos_industries", ["industry_id"], :name => "index_job_infos_industries_on_industry_id"
+
+  create_table "job_infos_job_info_categories", :id => false, :force => true do |t|
+    t.integer "job_info_id",          :limit => 11
+    t.integer "job_info_category_id", :limit => 11
+  end
+
+  add_index "job_infos_job_info_categories", ["job_info_id"], :name => "index_job_infos_job_info_categories_on_job_info_id"
+  add_index "job_infos_job_info_categories", ["job_info_category_id"], :name => "index_job_infos_job_info_categories_on_job_info_category_id"
+
+  create_table "job_infos_job_positions", :id => false, :force => true do |t|
+    t.integer "job_info_id",     :limit => 11
+    t.integer "job_position_id", :limit => 11
+  end
+
+  add_index "job_infos_job_positions", ["job_info_id"], :name => "index_job_infos_job_positions_on_job_info_id"
+  add_index "job_infos_job_positions", ["job_position_id"], :name => "index_job_infos_job_positions_on_job_position_id"
+
+  create_table "job_infos_job_processes", :id => false, :force => true do |t|
+    t.integer "job_info_id",    :limit => 11
+    t.integer "job_process_id", :limit => 11
+  end
+
+  add_index "job_infos_job_processes", ["job_info_id"], :name => "index_job_infos_job_processes_on_job_info_id"
+  add_index "job_infos_job_processes", ["job_process_id"], :name => "index_job_infos_job_processes_on_job_process_id"
+
+  create_table "job_position_infos", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creator_id",      :limit => 11
+    t.integer  "updater_id",      :limit => 11
+    t.string   "title"
+    t.text     "content"
+    t.integer  "job_position_id", :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "job_position_infos", ["created_at"], :name => "index_job_position_infos_on_created_at"
+  add_index "job_position_infos", ["updated_at"], :name => "index_job_position_infos_on_updated_at"
+  add_index "job_position_infos", ["creator_id"], :name => "index_job_position_infos_on_creator_id"
+  add_index "job_position_infos", ["updater_id"], :name => "index_job_position_infos_on_updater_id"
+  add_index "job_position_infos", ["job_position_id"], :name => "index_job_position_infos_on_job_position_id"
+  add_index "job_position_infos", ["delta"], :name => "index_job_position_infos_on_delta"
+
+  create_table "job_position_infos_companies", :id => false, :force => true do |t|
+    t.integer "job_position_info_id", :limit => 11
+    t.integer "company_id",           :limit => 11
+  end
+
+  add_index "job_position_infos_companies", ["job_position_info_id"], :name => "index_job_position_infos_companies_on_job_position_info_id"
+  add_index "job_position_infos_companies", ["company_id"], :name => "index_job_position_infos_companies_on_company_id"
+
+  create_table "job_position_infos_industries", :id => false, :force => true do |t|
+    t.integer "job_position_info_id", :limit => 11
+    t.integer "industry_id",          :limit => 11
+  end
+
+  add_index "job_position_infos_industries", ["job_position_info_id"], :name => "index_job_position_infos_industries_on_job_position_info_id"
+  add_index "job_position_infos_industries", ["industry_id"], :name => "index_job_position_infos_industries_on_industry_id"
 
   create_table "job_positions", :force => true do |t|
     t.datetime "created_at"

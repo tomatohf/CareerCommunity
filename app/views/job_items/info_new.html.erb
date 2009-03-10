@@ -1,0 +1,70 @@
+<% item_name = h(@item.name) %>
+
+<% page_title = "添加#{@item_label} #{item_name} 的信息" %>
+<% community_page_title(page_title) %>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block align_r">
+		<a href="/<%= @item_type %>/job_items/<%= @item.id %>/info">返回<%= @item_label %> <%= item_name %> 的信息列表</a>
+	</div>
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @info.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@info) %>
+			</p>
+		<% end %>
+		
+		<div class="div_form">
+			<% form_tag "/#{@item_type}/job_items/#{@item.id}/info_create", :method => :post do %>
+			
+				<div>
+					<label for="info_title">
+				        标题(<span style="color: red;">*</span>)
+				    </label>
+				</div>
+				<div>
+					<input type="text" id="info_title" name="info_title" class="text_field" size="75" value="<%= h(@info.title) %>" />
+				</div>
+				
+				<div>
+					<label for="info_content">
+				        内容(<span style="color: red;">*</span>)
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="#" onclick="remove_rich_editor('info_content'); return false;">使用 普通编辑框</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="#" onclick="add_rich_editor('info_content'); return false;">使用 高级编辑器</a>
+				    </label>
+				</div>
+				<div>
+					<textarea id="info_content" name="info_content" class="text_field" cols="75" rows="15"><%= @info.content %></textarea>
+				</div>
+				
+				<br />
+				
+				<div>
+					<%= submit_tag "保存信息", :class => "button", :disabled => @account_limited %>
+					&nbsp;&nbsp;&nbsp;
+					<a href="/<%= @item_type %>/job_items/<%= @item.id %>/info" onclick="if(!confirm('当前正在编辑的内容将全部丢失, 确定返回么 ?')){ return false; }">返回<%= @item_label %> <%= item_name %> 的信息列表</a>
+				</div>
+			
+			<% end %>
+		</div>
+		
+	</div>
+	
+</div>
+
+
+<script language="JavaScript" type="text/javascript" src="/lib/tiny_mce/tiny_mce.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="/javascripts/tinymce.js"></script>
+
+

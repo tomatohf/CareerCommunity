@@ -62,8 +62,6 @@ class CreateJobInfos < ActiveRecord::Migration
     create_table :job_info_categories, :force => true do |t|
       t.column :created_at, :datetime
       t.column :updated_at, :datetime
-      t.column :creator_id, :integer
-      t.column :updater_id, :integer
       
       t.column :name, :string
       t.column :desc, :string, :limit => 1000
@@ -76,8 +74,6 @@ class CreateJobInfos < ActiveRecord::Migration
     end
     add_index :job_info_categories, :created_at
     add_index :job_info_categories, :updated_at
-    add_index :job_info_categories, :creator_id
-    add_index :job_info_categories, :updater_id
     add_index :job_info_categories, :parent_category_id
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO job_info_categories (id) VALUES (1000)")

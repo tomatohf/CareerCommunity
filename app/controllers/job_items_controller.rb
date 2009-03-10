@@ -13,7 +13,8 @@ class JobItemsController < ApplicationController
   
   before_filter :check_login
   before_filter :check_limited, :only => [:create, :update, :destroy,
-                                          :add_company_industry, :del_company_industry]
+                                          :add_company_industry, :del_company_industry,
+                                          :info_create, :info_update, :info_destroy]
   
   before_filter :check_editor
   
@@ -162,6 +163,83 @@ class JobItemsController < ApplicationController
   end
   
   
+  def info
+    @item_label = get_item_label
+    @item = get_item_instance(params[:id])
+    
+    @infos = get_item_info_class.send("get_#{@item_type}_infos_title", @item.id)
+  end
+  
+  def info_new
+    @item_label = get_item_label
+    @item = get_item_instance(params[:id])
+    
+    @info = get_item_info_class.new
+  end
+  
+  def info_create
+    item_id = params[:id]
+    
+    @info = get_item_info_class.new(
+      :creator_id => session[:account_id],
+      :updater_id => session[:account_id],
+      :title => params[:info_title] && params[:info_title].strip,
+      :content => params[:info_content] && params[:info_content].strip
+    )
+    
+    @info.send("#{@item_type}_id=", item_id)
+    
+    if @info.save
+      jump_to("/#{@item_type}/job_items/#{item_id}/info")
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+      
+      @item_label = get_item_label
+      @item = get_item_instance(params[:id])
+      
+      render :action => "info_new"
+    end
+  end
+  
+  def info_edit
+    @info = get_item_info_class.find(params[:id])
+    
+    @item_label = get_item_label
+    @item = get_item_instance(@info.send("#{@item_type}_id"))
+  end
+  
+  def info_update
+    @info = get_item_info_class.find(params[:id])
+    
+    @info.title = params[:info_title] && params[:info_title].strip
+    @info.content = params[:info_content] && params[:info_content].strip
+    
+    @info.updater_id = session[:account_id]
+    
+    item_id = @info.send("#{@item_type}_id")
+    
+    if @info.save
+      jump_to("/#{@item_type}/job_items/#{item_id}/info")
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+      
+      @item_label = get_item_label
+      @item = get_item_instance(item_id)
+      
+      render :action => "info_edit"
+    end
+  end
+  
+  def info_destroy
+    @info = get_item_info_class.find(params[:id])
+    item_id = @info.send("#{@item_type}_id")
+    
+    @info.destroy
+    
+    jump_to("/#{@item_type}/job_items/#{item_id}/info")
+  end
+  
+  
   private
   
   def prepare_item_type
@@ -171,6 +249,10 @@ class JobItemsController < ApplicationController
   
   def get_item_class
     @item_type.camelize.constantize
+  end
+  
+  def get_item_info_class
+    "#{@item_type}_info".camelize.constantize
   end
   
   def get_item_label

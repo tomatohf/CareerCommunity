@@ -39,11 +39,22 @@
 				<input type="submit" value="删除" class="button" />
 			<% end %>
 			
+			&nbsp;&nbsp;
+
+			<a href="/<%= @item_type %>/job_items/<%= job_item.id %>/info">
+				管理关于这个<%= @item_label %>的信息</a>
+				
+			&nbsp;&nbsp;
+			|
+			
 			<% if @item_type == "company" %>
 				&nbsp;&nbsp;
 
 				<a href="/<%= @item_type %>/job_items/<%= job_item.id %>/manage_company_industries">
 					管理这个公司所在的行业</a>
+					
+				&nbsp;&nbsp;
+				|
 			<% end %>
 
 			&nbsp;&nbsp;

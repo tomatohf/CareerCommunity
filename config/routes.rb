@@ -502,7 +502,14 @@ ActionController::Routing::Routes.draw do |map|
     
     :manage_company_industries => :get,
     :add_company_industry => :post,
-    :del_company_industry => :post
+    :del_company_industry => :post,
+    
+    :info => :get,
+    :info_new => :get,
+    :info_create => :post,
+    :info_edit => :get,
+    :info_update => :post,
+    :info_destroy => :post
     
   }
 
