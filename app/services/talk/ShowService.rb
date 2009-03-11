@@ -16,6 +16,7 @@ class ShowService
       
       talk_content[:title] = talk.title
       talk_content[:desc] = talk.get_info[:desc]
+      talk_content[:reporters] = TalkReporter.get_talk_reporters(talk.id).collect{ |reporter| reporter[1] }
       talk_content[:publish_time] = ApplicationController.helpers.format_date(talk.publish_at)
       
       talkers = {}
