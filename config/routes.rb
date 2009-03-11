@@ -516,6 +516,16 @@ ActionController::Routing::Routes.draw do |map|
     :del_job_position_info_item => :post
     
   }
+  
+  
+  map.connect "/job_infos/p/:page", :controller => "job_infos", :action => "index", :page => /\d+/
+  map.resources :job_infos, :collection => {
+    
+    :search => :any
+    
+  }, :member => {
+    
+  }
 
   
   

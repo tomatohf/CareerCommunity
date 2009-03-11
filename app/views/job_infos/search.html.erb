@@ -1,0 +1,35 @@
+<% page_title = "求职信息的搜索结果" %>
+<% community_page_title(page_title) %>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		共搜索到
+		<b><%= @info_ids.total_entries %></b>
+		个结果
+		,
+		&nbsp;&nbsp;&nbsp;
+		<a href="/job_infos">
+			返回全部求职信息列表</a>
+	</div>
+	
+	<div class="community_block align_r">
+		<% form_tag "/job_infos/search", :method => :get do %>
+			<input type="text" name="info_tip" class="text_field search_input" size="30" value="<%= h(@info_tip) %>" />
+			&nbsp;&nbsp;&nbsp;
+			<input type="submit" value="搜索求职信息" class="button" />
+		<% end %>
+	</div>
+	
+	<div style="margin-top: 10px;">
+		<%= render :partial => "job_info", :collection => @infos %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@info_ids) %>
+	</div>
+</div>
+
+

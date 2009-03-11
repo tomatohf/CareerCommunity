@@ -1,0 +1,45 @@
+<% page_title = "管理求职信息" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 300px;" do %>
+		<div class="action_bar">
+			<a href="/job_infos/new" style="font-weight: bold;">
+				添加新的求职信息</a>
+			
+			|
+				
+			<a href="#">
+				管理求职信息的分类</a>
+		</div>
+	<% end %>
+</div>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @infos.total_entries %></b>
+		条求职信息
+	</div>
+	
+	<div class="community_block align_r">
+		<% form_tag "/job_infos/search", :method => :get do %>
+			<input type="text" name="info_tip" class="text_field search_input" size="30" />
+			&nbsp;&nbsp;&nbsp;
+			<input type="submit" value="搜索求职信息" class="button" />
+		<% end %>
+	</div>
+	
+	<div style="margin-top: 10px;">
+		<%= render :partial => "job_info", :collection => @infos %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@infos) %>
+	</div>
+</div>
+
+
