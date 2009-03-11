@@ -99,7 +99,7 @@ class TalksController < ApplicationController
   end
   
   def show
-    @edit = is_talk_editor?
+    @edit = is_info_editor?
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
@@ -739,18 +739,18 @@ class TalksController < ApplicationController
   
   private
   
-  def is_talk_editor?
-    ApplicationController.helpers.talk_editor?(session[:account_id])
+  def is_info_editor?
+    ApplicationController.helpers.info_editor?(session[:account_id])
   end
   
   def check_editor
-    jump_to("/errors/forbidden") unless is_talk_editor?
+    jump_to("/errors/forbidden") unless is_info_editor?
   end
   
   def check_talk_publish
     @talk = Talk.get_talk(params[:id])
     
-    jump_to("/errors/forbidden") unless @talk.published || is_talk_editor?
+    jump_to("/errors/forbidden") unless @talk.published || is_info_editor?
   end
   
 end

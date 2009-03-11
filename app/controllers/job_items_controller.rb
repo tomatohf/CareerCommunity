@@ -326,7 +326,7 @@ class JobItemsController < ApplicationController
   
   
   def is_editor?
-    ApplicationController.helpers.talk_editor?(session[:account_id])
+    ApplicationController.helpers.info_editor?(session[:account_id])
   end
   
   def check_editor

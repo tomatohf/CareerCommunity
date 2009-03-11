@@ -45,7 +45,7 @@
 		<a href="/talks/<%= talk.id %>#comment_list" class="account_nick_link">
 			评论(<%= comment_count %>)</a>
 		
-		<% if talk_editor?(session[:account_id]) %>
+		<% if info_editor?(session[:account_id]) %>
 			&nbsp;
 			|
 			&nbsp;

@@ -19,7 +19,7 @@ class JobTargetsController < ApplicationController
   
   before_filter :check_account_access, :only => [:list, :list_closed, :account_status, :account_process,
                                                   :account_job_item]
-  before_filter :check_general_admin, :only => [:system_status, :create_system_status,
+  before_filter :check_info_editor, :only => [:system_status, :create_system_status,
                                                 :system_process, :create_system_process]
   before_filter :check_status_change, :only => [:status_update, :status_destroy]
   before_filter :check_process_change, :only => [:process_update, :process_destroy]
@@ -672,7 +672,7 @@ class JobTargetsController < ApplicationController
   private
   
   def do_protection
-    jump_to("/community") unless ApplicationController.helpers.general_admin?(session[:account_id])
+    jump_to("/community") unless ApplicationController.helpers.info_editor?(session[:account_id])
   end
   
   def check_account_access
@@ -686,8 +686,8 @@ class JobTargetsController < ApplicationController
     jump_to("/errors/forbidden") unless @target.account_id == session[:account_id]
   end
   
-  def check_general_admin
-    jump_to("/errors/forbidden") unless ApplicationController.helpers.general_admin?(session[:account_id])
+  def check_info_editor
+    jump_to("/errors/forbidden") unless ApplicationController.helpers.info_editor?(session[:account_id])
   end
   
   def check_status_change
@@ -703,7 +703,7 @@ class JobTargetsController < ApplicationController
       valid = (session[:account_id] == status_account_id)
     else
       # system status ...
-      valid = ApplicationController.helpers.general_admin?(session[:account_id])
+      valid = ApplicationController.helpers.info_editor?(session[:account_id])
     end
     
     return jump_to("/errors/forbidden") unless valid
@@ -722,7 +722,7 @@ class JobTargetsController < ApplicationController
       valid = (session[:account_id] == process_account_id)
     else
       # system process ...
-      valid = ApplicationController.helpers.general_admin?(session[:account_id])
+      valid = ApplicationController.helpers.info_editor?(session[:account_id])
     end
     
     return jump_to("/errors/forbidden") unless valid

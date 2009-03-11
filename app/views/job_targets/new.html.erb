@@ -58,7 +58,7 @@
 				&nbsp;&nbsp;&nbsp;
 				<input type="submit" value="搜索公司" class="button" />
 
-				<% if general_admin?(session[:account_id]) %>
+				<% if info_editor?(session[:account_id]) %>
 					&nbsp;&nbsp;&nbsp;
 					<a href="/company/job_items" target="_blank">
 						管理系统添加的公司</a>
