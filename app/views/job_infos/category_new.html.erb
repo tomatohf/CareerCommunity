@@ -1,0 +1,67 @@
+<% page_title = "添加新的求职信息分类" %>
+<% community_page_title(page_title) %>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block align_r">
+		<a href="/job_infos/categories">返回管理求职信息的分类</a>
+	</div>
+	
+	<div class="community_block">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @category.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@category) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/job_infos/category_create", :method => :post do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td style="width: 100px">
+							<label for="category_name">
+						        分类的名称(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="category_name" name="category_name" class="text_field" size="50" value="<%= h(@category.name) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td valign="top">
+							<label for="category_desc">
+						        分类的描述
+								:
+						    </label>
+						</td>
+						<td>
+							<textarea id="category_desc" name="category_desc" class="text_field" cols="60" rows="5"><%= h(@category.desc) %></textarea>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "添加分类", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/job_infos/categories">返回管理求职信息的分类</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+

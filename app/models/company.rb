@@ -159,6 +159,8 @@ class Company < ActiveRecord::Base
   end
   
   
+  # there might be a large amount of companies belongs to one industry ...
+  # so be careful to use this method, since it maybe cache a huge of data in memory
   def self.get_industry_companies(industry_id)
     cs = Cache.get("#{CKP_industry_companies}_#{industry_id}".to_sym)
     

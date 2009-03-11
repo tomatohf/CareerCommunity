@@ -1,0 +1,63 @@
+<% page_title = "管理求职信息的分类" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r">
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 300px;" do %>
+		<div class="action_bar">
+			<a href="/job_infos/category_new" style="font-weight: bold;">
+				添加新的分类</a>
+			
+			|
+				
+			<a href="/job_infos">
+				返回求职信息列表</a>
+		</div>
+	<% end %>
+</div>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		现有
+		<b><%= @categories.size %></b>
+		个求职信息的分类
+	</div>
+	
+	<br />
+	
+	<div class="community_block">
+		<% @categories.each do |category| %>
+			<% category_name = h(category.name) %>
+			
+			<div class="community_block" style="border-bottom: 1px dashed #DADADA;" onmouseover="this.style.backgroundColor='#EAEAEA';" onmouseout="this.style.backgroundColor='#FFFFFF';">
+				<div class="community_block">
+					<% form_tag "/job_infos/#{category.id}/category_destroy", :method => :post, :onsubmit => "if(confirm('确定要删除信息 #{category_name} 么 ?')) { return true; }; return false;" do %>
+						<span class="float_r">
+							<input type="submit" value="删除" class="button" />
+
+							&nbsp;&nbsp;&nbsp;
+
+							<a href="/job_infos/<%= category.id %>/category_edit">
+								修改</a>
+						</span>
+
+						<span style="font-size: 14px; font-weight: bold;">
+							<%= category_name %>
+						</span>
+
+					<% end %>
+				</div>
+				
+				<div class="community_block_narrow form_info_s">
+					<%= h(category.desc) %>
+				</div>
+			</div>
+			
+		<% end %>
+	</div>
+	
+</div>
+
+

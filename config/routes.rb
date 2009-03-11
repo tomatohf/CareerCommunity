@@ -521,9 +521,17 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/job_infos/p/:page", :controller => "job_infos", :action => "index", :page => /\d+/
   map.resources :job_infos, :collection => {
     
-    :search => :any
+    :search => :any,
+    
+    :categories => :get,
+    :category_new => :get,
+    :category_create => :post
     
   }, :member => {
+    
+    :category_edit => :get,
+    :category_update => :post,
+    :category_destroy => :post
     
   }
 

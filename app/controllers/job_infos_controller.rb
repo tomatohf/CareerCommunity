@@ -10,7 +10,8 @@ class JobInfosController < ApplicationController
   layout "community"
   
   before_filter :check_login
-  before_filter :check_limited, :only => [:create, :update, :destroy]
+  before_filter :check_limited, :only => [:create, :update, :destroy,
+                                          :category_create, :category_update, :category_destroy]
   
   before_filter :check_editor
   
@@ -109,6 +110,56 @@ class JobInfosController < ApplicationController
     info.destroy
     
     jump_to("/job_infos")
+  end
+  
+  
+  def categories
+    @categories = JobInfoCategory.get_all_categories
+  end
+  
+  def category_new
+    @category = JobInfoCategory.new
+  end
+  
+  def category_create
+    @category = JobInfoCategory.new
+    
+    @category.name = params[:category_name] && params[:category_name].strip
+    @category.desc = params[:category_desc] && params[:category_desc].strip
+    
+    if @category.save
+      jump_to("/job_infos/categories")
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+      render :action => "category_new"
+    end
+  end
+  
+  def category_edit
+    @category = JobInfoCategory.get_category(params[:id])
+  end
+  
+  def category_update
+    @category = JobInfoCategory.get_category(params[:id])
+    
+    @category.name = params[:category_name] && params[:category_name].strip
+    @category.desc = params[:category_desc] && params[:category_desc].strip
+    
+    if @category.save
+      flash.now[:message] = "已成功保存"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+
+    render :action => "category_edit"
+  end
+  
+  def category_destroy
+    @category = JobInfoCategory.get_category(params[:id])
+    
+    @category.destroy
+    
+    jump_to("/job_infos/categories")
   end
   
   
