@@ -2,8 +2,11 @@ class AccountsController < ApplicationController
   
   layout "community"
   before_filter :check_current_account, :only => [:index, :send_register_confirmation]
-  before_filter :check_login_for_account, :only => [:register_confirmation, :edit, :update, :update_password]
+  before_filter :check_login_for_account, :only => [:register_confirmation, :edit, :update, :update_password,
+                                                    :edit_email, :update_email]
   before_filter :check_limited, :only => [:update, :update_password]
+  
+  
   
   # ! current account needed !
   def index
@@ -157,6 +160,35 @@ class AccountsController < ApplicationController
     end
     render :action => "forgot_password"
   end
+  
+  
+  def edit_email
+    
+  end
+  
+  def update_email
+    new_email = params[:account_email] && params[:account_email].strip
+    
+    old_email = @account.email
+    
+    @account.email = new_email
+    # set checked flag to false
+    @account.checked = false
+    
+    if @account.save
+      # re-login and clear related cache
+      do_login(@account)
+      Account.clear_account_nick_pic_cache(@account.id)
+      
+      send_register_confirmation
+    else
+      @account.email = old_email
+      @account.checked = true
+      
+      render(:action => "edit_email")
+    end
+  end
+  
   
   def return_original_page
     redirect_to_original_address

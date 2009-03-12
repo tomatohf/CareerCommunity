@@ -1,0 +1,61 @@
+<% community_page_title("更新帐号信息") %>
+
+<div class="float_r community_container_r">
+	<%= render :partial => "common/edit_navigation", :locals => {:account_checked => @account.checked} %>
+</div>
+
+<div class="community_container_l">
+	<h2>修改 email</h2>
+	
+
+	<div style="padding: 15px 50px 20px 30px;">
+		<p class="info_msg" style="color: #333333; font-weight: bold;">
+			注意: 修改了 email 地址后, 需要对新的 email 地址重新进行邮件确认
+		</p>
+	</div>
+
+	
+	<div class="community_block_narrow">
+
+		<% if @account.errors.size > 0 %>
+			<p class="error_msg"><%= list_model_validate_errors(@account) %></p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg">
+		    	<%= flash[:error_msg] %>
+			</p>
+		<% end %>
+		
+		<% form_for @account, :url => "/accounts/#{session[:account_id]}/update_email", :html => { :method => :post } do |f| %>
+			<table cellpadding="0" cellspacing="10" class="main_part_w">
+				<tr>
+					<td>
+						当前 email
+					</td>
+					<td>
+						<%= h(@account.email) %>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<label for="account_email">
+			                新的 email
+			            </label>
+					</td>
+					<td>
+						<input type="text" id="account_email" name="account_email" class="text_field" size="30" />
+					</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= f.submit "修改 email", :class => "button" %>
+					</td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+</div>
+

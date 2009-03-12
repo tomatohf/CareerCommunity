@@ -1,7 +1,4 @@
-﻿允许修改 email 地址功能
-
-
-Voting
+﻿Voting
 	启用嵌入投票客户端
 	给 MiniVote.swf 搜身 - 减小 SWF 文件大小
 

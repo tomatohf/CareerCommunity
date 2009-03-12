@@ -21,7 +21,10 @@ ActionController::Routing::Routes.draw do |map|
   
     :register_confirmation => :get,
     
-    :update_password => :post
+    :update_password => :post,
+    
+    :edit_email => :get,
+    :update_email => :post
   
   }
   

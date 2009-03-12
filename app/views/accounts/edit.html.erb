@@ -1,6 +1,11 @@
 <% community_page_title("更新帐号信息") %>
 
 <div class="float_r community_container_r">
+	<div style="font-weight: bold;">
+		<%= @account.email %>
+		(<a href="/accounts/<%= session[:account_id] %>/edit_email">修改我的登录 email</a>)
+	</div>
+	
 	<%= render :partial => "common/edit_navigation", :locals => {:account_checked => @account.checked} %>
 </div>
 
@@ -39,7 +44,7 @@
 		<table cellpadding="0" cellspacing="0" class="main_part_w">
 			<% form_for @account, :url => "/accounts/#{session[:account_id]}", :html => { :method => :put } do |f| %>
 				<tr>
-					<td>
+					<td style="font-weight: bold;">
 						<label for="account_nick">
 			                昵称
 			            </label>
@@ -75,7 +80,7 @@
 		
 			<% form_for @account, :url => "/accounts/#{session[:account_id]}/update_password", :html => { :method => :post } do |f| %>
 				<tr>
-					<td>
+					<td style="font-weight: bold;">
 						<label for="current_password">
 			                当前密码
 			            </label>
@@ -94,7 +99,7 @@
 				</tr>
 				
 				<tr>
-					<td>
+					<td style="font-weight: bold;">
 						<label for="account_password">
 			                新密码(<span style="color: red;">*</span>)
 			            </label>
