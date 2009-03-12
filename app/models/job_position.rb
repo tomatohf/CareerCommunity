@@ -21,6 +21,10 @@ class JobPosition < ActiveRecord::Base
                           #:order => "created_at DESC",
                           :after_add => Proc.new { |job_position, talk| JobPosition.clear_talk_job_positions_cache(talk.id) },
                           :after_remove => Proc.new { |job_position, talk| JobPosition.clear_talk_job_positions_cache(talk.id) }
+  has_and_belongs_to_many :job_infos,
+                          :foreign_key => "job_position_id",
+                          :association_foreign_key => "job_info_id",
+                          :join_table => "job_infos_job_positions"
   
   
   
@@ -28,7 +32,7 @@ class JobPosition < ActiveRecord::Base
   
   validates_uniqueness_of :name, :case_sensitive => false, :scope => :account_id, :message => "名称 已经存在"
   
-  validates_length_of :name, :maximum => 256, :message => "名称 超过长度限制", :allow_nil => false
+  validates_length_of :name, :maximum => 250, :message => "名称 超过长度限制", :allow_nil => false
   validates_length_of :desc, :maximum => 1000, :message => "别名或其他常用名 超过长度限制", :allow_nil => true
   
   

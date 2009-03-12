@@ -76,8 +76,8 @@
 				%>
 				
 				<% if info_industries.size > 0 %>
-					<% form_tag "/industry/job_items/#{info_data.id}/del_job_position_info_item", :method => :post, :id => "remove_industry_form" do %>
-						<input type="hidden" name="item_id" id="remove_industry_id" />
+					<% form_tag "/industry/job_items/#{info_data.id}/del_job_position_info_item", :method => :post, :id => "remove_industry_form_#{info[0]}" do %>
+						<input type="hidden" name="item_id" id="remove_industry_id_<%= info[0] %>" />
 					<% end %>
 					
 					<div class="community_block_narrow form_info_s">
@@ -90,7 +90,7 @@
 							<a href="/industry/job_items/<%= industry.id %>" target="_blank" title="<%= h(industry.desc) %>">
 								<%= industry_name %></a>
 							<span class="form_info_s">
-								<a title="删除行业 <%= industry_name %>" href="#" onclick="remove_industry(<%= industry.id %>); return false;">
+								<a title="删除行业 <%= industry_name %>" href="#" onclick="remove_industry(<%= info[0] %>, <%= industry.id %>); return false;">
 										<img src="/images/delete_small.gif" border="0" /></a>
 
 								&nbsp;&nbsp;&nbsp;
@@ -102,8 +102,8 @@
 				<% end %>
 				
 				<% if info_companies.size > 0 %>
-					<% form_tag "/company/job_items/#{info_data.id}/del_job_position_info_item", :method => :post, :id => "remove_company_form" do %>
-						<input type="hidden" name="item_id" id="remove_company_id" />
+					<% form_tag "/company/job_items/#{info_data.id}/del_job_position_info_item", :method => :post, :id => "remove_company_form_#{info[0]}" do %>
+						<input type="hidden" name="item_id" id="remove_company_id_<%= info[0] %>" />
 					<% end %>
 					
 					<div class="community_block_narrow form_info_s">
@@ -116,7 +116,7 @@
 							<a href="/company/job_items/<%= company.id %>" target="_blank" title="<%= h(company.desc) %>">
 								<%= company_name %></a>
 							<span class="form_info_s">
-								<a title="删除公司 <%= company_name %>" href="#" onclick="remove_company(<%= company.id %>); return false;">
+								<a title="删除公司 <%= company_name %>" href="#" onclick="remove_company(<%= info[0] %>, <%= company.id %>); return false;">
 										<img src="/images/delete_small.gif" border="0" /></a>
 
 								&nbsp;&nbsp;&nbsp;
@@ -136,17 +136,17 @@
 
 <script language="JavaScript" type="text/javascript">
 
-	function remove_industry(industry_id) {
+	function remove_industry(info_id, industry_id) {
 		if(confirm("确定要移除此行业么 ?")) {
-			document.getElementById("remove_industry_id").value = industry_id;
-			document.getElementById("remove_industry_form").submit();
+			document.getElementById("remove_industry_id_" + info_id).value = industry_id;
+			document.getElementById("remove_industry_form_" + info_id).submit();
 		}
 	}
 	
-	function remove_company(company_id) {
+	function remove_company(info_id, company_id) {
 		if(confirm("确定要移除此公司么 ?")) {
-			document.getElementById("remove_company_id").value = company_id;
-			document.getElementById("remove_company_form").submit();
+			document.getElementById("remove_company_id_" + info_id).value = company_id;
+			document.getElementById("remove_company_form_" + info_id).submit();
 		}
 	}
 

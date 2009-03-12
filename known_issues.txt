@@ -1,4 +1,7 @@
-﻿Voting
+﻿允许修改 email 地址功能
+
+
+Voting
 	启用嵌入投票客户端
 	给 MiniVote.swf 搜身 - 减小 SWF 文件大小
 
@@ -134,8 +137,6 @@ SWFUpload 上传大小超过 3M 的文件, server 端会抛错, client 端会一
 
 工具箱里搞点 性格测验一类的东西
 放 Flash 游戏
-
-修改 email 地址
 
 所有的删除功能都必须非常的小心，确保相关的东西都妥善处理
 

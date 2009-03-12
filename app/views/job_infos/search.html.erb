@@ -24,7 +24,7 @@
 	</div>
 	
 	<div style="margin-top: 10px;">
-		<%= render :partial => "job_info", :collection => @infos %>
+		<%= render :partial => "job_info", :collection => @infos, :locals => {:system_processes => JobProcess.get_system_processes, :categories => JobInfoCategory.get_all_categories} %>
 	</div>
 	
 	<div class="community_block">

@@ -1,94 +1,196 @@
 <% info_title = h(job_info.title) %>
 
-<div class="community_block" style="border-bottom: 1px dashed #DADADA;" onmouseover="this.style.backgroundColor='#EAEAEA';" onmouseout="this.style.backgroundColor='#FFFFFF';">
+<div class="community_block" style="border-bottom: 1px dashed #B2B2B2;" onmouseover="this.style.backgroundColor='#EAEAEA';" onmouseout="this.style.backgroundColor='#FFFFFF';">
+	
+	<% form_tag "/job_infos/#{job_info.id}", :method => :delete, :id => "del_form_#{job_info.id}" do %>
+	<% end %>
+	
+	<% form_tag "/job_infos/#{job_info.id}/del_job_item", :method => :post, :id => "remove_job_item_form_#{job_info.id}" do %>
+		<input type="hidden" name="item_id" id="remove_item_id_<%= job_info.id %>" />
+		<input type="hidden" name="item_type" id="remove_item_type_<%= job_info.id %>" />
+	<% end %>
+	
+	<% form_tag "/job_infos/#{job_info.id}/del_job_process", :method => :post, :id => "remove_job_process_form_#{job_info.id}" do %>
+		<input type="hidden" name="job_process_id" id="remove_job_process_id_<%= job_info.id %>" />
+	<% end %>
+	
+	<% form_tag "/job_infos/#{job_info.id}/del_category", :method => :post, :id => "remove_category_form_#{job_info.id}" do %>
+		<input type="hidden" name="category_id" id="remove_category_id_<%= job_info.id %>" />
+	<% end %>
+	
+	<% form_tag "/job_infos/#{job_info.id}/add_job_process", :method => :post, :id => "add_job_process_form_#{job_info.id}" do %>
+		<input type="hidden" name="job_process_id" id="add_job_process_id_<%= job_info.id %>" />
+	<% end %>
+	
+	<% form_tag "/job_infos/#{job_info.id}/add_category", :method => :post, :id => "add_category_form_#{job_info.id}" do %>
+		<input type="hidden" name="category_id" id="add_category_id_<%= job_info.id %>" />
+	<% end %>
+	
+	
 	<div class="community_block">
-		<% form_tag "/job_infos/#{job_info.id}", :method => :delete, :onsubmit => "if(confirm('确定要删除求职信息 #{info_title} 么 ?')) { return true; }; return false;" do %>
-			<span class="float_r">
-				<input type="submit" value="删除" class="button" />
+		<span class="float_r">
+			<a title="删除信息" href="#" onclick="if(confirm('确定要删除求职信息 <%= info_title %> 么 ?')) { document.getElementById('del_form_<%= job_info.id %>').submit(); }; return false;">
+				<img src="/images/delete_small.gif" border="0" /></a>
 
-				&nbsp;&nbsp;
-
-				<a href="/job_infos/<%= job_info.id %>/edit">
-					修改</a>
-
-				&nbsp;
-
-				<a href="#">
-					显示</a>
-			</span>
-
-			<a href="#" style="font-size: 14px; font-weight: bold;">
-				<%= info_title %></a>
+			&nbsp;&nbsp;&nbsp;
 			
-			<% if job_info.general %>
-				&nbsp;
-				<span style="color: #666666">
-					(通用信息)
-				</span>
-			<% end %>
+			<a href="/job_infos/<%= job_info.id %>/edit">
+				修改</a>
+				
+			&nbsp;
 
+			<a href="#">
+				显示</a>
+		</span>
+		
+		<a href="#" style="font-size: 14px; font-weight: bold;">
+			<%= info_title %></a>
+		
+		<% if job_info.general %>
+			&nbsp;
+			<span style="color: #666666">
+				(通用信息)
+			</span>
 		<% end %>
 	</div>
 	
 	
-	<% if false %>
+	<% job_info_categories = job_info.job_info_categories %>
+	<% if job_info_categories.size > 0 %>
+		<div class="community_block_narrow form_info_s">
+			所在的分类:
+			<% job_info_categories.each do |job_info_category| %>
+				<%
+					# NOTE!
+					# thinking all job info categories are added by info editors,
+					# ignore the html_escape (h) method to improve performance
+				%>
+				<% job_info_category_name = job_info_category.name %>
+
+				&nbsp;&nbsp;&nbsp;
+
+				<span style="color: #000000; font-weight: bold;" title="h(job_info_category.desc)">
+					<%= job_info_category_name %>
+				</span>
+				<span class="form_info_s">
+					<a title="移除分类 <%= job_info_category_name %>" href="#" onclick="if(confirm('确定要移除分类 <%= job_info_category_name %> 么 ?')) { document.getElementById('remove_category_id_<%= job_info.id %>').value = <%= job_info_category.id %>; document.getElementById('remove_category_form_<%= job_info.id %>').submit(); }; return false;">
+							<img src="/images/delete_small.gif" border="0" /></a>
+
+					&nbsp;&nbsp;&nbsp;
+					|
+
+				</span>
+			<% end %>
+		</div>
+	<% end %>
+	
+	
 	<%
-		info_industries = info_data.industries
-		info_companies = info_data.companies
+		[
+			["industry", "行业"],
+			["company", "公司"],
+			["job_position", "职位"]
+		].each do |item_type_info|
 	%>
-	
-	<% if info_industries.size > 0 %>
-		<% form_tag "/industry/job_infos/#{info_data.id}/del_job_position_info_item", :method => :post, :id => "remove_industry_form" do %>
-			<input type="hidden" name="item_id" id="remove_industry_id" />
+		<% items = job_info.send(item_type_info[0].pluralize) %>
+		<% if items.size > 0 %>
+			<div class="community_block_narrow form_info_s">
+				涉及的<%= item_type_info[1] %>:
+				<% items.each do |item| %>
+					<%
+						# NOTE!
+						# thinking all system job items are added by info editors,
+						# ignore the html_escape (h) method to improve performance
+					%>
+					<% item_name = item.name %>
+
+					&nbsp;&nbsp;&nbsp;
+
+					<a href="/<%= item_type_info[0] %>/job_items/<%= item.id %>" target="_blank" title="<%= h(item.desc) %>">
+						<%= item_name %></a>
+					<span class="form_info_s">
+						<a title="移除<%= item_type_info[1] %> <%= item_name %>" href="#" onclick="if(confirm('确定要移除<%= item_type_info[1] %> <%= item_name %> 么 ?')) { var info_id = <%= job_info.id %>; var item_type = '<%= item_type_info[0] %>'; var item_id = <%= item.id %>; document.getElementById('remove_item_id_' + info_id).value = item_id; document.getElementById('remove_item_type_' + info_id).value = item_type; document.getElementById('remove_job_item_form_' + info_id).submit(); }; return false;">
+								<img src="/images/delete_small.gif" border="0" /></a>
+
+						&nbsp;&nbsp;&nbsp;
+						|
+
+					</span>
+				<% end %>
+			</div>
 		<% end %>
-		
+	<% end %>
+	
+	
+	<% job_processes = job_info.job_processes %>
+	<% if job_processes.size > 0 %>
 		<div class="community_block_narrow form_info_s">
-			涉及的行业:
-			<% info_industries.each do |industry| %>
-				<% industry_name = h(industry.name) %>
-				
+			涉及的求职流程:
+			<% job_processes.each do |job_process| %>
+				<%
+					# NOTE!
+					# thinking all system job processes are added by info editors,
+					# ignore the html_escape (h) method to improve performance
+				%>
+				<% job_process_name = job_process.name %>
+
 				&nbsp;&nbsp;&nbsp;
-				
-				<a href="/industry/job_infos/<%= industry.id %>" target="_blank" title="<%= h(industry.desc) %>">
-					<%= industry_name %></a>
+
+				<span style="color: #000000;">
+					<%= job_process_name %>
+				</span>
 				<span class="form_info_s">
-					<a title="删除行业 <%= industry_name %>" href="#" onclick="remove_industry(<%= industry.id %>); return false;">
+					<a title="移除求职流程 <%= job_process_name %>" href="#" onclick="if(confirm('确定要移除求职流程 <%= job_process_name %> 么 ?')) { document.getElementById('remove_job_process_id_<%= job_info.id %>').value = <%= job_process.id %>; document.getElementById('remove_job_process_form_<%= job_info.id %>').submit(); }; return false;">
 							<img src="/images/delete_small.gif" border="0" /></a>
 
 					&nbsp;&nbsp;&nbsp;
 					|
-					
+
 				</span>
 			<% end %>
 		</div>
 	<% end %>
 	
-	<% if info_companies.size > 0 %>
-		<% form_tag "/company/job_infos/#{info_data.id}/del_job_position_info_item", :method => :post, :id => "remove_company_form" do %>
-			<input type="hidden" name="item_id" id="remove_company_id" />
-		<% end %>
-		
-		<div class="community_block_narrow form_info_s">
-			涉及的公司:
-			<% info_companies.each do |company| %>
-				<% company_name = h(company.name) %>
-				
-				&nbsp;&nbsp;&nbsp;
-				
-				<a href="/company/job_infos/<%= company.id %>" target="_blank" title="<%= h(company.desc) %>">
-					<%= company_name %></a>
-				<span class="form_info_s">
-					<a title="删除公司 <%= company_name %>" href="#" onclick="remove_company(<%= company.id %>); return false;">
-							<img src="/images/delete_small.gif" border="0" /></a>
+	
+	<div class="align_r form_info_s" style="word-spacing: 6px; margin-top: 5px;">
+		添加涉及的:
+		<a href="/job_infos/<%= job_info.id %>/select_job_item?type=industry">
+			行业</a>
+		<a href="/job_infos/<%= job_info.id %>/select_job_item?type=company">
+			公司</a>
+		<a href="/job_infos/<%= job_info.id %>/select_job_item?type=job_position">
+			职位</a>
 
-					&nbsp;&nbsp;&nbsp;
-					|
-					
-				</span>
+		|
+	
+		<select id="job_process_select_<%= job_info.id %>" class="dropdown_list">
+			<% system_processes.each do |job_process| %>
+				<%
+					# NOTE!
+					# thinking all system job processes are added by info editors,
+					# ignore the html_escape (h) method to improve performance
+				%>
+				<option value="<%= job_process.id %>"><%= job_process.name %></option>
 			<% end %>
-		</div>
-	<% end %>
-	<% end %>
+		</select>
+		<a href="#" onclick="if(confirm('确定要添加此流程么 ?')) { document.getElementById('add_job_process_id_<%= job_info.id %>').value = document.getElementById('job_process_select_<%= job_info.id %>').value; document.getElementById('add_job_process_form_<%= job_info.id %>').submit(); }; return false;">
+			添加选中的流程</a>
+		
+		|
+		
+		<select id="category_select_<%= job_info.id %>" class="dropdown_list">
+			<% categories.each do |category| %>
+				<%
+					# NOTE!
+					# thinking all job info categories are added by info editors,
+					# ignore the html_escape (h) method to improve performance
+				%>
+				<option value="<%= category.id %>" title="<%= category.desc %>"><%= category.name %></option>
+			<% end %>
+		</select>
+		<a href="#" onclick="if(confirm('确定要添加此分类么 ?')) { document.getElementById('add_category_id_<%= job_info.id %>').value = document.getElementById('category_select_<%= job_info.id %>').value; document.getElementById('add_category_form_<%= job_info.id %>').submit(); }; return false;">
+			添加选中的分类</a>
+	</div>
 	
 </div>
 

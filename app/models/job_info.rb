@@ -14,6 +14,29 @@ class JobInfo < ActiveRecord::Base
   
   
   
+  has_and_belongs_to_many :industries,
+                          :foreign_key => "job_info_id",
+                          :association_foreign_key => "industry_id",
+                          :join_table => "job_infos_industries"
+  has_and_belongs_to_many :companies,
+                          :foreign_key => "job_info_id",
+                          :association_foreign_key => "company_id",
+                          :join_table => "job_infos_companies"
+  has_and_belongs_to_many :job_positions,
+                          :foreign_key => "job_info_id",
+                          :association_foreign_key => "job_position_id",
+                          :join_table => "job_infos_job_positions"
+  has_and_belongs_to_many :job_processes,
+                          :foreign_key => "job_info_id",
+                          :association_foreign_key => "job_process_id",
+                          :join_table => "job_infos_job_processes"
+  has_and_belongs_to_many :job_info_categories,
+                          :foreign_key => "job_info_id",
+                          :association_foreign_key => "job_info_category_id",
+                          :join_table => "job_infos_job_info_categories"
+  
+  
+  
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"
   belongs_to :updater, :class_name => "Account", :foreign_key => "updater_id"
   

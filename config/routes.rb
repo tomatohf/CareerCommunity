@@ -531,7 +531,17 @@ ActionController::Routing::Routes.draw do |map|
     
     :category_edit => :get,
     :category_update => :post,
-    :category_destroy => :post
+    :category_destroy => :post,
+    
+    :select_job_item => :any,
+    :add_job_item => :post,
+    :del_job_item => :post,
+    
+    :add_job_process => :post,
+    :del_job_process => :post,
+    
+    :add_category => :post,
+    :del_category => :post
     
   }
 

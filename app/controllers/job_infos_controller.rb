@@ -11,7 +11,10 @@ class JobInfosController < ApplicationController
   
   before_filter :check_login
   before_filter :check_limited, :only => [:create, :update, :destroy,
-                                          :category_create, :category_update, :category_destroy]
+                                          :category_create, :category_update, :category_destroy,
+                                          :add_job_item, :del_job_item,
+                                          :add_job_process, :del_job_process,
+                                          :add_category, :del_category]
   
   before_filter :check_editor
   
@@ -25,6 +28,7 @@ class JobInfosController < ApplicationController
       :page => page,
       :per_page => Info_Page_Size,
       :select => "id, title, general, created_at",
+      :include => [:job_info_categories, :industries, :companies, :job_positions, :job_processes],
       :order => "created_at DESC"
     )
   end
@@ -50,6 +54,7 @@ class JobInfosController < ApplicationController
       :limit => Info_Page_Size,
       :select => "id, title, general, created_at",
       :conditions => ["id in (?)", @info_ids],
+      :include => [:job_info_categories, :industries, :companies, :job_positions, :job_processes],
       :order => "created_at DESC"
     )
   end
@@ -160,6 +165,121 @@ class JobInfosController < ApplicationController
     @category.destroy
     
     jump_to("/job_infos/categories")
+  end
+  
+  
+  def select_job_item
+    @item_type = params[:type]
+    @query = params[:query] && params[:query].strip
+    
+    @info = JobInfo.find(params[:id])
+    
+    @item_label = case @item_type
+      when "company"
+        "公司"
+      when "job_position"
+        "职位"
+      when "industry"
+        "行业"
+      else
+        nil
+    end
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    
+    if @query && @query != ""
+      @items = @item_type.camelize.constantize.system.search(
+        @query,
+        :page => page,
+        :per_page => JobItemsController::Item_Page_Size,
+        :match_mode => JobItemsController::Search_Match_Mode,
+        :order => JobItemsController::Search_Sort_Order,
+        :field_weights => JobItemsController::Search_Field_Weights
+      ).compact
+    else
+      @items = @item_type.camelize.constantize.system.find(
+        :all,
+        :limit => JobItemsController::Item_Page_Size,
+        :order => "created_at DESC"
+      )
+    end
+  end
+  
+  def add_job_item
+    info = JobInfo.find(params[:id])
+    
+    item_type = params[:item_type]
+    item_id = params[:item_id]
+    
+    item = item_type.camelize.constantize.send("get_#{item_type}", item_id)
+    
+    info_items = info.send(item_type.pluralize)
+    
+    info_items << item unless info_items.exists?(item)
+    
+    jump_to("/job_infos")
+  end
+  
+  def del_job_item
+    info = JobInfo.find(params[:id])
+    
+    item_type = params[:item_type]
+    item_id = params[:item_id]
+    
+    item = item_type.camelize.constantize.send("get_#{item_type}", item_id)
+    
+    info.send(item_type.pluralize).delete(item)
+    
+    jump_to("/job_infos")
+  end
+  
+  def add_job_process
+    info = JobInfo.find(params[:id])
+    
+    job_process_id = params[:job_process_id]
+    
+    job_process = JobProcess.get_process(job_process_id)
+    info_job_processes = info.job_processes
+    info_job_processes << job_process unless info_job_processes.exists?(job_process)
+    
+    jump_to("/job_infos")
+  end
+  
+  def del_job_process
+    info = JobInfo.find(params[:id])
+    
+    job_process_id = params[:job_process_id]
+    
+    job_process = JobProcess.get_process(job_process_id)
+    
+    info.job_processes.delete(job_process)
+    
+    jump_to("/job_infos")
+  end
+  
+  def add_category
+    info = JobInfo.find(params[:id])
+    
+    category_id = params[:category_id]
+    
+    category = JobInfoCategory.get_category(category_id)
+    info_categories = info.job_info_categories
+    info_categories << category unless info_categories.exists?(category)
+    
+    jump_to("/job_infos")
+  end
+  
+  def del_category
+    info = JobInfo.find(params[:id])
+    
+    category_id = params[:category_id]
+    
+    category = JobInfoCategory.get_category(category_id)
+    
+    info.job_info_categories.delete(category)
+    
+    jump_to("/job_infos")
   end
   
   

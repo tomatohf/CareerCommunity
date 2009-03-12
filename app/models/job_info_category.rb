@@ -1,5 +1,12 @@
 class JobInfoCategory < ActiveRecord::Base
   
+  has_and_belongs_to_many :job_infos,
+                          :foreign_key => "job_info_category_id",
+                          :association_foreign_key => "job_info_id",
+                          :join_table => "job_infos_job_info_categories"
+                          
+                          
+  
   validates_presence_of :name, :message => "请输入 名称"
   
   validates_uniqueness_of :name, :case_sensitive => false, :scope => :parent_category_id, :message => "名称 已经存在"
