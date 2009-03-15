@@ -1,8 +1,25 @@
-﻿Voting
+﻿替换电话为 400 ...
+
+求职信息
+	与 行业/公司/职位/求职流程/求职信息分类 匹配的圈子
+	处理 用户自己添加的信息
+		分享给好友
+	信息显示的页面
+		信息中心
+		单个信息显示页面
+	用户设置 - 显示哪些类别的消息, 哪些模块
+
+
+招聘信息 - 处理网申, 在乔布堂网站嵌入网申页面
+new recruitment vendors - yingjiesheng.com, guolairen.com, www.xyzp.net(卖我网), http://www.jobyoo.com
+
+
+根据求职目标列表 生成 日历
+
+
+Voting
 	启用嵌入投票客户端
 	给 MiniVote.swf 搜身 - 减小 SWF 文件大小
-
-new recruitment vendors - yingjiesheng.com, guolairen.com, www.xyzp.net(卖我网), http://www.jobyoo.com
 
 
 
