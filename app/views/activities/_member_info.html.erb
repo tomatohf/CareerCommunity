@@ -10,7 +10,7 @@
 	ActivityMember.set_activity_member_cache(member_info.activity_id, member_info.account_id, member_info) if member_info.kind_of?(ActivityMember)
 %>
 
-<% include_basic_profile = check_gender || check_birthday %>
+<% include_basic_profile = check_real_name || check_gender || check_birthday %>
 
 <tr>
 	<td>
