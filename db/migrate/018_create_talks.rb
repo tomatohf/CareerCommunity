@@ -35,6 +35,8 @@ class CreateTalks < ActiveRecord::Migration
       # info column includes:
       #   desc
       #   summary
+      #   question_prefix
+      #   answer_prefix
       
       t.column :sn, :string
       t.column :place, :string

@@ -1,4 +1,6 @@
 <% page_title = "添加新的访谈录" %>
+<% talk_info = @talk.get_info %>
+
 <% community_page_title(page_title) %>
 
 <div class="talk_container">
@@ -103,13 +105,37 @@
 					
 					<tr>
 						<td>
+							<label for="talk_question_prefix">
+						        问题文字前缀
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talk_question_prefix" name="talk_question_prefix" class="text_field" size="30" value="<%= h(talk_info[:question_prefix] || "乔布堂") %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="talk_answer_prefix">
+						        回答文字前缀
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="talk_answer_prefix" name="talk_answer_prefix" class="text_field" size="30" value="<%= h(talk_info[:answer_prefix] || "受访嘉宾") %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
 							<label for="talk_desc">
 						        访谈描述
 								:
 						    </label>
 						</td>
 						<td>
-							<textarea id="talk_desc" name="talk_desc" class="text_field" cols="60" rows="5"><%= h(@talk.get_info[:desc]) %></textarea>
+							<textarea id="talk_desc" name="talk_desc" class="text_field" cols="60" rows="5"><%= h(talk_info[:desc]) %></textarea>
 						</td>
 					</tr>
 					
@@ -121,7 +147,7 @@
 						    </label>
 						</td>
 						<td>
-							<textarea id="talk_summary" name="talk_summary" class="text_field" cols="60" rows="3"><%= h(@talk.get_info[:summary]) %></textarea>
+							<textarea id="talk_summary" name="talk_summary" class="text_field" cols="60" rows="3"><%= h(talk_info[:summary]) %></textarea>
 						</td>
 					</tr>
 					

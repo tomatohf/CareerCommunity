@@ -14,26 +14,32 @@ class ShowService
     unless talk_content
       talk_content = {}
       
+      talk_info = talk.get_info
       talk_content[:title] = talk.title
-      talk_content[:desc] = talk.get_info[:desc]
+      talk_content[:desc] = talk_info[:desc]
       talk_content[:reporters] = TalkReporter.get_talk_reporters(talk.id).collect{ |reporter| reporter[1] }
       talk_content[:publish_time] = ApplicationController.helpers.format_date(talk.publish_at)
+      
+      answer_prefix = talk_info[:answer_prefix]
+      talk_content[:question_prefix] = talk_info[:question_prefix]
+      talk_content[:answer_prefix] = answer_prefix
+      talk_content[:sep] = ":  "
       
       talkers = {}
       talk_talkers = TalkTalker.get_talk_talkers(talk.id)
       if talk_talkers.size > 1
         talk_talkers.each_index do |talker_index|
           talker = talk_talkers[talker_index][1]
-        
+      
           talkers["talker_#{talker.id}"] = {
-            :name => "受访嘉宾#{(talker_index + 65).chr}"
+            :name => "#{answer_prefix}#{(talker_index + 65).chr}"
           }
         end
       elsif talk_talkers.size > 0
         talker = talk_talkers[0][1]
-        
+      
         talkers["talker_#{talker.id}"] = {
-          :name => "受访嘉宾"
+          :name => answer_prefix
         }
       end
       talk_content[:talkers] = talkers

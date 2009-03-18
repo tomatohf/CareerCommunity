@@ -161,7 +161,9 @@ class TalksController < ApplicationController
     
     talk_info = {
       :desc => params[:talk_desc],
-      :summary => params[:talk_summary]
+      :summary => params[:talk_summary],
+      :question_prefix => params[:talk_question_prefix],
+      :answer_prefix => params[:talk_answer_prefix]
     }
     @talk.fill_info(talk_info)
     
@@ -193,7 +195,9 @@ class TalksController < ApplicationController
     
     talk_info = {
       :desc => params[:talk_desc],
-      :summary => params[:talk_summary]
+      :summary => params[:talk_summary],
+      :question_prefix => params[:talk_question_prefix],
+      :answer_prefix => params[:talk_answer_prefix]
     }
     @talk.update_info(talk_info)
     
