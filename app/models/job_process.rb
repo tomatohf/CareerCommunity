@@ -1,5 +1,8 @@
 class JobProcess < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   has_and_belongs_to_many :talks,
                           :foreign_key => "job_process_id",
                           :association_foreign_key => "talk_id",

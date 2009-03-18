@@ -1,5 +1,8 @@
 class VoteOption < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   has_many :records, :class_name => "VoteRecord", :foreign_key => "vote_option_id", :dependent => :destroy
   
   belongs_to :topic, :class_name => "VoteTopic", :foreign_key => "vote_topic_id"

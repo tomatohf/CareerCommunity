@@ -1,5 +1,8 @@
 class Message < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   include CareerCommunity::AccountBelongings
   
   belongs_to :receiver, :class_name => "Account", :foreign_key => "receiver_id"

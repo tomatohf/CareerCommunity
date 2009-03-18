@@ -1,5 +1,8 @@
 class GroupPostComment < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :group_post, :class_name => "GroupPost", :foreign_key => "group_post_id"
 

@@ -1,5 +1,8 @@
 class GroupPictureComment < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :group_picture, :class_name => "GroupPicture", :foreign_key => "group_picture_id"
 

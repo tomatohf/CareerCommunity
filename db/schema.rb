@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 23) do
+ActiveRecord::Schema.define(:version => 24) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -1230,6 +1230,16 @@ ActiveRecord::Schema.define(:version => 23) do
 
   add_index "timezones", ["name"], :name => "index_timezones_on_name"
   add_index "timezones", ["delta"], :name => "index_timezones_on_delta"
+
+  create_table "trash_records", :force => true do |t|
+    t.string   "trashable_type"
+    t.integer  "trashable_id",   :limit => 11
+    t.binary   "data",           :limit => 16777215
+    t.datetime "created_at"
+  end
+
+  add_index "trash_records", ["trashable_type", "trashable_id"], :name => "index_trash_records_on_trashable_type_and_trashable_id"
+  add_index "trash_records", ["created_at", "trashable_type"], :name => "index_trash_records_on_created_at_and_trashable_type"
 
   create_table "view_counters", :force => true do |t|
     t.datetime "created_at"

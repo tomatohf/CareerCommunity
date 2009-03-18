@@ -1,5 +1,8 @@
 class JobStatus < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   has_many :steps, :class_name => "JobStep", :foreign_key => "job_status_id", :dependent => :nullify
   
   

@@ -1,5 +1,8 @@
 class Talker < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   validates_presence_of :real_name, :message => "请输入 真实姓名"
   
   validates_length_of :real_name, :maximum => 50, :message => "真实姓名 超过长度限制", :allow_nil => true

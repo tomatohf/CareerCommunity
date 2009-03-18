@@ -1,5 +1,8 @@
 class TalkReporter < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   belongs_to :talk, :class_name => "Talk", :foreign_key => "talk_id"
   
   

@@ -1,5 +1,8 @@
 class VoteTopic < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   define_index do
     # fields
     indexes :title, :desc

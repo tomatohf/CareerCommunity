@@ -1,5 +1,8 @@
 class BlogComment < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :blog, :class_name => "Blog", :foreign_key => "blog_id"
 

@@ -1,5 +1,8 @@
 class GroupBookmark < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   include CareerCommunity::Util
   
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"

@@ -1,5 +1,8 @@
 class CompanyInfo < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   belongs_to :company, :class_name => "Company", :foreign_key => "company_id"
   
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"

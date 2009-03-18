@@ -1,5 +1,8 @@
 class IndustryInfo < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   belongs_to :industry, :class_name => "Industry", :foreign_key => "industry_id"
   
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"

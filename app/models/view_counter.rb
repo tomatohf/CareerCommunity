@@ -1,5 +1,8 @@
 class ViewCounter < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   validates_presence_of :counter_key, :view_count
   
   

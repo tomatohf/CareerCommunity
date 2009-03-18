@@ -1,5 +1,8 @@
 class SentMessage < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   include CareerCommunity::AccountBelongings
   
   belongs_to :sender, :class_name => "Account", :foreign_key => "sender_id"

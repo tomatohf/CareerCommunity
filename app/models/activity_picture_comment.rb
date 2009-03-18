@@ -1,5 +1,8 @@
 class ActivityPictureComment < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :activity_picture, :class_name => "ActivityPicture", :foreign_key => "activity_picture_id"
 

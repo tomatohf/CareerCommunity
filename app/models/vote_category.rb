@@ -1,5 +1,8 @@
 class VoteCategory < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   has_many :vote_topics, :class_name => "VoteTopic", :foreign_key => "vote_topic_id", :dependent => :nullify
 
   # ---

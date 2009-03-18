@@ -1,5 +1,8 @@
 class TalkQuestion < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   has_and_belongs_to_many :job_tags,
                           :foreign_key => "talk_question_id",
                           :association_foreign_key => "job_tag_id",

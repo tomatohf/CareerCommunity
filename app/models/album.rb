@@ -1,5 +1,8 @@
 class Album < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   has_many :photos, :class_name => "Photo", :foreign_key => "album_id", :dependent => :destroy
   
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"

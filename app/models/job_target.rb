@@ -1,5 +1,8 @@
 class JobTarget < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   include CareerCommunity::Util
   
   has_many :steps, :class_name => "JobStep", :foreign_key => "job_target_id", :dependent => :destroy

@@ -1,5 +1,8 @@
 class TalkQuestionCategory < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   belongs_to :talk, :class_name => "Talk", :foreign_key => "talk_id"
   
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"

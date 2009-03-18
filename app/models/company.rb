@@ -1,5 +1,8 @@
 class Company < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   define_index do
     # fields
     indexes :name, :desc

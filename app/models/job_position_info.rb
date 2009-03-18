@@ -1,5 +1,8 @@
 class JobPositionInfo < ActiveRecord::Base
   
+  acts_as_trashable
+  
+  
   belongs_to :job_position, :class_name => "JobPosition", :foreign_key => "job_position_id"
   
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"
