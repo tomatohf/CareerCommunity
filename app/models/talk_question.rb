@@ -23,9 +23,10 @@ class TalkQuestion < ActiveRecord::Base
   
   validates_presence_of :talk_id, :creator_id, :updater_id
   
-  validates_presence_of :question, :message => "请输入 问题"
+  #validates_presence_of :question, :message => "请输入 问题"
   
-  validates_length_of :question, :maximum => 250, :message => "问题 超过长度限制", :allow_nil => false
+  #validates_length_of :question, :maximum => 250, :message => "问题 超过长度限制", :allow_nil => false
+  validates_length_of :question, :maximum => 250, :message => "问题 超过长度限制", :allow_nil => true
   validates_length_of :summary, :maximum => 250, :message => "点评 超过长度限制", :allow_nil => true
   
   

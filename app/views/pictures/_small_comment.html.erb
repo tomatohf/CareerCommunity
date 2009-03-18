@@ -16,8 +16,9 @@
 				<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
 					<%= account_nick %></a>
 				说:
-				<a href="/<%= picture_type %>/pictures/<%= small_comment.send("#{picture_type}_picture_id") %>#comment_list" class="account_nick_link">
-					<%= truncate(h(small_comment.content)) %>
+				<% comment_content = h(small_comment.content) %>
+				<a href="/<%= picture_type %>/pictures/<%= small_comment.send("#{picture_type}_picture_id") %>#comment_list" class="account_nick_link" title="<%= comment_content %>">
+					<%= truncate(comment_content) %>
 				</a>
 				
 				<div class="form_info_s">

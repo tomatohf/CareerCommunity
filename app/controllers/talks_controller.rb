@@ -541,7 +541,7 @@ class TalksController < ApplicationController
     
     @answer.talker_id = params[:answer_talker]
     
-    @answer.answer = params[:answer_answer] && params[:answer_answer].strip
+    @answer.answer = params[:answer_answer]# && params[:answer_answer].strip
     @answer.summary = params[:answer_summary] && params[:answer_summary].strip
     
     if @answer.save
@@ -565,7 +565,7 @@ class TalksController < ApplicationController
     
     @answer.talker_id = params[:answer_talker]
     
-    @answer.answer = params[:answer_answer] && params[:answer_answer].strip
+    @answer.answer = params[:answer_answer]# && params[:answer_answer].strip
     @answer.summary = params[:answer_summary] && params[:answer_summary].strip
     
     if @answer.save
