@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
 <cross-domain-policy>
+	<allow-access-from domain="*" />
+	<!--
 	<allow-access-from domain="qiaobutang.*" />
 	<allow-access-from domain="*.qiaobutang.*" />
 	
 	<allow-access-from domain="qiaobuquan.*" />
 	<allow-access-from domain="*.qiaobuquan.*" />
 	
-	<allow-access-from domain="xn--jjqv9uz1e.*" />
-	<allow-access-from domain="*.xn--jjqv9uz1e.*" />
-	
 	<allow-access-from domain="221.130.201.43" />
+	-->
 </cross-domain-policy>
 
