@@ -82,9 +82,9 @@
 							能为你拓展一个新的角度
 							<br />
 
-							<img border="0" src="http://www.qiaobutang.com/images/left_quote.gif" style="width: 10px; height: 8px;"/>
+							<img border="0" src="http://www.qiaobutang.com/images/left_quote.gif" />
 							听君一席话，胜读十年书
-							<img border="0" src="http://www.qiaobutang.com/images/right_quote.gif" style="width: 10px; height: 12px;"/>
+							<img border="0" src="http://www.qiaobutang.com/images/right_quote.gif" />
 						</div>
 						
 						<div style="margin-top: 10px;">
@@ -92,7 +92,13 @@
 						</div>
 					</div>
 
-					<div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #EEEEEE;">
+					<div class="align_c" style="margin-top: 10px; border-top: 1px solid #EEEEEE;">
+						<p>
+							<button class="button_field" style="font-weight: bold; color: #111111;" onclick="window.top.location.href='http://apps.xiaonei.com/invite.do?app_id=26807'">邀请好友来看周三访谈录</button>
+						</p>
+					</div>
+					
+					<div style="margin-top: 10px; padding-top: 20px; border-top: 1px solid #EEEEEE;">
 						<form action="http://www.qiaobutang.com/community/search" method="get" target="_blank">
 							<div class="align_c">
 								<input type="text" name="query" class="text_field" size="20" />
