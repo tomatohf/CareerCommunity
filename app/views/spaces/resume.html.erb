@@ -28,7 +28,7 @@
 		<a href="/spaces/show/<%= @account_id %>"><%= owner_name %> 的空间</a>
 	</div>
 	
-	<% if @resume_visible %>
+	<% if @resume_visible || general_admin?(session[:account_id]) %>
 	
 		<div class="resume_container clear_r">
 			<div class="resume_title">

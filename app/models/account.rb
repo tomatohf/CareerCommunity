@@ -113,6 +113,14 @@ class Account < ActiveRecord::Base
   
   CKP_nick_pic = :account_nick_pic
   
+  after_create { |account|
+    # create the default album for new account
+    album = Album.new(:account_id => account.id)
+    album.name = "默认相册"
+    album.description = "乔布圈为新用户自动创建的默认相册"
+    album.save
+  }
+  
   
   
   def self.find_enabled(id)

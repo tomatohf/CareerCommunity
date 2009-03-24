@@ -38,7 +38,7 @@ class ActivitiesController < ApplicationController
                                         :members_info, :cancel, :recover,
                                         :members_master, :add_admin, :del_admin, :edit_master, :update_master,
                                         :invite_contact, :select_contact, :send_contact_invitations]
-  before_filter :check_limited, :only => [:create, :update_image, :join, :quit,
+  before_filter :check_limited, :only => [:create, :update_image, :check_profile, :join, :quit,
                                           :edit, :update, :update_desc, :update_access, :del_member,
                                           :approve_member, :reject_member, :invite_member,
                                           :add_absent, :del_absent, :add_interest, :del_interest,

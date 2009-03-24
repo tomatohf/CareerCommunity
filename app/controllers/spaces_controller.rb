@@ -48,7 +48,7 @@ class SpacesController < ApplicationController
       end
     end
     
-    if @resume_visible
+    if @resume_visible || ApplicationController.helpers.general_admin?(session[:account_id])
       # get required profiles
       @basic_profile = BasicProfile.get_by_account(@account_id)
       @contact_profile = ContactProfile.get_by_account(@account_id)
