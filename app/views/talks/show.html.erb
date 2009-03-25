@@ -217,7 +217,20 @@
 	</div>
 	
 	
-	<div class="community_block">
+	<div style="padding-left: 15px;">
+		
+		<div class="community_title">
+			最新访谈录 ...
+		</div>
+	
+		<div>
+			<% (Talk.get_talk_index_talks(1) || []).each do |talk| %>
+				<div class="community_block">
+					» <a href="/talks/<%= talk.id %>" title="<%= h(extract_text(talk.get_info[:desc])) %>" class="account_nick_link">
+						<%= h(talk.get_title) %></a>
+				</div>
+			<% end %>
+		</div>
 		
 	</div>
 	
