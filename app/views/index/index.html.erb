@@ -320,7 +320,7 @@
 					
 						<% talks.each do |talk| %>
 							<div class="form_info_s talk">
-								<a href="/talks/<%= talk.id %>" target="_blank" title="<%= h(talk.get_info[:desc]) %>">
+								<a href="/talks/<%= talk.id %>" target="_blank" title="<%= h(extract_text(talk.get_info[:desc])) %>">
 									<%= truncate(h(talk.get_title), 22) %></a>
 							
 								<span style="color: #999999;">

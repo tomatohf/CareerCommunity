@@ -12,7 +12,7 @@ atom_feed(:language => "zh_CN", :schema_date => 2009, "xmlns:app" => "http://www
       entry.published(talk.publish_at)
       entry.updated(talk.publish_at)
       
-      entry_content = simple_format(h(talk.get_info[:desc]))
+      entry_content = simple_format(h(extract_text(talk.get_info[:desc])))
       entry_content += %Q!<p><a href="/talks/#{talk.id}">完整阅读这篇访谈录</a></p>!
       
       entry.content(entry_content, :type => "html")

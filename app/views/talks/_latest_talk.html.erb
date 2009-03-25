@@ -9,7 +9,7 @@
 				评论(<%= TalkComment.get_count(latest_talk.id) %>)</a>
 		</div>
 		<div style="padding: 0px 15px; color: #444444; text-indent: 25px;">
-			<%= simple_format(h(latest_talk.get_info[:desc])) %>
+			<%= simple_format(h(extract_text(latest_talk.get_info[:desc]))) %>
 		</div>
 		<div class="align_r" style="padding-right: 20px;">
 			<%= format_date(latest_talk.publish_at) %> 发布
