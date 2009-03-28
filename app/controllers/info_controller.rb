@@ -1,5 +1,9 @@
 class InfoController < ApplicationController
   
+  def index
+    jump_to("/info/about")
+  end
+  
   def newbie
     
   end

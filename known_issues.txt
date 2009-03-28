@@ -1,5 +1,22 @@
-﻿求职信息
-	与 行业/公司/职位/求职流程/求职信息分类 匹配的圈子
+﻿招聘信息
+new recruitment vendors - yingjiesheng.com, guolairen.com, www.xyzp.net(卖我网), http://www.jobyoo.com
+
+处理网申, 在乔布堂网站嵌入网申页面
+
+抓取面经/笔经
+experience auto-vendors - http://www.51mianjing.cn, http://www.miansou.com
+experience manu-vendors - http://www.esojob.com, job_info_source
+
+通用化 select_item 页面
+
+与 行业/公司/职位 匹配的圈子(论坛)
+
+
+根据求职目标列表 生成 日历
+
+
+
+求职信息
 	处理 用户自己添加的信息
 		分享给好友
 	信息显示的页面
@@ -7,12 +24,6 @@
 		单个信息显示页面
 	用户设置 - 显示哪些类别的消息, 哪些模块
 
-
-招聘信息 - 处理网申, 在乔布堂网站嵌入网申页面
-new recruitment vendors - yingjiesheng.com, guolairen.com, www.xyzp.net(卖我网), http://www.jobyoo.com
-
-
-根据求职目标列表 生成 日历
 
 
 Voting
@@ -25,6 +36,12 @@ Voting
 访谈录显示相关文章
 访谈录复杂的文本格式的友好编辑器
 访谈录客户端阅读器? AIR ?
+
+
+
+调整数据库 index, 删除不需要的index以避免影响更新操作的速度. 为慢的查询添加需要的 index
+http://www.geekskillz.com/articles/16
+http://dev.mysql.com/doc/refman/5.1/zh/optimization.html
 
 
 
@@ -172,6 +189,10 @@ Denpendencies:
 	xmpp4r-simple
 	SystemTimer
 	erubis
+	-----
+	
+	[only on production server]
+	scout (sudo gem install scout --source http://gems.scoutapp.com)
 	-----
 	
 ======
