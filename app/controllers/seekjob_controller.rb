@@ -17,7 +17,6 @@ class SeekjobController < ApplicationController
         :title => 8,
         :content => 8,
         :location => 6,
-        :recruitment_type => 6,
         :recruitment_tags_name => 8
       }
     ) if params[:id] == "recruitment"

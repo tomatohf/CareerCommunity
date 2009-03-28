@@ -2,7 +2,7 @@ class Recruitment < ActiveRecord::Base
   
   define_index do
     # fields
-    indexes :title, :content, :location, :recruitment_type
+    indexes :title, :content, :location
     indexes recruitment_tags.name, :as => :recruitment_tags_name
 
     # attributes
@@ -35,6 +35,33 @@ class Recruitment < ActiveRecord::Base
   validates_uniqueness_of :source_link, :case_sensitive => false, :message => "来源链接 已存在, 可能该信息已存在. 试试发布其他信息吧"
   
   
+  
+  Type_fulltime = 1
+  Type_parttime = 2
+  Type_lecture = 3
+  Type_jobfair = 4
+  
+  @@all_recruitment_types = {
+    Type_fulltime => "全职",
+    Type_parttime => "兼职",
+    Type_lecture => "宣讲会",
+    Type_jobfair => "招聘会"
+  }
+  def self.recruitment_types
+    @@all_recruitment_types
+  end
+  
+  def self.recruitment_type_label(type)
+    @@all_recruitment_types[type]
+  end
+  
+  
+  named_scope :fulltime, :conditions => ["recruitment_type = ?", Type_fulltime]
+  named_scope :parttime, :conditions => ["recruitment_type = ?", Type_parttime]
+  named_scope :lecture, :conditions => ["recruitment_type = ?", Type_lecture]
+  named_scope :jobfair, :conditions => ["recruitment_type = ?", Type_jobfair]
+  
+  
   Filter_Out_Key_Words = [
     /hiall/i,
     /utomorrow/i,
@@ -49,7 +76,6 @@ class Recruitment < ActiveRecord::Base
   ]
   
   
-  CKP_types = :recruitment_types
   CKP_locations = :recruitment_locations
   
   FCKP_index_lecture = :fc_index_lecture_recruitments
@@ -57,29 +83,27 @@ class Recruitment < ActiveRecord::Base
   FCKP_index_parttime = :fc_index_parttime_recruitments
   
   after_destroy { |r|
-    self.clear_types_cache
     self.clear_locations_cache
     
     
     self.clear_recruitments_index_cache
     self.clear_recruitments_feed_cache
     
-    self.clear_index_lecture_cache if r.recruitment_type == "宣讲会"
-    self.clear_index_fulltime_cache if r.recruitment_type == "全职"
-    self.clear_index_parttime_cache if r.recruitment_type == "兼职"
+    self.clear_index_lecture_cache if r.recruitment_type == Type_lecture
+    self.clear_index_fulltime_cache if r.recruitment_type == Type_fulltime
+    self.clear_index_parttime_cache if r.recruitment_type == Type_parttime
   }
   
   after_save { |r|
-    self.clear_types_cache
     self.clear_locations_cache
     
     
     self.clear_recruitments_index_cache
     self.clear_recruitments_feed_cache
     
-    self.clear_index_lecture_cache if r.recruitment_type == "宣讲会"
-    self.clear_index_fulltime_cache if r.recruitment_type == "全职"
-    self.clear_index_parttime_cache if r.recruitment_type == "兼职"
+    self.clear_index_lecture_cache if r.recruitment_type == Type_lecture
+    self.clear_index_fulltime_cache if r.recruitment_type == Type_fulltime
+    self.clear_index_parttime_cache if r.recruitment_type == Type_parttime
   }
   
   def self.clear_recruitments_index_cache
@@ -156,20 +180,6 @@ class Recruitment < ActiveRecord::Base
     )
   end
   
-  
-  def self.get_types
-    types = Cache.get(CKP_types)
-    unless types
-      types = self.find(:all, :select => "DISTINCT recruitment_type").collect { |r| r.recruitment_type }.select { |t| t && t !="" }
-      
-      Cache.set(CKP_types, types, Cache_TTL)
-    end
-    types
-  end
-  
-  def self.clear_types_cache
-    Cache.delete(CKP_types)
-  end
   
   def self.get_locations
     locations = Cache.get(CKP_locations)

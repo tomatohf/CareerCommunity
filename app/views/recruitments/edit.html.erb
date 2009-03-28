@@ -52,17 +52,21 @@
 				
 				
 				<div>
-					<label for="recruitment_type">
-				        类型
-				    </label>
-					<input type="text" id="recruitment_type" name="recruitment_type" class="text_field" size="30" value="<%= h(@recruitment.recruitment_type) %>" />
-					
-					&nbsp;&nbsp;&nbsp;
-					
 					<label for="recruitment_location">
 				        地区
 				    </label>
 					<input type="text" id="recruitment_location" name="recruitment_location" class="text_field" size="30" value="<%= h(@recruitment.location) %>" />
+					
+					&nbsp;&nbsp;&nbsp;
+					
+					<label for="recruitment_type">
+				        类型
+				    </label>
+					<select id="recruitment_type" name="recruitment_type" class="dropdown_list">
+						<% Recruitment.recruitment_types.each do |k, v| %>
+							<option value="<%= k %>"<%= %Q! selected="selected"! if k == @recruitment.recruitment_type %>><%= v %></option>
+						<% end %>
+					</select>
 				</div>
 				
 				

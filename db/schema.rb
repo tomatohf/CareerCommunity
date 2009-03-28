@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 24) do
+ActiveRecord::Schema.define(:version => 25) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -937,7 +937,7 @@ ActiveRecord::Schema.define(:version => 24) do
     t.text     "content"
     t.datetime "publish_time"
     t.string   "location"
-    t.string   "recruitment_type"
+    t.integer  "recruitment_type", :limit => 1
     t.string   "source_name"
     t.string   "source_link"
     t.boolean  "active",                         :default => true

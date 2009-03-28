@@ -28,8 +28,8 @@ module RecruitmentVendor
     
     def save_new_messages(start_page = 1, page_count = 1)
       [
-        [list_url_parttime, { :recruitment_type => "兼职", :location => "上海" }],
-        [list_url_fulltime, { :recruitment_type => "全职", :location => "上海" }]
+        [list_url_parttime, { :recruitment_type => Recruitment::Type_parttime, :location => "上海" }],
+        [list_url_fulltime, { :recruitment_type => Recruitment::Type_fulltime, :location => "上海" }]
       ].each { |item|
         init_values = item[1]
         link = item[0]

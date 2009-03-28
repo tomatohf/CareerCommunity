@@ -3,7 +3,7 @@
 <%
 	excerpts = build_excerpts(
 		riddle_client,
-		[h(recruitment.title), sanitize_tinymce(extract_text(recruitment.content)), h(recruitment.location), h(recruitment.recruitment_type), recruitment.recruitment_tags.collect { |tag| h(tag.name) }.join(" - ")],
+		[h(recruitment.title), sanitize_tinymce(extract_text(recruitment.content)), h(recruitment.location), recruitment.recruitment_tags.collect { |tag| h(tag.name) }.join(" - ")],
 		query,
 		"recruitment_core"
 	)
@@ -13,14 +13,13 @@
 	recruitment_title = excerpts[0]
 	recruitment_content = excerpts[1]
 	recruitment_location = excerpts[2]
-	recruitment_type = excerpts[3]
-	recruitment_tag_names = excerpts[4]
+	recruitment_tag_names = excerpts[3]
 %>
 
 <div class="recruitment_container">
 	<div class="recruitment_title">
-		<% if recruitment.recruitment_type && recruitment.recruitment_type != "" %>
-			[<a href="/recruitments/recruitment_type?name=<%= h(recruitment.recruitment_type) %>" class="account_nick_link"><%= recruitment_type %></a>]
+		<% if recruitment.recruitment_type && recruitment.recruitment_type > 0 %>
+			[<a href="/recruitments/recruitment_type?name=<%= recruitment.recruitment_type %>" class="account_nick_link"><%= Recruitment.recruitment_type_label(recruitment.recruitment_type) %></a>]
 		<% end %>
 		<% if recruitment.location && recruitment.location != "" %>
 			[<a href="/recruitments/location?name=<%= h(recruitment.location) %>" class="account_nick_link"><%= recruitment_location %></a>]

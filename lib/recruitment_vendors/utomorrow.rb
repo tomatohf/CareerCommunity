@@ -73,9 +73,9 @@ module RecruitmentVendor
     def save_new_messages(start_page = 1, page_count = 1)
       [
         [list_url_job, {}],
-        [list_url_bbs_parttiime, {:recruitment_type => "兼职"}],
-        [list_url_bbs_intern, {:recruitment_type => "兼职"}],
-        [list_url_bbs_fulltiime, {:recruitment_type => "全职"}]
+        [list_url_bbs_parttiime, {:recruitment_type => Recruitment::Type_parttime}],
+        [list_url_bbs_intern, {:recruitment_type => Recruitment::Type_parttime}],
+        [list_url_bbs_fulltiime, {:recruitment_type => Recruitment::Type_fulltime}]
       ].each { |item|
         init_values = item[1]
         link = item[0]
@@ -188,7 +188,7 @@ module RecruitmentVendor
         init_values = {
           :title => title_a.inner_html,
           :location => location_td.inner_html,
-          :recruitment_type => type_td.inner_html.gsub("实习", "兼职").gsub("家教", "兼职"),
+          :recruitment_type => type_td.inner_html.gsub("实习", "兼职").gsub("家教", "兼职").gsub("兼职", Recruitment::Type_parttime),
           :publish_time => publish_time_td.inner_html
         }
         
@@ -245,7 +245,7 @@ module RecruitmentVendor
     private
     
     def test2
-      test(list_url_bbs_fulltiime, {:recruitment_type => "全职"})
+      test(list_url_bbs_fulltiime, {:recruitment_type => Recruitment::Type_fulltime})
     end
     
     def test1

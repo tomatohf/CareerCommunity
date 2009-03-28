@@ -5,9 +5,8 @@
 		按现有类型查看:
 		&nbsp;
 		<select name="name" class="dropdown_list">
-			<% Recruitment.get_types.each do |t| %>
-				<% type_name = h(t) %>
-				<option value="<%= type_name %>"<%= %Q! selected="selected"! if type_name == catalog_value %>><%= type_name %></option>
+			<% Recruitment.recruitment_types.each do |k, v| %>
+				<option value="<%= k %>"<%= %Q! selected="selected"! if k.to_s == catalog_value %>><%= v %></option>
 			<% end %>
 		</select>
 		&nbsp;

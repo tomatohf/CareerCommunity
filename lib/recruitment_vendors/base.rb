@@ -3,11 +3,13 @@ module RecruitmentVendor
   @@vendors = {
     # "file_name_without_rb" => "class name"
     
-    "sjtubbs" => "Sjtubbs",
-    "utomorrow" => "Utomorrow",
+    #"sjtubbs" => "Sjtubbs",
+    #"utomorrow" => "Utomorrow",
     "yjs54" => "Yjs54",
-    "hiall" => "Hiall"
-    
+    "hiall" => "Hiall",
+    "guolairen" => "Guolairen",
+    "maiwo" => "Maiwo",
+    "yingjiesheng" => "Yingjiesheng"
   }
   
   

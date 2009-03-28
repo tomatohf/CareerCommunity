@@ -55,9 +55,9 @@ module RecruitmentVendor
 
     def save_new_messages(start_page = 1, page_count = 1)
       [
-        [list_url_lecture, "宣讲会"],
-        [list_url_parttime, "兼职"],
-        [list_url_fulltime, "全职"]
+        [list_url_lecture, Recruitment::Type_lecture],
+        [list_url_parttime, Recruitment::Type_parttime],
+        [list_url_fulltime, Recruitment::Type_fulltime]
       ].each { |item|
         init_values = { :recruitment_type => item[1] }
         link = item[0]

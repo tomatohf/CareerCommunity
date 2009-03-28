@@ -78,9 +78,9 @@
 	<h2><%= page_title %></h2>
 	
 	<div class="community_block align_r">
-		<% if @recruitment.recruitment_type && @recruitment.recruitment_type != "" %>
+		<% if @recruitment.recruitment_type && @recruitment.recruitment_type > 0 %>
 			类型:
-			<a href="/recruitments/recruitment_type?name=<%= h(@recruitment.recruitment_type) %>" class="account_nick_link"><%= h(@recruitment.recruitment_type) %></a>
+			<a href="/recruitments/recruitment_type?name=<%= @recruitment.recruitment_type %>" class="account_nick_link"><%= Recruitment.recruitment_type_label(@recruitment.recruitment_type) %></a>
 		
 			&nbsp;
 			|
