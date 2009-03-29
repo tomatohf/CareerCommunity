@@ -64,7 +64,8 @@ module RecruitmentVendor
     
     def troublesome_attributes_in_content
       [
-        "class"
+        "class",
+        "width"
       ]
     end
     

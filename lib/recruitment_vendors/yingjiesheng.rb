@@ -21,7 +21,7 @@ module RecruitmentVendor
     end
     
     def list_url_lecture
-      ""
+      "http://my.yingjiesheng.com/index.php/personal/xjhinfo.htm"
     end
     
     def list_url_jobfair
@@ -35,6 +35,8 @@ module RecruitmentVendor
           fulltime_page_url(link, page)
         elsif link.include?("parttime")
           parttime_page_url(link, page)
+        elsif link.include?("xjhinfo")
+          lecture_page_url(link, page)
         else
           page_url(link, page)
         end
@@ -48,6 +50,10 @@ module RecruitmentVendor
     
     def parttime_page_url(link, page)
       link.gsub("parttime_1", "parttime_#{page}")
+    end
+    
+    def lecture_page_url(link, page)
+      "#{link}/?page=#{page}"
     end
     
     def page_url(link, page)
@@ -97,7 +103,7 @@ module RecruitmentVendor
         link = item[0]
         new_links.merge!(
           urls(link, start_page, page_count).collect { |url|
-            get_maiwo_new_links(url)
+            get_yingjiesheng_new_links(url)
           }.flatten.to_hash_keys{
             init_values
           }
@@ -108,17 +114,14 @@ module RecruitmentVendor
     end
 
     def save_new_messages(start_page = 1, page_count = 1)
-      # adjust since yingjiesheng has fewer items per page
-      adjusted_page_count = page_count * 7
-      
       [
         [list_url_parttime, Recruitment::Type_parttime],
         [list_url_fulltime, Recruitment::Type_fulltime]
       ].each { |item|
         init_values = { :recruitment_type => item[1] }
         link = item[0]
-        urls(link, start_page, adjusted_page_count).each { |url|
-          gotten_new_links = get_maiwo_new_links(url)
+        urls(link, start_page, page_count).each { |url|
+          gotten_new_links = get_yingjiesheng_new_links(url)
           
           existing_links = Recruitment.find(:all, :conditions => ["source_link in (?)", gotten_new_links]).collect { |r| r.source_link }
           non_existing_links = gotten_new_links.delete_if { |l| existing_links.include?(l) }
@@ -130,17 +133,96 @@ module RecruitmentVendor
           end
         }
       }
+      
+      # handle lecture, since it's different with other recruitment type
+      urls(list_url_lecture, start_page, page_count).each { |url|
+        gotten_new_links = get_yingjiesheng_lecture_new_links(url)
+        
+        existing_links = Recruitment.find(:all, :conditions => ["source_link in (?)", gotten_new_links]).collect { |r| r.source_link }
+        non_existing_links = gotten_new_links.delete_if { |l| existing_links.include?(l) }
+        
+        non_existing_links.each do |msg_link|
+          puts "retrieving message from link: " + msg_link.inspect
+          recruitment = get_recruitment(msg_link, { :recruitment_type => Recruitment::Type_lecture })
+          recruitment.save if recruitment
+        end
+      }
     end
     
-    def get_maiwo_new_links(url)
+    def get_yingjiesheng_new_links(url)
       doc = get_doc_from_url(url, false)
       
       return [] if doc.nil?
       
-      doc.search("//div[@class='job_item']").collect { |div|
-        left_divs = div.search("//div[@class='left']")
-        left_divs.size > 0 ? (root_url + left_divs[0].search("//a")[0]["href"].strip) : nil
+      list_xpath = "//div[@class='jobList']/table"
+      lists = doc.search(list_xpath)
+      
+      return [] if lists.size < 1
+      
+      trs = lists[0].search("//tr")
+      trs.collect { |tr|
+        link = nil
+        tds = tr.search("//td")
+        
+        if tds.size > 0
+          td = tds[0]
+          
+          as = td.search("//a")
+          
+          if as.size > 0
+            a = as[0]
+            
+            href = (a["href"] || "").strip
+            href = (root_url + href) unless (href[0, 4] == "http")
+
+            link = href if href =~ /jobshow_\d+.html/i
+          end
+        end
+        
+        link
       }.compact
+    end
+    
+    def get_yingjiesheng_lecture_new_links(url)
+      doc = get_doc_from_url(url, false)
+      
+      return [] if doc.nil?
+      
+      list_xpath = "//table[@class='campusTalk']"
+      tables = doc.search(list_xpath)
+      
+      return [] unless tables.size > 1
+      
+      # remove table header row
+      tables.delete_at(0)
+      
+      tables.collect { |table|
+        
+        trs = table.search("//tr")
+        
+        trs.collect { |tr|
+          link = nil
+          tds = tr.search("//td")
+
+          if tds.size > 5
+            td = tds[5]
+
+            as = td.search("//a")
+
+            if as.size > 0
+              a = as[0]
+
+              href = (a["href"] || "").strip
+              href = (root_url + href) unless (href[0, 4] == "http")
+
+              link = href if href =~ /jobshow_\d+.html/i
+            end
+          end
+
+          link
+        }
+        
+      }.flatten.compact
     end
     
     def build_recruitment(link, init_values = {})
@@ -152,24 +234,60 @@ module RecruitmentVendor
       init_values.each_pair { |key, value| r.send("#{key}=", value) }
       
 
-      content_xpath = "//div[@id='item_content']"
-      content_div = doc.search(content_xpath)
+      content_xpath = "//div[@class='jobDetails']"
+      job_details = doc.search(content_xpath)
       
-      center = content_div.search("/center")[0]
-      center_html = center.inner_html;
-      the_times = center_html.scan(/\d\d\d\d-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}/)
+      return nil unless job_details.size > 0
+      
+      content_div = job_details[0]
+      
+      h3s = content_div.search("/h3[@class='jobTitle']")
+      
+      return nil unless h3s.size > 0
+      
+      h3 = h3s[0]
+      
+      date_span = h3.search("/span[@class='memo']")[0]
+      
+      the_times = date_span.inner_html.scan(/\d\d\d\d-\d{1,2}-\d{1,2}/)
       r.publish_time = the_times.size > 0 ? the_times[0] : DateTime.now
       
-      title_elements = content_div.search("//h1")
-      if title_elements.size > 0
-        h1_element = title_elements[0]
+      date_span.search("").remove
+      
+      r.title = h3.inner_html.strip
+      
+      
+      info_div = content_div.search("/div[@class='basicInfo']")[0]
+      info_lis = info_div.search("//li")
+      location_li = info_lis[0]
+      location_label = location_li.search("/strong")[0]
+      location_label.search("").remove
+      location_text = location_li.inner_html.strip || ""
+      r.location = location_text.split(/\s/)[0]
+      
+      job_name_li = info_lis[1]
+      job_name = job_name_li.search("/span[@class='jobName']")[0].inner_html
+      
+      
+      content_container = content_div.search("//div[@class='jobContent']")[0].search("/span/div")[0]
+      
+      content_ps = content_container.search("/p")
+      if content_ps.size > 0
+        content_ps.delete_if { |p|
+          as = p.search("/a")
+          (as.size == 1) && as[0]["href"].include?("yingjiesheng")
+        }
+      
+        r.content = content_ps.collect{ |p| p.to_html }.join("\n")
+      else
+        content_tables = content_container.search("/div[@id='job_txt']")
         
-        r.title = h1_element.inner_html
-        
-        h1_element.search("").remove
+        if content_tables.size > 0
+          r.content = content_tables[0].inner_html
+        end
       end
       
-      r.content = content_div.search("//div[@id='contentadad']")[0].inner_html
+      return nil unless r.content && r.content.strip != ""
       
       
       # add the fixed attributes
@@ -178,8 +296,7 @@ module RecruitmentVendor
       
       
       # tags
-      tag_div = doc.search("//div[@class='tag']")
-      tag_text = tag_div.search("//a").collect { |tag_a| tag_a.inner_html }
+      tag_text = job_name.split(/\s|、/)
       tag_text.uniq!
       tag_text.each { |tag| r.recruitment_tags << RecruitmentTag.get_tag(tag) if tag && (tag.strip != "") }
       

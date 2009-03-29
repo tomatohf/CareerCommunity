@@ -162,7 +162,10 @@ module RecruitmentVendor
             li.search("/a").each{ |a|
               locations << a.inner_html unless a.inner_html =~ /^\s*$/im
             }
-            r.location = locations.join(" ")
+            
+            # only use the first the location
+            # r.location = locations.join(" ")
+            r.location = locations[0] if (locations.size > 0)
           when /.*?发布时间.*?\d{4}-\d{1,2}-\d{1,2}.*/im
             publish_time = li.inner_html.scan(/\d{4}-\d{1,2}-\d{1,2}/)[0]
             r.publish_time = DateTime.parse(publish_time) unless publish_time.nil?

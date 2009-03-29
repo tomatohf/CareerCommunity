@@ -13,13 +13,13 @@ class RecruitmentsController < ApplicationController
   ACKP_recruitments_index = :ac_recruitments_index
   ACKP_recruitments_feed = :ac_recruitments_feed
   
-  caches_action :index,
-    :cache_path => Proc.new { |controller|
-      page = controller.params[:page]
-      page = 1 unless page =~ /\d+/
+  #caches_action :index,
+  #  :cache_path => Proc.new { |controller|
+  #    page = controller.params[:page]
+  #    page = 1 unless page =~ /\d+/
 
-      "#{ACKP_recruitments_index}_#{page}"
-    }
+  #    "#{ACKP_recruitments_index}_#{page}"
+  #  }
     
   caches_action :feed,
     :cache_path => Proc.new { |controller|

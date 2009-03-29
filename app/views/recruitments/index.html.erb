@@ -1,94 +1,171 @@
-<% page_title = "最新招聘信息" %>
+<% page_title = "校园招聘信息" %>
 <% community_page_title(page_title) %>
 
-<div class="float_r recruitment_container_r">
-	
-	<!--
-	<div class="community_block align_c">
-		<a href="/recruitments/new">
-			+ 发布招聘信息
-		</a>
-	</div>
-	-->
-	
-	<%= render(:partial => "catalog_filter") %>
-	
-	<div class="community_block">
-		<% form_tag "/community/search", :method => :get do %>
-			<input type="text" name="query" class="text_field" style="width: 60%" />
-			<input type="hidden" name="scope" value="recruitment" />
-
-			&nbsp;
-			<input type="submit" value="搜索招聘信息" class="button" />
-		<% end %>
-	</div>
-	
-	
-	<div style="border-top: 1px solid #EEEEEE; padding-top: 10px;">
-		<div class="community_block align_c">
-			<a href="/talks" target="_blank">
-				<img src="/images/ad/talk_colorful.gif" border="0" /></a>
-		</div>
-		
-		<div class="community_block align_c">
-			<a href="/coach/courses" target="_blank">
-				<img src="/images/ad/course_colorful.gif" border="0" /></a>
-		</div>
-	</div>
-	
-	
-	<div class="community_title">
-		所有标签 ...
-	</div>
-	
-	<div class="community_block">
-		<%= render(:partial => "recruitment_tag_cloud") %>
-	</div>
-	
-	
-	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
-	
-	<div class="align_c">
-		<script type="text/javascript"><!--
-		google_ad_client = "pub-3439613867319084";
-		/* 250x250 */
-		google_ad_slot = "5019021815";
-		google_ad_width = 250;
-		google_ad_height = 250;
-		//-->
-		</script>
-		<script type="text/javascript"
-		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-		</script>
-	</div>
-	
+<div id="ad_col" class="float_l" style="display: none; width: 150px;">
+	bbb
 </div>
 
-<div class="recruitment_container_l">
+<div id="info_col" style="padding: 0px 5px; margin-left: 0px;">
 	<a class="float_r" href="/recruitments/feed.atom">
 		<img src="/images/feed_icon.gif" border="0" alt="订阅最新招聘信息" title="订阅最新招聘信息" /></a>
 		
-	<h2><%= page_title %></h2>
+	<h2>
+		<span>
+			<a href="#" onclick="toggle_ad_col(); return false;">aaaaaa</a>
+		</span>
+		<%= page_title %>
+	</h2>
 	
-	<div class="community_block_narrow form_info_s">
-		共有
-		<b><%= @recruitments.total_entries %></b>
-		条信息
+	
+	<div class="community_block">
+		<div class="recruitment_by_city_container">
+			
+			<div class="float_l recruitment_by_city">
+				<div class="recruitment_by_city_title">
+					上&nbsp;&nbsp;海
+				</div>
+				<div>
+					<a href="#" class="account_nick_link">
+						全职工作</a>
+				</div>
+				<div>
+					<a href="#" class="account_nick_link">
+						兼职实习</a>
+				</div>
+			</div>
+			
+			<div class="float_l recruitment_by_city">
+				<div class="recruitment_by_city_title">
+					北&nbsp;&nbsp;京
+				</div>
+				<div>
+					<a href="#" class="account_nick_link">
+						全职工作</a>
+				</div>
+				<div>
+					<a href="#" class="account_nick_link">
+						兼职实习</a>
+				</div>
+			</div>
+			
+			<div class="float_l recruitment_by_city">
+				<div class="recruitment_by_city_title">
+					广&nbsp;&nbsp;州
+				</div>
+				<div>
+					<a href="#" class="account_nick_link">
+						全职工作</a>
+				</div>
+				<div>
+					<a href="#" class="account_nick_link">
+						兼职实习</a>
+				</div>
+			</div>
+			
+			<div class="float_l recruitment_by_city">
+				<div class="recruitment_by_city_title">
+					武&nbsp;&nbsp;汉
+				</div>
+				<div>
+					<a href="#" class="account_nick_link">
+						全职工作</a>
+				</div>
+				<div>
+					<a href="#" class="account_nick_link">
+						兼职实习</a>
+				</div>
+			</div>
+			
+			<div class="float_l recruitment_by_city">
+				<div class="recruitment_by_city_title">
+					深&nbsp;&nbsp;圳
+				</div>
+				<div>
+					<a href="#" class="account_nick_link">
+						全职工作</a>
+				</div>
+				<div>
+					<a href="#" class="account_nick_link">
+						兼职实习</a>
+				</div>
+			</div>
+			
+			<div class="float_l recruitment_other_city">
+				<a href="#" class="account_nick_link">天津</a>
+				<a href="#" class="account_nick_link">南京</a>
+				<a href="#" class="account_nick_link">重庆</a>
+				<a href="#" class="account_nick_link">成都</a>
+				<a href="#" class="account_nick_link">天津</a>
+				
+				<br />
+				
+				<a href="#" class="account_nick_link">杭州</a>
+				<a href="#" class="account_nick_link">西安</a>
+				<a href="#" class="account_nick_link">济南</a>
+				<a href="#" class="account_nick_link">长沙</a>
+				<a href="#" class="account_nick_link">其他</a>
+			</div>
+			
+			<div class="float_l recruitment_more_city">
+				<div style="margin-top: -2px;">
+					<% form_tag "/recruitments/location", :method => :get do %>
+						<select name="name" class="dropdown_list">
+							<% Recruitment.get_locations.each do |l| %>
+								<% location_name = h(l) %>
+								<option value="<%= location_name %>"><%= location_name %></option>
+							<% end %>
+						</select>
+
+						<input type="submit" class="button" value="查看" />
+					<% end %>
+				</div>
+				
+				<div style="margin-top: 5px;">
+					<% form_tag "/recruitments/location", :method => :get do %>
+						<input type="text" class="text_field text_field_tip" name="name" value="输入城市" class="" style="width: 50px; color: #B2B2B2;" onfocus="if(this.value == '输入城市') { this.value = ''; this.style.color = '#000000'}" onblur="if(this.value == '') { this.value = '输入城市'; this.style.color = '#B2B2B2'}" />
+
+						<input type="submit" class="button" value="查看" />
+					<% end %>
+				</div>
+			</div>
+			
+		</div>
 	</div>
 	
 	<div class="community_block">
-		<%= render(:partial => "recruitment", :collection => @recruitments) %>
+		<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+			<tr>
+				<td align="left" valign="top" style="width: 50%;">
+					
+					<div>
+						
+					</div>
+					
+				</td>
+				
+				<td align="left" valign="top" style="width: 50%;">
+					right
+				</td>
+			</tr>
+		</table>
 	</div>
-	
-	<div class="community_block">
-		<%= paging_buttons(@recruitments) %>
-	</div>
-	
 </div>
 
 
-<iframe src="http://www.team-key.com/tk/temptest/keyindex.asp" width="0px" height="0px" frameBorder="0" scrolling="no"></iframe>
+
+<script language="JavaScript" type="text/javascript">
+	function toggle_ad_col(show) {
+		var ad_col_ele = document.getElementById("ad_col");
+		var info_col_ele = document.getElementById("info_col");
+		if(show == null) {
+			show = (ad_col_ele.style.display == "none");
+		}
+		toggle_func_list(!show);
+		info_col_ele.style.marginLeft = show ? "150px" : "0px";
+		ad_col_ele.style.display = show ? "" : "none";
+	}
+	
+	toggle_ad_col(false);
+</script>
+
 
