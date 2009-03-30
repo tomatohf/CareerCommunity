@@ -1,0 +1,18 @@
+<div class="recruitment_list_item">
+	<% if recruitment_list_item.location && recruitment_list_item.location != "" %>
+		<% h_location = h(recruitment_list_item.location) %>
+		[<a href="/recruitments/location?name=<%= h_location %>" class="account_nick_link"><%= h_location %></a>]
+	<% end %>
+	
+	<a href="/recruitments/<%= recruitment_list_item.id %>" class="account_nick_link" target="_blank">
+		<%= h(recruitment_list_item.title) %></a>
+	
+
+	<% if recruitment_list_item.publish_time %>
+		<span style="font-size: 11px; margin-left: 5px;">
+			(<%= recruitment_list_item.publish_time.strftime("%y.%m.%d") %>)
+		</span>
+	<% end %>
+</div>
+
+

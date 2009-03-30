@@ -1,0 +1,193 @@
+<div class="community_block">
+	<div class="recruitment_nav">
+		<img src="/images/recruitments/nav_icon.gif" border="0" />
+		<a href="/recruitments" class="account_nick_link">
+			校园招聘信息首页</a>
+		|
+		<a href="/recruitments/recruitment_type/<%= Recruitment::Type_fulltime %>" class="account_nick_link">
+			全职招聘信息</a>
+		|
+		<a href="/recruitments/recruitment_type/<%= Recruitment::Type_parttime %>" class="account_nick_link">
+			兼职实习机会</a>
+		|	
+		<a href="/recruitments/recruitment_type/<%= Recruitment::Type_lecture %>" class="account_nick_link">
+			校园宣讲会</a>
+		|	
+		<a href="/recruitments/recruitment_type/<%= Recruitment::Type_jobfair %>" class="account_nick_link">
+			现场招聘会</a>
+		|	
+		<a href="/recruitments/tag" class="account_nick_link">
+			招聘信息标签</a>
+		|	
+		<a href="/recruitments/search" class="account_nick_link">
+			搜索招聘职位</a>
+	</div>
+</div>
+
+
+<div class="community_block">
+	<div class="recruitment_by_city_container">
+		
+		<div class="float_l recruitment_by_city">
+			<div class="recruitment_by_city_title">
+				上&nbsp;&nbsp;海
+			</div>
+			<div>
+				<a href="/recruitments/location?name=上海" class="account_nick_link">
+					全职工作</a>
+			</div>
+			<div>
+				<a href="/recruitments/location?name=上海&rt=2" class="account_nick_link">
+					兼职实习</a>
+			</div>
+		</div>
+		
+		<div class="float_l recruitment_by_city">
+			<div class="recruitment_by_city_title">
+				北&nbsp;&nbsp;京
+			</div>
+			<div>
+				<a href="/recruitments/location?name=北京" class="account_nick_link">
+					全职工作</a>
+			</div>
+			<div>
+				<a href="/recruitments/location?name=北京&rt=2" class="account_nick_link">
+					兼职实习</a>
+			</div>
+		</div>
+		
+		<div class="float_l recruitment_by_city">
+			<div class="recruitment_by_city_title">
+				广&nbsp;&nbsp;州
+			</div>
+			<div>
+				<a href="/recruitments/location?name=广州" class="account_nick_link">
+					全职工作</a>
+			</div>
+			<div>
+				<a href="/recruitments/location?name=广州&rt=2" class="account_nick_link">
+					兼职实习</a>
+			</div>
+		</div>
+		
+		<div class="float_l recruitment_by_city">
+			<div class="recruitment_by_city_title">
+				武&nbsp;&nbsp;汉
+			</div>
+			<div>
+				<a href="/recruitments/location?name=武汉" class="account_nick_link">
+					全职工作</a>
+			</div>
+			<div>
+				<a href="/recruitments/location?name=武汉&rt=2" class="account_nick_link">
+					兼职实习</a>
+			</div>
+		</div>
+		
+		<div class="float_l recruitment_by_city">
+			<div class="recruitment_by_city_title">
+				深&nbsp;&nbsp;圳
+			</div>
+			<div>
+				<a href="/recruitments/location?name=深圳" class="account_nick_link">
+					全职工作</a>
+			</div>
+			<div>
+				<a href="/recruitments/location?name=深圳&rt=2" class="account_nick_link">
+					兼职实习</a>
+			</div>
+		</div>
+		
+		<div class="float_l recruitment_other_city">
+			<a href="/recruitments/location?name=天津" class="account_nick_link">天津</a>
+			<a href="/recruitments/location?name=南京" class="account_nick_link">南京</a>
+			<a href="/recruitments/location?name=重庆" class="account_nick_link">重庆</a>
+			<a href="/recruitments/location?name=成都" class="account_nick_link">成都</a>
+			<a href="/recruitments/location?name=苏州" class="account_nick_link">苏州</a>
+			
+			<br />
+			
+			<a href="/recruitments/location?name=杭州" class="account_nick_link">杭州</a>
+			<a href="/recruitments/location?name=西安" class="account_nick_link">西安</a>
+			<a href="/recruitments/location?name=济南" class="account_nick_link">济南</a>
+			<a href="/recruitments/location?name=长沙" class="account_nick_link">长沙</a>
+			<a href="/recruitments/location?name=合肥" class="account_nick_link">合肥</a>
+		</div>
+		
+		<div class="float_l recruitment_more_city">
+			<div style="margin-top: -2px;">
+				<% form_tag "/recruitments/location", :method => :get do %>
+					<label for="more_location_name">
+						更多:
+					</label>
+					<select id="more_location_name" name="name" class="dropdown_list">
+						<% Recruitment.get_locations.each do |l| %>
+							<% location_name = h(l) %>
+							<option value="<%= location_name %>"><%= location_name %></option>
+						<% end %>
+					</select>
+				<% end %>
+			</div>
+			
+			<div style="margin-top: 5px;">
+				<% form_tag "/recruitments/location", :method => :get do %>
+					<input type="text" class="text_field text_field_tip" name="name" value="或输入城市名称" class="" style="width: 100px; color: #B2B2B2;" onfocus="if(this.value == '或输入城市名称') { this.value = ''; this.style.color = '#000000'}" onblur="if(this.value == '') { this.value = '或输入城市名称'; this.style.color = '#B2B2B2'}" />
+				<% end %>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+
+<div class="community_block">
+	<div class="float_r">
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-3439613867319084";
+		/* 468x60 */
+		google_ad_slot = "0991456068";
+		google_ad_width = 468;
+		google_ad_height = 60;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+	</div>
+	
+	<div>
+		<% form_tag "/recruitments/search", :method => :get do %>
+			<input type="text" name="query" class="text_field" style="width: 150px;" />
+
+			<select name="recruitment_type" class="dropdown_list">
+				<option value="">信息类型</option>
+
+				<% Recruitment.recruitment_types.each do |k, v| %>
+					<option value="<%= k %>"><%= v %></option>
+				<% end %>
+			</select>
+			
+			<input type="submit" value="搜索职位" class="button" />
+		<% end %>
+	</div>
+	
+	<div style="margin-top: 10px; word-spacing: 10px;">
+		<!--
+		<a href="#" target="_blank">
+			找面经</a>
+		-->
+		
+		<a href="/talks" target="_blank">
+			找职业信息访谈录</a>
+		
+		<!--	
+		<a href="#" target="_blank">
+			管理求职目标</a>
+			
+		<a href="#" target="_blank">
+			求职网址导航</a>
+		-->
+	</div>
+</div>
+
+

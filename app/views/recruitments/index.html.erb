@@ -1,171 +1,282 @@
 <% page_title = "校园招聘信息" %>
 <% community_page_title(page_title) %>
 
-<div id="ad_col" class="float_l" style="display: none; width: 150px;">
-	bbb
+<div id="ad_col" class="float_l left_ad_container" style="display: none;">
+	<div class="align_c">
+		<div>
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-3439613867319084";
+			/* 120x90 */
+			google_ad_slot = "9302035199";
+			google_ad_width = 120;
+			google_ad_height = 90;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+		</div>
+
+		<br />
+
+		<div>
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-3439613867319084";
+			/* 120x600 */
+			google_ad_slot = "0527158653";
+			google_ad_width = 120;
+			google_ad_height = 600;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+		</div>
+
+		<br />
+
+		<div>
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-3439613867319084";
+			/* 120x90 */
+			google_ad_slot = "9302035199";
+			google_ad_width = 120;
+			google_ad_height = 90;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+		</div>
+
+		<br />
+
+		<div>
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-3439613867319084";
+			/* 120x600 */
+			google_ad_slot = "0527158653";
+			google_ad_width = 120;
+			google_ad_height = 600;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+		</div>
+	</div>
 </div>
 
-<div id="info_col" style="padding: 0px 5px; margin-left: 0px;">
+<div id="content_col" class="right_content_container">
 	<a class="float_r" href="/recruitments/feed.atom">
 		<img src="/images/feed_icon.gif" border="0" alt="订阅最新招聘信息" title="订阅最新招聘信息" /></a>
 		
 	<h2>
-		<span>
-			<a href="#" onclick="toggle_ad_col(); return false;">aaaaaa</a>
-		</span>
+		<a href="#" onclick="toggle_ad_col(); return false;" title="显示/隐藏功能列表栏">
+			<img src="/images/recruitments/toggle_ad_icon.gif" border="0" alt="显示/隐藏功能列表栏" /></a>
+
 		<%= page_title %>
 	</h2>
 	
 	
-	<div class="community_block">
-		<div class="recruitment_by_city_container">
-			
-			<div class="float_l recruitment_by_city">
-				<div class="recruitment_by_city_title">
-					上&nbsp;&nbsp;海
-				</div>
-				<div>
-					<a href="#" class="account_nick_link">
-						全职工作</a>
-				</div>
-				<div>
-					<a href="#" class="account_nick_link">
-						兼职实习</a>
-				</div>
-			</div>
-			
-			<div class="float_l recruitment_by_city">
-				<div class="recruitment_by_city_title">
-					北&nbsp;&nbsp;京
-				</div>
-				<div>
-					<a href="#" class="account_nick_link">
-						全职工作</a>
-				</div>
-				<div>
-					<a href="#" class="account_nick_link">
-						兼职实习</a>
-				</div>
-			</div>
-			
-			<div class="float_l recruitment_by_city">
-				<div class="recruitment_by_city_title">
-					广&nbsp;&nbsp;州
-				</div>
-				<div>
-					<a href="#" class="account_nick_link">
-						全职工作</a>
-				</div>
-				<div>
-					<a href="#" class="account_nick_link">
-						兼职实习</a>
-				</div>
-			</div>
-			
-			<div class="float_l recruitment_by_city">
-				<div class="recruitment_by_city_title">
-					武&nbsp;&nbsp;汉
-				</div>
-				<div>
-					<a href="#" class="account_nick_link">
-						全职工作</a>
-				</div>
-				<div>
-					<a href="#" class="account_nick_link">
-						兼职实习</a>
-				</div>
-			</div>
-			
-			<div class="float_l recruitment_by_city">
-				<div class="recruitment_by_city_title">
-					深&nbsp;&nbsp;圳
-				</div>
-				<div>
-					<a href="#" class="account_nick_link">
-						全职工作</a>
-				</div>
-				<div>
-					<a href="#" class="account_nick_link">
-						兼职实习</a>
-				</div>
-			</div>
-			
-			<div class="float_l recruitment_other_city">
-				<a href="#" class="account_nick_link">天津</a>
-				<a href="#" class="account_nick_link">南京</a>
-				<a href="#" class="account_nick_link">重庆</a>
-				<a href="#" class="account_nick_link">成都</a>
-				<a href="#" class="account_nick_link">天津</a>
-				
-				<br />
-				
-				<a href="#" class="account_nick_link">杭州</a>
-				<a href="#" class="account_nick_link">西安</a>
-				<a href="#" class="account_nick_link">济南</a>
-				<a href="#" class="account_nick_link">长沙</a>
-				<a href="#" class="account_nick_link">其他</a>
-			</div>
-			
-			<div class="float_l recruitment_more_city">
-				<div style="margin-top: -2px;">
-					<% form_tag "/recruitments/location", :method => :get do %>
-						<select name="name" class="dropdown_list">
-							<% Recruitment.get_locations.each do |l| %>
-								<% location_name = h(l) %>
-								<option value="<%= location_name %>"><%= location_name %></option>
-							<% end %>
-						</select>
-
-						<input type="submit" class="button" value="查看" />
-					<% end %>
-				</div>
-				
-				<div style="margin-top: 5px;">
-					<% form_tag "/recruitments/location", :method => :get do %>
-						<input type="text" class="text_field text_field_tip" name="name" value="输入城市" class="" style="width: 50px; color: #B2B2B2;" onfocus="if(this.value == '输入城市') { this.value = ''; this.style.color = '#000000'}" onblur="if(this.value == '') { this.value = '输入城市'; this.style.color = '#B2B2B2'}" />
-
-						<input type="submit" class="button" value="查看" />
-					<% end %>
-				</div>
-			</div>
-			
-		</div>
-	</div>
+	
+	<%= render :partial => "top_nav" %>
+	
 	
 	<div class="community_block">
 		<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
 			<tr>
-				<td align="left" valign="top" style="width: 50%;">
+				<td align="left" valign="top" style="width: 50%; padding-right: 5px;">
 					
-					<div>
+					<div class="recruitment_list_container">
+						<div class="recruitment_list_title">
+							<a class="float_r account_nick_link" href="/recruitments/recruitment_type/<%= Recruitment::Type_fulltime %>">
+								更多 »</a>
+							
+							<strong>最新校园全职招聘信息</strong>
+						</div>
 						
+						
+						<% cache(Recruitment::FCKP_community_index_fulltime) do %>
+							<%
+								frs = Recruitment.find(
+									:all,
+							      	:limit => 100,
+									:select => "id, title, publish_time, location, recruitment_type",
+									:conditions => ["recruitment_type = ?", Recruitment::Type_fulltime],
+									:order => "publish_time DESC"
+								)
+							%>
+						
+							<%= render :partial => "recruitment_list_item", :collection => frs %>
+						<% end %>
+						
+						
+						<div class="community_block align_r" style="border-top: dashed 1px #DADADA;">
+							<% form_tag "/recruitments/search", :method => :get do %>
+								<a class="float_l" href="/recruitments/recruitment_type/<%= Recruitment::Type_fulltime %>">
+									更多全职招聘信息 »</a>
+									
+								<input type="text" name="query" class="text_field" style="width: 120px;" />
+								<input type="hidden" name="recruitment_type" value="<%= Recruitment::Type_fulltime %>" />
+								<input type="submit" value="搜索全职职位" class="button" />
+							<% end %>
+						</div>
 					</div>
 					
 				</td>
 				
-				<td align="left" valign="top" style="width: 50%;">
-					right
+				<td align="left" valign="top" style="width: 50%; padding-left: 5px;">
+					<div class="recruitment_list_container">
+						<div class="recruitment_list_title">
+							<a class="float_r account_nick_link" href="/recruitments/recruitment_type/<%= Recruitment::Type_lecture %>">
+								更多 »</a>
+							
+							<strong>最新校园宣讲会信息</strong>
+						</div>
+						<% cache(Recruitment::FCKP_community_index_lecture) do %>
+							<%
+								lrs = Recruitment.find(
+									:all,
+							      	:limit => 5,
+									:select => "id, title, publish_time, location, recruitment_type",
+									:conditions => ["recruitment_type = ?", Recruitment::Type_lecture],
+									:order => "publish_time DESC"
+								)
+							%>
+							<%= render :partial => "recruitment_list_item", :collection => lrs %>
+						<% end %>
+						<div class="community_block align_r" style="border-top: dashed 1px #DADADA;">
+							<% form_tag "/recruitments/search", :method => :get do %>
+								<a class="float_l" href="/recruitments/recruitment_type/<%= Recruitment::Type_lecture %>">
+									更多宣讲会信息 »</a>
+									
+								<input type="text" name="query" class="text_field" style="width: 120px;" />
+								<input type="hidden" name="recruitment_type" value="<%= Recruitment::Type_lecture %>" />
+								<input type="submit" value="搜索宣讲会信息" class="button" />
+							<% end %>
+						</div>
+						
+						
+						
+						<div class="recruitment_list_title">
+							<a class="float_r account_nick_link" href="/recruitments/recruitment_type/<%= Recruitment::Type_jobfair %>">
+								更多 »</a>
+							
+							<strong>最新招聘会信息</strong>
+						</div>
+						<% cache(Recruitment::FCKP_community_index_jobfair) do %>
+							<%
+								jrs = Recruitment.find(
+									:all,
+							      	:limit => 5,
+									:select => "id, title, publish_time, location, recruitment_type",
+									:conditions => ["recruitment_type = ?", Recruitment::Type_jobfair],
+									:order => "publish_time DESC"
+								)
+							%>
+							<%= render :partial => "recruitment_list_item", :collection => jrs %>
+						<% end %>
+						<div class="community_block align_r" style="border-top: dashed 1px #DADADA;">
+							<% form_tag "/recruitments/search", :method => :get do %>
+								<a class="float_l" href="/recruitments/recruitment_type/<%= Recruitment::Type_jobfair %>">
+									更多招聘会信息 »</a>
+									
+								<input type="text" name="query" class="text_field" style="width: 120px;" />
+								<input type="hidden" name="recruitment_type" value="<%= Recruitment::Type_jobfair %>" />
+								<input type="submit" value="搜索招聘会信息" class="button" />
+							<% end %>
+						</div>
+						
+						
+						
+						<div class="recruitment_list_title">
+							<a class="float_r account_nick_link" href="/recruitments/recruitment_type/<%= Recruitment::Type_parttime %>">
+								更多 »</a>
+							
+							<strong>最新校园兼职实习信息</strong>
+						</div>
+						<% cache(Recruitment::FCKP_community_index_parttime) do %>
+							<%
+								prs = Recruitment.find(
+									:all,
+							      	:limit => 85,
+									:select => "id, title, publish_time, location, recruitment_type",
+									:conditions => ["recruitment_type = ?", Recruitment::Type_parttime],
+									:order => "publish_time DESC"
+								)
+							%>
+							<%= render :partial => "recruitment_list_item", :collection => prs %>
+						<% end %>
+						<div class="community_block align_r" style="border-top: dashed 1px #DADADA;">
+							<% form_tag "/recruitments/search", :method => :get do %>
+								<a class="float_l" href="/recruitments/recruitment_type/<%= Recruitment::Type_parttime %>">
+									更多兼职实习信息 »</a>
+									
+								<input type="text" name="query" class="text_field" style="width: 120px;" />
+								<input type="hidden" name="recruitment_type" value="<%= Recruitment::Type_parttime %>" />
+								<input type="submit" value="搜索兼职实习" class="button" />
+							<% end %>
+						</div>
+					</div>
 				</td>
 			</tr>
 		</table>
 	</div>
+	
+	
+	<div class="community_block">
+		<div class="recruitment_list_container">
+			<div class="recruitment_list_title">
+				<span class="float_r">
+					 »</span>
+				
+				<strong>信息标签 ( Top 200 )</strong>
+			</div>
+			
+			<div class="community_block">
+				<%= render(:partial => "recruitment_tag_cloud") %>
+			</div>
+		</div>
+	</div>
+	
+	<!--
+	<div class="community_block">
+		<div class="recruitment_list_container">
+			<div class="recruitment_list_title">
+				<span class="float_r">
+					 »</span>
+				
+				<strong>招聘公司导航</strong>
+			</div>
+			
+			<div class="community_block">
+				
+			</div>
+		</div>
+	</div>
+	-->
+	
+	
+	<div class="community_block">
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-3439613867319084";
+		/* 728x90 */
+		google_ad_slot = "8878841011";
+		google_ad_width = 728;
+		google_ad_height = 90;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+	</div>
 </div>
 
 
-
+<script language="JavaScript" type="text/javascript" src="/javascripts/ad_content.js"></script>
 <script language="JavaScript" type="text/javascript">
-	function toggle_ad_col(show) {
-		var ad_col_ele = document.getElementById("ad_col");
-		var info_col_ele = document.getElementById("info_col");
-		if(show == null) {
-			show = (ad_col_ele.style.display == "none");
-		}
-		toggle_func_list(!show);
-		info_col_ele.style.marginLeft = show ? "150px" : "0px";
-		ad_col_ele.style.display = show ? "" : "none";
-	}
-	
-	toggle_ad_col(false);
+	toggle_ad_col(true);
 </script>
 
 

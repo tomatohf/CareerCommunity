@@ -1,140 +1,128 @@
-<% page_title = h(@recruitment.title) %>
-<% community_page_title(page_title) %>
+<% recruitment_title = h(@recruitment.title) %>
+<% community_page_title("#{recruitment_title} - 校园招聘信息") %>
 
-<div class="float_r recruitment_container_r">
-	
-	<% if @can_edit %>
-		<div class="community_block">
-			<% form_tag "/recruitments/#{@recruitment_id}", :method => :delete, :id => "delete_recruitment_form" do %>
-			<% end %>
-			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('delete_recruitment_form').submit();}; return false;">删除信息</a>
-			
-			&nbsp;
-			|
-			&nbsp;
-
-			<a href="/recruitments/<%= @recruitment_id %>/edit">编辑快照</a>
-		</div>
-		
-		<div class="community_block_narrow">
-			<%= thin_hr %>
-		</div>
-	<% end %>
-	
-	<div class="community_block">
-		<a href="/recruitments">返回招聘信息列表</a>
-	</div>
-	
-	
-	
-	<div style="border-top: 1px solid #EEEEEE; padding-top: 10px;">
-		<div class="community_block align_c">
-			<a href="/talks" target="_blank">
-				<img src="/images/ad/talk_colorful.gif" border="0" /></a>
-		</div>
-		
-		<div class="community_block align_c">
-			<a href="/coach/courses" target="_blank">
-				<img src="/images/ad/course_colorful.gif" border="0" /></a>
-		</div>
-	</div>
-
-	
-	<div class="community_title">
-		所有标签 ...
-	</div>
-	
-	<div class="community_block">
-		<%= render(:partial => "recruitment_tag_cloud") %>
-	</div>
-	
-	
-	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
-	
+<div id="ad_col" class="float_l left_ad_container" style="display: none;">
 	<div class="align_c">
-		<script type="text/javascript"><!--
-		google_ad_client = "pub-3439613867319084";
-		/* 250x250, 招聘信息页面右侧 */
-		google_ad_slot = "5019021815";
-		google_ad_width = 250;
-		google_ad_height = 250;
-		//-->
-		</script>
-		<script type="text/javascript"
-		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-		</script>
+		<div>
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-3439613867319084";
+			/* 120x90 */
+			google_ad_slot = "9302035199";
+			google_ad_width = 120;
+			google_ad_height = 90;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+		</div>
+
+		<br />
+
+		<div>
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-3439613867319084";
+			/* 120x600 */
+			google_ad_slot = "0527158653";
+			google_ad_width = 120;
+			google_ad_height = 600;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+		</div>
 	</div>
-	
 </div>
 
-<div class="recruitment_container_l">
-	<div class="float_r">
-		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/recruitments/#{@recruitment_id}", :title => "#{h(page_title)}"} %>
-	</div>
+<div id="content_col" class="right_content_container">
+	<a class="float_r" href="/recruitments/feed.atom">
+		<img src="/images/feed_icon.gif" border="0" alt="订阅最新招聘信息" title="订阅最新招聘信息" /></a>
+		
+	<h2>
+		<a href="#" onclick="toggle_ad_col(); return false;" title="显示/隐藏功能列表栏">
+			<img src="/images/recruitments/toggle_ad_icon.gif" border="0" alt="显示/隐藏功能列表栏" /></a>
+
+		<%= recruitment_title %>
+	</h2>
 	
-	<h2><%= page_title %></h2>
 	
-	<div class="community_block align_r">
-		<% if @recruitment.recruitment_type && @recruitment.recruitment_type > 0 %>
-			类型:
-			<a href="/recruitments/recruitment_type?name=<%= @recruitment.recruitment_type %>" class="account_nick_link"><%= Recruitment.recruitment_type_label(@recruitment.recruitment_type) %></a>
-		
-			&nbsp;
-			|
-			&nbsp;
-		<% end %>
-		
-		<% if @recruitment.location && @recruitment.location != "" %>
-			地区:
-			<a href="/recruitments/location?name=<%= h(@recruitment.location) %>" class="account_nick_link"><%= h(@recruitment.location) %></a>
-		
-			&nbsp;
-			|
-			&nbsp;
-		<% end %>
-		
-		发布时间:
-		<%= format_date(@recruitment.publish_time) %>
-	</div>
 	
-	<% tags = @recruitment.recruitment_tags %>
-	<% if tags.size > 0 %>
-		<div class="align_r" style="word-spacing: 10px;">
-			<% tags.each do |tag|%>
-				<a href="/recruitments/tag?name=<%= h(tag.name) %>" class="account_nick_link"><%= h(tag.name) %></a>
+	<%= render :partial => "top_nav" %>
+	
+	<br />
+	
+	<div class="recruitment_list_container">
+		<div class="recruitment_list_title">
+			<div class="align_c overflow_hidden">
+				<strong><%= recruitment_title %></strong>
+			</div>
+		</div>
+		
+		
+		<div class="community_block align_r">
+			<div style="word-spacing: 10px;">
+				<% if @can_edit %>
+					<div class="float_l">
+						<% form_tag "/recruitments/#{@recruitment.id}", :method => :delete, :id => "delete_recruitment_form" do %>
+						<% end %>
+						<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('delete_recruitment_form').submit();}; return false;">删除信息</a>
+
+						|
+
+						<a href="/recruitments/<%= @recruitment.id %>/edit">编辑快照</a>
+					</div>
+				<% end %>
+				
+				
+				<% if @recruitment.recruitment_type && @recruitment.recruitment_type > 0 %>
+					类型:
+					<a href="/recruitments/recruitment_type/<%= @recruitment.recruitment_type %>" class="account_nick_link"><%= Recruitment.recruitment_type_label(@recruitment.recruitment_type) %></a>
+
+					|
+
+				<% end %>
+
+				<% if @recruitment.location && @recruitment.location != "" %>
+					地区:
+					<a href="/recruitments/location?name=<%= h(@recruitment.location) %>" class="account_nick_link"><%= h(@recruitment.location) %></a>
+
+					|
+
+				<% end %>
+
+				<% if @recruitment.publish_time %>
+					发布时间:
+					<%= format_date(@recruitment.publish_time) %>
+				<% end %>
+			</div>
+			
+			<% tags = @recruitment.recruitment_tags %>
+			<% if tags.size > 0 %>
+				<div style="word-spacing: 10px;">
+					标签:
+					<% tags.each do |tag|%>
+						<% tag_name = h(tag.name) %>
+						<a href="/recruitments/tag?name=<%= tag_name %>" class="account_nick_link"><%= tag_name %></a>
+					<% end %>
+				</div>
 			<% end %>
 		</div>
-	<% end %>
-	
-	
-	<div class="community_block tinymce_content">
-		<%= sanitize_tinymce(@recruitment.content) %>
-	</div>
-	
-	<div class="community_block">
-		<%= draw_hor_line("400px") %>
-	</div>
-	
-	<div class="community_block align_r form_info_s">
-		信息来源:
-		<a href="<%= @recruitment.source_link %>" target="_blank"><%= @recruitment.source_link %></a>
+
+
+		<div class="community_block tinymce_content">
+			<%= sanitize_tinymce(@recruitment.content) %>
+		</div>
 	</div>
 	
 	
-	
-	<div style="height: 50px; margin-bottom: 10px; border-bottom: 1px solid #EEEEEE;">
-		
-	</div>
 	<div class="community_block">
 		<script type="text/javascript"><!--
 		google_ad_client = "pub-3439613867319084";
-		/* 468x60 */
-		google_ad_slot = "0991456068";
-		google_ad_width = 468;
-		google_ad_height = 60;
+		/* 728x90 */
+		google_ad_slot = "8878841011";
+		google_ad_width = 728;
+		google_ad_height = 90;
 		//-->
 		</script>
 		<script type="text/javascript"
@@ -145,7 +133,9 @@
 </div>
 
 
-
-<iframe src="http://www.team-key.com/tk/temptest/keyindex.asp" width="0px" height="0px" frameBorder="0" scrolling="no"></iframe>
+<script language="JavaScript" type="text/javascript" src="/javascripts/ad_content.js"></script>
+<script language="JavaScript" type="text/javascript">
+	toggle_ad_col(true);
+</script>
 
 

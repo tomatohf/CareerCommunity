@@ -6,7 +6,7 @@ class Recruitment < ActiveRecord::Base
     indexes recruitment_tags.name, :as => :recruitment_tags_name
 
     # attributes
-    has :created_at, :updated_at, :publish_time
+    has :created_at, :updated_at, :recruitment_type, :publish_time
     
     set_property :delta => true
     
@@ -62,6 +62,24 @@ class Recruitment < ActiveRecord::Base
   named_scope :jobfair, :conditions => ["recruitment_type = ?", Type_jobfair]
   
   
+  
+  def self.get_recruitment_type_scope(recruitment_type)
+    case recruitment_type
+      when Type_fulltime
+        self.fulltime
+      when Type_parttime
+        self.parttime
+      when Type_lecture
+        self.lecture
+      when Type_jobfair
+        self.jobfair
+      else
+        self
+      end
+  end
+  
+  
+  
   Filter_Out_Key_Words = [
     /hiall/i,
     /utomorrow/i,
@@ -82,38 +100,34 @@ class Recruitment < ActiveRecord::Base
   FCKP_index_fulltime = :fc_index_fulltime_recruitments
   FCKP_index_parttime = :fc_index_parttime_recruitments
   
+  FCKP_community_index_fulltime = :fc_community_index_fulltime_recruitments
+  FCKP_community_index_parttime = :fc_community_index_parttime_recruitments
+  FCKP_community_index_lecture = :fc_community_index_lecture_recruitments
+  FCKP_community_index_jobfair = :fc_community_index_jobfair_recruitments
+  
   after_destroy { |r|
     self.clear_locations_cache
     
     
-    self.clear_recruitments_index_cache
     self.clear_recruitments_feed_cache
     
     self.clear_index_lecture_cache if r.recruitment_type == Type_lecture
     self.clear_index_fulltime_cache if r.recruitment_type == Type_fulltime
     self.clear_index_parttime_cache if r.recruitment_type == Type_parttime
+    self.clear_index_jobfair_cache if r.recruitment_type == Type_jobfair
   }
   
   after_save { |r|
     self.clear_locations_cache
     
     
-    self.clear_recruitments_index_cache
     self.clear_recruitments_feed_cache
     
     self.clear_index_lecture_cache if r.recruitment_type == Type_lecture
     self.clear_index_fulltime_cache if r.recruitment_type == Type_fulltime
     self.clear_index_parttime_cache if r.recruitment_type == Type_parttime
+    self.clear_index_jobfair_cache if r.recruitment_type == Type_jobfair
   }
-  
-  def self.clear_recruitments_index_cache
-    recruitment_count = self.count
-    index_page_count = recruitment_count > 0 ? (recruitment_count.to_f/RecruitmentsController::Recruitment_List_Size).ceil : 1
-
-    1.upto(index_page_count) { |i|
-      Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_index}_#{i}"))
-    }
-  end
   
   def self.clear_recruitments_feed_cache
     Cache.delete(expand_cache_key("#{RecruitmentsController::ACKP_recruitments_feed}.atom"))
@@ -121,14 +135,24 @@ class Recruitment < ActiveRecord::Base
   
   def self.clear_index_lecture_cache
     Cache.delete(expand_cache_key(FCKP_index_lecture))
+    
+    Cache.delete(expand_cache_key(FCKP_community_index_lecture))
   end
   
   def self.clear_index_fulltime_cache
     Cache.delete(expand_cache_key(FCKP_index_fulltime))
+    
+    Cache.delete(expand_cache_key(FCKP_community_index_fulltime))
   end
   
   def self.clear_index_parttime_cache
     Cache.delete(expand_cache_key(FCKP_index_parttime))
+    
+    Cache.delete(expand_cache_key(FCKP_community_index_parttime))
+  end
+  
+  def self.clear_index_jobfair_cache
+    Cache.delete(expand_cache_key(FCKP_community_index_jobfair))
   end
   
   
@@ -167,18 +191,6 @@ class Recruitment < ActiveRecord::Base
     end
   end
   
-  
-  
-  def self.paginate_by_catalog(page, per_page, catalog_name, catalog_value)
-    self.paginate(
-      :page => page,
-      :per_page => per_page,
-      :select => "id, title, publish_time, location, recruitment_type",
-      :conditions => ["#{catalog_name} = ?", catalog_value],
-      :order => "publish_time DESC",
-      :include => [:recruitment_tags]
-    )
-  end
   
   
   def self.get_locations

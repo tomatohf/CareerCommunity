@@ -184,10 +184,11 @@ class CommunityController < ApplicationController
   end
   
   def search_talk(query, page, per_page)
-    Talk.published.search(
+    Talk.search(
       query,
       :page => page,
       :per_page => per_page,
+      :conditions => { :published => 1 },
       :match_mode => Search_Match_Mode,
       :order => "@relevance DESC, publish_at DESC",
       :field_weights => {

@@ -1086,6 +1086,15 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	width: 280px;
 }
 
+.left_ad_container {
+	width: 150px;
+}
+
+.right_content_container {
+	padding: 0px 5px;
+	margin-left: 0px;
+}
+
 .recruitment_container {
 	margin-bottom: 10px;
 }
@@ -1104,6 +1113,15 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	word-spacing: 10px;
 }
 
+.recruitment_nav {
+	border: 1px solid #F0E0CF;
+	background-color: #FAFFE7;
+	word-spacing: 8px;
+	padding: 4px 20px 1px;
+	font-size: 13px;
+	color: #B2B2B2;
+}
+
 .recruitment_by_city_container {
 	background: transparent url(/images/recruitments/by_city_middle.gif) no-repeat scroll 1px 1px;
 	border: 1px solid #DADADA;
@@ -1116,7 +1134,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	text-align: center;
 	line-height: 1.5;
 	padding: 4px;
-	width: 85px;
+	width: 80px;
 }
 
 .recruitment_by_city_title {
@@ -1125,20 +1143,40 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	margin-bottom: 2px;
 }
 
-.recruitment_other_city, .recruitment_more_city {
+.recruitment_other_city {
+	background: transparent url(/images/recruitments/by_city_sep.gif) no-repeat scroll right center;
 	line-height: 180%;
 	padding: 10px;
 	text-align: center;
 	word-spacing: 5px;
 }
 
-.recruitment_other_city {
-	background: transparent url(/images/recruitments/by_city_sep.gif) no-repeat scroll right center;
+.recruitment_more_city {
+	line-height: 180%;
+	padding: 10px;
+	text-align: center;
 }
 
 .recruitment_other_city a {
 	font-size: 13px;
 	font-weight: bold;
+}
+
+.recruitment_list_container {
+	border: 1px solid #F0E0CF;
+}
+
+.recruitment_list_title {
+	margin: 2px;
+	padding: 3px 10px 1px;
+	background-color: #FFF5E8;
+}
+
+.recruitment_list_item {
+	color: #888888;
+	height: 24px;
+	overflow: hidden;
+	padding: 0px 10px;
 }
 
 .vote_container {

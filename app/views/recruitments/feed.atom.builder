@@ -14,8 +14,17 @@ atom_feed(:language => "zh_CN", :schema_date => 2008, "xmlns:app" => "http://www
       
       entry_content = ""
       
-      entry_content += %Q!类型: <a href="#{root_url}recruitments/recruitment_type?name=#{r.recruitment_type}">#{Recruitment.recruitment_type_label(r.recruitment_type)}</a> <br />! if r.recruitment_type && r.recruitment_type > 0
-      entry_content += %Q!地区: <a href="#{root_url}recruitments/location?name=#{h(r.location)}">#{h(r.location)}</a> <br />! if r.location && r.location != ""
+      entry_content += %Q!
+        类型:
+        <a href="#{root_url}recruitments/recruitment_type/#{r.recruitment_type}">
+          #{Recruitment.recruitment_type_label(r.recruitment_type)}</a>
+        <br />! if r.recruitment_type && r.recruitment_type > 0
+        
+      entry_content += %Q!
+        地区:
+        <a href="#{root_url}recruitments/location?name=#{h(r.location)}">
+          #{h(r.location)}</a>
+          <br />! if r.location && r.location != ""
       
       tags = r.recruitment_tags
 			if tags.size > 0

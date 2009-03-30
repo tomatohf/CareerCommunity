@@ -1,6 +1,6 @@
 class RecruitmentsController < ApplicationController
   
-  Recruitment_List_Size = 100
+  Recruitment_List_Size = 50
   
   layout "community"
   before_filter :check_login, :only => [:new, :create, :edit, :update, :destroy]
@@ -8,19 +8,12 @@ class RecruitmentsController < ApplicationController
   
   before_filter :check_edit_access, :only => [:edit, :update, :destroy]
   
+  before_filter :check_recruitment_type, :only => [:recruitment_type]
   
   
-  ACKP_recruitments_index = :ac_recruitments_index
+  
   ACKP_recruitments_feed = :ac_recruitments_feed
   
-  #caches_action :index,
-  #  :cache_path => Proc.new { |controller|
-  #    page = controller.params[:page]
-  #    page = 1 unless page =~ /\d+/
-
-  #    "#{ACKP_recruitments_index}_#{page}"
-  #  }
-    
   caches_action :feed,
     :cache_path => Proc.new { |controller|
       ACKP_recruitments_feed.to_s
@@ -32,16 +25,7 @@ class RecruitmentsController < ApplicationController
   
   
   def index
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
     
-    @recruitments = Recruitment.paginate(
-      :page => page,
-      :per_page => Recruitment_List_Size,
-      :select => "id, title, publish_time, location, recruitment_type",
-      :include => [:recruitment_tags],
-      :order => "publish_time DESC"
-    )
   end
   
   def feed
@@ -51,7 +35,7 @@ class RecruitmentsController < ApplicationController
       format.atom {
         @recruitments = Recruitment.find(
           :all,
-          :limit => Recruitment_List_Size,
+          :limit => 100,
           :include => [:recruitment_tags],
           :order => "publish_time DESC"
         )
@@ -62,54 +46,102 @@ class RecruitmentsController < ApplicationController
   end
   
   def show
-    @recruitment_id = params[:id]
-    @recruitment = Recruitment.find(@recruitment_id, :include => [:recruitment_tags])
+    @recruitment = Recruitment.find(params[:id], :include => [:recruitment_tags])
     
     @can_edit = has_login? && has_edit_access(@recruitment)
   end
   
-  def tag
-    @tag_name = params[:name] && params[:name].strip
-    @tag = RecruitmentTag.get_tag(@tag_name)
+  def recruitment_type
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
     
-    @new_record = @tag.new_record?
-    
-    unless @new_record
-      page = params[:page]
-      page = 1 unless page =~ /\d+/
-      @recruitments = Recruitment.paginate(
-        :page => page,
-        :per_page => Recruitment_List_Size,
-        :select => "recruitments.id, recruitments.title, recruitments.publish_time, recruitments.location, recruitments.recruitment_type",
-        :joins => "INNER JOIN recruitments_recruitment_tags ON 
-                    recruitments_recruitment_tags.recruitment_id = recruitments.id AND 
-                    recruitments_recruitment_tags.recruitment_tag_id = #{@tag.id}",
-        :order => "recruitments.publish_time DESC",
-        :include => [:recruitment_tags]
-      )
-    end
+    @recruitments = Recruitment.paginate(
+      :page => page,
+      :per_page => Recruitment_List_Size,
+      :select => "id, title, publish_time, location, recruitment_type",
+      :conditions => ["recruitment_type = ?", params[:id]],
+      :order => "publish_time DESC",
+      :include => [:recruitment_tags]
+    )
   end
   
   def location
-    @catalog_value = params[:name] && params[:name].strip
-    @catalog_name = "地区"
+    @location_name = params[:name] && params[:name].strip
+    @is_parttime = (params[:rt] == "2")
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @recruitments = Recruitment.paginate_by_catalog(page, Recruitment_List_Size, :location, @catalog_value)
     
-    render :action => "catalog"
+    @recruitments = Recruitment.search(
+      @location_name,
+      :page => page,
+      :per_page => Recruitment_List_Size,
+      :conditions => { :recruitment_type => (@is_parttime ? 2 : 1) },
+      #:match_mode => CommunityController::Search_Match_Mode,
+      :order => "publish_time DESC, @relevance DESC",
+      :field_weights => {
+        :title => 5,
+        :content => 5,
+        :location => 10,
+        :recruitment_tags_name => 5
+      },
+      :include => [:recruitment_tags]
+    ).compact
   end
-
-  def recruitment_type
-    @catalog_value = params[:name] && params[:name].strip
-    @catalog_name = "类型"
-
+  
+  def tag
+    @tag_name = params[:name] && params[:name].strip
+    
+    if @tag_name && (@tag_name != "")
+      @tag = RecruitmentTag.get_tag(@tag_name)
+    
+      @new_record = @tag.new_record?
+    
+      unless @new_record
+        page = params[:page]
+        page = 1 unless page =~ /\d+/
+        @recruitments = Recruitment.paginate(
+          :page => page,
+          :per_page => Recruitment_List_Size,
+          :select => "recruitments.id, recruitments.title, recruitments.publish_time, recruitments.location, recruitments.recruitment_type",
+          :joins => "INNER JOIN recruitments_recruitment_tags ON 
+                      recruitments_recruitment_tags.recruitment_id = recruitments.id AND 
+                      recruitments_recruitment_tags.recruitment_tag_id = #{@tag.id}",
+          :order => "recruitments.publish_time DESC",
+          :include => [:recruitment_tags]
+        )
+      end
+      
+    end
+  end
+  
+  def search
+    @recruitment_type = params[:recruitment_type].to_i
+    
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @recruitments = Recruitment.paginate_by_catalog(page, Recruitment_List_Size, :recruitment_type, @catalog_value)
-
-    render :action => "catalog"
+    
+    @query = params[:query] && params[:query].strip
+    
+    conditions = @recruitment_type > 0 ? { :recruitment_type => @recruitment_type } : {}
+    
+    if @query && (@query != "")
+      @recruitments = Recruitment.search(
+        @query,
+        :page => page,
+        :per_page => 15,
+        :conditions => conditions,
+        :match_mode => CommunityController::Search_Match_Mode,
+        :order => "publish_time DESC, @relevance DESC",
+        :field_weights => {
+          :title => 8,
+          :content => 8,
+          :location => 6,
+          :recruitment_tags_name => 8
+        },
+        :include => [:recruitment_tags]
+      ).compact
+    end
   end
   
   
@@ -166,6 +198,12 @@ class RecruitmentsController < ApplicationController
     @recruitment = Recruitment.find(@recruitment_id)
     
     jump_to("/errors/forbidden") unless has_edit_access(@recruitment)
+  end
+  
+  def check_recruitment_type
+    @type_label = Recruitment.recruitment_type_label(params[:id].to_i)
+    
+    jump_to("/errors/forbidden") unless @type_label && (@type_label != "")
   end
   
 end

@@ -1,5 +1,6 @@
-<% page_title = "校园招聘信息标签" %>
-<% page_title = "#{@tag_name} - " + page_title if @tag_name && (@tag_name != "") %>
+<% page_title = "搜索校园招聘信息" %>
+<% page_title = page_title + " (#{Recruitment.recruitment_type_label(@recruitment_type)})" if @recruitment_type > 0 %>
+<% page_title = "#{@query} - " + page_title if @query && (@query != "") %>
 <% community_page_title(page_title) %>
 
 <div id="ad_col" class="float_l left_ad_container" style="display: none;">
@@ -33,40 +34,6 @@
 			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			</script>
 		</div>
-
-		<% if @recruitments && @recruitments.size > 0 %>
-			<br />
-
-			<div>
-				<script type="text/javascript"><!--
-				google_ad_client = "pub-3439613867319084";
-				/* 120x90 */
-				google_ad_slot = "9302035199";
-				google_ad_width = 120;
-				google_ad_height = 90;
-				//-->
-				</script>
-				<script type="text/javascript"
-				src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-				</script>
-			</div>
-
-			<br />
-
-			<div>
-				<script type="text/javascript"><!--
-				google_ad_client = "pub-3439613867319084";
-				/* 120x600 */
-				google_ad_slot = "0527158653";
-				google_ad_width = 120;
-				google_ad_height = 600;
-				//-->
-				</script>
-				<script type="text/javascript"
-				src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-				</script>
-			</div>
-		<% end %>
 	</div>
 </div>
 
@@ -88,52 +55,61 @@
 	
 	<br />
 	
-	<% if @recruitments && @recruitments.size > 0 %>
-		<div class="recruitment_list_container">
-			<div class="recruitment_list_title">
-				<div class="align_c overflow_hidden">
-					<strong><%= page_title %></strong>
+	<div class="recruitment_list_container">
+		<div class="recruitment_list_title">
+			<div class="align_c overflow_hidden">
+				<strong><%= page_title %></strong>
 				
+				<% if @recruitments %>
 					&nbsp;&nbsp;&nbsp;
 					<span class="form_info_s">
 						(
-						有
+						搜索到
 						<b><%= @recruitments.total_entries %></b>
 						条信息
 						)
 					</span>
-				</div>
-			</div>
-		
-		
-			<div class="community_block">
-				<%= paging_buttons(@recruitments) %>
-			</div>
-		
-			<div class="community_block">
-				<%= render(:partial => "recruitment", :collection => @recruitments) %>
-			</div>
-	
-			<div class="community_block">
-				<%= paging_buttons(@recruitments) %>
+				<% end %>
 			</div>
 		</div>
-	<% end %>
-	
-	
-	<div class="community_block">
-		<div class="recruitment_list_container">
-			<div class="recruitment_list_title">
-				<span class="float_r">
-					 »</span>
-				
-				<strong>信息标签 ( Top 200 )</strong>
-			</div>
+		
+		
+		<div class="community_block align_c">
+			<% form_tag "/recruitments/search", :method => :get do %>
+				<input type="text" name="query" class="text_field" style="padding: 5px;" value="<%= h(@query) %>" style="width: 200px;" />
+
+				<select name="recruitment_type" class="dropdown_list">
+					<option value="">信息类型</option>
+
+					<% Recruitment.recruitment_types.each do |k, v| %>
+						<option value="<%= k %>"<%= " selected=\"selected\"" if k == @recruitment_type %>><%= v %></option>
+					<% end %>
+				</select>
+
+				<input type="submit" value="搜索职位" class="button" />
+			<% end %>
 			
-			<div class="community_block">
-				<%= render(:partial => "recruitment_tag_cloud") %>
-			</div>
+			<br />
 		</div>
+		
+		
+		<% if @recruitments %>
+			<div class="community_block">
+				<% @recruitments.each do |r| %>
+					<% if r %>
+						<%= render(:partial => "/community/search_results/recruitment", :locals => {:result => r, :query => @query, :riddle_client => get_riddle_client}) %>
+					
+						<div style="height: 30px;">
+						
+						</div>
+					<% end %>
+				<% end %>
+			</div>
+	
+			<div class="community_block">
+				<%= paging_buttons(@recruitments) %>
+			</div>
+		<% end %>
 	</div>
 	
 	

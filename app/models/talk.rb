@@ -20,7 +20,7 @@ class Talk < ActiveRecord::Base
     
 
     # attributes
-    has :created_at, :updated_at, :publish_at
+    has :created_at, :updated_at, :published, :publish_at
     
     set_property :delta => true
     
