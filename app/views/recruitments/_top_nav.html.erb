@@ -117,10 +117,8 @@
 		<div class="float_l recruitment_more_city">
 			<div style="margin-top: -2px;">
 				<% form_tag "/recruitments/location", :method => :get do %>
-					<label for="more_location_name">
-						更多:
-					</label>
-					<select id="more_location_name" name="name" class="dropdown_list">
+					<select name="name" class="dropdown_list" onchange="if(this.value != '') { window.location.href='/recruitments/location?name=' + this.value}">
+						<option value="">更多地区</option>
 						<% Recruitment.get_locations.each do |l| %>
 							<% location_name = h(l) %>
 							<option value="<%= location_name %>"><%= location_name %></option>
