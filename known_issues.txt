@@ -1,11 +1,13 @@
-﻿招聘信息
-new recruitment vendors - 面霸网, 大街网
-
-处理网申, 在乔布堂网站嵌入网申页面
-
-抓取面经/笔经
+﻿抓取面经/笔经
 experience auto-vendors - http://www.51mianjing.cn, http://www.miansou.com
 experience manu-vendors - http://www.esojob.com, job_info_source
+
+
+招聘信息
+new recruitment vendors - 面霸网
+招聘信息的过期处理
+
+处理网申, 在乔布堂网站嵌入网申页面
 
 通用化 select_item 页面
 

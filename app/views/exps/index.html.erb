@@ -1,5 +1,4 @@
-<% page_title = "校园招聘信息标签" %>
-<% page_title = "#{@tag_name} - " + page_title if @tag_name && (@tag_name != "") %>
+<% page_title = "面经" %>
 <% community_page_title(page_title) %>
 
 <div id="ad_col" class="float_l left_ad_container" style="display: none;">
@@ -7,8 +6,8 @@
 </div>
 
 <div id="content_col" class="right_content_container">
-	<a class="float_r" href="/recruitments/feed.atom">
-		<img src="/images/feed_icon.gif" border="0" alt="订阅最新招聘信息" title="订阅最新招聘信息" /></a>
+	<a class="float_r" href="/exps/feed.atom">
+		<img src="/images/feed_icon.gif" border="0" alt="订阅最新面经信息" title="订阅最新面经信息" /></a>
 		
 	<h2>
 		<a href="#" onclick="toggle_ad_col(); return false;" title="显示/隐藏功能列表栏">
@@ -22,39 +21,30 @@
 	<%= render :partial => "top_nav" %>
 	
 	
-	<br />
 	
-	<% if @recruitments && @recruitments.size > 0 %>
-		<div class="recruitment_list_container">
-			<div class="recruitment_list_title">
-				<div class="align_c overflow_hidden">
-					<strong><%= page_title %></strong>
-				
-					&nbsp;&nbsp;&nbsp;
-					<span class="form_info_s">
-						(
-						有
-						<b><%= @recruitments.total_entries %></b>
-						条信息
-						)
-					</span>
-				</div>
-			</div>
-		
-		
-			<div class="community_block">
-				<%= paging_buttons(@recruitments) %>
-			</div>
-		
-			<div class="community_block">
-				<%= render(:partial => "recruitment", :collection => @recruitments) %>
-			</div>
-	
-			<div class="community_block">
-				<%= paging_buttons(@recruitments) %>
-			</div>
+	<div class="community_block">
+		<div>
+			热门公司面经
 		</div>
-	<% end %>
+		
+		<div>
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-3439613867319084";
+			/* 728x15 */
+			google_ad_slot = "8608645276";
+			google_ad_width = 728;
+			google_ad_height = 15;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+		</div>
+		
+		<div>
+			
+		</div>
+	</div>
 	
 	
 	<div class="community_block">
@@ -63,7 +53,23 @@
 				<span class="float_r">
 					 »</span>
 				
-				<strong>信息标签 ( Top 200 )</strong>
+				<strong>最新面经</strong>
+			</div>
+			
+			<div class="community_block">
+				
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="community_block">
+		<div class="recruitment_list_container">
+			<div class="recruitment_list_title">
+				<span class="float_r">
+					 »</span>
+				
+				<strong>面经标签 ( Top 100 )</strong>
 			</div>
 			
 			<div class="community_block">
@@ -81,7 +87,7 @@
 					</script>
 				</div>
 				
-				<%= render(:partial => "recruitment_tag_cloud") %>
+				<%#= render(:partial => "exp_tag_cloud") %>
 			</div>
 		</div>
 	</div>

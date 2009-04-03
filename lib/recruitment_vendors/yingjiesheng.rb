@@ -128,7 +128,7 @@ module RecruitmentVendor
           
           non_existing_links.each do |msg_link|
             puts "retrieving message from link: " + msg_link.inspect
-            recruitment = get_recruitment(msg_link, init_values)
+            recruitment = get_info_obj(msg_link, init_values)
             recruitment.save if recruitment
           end
         }
@@ -143,7 +143,7 @@ module RecruitmentVendor
         
         non_existing_links.each do |msg_link|
           puts "retrieving message from link: " + msg_link.inspect
-          recruitment = get_recruitment(msg_link, { :recruitment_type => Recruitment::Type_lecture })
+          recruitment = get_info_obj(msg_link, { :recruitment_type => Recruitment::Type_lecture })
           recruitment.save if recruitment
         end
       }
@@ -225,7 +225,7 @@ module RecruitmentVendor
       }.flatten.compact
     end
     
-    def build_recruitment(link, init_values = {})
+    def build_info_obj(link, init_values = {})
       doc = get_doc_from_url(link, true)
       
       return nil if doc.nil?
@@ -275,7 +275,7 @@ module RecruitmentVendor
       if content_ps.size > 0
         content_ps.delete_if { |p|
           as = p.search("/a")
-          (as.size == 1) && as[0]["href"].include?("yingjiesheng")
+          (as.size == 1) && (as[0]["href"].nil? || as[0]["href"].include?("yingjiesheng"))
         }
       
         r.content = content_ps.collect{ |p| p.to_html }.join("\n")

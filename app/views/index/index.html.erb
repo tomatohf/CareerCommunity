@@ -484,6 +484,33 @@
 					死磕乔布
 				</div>
 				
+				
+				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+					<div style="font-weight: bold;">
+						全职
+					</div>
+					<% cache(Recruitment::FCKP_index_fulltime) do %>
+						<%
+							fulltime_recruitments = Recruitment.find(
+								:all,
+								:limit => 15,
+								:conditions => ["recruitment_type = ?", Recruitment::Type_fulltime],
+								:select => "id, title, publish_time, location, recruitment_type",
+								:order => "publish_time DESC"
+						    )
+						%>
+						
+						<%= render :partial => "recruitment_item", :collection => fulltime_recruitments %>
+					<% end %>
+					
+					<div style="text-align: right;">
+						<a href="/recruitments/recruitment_type/<%= Recruitment::Type_fulltime %>" target="_blank" style="color: #333333; font-size: 12px;">
+							更多全职信息
+							<img src="/images/real_index/more_icon.png" border="0" /></a>
+					</div>
+				</div>
+				
+				
 				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
 					<div style="font-weight: bold;">
 						宣讲会
@@ -492,8 +519,8 @@
 						<%
 							lecture_recruitments = Recruitment.find(
 								:all,
-								:limit => 15,
-								:conditions => ["recruitment_type = ?", "宣讲会"],
+								:limit => 5,
+								:conditions => ["recruitment_type = ?", Recruitment::Type_lecture],
 								:select => "id, title, publish_time, location, recruitment_type",
 								:order => "publish_time DESC"
 						    )
@@ -509,30 +536,32 @@
 					</div>
 				</div>
 				
+				
 				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
 					<div style="font-weight: bold;">
-						全职
+						招聘会
 					</div>
-					<% cache(Recruitment::FCKP_index_fulltime) do %>
+					<% cache(Recruitment::FCKP_index_jobfair) do %>
 						<%
-							lecture_recruitments = Recruitment.find(
+							jobfair_recruitments = Recruitment.find(
 								:all,
-								:limit => 15,
-								:conditions => ["recruitment_type = ?", Recruitment::Type_fulltime],
+								:limit => 5,
+								:conditions => ["recruitment_type = ?", Recruitment::Type_jobfair],
 								:select => "id, title, publish_time, location, recruitment_type",
 								:order => "publish_time DESC"
 						    )
 						%>
 						
-						<%= render :partial => "recruitment_item", :collection => lecture_recruitments %>
+						<%= render :partial => "recruitment_item", :collection => jobfair_recruitments %>
 					<% end %>
 					
 					<div style="text-align: right;">
-						<a href="/recruitments/recruitment_type/<%= Recruitment::Type_fulltime %>" target="_blank" style="color: #333333; font-size: 12px;">
-							更多全职信息
+						<a href="/recruitments/recruitment_type/<%= Recruitment::Type_jobfair %>" target="_blank" style="color: #333333; font-size: 12px;">
+							更多招聘会信息
 							<img src="/images/real_index/more_icon.png" border="0" /></a>
 					</div>
 				</div>
+				
 				
 				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
 					<div style="font-weight: bold;">
@@ -540,16 +569,16 @@
 					</div>
 					<% cache(Recruitment::FCKP_index_parttime) do %>
 						<%
-							lecture_recruitments = Recruitment.find(
+							parttime_recruitments = Recruitment.find(
 								:all,
 								:limit => 15,
-								:conditions => ["recruitment_type = ? and source_name in (?)", "兼职", ["Hiall", "我是应届生"]],
+								:conditions => ["recruitment_type = ?", Recruitment::Type_parttime],
 								:select => "id, title, publish_time, location, recruitment_type",
 								:order => "publish_time DESC"
 						    )
 						%>
 						
-						<%= render :partial => "recruitment_item", :collection => lecture_recruitments %>
+						<%= render :partial => "recruitment_item", :collection => parttime_recruitments %>
 					<% end %>
 					
 					<div style="text-align: right;">

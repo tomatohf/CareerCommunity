@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 25) do
+ActiveRecord::Schema.define(:version => 26) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -390,6 +390,41 @@ ActiveRecord::Schema.define(:version => 25) do
   add_index "education_profiles", ["education_id"], :name => "index_education_profiles_on_education_id"
   add_index "education_profiles", ["enter_year"], :name => "index_education_profiles_on_enter_year"
   add_index "education_profiles", ["delta"], :name => "index_education_profiles_on_delta"
+
+  create_table "exp_tags", :force => true do |t|
+    t.string  "name"
+    t.boolean "delta"
+  end
+
+  add_index "exp_tags", ["name"], :name => "index_exp_tags_on_name"
+  add_index "exp_tags", ["delta"], :name => "index_exp_tags_on_delta"
+
+  create_table "exps", :force => true do |t|
+    t.string   "title"
+    t.text     "content"
+    t.datetime "publish_time"
+    t.string   "source_name"
+    t.string   "source_link"
+    t.boolean  "active",                     :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",   :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "exps", ["publish_time"], :name => "index_exps_on_publish_time"
+  add_index "exps", ["source_link"], :name => "index_exps_on_source_link"
+  add_index "exps", ["active"], :name => "index_exps_on_active"
+  add_index "exps", ["created_at"], :name => "index_exps_on_created_at"
+  add_index "exps", ["delta"], :name => "index_exps_on_delta"
+
+  create_table "exps_exp_tags", :id => false, :force => true do |t|
+    t.integer "exp_id",     :limit => 11
+    t.integer "exp_tag_id", :limit => 11
+  end
+
+  add_index "exps_exp_tags", ["exp_id"], :name => "index_exps_exp_tags_on_exp_id"
+  add_index "exps_exp_tags", ["exp_tag_id"], :name => "index_exps_exp_tags_on_exp_tag_id"
 
   create_table "friends", :force => true do |t|
     t.datetime "created_at"

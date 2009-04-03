@@ -165,7 +165,7 @@ class RecruitmentsController < ApplicationController
     @recruitment.source_name = params[:recruitment_source_name] && params[:recruitment_source_name].strip
     @recruitment.source_link = params[:recruitment_source_link] && params[:recruitment_source_link].strip
     
-    @recruitment.source_link += "/" if @recruitment.source_link[-1, 1] != "/"
+    # @recruitment.source_link += "/" if @recruitment.source_link[-1, 1] != "/"
     
     @recruitment.recruitment_type = params[:recruitment_type] && params[:recruitment_type].strip
     @recruitment.location = params[:recruitment_location] && params[:recruitment_location].strip
@@ -180,7 +180,9 @@ class RecruitmentsController < ApplicationController
   end
   
   def destroy
-    @recruitment.recruitment_tags.clear
+    # seems it can be done automatically ...
+    # @recruitment.recruitment_tags.clear
+    
     @recruitment.destroy
     
     jump_to("/recruitments")

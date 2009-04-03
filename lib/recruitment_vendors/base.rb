@@ -129,35 +129,7 @@ module RecruitmentVendor
       
       non_existing_links = remove_existing_links(gotten_new_links)
       
-      non_existing_links.to_a.collect { |link_info| get_recruitment(link_info[0], link_info[1]) }.compact
-    end
-    
-    def get_recruitment(link, init_values = {})
-      recruitment = build_recruitment(link, init_values)
-      
-      return nil if recruitment.nil?
-      
-      # set the flag to indicate that this message is collected automatically
-      recruitment.account_id = -1
-      
-      # remove the troublesome attribute values in content such as class
-      troublesome_attributes_in_content.each { |attr| Hpricot(recruitment.content).search("[@#{attr}]").each{|element| element.remove_attribute(attr) } }
-      
-      # apply replace_match_rules
-      apply_replace_match_rules(recruitment, before_filter_replace_match_rules)
-      
-      # apply filter_match_rules
-      return nil if filter_match_rules_applicable?(recruitment)
-
-      # apply replace_match_rules
-      apply_replace_match_rules(recruitment, after_filter_replace_match_rules)
-      
-      # return the recruitment model object
-      recruitment
-    end
-
-    def save_new_messages(start_page = 1, page_count = 1)
-      self.collect_new_messages(start_page, page_count).values.flatten.each { |message| message.save }
+      non_existing_links.to_a.collect { |link_info| get_info_obj(link_info[0], link_info[1]) }.compact
     end
     
     def remove_existing_links(links)
@@ -165,14 +137,42 @@ module RecruitmentVendor
       links.delete_if { |key, value| existing_links.include?(key) }
     end
     
-    def filter_match_rules_applicable?(recruitment)
+    def save_new_messages(start_page = 1, page_count = 1)
+      self.collect_new_messages(start_page, page_count).values.flatten.each { |message| message.save }
+    end
+    
+    def get_info_obj(link, init_values = {})
+      info_obj = build_info_obj(link, init_values)
+      
+      return nil if info_obj.nil?
+      
+      # set the flag to indicate that this message is collected automatically
+      info_obj.account_id = -1
+      
+      # remove the troublesome attribute values in content such as class
+      troublesome_attributes_in_content.each { |attr| Hpricot(info_obj.content).search("[@#{attr}]").each{|element| element.remove_attribute(attr) } }
+      
+      # apply replace_match_rules
+      apply_replace_match_rules(info_obj, before_filter_replace_match_rules)
+      
+      # apply filter_match_rules
+      return nil if filter_match_rules_applicable?(info_obj)
+
+      # apply replace_match_rules
+      apply_replace_match_rules(info_obj, after_filter_replace_match_rules)
+      
+      # return the info_obj model object
+      info_obj
+    end
+    
+    def filter_match_rules_applicable?(info_obj)
       filter_match_rules.each do |rule|
         rule.each_pair do |key, value|
           fields = key == :all ? all_fields : [key]
           
           fields.each do |field|
             value.each do |pattern|
-              return true if recruitment.send(field) =~ pattern
+              return true if info_obj.send(field) =~ pattern
             end
           end
         end
@@ -181,7 +181,7 @@ module RecruitmentVendor
       false
     end
     
-    def apply_replace_match_rules(recruitment, rules)
+    def apply_replace_match_rules(info_obj, rules)
       rules.each do |rule|
         rule.each_pair do |key, value|
           fields = key == :all ? all_fields : [key]
@@ -189,12 +189,12 @@ module RecruitmentVendor
           target = value.shift
           fields.each do |field|
             value.each do |pattern|
-              field_value = recruitment.send(field)
+              field_value = info_obj.send(field)
 
               unless field_value.nil?
                 field_value.gsub!(pattern) {|match| target.kind_of?(Proc) ? target.call(match, $~) : target }
               
-                recruitment.send("#{field}=", field_value)
+                info_obj.send("#{field}=", field_value)
               end
             end
           end

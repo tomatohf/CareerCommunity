@@ -173,6 +173,8 @@
 						html += 	"</div>";
 						html += 	"<div style='padding: 3px 15px; color: #666666;'>";
 						html += 		talk.desc;
+						html += 		"&nbsp;&nbsp;&nbsp;";
+						html += 		"<a style='font-weight: bold;' href='#' onclick='show_talk_reader(" + talk.talk_id + "); return false;'>::阅读全文::</a>";
 						html += 	"</div>";
 						html += "</div>";
 					}

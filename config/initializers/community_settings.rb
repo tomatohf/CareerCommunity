@@ -63,6 +63,8 @@ require "recruitment_vendors/base"
 
 require "contact"
 
+require "exp_vendors/base"
+
 ##################################################
 ### END
 ##################################################

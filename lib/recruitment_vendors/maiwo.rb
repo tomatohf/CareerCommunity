@@ -135,7 +135,7 @@ module RecruitmentVendor
           
           non_existing_links.each do |msg_link|
             puts "retrieving message from link: " + msg_link.inspect
-            recruitment = get_recruitment(msg_link, init_values)
+            recruitment = get_info_obj(msg_link, init_values)
             recruitment.save if recruitment
           end
         }
@@ -153,7 +153,7 @@ module RecruitmentVendor
       }.compact
     end
     
-    def build_recruitment(link, init_values = {})
+    def build_info_obj(link, init_values = {})
       doc = get_doc_from_url(link, true)
       
       return nil if doc.nil?
@@ -166,7 +166,7 @@ module RecruitmentVendor
       content_div = doc.search(content_xpath)
       
       center = content_div.search("/center")[0]
-      center_html = center.inner_html;
+      center_html = center.inner_html
       the_times = center_html.scan(/\d\d\d\d-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}/)
       r.publish_time = the_times.size > 0 ? the_times[0] : DateTime.now
       

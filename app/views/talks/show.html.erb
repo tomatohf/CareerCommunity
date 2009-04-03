@@ -240,23 +240,21 @@
 	<h2><%= page_title %></h2>
 	
 
-	<div class="community_block">
-		<span class="float_r">
-			<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/talks/#{@talk.id}", :title => page_title} %>
-		</span>
-		
-		
+	<div class="community_block align_r">
 		<% if @edit %>
-			<a href="/talks/unpublished">
-				尚未发布的访谈录列表</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="/talks/<%= @talk.id %>/manage">
-				管理这篇访谈录</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="float_l">
+				<a href="/talks/unpublished">
+					尚未发布的访谈录列表</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/talks/<%= @talk.id %>/manage">
+					管理这篇访谈录</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</span>
 		<% end %>
+		
+		
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/talks/#{@talk.id}", :title => page_title} %>
 	</div>
-	
-	<br />
 	
 	
 	<div>

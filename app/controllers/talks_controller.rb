@@ -735,7 +735,7 @@ class TalksController < ApplicationController
     @talks = Talk.unpublished.paginate(
       :page => page,
       :per_page => Talk_Page_Size,
-      :order => "publish_at DESC"
+      :order => "created_at DESC"
     )
     
   end

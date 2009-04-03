@@ -96,9 +96,10 @@ class Recruitment < ActiveRecord::Base
   
   CKP_locations = :recruitment_locations
   
-  FCKP_index_lecture = :fc_index_lecture_recruitments
   FCKP_index_fulltime = :fc_index_fulltime_recruitments
   FCKP_index_parttime = :fc_index_parttime_recruitments
+  FCKP_index_lecture = :fc_index_lecture_recruitments
+  FCKP_index_jobfair = :fc_index_jobfair_recruitments
   
   FCKP_community_index_fulltime = :fc_community_index_fulltime_recruitments
   FCKP_community_index_parttime = :fc_community_index_parttime_recruitments
@@ -152,6 +153,8 @@ class Recruitment < ActiveRecord::Base
   end
   
   def self.clear_index_jobfair_cache
+    Cache.delete(expand_cache_key(FCKP_index_jobfair))
+    
     Cache.delete(expand_cache_key(FCKP_community_index_jobfair))
   end
   

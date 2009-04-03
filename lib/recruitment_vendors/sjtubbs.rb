@@ -58,7 +58,7 @@ module RecruitmentVendor
 
             non_existing_links.each do |msg_link_info|
               puts "retrieving message from link: " + msg_link_info[0].inspect
-              recruitment = get_recruitment(msg_link_info[0], init_values.merge(msg_link_info[1]))
+              recruitment = get_info_obj(msg_link_info[0], init_values.merge(msg_link_info[1]))
               recruitment.save if recruitment
             end
           }
@@ -67,7 +67,7 @@ module RecruitmentVendor
       }
     end
     
-    def build_recruitment(link, init_values = {})
+    def build_info_obj(link, init_values = {})
       doc = get_doc_from_url(link, true)
       
       return nil if doc.nil?

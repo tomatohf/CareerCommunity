@@ -157,7 +157,7 @@ module ApplicationHelper
     return nil if total.nil? || highest.nil? || lowest.nil?
 
     # options
-    maxf = options[:max_font_size] || 20
+    maxf = options[:max_font_size] || 15
     minf = options[:min_font_size] || 12
     maxc = options[:max_color] || [ 0, 0, 0 ]
     minc = options[:min_color] || [ 156, 156, 156 ]

@@ -549,6 +549,20 @@ ActionController::Routing::Routes.draw do |map|
     :del_category => :post
     
   }
+  
+  
+  map.connect "/exps/p/:page", :controller => "exps", :action => "index", :page => /\d+/
+  map.resources :exps, :collection => {
+    
+    :tag => :get,
+    
+    :search => :get,
+    
+    :feed => :get
+    
+  }, :member => {
+    
+  }
 
   
   

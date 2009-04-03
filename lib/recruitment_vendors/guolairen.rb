@@ -122,7 +122,7 @@ module RecruitmentVendor
           
           non_existing_links.each do |msg_link|
             puts "retrieving message from link: " + msg_link.inspect
-            recruitment = get_recruitment(msg_link, init_values.merge({:publish_time => gotten_new_link_infos[msg_link]}))
+            recruitment = get_info_obj(msg_link, init_values.merge({:publish_time => gotten_new_link_infos[msg_link]}))
             recruitment.save if recruitment
           end
         }
@@ -139,7 +139,7 @@ module RecruitmentVendor
         
         non_existing_links.each do |msg_link|
           puts "retrieving message from link: " + msg_link.inspect
-          recruitment = get_recruitment(msg_link, { :recruitment_type => Recruitment::Type_lecture })
+          recruitment = get_info_obj(msg_link, { :recruitment_type => Recruitment::Type_lecture })
           recruitment.save if recruitment
         end
       }
@@ -185,7 +185,7 @@ module RecruitmentVendor
       }.compact
     end
     
-    def build_recruitment(link, init_values = {})
+    def build_info_obj(link, init_values = {})
       doc = get_doc_from_url(link, true, "UTF-8")
       
       return nil if doc.nil?
