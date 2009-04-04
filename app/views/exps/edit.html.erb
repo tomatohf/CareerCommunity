@@ -1,0 +1,87 @@
+<% community_page_title("编辑面经") %>
+
+<div class="blog_container">
+	<h2>编辑面经</h2>
+	
+	<div class="community_block">
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<br />
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @exp.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@exp) %>
+			</p>
+		<% end %>
+		
+		<div class="div_form">
+			<% form_tag "/exps/#{@exp.id}", :method => :put do %>
+			
+				<div>
+					<label for="exp_title">
+				        标题(<span style="color: red;">*</span>)
+				    </label>
+				</div>
+				<div>
+					<input type="text" id="exp_title" name="exp_title" class="text_field" size="75" value="<%= h(@exp.title) %>" />
+				</div>
+				
+				
+				<% if general_admin?(session[:account_id]) %>
+					<div>
+						<label for="exp_source_link">
+					        来源链接
+					    </label>
+					</div>
+					<div>
+						<input type="text" id="exp_source_link" name="exp_source_link" class="text_field" size="60" value="<%= h(@exp.source_link) %>" />
+					
+						&nbsp;&nbsp;&nbsp;
+						<label for="exp_source_name">
+					        来源名称
+					    </label>
+						<input type="text" id="exp_source_name" name="exp_source_name" class="text_field" size="15" value="<%= h(@exp.source_name) %>" />
+					</div>
+				<% end %>
+				
+				
+				<div>
+					<label for="exp_content">
+				        内容(<span style="color: red;">*</span>)
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="#" onclick="remove_rich_editor('exp_content'); return false;">使用 普通编辑框</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="#" onclick="add_rich_editor('exp_content'); return false;">使用 高级编辑器</a>
+				    </label>
+				</div>
+				<div>
+					<textarea id="exp_content" name="exp_content" class="text_field" cols="75" rows="15"><%= @exp.content %></textarea>
+				</div>
+				
+				<br />
+				
+				<div>
+					<%= submit_tag "更新面经", :class => "button", :disabled => @account_limited %>
+					&nbsp;&nbsp;&nbsp;
+					<a href="/exps/<%= @exp.id %>">返回这条面经</a>
+				</div>
+			
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+
+
+<script language="JavaScript" type="text/javascript" src="/lib/tiny_mce/tiny_mce.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="/javascripts/tinymce.js"></script>
+
+

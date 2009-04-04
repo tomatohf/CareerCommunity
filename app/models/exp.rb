@@ -3,7 +3,6 @@ class Exp < ActiveRecord::Base
   define_index do
     # fields
     indexes :title, :content
-    indexes exp_tags.name, :as => :exp_tags_name
 
     # attributes
     has :created_at, :publish_time, :active, :account_id
@@ -14,13 +13,6 @@ class Exp < ActiveRecord::Base
   end
   
   include CareerCommunity::Util
-  
-  has_and_belongs_to_many :exp_tags,
-                          :foreign_key => "exp_id",
-                          :association_foreign_key => "exp_tag_id",
-                          :join_table => "exps_exp_tags",
-                          :after_add => Proc.new { |r, rt| ExpTag.clear_top_tags_cache },
-                          :after_remove => Proc.new { |r, rt| ExpTag.clear_top_tags_cache }
   
   
   
@@ -68,11 +60,11 @@ class Exp < ActiveRecord::Base
   }
   
   def self.clear_exps_feed_cache
-    # Cache.delete(expand_cache_key("#{ExpsController::ACKP_exps_feed}.atom"))
+    Cache.delete(expand_cache_key("#{ExpsController::ACKP_exps_feed}.atom"))
   end
   
   def self.clear_index_list_cache
-    Cache.delete(expand_cache_key(FCKP_index_list))
+    # Cache.delete(expand_cache_key(FCKP_index_list))
     
     Cache.delete(expand_cache_key(FCKP_community_index_list))
   end
@@ -98,7 +90,6 @@ class Exp < ActiveRecord::Base
         if r.title =~ word || r.content =~ word
           puts "id #{r.id} with title #{r.title} will be deleted"
           
-          # r.exp_tags.clear
           r.destroy
           
           break

@@ -1,6 +1,6 @@
 class ExpsController < ApplicationController
   
-  Exp_List_Size = 20
+  Exp_List_Size = 30
   
   layout "community"
   before_filter :check_login, :only => [:new, :create, :edit, :update, :destroy]
@@ -34,7 +34,6 @@ class ExpsController < ApplicationController
         @exps = Exp.find(
           :all,
           :limit => 50,
-          :include => [:exp_tags],
           :order => "publish_time DESC"
         )
         
@@ -44,35 +43,21 @@ class ExpsController < ApplicationController
   end
   
   def show
-    @exp = Exp.find(params[:id], :include => [:exp_tags])
+    @exp = Exp.find(params[:id])
     
     @can_edit = has_login? && has_edit_access(@exp)
   end
   
-  def tag
-    @tag_name = params[:name] && params[:name].strip
+  def list
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
     
-    if @tag_name && (@tag_name != "")
-      @tag = ExpTag.get_tag(@tag_name)
-    
-      @new_record = @tag.new_record?
-    
-      unless @new_record
-        page = params[:page]
-        page = 1 unless page =~ /\d+/
-        @exps = Exp.paginate(
-          :page => page,
-          :per_page => Exp_List_Size,
-          :select => "exps.id, exps.title, exps.publish_time",
-          :joins => "INNER JOIN exps_exp_tags ON 
-                      exps_exp_tags.exp_id = exps.id AND 
-                      exps_exp_tags.exp_tag_id = #{@tag.id}",
-          :order => "exps.publish_time DESC",
-          :include => [:exp_tags]
-        )
-      end
-      
-    end
+    @exps = Exp.paginate(
+      :page => page,
+      :per_page => Exp_List_Size,
+      :select => "id, title, publish_time",
+      :order => "publish_time DESC"
+    )
   end
   
   def search
@@ -85,15 +70,13 @@ class ExpsController < ApplicationController
       @exps = Exp.search(
         @query,
         :page => page,
-        :per_page => 15,
+        :per_page => 10,
         :match_mode => CommunityController::Search_Match_Mode,
         :order => "publish_time DESC, @relevance DESC",
         :field_weights => {
           :title => 4,
           :content => 3,
-          :exp_tags_name => 4
-        },
-        :include => [:exp_tags]
+        }
       ).compact
     end
   end
@@ -116,8 +99,10 @@ class ExpsController < ApplicationController
     @exp.title = params[:exp_title] && params[:exp_title].strip
     @exp.content = params[:exp_content] && params[:exp_content].strip
     
-    @exp.source_name = params[:exp_source_name] && params[:exp_source_name].strip
-    @exp.source_link = params[:exp_source_link] && params[:exp_source_link].strip
+    if ApplicationController.helpers.general_admin?(session[:account_id])
+      @exp.source_name = params[:exp_source_name] && params[:exp_source_name].strip
+      @exp.source_link = params[:exp_source_link] && params[:exp_source_link].strip
+    end
     
     if @exp.save
       return jump_to("/exps/#{@exp.id}")
@@ -129,9 +114,6 @@ class ExpsController < ApplicationController
   end
   
   def destroy
-    # seems it can be done automatically ...
-    # @exp.exp_tags.clear
-    
     @exp.destroy
     
     jump_to("/exps")

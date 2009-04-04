@@ -183,6 +183,20 @@ class CommunityController < ApplicationController
     @talks = search_talk(query, 1, Search_All_Result_Page_Size)
   end
   
+  def search_exp(query, page, per_page)
+    Exp.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, publish_time DESC",
+      :field_weights => {
+        :title => 4,
+        :content => 3,
+      }
+    )
+  end
+  
   def search_talk(query, page, per_page)
     Talk.search(
       query,

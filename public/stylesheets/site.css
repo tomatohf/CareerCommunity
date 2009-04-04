@@ -1509,6 +1509,14 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	background: transparent url(/images/job_targets/add_target_item_small.gif) no-repeat scroll left 6px;
 }
 
+.exp_item {
+	color: #888888;
+	height: 26px;
+	overflow: hidden;
+	padding: 0px 10px 0px 24px;
+	background: transparent url(/images/index/exp_icon.gif) no-repeat scroll 2px 2px;
+}
+
 
 
 

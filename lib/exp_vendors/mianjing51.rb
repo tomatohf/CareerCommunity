@@ -123,8 +123,11 @@ module ExpVendor
         divs_in_text[2].search("").remove
       end
       
-      text_div.search("/div[@class='text_tag']")[0].search("").remove
-      text_div.search("/div[@class='note']")[0].search("").remove
+      text_tags_in_text_div = text_div.search("/div[@class='text_tag']")
+      text_tags_in_text_div[0].search("").remove if text_tags_in_text_div.size > 0
+      
+      text_notes_in_text_div = text_div.search("/div[@class='note']")
+      text_notes_in_text_div[0].search("").remove if text_notes_in_text_div.size > 0
       
       exp.content = text_div.inner_html
       
@@ -132,14 +135,6 @@ module ExpVendor
       # add the fixed attributes
       exp.source_name = source_name
       exp.source_link = link
-      
-      
-      # tags
-      tag_element = doc.search("//div[@class='text_tag']")[0].search("/h5")[0]
-      tag_element.search("/span[@class='note']")[0].search("").remove
-      tag_text = tag_element.inner_html[5..-1].split(/\s/)
-      tag_text.uniq!
-      tag_text.each { |tag| exp.exp_tags << ExpTag.get_tag(tag) if tag && (tag.strip != "") }
       
       exp
       

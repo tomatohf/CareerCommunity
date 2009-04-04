@@ -1,6 +1,8 @@
 ﻿抓取面经/笔经
-experience auto-vendors - http://www.51mianjing.cn, http://www.miansou.com
-experience manu-vendors - http://www.esojob.com, job_info_source
+experience manu-vendors - http://www.esojob.com, http://www.miansou.com, job_info_source
+
+通用化 select_item 页面
+
 
 
 招聘信息
@@ -8,8 +10,6 @@ new recruitment vendors - 面霸网
 招聘信息的过期处理
 
 处理网申, 在乔布堂网站嵌入网申页面
-
-通用化 select_item 页面
 
 在 talk reader 中添加 STP 和 面板的广告
 

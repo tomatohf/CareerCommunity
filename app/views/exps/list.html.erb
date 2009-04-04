@@ -1,4 +1,4 @@
-<% page_title = "面经" %>
+<% page_title = "面经列表" %>
 <% community_page_title(page_title) %>
 
 <div id="ad_col" class="float_l left_ad_container" style="display: none;">
@@ -23,51 +23,25 @@
 	
 	
 	<div class="community_block">
-		<div>
-			热门公司面经
-		</div>
-		
-		<div>
-			<script type="text/javascript"><!--
-			google_ad_client = "pub-3439613867319084";
-			/* 728x15 */
-			google_ad_slot = "8608645276";
-			google_ad_width = 728;
-			google_ad_height = 15;
-			//-->
-			</script>
-			<script type="text/javascript"
-			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-			</script>
-		</div>
-		
-		<div>
-			aaaaaaaa
-		</div>
-		
-		<div>
-			<script type="text/javascript"><!--
-			google_ad_client = "pub-3439613867319084";
-			/* 728x15 */
-			google_ad_slot = "8608645276";
-			google_ad_width = 728;
-			google_ad_height = 15;
-			//-->
-			</script>
-			<script type="text/javascript"
-			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-			</script>
-		</div>
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-3439613867319084";
+		/* 728x15 */
+		google_ad_slot = "8608645276";
+		google_ad_width = 728;
+		google_ad_height = 15;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
 	</div>
-	
 	
 	<div class="community_block">
 		<div class="recruitment_list_container">
 			<div class="recruitment_list_title">
-				<a class="float_r account_nick_link" href="/exps/list">
-					更多面经列表 »</a>
-				
-				<strong>最新面经</strong>
+				<div class="align_c overflow_hidden">
+					<strong><%= page_title %></strong>
+				</div>
 			</div>
 			
 			<div class="community_block">
@@ -87,23 +61,16 @@
 				
 				
 				<div style="margin-right: 160px;">
-					<% cache(Exp::FCKP_community_index_list) do %>
-						<%
-							exps = Exp.find(
-								:all,
-						      	:limit => ExpsController::Exp_List_Size,
-								:select => "id, title, publish_time",
-								:order => "publish_time DESC"
-							)
-						%>
-
-						<%= render :partial => "exp", :collection => exps %>
-					<% end %>
+					<div class="community_block">
+						<%= paging_buttons(@exps) %>
+					</div>
 					
 					
-					<div class="community_block align_r" style="border-top: dashed 1px #DADADA;">
-						<a href="/exps/list">
-							更多面经列表 »</a>
+					<%= render :partial => "exp", :collection => @exps %>
+					
+					
+					<div class="community_block">
+						<%= paging_buttons(@exps) %>
 					</div>
 				</div>
 			</div>

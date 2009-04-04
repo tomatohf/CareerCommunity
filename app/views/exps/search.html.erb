@@ -1,4 +1,5 @@
-<% page_title = "面经" %>
+<% page_title = "搜索面经" %>
+<% page_title = "#{@query} - " + page_title if @query && (@query != "") %>
 <% community_page_title(page_title) %>
 
 <div id="ad_col" class="float_l left_ad_container" style="display: none;">
@@ -21,55 +22,51 @@
 	<%= render :partial => "top_nav" %>
 	
 	
-	
 	<div class="community_block">
-		<div>
-			热门公司面经
-		</div>
-		
-		<div>
-			<script type="text/javascript"><!--
-			google_ad_client = "pub-3439613867319084";
-			/* 728x15 */
-			google_ad_slot = "8608645276";
-			google_ad_width = 728;
-			google_ad_height = 15;
-			//-->
-			</script>
-			<script type="text/javascript"
-			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-			</script>
-		</div>
-		
-		<div>
-			aaaaaaaa
-		</div>
-		
-		<div>
-			<script type="text/javascript"><!--
-			google_ad_client = "pub-3439613867319084";
-			/* 728x15 */
-			google_ad_slot = "8608645276";
-			google_ad_width = 728;
-			google_ad_height = 15;
-			//-->
-			</script>
-			<script type="text/javascript"
-			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-			</script>
-		</div>
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-3439613867319084";
+		/* 728x15 */
+		google_ad_slot = "8608645276";
+		google_ad_width = 728;
+		google_ad_height = 15;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
 	</div>
 	
-	
-	<div class="community_block">
-		<div class="recruitment_list_container">
-			<div class="recruitment_list_title">
-				<a class="float_r account_nick_link" href="/exps/list">
-					更多面经列表 »</a>
+	<div class="recruitment_list_container">
+		<div class="recruitment_list_title">
+			<div class="align_c overflow_hidden">
+				<strong><%= page_title %></strong>
 				
-				<strong>最新面经</strong>
+				<% if @exps %>
+					&nbsp;&nbsp;&nbsp;
+					<span class="form_info_s">
+						(
+						搜索到
+						<b><%= @exps.total_entries %></b>
+						条面经
+						)
+					</span>
+				<% end %>
 			</div>
+		</div>
+		
+		
+		<div class="community_block align_c">
+			<% form_tag "/exps/search", :method => :get do %>
+				<input type="text" name="query" class="text_field" style="padding: 5px;" value="<%= h(@query) %>" style="width: 200px;" />
+
+				<input type="submit" value="搜索面经" class="button" />
+			<% end %>
 			
+			<br />
+		</div>
+		
+		
+		<% if @exps %>
 			<div class="community_block">
 				<div class="float_r">
 					<script type="text/javascript"><!--
@@ -86,28 +83,24 @@
 				</div>
 				
 				
-				<div style="margin-right: 160px;">
-					<% cache(Exp::FCKP_community_index_list) do %>
-						<%
-							exps = Exp.find(
-								:all,
-						      	:limit => ExpsController::Exp_List_Size,
-								:select => "id, title, publish_time",
-								:order => "publish_time DESC"
-							)
-						%>
+				<div style="margin-right: 190px;">
+					<% @exps.each do |exp| %>
+						<% if exp %>
+							<%= render(:partial => "/community/search_results/exp", :locals => {:result => exp, :query => @query, :riddle_client => get_riddle_client}) %>
 
-						<%= render :partial => "exp", :collection => exps %>
+							<div style="height: 30px;">
+
+							</div>
+						<% end %>
 					<% end %>
 					
 					
-					<div class="community_block align_r" style="border-top: dashed 1px #DADADA;">
-						<a href="/exps/list">
-							更多面经列表 »</a>
+					<div class="community_block">
+						<%= paging_buttons(@exps) %>
 					</div>
 				</div>
 			</div>
-		</div>
+		<% end %>
 	</div>
 	
 	

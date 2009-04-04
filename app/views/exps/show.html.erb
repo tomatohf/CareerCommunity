@@ -1,0 +1,106 @@
+<% exp_title = h(@exp.title) %>
+<% community_page_title("#{exp_title} - 面经") %>
+
+<div id="ad_col" class="float_l left_ad_container" style="display: none;">
+	<%= render :partial => "left_ad" %>
+</div>
+
+<div id="content_col" class="right_content_container">
+	<a class="float_r" href="/exps/feed.atom">
+		<img src="/images/feed_icon.gif" border="0" alt="订阅最新面经" title="订阅最新面经" /></a>
+		
+	<h2>
+		<a href="#" onclick="toggle_ad_col(); return false;" title="显示/隐藏功能列表栏">
+			<img src="/images/recruitments/toggle_ad_icon.gif" border="0" alt="显示/隐藏功能列表栏" /></a>
+
+		<%= exp_title %>
+	</h2>
+	
+	
+	
+	<%= render :partial => "top_nav" %>
+	
+	
+	
+	<div class="community_block">
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-3439613867319084";
+		/* 728x15 */
+		google_ad_slot = "8608645276";
+		google_ad_width = 728;
+		google_ad_height = 15;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+	</div>
+	
+	<div class="recruitment_list_container">
+		<div class="recruitment_list_title">
+			<div class="align_c overflow_hidden">
+				<strong><%= exp_title %></strong>
+			</div>
+		</div>
+		
+		
+		<div class="community_block align_r">
+			<div style="word-spacing: 10px;">
+				<% if @can_edit %>
+					<div class="float_l">
+						<% form_tag "/exps/#{@exp.id}", :method => :delete, :id => "delete_exp_form" do %>
+						<% end %>
+						<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('delete_exp_form').submit();}; return false;">删除信息</a>
+
+						|
+
+						<a href="/exps/<%= @exp.id %>/edit">编辑快照</a>
+						
+						|
+						
+						<a href="#">添加涉及的职位</a>
+						
+						|
+						
+						<a href="#">添加涉及的公司</a>
+					</div>
+				<% end %>
+				
+				
+				<% if @exp.publish_time %>
+					发布时间:
+					<%= format_date(@exp.publish_time) %>
+				<% end %>
+			</div>
+		</div>
+
+
+		<div class="community_block tinymce_content">
+			<%= sanitize_tinymce(@exp.content) %>
+		</div>
+	</div>
+	
+	
+	<div class="community_block">
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-3439613867319084";
+		/* 728x90 */
+		google_ad_slot = "8878841011";
+		google_ad_width = 728;
+		google_ad_height = 90;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+	</div>
+	
+</div>
+
+
+<script language="JavaScript" type="text/javascript" src="/javascripts/ad_content.js"></script>
+<script language="JavaScript" type="text/javascript">
+	toggle_ad_col(true);
+</script>
+
+

@@ -551,10 +551,10 @@ ActionController::Routing::Routes.draw do |map|
   }
   
   
-  map.connect "/exps/p/:page", :controller => "exps", :action => "index", :page => /\d+/
+  map.connect "/exps/list/p/:page", :controller => "exps", :action => "list", :page => /\d+/
   map.resources :exps, :collection => {
     
-    :tag => :get,
+    :list => :get,
     
     :search => :get,
     

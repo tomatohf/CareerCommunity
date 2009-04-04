@@ -1,0 +1,13 @@
+<div class="exp_item">
+	<a href="/exps/<%= exp.id %>" class="account_nick_link" style="font-size: 14px;" target="_blank">
+		<%= h(exp.title) %></a>
+	
+
+	<% if exp.publish_time %>
+		<span style="margin-left: 5px;">
+			(<%= exp.publish_time.strftime("%y.%m.%d") %>)
+		</span>
+	<% end %>
+</div>
+
+

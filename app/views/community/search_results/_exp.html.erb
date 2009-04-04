@@ -1,0 +1,39 @@
+<% exp = result %>
+
+<%
+	excerpts = build_excerpts(
+		riddle_client,
+		[h(exp.title), sanitize_tinymce(extract_text(exp.content))],
+		query,
+		"exp_core"
+	)
+%>
+
+<%
+	exp_title = excerpts[0]
+	exp_content = excerpts[1]
+%>
+
+<div class="recruitment_container">
+	<div class="recruitment_title">
+		<a href="/exps/<%= exp.id %>" class="account_nick_link">
+			<%= exp_title %></a>
+	</div>
+	
+	<div class="align_r">
+		<span class="form_info_s">
+			发布时间:
+		</span>
+		<span class="recruitment_info_highlight">
+			<b>
+				<%= format_date(exp.publish_time) %>
+			</b>
+		</span>
+	</div>
+	
+	<div class="recruitment_content">
+		<%= exp_content %>
+	</div>
+</div>
+
+

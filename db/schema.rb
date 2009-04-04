@@ -391,14 +391,6 @@ ActiveRecord::Schema.define(:version => 26) do
   add_index "education_profiles", ["enter_year"], :name => "index_education_profiles_on_enter_year"
   add_index "education_profiles", ["delta"], :name => "index_education_profiles_on_delta"
 
-  create_table "exp_tags", :force => true do |t|
-    t.string  "name"
-    t.boolean "delta"
-  end
-
-  add_index "exp_tags", ["name"], :name => "index_exp_tags_on_name"
-  add_index "exp_tags", ["delta"], :name => "index_exp_tags_on_delta"
-
   create_table "exps", :force => true do |t|
     t.string   "title"
     t.text     "content"
@@ -417,14 +409,6 @@ ActiveRecord::Schema.define(:version => 26) do
   add_index "exps", ["active"], :name => "index_exps_on_active"
   add_index "exps", ["created_at"], :name => "index_exps_on_created_at"
   add_index "exps", ["delta"], :name => "index_exps_on_delta"
-
-  create_table "exps_exp_tags", :id => false, :force => true do |t|
-    t.integer "exp_id",     :limit => 11
-    t.integer "exp_tag_id", :limit => 11
-  end
-
-  add_index "exps_exp_tags", ["exp_id"], :name => "index_exps_exp_tags_on_exp_id"
-  add_index "exps_exp_tags", ["exp_tag_id"], :name => "index_exps_exp_tags_on_exp_tag_id"
 
   create_table "friends", :force => true do |t|
     t.datetime "created_at"
