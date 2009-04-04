@@ -23,40 +23,47 @@
 	
 	
 	<div class="community_block">
-		<div>
-			热门公司面经
-		</div>
-		
-		<div>
-			<script type="text/javascript"><!--
-			google_ad_client = "pub-3439613867319084";
-			/* 728x15 */
-			google_ad_slot = "8608645276";
-			google_ad_width = 728;
-			google_ad_height = 15;
-			//-->
-			</script>
-			<script type="text/javascript"
-			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-			</script>
-		</div>
-		
-		<div>
-			aaaaaaaa
-		</div>
-		
-		<div>
-			<script type="text/javascript"><!--
-			google_ad_client = "pub-3439613867319084";
-			/* 728x15 */
-			google_ad_slot = "8608645276";
-			google_ad_width = 728;
-			google_ad_height = 15;
-			//-->
-			</script>
-			<script type="text/javascript"
-			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-			</script>
+		<div class="recruitment_list_container">
+			<div class="recruitment_list_title">
+				<a class="float_r account_nick_link" href="/exps/company">
+					更多热门公司 »</a>
+				
+				<strong>热门公司面经</strong>
+			</div>
+			
+			<div class="community_block">
+				<div>
+					<script type="text/javascript"><!--
+					google_ad_client = "pub-3439613867319084";
+					/* 728x15 */
+					google_ad_slot = "8608645276";
+					google_ad_width = 728;
+					google_ad_height = 15;
+					//-->
+					</script>
+					<script type="text/javascript"
+					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+					</script>
+				</div>
+
+				<div class="community_block">
+					<%= render :partial => "company_area" %>
+				</div>
+
+				<div>
+					<script type="text/javascript"><!--
+					google_ad_client = "pub-3439613867319084";
+					/* 728x15 */
+					google_ad_slot = "8608645276";
+					google_ad_width = 728;
+					google_ad_height = 15;
+					//-->
+					</script>
+					<script type="text/javascript"
+					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+					</script>
+				</div>
+			</div>
 		</div>
 	</div>
 	
@@ -64,29 +71,24 @@
 	<div class="community_block">
 		<div class="recruitment_list_container">
 			<div class="recruitment_list_title">
-				<a class="float_r account_nick_link" href="/exps/list">
-					更多面经列表 »</a>
+				<span class="float_r">
+					»</span>
 				
 				<strong>最新面经</strong>
+				
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				
+				(
+				<a class="account_nick_link" href="/exps/list">
+					更多面经列表 »</a>
+				)
 			</div>
 			
 			<div class="community_block">
-				<div class="float_r">
-					<script type="text/javascript"><!--
-					google_ad_client = "pub-3439613867319084";
-					/* 160x600 */
-					google_ad_slot = "3255236956";
-					google_ad_width = 160;
-					google_ad_height = 600;
-					//-->
-					</script>
-					<script type="text/javascript"
-					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-					</script>
-				</div>
+				<%= render :partial => "talks_area" %>
 				
 				
-				<div style="margin-right: 160px;">
+				<div style="margin-right: 280px;">
 					<% cache(Exp::FCKP_community_index_list) do %>
 						<%
 							exps = Exp.find(

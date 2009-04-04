@@ -1,0 +1,23 @@
+<div class="float_r" style="width: 260px; border-left: 1px dashed #DADADA; padding-left: 10px;">
+	<div>
+		<span style="font-size: 14px;">
+			更多精品面经, 尽在
+		</span>
+		<a href="/talks" class="account_nick_link" style="font-size: 14px;">
+			<strong>周三访谈录</strong></a>
+		:
+	</div>
+	
+	<% (Talk.get_talk_index_talks(1) || []).each do |talk| %>
+		<div style="margin-top: 5px;">
+			<a href="/talks/<%= talk.id %>" title="<%= h(extract_text(talk.get_info[:desc])) %>" class="account_nick_link" style="font-size: 14px;">
+				<img src="/images/index/talk_icon.png" border="0" style="margin-right: 2px; margin-bottom: -2px;" />
+				<%= h(talk.get_title) %></a>
+		</div>
+	<% end %>
+	
+	<div class="community_block align_r">
+		<a href="/talks">
+			查看更多 »</a>
+	</div>
+</div>

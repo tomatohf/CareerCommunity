@@ -1,4 +1,4 @@
-<% page_title = "面经列表" %>
+<% page_title = "热门公司面经导航" %>
 <% community_page_title(page_title) %>
 
 <div id="ad_col" class="float_l left_ad_container" style="display: none;">
@@ -23,44 +23,29 @@
 	
 	
 	<div class="community_block">
-		<script type="text/javascript"><!--
-		google_ad_client = "pub-3439613867319084";
-		/* 728x15 */
-		google_ad_slot = "8608645276";
-		google_ad_width = 728;
-		google_ad_height = 15;
-		//-->
-		</script>
-		<script type="text/javascript"
-		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-		</script>
-	</div>
-	
-	<div class="community_block">
 		<div class="recruitment_list_container">
-			<div class="recruitment_list_title">
-				<div class="align_c overflow_hidden">
-					<strong><%= page_title %></strong>
+			<div class="recruitment_list_title align_c">
+				<strong>热门公司面经</strong>
+			</div>
+			
+			<div class="community_block">
+				<div>
+					<script type="text/javascript"><!--
+					google_ad_client = "pub-3439613867319084";
+					/* 728x15 */
+					google_ad_slot = "8608645276";
+					google_ad_width = 728;
+					google_ad_height = 15;
+					//-->
+					</script>
+					<script type="text/javascript"
+					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+					</script>
 				</div>
-			</div>
-			
-			<div class="community_block">
-				<%= paging_buttons(@exps) %>
-			</div>
-			
-			<div class="community_block">
-				<%= render :partial => "talks_area" %>
-				
-				
-				<div style="margin-right: 280px;">
-					
-					<%= render :partial => "exp", :collection => @exps %>
-					
+
+				<div class="community_block">
+					<%= render :partial => "company_area", :locals => {:all => true} %>
 				</div>
-			</div>
-			
-			<div class="community_block">
-				<%= paging_buttons(@exps) %>
 			</div>
 		</div>
 	</div>

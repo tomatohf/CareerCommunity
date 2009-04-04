@@ -44,39 +44,55 @@
 		</div>
 		
 		
-		<div class="community_block align_r">
-			<div style="word-spacing: 10px;">
-				<% if @can_edit %>
-					<div class="float_l">
-						<% form_tag "/exps/#{@exp.id}", :method => :delete, :id => "delete_exp_form" do %>
-						<% end %>
-						<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('delete_exp_form').submit();}; return false;">删除信息</a>
+		<div class="community_block">
+			<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+				<tr>
+					<td valign="top">
+						<div class="community_block align_r">
+							<div style="word-spacing: 10px;">
+								<% if @can_edit %>
+									<div class="float_l">
+										<% form_tag "/exps/#{@exp.id}", :method => :delete, :id => "delete_exp_form" do %>
+										<% end %>
+										<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('delete_exp_form').submit();}; return false;">删除信息</a>
 
-						|
+										|
 
-						<a href="/exps/<%= @exp.id %>/edit">编辑快照</a>
-						
-						|
-						
-						<a href="#">添加涉及的职位</a>
-						
-						|
-						
-						<a href="#">添加涉及的公司</a>
-					</div>
-				<% end %>
-				
-				
-				<% if @exp.publish_time %>
-					发布时间:
-					<%= format_date(@exp.publish_time) %>
-				<% end %>
-			</div>
-		</div>
+										<a href="/exps/<%= @exp.id %>/edit">编辑快照</a>
+
+										<% if false %>
+										|
+
+										<a href="#">添加涉及的职位</a>
+
+										|
+
+										<a href="#">添加涉及的公司</a>
+										<% end %>
+									</div>
+								<% end %>
 
 
-		<div class="community_block tinymce_content">
-			<%= sanitize_tinymce(@exp.content) %>
+								<% if @exp.publish_time %>
+									发布时间:
+									<%= format_date(@exp.publish_time) %>
+								<% end %>
+							</div>
+						</div>
+
+
+						<div class="community_block tinymce_content">
+							<%= sanitize_tinymce(@exp.content) %>
+						</div>
+					</td>
+					
+					<td style="width: 30px;"></td>
+					
+					<td valign="top">
+						<%= render :partial => "talks_area" %>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	

@@ -556,6 +556,8 @@ ActionController::Routing::Routes.draw do |map|
     
     :list => :get,
     
+    :company => :get,
+    
     :search => :get,
     
     :feed => :get

@@ -81,6 +81,10 @@ class ExpsController < ApplicationController
     end
   end
   
+  def company
+    
+  end
+  
   
   # def new
   #   @exp = Exp.new
