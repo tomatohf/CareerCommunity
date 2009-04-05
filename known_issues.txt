@@ -1,4 +1,6 @@
-﻿在 talk reader 中添加广告
+﻿通用化 select_item 页面
+
+在 talk reader 中添加广告
 	- STP
 	- 招聘信息
 	- 面经
@@ -19,8 +21,6 @@ new recruitment vendors - 面霸网
 根据求职目标列表 生成 日历
 
 
-
-通用化 select_item 页面
 
 求职信息
 	处理 用户自己添加的信息

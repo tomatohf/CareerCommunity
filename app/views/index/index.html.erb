@@ -493,7 +493,7 @@
 						<%
 							fulltime_recruitments = Recruitment.find(
 								:all,
-								:limit => 15,
+								:limit => 17,
 								:conditions => ["recruitment_type = ?", Recruitment::Type_fulltime],
 								:select => "id, title, publish_time, location, recruitment_type",
 								:order => "publish_time DESC"
