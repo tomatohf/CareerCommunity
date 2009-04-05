@@ -560,7 +560,9 @@ ActionController::Routing::Routes.draw do |map|
     
     :search => :get,
     
-    :feed => :get
+    :feed => :get,
+    
+    :zz => :get
     
   }, :member => {
     

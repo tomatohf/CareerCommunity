@@ -3,10 +3,12 @@ class ExpsController < ApplicationController
   Exp_List_Size = 30
   
   layout "community"
-  before_filter :check_login, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :check_login, :only => [:new, :zz, :create, :edit, :update, :destroy]
   before_filter :check_limited, :only => [:create, :update, :destroy]
   
   before_filter :check_edit_access, :only => [:edit, :update, :destroy]
+  
+  before_filter :check_info_editor, :only => [:zz]
   
   
   
@@ -86,14 +88,42 @@ class ExpsController < ApplicationController
   end
   
   
-  # def new
-  #   @exp = Exp.new
-  # end
+  def new
+    @exp = Exp.new
+  end
   
-  # def create
-  #   @exp = Exp.new(:account_id => session[:account_id])
+  def zz
+    @zz = true
+    new
+    render :action => "new"
+  end
+  
+  def create
+    is_info_editor = ApplicationController.helpers.info_editor?(session[:account_id])
     
-  # end
+    is_zz = is_info_editor && (params[:zz] == "true")
+    
+    @exp = Exp.new(:account_id => is_zz ? -1 : session[:account_id])
+    
+    @exp.title = params[:exp_title] && params[:exp_title].strip
+    @exp.content = params[:exp_content] && params[:exp_content].strip
+    
+    if is_zz
+      @exp.source_name = params[:exp_source_name] && params[:exp_source_name].strip
+      @exp.source_link = params[:exp_source_link] && params[:exp_source_link].strip
+      @exp.publish_time = params[:exp_publish_time] && params[:exp_publish_time].strip
+    end
+    
+    @exp.publish_time ||= DateTime.now
+    
+    if @exp.save
+      return jump_to("/exps/#{@exp.id}")
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+
+    render :action => is_zz ? "zz" : "new"
+  end
   
   def edit
     
@@ -103,9 +133,10 @@ class ExpsController < ApplicationController
     @exp.title = params[:exp_title] && params[:exp_title].strip
     @exp.content = params[:exp_content] && params[:exp_content].strip
     
-    if ApplicationController.helpers.general_admin?(session[:account_id])
+    if ApplicationController.helpers.info_editor?(session[:account_id])
       @exp.source_name = params[:exp_source_name] && params[:exp_source_name].strip
       @exp.source_link = params[:exp_source_link] && params[:exp_source_link].strip
+      @exp.publish_time = params[:exp_publish_time] && params[:exp_publish_time].strip
     end
     
     if @exp.save
@@ -127,7 +158,7 @@ class ExpsController < ApplicationController
   private
   
   def has_edit_access(exp)
-    ApplicationController.helpers.general_admin?(session[:account_id]) || (exp.account_id == session[:account_id])
+    ApplicationController.helpers.info_editor?(session[:account_id]) || (exp.account_id == session[:account_id])
   end
   
   def check_edit_access
@@ -135,6 +166,10 @@ class ExpsController < ApplicationController
     @exp = Exp.find(@exp_id)
     
     jump_to("/errors/forbidden") unless has_edit_access(@exp)
+  end
+  
+  def check_info_editor
+    jump_to("/errors/forbidden") unless ApplicationController.helpers.info_editor?(session[:account_id])
   end
   
 end

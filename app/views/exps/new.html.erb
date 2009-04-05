@@ -1,7 +1,7 @@
-<% community_page_title("编辑面经") %>
+<% community_page_title("添加面经") %>
 
 <div class="blog_container">
-	<h2>编辑面经</h2>
+	<h2>添加面经</h2>
 	
 	<div class="community_block">
 		<%= unchecked_alert(@account_checked) %>
@@ -21,7 +21,7 @@
 		<% end %>
 		
 		<div class="div_form">
-			<% form_tag "/exps/#{@exp.id}", :method => :put do %>
+			<% form_tag "/exps/#{@exp.id}", :method => :post do %>
 			
 				<div>
 					<label for="exp_title">
@@ -33,7 +33,7 @@
 				</div>
 				
 				
-				<% if info_editor?(session[:account_id]) %>
+				<% if @zz %>
 					<div>
 						<label for="exp_source_link">
 					        来源链接
@@ -48,7 +48,6 @@
 					    </label>
 						<input type="text" id="exp_source_name" name="exp_source_name" class="text_field" size="15" value="<%= h(@exp.source_name) %>" />
 					</div>
-					
 					
 					<div>
 						<label for="exp_publish_time">
@@ -77,9 +76,12 @@
 				<br />
 				
 				<div>
-					<%= submit_tag "更新面经", :class => "button", :disabled => @account_limited %>
+					<% if @zz %>
+						<input type="hidden" name="zz" value="true" />
+					<% end %>
+					<%= submit_tag "保存面经", :class => "button", :disabled => @account_limited %>
 					&nbsp;&nbsp;&nbsp;
-					<a href="/exps/<%= @exp.id %>">返回这条面经</a>
+					<a href="/exps">返回面经首页</a>
 				</div>
 			
 			<% end %>

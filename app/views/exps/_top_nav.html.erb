@@ -12,6 +12,14 @@
 		|	
 		<a href="/exps/search" class="account_nick_link">
 			搜索面经</a>
+		|	
+		<a href="/exps/new" class="account_nick_link">
+			我要添加面经</a>
+		<% if info_editor?(session[:account_id]) %>
+			|	
+			<a href="/exps/zz" class="account_nick_link">
+				转载面经</a>
+		<% end %>
 	</div>
 </div>
 

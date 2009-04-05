@@ -1,9 +1,4 @@
-﻿完成 热门公司  抓取更多面经   思考一下调整系统适应非 ID 方式关联公司
-
-抓取面经/笔经
-experience manu-vendors - http://www.esojob.com, http://www.miansou.com, job_info_source
-
-在 talk reader 中添加广告
+﻿在 talk reader 中添加广告
 	- STP
 	- 招聘信息
 	- 面经

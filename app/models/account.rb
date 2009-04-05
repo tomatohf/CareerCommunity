@@ -196,10 +196,8 @@ class Account < ActiveRecord::Base
       # has paid user can create three groups
       count += 3
     else
-      if 1.years.ago > self.created_at
-        # has registered 6 months
-        count += 1
-      end
+      # TODO - check point amount
+      
     end
     
     if has_ownership?

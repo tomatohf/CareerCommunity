@@ -3,6 +3,7 @@ module ExpVendor
   @@vendors = {
     # "file_name_without_rb" => "class name"
     
+    # "esojob" => "Esojob",
     "mianjing51" => "Mianjing51"
   }
   

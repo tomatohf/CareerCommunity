@@ -40,10 +40,8 @@
 	</div>
 	-->
 	
-	<div class="community_block">
-		注册时间超过一年可获得 <b>1</b> 个创建圈子的权限
-	</div>
-
+	
+	
 </div>
 
 <div class="group_container_l">
@@ -151,9 +149,20 @@
 				<img src="/images/warning_small.png" border="0" alt="警告" title="警告" />
 				没有创建圈子的权限 ...
 			</p>
-			<a href="/groups/list/<%= @account_id %>">返回我参加的圈子列表</a>
-			&nbsp;&nbsp;&nbsp;
-			<a href="/groups/recent/<%= @account_id %>">返回我的圈子近况</a>
+			
+			
+			<p class="community_block">
+				需要开通圈子可以到
+				<a href="/groups/1">
+					乔布圈反馈小组</a>
+				提出申请, 并注明是否愿意担当圈子管理员
+			</p>
+			
+			<p class="align_r" style="margin-right: 50px;">
+				<a href="/groups/list/<%= @account_id %>">返回我参加的圈子列表</a>
+				&nbsp;&nbsp;&nbsp;
+				<a href="/groups/recent/<%= @account_id %>">返回我的圈子近况</a>
+			</p>
 		<% end %>
 	</div>
 </div>
