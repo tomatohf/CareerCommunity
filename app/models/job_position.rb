@@ -44,6 +44,9 @@ class JobPosition < ActiveRecord::Base
   
   
   
+  Null_Record_ID = 1000
+  
+  
   CKP_account_positions = :account_positions
   CKP_position = :position
   

@@ -15,7 +15,8 @@ class JobTargetsController < ApplicationController
                                           :create_system_status, :status_update, :status_destroy,
                                           :create_system_process, :process_update, :process_destroy,
                                           :account_job_item_update, :account_job_item_destroy,
-                                          :create_account_item, :update_target_job_item]
+                                          :create_account_item, :update_target_job_item,
+                                          :create_from_recruitment]
   
   before_filter :check_account_access, :only => [:list, :list_closed, :account_status, :account_process,
                                                   :account_job_item]
@@ -31,9 +32,8 @@ class JobTargetsController < ApplicationController
                                                 :update_step_date, :update_step_remind_date,
                                                 :close_target, :open_target, :destroy, :star_target,
                                                 :unstar_target,
-                                                :edit_target_job_item, :update_target_job_item]
-  
-  before_filter :do_protection
+                                                :edit_target_job_item, :update_target_job_item,
+                                                :recruitments, :exps]
   
 
   
@@ -188,8 +188,31 @@ class JobTargetsController < ApplicationController
     )
     
     
-    jump_to("/job_targets/list/session[:account_id]") unless @target.save # should never happen normally ...
+    jump_to("/job_targets/list/#{session[:account_id]}") unless @target.save # should never happen normally ...
     
+  end
+  
+  def create_from_recruitment
+    recruitment_name = params[:recruitment_title] && params[:recruitment_title].strip
+    recruitment_id = params[:recruitment_id] && params[:recruitment_id].strip
+    
+    target = JobTarget.new(
+      :company_id => Company::Null_Record_ID,
+      :job_position_id => JobPosition::Null_Record_ID,
+      :account_id => session[:account_id],
+      :closed => false
+    )
+    
+    target.fill_info(
+      {
+        :refer_name => recruitment_name,
+        :refer_url => "/recruitments/#{recruitment_id}"
+      }
+    )
+    
+    target.save
+    
+    jump_to("/job_targets/list/#{session[:account_id]}")
   end
   
   
@@ -421,7 +444,7 @@ class JobTargetsController < ApplicationController
       saved = step.save
       
       if saved
-        step_order = @target.get_info[:step_order]
+        step_order = @target.get_info[:step_order] || []
         step_order << step.id
         @target.update_info(
           {
@@ -668,12 +691,74 @@ class JobTargetsController < ApplicationController
   end
   
   
+  def recruitments
+    company = Company.get_company(@target.company_id)
+    job_position = JobPosition.get_job_position(@target.job_position_id)
+    @company_name = company.name
+    @job_position_name = job_position.name
+    
+    text = (company.id == Company::Null_Record_ID) ? @target.get_info[:refer_name] : @company_name
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    
+    if text && text.strip != ""
+      
+      @recruitments = Recruitment.search(
+        text,
+        :page => page,
+        :per_page => 50,
+        :match_mode => CommunityController::Search_Match_Mode,
+        :order => "publish_time DESC, @relevance DESC",
+        :field_weights => {
+          :title => 8,
+          :content => 8,
+          :location => 6,
+          :recruitment_tags_name => 8
+        },
+        :include => [:recruitment_tags]
+      ).compact
+      
+    else
+      
+      @recruitments = []
+      
+    end
+  end
+  
+  def exps
+    company = Company.get_company(@target.company_id)
+    job_position = JobPosition.get_job_position(@target.job_position_id)
+    @company_name = company.name
+    @job_position_name = job_position.name
+    
+    text = (company.id == Company::Null_Record_ID) ? @target.get_info[:refer_name] : @company_name
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    
+    if text && text.strip != ""
+      @exps = Exp.search(
+        text,
+        :page => page,
+        :per_page => 30,
+        :match_mode => CommunityController::Search_Match_Mode,
+        :order => "publish_time DESC, @relevance DESC",
+        :field_weights => {
+          :title => 4,
+          :content => 3,
+        }
+      ).compact
+    else
+      
+      @exps = []
+      
+    end
+  end
+  
+  
   
   private
-  
-  def do_protection
-    jump_to("/community") unless ApplicationController.helpers.info_editor?(session[:account_id])
-  end
   
   def check_account_access
     @account_id = params[:id]

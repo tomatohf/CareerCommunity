@@ -1,4 +1,6 @@
 <%
+	target_info = closed_target.get_info
+	
 	company = closed_target.company
 	Company.set_company_cache(company)
 	
@@ -13,7 +15,7 @@
 	</td>
 	
 	<td align="left" valign="middle" style="font-size: 14px;">
-		<%= h(company.name) %>
+		<%= (company.id == Company::Null_Record_ID) ? h(target_info[:refer_name]) : h(company.name) %>
 	</td>
 	
 	<td align="left" valign="middle" style="font-size: 14px;">

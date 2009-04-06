@@ -61,6 +61,9 @@ class Company < ActiveRecord::Base
   
   
   
+  Null_Record_ID = 1000
+  
+  
   CKP_account_companies = :account_companies
   CKP_company = :company
   

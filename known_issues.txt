@@ -1,10 +1,12 @@
-﻿通用化 select_item 页面
+﻿编辑目标的 refer_name 和 refer_url
+链接到 refer_url
+目标的备注功能
+
+面经的 涉及的公司 和 职位
+通用化 select_item 页面
 
 在 talk reader 中添加广告
 	- STP
-	- 招聘信息
-	- 面经
-	- 求职目标管理
 	- 求职网址导航
 
 
@@ -12,6 +14,7 @@
 招聘信息
 new recruitment vendors - 面霸网
 招聘信息的过期处理
+	对于已经年久没删除的信息, 页面访问时给出信息说明, 不要只显示不存在
 
 处理网申, 在乔布堂网站嵌入网申页面
 

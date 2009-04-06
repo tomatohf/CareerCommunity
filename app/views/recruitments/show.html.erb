@@ -80,8 +80,23 @@
 		</div>
 
 
+		<% form_tag "/job_targets/create_from_recruitment", :method => :post, :target => "_blank", :id => "create_job_target_form" do %>
+			<input type="hidden" name="recruitment_title" value="<%= recruitment_title %>" />
+			<input type="hidden" name="recruitment_id" value="<%= @recruitment.id %>" />
+		<% end %>
+		
 		<div class="community_block tinymce_content">
+			<div class="align_r">
+				<a href="#" onclick="if(confirm('确定要根据这条招聘信息创建求职目标么 ?')){document.getElementById('create_job_target_form').submit();}; return false;">
+					<img src="/images/recruitments/create_job_target_btn.png" border="0" /></a>
+			</div>
+			
 			<%= sanitize_tinymce(@recruitment.content) %>
+			
+			<div class="align_r">
+				<a href="#">
+					<img src="/images/recruitments/create_job_target_btn.png" border="0" /></a>
+			</div>
 		</div>
 	</div>
 	

@@ -59,8 +59,8 @@ class CreateJobTargets < ActiveRecord::Migration
       
       t.column :info, :text
       # step_order
-      # color
-      # icon
+      # refer_name
+      # refer_url
       
       
       # enable sphinx delta index

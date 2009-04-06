@@ -7,6 +7,8 @@
 %>
 
 <%
+	target_info = target.get_info
+	
 	steps = target.steps
 	steps.each do |s|
 		# set the job step cache
@@ -14,7 +16,7 @@
 	end
 	
 	current_step = nil
-	ordered_steps = (target.get_info[:step_order] || []).collect { |sid|
+	ordered_steps = (target_info[:step_order] || []).collect { |sid|
 		sobj = nil
 		begin
 			sobj = JobStep.get_step(sid)
@@ -69,7 +71,7 @@
 	</td>
 	
 	<td>
-		<%= h(company.name) %>
+		<%= (company.id == Company::Null_Record_ID) ? h(target_info[:refer_name]) : h(company.name) %>
 	</td>
 	
 	<td>

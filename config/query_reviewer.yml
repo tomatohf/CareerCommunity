@@ -1,5 +1,5 @@
 all:
-    inject_view: true
+    inject_view: false
     stack_trace_lines: 3
     trace_includes_vendor: false
     trace_includes_lib: true

@@ -1,0 +1,57 @@
+<% target_name = "#{h(@company_name)}/#{h(@job_position_name)}" %>
+
+<% page_title = "与求职目标 #{target_name} 相关的面经" %>
+<% community_page_title(page_title) %>
+
+
+<div class="blog_container">
+	<a href="/job_targets/list/<%= session[:account_id] %>" class="float_r">
+		返回我的求职目标</a>
+		
+	<h2><%= page_title %></h2>
+	
+	
+	
+	<div class="community_block_narrow" style="color: #555555;">
+		<img src="/images/job_targets/steward_small.png" border="0" alt="求职管家" />
+		
+		&nbsp;&nbsp;
+		
+		为您找到了
+		<span style="font-size: 14px; color: #000000;"><b><%= @exps.total_entries %></b></span>
+		条
+		与您的求职目标
+		<span style="font-size: 14px; color: #000000;"><strong><%= target_name %></strong></span>
+		相关的面经
+	</div>
+	
+	
+	<br />
+	
+	
+	<div class="community_block">
+		<%= paging_buttons(@exps) %>
+	</div>
+	
+	<div class="community_block">
+		<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+			<tr>
+				<td valign="top">
+					<%= render(:partial => "/exps/exp", :collection => @exps) %>
+				</td>
+				
+				<td style="width: 30px;"></td>
+				
+				<td valign="top">
+					<%= render :partial => "/exps/talks_area" %>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="community_block">
+		<%= paging_buttons(@exps) %>
+	</div>
+</div>
+
+

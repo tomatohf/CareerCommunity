@@ -109,9 +109,7 @@
 							<li style="list-style-image: url(/images/index/bookmark_icon.gif);"><a href="/bookmarks">收藏</a></li>
 							<li style="list-style-image: url(/images/index/talk_icon.png);"><a href="/talks">周三访谈录</a></li>
 							<li style="list-style-image: url(/images/index/exp_icon.gif);"><a href="/exps">面经</a></li>
-							<% if false %>
-							<li style="list-style-image: url(/images/index/job_targets_icon.gif);"><a href="/job_targets">求职管家</a><img src="/images/index/hot_icon.gif" border="0" /></li>
-							<% end %>
+							<li style="list-style-image: url(/images/index/job_targets_icon.png);"><a href="/job_targets">求职管家</a><img src="/images/index/hot_icon.gif" border="0" style="margin-left: 5px;" /></li>
 
 							
 							<% if false %>
@@ -177,6 +175,8 @@
 			<a href="http://tongji.cn.yahoo.com">
 				<img src="http://img.tongji.cn.yahoo.com/891616/ystat.gif"/></a>
 		</noscript>
+		
+		<%= query_review_output if ENV['RAILS_ENV'] == "development" %>
     </body>
 </html>
 

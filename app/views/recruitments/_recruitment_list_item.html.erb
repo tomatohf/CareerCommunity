@@ -1,11 +1,22 @@
+<% recruitment_title = h(recruitment_list_item.title) %>
+
+<% form_tag "/job_targets/create_from_recruitment", :method => :post, :target => "_blank", :id => "create_job_target_form_#{recruitment_list_item.id}" do %>
+	<input type="hidden" name="recruitment_title" value="<%= recruitment_title %>" />
+	<input type="hidden" name="recruitment_id" value="<%= recruitment_list_item.id %>" />
+<% end %>
+
 <div class="recruitment_list_item">
+	<a href="#" onclick="if(confirm('确定要根据这条招聘信息创建求职目标么 ?')){document.getElementById('create_job_target_form_<%= recruitment_list_item.id %>').submit();}; return false;" title="根据这条招聘信息创建求职目标">
+		<img src="/images/index/job_targets_icon.png" border="0" width="14" height="14" style="margin-bottom: -2px;" /></a>
+		
+		
 	<% if recruitment_list_item.location && recruitment_list_item.location != "" %>
 		<% h_location = h(recruitment_list_item.location) %>
 		[<a href="/recruitments/location?name=<%= h_location %>" class="account_nick_link"><%= h_location %></a>]
 	<% end %>
 	
 	<a href="/recruitments/<%= recruitment_list_item.id %>" class="account_nick_link" target="_blank">
-		<%= h(recruitment_list_item.title) %></a>
+		<%= recruitment_title %></a>
 	
 
 	<% if recruitment_list_item.publish_time %>

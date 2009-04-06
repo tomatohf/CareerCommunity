@@ -101,14 +101,14 @@ class ExpsController < ApplicationController
   def create
     is_info_editor = ApplicationController.helpers.info_editor?(session[:account_id])
     
-    is_zz = is_info_editor && (params[:zz] == "true")
+    @zz = is_info_editor && (params[:zz] == "true")
     
-    @exp = Exp.new(:account_id => is_zz ? -1 : session[:account_id])
+    @exp = Exp.new(:account_id => @zz ? -1 : session[:account_id])
     
     @exp.title = params[:exp_title] && params[:exp_title].strip
     @exp.content = params[:exp_content] && params[:exp_content].strip
     
-    if is_zz
+    if @zz
       @exp.source_name = params[:exp_source_name] && params[:exp_source_name].strip
       @exp.source_link = params[:exp_source_link] && params[:exp_source_link].strip
       @exp.publish_time = params[:exp_publish_time] && params[:exp_publish_time].strip
@@ -122,7 +122,7 @@ class ExpsController < ApplicationController
       flash.now[:error_msg] = "操作失败, 再试一次吧"
     end
 
-    render :action => is_zz ? "zz" : "new"
+    render :action => "new"
   end
   
   def edit

@@ -316,13 +316,14 @@ function create_table_grid() {
 				
 				"-",
 				
-				"->",
-				
-				"<span id='opera_context_menu_warning' class='form_info_l'></span>",
+				"共有 <b><span id='unclosed_target_count'>" + target_count + "</span></b> 条未关闭的目标",
 				
 				"-",
-			
-				"共有 <b><span id='unclosed_target_count'>" + target_count + "</span></b> 条未关闭的目标"
+				
+				"->",
+				
+				"<span id='opera_context_menu_warning' class='form_info_l' style='color: #333333;'>在目标和步骤上点击鼠标右键显示更多操作菜单</span>"
+				
 			]
 		}
 	);
@@ -425,7 +426,7 @@ function create_table_grid() {
 			{
 				//id: "",
 				text: "添加新的步骤",
-				//icon: "",
+				icon: "/images/job_targets/new_step_small.gif",
 				hideOnClick: false,
 				menu: {
 					items: process_items
@@ -460,7 +461,7 @@ function create_table_grid() {
 			{
 				//id: "",
 				text: "改变目标的公司",
-				//icon: "",
+				icon: "/images/job_targets/change_job_target_company_small.gif",
 				handler: function() {
 					window.location.href = "/job_targets/" + target_id + "/edit_target_job_item?item_type=company";
 				}
@@ -471,9 +472,34 @@ function create_table_grid() {
 			{
 				//id: "",
 				text: "改变目标的职位",
-				//icon: "",
+				icon: "/images/job_targets/change_job_target_position_small.gif",
 				handler: function() {
 					window.location.href = "/job_targets/" + target_id + "/edit_target_job_item?item_type=job_position";
+				}
+			}
+		);
+		
+		
+		menu_items.push("-");
+		
+		menu_items.push(
+			{
+				//id: "",
+				text: "寻找相关的招聘信息",
+				icon: "/images/index/recruitment_icon.png",
+				handler: function() {
+					link_to_blank("/job_targets/" + target_id + "/recruitments");
+				}
+			}
+		);
+		
+		menu_items.push(
+			{
+				//id: "",
+				text: "看看相关的面经",
+				icon: "/images/index/exp_icon.gif",
+				handler: function() {
+					link_to_blank("/job_targets/" + target_id + "/exps");
 				}
 			}
 		);
@@ -888,8 +914,8 @@ function show_step_menu(evt, target, options) {
 	menu_items.push(
 		{
 			//id: "",
-			text: "重命名..",
-			//icon: "/images/job_targets/",
+			text: "重命名...",
+			icon: "/images/job_targets/rename_step_small.gif",
 			handler: function(item, e) {
 				edit_step_label(step_id, target_id);
 			}
@@ -960,7 +986,7 @@ function edit_step_label(step_id, target_id) {
 function new_step(target_id, process_id, process_name) {
 	Ext.Msg.prompt(
 		"添加步骤",
-		"(" + process_name + ") 步骤的名称:",
+		"(" + process_name + ") 步骤的名称: (可留空)",
 		function(btn, text) {
 			if (btn == "ok"){
 				create_step(target_id, process_id, process_name, text);
@@ -1080,6 +1106,21 @@ function update_grid_store_for_current_end_date(target_id, date) {
 	store.commitChanges();
 	
 	reconfig_target_steps(target_id);
+}
+
+
+function link_to_blank(url) {
+	x = function() {
+		if(!window.open(url)) {
+			window.location.href = url;
+		}
+	};
+	
+	if(/Firefox/.test(navigator.userAgent)) {
+		setTimeout(x, 0);
+	} else {
+		x();
+	}
 }
 
 
