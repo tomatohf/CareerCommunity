@@ -1,13 +1,8 @@
 <% recruitment_title = h(recruitment.title) %>
 
-<% form_tag "/job_targets/create_from_recruitment", :method => :post, :target => "_blank", :id => "create_job_target_form_#{recruitment.id}" do %>
-	<input type="hidden" name="recruitment_title" value="<%= recruitment_title %>" />
-	<input type="hidden" name="recruitment_id" value="<%= recruitment.id %>" />
-<% end %>
-
 <div class="recruitment_container">
 	<div class="recruitment_title">
-		<a href="#" onclick="if(confirm('确定要根据这条招聘信息创建求职目标么 ?')){document.getElementById('create_job_target_form_<%= recruitment.id %>').submit();}; return false;" title="根据这条招聘信息创建求职目标">
+		<a href="#" onclick="create_job_target('<%= recruitment_title %>', <%= recruitment.id %>); return false;" title="根据这条招聘信息创建求职目标">
 			<img src="/images/index/job_targets_icon.png" border="0" width="16" height="16" style="margin-bottom: -3px;" /></a>
 			
 			

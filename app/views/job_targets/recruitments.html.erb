@@ -29,6 +29,20 @@
 	<br />
 	
 	
+	<% form_tag "/job_targets/create_from_recruitment", :method => :post, :target => "_blank", :id => "create_job_target_form" do %>
+		<input type="hidden" id="job_target_recruitment_title" name="recruitment_title" value="" />
+		<input type="hidden" id="job_target_recruitment_id" name="recruitment_id" value="" />
+	<% end %>
+	<script language="JavaScript" type="text/javascript">
+		function create_job_target(title, id) {
+			if(confirm("确定要根据招聘信息 " + title + " 创建求职目标么 ?")){
+				document.getElementById("job_target_recruitment_title").value = title;
+				document.getElementById("job_target_recruitment_id").value = id;
+				document.getElementById("create_job_target_form").submit();
+			}
+		}
+	</script>
+	
 	<div class="community_block">
 		<%= paging_buttons(@recruitments) %>
 	</div>
