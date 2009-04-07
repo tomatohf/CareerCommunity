@@ -1,4 +1,4 @@
-<% target_name = "#{h(@company_name)}/#{h(@job_position_name)}" %>
+<% target_name = h(@company_name) %>
 
 <% page_title = "与求职目标 #{target_name} 相关的招聘信息" %>
 <% community_page_title(page_title) %>
@@ -29,7 +29,7 @@
 	<br />
 	
 	
-	<% form_tag "/job_targets/create_from_recruitment", :method => :post, :target => "_blank", :id => "create_job_target_form" do %>
+	<% form_tag "/job_targets/create_from_recruitment", :method => :post, :target => RecruitmentsController::Create_Job_Target_Page_Name, :id => "create_job_target_form" do %>
 		<input type="hidden" id="job_target_recruitment_title" name="recruitment_title" value="" />
 		<input type="hidden" id="job_target_recruitment_id" name="recruitment_id" value="" />
 	<% end %>

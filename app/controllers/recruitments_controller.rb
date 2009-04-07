@@ -1,5 +1,8 @@
 class RecruitmentsController < ApplicationController
   
+  Create_Job_Target_Page_Name = "job_target_list_from_recruitment"
+  
+  
   Recruitment_List_Size = 50
   
   layout "community"

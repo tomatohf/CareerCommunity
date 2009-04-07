@@ -7,6 +7,8 @@ class JobTarget < ActiveRecord::Base
   
   has_many :steps, :class_name => "JobStep", :foreign_key => "job_target_id", :dependent => :destroy
   
+  has_one :note, :class_name => "JobTargetNote", :foreign_key => "job_target_id", :dependent => :destroy
+  
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :company, :class_name => "Company", :foreign_key => "company_id"
   belongs_to :job_position, :class_name => "JobPosition", :foreign_key => "job_position_id"

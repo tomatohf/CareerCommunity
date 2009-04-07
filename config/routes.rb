@@ -409,7 +409,13 @@ ActionController::Routing::Routes.draw do |map|
     :update_target_job_item => :post,
     
     :recruitments => :get,
-    :exps => :get
+    :exps => :get,
+    
+    :edit_refer => :get,
+    :update_refer => :post,
+    
+    :edit_note => :get,
+    :update_note => :post
     
   }
   

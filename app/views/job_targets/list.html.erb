@@ -37,9 +37,11 @@
 				
 			<a href="/job_position/job_items" target="_blank">
 				职位</a>
-				
+			
+			<% if superadmin?(session[:account_id]) %>	
 			<a href="/job_targets/system_process">
 				流程</a>
+			<% end %>
 					
 			<a href="/job_targets/system_status">
 				状态</a>

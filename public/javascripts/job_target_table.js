@@ -1,3 +1,5 @@
+var targets = {}
+
 var steps = {};
 var current_step_mapping = {};
 
@@ -389,6 +391,8 @@ function create_table_grid() {
 		var steps_element = get_element_from_html(steps_dom);
 		var target_id = steps_element.id.substr("step_group_".length);
 		
+		var target = targets["target_" + target_id];
+		
 		var menu_items = [];
 		
 		
@@ -481,6 +485,20 @@ function create_table_grid() {
 		
 		
 		menu_items.push("-");
+
+		menu_items.push(
+			{
+				//id: "",
+				text: "查看/编辑 目标备注",
+				icon: "/images/job_targets/edit_note_icon.gif",
+				handler: function() {
+					link_to_blank("/job_targets/" + target_id + "/edit_note");
+				}
+			}
+		);
+		
+		
+		menu_items.push("-");
 		
 		menu_items.push(
 			{
@@ -503,6 +521,33 @@ function create_table_grid() {
 				}
 			}
 		);
+		
+		
+		if(target.company_id == null_record_id) {
+			menu_items.push("-");
+
+			menu_items.push(
+				{
+					//id: "",
+					text: "编辑目标的相关名称",
+					icon: "/images/job_targets/edit_refer_name_icon.gif",
+					handler: function() {
+						window.location.href = "/job_targets/" + target_id + "/edit_refer";
+					}
+				}
+			);
+
+			menu_items.push(
+				{
+					//id: "",
+					text: "打开目标的相关链接",
+					icon: "/images/job_targets/link_to_refer_url_icon.gif",
+					handler: function() {
+						open_target_refer_url(target);
+					}
+				}
+			);
+		}
 		
 		
 		menu_items.push("-");
@@ -537,6 +582,27 @@ function create_table_grid() {
 	    cell_menu_obj.showAt(e.getXY());
 	}
 	
+	
+	var grid_cell_double_click_handler = function(grid, row_index, cell_index, e) {
+		var store = grid.getStore();
+		var record = store.getAt(row_index);
+	
+		var steps_dom = record.data.column_5;
+		
+		var steps_element = get_element_from_html(steps_dom);
+		var target_id = steps_element.id.substr("step_group_".length);
+		
+		var target = targets["target_" + target_id];
+		
+		
+		//if(cell_index == 2) {
+		if(cell_index < (record.fields.length-1)) {
+			open_target_refer_url(target);
+		}
+	}
+	
+	
+	
 	if (Ext.isOpera){ 
 		grid.addListener(
 			"cellmousedown",
@@ -555,6 +621,13 @@ function create_table_grid() {
 			grid_cell_right_click_handler
 		);
 	}
+	
+	
+	
+	grid.addListener(
+		"celldblclick",
+		grid_cell_double_click_handler
+	);
 	
 	
 	
@@ -1121,6 +1194,15 @@ function link_to_blank(url) {
 	} else {
 		x();
 	}
+}
+
+
+function open_target_refer_url(target) {
+	var url = target.refer_url;
+	if(url && url != "") {
+		link_to_blank(url);
+	}
+	
 }
 
 

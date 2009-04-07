@@ -15,7 +15,7 @@
 	</td>
 	
 	<td align="left" valign="middle" style="font-size: 14px;">
-		<%= (company.id == Company::Null_Record_ID) ? h(target_info[:refer_name]) : h(company.name) %>
+		<%= get_target_company_name(target, company, target_info) %>
 	</td>
 	
 	<td align="left" valign="middle" style="font-size: 14px;">

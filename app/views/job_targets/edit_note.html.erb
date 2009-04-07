@@ -1,0 +1,54 @@
+<% target_name = h(@company_name) %>
+
+<% page_title = "求职目标 #{target_name} 的备注" %>
+<% community_page_title(page_title) %>
+
+
+<div class="blog_container">
+	<a href="/job_targets/list/<%= session[:account_id] %>" class="float_r">
+		<img src="/images/job_targets/steward_small.png" border="0" alt="求职管家" />
+		返回我的求职目标</a>
+		
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow">
+		<% if flash[:message] %>
+			<p class="info_msg" style="width: 500px;" id="the_info_message">
+				<a class="float_r" href="#" onclick="document.getElementById('the_info_message').style.display='none'; return false;">
+					隐藏</a>
+					
+				<%= flash[:message] %>
+			</p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg" style="width: 500px;" id="the_error_message">
+				<a class="float_r" href="#" onclick="document.getElementById('the_error_message').style.display='none'; return false;">
+					隐藏</a>
+					
+				<%= flash[:error_msg] %>
+			</p>
+		<% end %>
+		
+		<div class="div_form">
+			<% form_tag "/job_targets/#{@target.id}/update_note", :method => :post do %>
+			
+				<div>
+					<label for="note_content">
+				        备注内容:
+				    </label>
+				</div>
+				<div>
+					<textarea id="note_content" name="note_content" class="text_field" cols="110" rows="25"><%= h(@note.content) %></textarea>
+				</div>
+				
+				<div>
+					<%= submit_tag "更新", :class => "button", :disabled => @account_limited %>
+				</div>
+			
+			<% end %>
+		</div>
+	</div>
+</div>
+
+

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 27) do
+ActiveRecord::Schema.define(:version => 28) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -831,6 +831,19 @@ ActiveRecord::Schema.define(:version => 27) do
 
   add_index "job_tags", ["name"], :name => "index_job_tags_on_name"
   add_index "job_tags", ["delta"], :name => "index_job_tags_on_delta"
+
+  create_table "job_target_notes", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "content"
+    t.integer  "job_target_id", :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "job_target_notes", ["job_target_id"], :name => "index_job_target_notes_on_job_target_id"
+  add_index "job_target_notes", ["updated_at"], :name => "index_job_target_notes_on_updated_at"
+  add_index "job_target_notes", ["created_at"], :name => "index_job_target_notes_on_created_at"
+  add_index "job_target_notes", ["delta"], :name => "index_job_target_notes_on_delta"
 
   create_table "job_targets", :force => true do |t|
     t.datetime "created_at"

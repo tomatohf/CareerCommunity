@@ -1,0 +1,39 @@
+<% target_info = @target.get_info %>
+
+<% page_title = "编辑求职目标的相关名称" %>
+<% community_page_title(page_title) %>
+
+
+<div class="blog_container">
+	<a href="/job_targets/list/<%= session[:account_id] %>" class="float_r">
+		<img src="/images/job_targets/steward_small.png" border="0" alt="求职管家" />
+		返回我的求职目标</a>
+		
+	<h2><%= page_title %></h2>
+	
+	
+	<br />
+	
+	<div class="community_block_narrow">
+		<div class="div_form">
+			<% form_tag "/job_targets/#{@target.id}/update_refer", :method => :post do %>
+			
+				<div>
+					<label for="refer_name">
+				        名称:
+				    </label>
+				</div>
+				<div>
+					<input type="text" id="refer_name" name="refer_name" class="text_field" size="70" value="<%= h(target_info[:refer_name]) %>" style="font-size: 16px; padding: 5px;" />
+				</div>
+				
+				<div>
+					<%= submit_tag "更新", :class => "button", :disabled => @account_limited %>
+				</div>
+			
+			<% end %>
+		</div>
+	</div>
+</div>
+
+

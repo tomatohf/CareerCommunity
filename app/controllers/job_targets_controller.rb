@@ -16,7 +16,7 @@ class JobTargetsController < ApplicationController
                                           :create_system_process, :process_update, :process_destroy,
                                           :account_job_item_update, :account_job_item_destroy,
                                           :create_account_item, :update_target_job_item,
-                                          :create_from_recruitment]
+                                          :create_from_recruitment, :update_refer, :update_note]
   
   before_filter :check_account_access, :only => [:list, :list_closed, :account_status, :account_process,
                                                   :account_job_item]
@@ -33,7 +33,8 @@ class JobTargetsController < ApplicationController
                                                 :close_target, :open_target, :destroy, :star_target,
                                                 :unstar_target,
                                                 :edit_target_job_item, :update_target_job_item,
-                                                :recruitments, :exps]
+                                                :recruitments, :exps,
+                                                :edit_refer, :update_refer, :edit_note, :update_note]
   
 
   
@@ -211,6 +212,8 @@ class JobTargetsController < ApplicationController
     )
     
     target.save
+    
+    add_default_steps_to_target(target)
     
     jump_to("/job_targets/list/#{session[:account_id]}")
   end
@@ -584,7 +587,9 @@ class JobTargetsController < ApplicationController
   end
   
   def process_destroy
-    @process.destroy
+    # @process.destroy
+    # currently set to only allow to destroy account process
+    @process.destroy if @is_account_process
     
     jump_to(@is_account_process ? "/job_targets/account_process/#{session[:account_id]}" : "/job_targets/system_process")
   end
@@ -692,20 +697,15 @@ class JobTargetsController < ApplicationController
   
   
   def recruitments
-    company = Company.get_company(@target.company_id)
-    job_position = JobPosition.get_job_position(@target.job_position_id)
-    @company_name = company.name
-    @job_position_name = job_position.name
-    
-    text = (company.id == Company::Null_Record_ID) ? @target.get_info[:refer_name] : @company_name
+    @company_name = JobTargetsController.helpers.get_target_company_name(@target)
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
     
-    if text && text.strip != ""
+    if @company_name && @company_name.strip != ""
       
       @recruitments = Recruitment.search(
-        text,
+        @company_name,
         :page => page,
         :per_page => 50,
         :match_mode => CommunityController::Search_Match_Mode,
@@ -727,19 +727,14 @@ class JobTargetsController < ApplicationController
   end
   
   def exps
-    company = Company.get_company(@target.company_id)
-    job_position = JobPosition.get_job_position(@target.job_position_id)
-    @company_name = company.name
-    @job_position_name = job_position.name
-    
-    text = (company.id == Company::Null_Record_ID) ? @target.get_info[:refer_name] : @company_name
+    @company_name = JobTargetsController.helpers.get_target_company_name(@target)
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
     
-    if text && text.strip != ""
+    if @company_name && @company_name.strip != ""
       @exps = Exp.search(
-        text,
+        @company_name,
         :page => page,
         :per_page => 30,
         :match_mode => CommunityController::Search_Match_Mode,
@@ -754,6 +749,46 @@ class JobTargetsController < ApplicationController
       @exps = []
       
     end
+  end
+  
+  
+  def edit_refer
+    
+  end
+  
+  def update_refer
+    refer_name = params[:refer_name] && params[:refer_name].strip
+    
+    @target.update_info(
+      {
+        :refer_name => refer_name
+      }
+    ) 
+    
+    @target.save
+    
+    jump_to("/job_targets/list/#{session[:account_id]}")
+  end
+  
+  
+  def edit_note
+    @company_name = JobTargetsController.helpers.get_target_company_name(@target)
+    
+    @note = @target.note || JobTargetNote.new(:job_target_id => @target.id)
+  end
+  
+  def update_note
+    edit_note
+    
+    @note.content = params[:note_content] && params[:note_content].strip
+    
+    if @note.save
+      flash.now[:message] = "已成功保存"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+
+    render :action => "edit_note"
   end
   
   
@@ -807,7 +842,8 @@ class JobTargetsController < ApplicationController
       valid = (session[:account_id] == process_account_id)
     else
       # system process ...
-      valid = ApplicationController.helpers.info_editor?(session[:account_id])
+      # valid = ApplicationController.helpers.info_editor?(session[:account_id])
+      valid = ApplicationController.helpers.superadmin?(session[:account_id])
     end
     
     return jump_to("/errors/forbidden") unless valid
@@ -831,6 +867,49 @@ class JobTargetsController < ApplicationController
       else
         nil
     end
+  end
+  
+  def add_default_steps_to_target(target)
+    step_order = target.get_info[:step_order] || []
+    
+    
+    resume_process = JobProcess.get_system_process_by_name("简历")
+    if resume_process
+      resume_step = JobStep.new(
+        :job_target_id => target.id,
+        :account_id => session[:account_id],
+        :job_process_id => resume_process.id,
+        :label => ""
+      )
+      step_order << resume_step.id if resume_step.save
+    end
+    
+    interview_process = JobProcess.get_system_process_by_name("面试")
+    if interview_process
+      interview1_step = JobStep.new(
+        :job_target_id => target.id,
+        :account_id => session[:account_id],
+        :job_process_id => interview_process.id,
+        :label => "一面"
+      )
+      step_order << interview1_step.id if interview1_step.save
+      
+      interview2_step = JobStep.new(
+        :job_target_id => target.id,
+        :account_id => session[:account_id],
+        :job_process_id => interview_process.id,
+        :label => "终面"
+      )
+      step_order << interview2_step.id if interview2_step.save
+    end
+    
+    
+    target.update_info(
+      {
+        :step_order => step_order
+      }
+    )
+    target.save
   end
   
 end

@@ -48,6 +48,17 @@
 
 <script language="JavaScript" type="text/javascript">
 	current_step_mapping["<%= target.id %>"] = "<%= target.current_job_step_id %>";
+	
+	targets.target_<%= target.id %> = {
+		id: "<%= target.id %>",
+		company_id: "<%= target.company_id %>",
+		job_position_id: "<%= target.job_position_id %>",
+		account_id: "<%= target.account_id %>",
+		starred: "<%= target.starred %>",
+		
+		refer_name: "<%= h(target_info[:refer_name]) %>",
+		refer_url: "<%= target_info[:refer_url] %>"
+	};
 </script>
 
 <tr>
@@ -71,7 +82,7 @@
 	</td>
 	
 	<td>
-		<%= (company.id == Company::Null_Record_ID) ? h(target_info[:refer_name]) : h(company.name) %>
+		<%= get_target_company_name(target, company, target_info) %>
 	</td>
 	
 	<td>

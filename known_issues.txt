@@ -1,8 +1,4 @@
-﻿编辑目标的 refer_name 和 refer_url
-链接到 refer_url
-目标的备注功能
-
-面经的 涉及的公司 和 职位
+﻿面经的 涉及的公司 和 职位
 通用化 select_item 页面
 
 在 talk reader 中添加广告

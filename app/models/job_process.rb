@@ -150,6 +150,15 @@ class JobProcess < ActiveRecord::Base
   end
   
   
+  
+  def self.get_system_process_by_name(name)
+    self.system.find(
+      :first,
+      :conditions => ["name = ?", name]
+    )
+  end
+  
+  
 end
 
 
