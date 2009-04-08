@@ -1,4 +1,7 @@
-﻿面经的 涉及的公司 和 职位
+﻿求职网址导航
+
+
+面经的 涉及的公司 和 职位
 通用化 select_item 页面
 
 在 talk reader 中添加广告
@@ -142,13 +145,6 @@ Flash 做个很炫很酷的照片演示，并且可支持离开网站使用
 http://www.libming.org/
 http://madscientist.jp/~ikegami/ruby/ming/
 
-
-
-用户的profile
-	积分 - 积分当钱用？
-		等级？
-		头衔？
-	货币 - 用来买课程，我们会赠送
 
 
 照片 和 博客 的 tag  功能

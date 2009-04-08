@@ -698,6 +698,7 @@ class JobTargetsController < ApplicationController
   
   def recruitments
     @company_name = JobTargetsController.helpers.get_target_company_name(@target)
+    @target_name = JobTargetsController.helpers.append_job_position_name(@company_name, JobPosition.get_job_position(@target.job_position_id))
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
@@ -728,6 +729,7 @@ class JobTargetsController < ApplicationController
   
   def exps
     @company_name = JobTargetsController.helpers.get_target_company_name(@target)
+    @target_name = JobTargetsController.helpers.append_job_position_name(@company_name, JobPosition.get_job_position(@target.job_position_id))
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
@@ -772,7 +774,7 @@ class JobTargetsController < ApplicationController
   
   
   def edit_note
-    @company_name = JobTargetsController.helpers.get_target_company_name(@target)
+    @target_name = JobTargetsController.helpers.get_target_name(@target)
     
     @note = @target.note || JobTargetNote.new(:job_target_id => @target.id)
   end

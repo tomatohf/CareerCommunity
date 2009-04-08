@@ -1,6 +1,4 @@
-<% target_name = h(@company_name) %>
-
-<% page_title = "与求职目标 #{target_name} 相关的面经" %>
+<% page_title = "与求职目标 #{@target_name} 相关的面经" %>
 <% community_page_title(page_title) %>
 
 
@@ -21,7 +19,7 @@
 		<span style="font-size: 14px; color: #000000;"><b><%= @exps.total_entries %></b></span>
 		条
 		与您的求职目标
-		<span style="font-size: 14px; color: #000000;"><strong><%= target_name %></strong></span>
+		<span style="font-size: 14px; color: #000000;"><strong><%= @target_name %></strong></span>
 		相关的面经
 	</div>
 	
