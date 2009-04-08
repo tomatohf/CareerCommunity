@@ -1,0 +1,482 @@
+<% page_title = "我的求职日历" %>
+<% community_page_title(page_title) %>
+
+
+<div class="blog_container">
+	<a href="/job_targets/list/<%= session[:account_id] %>" class="float_r">
+		返回我的求职目标</a>
+		
+	<h2><%= page_title %></h2>
+	
+	
+	
+	<div class="community_block_narrow">
+		<img src="/images/job_targets/steward_small.png" border="0" alt="求职管家" />
+		
+		&nbsp;&nbsp;
+		
+		根据
+		<a href="/job_targets/list/<%= session[:account_id] %>">
+			您的求职目标列表</a>
+		为您生成的专属求职日历
+	</div>
+	
+	
+	<br />
+	
+	
+	<div class="community_block">
+		
+		<div>
+			
+			<div>
+				<div>
+					<table cellspacing="0" cellpadding="0" style="border-color: rgb(195, 217, 255); background: rgb(255, 255, 255) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; vertical-align: bottom; width: 100%;">
+						<tbody>
+							<tr>
+								<td>
+									<table cellspacing="0" cellpadding="0" id="t1">
+										<tbody>
+											<tr>
+												<td class="noprint">
+													<img width="29" height="17" onmousedown="Jr(-1);return false;" alt="Earlier" src="//calendar.google.com/googlecalendar/images/blank.gif" class="navbutton navBack"/>
+												</td>
+												<td class="noprint">
+													<img width="29" height="17" onmousedown="Jr(1);return false;" alt="Later" src="//calendar.google.com/googlecalendar/images/blank.gif" class="navbutton navForward"/>
+												</td>
+												<td class="noprint">
+													<button style="padding: 0pt 1px; font-size: 85%;" id="todayButton" onclick="Jr(0);return false;">Today</button>
+												</td>
+												<td>
+													<h2><span id="dateunderlay">August 2009</span></h2>
+												</td>
+												<td class="noprint">
+													<a href="javascript:_SR_backToCalendar()">Refresh</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+								<td style="float: right; text-align: right;">
+									<table cellspacing="0" cellpadding="0">
+										<tbody>
+											<tr>
+												<td id="printlink">
+													<img width="16" height="20" title="Print my calendar (shows preview)" onclick="Tr()" style="background-image: url(//calendar.google.com/googlecalendar/images/combined_v6.gif);" src="//calendar.google.com/googlecalendar/images/blank.gif" id="printlinkImg"/>
+													<span onclick="Tr()" class="lk" id="printlinkSpan">Print</span>
+													<div class="printonly" id="printmsg">
+														To see a more concise version of your calendar, optimized for printing, click the printer icon to the left (Acrobat Reader req'd)
+													</div>
+												</td>
+												<td class="noprint" onmousedown="Ut('search');return false;" style="display: none;" id="mode_link0">
+													<div class="t1" style="background: rgb(232, 238, 247) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="t2" style="background: rgb(232, 238, 247) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="modelinkOff">
+														<nobr id="mode-search">Search Results</nobr>
+													</div>
+												</td>
+												<td class="noprint"> </td>
+												<td class="noprint" onmousedown="Ut('day');return false;" id="mode_link1">
+													<div class="t1" style="background: rgb(232, 238, 247) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="t2" style="background: rgb(232, 238, 247) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="modelinkOff">
+														<nobr id="mode-day">Day</nobr>
+													</div>
+												</td>
+												<td class="noprint"> </td>
+												<td class="noprint" onmousedown="Ut('week');return false;" id="mode_link2">
+													<div class="t1" style="background: rgb(232, 238, 247) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="t2" style="background: rgb(232, 238, 247) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="modelinkOff">
+														<nobr id="mode-week">Week</nobr>
+													</div>
+												</td>
+												<td class="noprint"> </td>
+												<td class="noprint" onmousedown="Ut('month');return false;" id="mode_link3">
+													<div class="t1" style="background: rgb(195, 217, 255) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="t2" style="background: rgb(195, 217, 255) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="modelinkOn">
+														<nobr id="mode-month">Month</nobr>
+													</div>
+												</td>
+												<td class="noprint"> </td>
+												<td class="noprint" onmousedown="Ut('custom,4');return false;" id="mode_link4">
+													<div class="t1" style="background: rgb(232, 238, 247) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="t2" style="background: rgb(232, 238, 247) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="modelinkOff">
+														<nobr id="customModeLabel">4 Days</nobr>
+													</div>
+												</td>
+												<td class="noprint"> </td>
+												<td class="noprint" onmousedown="Ut('list');return false;" id="mode_link5">
+													<div class="t1" style="background: rgb(232, 238, 247) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="t2" style="background: rgb(232, 238, 247) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+													</div>
+													<div class="modelinkOff">
+														<nobr id="mode-list">Agenda</nobr>
+													</div>
+												</td>
+												<td class="noprint"> </td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		
+			<div class="t1 chromeColor"> </div>
+			<div class="t2 chromeColor"> </div>
+			
+			<div class="printborder mainGrid">
+				<div style="display: none;" id="lvHeader" class="lv-header"/>
+				<div id="gridcontainer" style="overflow-y: visible; height: 264px;" class="">
+					<div class="mv-container">
+						<table cellspacing="0" cellpadding="0" class="mv-daynames-table">
+							<tbody>
+								<tr>
+									<th title="Mon" class="mv-dayname">Mon</th>
+									<th title="Tue" class="mv-dayname">Tue</th>
+									<th title="Wed" class="mv-dayname">Wed</th>
+									<th title="Thu" class="mv-dayname">Thu</th>
+									<th title="Fri" class="mv-dayname">Fri</th>
+									<th title="Sat" class="mv-dayname">Sat</th>
+									<th title="Sun" class="mv-dayname">Sun</th>
+								</tr>
+							</tbody>
+						</table>
+						
+						<div id="mvEventContainer" class="mv-event-container">
+							<div style="top: 0%; height: 16.6667%;" class="month-row">
+								<table cellspacing="0" cellpadding="0" class="st-bg-table">
+									<tbody>
+										<tr>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+										</tr>
+									</tbody>
+								</table>
+								<table cellspacing="0" cellpadding="0" class="st-grid">
+									<tbody>
+										<tr>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20219">27</span>
+											</td>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20220">28</span>
+											</td>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20221">29</span>
+											</td>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20222">30</span>
+											</td>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20223">31</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20225">Aug 1</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20226">2</span>
+											</td>
+										</tr>
+										<tr>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div style="top: 16.6667%; height: 16.6667%;" class="month-row">
+								<table cellspacing="0" cellpadding="0" class="st-bg-table">
+									<tbody>
+										<tr>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+										</tr>
+									</tbody>
+								</table>
+								<table cellspacing="0" cellpadding="0" class="st-grid">
+									<tbody>
+										<tr>
+											<td class="st-dtitle">
+												<span class="ca-cdp20227">3</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20228">4</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20229">5</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20230">6</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20231">7</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20232">8</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20233">9</span>
+											</td>
+										</tr>
+										<tr>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div style="top: 33.3333%; height: 16.6667%;" class="month-row">
+								<table cellspacing="0" cellpadding="0" class="st-bg-table">
+									<tbody>
+										<tr>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+										</tr>
+									</tbody>
+								</table>
+								<table cellspacing="0" cellpadding="0" class="st-grid">
+									<tbody>
+										<tr>
+											<td class="st-dtitle">
+												<span class="ca-cdp20234">10</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20235">11</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20236">12</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20237">13</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20238">14</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20239">15</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20240">16</span>
+											</td>
+										</tr>
+										<tr>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div style="top: 50%; height: 16.6667%;" class="month-row">
+								<table cellspacing="0" cellpadding="0" class="st-bg-table">
+									<tbody>
+										<tr>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+										</tr>
+									</tbody>
+								</table>
+								<table cellspacing="0" cellpadding="0" class="st-grid">
+									<tbody>
+										<tr>
+											<td class="st-dtitle">
+												<span class="ca-cdp20241">17</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20242">18</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20243">19</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20244">20</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20245">21</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20246">22</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20247">23</span>
+											</td>
+										</tr>
+										<tr>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div style="top: 66.6667%; height: 16.6667%;" class="month-row">
+								<table cellspacing="0" cellpadding="0" class="st-bg-table">
+									<tbody>
+										<tr>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+										</tr>
+									</tbody>
+								</table>
+								<table cellspacing="0" cellpadding="0" class="st-grid">
+									<tbody>
+										<tr>
+											<td class="st-dtitle">
+												<span class="ca-cdp20248">24</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20249">25</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20250">26</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20251">27</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20252">28</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20253">29</span>
+											</td>
+											<td class="st-dtitle">
+												<span class="ca-cdp20254">30</span>
+											</td>
+										</tr>
+										<tr>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div style="top: 83.3333%; height: 16.6667%;" class="month-row">
+								<table cellspacing="0" cellpadding="0" class="st-bg-table">
+									<tbody>
+										<tr>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+											<td class="st-bg"> </td>
+										</tr>
+									</tbody>
+								</table>
+								<table cellspacing="0" cellpadding="0" class="st-grid">
+									<tbody>
+										<tr>
+											<td class="st-dtitle">
+												<span class="ca-cdp20255">31</span>
+											</td>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20257">Sep 1</span>
+											</td>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20258">2</span>
+											</td>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20259">3</span>
+											</td>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20260">4</span>
+											</td>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20261">5</span>
+											</td>
+											<td class="st-dtitle st-dtitle-nonmonth">
+												<span class="ca-cdp20262">6</span>
+											</td>
+										</tr>
+										<tr>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+											<td class="st-c st-s"> </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						
+						</div>
+					</div>
+				</div>
+			
+			</div>
+			<div class="t2 chromeColor"> </div>
+			<div class="t1 chromeColor"> </div>
+		</div>
+		
+	</div>
+</div>
+
+
