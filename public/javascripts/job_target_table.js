@@ -224,8 +224,8 @@ function create_table_grid() {
 				{
 					//id: "",
 					text: "添加流程",
-					//icon: "",
-					//cls: "x-btn-text-icon",
+					icon: "/images/job_targets/add_process_icon.gif",
+					cls: "x-btn-text-icon",
 					handler: function() {
 						new_process();
 					}
@@ -236,8 +236,8 @@ function create_table_grid() {
 				{
 					//id: "",
 					text: "添加状态",
-					//icon: "",
-					//cls: "x-btn-text-icon",
+					icon: "/images/job_targets/add_status_icon.gif",
+					cls: "x-btn-text-icon",
 					menu: {
 						// id: "",
 						items: [
