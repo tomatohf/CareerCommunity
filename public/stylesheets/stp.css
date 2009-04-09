@@ -1,0 +1,134 @@
+#top_bar {
+	margin-bottom: 0px;
+}
+
+.left_section {
+	width: 197px;
+	height: 47px;
+	border: 2px solid #E4E4E4;
+	
+	text-align: left;
+}
+
+.left_section_content {
+	width: 197px;
+	border-left: 2px solid #E4E4E4;
+	border-right: 2px solid #E4E4E4;
+	border-bottom: 2px solid #E4E4E4;
+	
+	text-align: left;
+}
+
+.left_section_content_body {
+	padding: 10px 20px;
+}
+
+.left_section_title {
+	font-size: 18px;
+	font-weight: bold;
+	
+	padding: 15px;
+}
+
+.try_section_title {
+	color: #AA8846;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.try_section_content {
+	color: #999999;
+	padding-left: 20px;
+}
+
+.right_content_container {
+	width: 650px;
+}
+
+.right_title_section {
+	height: 40px;
+	background: transparent url(/images/coach/stp/vertical_short_line.jpg) no-repeat scroll left 0px;
+	padding-left: 15px;
+	text-align: left;
+	line-height: 1.1;
+	
+	margin-top: 30px;
+}
+
+.right_title_section a {
+	text-decoration: none;
+}
+
+.right_sep_line {
+	height: 6px;
+	border-bottom: 1px solid #EFD1C3;
+	margin-bottom: 15px;
+}
+
+.right_course {
+	border-bottom: 1px solid #DEDEDE;
+	background: transparent url(/images/coach/stp/number_bg.jpg) no-repeat scroll 5px 1px;
+	height: 19px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	text-align: left;
+	margin-top: 10px;
+}
+
+.right_course_number {
+	color: #FFFFFF;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.right_course_title {
+	padding-left: 15px;
+	color: #666666;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.tab_content_title {
+	height: 17px;
+	margin-top: 30px;
+	text-align: left;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.tab_content_desc {
+	border: 1px solid #DEDEDE;
+	margin: 10px 1px 15px;
+	padding: 10px;
+	text-align: left;
+	color: #444444;
+}
+
+.round_corner_top_left {
+	width: 11px;
+	height: 11px;
+	background: transparent url(/images/coach/stp/round_top_left.jpg) no-repeat scroll left 0px;
+}
+
+.round_corner_top_right {
+	width: 11px;
+	height: 11px;
+	background: transparent url(/images/coach/stp/round_top_right.jpg) no-repeat scroll right 0px;
+}
+
+.free_qiuzhi {
+	background: transparent url(/images/coach/stp/btn_bg.jpg) no-repeat scroll left 0px;
+	height: 37px;
+	width: 233px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 8px 1px;
+	text-align: center;
+}
+
+.free_qiuzhi_link {
+	color: #94483F;
+	text-decoration: none;
+	display: block;
+}
+
