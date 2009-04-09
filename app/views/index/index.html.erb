@@ -1,225 +1,15 @@
-<script language="JavaScript" src="/lib/protopack/protoculous-effects-packer.js"></script>
-
 <div style="float: right; width: 250px;">
-	<a href="/group/posts/219">
-		<img src="/images/real_index/rick_ma_video.jpg" border="0" /></a>
+	<a href="/group/posts/219" target="_blank">
+		<img src="/images/coach/for_index/rick_ma_video.jpg" border="0" /></a>
 </div>
 
 <div style="margin-right: 250px;">
-	<a href="/coach/stp">
-		<img src="/images/coach/programs/STP_small.jpg" border="0" /></a>
+	<a href="/coach/stp" target="_blank">
+		<img src="/images/coach/for_index/STP_small.jpg" border="0" /></a>
 </div>
 
 
-<div class="clear" style="margin-bottom: 5px;"></div>
-
-
-
-
-
-
-
-
-
-
-<!-- ++++++++++++++++ sep line ++++++++++++++++ -->
-
-<%
-	post_names = [
-		"overall", "resume_8_hrs", "career_path", "interview_2_days", "sales_training"
-	]
-%>
-
-
-<script language="JavaScript">
-
-	var POSTS = [
-		"overall", "resume_8_hrs", "career_path", "interview_2_days", "sales_training"
-	];
-	
-	function get_big_post(post_name) {
-		return $("big_post_" + post_name);
-	}
-	
-	function get_small_post(post_name) {
-		return $("small_post_" + post_name);
-	}
-	
-	function get_selected_small_post(post_name) {
-		return $("selected_small_post_" + post_name);
-	}
-
-	function hide_all_big_and_selected_posts(exclude) {
-		for(var i = 0; i < POSTS.length; i++) {
-			var post_name = POSTS[i];
-			
-			if(post_name != exclude) {
-				var post = get_big_post(post_name);
-				if(post.visible()) {
-					post.hide();
-			
-					get_selected_small_post(post_name).hide();
-					get_small_post(post_name).show();
-				}
-			}
-		}
-	}
-	
-	function select_post(post_name) {
-		var shown_post = get_big_post(post_name);
-		if(shown_post.visible()) {
-			hide_all_big_and_selected_posts(post_name);
-			return;
-		}
-		
-		hide_all_big_and_selected_posts();
-		
-		shown_post.appear();
-		
-		get_small_post(post_name).hide();
-		get_selected_small_post(post_name).show();
-	}
-	
-	
-	function get_current_shown_post_index() {
-		for(var i = 0; i < POSTS.length; i++) {
-			var post_name = POSTS[i];
-			
-			var post = get_big_post(post_name);
-			if(post.visible()) {
-				return i;
-			}
-		}
-	}
-	
-	function get_next_post_index() {
-		current_index = get_current_shown_post_index();
-		
-		if(current_index == null) {
-			return 0;
-		}
-		
-		if(current_index + 1 < POSTS.length) {
-			return current_index + 1
-		}
-		
-		// at the end ... jump to first
-		return 0;
-	}
-	
-	
-	var ON_SMALL_POST = false;
-	function set_on_small_post(on) {
-		ON_SMALL_POST = on;
-	}
-	
-	function select_next_post() {
-		if(!ON_SMALL_POST) {
-			select_post(POSTS[get_next_post_index()]);
-		}
-		
-		setTimeout("select_next_post();", 1000 * 10);
-	}
-	
-</script>
-
-
-<link href="/lib/greybox/gb_styles.css" rel="stylesheet" type="text/css" />
-
-<script type="text/javascript">
-	var GB_ROOT_DIR = "/lib/greybox/";
-</script>
-
-<script type="text/javascript" src="/lib/greybox/AJS.js"></script>
-<script type="text/javascript" src="/lib/greybox/AJS_fx.js"></script>
-<script type="text/javascript" src="/lib/greybox/gb_scripts.js"></script>
-
-
-<script type="text/javascript">
-	function apply_course() {
-		var current_index = get_current_shown_post_index();
-		
-		// [
-		// 	"overall", "resume_8_hrs", "career_path", "interview_2_days", "sales_training"
-		// ];
-		
-		var course_title;
-		var course_apply_url;
-		
-		switch(current_index) {
-			case 0:
-				course_title = "我要报名: 申请乔布堂求职顾问";
-				course_apply_url = "/coach/course_apply?sid=2";
-				break;
-			case 1:
-				course_title = "我要报名: 申请简历网申求职信8小时特训";
-				course_apply_url = "/coach/course_apply?sid=4";
-				break;
-			case 2:
-				course_title = "我要报名: 申请职业决策研讨班";
-				course_apply_url = "/coach/course_apply?sid=3";
-				break;
-			case 3:
-				course_title = "我要报名: 申请面试和职场礼仪模拟训练";
-				course_apply_url = "/coach/course_apply?sid=5";
-				break;
-			case 4:
-				course_title = "我要报名: 申请销售精英启航班";
-				course_apply_url = "/coach/course_apply?sid=6";
-				break;
-		   
-			default:
-				return;
-		}
-
-		
-		return GB_showCenter(course_title, course_apply_url, 350, 500);
-	}
-</script>
-
-
-<div class="index_both_post_container">
-	<div class="index_big_post_container">
-		<%
-			post_names.each do |post_name|
-		%>
-			<img src="/images/real_index/posts/<%= post_name %>.jpg" id="big_post_<%= post_name %>" border="0" style="display: none;" />
-		<% end %>
-	</div>
-
-	<div class="index_small_post_container">
-		<%			
-			post_names.each do |post_name|
-		%>
-			<div class="index_small_post">
-				<a href="<%= post_name == "overall" ? "/coach/consultant" : "/coach/courses##{post_name}" %>" onmouseover="select_post('<%= post_name %>'); set_on_small_post(true); return false;" onmouseout="set_on_small_post(false); return false;">
-					<img src="/images/real_index/posts/<%= post_name %>_small_selected.png" id="selected_small_post_<%= post_name %>" border="0" style="display: none;" />
-					<img src="/images/real_index/posts/<%= post_name %>_small.png" id="small_post_<%= post_name %>" border="0" /></a>
-			</div>
-		
-		<% end %>
-		
-		<div style="clear: left;"></div>
-	</div>
-	
-</div>
-
-<div class="index_register_button">
-	<a href="/coach/course_apply" onclick="apply_course(); return false;">
-		<img src="/images/real_index/register.png" border="0" /></a>
-</div>
-
-
-<script language="JavaScript">
-
-	select_next_post();
-	
-</script>
-
-
-
-
-
+<div class="clear" style="margin-bottom: 40px;"></div>
 
 
 
@@ -263,10 +53,10 @@
 	
 	<%
 		partners = [
-			["应届生求职网", "yingjiesheng.gif", "http://yingjiesheng.com"],
-			["上海市心理学会", "hrm.png", "http://www.hrm.org.cn"],
-			["上海百恒企业咨询服务", "baiheng.jpg", "http://www.eapbh.com"],
-			["Blacking", "blacking.jpg", "http://www.blacking.cn"]
+			["", "yingjiesheng.gif", "http://yingjiesheng.com"], # 应届生求职网
+			["", "hrm.png", "http://www.hrm.org.cn"], # 上海市心理学会
+			["", "blacking.jpg", "http://www.blacking.cn"], # Blacking
+			["", "team_key.jpg", "http://www.team-key.com"] # 上海拓展培训训练
 		]
 	%>
 	<% partners.each do |partner| %>
@@ -281,16 +71,6 @@
 			</div>
 		</div>
 	<% end %>
-	<div class="index_partner">
-		<div>
-			<a href="http://www.team-key.com" target="_blank">
-				<img src="/images/real_index/partners/team_key.jpg" border="0" title="上海拓展培训训练" /></a>
-		</div>
-		<div>
-			<a href="http://www.team-key.com" target="_blank">
-				<strong>上海拓展培训训练</strong></a>
-		</div>
-	</div>
 </div>
 
 <table cellpadding="0" cellspacing="0" border="0" class="index_community_container">
