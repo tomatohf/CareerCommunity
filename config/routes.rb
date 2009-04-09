@@ -360,6 +360,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/job_targets/list_closed/:id/:page", :controller => "job_targets", :action => "list_closed", :id => /\d+/, :page => /\d+/
   map.connect "/job_targets/:id/recruitments/:page", :controller => "job_targets", :action => "recruitments", :id => /\d+/, :page => /\d+/
   map.connect "/job_targets/:id/exps/:page", :controller => "job_targets", :action => "exps", :id => /\d+/, :page => /\d+/
+  map.connect "/job_targets/calendar/:id/:month", :controller => "job_targets", :action => "calendar", :month => /\d\d\d\d\d\d/, :id => /\d+/
   map.resources :job_targets, :collection => {
     
     :new_for_position => :any,

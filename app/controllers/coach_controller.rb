@@ -22,7 +22,7 @@ class CoachController < ApplicationController
   
   
   def stp
-    
+    render :layout => "uncategoried"
   end
   
   

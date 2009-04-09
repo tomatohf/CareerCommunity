@@ -19,7 +19,7 @@ class JobTargetsController < ApplicationController
                                           :create_from_recruitment, :update_refer, :update_note]
   
   before_filter :check_account_access, :only => [:list, :list_closed, :account_status, :account_process,
-                                                  :account_job_item]
+                                                  :account_job_item, :calendar]
   before_filter :check_info_editor, :only => [:system_status, :create_system_status,
                                                 :system_process, :create_system_process]
   before_filter :check_status_change, :only => [:status_update, :status_destroy]
@@ -791,6 +791,15 @@ class JobTargetsController < ApplicationController
     end
 
     render :action => "edit_note"
+  end
+  
+  
+  def calendar
+    month = params[:month]
+    
+    d = month ? Date.parse("#{month}01") : Date.today
+    
+    
   end
   
   

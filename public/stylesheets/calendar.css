@@ -1,0 +1,163 @@
+.calendar_t2 {
+	font-size:1px;
+	height:1px;
+	line-height:1px;
+	margin:0 2px;
+	background: #C3D9FF none repeat scroll 0 0;
+	border-color: #C3D9FF;
+}
+
+.calendar_t1 {
+	font-size:1px;
+	height:1px;
+	line-height:1px;
+	margin:0 1px;
+	background: #C3D9FF none repeat scroll 0 0;
+	border-color: #C3D9FF;
+}
+
+.view_name_t2 {
+	background: rgb(195, 217, 255) none repeat scroll 0% 0%;
+	font-size: 1px;
+	height: 1px;
+	line-height: 1px;
+	margin: 0px 2px;
+	
+	-moz-background-clip: -moz-initial;
+	-moz-background-origin: -moz-initial;
+	-moz-background-inline-policy: -moz-initial;
+}
+
+.view_name_t1 {
+	background: rgb(195, 217, 255) none repeat scroll 0% 0%;
+	font-size: 1px;
+	height: 1px;
+	line-height: 1px;
+	margin: 0px 1px;
+	
+	-moz-background-clip: -moz-initial;
+	-moz-background-origin: -moz-initial;
+	-moz-background-inline-policy: -moz-initial;
+}
+
+.calendar_action_bar {
+	border-color: rgb(195, 217, 255);
+	background: rgb(255, 255, 255) none repeat scroll 0% 0%;
+	vertical-align: bottom;
+	width: 100%;
+	
+	-moz-background-clip: -moz-initial;
+	-moz-background-origin: -moz-initial;
+	-moz-background-inline-policy: -moz-initial;
+}
+
+.selected_view_name {
+	background: #C3D9FF none repeat scroll 0 0;
+	font-weight:bold;
+	padding: 4px 5px 3px;
+}
+
+.calendar_container {
+	background: #C3D9FF none repeat scroll 0 0;
+	border-bottom: 6px solid #C3D9FF;
+	border-left: 9px solid #C3D9FF;
+	border-right: 6px solid #C3D9FF;
+}
+
+.calendar_body {
+	overflow-y: visible;
+	height: 400px;
+	background: #E8EEF7 none repeat scroll 0 0;
+	position: relative;
+}
+
+.calendar_cells {
+	line-height:14px;
+	height: 100%;
+	position: relative;
+	white-space: nowrap;
+}
+
+.calendar_daynames {
+	background: #C3D9FF none repeat scroll 0 0;
+	color: #112ABB;
+	left: 0px;
+	position: absolute;
+	table-layout: fixed;
+	top: 0px;
+	width: 100%;
+}
+
+.calendar_days {
+	background: white none repeat scroll 0 0;
+	bottom: 0px; left: 0px;
+	overflow: hidden;
+	position: absolute;
+	top: 14px;
+	width: 100%;
+}
+
+.mv-dayname {
+	color: #222222;
+}
+
+.month-row {
+	left: 0px;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+}
+
+.st-bg-table {
+	height: 100%;
+	left: 0px;
+	position: absolute;
+	table-layout: fixed;
+	top: 0px;
+	width: 100%;
+}
+
+.st-bg {
+	border-left: 1px solid #C3D9FF;
+}
+
+.st-grid {
+	position: relative;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.st-dtitle {
+	border-left: 1px solid #C3D9FF;
+	border-top: 1px solid #C3D9FF;
+	background-color:#E8EEF7;
+	color: #444444;
+	padding-right: 2px;
+	text-align: right;
+	line-height: 16px;
+	overflow: hidden;
+}
+
+.st-dtitle-today {
+	background-color: #BCD;
+}
+
+.st-dtitle-nonmonth {
+	background-color: #EEEEEE;
+	color: #777777;
+}
+
+.st-s {
+	cursor: default;
+	padding-bottom: 2px;
+}
+.st-c {
+	padding: 1px 1px 0 2px;
+	vertical-align: top;
+}
+
+.bottom_action_bar {
+	background-color: #C3D9FF;
+	padding: 0px 10px;
+}
+

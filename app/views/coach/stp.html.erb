@@ -1,89 +1,593 @@
-<% community_page_title("销售实习生计划") %>
+<style>
+	#top_bar {
+		margin-bottom: 0px;
+	}
+	
+	.left_section {
+		width: 197px;
+		height: 47px;
+		border: 2px solid #E4E4E4;
+		
+		text-align: left;
+	}
+	
+	.left_section_content {
+		width: 197px;
+		border-left: 2px solid #E4E4E4;
+		border-right: 2px solid #E4E4E4;
+		border-bottom: 2px solid #E4E4E4;
+		
+		text-align: left;
+	}
+	
+	.left_section_content_body {
+		padding: 10px 20px;
+	}
+	
+	.left_section_title {
+		font-size: 18px;
+		font-weight: bold;
+		
+		padding: 15px;
+	}
+	
+	.try_section_title {
+		color: #AA8846;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	
+	.try_section_content {
+		color: #999999;
+		padding-left: 20px;
+	}
+	
+	.right_content_container {
+		width: 650px;
+	}
+	
+	.right_title_section {
+		height: 40px;
+		background: transparent url(/images/coach/stp/vertical_short_line.jpg) no-repeat scroll left 0px;
+		padding-left: 15px;
+		text-align: left;
+		line-height: 1.1;
+		
+		margin-top: 30px;
+	}
+	
+	.right_title_section a {
+		text-decoration: none;
+	}
+	
+	.right_sep_line {
+		height: 6px;
+		border-bottom: 1px solid #EFD1C3;
+		margin-bottom: 15px;
+	}
+	
+	.right_course {
+		border-bottom: 1px solid #DEDEDE;
+		background: transparent url(/images/coach/stp/number_bg.jpg) no-repeat scroll 5px 1px;
+		height: 19px;
+		padding-bottom: 5px;
+		padding-left: 15px;
+		text-align: left;
+		margin-top: 10px;
+	}
+	
+	.right_course_number {
+		color: #FFFFFF;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	
+	.right_course_title {
+		padding-left: 15px;
+		color: #666666;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	
+	.tab_content_title {
+		height: 17px;
+		margin-top: 30px;
+		text-align: left;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	
+	.tab_content_desc {
+		border: 1px solid #DEDEDE;
+		margin: 10px 1px 15px;
+		padding: 10px;
+		text-align: left;
+	}
+	
+	#page_container {
+		#border: 1px solid;
+	}
+</style>
 
-<div class="breadcrumb">
-	<a href="/">
-		乔布堂</a>
-	»
-	<a href="/coach">
-		乔布教练</a>
-	»
-	<a href="/coach/stp">
-		销售实习生计划</a>
-</div>
+<script type="text/javascript">
+	function show_tab(tab_name) {
+		var tab = document.getElementById("tab_" + tab_name);
+		var tab_content = document.getElementById("tab_content_" + tab_name);
+	}
+</script>
 
 
 <link href="/lib/greybox/gb_styles.css" rel="stylesheet" type="text/css" />
-
 <script type="text/javascript">
 	var GB_ROOT_DIR = "/lib/greybox/";
 </script>
-
 <script type="text/javascript" src="/lib/greybox/AJS.js"></script>
 <script type="text/javascript" src="/lib/greybox/AJS_fx.js"></script>
 <script type="text/javascript" src="/lib/greybox/gb_scripts.js"></script>
 
 
 
-<br />
-<div class="align_c">
-	<img src="/images/coach/programs/STP.jpg" border="0" />
-</div>
-<br />
+<div id="page_container" style="margin: 0px auto; width: 950px;">
+	<div>
+		<table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+			<tr>
+				<td align="left" valign="top" style="width: 250px;">
+					<div>
+						<a href="http://www.qiaobutang.com" target="_blank">
+							<img src="/images/coach/stp/logo.jpg" border="0" /></a>
+					</div>
+					
+					<div>
+						<table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+							<tr>
+								<td align="left" valign="top" style="width: 11px;">
+									<div style="width: 11px; height: 11px; background: transparent url(/images/coach/stp/round_top_left.jpg) no-repeat scroll left 0px;"> </div>
+									
+									<div>
+										<img src="/images/coach/stp/vertical_line.jpg" border="0" />
+									</div>
+								</td>
+								
+								<td align="center" valign="top" style="width: 100%; background: transparent url(/images/coach/stp/round_hori_dot.jpg) repeat-x scroll left 0px">
+									<div class="left_section" style="background: transparent url(/images/coach/stp/history_icon.jpg) no-repeat scroll center 0px; margin-top: 30px;">
+										<div class="left_section_title">
+											精彩回顾
+										</div>
+									</div>
+									
+									<div class="left_section" style="background: transparent url(/images/coach/stp/trainers_icon.jpg) no-repeat scroll center 0px; margin-top: 15px;">
+										<div class="left_section_title">
+											查看培训师
+										</div>
+									</div>
+									
+									<div>
+										<div class="left_section" style="background: transparent url(/images/coach/stp/apply_icon.jpg) no-repeat scroll center 0px; margin-top: 15px;">
+											<div class="left_section_title">
+												报名方法
+											</div>
+										</div>
+										<div class="left_section_content">
+											<ul class="left_section_content_body" style="margin: 0px; list-style-type: none; color: #888888;">
+												<li>
+													a. 网上报名
+												</li>
+												<li>
+													b. 至公司付款/网上付款
+												</li>
+												<li>
+													c. 签署协议
+												</li>
+												<li>
+													d. 领取听课证
+												</li>
+											</ul>
+										</div>
+									</div>
+									
+									<div>
+										<div class="left_section" style="background: transparent url(/images/coach/stp/try_icon.jpg) no-repeat scroll center 0px; margin-top: 15px;">
+											<div class="left_section_title">
+												申请试听
+											</div>
+										</div>
+										<div class="left_section_content">
+											<div class="left_section_content_body">
+												<div>
+													<div class="try_section_title">
+														试听时间:
+													</div>
+													<div class="try_section_content">
+														每个月两次, 周六/周日.
+														<br />
+														具体时间电话通知.
+													</div>
+												</div>
+												
+												<div>
+													<div class="try_section_title">
+														试听内容:
+													</div>
+													<div class="try_section_content">
+														3个小时的专业拜访技巧
+														<br />
+														--获得认可的六脉神剑.
+													</div>
+												</div>
+												
+												<div>
+													<div class="try_section_title">
+														试听费用:
+													</div>
+													<div class="try_section_content">
+														50元, 可获得50元的
+														<br />
+														培训费抵用券.
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div>
+										<div class="left_section" style="background: transparent url(/images/coach/stp/photo_icon.jpg) no-repeat scroll center 0px; margin-top: 15px;">
+											<div class="left_section_title">
+												咨询电话
+											</div>
+										</div>
+										<div class="left_section_content">
+											<div class="left_section_content_body" style="font-size: 16px;">
+												TEL:
+												&nbsp;
+												400-600-2010
+											</div>
+										</div>
+									</div>
+								</td>
+								
+								<td align="right" valign="top" style="width: 11px;">
+									<div style="width: 11px; height: 11px; background: transparent url(/images/coach/stp/round_top_right.jpg) no-repeat scroll right 0px;"> </div>
+									
+									<div>
+										<img src="/images/coach/stp/vertical_line.jpg" border="0" />
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</td>
+				
+				<td align="left" valign="top" style="width: 700px;">
+					<div>
+						<img src="/images/coach/stp/banner.jpg" border="0" />
+					</div>
+					
+					<div style="">
+						<table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+							<tr>
+								<td align="left" valign="top" style="width: 11px;">
+									<div style="width: 11px; height: 11px; background: transparent url(/images/coach/stp/round_top_left.jpg) no-repeat scroll left 0px;"> </div>
+								</td>
+								
+								<td align="center" valign="top" style="width: 100%; background: transparent url(/images/coach/stp/round_hori_dot.jpg) repeat-x scroll left 0px;">
+									<div class="right_content_container">
 
-
-<div class="coach_block" style="margin-top: 15px;">
-	<ul>
-		<%
-			features = [
-				"专业销售培训体系 与世界500强公司内部培训无缝对接",
-				"跨国公司销售市场总监任总教练",
-				"全部培训师为跨国公司内部销售培训师",
-				"为期6个月，全方位打造极具竞争力的销售精英",
-				"3星级以上学员加入乔布堂销售人才库",
-				"4星级以上学员有机会获得就业推荐",
-				"5星级以上学员将得到销售总教练亲笔推荐信"
-			]
-		%>
-		
-		<% features.each do |feature| %>
-			<li style="font-size: 14px; font-weight: bold; margin-top: 5px;">
-				<%= feature %>
-			</li>
-		<% end %>
-	</ul>
-</div>
-
-
-<div class="coach_block" style="margin-top: 30px;">
-	<h2>
-		2个月课程培训体系包括:
-	</h2>
+										<div class="right_title_section">
+											<div style="color: #999999; font-size: 14px; font-weight: bold;">
+												销售实习生计划-STP
+											</div>
+											
+											<div style="margin-top: 5px;">
+												<span style="float: right; color: #CEA84D;">
+													<a href="/" target="_blank" style="color: #888888;">
+														乔布堂</a>
+													»
+													<a href="/coach" target="_blank" style="color: #888888;">
+														乔布教练</a>
+													»
+													销售实习生计划
+												</span>
+												
+												<span style="font-size: 18px; font-weight: bold;">
+													培训流程
+												</span>
+											</div>
+										</div>
+										<div class="right_sep_line"> </div>
+										
+										<div>
+											<img src="/images/coach/stp/big_process.jpg" border="0" />
+										</div>
+										
+										<div class="right_title_section">
+											<div style="color: #999999; font-size: 14px; font-weight: bold;">
+												销售实习生计划-STP
+											</div>
+											
+											<div style="margin-top: 5px;">
+												<span style="float: right; color: #CEA84D;">
+													<a href="/" target="_blank" style="color: #888888;">
+														乔布堂</a>
+													»
+													<a href="/coach" target="_blank" style="color: #888888;">
+														乔布教练</a>
+													»
+													销售实习生计划
+												</span>
+												
+												<span style="font-size: 18px; font-weight: bold;">
+													具体安排
+												</span>
+											</div>
+										</div>
+										<div class="right_sep_line"> </div>
+										
+										
+										<div>
+											<map name="tab_map">
+												<area href="javascript: alert('a')" alt="查看销售培训的具体安排" title="查看销售培训的具体安排" shape="rect" coords="0,0,113,30" />
+												<area href="javascript: alert('b')" alt="查看销售/市场类实习的具体安排" title="查看销售/市场类实习的具体安排" shape="rect" coords="120,0,233,30" />
+												<area href="javascript: alert('c')" alt="查看求职技能培训的具体安排" title="查看求职技能培训的具体安排" shape="rect" coords="240,0,360,30" />
+											</map>
+											
+											<img id="tab_sales" src="/images/coach/stp/tab_sales.jpg" border="0" usemap="#tab_map" />
+											<img id="tab_intern" src="/images/coach/stp/tab_intern.jpg" border="0" usemap="#tab_map" style="display: none;" />
+											<img id="tab_qiuzhi" src="/images/coach/stp/tab_qiuzhi.jpg" border="0" usemap="#tab_map" style="display: none;" />
+										</div>
+										
+										<div>
+											
+											<div id="tab_content_sales">
+												
+												<div style="background: transparent url(/images/coach/stp/8days.jpg) no-repeat scroll left 0px; padding-left: 60px;" class="tab_content_title">
+													全部是实用技能 ! 提高你的单兵作战能力 !
+												</div>
+												
+												<div class="tab_content_desc">
+													<div>
+														培训时间:
+														8天, 每天 4-6 小时
+													</div>
+													<div>
+														培训方式: 设定学习目标 → 系统知识的传授 → 培训师示范 → 分角色/设情景/模拟训练
+														<br />
+														→ 现场点评 → 对照目标进行考核 → 考核通过进入下一课程的学习
+													</div>
+												</div>
+												
+												<div class="right_course">
+													<span class="right_course_number">
+														01
+													</span>
+													<span class="right_course_title">
+														专业拜访技巧
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														02
+													</span>
+													<span class="right_course_title">
+														专业演讲技巧
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														03
+													</span>
+													<span class="right_course_title">
+														群体销售技巧
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														04
+													</span>
+													<span class="right_course_title">
+														时间与压力管理
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														05
+													</span>
+													<span class="right_course_title">
+														商务沟通与激励
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														06
+													</span>
+													<span class="right_course_title">
+														销售谈判技巧
+													</span>
+												</div>
+												
+											</div>
+											
+											
+											<div id="tab_content_intern" style="display: none;">
+												
+												<div style="background: transparent url(/images/coach/stp/4months.jpg) no-repeat scroll left 0px; padding-left: 80px;" class="tab_content_title">
+													实习机会
+													<span style="color: #888888;">
+														---
+														乔布堂为学员提供4个月的实习机会
+														---
+														以实践所学技能为主要目的.
+													</span>
+												</div>
+												
+												<div class="tab_content_desc">
+													实习以销售, 市场类为主, 但不限于销售和市场类. 实习可在乔布堂实习, 也可在乔布堂协议单位实习.
+													<br />
+													实习期间所有的收入归学员所有, 乔布堂不收取任何中介费用. 实习结束后, 乔布堂与协议单位提供实习证明和实习小结.
+													对实习有疑问? 手机热线: 400-600-2010 问个清楚.
+												</div>
+												
+												<div class="right_course">
+													<span class="right_course_number">
+														01
+													</span>
+													<span class="right_course_title">
+														在乔布堂的实习: 主要客户为行政事业单位, 企业人力资源部门, 小型媒体编辑部等.
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														02
+													</span>
+													<span class="right_course_title">
+														在协议单位实习: 没有信用卡推广, 销售保险, 地铁发卡这种概率型销售实习.
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														03
+													</span>
+													<span class="right_course_title">
+														签订实习协议前进行双向选择.
+													</span>
+												</div>
+												
+												
+												<div style="background: transparent url(/images/coach/stp/8days.jpg) no-repeat scroll left 0px; padding-left: 80px;" class="tab_content_title">
+													在岗培训
+													<span style="color: #888888;">
+														---
+														实习期间乔布堂将为所有学员提供一共8天, 每天3小时的在岗培训.
+													</span>
+												</div>
+												
+												<div class="tab_content_desc">
+													<div>
+														培训时间:
+														8天, 每天 3 小时
+													</div>
+													<div>
+														培训目的:
+														根据实习过程中出现的问题, 对学员进行针对性的加强和提高, 并提供更多的客户关系管理和销售工具.
+													</div>
+													<div>
+														培训方式:
+														情景再现, 培训师解答, 模拟训练.
+													</div>
+												</div>
+												
+												<div class="right_course">
+													<span class="right_course_number">
+														01
+													</span>
+													<span class="right_course_title">
+														销售技能回炉
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														02
+													</span>
+													<span class="right_course_title">
+														客户关系管理
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														03
+													</span>
+													<span class="right_course_title">
+														销售工具和方法
+													</span>
+												</div>
+												
+											</div>
+											
+											
+											<div id="tab_content_qiuzhi" style="display: none;">
+												
+												<div style="background: transparent url(/images/coach/stp/8days.jpg) no-repeat scroll left 0px; padding-left: 60px;" class="tab_content_title">
+													本计划的最后一个环节:
+													把自己卖给目标公司 !
+												</div>
+												
+												<div class="tab_content_desc">
+													<div>
+														培训时间:
+														8天, 每天 4-6 小时
+													</div>
+													<div>
+														培训方式: 使用乔布堂16D工具收集整理职业信息 → 采用MBTI,16PF量表等工具进行自我评估
+														<br />
+														→ 3份简历和2封求职信在指导下当堂完成 → AC和面试分角色设情景,模拟训练现场点评
+													</div>
+												</div>
+												
+												<div class="right_course">
+													<span class="right_course_number">
+														01
+													</span>
+													<span class="right_course_title">
+														自我评估
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														02
+													</span>
+													<span class="right_course_title">
+														简历-求职信
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														03
+													</span>
+													<span class="right_course_title">
+														职业信息
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														04
+													</span>
+													<span class="right_course_title">
+														求职途径
+													</span>
+												</div>
+												<div class="right_course">
+													<span class="right_course_number">
+														05
+													</span>
+													<span class="right_course_title">
+														AC和面试
+													</span>
+												</div>
+												
+											</div>
+											
+										</div>
+									</div>
+								</td>
+								
+								<td align="right" valign="top" style="width: 11px;">
+									<div style="width: 11px; height: 11px; background: transparent url(/images/coach/stp/round_top_right.jpg) no-repeat scroll right 0px;"> </div>
+									
+									<div>
+										<img src="/images/coach/stp/vertical_line.jpg" border="0" />
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+					
+				</td>
+			</tr>
+		</table>
+	</div>
 	
-	<ul>
-		<%
-			contents = [
-				"专业拜访技巧培训 -- 《获得认可的六脉神剑》",
-				"专业演讲技巧培训 -- 《八步成就演讲高手》",
-				"群体销售技巧培训 -- 《神奇的影响力法则》",
-				"时间与压力管理培训 -- 《高效能销售员》",
-				"商务沟通与激励培训 -- 《细节之中有魔鬼》",
-				"销售谈判技巧培训 -- 《赢》",
-				"销售职业生涯规划 -- 《从销售实习生到百万富翁》"
-			]
-		%>
-		
-		<% contents.each do |feature| %>
-			<li style="font-size: 14px; font-weight: bold; margin-top: 5px;">
-				<%= feature %>
-			</li>
-		<% end %>
-	</ul>
-</div>
-
-
-<div class="coach_block align_c">
-	<a rel="gb_page_center[500, 350]" title="我要申请: 百万销售实习生计划 (STP)" href="/coach/course_apply?sid=11">
-		<img src="/images/coach/apply_button.png" border="0" /></a>
+	<div>
+		<img src="/images/coach/stp/bottom_cities.jpg" border="0" />
+	</div>
 </div>
 
 
