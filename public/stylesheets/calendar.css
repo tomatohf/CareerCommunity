@@ -131,7 +131,7 @@
 	border-left: 1px solid #C3D9FF;
 	border-top: 1px solid #C3D9FF;
 	background-color:#E8EEF7;
-	color: #444444;
+	color: #333333;
 	padding-right: 2px;
 	text-align: right;
 	line-height: 16px;
@@ -144,7 +144,7 @@
 
 .st-dtitle-nonmonth {
 	background-color: #EEEEEE;
-	color: #777777;
+	color: #888888;
 }
 
 .st-s {
@@ -160,4 +160,124 @@
 	background-color: #C3D9FF;
 	padding: 0px 10px;
 }
+
+.event {
+	margin: 1px 0px;
+	padding: 1px 1px 1px 3px;
+	overflow: hidden;
+	white-space: nowrap;
+	color: white;
+	cursor: pointer;
+	background-color: #668CD9;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+
+
+.bubble {
+	font-size: 9pt;
+	position: absolute;
+}
+
+.bubble .corner {
+	height: 25px;
+	overflow: hidden;
+	position: absolute;
+	width: 25px;
+}
+
+
+.bubble-tl {
+	left: 0px;
+	top: 0px;
+}
+
+.bubble-tl .bubble-sprite {
+	left: 0px;
+}
+
+.bubble-sprite {
+	background-image: url(/images/job_targets/calendar/bubble_combined.png);
+	height: 96px;
+	position: absolute;
+	width: 148px;
+}
+
+.bubble-tr {
+	right: 0px;
+	top: 0px;
+}
+
+.bubble-tr .bubble-sprite {
+	left: -25px;
+}
+
+.bubble .closebutton {
+	background: transparent url(/images/job_targets/calendar/close_icon.gif) repeat scroll 0px 0px;
+	cursor: pointer;
+	height: 25px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	width: 25px;
+}
+
+.bubble-top {
+	border-top: 1px solid #ABABAB;
+}
+
+.bubble-top, .bubble-bottom {
+	background: #FFFFFF none repeat scroll 0 0;
+	height: 24px;
+	margin: 0px 25px;
+}
+
+.bubble-mid {
+	background: #FFFFFF none repeat scroll 0 0;
+	border-left: 1px solid #ABABAB;
+	border-right: 1px solid #ABABAB;
+	padding: 0px 20px;
+}
+
+.bubble_body {
+	overflow: hidden;
+}
+
+.bubble-bl {
+	bottom: 0px;
+	left: 0px;
+}
+
+.bubble-bl .bubble-sprite {
+	left: 0px;
+	top: -25px;
+}
+
+.bubble-br {
+	bottom: 0px;
+	right: 0px;
+}
+
+.bubble-br .bubble-sprite {
+	left: -25px;
+	top: -25px;
+}
+
+.bubble-bottom {
+	border-bottom: 1px solid #ABABAB;
+}
+
+.prong {
+	height: 96px;
+	overflow: hidden;
+	position: absolute;
+	width: 98px;
+}
+
+.prong .bubble-sprite {
+	left: -50px;
+	top: 0px;
+}
+
 

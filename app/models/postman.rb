@@ -229,15 +229,15 @@ class Postman < ActionMailer::Base
     process_name = process.name
     step_display_name = (step_name && step_name != "") ? "#{step_name}(#{process_name})" : process_name
     
-    company_name = company.name
-    position_name = position.name
+    company_name = JobTargetsController.helpers.get_target_company_name(target, company)
+    target_name = JobTargetsController.helpers.append_job_position_name(company_name, position, [" / ", ""])
     
-    subject("[求职步骤提醒] #{step_display_name} / #{company_name} / #{position_name}")
+    subject("[求职步骤提醒] #{step_display_name} / #{target_name}")
     body(
       :step_name => step_name,
-      :process_name => process_name.id,
+      :process_name => process_name,
       :company_name => company_name,
-      :position_name => position_name,
+      :position => position,
       :account => account
     )
     content_type "text/html"

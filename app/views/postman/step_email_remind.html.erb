@@ -12,8 +12,10 @@
 		目标公司:   <strong><%= @company_name %></strong>
 		<br />
 		
-		目标职位:   <strong><%= @position_name %></strong>
-		<br />
+		<% if @position.id != JobPosition::Null_Record_ID %>
+			目标职位:   <strong><%= @position.name %></strong>
+			<br />
+		<% end %>
 		
 		<% if @step_name && @step_name != "" %>
 			步骤名称:   <strong><%= @step_name %></strong>
@@ -24,6 +26,8 @@
 		<br />
 	</p>
 	
+	<br />
+	
 	<p>
 		<a href="http://www.qiaobutang.com/job_targets/list/<%= @account.id %>" target="_blank">
 			<span style="font-size: 14px; font-weight: bold;">去我的求职目标列表</span></a>
@@ -32,6 +36,16 @@
 		
 		<a href="http://www.qiaobutang.com/job_targets/list/<%= @account.id %>" target="_blank">
 			http://www.qiaobutang.com/job_targets/list/<%= @account.id %></a>
+	</p>
+	
+	<p>
+		<a href="http://www.qiaobutang.com/job_targets/calendar/<%= @account.id %>" target="_blank">
+			<span style="font-size: 14px; font-weight: bold;">去查看我的求职日历</span></a>
+		
+		<br />
+		
+		<a href="http://www.qiaobutang.com/job_targets/calendar/<%= @account.id %>" target="_blank">
+			http://www.qiaobutang.com/job_targets/calendar/<%= @account.id %></a>
 	</p>
 	
 	

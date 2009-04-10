@@ -10,10 +10,10 @@ module JobTargetsHelper
     append_job_position_name(company_name, job_position)
   end
   
-  def append_job_position_name(company_name, job_position)
+  def append_job_position_name(company_name, job_position, sep = ["(", ")"])
     target_name = company_name
     
-    target_name += "(#{job_position.name})" unless (job_position.id == JobPosition::Null_Record_ID)
+    target_name += " #{sep[0]}#{job_position.name}#{sep[1]}" unless (job_position.id == JobPosition::Null_Record_ID)
     
     target_name
   end

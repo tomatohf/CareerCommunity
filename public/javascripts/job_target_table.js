@@ -259,6 +259,24 @@ function create_table_grid() {
 				
 				"-",
 				
+				{
+					//id: "",
+					text: "查看我的求职日历",
+					icon: "/images/job_targets/calendar_icon.gif",
+					cls: "x-btn-text-icon",
+					handler: function() {
+						link_to_blank("/job_targets/calendar/" + current_user_id);
+					}
+				},
+				
+				"-",
+				
+				"今天是 <b>" + new Date().format("Y年m月d日") + "</b>",
+				
+				"-",
+				
+				"->",
+				
 				"管理自己添加的:",
 				
 				{
@@ -291,13 +309,7 @@ function create_table_grid() {
 					handler: function() {
 						window.location.href = "/job_targets/account_status/" + current_user_id;
 					}
-				},
-				
-				"-",
-				
-				"->",
-				
-				"今天是 <b>" + new Date().format("Y年m月d日") + "</b>"
+				}
 			
 			]
 		}

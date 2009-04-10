@@ -20,7 +20,8 @@
 		
 		<br />
 		
-		<img id="step_remind_<%= step.id %>" src="/images/job_targets/alerm_tiny.gif" border="0" alt="已设置提醒" title="已设置提醒" style="display: <%= step.remind_at ? "" : "none" %>" />
+		<% formatted_remind_at = format_date(step.remind_at) %>
+		<img id="step_remind_<%= step.id %>" src="/images/job_targets/alarm_tiny.gif" border="0" alt="已设置提醒<%= formatted_remind_at %>" title="已设置提醒<%= formatted_remind_at %>" style="display: <%= step.remind_at ? "" : "none" %>" />
 	</div>
 </div>
 

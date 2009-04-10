@@ -795,11 +795,54 @@ class JobTargetsController < ApplicationController
   
   
   def calendar
-    month = params[:month]
+    @today = Date.today
     
-    d = month ? Date.parse("#{month}01") : Date.today
+    month = params[:month] || @today.strftime("%Y%m")
     
+    @this_month = Date.parse("#{month}01")
     
+    @prev_month = 1.month.ago(@this_month)
+    @next_month = 1.month.since(@this_month)
+    
+    first_wday = @this_month.wday
+    
+    last_date_of_this_month = 1.day.ago(@next_month)
+    last_wday = last_date_of_this_month.wday
+    
+    # make Sunday the last day of week,
+    # which means Monday is the first day of week
+    first_wday = 7 unless first_wday > 0
+    last_wday = 7 unless last_wday > 0
+    
+    prev_month_days = first_wday - 1
+    next_month_days = 7 - last_wday
+    
+    start_date = prev_month_days.days.ago(@this_month)
+    end_date= next_month_days.days.since(last_date_of_this_month)
+    
+    @step_mapping = {}
+    
+    JobStep.find(
+      :all,
+      :conditions => [
+        "account_id = ? and end_at >= ? and end_at < ?",
+        session[:account_id],
+        start_date,
+        1.day.since(end_date)
+      ],
+      :order => "end_at ASC"
+    ).each do |step|
+      date_key = step.end_at.strftime("%Y%m%d")
+      @step_mapping[date_key] = (@step_mapping[date_key] || []) << step
+    end
+    
+    @days = []
+    week = []
+    start_date.upto(end_date) do |date|
+      week = [] if (date.wday == 1) # when Monday
+      week << date
+      @days << week if (date.wday == 0) # when Sunday
+    end
   end
   
   

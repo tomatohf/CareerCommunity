@@ -4,7 +4,7 @@
 
 <div class="blog_container">
 	<a href="/job_targets/list/<%= session[:account_id] %>" class="float_r">
-		返回我的求职目标</a>
+		返回我的求职目标对日历内容进行编辑</a>
 		
 	<h2><%= page_title %></h2>
 	
@@ -28,23 +28,55 @@
 										<tbody>
 											<tr>
 												<td>
-													<a href="/job_targets/calendar/<%= session[:account_id] %>/" title="上一个月">
+													<a href="/job_targets/calendar/<%= session[:account_id] %>/<%= @prev_month.strftime("%Y%m") %>" title="上一个月">
 														<img src="/images/job_targets/calendar/prev_btn_small.gif" border="0" alt="更早" style="padding-left: 5px;" /></a>
 												</td>
 												
 												<td>
-													<span style="padding: 0px 5px; white-space: nowrap; font-size: 14px; font-weight: bold;">2009年8月</span>
+													<span style="padding: 0px 5px; white-space: nowrap; font-size: 14px; font-weight: bold;"><%= @this_month.strftime("%Y年%m月") %></span>
 												</td>
 												
 												<td>
-													<a href="#" title="下一个月">
+													<a href="/job_targets/calendar/<%= session[:account_id] %>/<%= @next_month.strftime("%Y%m") %>" title="下一个月">
 														<img src="/images/job_targets/calendar/next_btn_small.gif" border="0" alt="更晚" /></a>
 												</td>
 												
 												<td>
-													<span style="padding-left: 20px; white-space: nowrap;">
+													<span style="padding-left: 10px; white-space: nowrap;">
 														<a href="/job_targets/calendar/<%= session[:account_id] %>">
 															跳转到今天</a>
+													</span>
+												</td>
+												
+												<td>
+													<span style="padding-left: 10px; white-space: nowrap;">
+														<span style="color: #CCCCCC;">|</span>
+														&nbsp;
+														<select id="year_select" class="dropdown_list">
+															<% 2000.upto(2030) do |year| %>
+																<option value="<%= year %>"<%= %Q! selected="selected"! if @this_month.year == year %>><%= year %></option>
+															<% end %>
+														</select>
+														年
+													</span>
+												</td>
+												<td>
+													<span style="padding-left: 0px; white-space: nowrap;">
+														<select id="month_select" class="dropdown_list">
+															<% 1.upto(12) do |month| %>
+																<option value="<%= month %>"<%= %Q! selected="selected"! if @this_month.month == month %>><%= month %></option>
+															<% end %>
+														</select>
+														月
+													</span>
+												</td>
+												<td>
+													<span style="padding-left: 10px; white-space: nowrap;">
+														<a href="#" onclick="goto_selected_month();">
+															GO</a>
+															
+														&nbsp;
+														<span style="color: #CCCCCC;">|</span>
 													</span>
 												</td>
 											</tr>
@@ -59,7 +91,7 @@
 													<img src="/images/job_targets/steward_small.png" border="0" alt="求职管家" width="22" height="25" style="padding-right: 5px;" />
 												</td>
 												<td>
-													<span style="padding-right: 30px; white-space: nowrap;">
+													<span style="padding-right: 10px; white-space: nowrap;">
 														根据
 														<a href="/job_targets/list/<%= session[:account_id] %>">
 															您的求职目标列表</a>
@@ -90,7 +122,7 @@
 			
 			<div class="calendar_container">
 				<div>
-					<a href="#" onclick="toggle_func_list(); return false;" title="显示/隐藏左边的功能列表栏, 缩小/增大求职目标日历的宽度">
+					<a href="#" onclick="hide_detail(); toggle_func_list(); return false;" title="显示/隐藏左边的功能列表栏, 缩小/增大求职目标日历的宽度">
 						<img src="/images/job_targets/hide_left_icon.gif" border="0" /></a>
 					
 					&nbsp;&nbsp;&nbsp;
@@ -121,313 +153,99 @@
 						</table>
 						
 						<div class="calendar_days">
-							<div style="top: 0%; height: 20%;" class="month-row">
-								<table cellspacing="0" cellpadding="0" class="st-bg-table">
-									<tbody>
-										<tr>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-										</tr>
-									</tbody>
-								</table>
-								<table cellspacing="0" cellpadding="0" class="st-grid">
-									<tbody>
-										<tr>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20219">27</span>
-											</td>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20220">28</span>
-											</td>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20221">29</span>
-											</td>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20222">30</span>
-											</td>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20223">31</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20225">8月 1</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20226">2</span>
-											</td>
-										</tr>
-										<tr>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div style="top: 16.6667%; height: 16.6667%;" class="month-row">
-								<table cellspacing="0" cellpadding="0" class="st-bg-table">
-									<tbody>
-										<tr>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-										</tr>
-									</tbody>
-								</table>
-								<table cellspacing="0" cellpadding="0" class="st-grid">
-									<tbody>
-										<tr>
-											<td class="st-dtitle">
-												<span class="ca-cdp20227">3</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20228">4</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20229">5</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20230">6</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20231">7</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20232">8</span>
-											</td>
-											<td class="st-dtitle st-dtitle-today">
-												<span class="ca-cdp20233">今天 9</span>
-											</td>
-										</tr>
-										<tr>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div style="top: 33.3333%; height: 16.6667%;" class="month-row">
-								<table cellspacing="0" cellpadding="0" class="st-bg-table">
-									<tbody>
-										<tr>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-										</tr>
-									</tbody>
-								</table>
-								<table cellspacing="0" cellpadding="0" class="st-grid">
-									<tbody>
-										<tr>
-											<td class="st-dtitle">
-												<span class="ca-cdp20234">10</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20235">11</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20236">12</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20237">13</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20238">14</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20239">15</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20240">16</span>
-											</td>
-										</tr>
-										<tr>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div style="top: 50%; height: 16.6667%;" class="month-row">
-								<table cellspacing="0" cellpadding="0" class="st-bg-table">
-									<tbody>
-										<tr>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-										</tr>
-									</tbody>
-								</table>
-								<table cellspacing="0" cellpadding="0" class="st-grid">
-									<tbody>
-										<tr>
-											<td class="st-dtitle">
-												<span class="ca-cdp20241">17</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20242">18</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20243">19</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20244">20</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20245">21</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20246">22</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20247">23</span>
-											</td>
-										</tr>
-										<tr>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div style="top: 66.6667%; height: 16.6667%;" class="month-row">
-								<table cellspacing="0" cellpadding="0" class="st-bg-table">
-									<tbody>
-										<tr>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-										</tr>
-									</tbody>
-								</table>
-								<table cellspacing="0" cellpadding="0" class="st-grid">
-									<tbody>
-										<tr>
-											<td class="st-dtitle">
-												<span class="ca-cdp20248">24</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20249">25</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20250">26</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20251">27</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20252">28</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20253">29</span>
-											</td>
-											<td class="st-dtitle">
-												<span class="ca-cdp20254">30</span>
-											</td>
-										</tr>
-										<tr>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div style="top: 83.3333%; height: 16.6667%;" class="month-row">
-								<table cellspacing="0" cellpadding="0" class="st-bg-table">
-									<tbody>
-										<tr>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-											<td class="st-bg"> </td>
-										</tr>
-									</tbody>
-								</table>
-								<table cellspacing="0" cellpadding="0" class="st-grid">
-									<tbody>
-										<tr>
-											<td class="st-dtitle">
-												<span class="ca-cdp20255">31</span>
-											</td>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20257">9月 1</span>
-											</td>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20258">2</span>
-											</td>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20259">3</span>
-											</td>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20260">4</span>
-											</td>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20261">5</span>
-											</td>
-											<td class="st-dtitle st-dtitle-nonmonth">
-												<span class="ca-cdp20262">6</span>
-											</td>
-										</tr>
-										<tr>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-											<td class="st-c st-s"> </td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						
+							
+							<% 
+								height = 100.0 / @days.size
+								@days.each_index do |week_i|
+									week = @days[week_i]
+							%>
+								
+								<div style="top: <%= height * week_i %>%; height: <%= height %>%;" class="month-row">
+									<table cellspacing="0" cellpadding="0" class="st-bg-table">
+										<tbody>
+											<tr>
+												<td class="st-bg"> </td>
+												<td class="st-bg"> </td>
+												<td class="st-bg"> </td>
+												<td class="st-bg"> </td>
+												<td class="st-bg"> </td>
+												<td class="st-bg"> </td>
+												<td class="st-bg"> </td>
+											</tr>
+										</tbody>
+									</table>
+									
+									<table cellspacing="0" cellpadding="0" class="st-grid">
+										<tbody>
+											<tr>
+												<% 
+													# loop for day title
+													week.each do |date|
+												%>
+													<% is_today = (date.year == @today.year) && (date.month == @today.month) && (date.mday == @today.mday) %>
+													
+													<td class="st-dtitle<%= " st-dtitle-nonmonth" unless ((date.year == @this_month.year) && (date.month == @this_month.month)) %><%= " st-dtitle-today" if is_today %>">
+														<span>
+															<%=
+																if is_today
+																	"今天"
+																elsif date.mday == 1
+																	"#{date.month}月"
+																end
+															%>
+															<%= date.mday %>
+														</span>
+													</td>
+												<% end %>
+											</tr>
+											<tr>
+												<% 
+													# loop for day content
+													week.each do |date|
+												%>
+													<td class="st-c st-s">
+														<%
+															steps = @step_mapping[date.strftime("%Y%m%d")]
+															if steps && steps.size > 0
+																steps.each do |step|
+																	target = JobTarget.get_target(step.job_target_id)
+																	#unless target.closed
+																		step_name = step.label
+																		step_name= JobProcess.get_process(step.job_process_id).name unless step_name && step_name != ""
+																		h_step_name = h(step_name)
+																		
+																		company_name = get_target_company_name(target)
+																    	target_name = append_job_position_name(company_name, JobPosition.get_job_position(target.job_position_id), [" - ", ""])
+																		h_target_name = h(target_name)
+																		
+																		formatted_remind_at = format_date(step.remind_at)
+														%>
+																		<div class="event" onmousedown="show_detail('<%= date.strftime("%Y年%m月%d日") %>', '<%= h_step_name %>', '<%= h_target_name %>', '<%= formatted_remind_at %>', <%= date < @today %>, this, <%= date.wday %>);">
+																			<%
+																				if formatted_remind_at
+																			%>
+																					<img src="/images/job_targets/alarm_tiny_white.gif" border="0" alt="已设置提醒<%= formatted_remind_at %>" title="已设置提醒<%= formatted_remind_at %>" />
+																			<% end %>
+																		
+																			<span>
+																				<%= h_step_name %>
+																				<img src="/images/job_targets/calendar/right_arrow_tiny.png" border="0" />
+																				<%= h(company_name) %>
+																			</span>
+																		</div>
+														<%
+																	#end
+																end
+															end
+														%>
+													</td>
+												<% end %>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							<% end %>
+							
 						</div>
 					</div>
 				</div>
@@ -448,8 +266,18 @@
 			<div class="calendar_t2"> </div>
 			
 			
-			<script language="JavaScript" type="text/javascript">	
+			<script language="JavaScript" type="text/javascript">
+				function goto_selected_month() {
+					var year = document.getElementById("year_select").value;
+					var month = document.getElementById("month_select").value;
+					if(month < 10) { month = "0"+month; }
+					window.location.href = "/job_targets/calendar/<%= session[:account_id] %>/"+year+month;
+				}
+				
 				function adjust_calendar_height(n) {
+					hide_detail();
+					
+					
 					var cb = document.getElementById("calendar_body");
 					var h = cb.offsetHeight;
 
@@ -459,7 +287,112 @@
 
 					cb.style.height = (h + n) + "px";
 				}
+				
+				function get_element_position(ele) {
+					var top = ele.offsetTop;
+					var left = ele.offsetLeft;
+
+					while(ele=ele.offsetParent) {
+						top += ele.offsetTop;
+						left += ele.offsetLeft
+					}
+					
+					return [left, top];
+				}
+				
+				function show_detail(date, step_name, target_name, remind_at, out, event_div, wday) {
+					if(out) {
+						step_name = "<span style='color: #FF0000'>(已过去)</span> &nbsp;" + step_name;
+					}
+					
+					document.getElementById("detail_target_name").innerHTML = target_name;
+					document.getElementById("detail_step_name").innerHTML = step_name;
+					document.getElementById("detail_date").innerHTML = date;
+					if(remind_at != null && remind_at != "") {
+						document.getElementById("detail_remind_at").innerHTML = "已经设置在 " + remind_at + " 发送邮件提醒.";
+					}
+					
+					var bubble = document.getElementById("detail_bubble");
+					var prong = document.getElementById("detail_bubble_prong");
+					
+					var div_position = get_element_position(event_div);
+					var div_left = div_position[0];
+					var div_top = div_position[1];
+					var div_width = event_div.offsetWidth;
+					
+					var bubble_width = bubble.offsetWidth;
+					
+					if(wday <= 0) { wday = 7; }
+					
+					if(wday == 7) {
+						prong.style.display = "none";
+					} else {
+						prong.style.display = "";
+					}
+					
+					var bubble_top = div_top-bubble.offsetHeight-5;
+					if(wday != 7) {
+						bubble_top = bubble_top-prong.offsetHeight+40;
+					}
+					bubble.style.top = bubble_top + "px";
+					
+					
+					var bubble_left;
+					if(wday == 7) {
+						bubble_left = div_left - (bubble_width - div_width);
+					} else {
+						var factor = wday-3;
+						var bubble_hor_offset = factor*(-10);
+						bubble_left = bubble_hor_offset+div_left-((bubble_width-div_width)/2);
+						if(bubble_left < 0) { bubble_left = 30; }
+					}
+					bubble.style.left = bubble_left + "px";
+					
+					if(wday != 7) {
+						var prong_hor_offset = factor*(-5);
+						prong.style.left = (prong_hor_offset+div_left-bubble_left+(div_width/2)) + "px";
+					}
+					
+					bubble.style.visibility = "visible";
+				}
+				
+				function hide_detail() {
+					document.getElementById("detail_bubble").style.visibility = "hidden";
+				}
 			</script>
+			
+			
+			<div id="detail_bubble" class="bubble" style="width: 400px; visibility: hidden;">
+				<div class="corner bubble-tl">
+					<div class="bubble-sprite"></div>
+				</div>
+				<div class="corner bubble-tr">
+					<div class="bubble-sprite"></div>
+				</div>
+				<div onmousedown="hide_detail();" title="关闭" class="closebutton"></div>
+				<div class="bubble-top"></div>
+				<div class="bubble-mid">
+					<div class="bubble_body">
+						
+						<h2 id="detail_target_name" style="margin: 0px 0px 6px 0px; padding: 0px;"></h2>
+						<h2 id="detail_step_name" style="margin: 0px 0px 6px 0px; padding: 0px;"></h2>
+						<div id="detail_remind_at" style="padding-left: 20px;"></div>
+						<div id="detail_date" style="text-align: right; font-size: 14px;"></div>
+						
+					</div>
+				</div>
+				<div class="corner bubble-bl">
+					<div class="bubble-sprite"></div>
+				</div>
+				<div class="corner bubble-br">
+					<div class="bubble-sprite"></div>
+				</div>
+				<div class="bubble-bottom">
+					<div id="detail_bubble_prong" class="prong" style="left: 100px;">
+						<div class="bubble-sprite"></div>
+					</div>
+				</div>
+			</div>
 			
 		</div>
 		

@@ -61,7 +61,7 @@
 			<div class="out_container">
 				<div style="float: right; width: 210px;">
 					<div>
-						<a href="http://www.qiaobutang.com/talks" target="_blank" title="乔布堂 周三访谈录">
+						<a href="http://www.qiaobutang.com/talks" target="_blank" title="乔布堂 周三访谈录" id="top">
 							<img src="http://www.qiaobutang.com/images/talks/qiaobutang_talk_logo.png" border="0" /></a>
 					</div>
 
@@ -175,12 +175,12 @@
 
 						html += "<div>";
 						html += 	"<div class='talk_title'>";
-						html += 		"<a style='font-size: 14px; font-weight: bold;' href='#' onclick='show_talk_reader(" + talk.talk_id + "); return false;'>" + talk.title + "</a>";
+						html += 		"<a style='font-size: 14px; font-weight: bold;' href='#top' onclick='show_talk_reader(" + talk.talk_id + ");'>" + talk.title + "</a>";
 						html += 	"</div>";
 						html += 	"<div style='padding: 3px 15px; color: #666666;'>";
 						html += 		talk.desc;
 						html += 		"&nbsp;&nbsp;&nbsp;";
-						html += 		"<a style='font-weight: bold;' href='#' onclick='show_talk_reader(" + talk.talk_id + "); return false;'>::阅读全文::</a>";
+						html += 		"<a style='font-weight: bold;' href='#top' onclick='show_talk_reader(" + talk.talk_id + ");'>::阅读全文::</a>";
 						html += 	"</div>";
 						html += "</div>";
 					}
