@@ -10,7 +10,7 @@ class ActivityPostComment < ActiveRecord::Base
 
   validates_presence_of :account_id, :activity_post_id, :content
   
-  validates_length_of :content, :maximum => 1000, :message => "评论内容 超过长度限制", :allow_nil => false
+  validates_length_of :content, :maximum => 1000, :message => "回帖内容 超过长度限制", :allow_nil => false
   
   
   

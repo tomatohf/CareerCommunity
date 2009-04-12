@@ -111,6 +111,7 @@ class Account < ActiveRecord::Base
   named_scope :enabled, :conditions => { :enabled => true }
   named_scope :unlimited, :conditions => { :checked => true, :active => true }
   
+  
   CKP_nick_pic = :account_nick_pic
   
   after_create { |account|
@@ -119,6 +120,18 @@ class Account < ActiveRecord::Base
     album.name = "默认相册"
     album.description = "乔布圈为新用户自动创建的默认相册"
     album.save
+  }
+  
+  after_destroy { |account|
+    
+  }
+  
+  after_save { |account|
+    self.update_account_nick_pic_cache(
+      account.id,
+      :nick => account.get_nick,
+      :email => account.email
+    )
   }
   
   
@@ -200,7 +213,7 @@ class Account < ActiveRecord::Base
       
     end
     
-    if has_ownership?
+    if ApplicationController.helpers.general_admin?(self.id)
       count += 1000
     end
     
@@ -244,10 +257,6 @@ class Account < ActiveRecord::Base
   
   def self.clear_account_nick_pic_cache(account_id)
     Cache.delete("#{CKP_nick_pic}_#{account_id}".to_sym)
-  end
-  
-  def has_ownership?
-    ApplicationController.helpers.general_admin?(self.id)
   end
   
 end

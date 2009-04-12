@@ -46,9 +46,7 @@ class AccountsController < ApplicationController
     
     @account.nick = nick
     if @account.save
-      account_get_nick = @account.get_nick
-      update_session_nick(account_get_nick)
-      Account.update_account_nick_pic_cache(session[:account_id], :nick => account_get_nick)
+      update_session_nick(@account.get_nick)
       flash.now[:message] = "你的昵称已成功修改"
     else
       flash.now[:error_msg] = "修改昵称失败, 再试一次吧"
@@ -178,7 +176,6 @@ class AccountsController < ApplicationController
     if @account.save
       # re-login and clear related cache
       do_login(@account)
-      Account.clear_account_nick_pic_cache(@account.id)
       
       send_register_confirmation
     else

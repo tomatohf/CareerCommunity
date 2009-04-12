@@ -210,16 +210,16 @@
 			<b>
 				<%= @comments.total_entries %>
 			</b>
-			条<span id="comment_list">评论</span> ...
+			条<span id="comment_list">回帖</span> ...
 		</div>
 	
 		<% if @access.include?(:can_add_comment) %>
 			<div class="community_block_narrow align_r">
-				<a href="#comment_new">添加评论</a>
+				<a href="#comment_new">添加回帖</a>
 			</div>
 		<% else %>
 			<div class="community_block align_r">
-				<span class="form_info_l">无权添加评论 ...</span>
+				<span class="form_info_l">无权添加回帖 ...</span>
 			</div>
 		<% end %>
 	
@@ -233,12 +233,12 @@
 	
 		<% if @access.include?(:can_add_comment) %>
 			<div class="community_block_narrow">
-				<span id="comment_new">添加评论 »</span>
-				<% form_tag "/#{@post_type}/posts/#{@post_id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('post_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
+				<span id="comment_new">添加回帖 »</span>
+				<% form_tag "/#{@post_type}/posts/#{@post_id}/create_comment", :method => :post, :onsubmit => "if(document.getElementById('post_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写回帖内容 ...'); return false; }" do %>
 					<textarea id="post_comment" name="post_comment" class="text_field" cols="50" rows="5"></textarea>
 				
 					<div>
-						<input type="submit" value="发表评论" class="button" />
+						<input type="submit" value="发表回帖" class="button" />
 					</div>
 				<% end %>
 			</div>

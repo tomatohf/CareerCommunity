@@ -111,6 +111,9 @@ class SpacesController < ApplicationController
     end
     
     
+    @points = PointProfile.get_account_points(@account_id)
+    
+    
     @friends = Friend.get_all_by_account(
       @account_id,
       :limit => Space_Friend_Num,

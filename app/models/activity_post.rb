@@ -40,10 +40,23 @@ class ActivityPost < ActiveRecord::Base
   
   after_destroy { |post|
     self.clear_post_cache(post.id)
+    
+    PointProfile.adjust_account_points_by_action(post.account_id, :add_post, false)
+    # should also think about to decrease good post points, if it's good post
   }
   
   after_save { |post|
+    if post.good_changed?
+      PointProfile.adjust_account_points_by_action(post.account_id, :add_post_to_good, post.good)
+    end
+    
+    # clear changed attributes, before we cache it ...
+    post.clean_myself
     self.set_post_cache(post.id, post)
+  }
+  
+  after_create { |post|
+    PointProfile.adjust_account_points_by_action(post.account_id, :add_post, true)
   }
   
   

@@ -176,7 +176,10 @@
 				<img src="http://img.tongji.cn.yahoo.com/891616/ystat.gif"/></a>
 		</noscript>
 		
-		<%= query_review_output if ENV['RAILS_ENV'] == "development" %>
+		
+		<% if (ENV['RAILS_ENV'] == "development") %>
+			<%= query_review_output %>
+		<% end %>
     </body>
 </html>
 

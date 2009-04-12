@@ -833,7 +833,6 @@ class GroupsController < ApplicationController
     
     
     if @group.save
-      Group.update_group_with_image_cache(@group_id, :group => @group)
       @old_group_name = nil
       flash.now[:message] = "圈子设置已成功修改"
     else
@@ -861,8 +860,6 @@ class GroupsController < ApplicationController
     @group.update_setting(group_setting)
     
     if @group.save
-      Group.update_group_with_image_cache(@group_id, :group => @group)
-      
       # approve group join request
       # GroupMember.approve_all(@group_id)
       
@@ -1188,9 +1185,8 @@ class GroupsController < ApplicationController
     
     if GroupMember.is_group_admin(@group_id, new_master_id)
       @group.master_id = new_master_id
-      if @group.save
-        Group.update_group_with_image_cache(@group_id, :group => @group)
-      end
+      
+      @group.save
     end
     
     jump_to("/groups/#{@group_id}")

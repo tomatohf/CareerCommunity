@@ -17,6 +17,8 @@ class AccountAction < ActiveRecord::Base
     "add_friend" => "添加朋友",
     "join_group" => "加入圈子",
     "join_activity" => "参加活动",
+    "add_group_post" => "发表圈子话题",
+    "add_activity_post" => "发表活动话题",
     "create_vote_topic" => "发起投票",
     "join_vote_topic" => "参与投票",
     "add_bookmark" => "添加推荐/收藏"
@@ -254,6 +256,44 @@ class AccountAction < ActiveRecord::Base
             :bookmark_title => #{bookmark_title.inspect},
             :bookmark_url => #{bookmark_url.inspect},
             :bookmark_desc => #{bookmark_desc.inspect},
+          
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddGroupPost < Base
+      def action_text(data, operator, save_space)
+        post_id = data[:post_id]
+        post_title = data[:post_title]
+        group_id = data[:group_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_group_post", :locals => {
+            :operator => #{operator},
+            :post_id => #{post_id},
+            :post_title => #{post_title.inspect},
+            :group_id => #{group_id},
+          
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddActivityPost < Base
+      def action_text(data, operator, save_space)
+        post_id = data[:post_id]
+        post_title = data[:post_title]
+        activity_id = data[:activity_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_activity_post", :locals => {
+            :operator => #{operator},
+            :post_id => #{post_id},
+            :post_title => #{post_title.inspect},
+            :activity_id => #{activity_id},
           
             :save_space => #{save_space.inspect}
           })

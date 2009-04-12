@@ -54,6 +54,12 @@ class Blog < ActiveRecord::Base
     self.clear_index_blog_cache
     
     self.clear_blogs_account_feed_cache(blog.account_id)
+    
+    PointProfile.adjust_account_points_by_action(blog.account_id, :add_blog, false)
+  }
+  
+  after_create { |blog|
+    PointProfile.adjust_account_points_by_action(blog.account_id, :add_blog, true)
   }
   
   def self.clear_spaces_show_blog_cache(account_id)

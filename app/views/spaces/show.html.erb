@@ -20,50 +20,65 @@
 		<% end %>
 	</div>
 	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
 	<% if @basic_profile %>
-		<div class="community_block_narrow">
-			<%= thin_hr %>
-		</div>
-		
 		<div class="community_block">
 			<% if @basic_profile.real_name && @basic_profile.real_name != "" %>
-				真实姓名:
+				<span class="activity_info_label">真实姓名:</span>
 				<%= h(@basic_profile.real_name) %>
 				&nbsp;&nbsp;&nbsp;
 			<% end %>
 			
 			<% unless @basic_profile.gender.nil? %>
-				性别:
+				<span class="activity_info_label">性别:</span>
 				<%= @basic_profile.gender ? "男" : "女" %>
 				&nbsp;&nbsp;&nbsp;
 			<% end %>
 			
 			<% if @province_name || @city_name %>
-				所在城市:
+				<span class="activity_info_label">所在城市:</span>
 				<%= @province_name %> &nbsp; <%= @city_name %>
 			<% end %>
 		</div>
 		<div class="community_block">
 			<% if @basic_profile.birthday %>
-				生日:
+				<span class="activity_info_label">生日:</span>
 				<%= format_date(@basic_profile.birthday) %>
 				&nbsp;&nbsp;&nbsp;
 				
-				星座:
+				<span class="activity_info_label">星座:</span>
 				<%= Astrology.find_by_date(@basic_profile.birthday.month, @basic_profile.birthday.mday).name %>
 				&nbsp;&nbsp;&nbsp;
 			<% end %>
 			
 			<% if @hometown_province_name || @hometown_city_name %>
-				家乡:
+				<span class="activity_info_label">家乡:</span>
 				<%= @hometown_province_name %> &nbsp; <%= @hometown_city_name %>
 			<% end %>
 		</div>
-		
-		<div class="community_block_narrow">
-			<hr size="1" style="color: #EEEEEE" />
-		</div>
 	<% end %>
+	<div class="community_block align_c">
+		<a href="#" title="这是什么? 积分有什么用?" target="_blank">
+			<img src="/images/spaces/question_mark_tiny.gif" border="0" style="margin-bottom: -3px;" alt="这是什么? 积分有什么用?" /></a>
+		&nbsp;
+			
+		<span class="activity_info_label">积分:</span>
+		<span style="font-size: 13px;"><%= @points %></span>
+		<img src="/images/spaces/points_icon.gif" border="0" />
+		
+		<% if general_admin?(session[:account_id]) %>
+			&nbsp;&nbsp;&nbsp;
+			<a href="#" title="增加/扣除这个用户的积分">
+				(+/-)</a>
+		<% end %>
+	</div>
+	
+	<div class="community_block_narrow">
+		<hr size="1" style="color: #EEEEEE" />
+	</div>
+	
 	
 	<div class="community_block align_c">
 		<a href="/spaces/resume/<%= @account_id %>">查看简历</a>

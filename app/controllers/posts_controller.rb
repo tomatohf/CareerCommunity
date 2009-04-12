@@ -62,6 +62,13 @@ class PostsController < ApplicationController
         post_attachment.save
       end
       
+      # record account action
+      AccountAction.create_new(session[:account_id], "add_#{@post_type}_post", {
+        :post_id => @post.id,
+        :post_title => @post.title,
+        @type_handler.get_type_id.to_sym => @type_id
+      })
+      
       jump_to("/#{@post_type}/posts/#{@post.id}")
     else
       flash.now[:error_msg] = "操作失败, 再试一次吧"

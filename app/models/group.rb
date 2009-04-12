@@ -47,6 +47,10 @@ class Group < ActiveRecord::Base
   
   
   
+  after_save { |group|
+    self.update_group_with_image_cache(group.id, :group => group)
+  }
+  
   after_destroy { |group|
     self.decrease_created_count_cache(group.creator_id)
   }
