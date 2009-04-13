@@ -57,6 +57,7 @@ class AccountSetting < ActiveRecord::Base
   
   
   
+  require "account_action"
   @@default_values = {
     # profile visible settings
     # "any" or "login" or "friend" or "both_friend"
@@ -82,6 +83,18 @@ class AccountSetting < ActiveRecord::Base
     
     :dumy => ""
   }
+  # account action settings
+  # "true" or "false"
+  AccountAction::Action_Types.each do |key, value|
+    @@default_values["hide_action_#{key}".to_sym] = (
+      [
+        "add_group_post_comment",
+        "add_activity_post_comment",
+        "add_vote_comment",
+        "add_talk_comment"
+      ].include?(key)
+    ).to_s
+  end
   def self.default_value(name)
     @@default_values[name]
   end
@@ -103,6 +116,10 @@ class AccountSetting < ActiveRecord::Base
   
   def self.valid_activity_index_setting_values
     ["all", "week", "recent", "join", "join_notbegin", "create"]
+  end
+  
+  def self.valid_account_action_setting_values
+    ["true", "false"]
   end
     
   # end: valid setting values

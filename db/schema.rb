@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 28) do
+ActiveRecord::Schema.define(:version => 29) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -17,12 +17,14 @@ ActiveRecord::Schema.define(:version => 28) do
     t.string   "action_type", :limit => 30
     t.text     "raw_data"
     t.boolean  "delta"
+    t.boolean  "hide",                      :default => false
   end
 
   add_index "account_actions", ["account_id"], :name => "index_account_actions_on_account_id"
   add_index "account_actions", ["created_at"], :name => "index_account_actions_on_created_at"
   add_index "account_actions", ["action_type"], :name => "index_account_actions_on_action_type"
   add_index "account_actions", ["delta"], :name => "index_account_actions_on_delta"
+  add_index "account_actions", ["hide"], :name => "index_account_actions_on_hide"
 
   create_table "account_settings", :force => true do |t|
     t.integer  "account_id", :limit => 11

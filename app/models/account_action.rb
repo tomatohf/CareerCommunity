@@ -9,6 +9,11 @@ class AccountAction < ActiveRecord::Base
   validates_presence_of :account_id, :action_type
   
   
+  
+  named_scope :visible, :conditions => ["hide = ?", false]
+  
+  
+  
   # define account action types
   
   Action_Types = {
@@ -18,10 +23,14 @@ class AccountAction < ActiveRecord::Base
     "join_group" => "加入圈子",
     "join_activity" => "参加活动",
     "add_group_post" => "发表圈子话题",
+    "add_group_post_comment" => "回应圈子话题",
     "add_activity_post" => "发表活动话题",
+    "add_activity_post_comment" => "回应活动话题",
     "create_vote_topic" => "发起投票",
     "join_vote_topic" => "参与投票",
-    "add_bookmark" => "添加推荐/收藏"
+    "add_vote_comment" => "评论投票",
+    "add_bookmark" => "添加推荐/收藏",
+    "add_talk_comment" => "评论访谈录",
   }
   
   Action_Types.keys.each do |t|
@@ -37,10 +46,14 @@ class AccountAction < ActiveRecord::Base
   
   
   def self.create_new(a_id, type_id, data)
-    aa = AccountAction.new
+    account_setting = AccountSetting.get_account_setting(a_id)
+    hide = account_setting.get_setting_value("hide_action_#{type_id}".to_sym)
+    
+    aa = self.new
     aa.action_type = aa.send(type_id)
     aa.account_id = a_id
     aa.raw_data = aa.get_type_obj(type_id).build_raw_data(data)
+    aa.hide = (hide == "true")
     aa.save
   end
   
@@ -295,6 +308,82 @@ class AccountAction < ActiveRecord::Base
             :post_title => #{post_title.inspect},
             :activity_id => #{activity_id},
           
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddVoteComment < Base
+      def action_text(data, operator, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        vote_topic_id = data[:vote_topic_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_vote_comment", :locals => {
+            :operator => #{operator},
+            :vote_topic_id => #{vote_topic_id},
+            :comment_id => #{comment_id},
+            :comment_content => #{comment_content.inspect},
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddGroupPostComment < Base
+      def action_text(data, operator, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        group_post_id = data[:group_post_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_group_post_comment", :locals => {
+            :operator => #{operator},
+            :group_post_id => #{group_post_id},
+            :comment_id => #{comment_id},
+            :comment_content => #{comment_content.inspect},
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddActivityPostComment < Base
+      def action_text(data, operator, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        activity_post_id = data[:activity_post_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_activity_post_comment", :locals => {
+            :operator => #{operator},
+            :activity_post_id => #{activity_post_id},
+            :comment_id => #{comment_id},
+            :comment_content => #{comment_content.inspect},
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+
+    class AddTalkComment < Base
+      def action_text(data, operator, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        talk_id = data[:talk_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_talk_comment", :locals => {
+            :operator => #{operator},
+            :talk_id => #{talk_id},
+            :comment_id => #{comment_id},
+            :comment_content => #{comment_content.inspect},
+            
             :save_space => #{save_space.inspect}
           })
         !

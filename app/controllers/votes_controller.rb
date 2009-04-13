@@ -239,6 +239,16 @@ class VotesController < ApplicationController
       comment_saved = vote_comment.save
     end
     
+    
+    if comment_saved
+      AccountAction.create_new(session[:account_id], "add_vote_comment", {
+        :vote_topic_id => vote_comment.vote_topic_id,
+        :comment_id => vote_comment.id,
+        :comment_content => vote_comment.content
+      })
+    end
+    
+    
     total_count = VoteComment.get_count(vote_comment.vote_topic_id)
     last_page = total_count > 0 ? (total_count.to_f/Comment_Page_Size).ceil : 1
     

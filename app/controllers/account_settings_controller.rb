@@ -104,6 +104,40 @@ class AccountSettingsController < ApplicationController
   end
   
   
+  def account_action
+    settings = @account_setting.get_setting
+    
+    @setting_values = {}
+    AccountAction::Action_Types.each do |key, value|
+      @setting_values[key] = @account_setting.get_setting_value("hide_action_#{key}".to_sym, settings)
+    end
+  end
+  
+  def set_account_action
+    account_action_setting = {}
+    @setting_values = {}
+    
+    AccountAction::Action_Types.each do |key, value|
+      symbol_key = key.to_sym
+      setting_value = params[symbol_key] && params[symbol_key].strip
+      
+      setting_key = "hide_action_#{key}".to_sym
+      account_action_setting[setting_key] = AccountSetting.valid_account_action_setting_values.include?(setting_value) ? setting_value : AccountSetting.default_value(setting_key)
+      @setting_values[key] = account_action_setting[setting_key]
+    end
+    
+    @account_setting.update_setting(account_action_setting)
+    
+    if @account_setting.save
+      flash.now[:message] = "设置已成功修改"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+    
+    render(:action => "account_action")
+  end
+  
+  
   private
   
   def check_login_for_account_settings

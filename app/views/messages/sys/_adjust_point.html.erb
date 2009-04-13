@@ -1,0 +1,22 @@
+<table cellpadding="0" cellspacing="5" class="main_part_w">
+	<tr>
+		<td>
+			你被
+			<b><%= points < 0 ? "扣除" : "奖励" %></b>
+			了
+			<span style="font-size: 13px;"><%= points.abs %></span>
+			积分.
+			&nbsp;
+			原因是:
+			&nbsp;
+			<img src="/images/left_quote.gif" border="0" />
+			<%= h(reason) %>
+			<img src="/images/right_quote.gif" border="0" />
+		</td>
+		
+		<td style="width: 50px">
+			
+		</td>
+	</tr>
+</table>
+

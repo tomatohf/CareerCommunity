@@ -1,0 +1,65 @@
+<% community_page_title("我的动态 - 用户设置") %>
+
+<% options = [["true", "不记录"], ["false", "记录并显示"]] %>
+
+<div class="float_r profile_container_r">
+	<%= render :partial => "account_setting_nav", :locals => {:account_checked => @account_checked} %>
+</div>
+
+<div class="profile_container_l">
+	<h2>用户设置 - 我的动态</h2>
+	
+	<div class="community_block_narrow form_info_s">
+		设定我想记录我的哪些动态
+	</div>
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @account_setting.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@account_setting) %>
+			</p>
+		<% end %>
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		
+	</div>
+	
+	<div class="community_block">
+		<table cellpadding="0" cellspacing="10" class="main_part_w">
+			<% form_tag "/account_settings/set_account_action/#{session[:account_id]}", :method => :post do %>
+				<% AccountAction::Action_Types.each do |key, value| %>
+					<tr>
+						<td style="width: 150px;">
+							<label for="<%= key %>">
+				                <b>
+									<%= value %>:
+				                </b>
+				            </label>
+						</td>
+						<td>
+							<select name="<%= key %>" id="<%= key %>" class="dropdown_list">
+								<% options.each do |option| %>
+									<option value="<%= option[0] %>"<%= " selected=\"selected\"" if @setting_values[key] == option[0] %>><%= option[1] %></option>
+								<% end %>
+							</select>
+						</td>
+					</tr>
+				<% end %>
+				
+				
+				<tr>
+					<td></td>
+					<td>
+						<%= submit_tag "更新设置", :class => "button", :disabled => @account_limited %>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+</div>
+

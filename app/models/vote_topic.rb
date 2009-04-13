@@ -75,6 +75,12 @@ class VoteTopic < ActiveRecord::Base
     
     self.clear_index_vote_topic_cache
     self.clear_community_index_vote_topic_cache
+    
+    PointProfile.adjust_account_points_by_action(vote_topic.account_id, :add_vote_topic, false)
+  }
+  
+  after_create { |vote_topic|
+    PointProfile.adjust_account_points_by_action(vote_topic.account_id, :add_vote_topic, true)
   }
   
   def self.clear_spaces_show_vote_topic_cache(account_id)

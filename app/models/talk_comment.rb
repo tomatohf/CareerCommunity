@@ -30,6 +30,12 @@ class TalkComment < ActiveRecord::Base
   
   after_destroy { |comment|
     self.clear_talk_index_comments_cache
+    
+    PointProfile.adjust_account_points_by_action(comment.account_id, :add_talk_comment, false)
+  }
+  
+  after_create { |comment|
+    PointProfile.adjust_account_points_by_action(comment.account_id, :add_talk_comment, true)
   }
   
   def self.clear_talk_index_comments_cache

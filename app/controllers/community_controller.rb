@@ -36,7 +36,7 @@ class CommunityController < ApplicationController
       :order => "created_at DESC"
     ) if @has_login
     
-    @new_actions = AccountAction.find(
+    @new_actions = AccountAction.visible.find(
       :all,
       :limit => New_Action_Size,
       :include => [:account => [:profile_pic]],

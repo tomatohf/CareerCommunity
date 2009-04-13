@@ -15,9 +15,11 @@ class SpacesController < ApplicationController
   
   layout "community"
   before_filter :check_current_account, :only => [:index]
-  before_filter :check_login, :only => [:create_comment, :delete_comment]
-  before_filter :check_limited, :only => [:create_comment, :delete_comment]
+  before_filter :check_login, :only => [:create_comment, :delete_comment, :update_point]
+  before_filter :check_limited, :only => [:create_comment, :delete_comment, :update_point]
   before_filter :check_comment_owner, :only => [:delete_comment]
+  
+  before_filter :check_general_admin, :only => [:update_point]
   
   
   # ! current account needed !
@@ -140,7 +142,7 @@ class SpacesController < ApplicationController
     
     @account_actions = if @edit
       # find friends'
-      AccountAction.find(
+      AccountAction.visible.find(
         :all,
         :limit => Space_Action_Num,
         :conditions => ["account_id in (select friend_id from friends where account_id = ?)", @account_id],
@@ -148,7 +150,7 @@ class SpacesController < ApplicationController
         :order => "created_at DESC"
       )
     else
-      AccountAction.find(
+      AccountAction.visible.find(
         :all,
         :limit => Space_Action_Num,
         :conditions => ["account_id = ?", @account_id],
@@ -265,7 +267,7 @@ class SpacesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @account_actions = AccountAction.paginate(
+    @account_actions = AccountAction.visible.paginate(
       :page => page,
       :per_page => Action_Page_Size,
       :conditions => condition,
@@ -283,7 +285,7 @@ class SpacesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @account_actions = AccountAction.paginate(
+    @account_actions = AccountAction.visible.paginate(
       :page => page,
       :per_page => Action_Page_Size,
       :conditions => condition,
@@ -325,11 +327,36 @@ class SpacesController < ApplicationController
     jump_to("/spaces/wall/#{session[:account_id]}")
   end
   
+  def update_point
+    account_id = params[:id]
+    
+    if request.post?
+      points = params[:points] && params[:points].strip
+      reason = params[:reason] && params[:reason].strip
+      
+      if PointProfile.adjust_account_points(account_id, points.to_i)
+        # remind user by sending sys message
+        SysMessage.create_new(account_id, "adjust_point", {
+          :points => points,
+          :reason => reason
+        })
+      end
+    end
+    
+    jump_to("/spaces/show/#{account_id}")
+  end
+  
+  
   private
   
   def check_comment_owner
     @space_comment = SpaceComment.find(params[:id])
     jump_to("/errors/forbidden") unless session[:account_id] == @space_comment.owner_id
+  end
+  
+  
+  def check_general_admin
+    return jump_to("/errors/forbidden") unless ApplicationController.helpers.general_admin?(session[:account_id])
   end
   
 end

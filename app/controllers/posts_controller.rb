@@ -169,6 +169,16 @@ class PostsController < ApplicationController
       end
     end
     
+    
+    if comment_saved
+      AccountAction.create_new(session[:account_id], "add_#{@post_type}_post_comment", {
+        @type_handler.get_type_post_id.to_sym => comment.send(@type_handler.get_type_post_id),
+        :comment_id => comment.id,
+        :comment_content => comment.content
+      })
+    end
+    
+    
     total_count = @type_handler.get_post_comment_class.get_count(comment.send("#{@type_handler.get_type_post_id}"))
     last_page = total_count > 0 ? (total_count.to_f/Comment_Page_Size).ceil : 1
     

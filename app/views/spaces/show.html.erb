@@ -60,7 +60,7 @@
 		</div>
 	<% end %>
 	<div class="community_block align_c">
-		<a href="#" title="这是什么? 积分有什么用?" target="_blank">
+		<a href="/group/posts/276" title="这是什么? 积分有什么用?" target="_blank">
 			<img src="/images/spaces/question_mark_tiny.gif" border="0" style="margin-bottom: -3px;" alt="这是什么? 积分有什么用?" /></a>
 		&nbsp;
 			
@@ -70,8 +70,64 @@
 		
 		<% if general_admin?(session[:account_id]) %>
 			&nbsp;&nbsp;&nbsp;
-			<a href="#" title="增加/扣除这个用户的积分">
+			<a href="#" onclick="var f = document.getElementById('adjust_point_form'); if(f.style.display == 'none') { f.style.display = ''; } else { f.style.display = 'none'; }; return false;" title="增加/扣除这个用户的积分">
 				(+/-)</a>
+				
+			<div id="adjust_point_form" class="community_block" style="border: dashed 1px #DDDDDD; display: none;">
+				<% form_tag "/spaces/update_point/#{@account_id}", :method => :post do %>
+					<table cellpadding="0" cellspacing="5" border="0" class="main_part_w" style="text-align: left;">
+						<tr>
+							<td>
+								<label for="points_input">
+									增加的积分:
+								</label>
+							</td>
+							
+							<td>
+								<input type="text" name="points" id="adjust_points" class="text_field" size="10" />
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<span class="form_info_l">
+									填写负数扣除积分
+								</span>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
+								<label for="adjust_reason">
+									调整的理由:
+								</label>
+								
+								<br />
+								
+								<span class="form_info_s">
+									将作为系统消息发送给用户
+								</span>
+							</td>
+							
+							<td>
+								<textarea name="reason" id="adjust_reason" class="text_field" rows="5" cols="20"></textarea>
+							</td>
+						</tr>
+						
+						<tr>
+							<td></td>
+							<td>
+								<input type="submit" value="调整用户积分" class="button" />
+								
+								&nbsp;&nbsp;&nbsp;
+								
+								<a href="#" onclick="document.getElementById('adjust_point_form').style.display = 'none'; return false;">
+									不了先</a>
+							</td>
+						</tr>
+					</table>
+				<% end %>
+			</div>
 		<% end %>
 	</div>
 	

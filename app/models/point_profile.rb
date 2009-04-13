@@ -13,7 +13,12 @@ class PointProfile < ActiveRecord::Base
   Action_Points = {
     :add_post => 20,
     :add_post_to_good => 50,
-    :add_blog => 20
+    :add_blog => 20,
+    :add_vote_topic => 20,
+    :add_vote_comment => 10,
+    :add_post_comment => 10,
+    :add_talk_comment => 20,
+    :create_pic_profile => 100
   }
   
   

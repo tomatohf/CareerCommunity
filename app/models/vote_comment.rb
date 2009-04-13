@@ -19,4 +19,14 @@ class VoteComment < ActiveRecord::Base
   Count_Cache_Group_Field = :vote_topic_id
   include CareerCommunity::CountCacheable
   
+  
+  
+  after_destroy { |vote_comment|
+    PointProfile.adjust_account_points_by_action(vote_comment.account_id, :add_vote_comment, false)
+  }
+  
+  after_create { |vote_comment|
+    PointProfile.adjust_account_points_by_action(vote_comment.account_id, :add_vote_comment, true)
+  }
+  
 end

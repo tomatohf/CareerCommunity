@@ -18,4 +18,14 @@ class ActivityPostComment < ActiveRecord::Base
   Count_Cache_Group_Field = :activity_post_id
   include CareerCommunity::CountCacheable
   
+  
+  
+  after_destroy { |post_comment|
+    PointProfile.adjust_account_points_by_action(post_comment.account_id, :add_post_comment, false)
+  }
+  
+  after_create { |post_comment|
+    PointProfile.adjust_account_points_by_action(post_comment.account_id, :add_post_comment, true)
+  }
+  
 end

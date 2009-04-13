@@ -124,6 +124,16 @@ class TalksController < ApplicationController
       comment_saved = comment.save
     end
     
+    
+    if comment_saved
+      AccountAction.create_new(session[:account_id], "add_talk_comment", {
+        :talk_id => comment.talk_id,
+        :comment_id => comment.id,
+        :comment_content => comment.content
+      })
+    end
+    
+    
     total_count = TalkComment.get_count(comment.talk_id)
     last_page = total_count > 0 ? (total_count.to_f/Comment_Page_Size).ceil : 1
     

@@ -69,7 +69,8 @@ class SysMessage < ActiveRecord::Base
     "invite_join_group" => "邀请加入圈子",
     "invite_join_activity" => "邀请参加活动",
     "deleted_from_activity" => "从活动中删除",
-    "invite_join_vote" => "邀请参与投票"
+    "invite_join_vote" => "邀请参与投票",
+    "adjust_point" => "调整积分"
   }
   
   Msg_Types.keys.each do |t|
@@ -358,6 +359,20 @@ class SysMessage < ActiveRecord::Base
             :vote_topic_image => #{vote_topic_image.inspect},
             
             :invitation_words => #{invitation_words.inspect}
+          })
+        !
+      end
+    end
+    
+    class AdjustPoint < Base
+      def msg_text(data, owner_id)
+        points = data[:points]
+        reason = data[:reason]
+        
+        %Q!
+          render(:partial => "/messages/sys/adjust_point", :locals => {
+            :points => #{points},
+            :reason => #{reason.inspect}
           })
         !
       end

@@ -1,0 +1,27 @@
+<table cellpadding="0" cellspacing="0" class="main_part_w">
+	<tr>
+		<td>
+			<a href="/spaces/show/<%= operator[2] %>" class="account_nick_link">
+				<%= h(operator[0]) %></a>
+			评论
+			<a href="/votes/<%= vote_topic_id %>">
+				投票话题</a>
+			说:
+			&nbsp;
+			<% h_comment_content = h(comment_content) %>
+			<span title="<%= h_comment_content %>">
+				<img src="/images/left_quote.gif" border="0" />
+					<%= truncate(h_comment_content) %>
+				<img src="/images/right_quote.gif" border="0" />
+			</span>
+		</td>
+		
+		<% unless save_space %>
+			<td style="width: 50px">
+				<a href="/spaces/show/<%= operator[2] %>">
+					<img src="<%= face_img_src(operator[1]) %>" border="0" /></a>
+			</td>
+		<% end %>
+	</tr>
+</table>
+
