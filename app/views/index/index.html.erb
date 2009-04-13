@@ -252,6 +252,40 @@
 					
 				</div>
 				
+				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+					<div style="font-weight: bold;">
+						面经
+					</div>
+					<% cache(Exp::FCKP_index_list) do %>
+						<%
+							exps = Exp.find(
+								:all,
+								:limit => 10,
+								:select => "id, title, publish_time",
+								:order => "publish_time DESC"
+						    )
+						%>
+						
+						<% exps.each do |exp| %>
+							<div style="background: transparent url(/images/index/exp_icon.gif) no-repeat scroll left center;padding-left: 18px;">
+								<% exp_title = h(exp.title) %>
+								<a href="/exps/<%= exp.id %>" target="_blank" title="<%= exp_title %>">
+									<%= truncate(exp_title, 23) %></a>
+
+								<span style="color: #999999; font-size: 10px;">
+									(<%= exp.publish_time.strftime("%y-%m-%d") %>)
+								</span>
+							</div>
+						<% end %>
+					<% end %>
+					
+					<div style="text-align: right;">
+						<a href="/exps" target="_blank" style="color: #333333; font-size: 12px;">
+							更多面经
+							<img src="/images/real_index/more_icon.png" border="0" /></a>
+					</div>
+				</div>
+				
 			</div>
 		</td>
 		
@@ -273,7 +307,7 @@
 						<%
 							fulltime_recruitments = Recruitment.find(
 								:all,
-								:limit => 17,
+								:limit => 25,
 								:conditions => ["recruitment_type = ?", Recruitment::Type_fulltime],
 								:select => "id, title, publish_time, location, recruitment_type",
 								:order => "publish_time DESC"
@@ -351,7 +385,7 @@
 						<%
 							parttime_recruitments = Recruitment.find(
 								:all,
-								:limit => 15,
+								:limit => 20,
 								:conditions => ["recruitment_type = ?", Recruitment::Type_parttime],
 								:select => "id, title, publish_time, location, recruitment_type",
 								:order => "publish_time DESC"

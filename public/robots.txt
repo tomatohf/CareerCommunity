@@ -1,1 +1,13 @@
 # See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file
+
+
+
+Sitemap: http://www.qiaobutang.com/exps/feed.atom
+Sitemap: http://www.qiaobutang.com/recruitments/feed.atom
+Sitemap: http://www.qiaobutang.com/talks/feed.atom
+
+
+Sitemap: http://qiaobutang.com/exps/feed.atom
+Sitemap: http://qiaobutang.com/recruitments/feed.atom
+Sitemap: http://qiaobutang.com/talks/feed.atom
+

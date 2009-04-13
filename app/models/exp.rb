@@ -64,7 +64,7 @@ class Exp < ActiveRecord::Base
   end
   
   def self.clear_index_list_cache
-    # Cache.delete(expand_cache_key(FCKP_index_list))
+    Cache.delete(expand_cache_key(FCKP_index_list))
     
     Cache.delete(expand_cache_key(FCKP_community_index_list))
   end

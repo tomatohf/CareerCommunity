@@ -49,6 +49,7 @@ class BookmarksController < ApplicationController
   def inline_add_form
     unless has_login?
       return render :inline => %Q!
+        <title>推荐/收藏 - <%= h(params[:title]) %> - 乔布圈</title>
         <div style="padding: 30px">
           添加收藏前,
           请先

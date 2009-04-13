@@ -77,7 +77,7 @@ class ViewCounter < ActiveRecord::Base
     )
     
     unless counter
-      counter = ViewCounter.new(
+      counter = self.new(
         :counter_key => self.get_db_key(kind, id),
         :view_count => 0
       )

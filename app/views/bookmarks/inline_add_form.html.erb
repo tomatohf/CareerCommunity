@@ -1,3 +1,8 @@
+<% bookmark_title = h(@bookmark.title) %>
+
+<title>推荐/收藏 - <%= bookmark_title %> - 乔布圈</title>
+
+
 <link href="/stylesheets/site.css" rel="stylesheet" type="text/css" />
 
 <style>
@@ -39,7 +44,7 @@
 						    </label>
 						</td>
 						<td>
-							<input type="text" id="bookmark_title" name="bookmark_title" class="text_field" size="50" value="<%= h(@bookmark.title) %>" />
+							<input type="text" id="bookmark_title" name="bookmark_title" class="text_field" size="50" value="<%= bookmark_title %>" />
 						</td>
 					</tr>
 					
