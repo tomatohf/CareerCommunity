@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 29) do
+ActiveRecord::Schema.define(:version => 30) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -792,6 +792,87 @@ ActiveRecord::Schema.define(:version => 29) do
   add_index "job_profiles", ["enter_year"], :name => "index_job_profiles_on_enter_year"
   add_index "job_profiles", ["enter_month"], :name => "index_job_profiles_on_enter_month"
   add_index "job_profiles", ["delta"], :name => "index_job_profiles_on_delta"
+
+  create_table "job_service_categories", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.string   "desc",       :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "job_service_categories", ["created_at"], :name => "index_job_service_categories_on_created_at"
+  add_index "job_service_categories", ["updated_at"], :name => "index_job_service_categories_on_updated_at"
+
+  create_table "job_service_comments", :force => true do |t|
+    t.integer  "job_service_id", :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",     :limit => 11
+    t.string   "content",        :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "job_service_comments", ["job_service_id"], :name => "index_job_service_comments_on_job_service_id"
+  add_index "job_service_comments", ["account_id"], :name => "index_job_service_comments_on_account_id"
+  add_index "job_service_comments", ["created_at"], :name => "index_job_service_comments_on_created_at"
+  add_index "job_service_comments", ["delta"], :name => "index_job_service_comments_on_delta"
+
+  create_table "job_service_evaluations", :force => true do |t|
+    t.integer  "job_service_id", :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",     :limit => 11
+    t.integer  "point",          :limit => 1
+    t.boolean  "delta"
+  end
+
+  add_index "job_service_evaluations", ["created_at"], :name => "index_job_service_evaluations_on_created_at"
+  add_index "job_service_evaluations", ["updated_at"], :name => "index_job_service_evaluations_on_updated_at"
+  add_index "job_service_evaluations", ["job_service_id"], :name => "index_job_service_evaluations_on_job_service_id"
+  add_index "job_service_evaluations", ["account_id"], :name => "index_job_service_evaluations_on_account_id"
+  add_index "job_service_evaluations", ["point"], :name => "index_job_service_evaluations_on_point"
+  add_index "job_service_evaluations", ["delta"], :name => "index_job_service_evaluations_on_delta"
+
+  create_table "job_service_functions", :force => true do |t|
+    t.string  "name"
+    t.boolean "delta"
+  end
+
+  add_index "job_service_functions", ["name"], :name => "index_job_service_functions_on_name"
+  add_index "job_service_functions", ["delta"], :name => "index_job_service_functions_on_delta"
+
+  create_table "job_services", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "updater_id",  :limit => 11
+    t.integer  "creator_id",  :limit => 11
+    t.integer  "category_id", :limit => 11
+    t.string   "name"
+    t.string   "url"
+    t.string   "place"
+    t.string   "desc",        :limit => 1000
+    t.string   "phone"
+    t.string   "scope"
+    t.integer  "cost",        :limit => 10,   :precision => 10, :scale => 0
+    t.boolean  "delta"
+  end
+
+  add_index "job_services", ["created_at"], :name => "index_job_services_on_created_at"
+  add_index "job_services", ["updated_at"], :name => "index_job_services_on_updated_at"
+  add_index "job_services", ["creator_id"], :name => "index_job_services_on_creator_id"
+  add_index "job_services", ["updater_id"], :name => "index_job_services_on_updater_id"
+  add_index "job_services", ["category_id"], :name => "index_job_services_on_category_id"
+  add_index "job_services", ["cost"], :name => "index_job_services_on_cost"
+  add_index "job_services", ["delta"], :name => "index_job_services_on_delta"
+
+  create_table "job_services_functions", :id => false, :force => true do |t|
+    t.integer "job_service_id", :limit => 11
+    t.integer "function_id",    :limit => 11
+  end
+
+  add_index "job_services_functions", ["job_service_id"], :name => "index_job_services_functions_on_job_service_id"
+  add_index "job_services_functions", ["function_id"], :name => "index_job_services_functions_on_function_id"
 
   create_table "job_statuses", :force => true do |t|
     t.datetime "created_at"

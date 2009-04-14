@@ -581,6 +581,21 @@ ActionController::Routing::Routes.draw do |map|
   }, :member => {
     
   }
+  
+  
+  map.resources :job_services, :collection => {
+    
+    :categories => :get,
+    :category_new => :get,
+    :category_create => :post
+    
+  }, :member => {
+    
+    :category_edit => :get,
+    :category_update => :post,
+    :category_destroy => :post
+    
+  }
 
   
   
