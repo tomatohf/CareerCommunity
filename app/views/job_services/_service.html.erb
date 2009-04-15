@@ -1,0 +1,27 @@
+<% point = (service.average || 0).to_f %>
+
+<% evaluation_count = JobServiceEvaluation.get_count(service.id) %>
+
+<tr onmouseover="this.style.backgroundColor='#E0EDFE';" onmouseout="this.style.backgroundColor='#FFFFFF';">
+	<td align="left" style="width: 20px; font-size: 14px; border-bottom: 1px solid #E8EEF7;">
+		<%= service_counter %>
+	</td>
+	
+	<td align="left" style="border-bottom: 1px solid #E8EEF7;">
+		<a href="/job_services/<%= service.id %><%= %Q!/url_preview! if service.url && (service.url != "") %>" class="account_nick_link" style="font-size: 16px;">
+			<%= h(service.name) %></a>
+	</td>
+	
+	<td align="left" style="width: 60px; border-bottom: 1px solid #E8EEF7;">
+		<a href="/job_services/<%= service.id %>" class="account_nick_link">
+			点评(<%= evaluation_count %>)</a>
+	</td>
+	
+	<td class="form_info_s" style="width: 100px; border-bottom: 1px solid #E8EEF7;">
+		(<%= sprintf("%.2f", point) %>)
+		-
+		<%= rank(point, :small => true, :readonly => true) %>
+	</td>
+</tr>
+
+

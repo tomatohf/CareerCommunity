@@ -36,7 +36,7 @@
 			<a href="/job_services">
 				求职导航</a>
 			»
-			<a href="#">
+			<a href="/job_services/category/<%= @service.category_id %>">
 				<%= h(JobServiceCategory.get_category(@service.category_id).name) %></a>
 		</div>
 	</div>
@@ -148,7 +148,7 @@
 		<b>
 			<%= @service_evaluations.total_entries %>
 		</b>
-		条<span id="evaluation_list">评价</span> ...
+		条<span id="evaluation_list">点评</span> ...
 	</div>
 	
 	<% if info_editor?(session[:account_id]) %>

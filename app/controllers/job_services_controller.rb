@@ -38,7 +38,16 @@ class JobServicesController < ApplicationController
   end
   
   def category
+    @category = JobServiceCategory.get_category(params[:id])
     
+    query = "SELECT job_services.id, name, url, AVG(job_service_evaluations.point) as average"
+    query << " FROM job_services LEFT OUTER JOIN job_service_evaluations"
+    query << " ON job_services.id = job_service_evaluations.job_service_id"
+    query << " WHERE job_services.category_id = #{@category.id}"
+    query << " GROUP BY job_service_evaluations.job_service_id"
+    query << " ORDER BY average DESC"
+    
+    @category_services = JobService.find_by_sql(query)
   end
 
   def show
