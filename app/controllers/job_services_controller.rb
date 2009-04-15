@@ -63,7 +63,13 @@ class JobServicesController < ApplicationController
   end
   
   def url_preview
-    render :layout => "uncategoried"
+    render :layout => "empty"
+  end
+  
+  def url_preview_top
+    @service = JobService.find(params[:id])
+    
+    render :layout => "empty"
   end
   
   def new

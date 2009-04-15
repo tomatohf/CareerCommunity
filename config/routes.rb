@@ -599,7 +599,8 @@ ActionController::Routing::Routes.draw do |map|
     :create_evaluation => :post,
     :delete_evaluation => :post,
     
-    :url_preview => :get
+    :url_preview => :get,
+    :url_preview_top => :get
     
   }
 

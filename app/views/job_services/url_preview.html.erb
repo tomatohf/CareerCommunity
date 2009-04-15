@@ -1,13 +1,15 @@
-<div id="page_container" style="margin: 0px auto; width: 980px;">
-	fasfasdfsd
-</div>
+<% service_name = h(@service.name) %>
 
-<div style="border-bottom: 2px solid #404040;">
+<% page_title = "点评#{service_name} - 乔布圈 - 乔布堂" %>
+<% community_page_title(page_title) %>
+
+<frameset border="0" frameborder="no" framespacing="0" cols="0,*" rows="*">
+	<frame name="empty_frame" src=""></frame>
 	
-</div>
-
-<div>
-	<iframe scrolling="auto" frameborder="0" style="width: 100%; height: 100%;" />
-</div>
+	<frameset framespacing="0" border="0" frameborder="no" rows="45,*">
+		<frame scrolling="no" src="/job_services/<%= @service.id %>/url_preview_top"></frame>
+		<frame src="<%= @service.url %>"></frame>
+	</frameset>
+</frameset>
 
 
