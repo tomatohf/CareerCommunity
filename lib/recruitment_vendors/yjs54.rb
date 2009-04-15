@@ -99,7 +99,7 @@ module RecruitmentVendor
       title_element = context_div.at("/h1")
       r.title = title_element.inner_html
       
-      return nil if Recruitment.find(:first, :conditions => ["recruitment_type = '宣讲会' and title = ?", r.title])
+      return nil if Recruitment.find(:first, :conditions => ["recruitment_type = ? and title = ?", Recruitment::Type_lecture, r.title])
       
       
       title_element.search("").remove
@@ -136,7 +136,12 @@ module RecruitmentVendor
       
       content_div = content_divs[0]
       
-      title_element = content_div.at("/h1")
+      header_elements = content_div.search("/div[@align=center]")
+      return nil unless header_elements.size > 0
+      
+      header_element = header_elements[0]
+      
+      title_element = header_element.at("/h1")
       r.title = title_element.inner_html
       
       texter_divs = content_div.search("/div[@class=texter]")
@@ -149,9 +154,8 @@ module RecruitmentVendor
       
       
       tag_text = []
-      info_exp = /^.*?<a.*?>.*?<\/a>\s*$/im
       
-      spans = content_div.search("/span")
+      spans = header_element.search("/span")
       return nil if spans.size < 3
       
       r.location = spans[0].inner_html

@@ -20,7 +20,7 @@ class PointProfile < ActiveRecord::Base
     :add_talk_comment => 20,
     :create_pic_profile => 100,
     :add_job_service => 30,
-    :add_job_service_comment => 20
+    :add_job_service_evaluation => 20
   }
   
   

@@ -331,5 +331,33 @@ module ApplicationHelper
   def just_output(*args, &block)
     concat(capture(&block), block.binding)
   end
+    
+  def rank(value, options = {})
+    small = options[:small] && true
+    readonly = options[:readonly] && true
+    titles = options[:titles] || [1, 2, 3, 4, 5]
+    current_rating_id = options[:current_rating_id] || "current_rating"
+    handler = options[:handler] || "select_rank"
+    
+    lis = ""
+    5.times do |i|
+      num = i+1
+      lis += %Q!
+        <li>
+          <a href="#" onclick="#{handler}(#{num}); return false;" title="#{titles[i]}" class="star_#{num}#{" readonly" if readonly}">
+            #{num}</a>
+        </li>
+      !
+    end
+  
+    %Q!
+      <span class="inline-rating">
+  		  <ul class="star-rating#{" small-star" if small}">
+  			  <li#{" id=\"#{current_rating_id}\"" unless readonly} class="current-rating" style="width:#{value*100/5}%;">当前: #{value}</li>
+  			  #{lis}
+  		  </ul>
+  		</span>
+    !
+  end
   
 end

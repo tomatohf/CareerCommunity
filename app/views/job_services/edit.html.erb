@@ -1,0 +1,159 @@
+<% service_name = h(@service.name) %>
+
+<% page_title = "编辑求职服务 #{service_name}" %>
+<% community_page_title(page_title) %>
+
+<div class="job_item_container">
+	<div class="community_block float_r">
+		<a href="/job_services/<%= @service.id %>">返回这个求职服务</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="/job_services">返回求职导航</a>
+	</div>
+	
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block">
+
+		<% if flash[:message] %>
+			<p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @service.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@service) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/job_services/#{@service.id}", :method => :put do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td style="width: 100px">
+							<label for="service_name">
+						        名称(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="service_name" name="service_name" class="text_field" size="50" value="<%= h(@service.name) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="service_category">
+						        所在分类(<span style="color: red;">*</span>)
+								:
+						    </label>
+						</td>
+						<td>
+							<select id="service_category" name="service_category" class="dropdown_list">
+								<% JobServiceCategory.get_all_categories.each do |category| %>
+									<option value="<%= category.id %>" title="<%= h(category.desc) %>"<%= %Q! selected="selected"! if @service.category_id == category.id %>><%= h(category.name) %></option>
+								<% end %>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="service_url">
+						        链接
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="service_url" name="service_url" class="text_field" size="50" value="<%= h(@service.url) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="service_place">
+						        地点
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="service_place" name="service_place" class="text_field" size="50" value="<%= h(@service.place) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="service_phone">
+						        电话
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="service_phone" name="service_phone" class="text_field" size="50" value="<%= h(@service.phone) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= draw_hor_line("250px") %>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="service_scope">
+						        服务范围
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="service_scope" name="service_scope" class="text_field" size="50" value="<%= h(@service.scope) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="service_cost">
+						        价位
+								:
+						    </label>
+						</td>
+						<td>
+							<input type="text" id="service_cost" name="service_cost" class="text_field" size="20" value="<%= h(@service.cost) %>" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="service_desc">
+						        简介
+								:
+						    </label>
+						</td>
+						<td>
+							<textarea id="service_desc" name="service_desc" class="text_field" cols="60" rows="5"><%= h(@service.desc) %></textarea>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "更新求职服务", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/job_services/<%= @service.id %>">返回这个求职服务</a>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="/job_services">返回求职导航</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+

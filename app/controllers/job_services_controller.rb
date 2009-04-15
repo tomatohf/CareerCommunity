@@ -2,18 +2,34 @@ class JobServicesController < ApplicationController
   
   Top_List_Num = 8
   
+  Evaluation_Page_Size = 15
+  
+  Rank_Titles = [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
+  
   
   layout "community"
   
   before_filter :check_login, :only => [:new, :create, :edit, :update, :destroy,
                                         :categories, :category_new, :category_create,
-                                        :category_edit, :category_update, :category_destroy]
+                                        :category_edit, :category_update, :category_destroy,
+                                        :create_evaluation, :delete_evaluation]
   before_filter :check_limited, :only => [:create, :update, :destroy,
-                                          :category_create, :category_update, :category_destroy]
+                                          :category_create, :category_update, :category_destroy,
+                                          :create_evaluation, :delete_evaluation]
   
   before_filter :check_editor, :only => [:edit, :update, :destroy,
                                           :categories, :category_new, :category_create,
                                           :category_edit, :category_update, :category_destroy]
+                                          
+  before_filter :check_evaluation_owner, :only => [:delete_evaluation]
+  
+  before_filter :check_service_url, :only => [:url_preview]
   
   
   
@@ -21,8 +37,33 @@ class JobServicesController < ApplicationController
     
   end
   
-  def show
+  def category
     
+  end
+
+  def show
+    @service = JobService.find(params[:id])
+    
+    @creator_nick_pic = Account.get_nick_and_pic(@service.creator_id)
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @service_evaluations = @service.evaluations.paginate(
+      :page => page,
+      :per_page => Evaluation_Page_Size,
+      :total_entries => JobServiceEvaluation.get_count(@service.id),
+      :include => [:account => [:profile_pic]],
+      :order => "updated_at DESC"
+    )
+    
+    @point = JobServiceEvaluation.average(
+      "point",
+      :conditions => ["job_service_id = ?", @service.id]
+    ) || 0
+  end
+  
+  def url_preview
+    render :layout => "uncategoried"
   end
   
   def new
@@ -30,18 +71,20 @@ class JobServicesController < ApplicationController
   end
   
   def create
-    @info = JobInfo.new(
+    @service = JobService.new(
       :creator_id => session[:account_id],
       :updater_id => session[:account_id]
     )
     
-    @info.title = params[:info_title] && params[:info_title].strip
-    @info.content = params[:info_content] && params[:info_content].strip
+    @service.name = params[:service_name] && params[:service_name].strip
+    @service.category_id = params[:service_category] && params[:service_category].strip
     
-    @info.general = (params[:info_general] == "true")
+    @service.url = params[:service_url] && params[:service_url].strip
+    @service.place = params[:service_place] && params[:service_place].strip
+    @service.phone = params[:service_phone] && params[:service_phone].strip
     
-    if @info.save
-      jump_to("/job_infos")
+    if @service.save
+      jump_to("/job_services/#{@service.id}")
     else
       flash.now[:error_msg] = "操作失败, 再试一次吧"
       render :action => "new"
@@ -55,14 +98,20 @@ class JobServicesController < ApplicationController
   def update
     @service = JobService.find(params[:id])
     
-    @info.updater_id = session[:account_id]
+    @service.updater_id = session[:account_id]
     
-    @info.title = params[:info_title] && params[:info_title].strip
-    @info.content = params[:info_content] && params[:info_content].strip
+    @service.name = params[:service_name] && params[:service_name].strip
+    @service.category_id = params[:service_category] && params[:service_category].strip
     
-    @info.general = (params[:info_general] == "true")
+    @service.url = params[:service_url] && params[:service_url].strip
+    @service.place = params[:service_place] && params[:service_place].strip
+    @service.phone = params[:service_phone] && params[:service_phone].strip
     
-    if @info.save
+    @service.scope = params[:service_scope] && params[:service_scope].strip
+    @service.cost = params[:service_cost] && params[:service_cost].strip
+    @service.desc = params[:service_desc] && params[:service_desc].strip
+    
+    if @service.save
       flash.now[:message] = "已成功保存"
     else
       flash.now[:error_msg] = "操作失败, 再试一次吧"
@@ -77,6 +126,38 @@ class JobServicesController < ApplicationController
     service.destroy
     
     jump_to("/job_services")
+  end
+  
+  
+  def create_evaluation
+    job_service_id = params[:id]
+    account_id = session[:account_id]
+    
+    evaluation = JobServiceEvaluation.find(
+      :first,
+      :conditions => ["job_service_id = ? and account_id = ?", job_service_id, account_id]
+    ) || JobServiceEvaluation.new(
+      :job_service_id => job_service_id,
+      :account_id => account_id
+    )  
+    
+    evaluation.content = params[:service_evaluation] && params[:service_evaluation].strip
+    evaluation.point = params[:service_evaluation_point] && params[:service_evaluation_point].strip
+    
+    evaluation_saved = evaluation.save
+    
+    total_count = JobServiceEvaluation.get_count(evaluation.job_service_id)
+    last_page = total_count > 0 ? (total_count.to_f/Evaluation_Page_Size).ceil : 1
+    
+    jump_to("/job_services/#{evaluation.job_service_id}/evaluation/#{last_page}#{"#evaluation_#{evaluation.id}" if evaluation_saved}")
+  end
+  
+  def delete_evaluation
+    @evaluation ||= JobServiceEvaluation.find(params[:id])
+    
+    @evaluation.destroy
+    
+    jump_to("/job_services/#{@evaluation.job_service_id}")
   end
   
   
@@ -146,6 +227,23 @@ class JobServicesController < ApplicationController
   
   def check_editor
     jump_to("/errors/forbidden") unless is_editor?
+  end
+  
+  def check_evaluation_owner
+    valid = is_editor?
+    
+    unless valid
+      @evaluation = JobServiceEvaluation.find(params[:id])
+      valid = (session[:account_id] == @evaluation.account_id)
+    end
+
+    jump_to("/errors/forbidden") unless valid
+  end
+  
+  def check_service_url
+    @service = JobService.find(params[:id])
+    
+    jump_to("/job_services/#{@service.id}") unless @service.url && (@service.url != "")
   end
   
 end

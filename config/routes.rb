@@ -583,6 +583,7 @@ ActionController::Routing::Routes.draw do |map|
   }
   
   
+  map.connect "/job_services/:id/evaluation/:page", :controller => "job_services", :action => "show", :id => /\d+/, :page => /\d+/
   map.resources :job_services, :collection => {
     
     :categories => :get,
@@ -593,7 +594,12 @@ ActionController::Routing::Routes.draw do |map|
     
     :category_edit => :get,
     :category_update => :post,
-    :category_destroy => :post
+    :category_destroy => :post,
+    
+    :create_evaluation => :post,
+    :delete_evaluation => :post,
+    
+    :url_preview => :get
     
   }
 

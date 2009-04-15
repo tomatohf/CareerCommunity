@@ -1,5 +1,8 @@
 class ExpsController < ApplicationController
   
+  Show_Left_Ad = false
+  
+  
   Exp_List_Size = 30
   
   layout "community"

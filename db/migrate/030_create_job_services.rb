@@ -57,27 +57,6 @@ class CreateJobServices < ActiveRecord::Migration
     ActiveRecord::Base.connection.execute("INSERT INTO job_services (id) VALUES (1000)")
     ActiveRecord::Base.connection.execute("DELETE FROM job_services WHERE id = 1000")
     
-    # job_service_comments table
-    create_table :job_service_comments, :force => true do |t|
-      t.column :job_service_id, :integer
-      t.column :created_at, :datetime
-      t.column :updated_at, :datetime
-      
-      t.column :account_id, :integer
-      t.column :content, :string, :limit => 1000
-      
-      
-      # enable sphinx delta index
-      t.column :delta, :boolean
-    end
-    add_index :job_service_comments, :job_service_id
-    add_index :job_service_comments, :account_id
-    add_index :job_service_comments, :created_at
-    add_index :job_service_comments, :delta
-    # reserve first 1000 ID
-    ActiveRecord::Base.connection.execute("INSERT INTO job_service_comments (id) VALUES (1000)")
-    ActiveRecord::Base.connection.execute("DELETE FROM job_service_comments WHERE id = 1000")
-    
     # job_service_evaluations table
     create_table :job_service_evaluations, :force => true do |t|
       t.column :job_service_id, :integer
@@ -87,6 +66,7 @@ class CreateJobServices < ActiveRecord::Migration
       t.column :account_id, :integer
       
       t.column :point, :integer, :limit => 1
+      t.column :content, :string, :limit => 1000
       
       
       # enable sphinx delta index
@@ -130,7 +110,6 @@ class CreateJobServices < ActiveRecord::Migration
     drop_table :job_services_functions
     drop_table :job_service_functions
     drop_table :job_service_evaluations
-    drop_table :job_service_comments
     drop_table :job_services
     drop_table :job_service_categories
   end

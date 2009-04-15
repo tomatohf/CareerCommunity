@@ -804,26 +804,13 @@ ActiveRecord::Schema.define(:version => 30) do
   add_index "job_service_categories", ["created_at"], :name => "index_job_service_categories_on_created_at"
   add_index "job_service_categories", ["updated_at"], :name => "index_job_service_categories_on_updated_at"
 
-  create_table "job_service_comments", :force => true do |t|
-    t.integer  "job_service_id", :limit => 11
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "account_id",     :limit => 11
-    t.string   "content",        :limit => 1000
-    t.boolean  "delta"
-  end
-
-  add_index "job_service_comments", ["job_service_id"], :name => "index_job_service_comments_on_job_service_id"
-  add_index "job_service_comments", ["account_id"], :name => "index_job_service_comments_on_account_id"
-  add_index "job_service_comments", ["created_at"], :name => "index_job_service_comments_on_created_at"
-  add_index "job_service_comments", ["delta"], :name => "index_job_service_comments_on_delta"
-
   create_table "job_service_evaluations", :force => true do |t|
     t.integer  "job_service_id", :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "account_id",     :limit => 11
     t.integer  "point",          :limit => 1
+    t.string   "content",        :limit => 1000
     t.boolean  "delta"
   end
 

@@ -7,7 +7,8 @@ class JobService < ActiveRecord::Base
   has_and_belongs_to_many :functions,
                           :foreign_key => "job_service_id",
                           :association_foreign_key => "function_id",
-                          :join_table => "job_services_functions"
+                          :join_table => "job_services_functions",
+                          :class_name => "JobServiceFunction"
   
   
   
@@ -15,6 +16,8 @@ class JobService < ActiveRecord::Base
   belongs_to :updater, :class_name => "Account", :foreign_key => "updater_id"
   
   belongs_to :category, :class_name => "JobServiceCategory", :foreign_key => "category_id"
+  
+  has_many :evaluations, :class_name => "JobServiceEvaluation", :foreign_key => "job_service_id", :dependent => :destroy
   
   
   
@@ -28,6 +31,8 @@ class JobService < ActiveRecord::Base
   validates_length_of :desc, :maximum => 1000, :message => "简介 超过长度限制", :allow_nil => true
   validates_length_of :phone, :maximum => 250, :message => "电话 超过长度限制", :allow_nil => true
   validates_length_of :scope, :maximum => 250, :message => "服务范围 超过长度限制", :allow_nil => true
+  
+  validates_numericality_of :cost, :message => "价位 必须是大于等于0的数字", :allow_nil => true, :greater_than_or_equal_to => 0
   
   
   

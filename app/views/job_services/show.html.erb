@@ -1,0 +1,251 @@
+<% service_name = h(@service.name) %>
+
+<% page_title = "点评 #{service_name}" %>
+<% community_page_title(page_title) %>
+
+<link href="/lib/star_rating/star_rating.css" rel="stylesheet" type="text/css" media="all">
+
+<div class="float_r community_container_r">
+
+	<div class="community_block align_c">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/job_services/#{@service.id}", :title => "点评: #{service_name}"} %>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+
+</div>
+
+<div class="community_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block">
+		<div class="float_r">
+			<span class="point_number">
+				<%= sprintf("%.2f", @point).gsub(/^([0-9])/, "<strong>\\1</strong>") %>
+			</span>
+			&nbsp;
+			-
+			&nbsp;
+			<%= rank(@point, :small => false, :readonly => true) %>
+		</div>
+		
+		<div>
+			<a href="/job_services">
+				求职导航</a>
+			»
+			<a href="#">
+				<%= h(JobServiceCategory.get_category(@service.category_id).name) %></a>
+		</div>
+	</div>
+	
+	<div class="community_block" style="font-size: 13px; color: #222222; margin-top: 10px;">
+		<table cellpadding="0" cellspacing="5" class="main_part_w">
+			<tr>
+				<td align="left" valign="middle">
+					<% if @service.place && @service.place != "" %>
+						<div>
+							地址:
+							&nbsp;
+							<%= h(@service.place) %>
+						</div>
+					<% end %>
+
+					<% if @service.phone && @service.phone != "" %>
+						<div>
+							电话:
+							&nbsp;
+							<%= h(@service.phone) %>
+						</div>
+					<% end %>
+
+					<% if @service.scope && @service.scope != "" %>
+						<div>
+							服务范围:
+							&nbsp;
+							<%= h(@service.scope) %>
+						</div>
+					<% end %>
+
+					<% if @service.cost %>
+						<div>
+							价位:
+							&nbsp;
+							￥<%= h(@service.cost) %>
+						</div>
+					<% end %>
+
+					<% has_url = @service.url && @service.url != "" %>
+					<% if has_url %>
+						<div>
+							链接:
+							
+							<a href="/job_services/<%= @service.id %>/url_preview" target="_blank" class="account_nick_link">
+								<%= h(@service.url) %></a>
+							(
+								<a href="/job_services/<%= @service.id %>/url_preview" target="_blank">
+									预览</a>
+							)
+						</div>
+					<% end %>
+				</td>
+				
+				<td style="width: 120px;" align="center" valign="middle">
+					<a href="#evaluation_new" title="我要点评">
+						<img src="/images/job_services/evaluation_btn.png" border="0" alt="我要点评" /></a>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="community_block">
+		<dl class="service_intro">
+			<dt>服务简介</dt>
+			<dd>
+				<%= h(@service.desc) %>
+			</dd>
+		</dl>
+		
+		<dl class="service_intro">
+			<dt>服务标签</dt>
+			<dd>
+				
+			</dd>
+		</dl>
+	</div>
+	
+	<div class="community_block align_r form_info_s">
+		最后更新于
+		<%= format_datetime(@service.updated_at) %>
+		
+		&nbsp;&nbsp;
+		|
+		&nbsp;&nbsp;
+		
+		由
+		<a href="/spaces/show/<%= @service.creator_id %>" class="account_nick_link">
+			<%= h(@creator_nick_pic[0]) %></a>
+		添加
+	</div>
+	
+	<% if info_editor?(session[:account_id]) %>
+		<% form_tag "/job_services/#{@service.id}", :method => :delete, :id => "service_delete_form" do %>
+		<% end %>
+		
+		<div class="community_block_narrow">
+			<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('service_delete_form').submit();}; return false;">删除</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="/job_services/<%= @service.id %>/edit">
+				编辑</a>
+		</div>
+	<% end %>
+	
+	
+	
+	<div class="community_title">
+		共有
+		<b>
+			<%= @service_evaluations.total_entries %>
+		</b>
+		条<span id="evaluation_list">评价</span> ...
+	</div>
+	
+	<% if info_editor?(session[:account_id]) %>
+		<% form_tag "", :method => :post, :id => "delete_evaluation_form" do %>
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_evaluation(evaluation_id) {
+				if(confirm("确定要删除此点评么 ?")) {
+					del_form = document.getElementById("delete_evaluation_form");
+					del_form.action = "/job_services/" + evaluation_id + "/delete_evaluation";
+					del_form.submit();
+				}
+			}
+		</script>
+	<% end %>
+	
+	<div class="community_block_narrow align_r">
+		<a href="#evaluation_new">添加点评</a>
+	</div>
+
+	<div class="community_block">
+		<%= render(:partial => "evaluation", :collection => @service_evaluations, :locals => {:can_del => info_editor?(session[:account_id]), :counter_shift => calculate_counter_shift(@service_evaluations)}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@service_evaluations) %>
+	</div>
+	
+	<div id="evaluation_new" class="community_block">
+		<a href="#top" class="float_r">
+			回页首</a>
+			
+		<span style="font-size: 14px; color: #EE9966;">
+			添加点评 »
+		</span>
+	</div>
+	<div class="community_block_narrow" style="margin-top: 10px;">
+		<div style="margin-bottom: 5px;">
+			评分(<span style="color: red;">*</span>)
+			:
+			&nbsp;
+			<%= rank(0, :small => false, :readonly => false, :titles => JobServicesController::Rank_Titles) %>
+		</div>
+		<div>
+			评价(<span style="color: red;">*</span>)
+			:
+			&nbsp;
+			<span class="form_info_s">
+				1000 个字符以内
+				
+				&nbsp;&nbsp;&nbsp;
+				(注意: 新的点评将覆盖你之前已经提交的点评)
+			</span>
+		</div>
+		<% form_tag "/job_services/#{@service.id}/create_evaluation", :method => :post, :onsubmit => "return validate_evaluation_form();" do %>
+			<textarea id="service_evaluation" name="service_evaluation" class="text_field" cols="60" rows="8"></textarea>
+			<input type="hidden" name="service_evaluation_point" id="service_evaluation_point" />
+			
+			<div style="margin-top: 5px;">
+				<input type="submit" value="提交点评" class="button" />
+			</div>
+		<% end %>
+	</div>
+	
+</div>
+
+
+
+<script language="JavaScript">
+	function validate_evaluation_form() {
+		var evaluation_point = document.getElementById("service_evaluation_point").value;
+		if(evaluation_point == null || evaluation_point <= 0) {
+			alert("请选择评分 ...");
+			return false;
+		}
+		
+		var evaluation_content = document.getElementById('service_evaluation').value || "";
+		if(evaluation_content.replace(/(^\s*)|(\s*$)/g, '') == '') {
+			alert("请填写评价内容 ...");
+			return false;
+		}
+		if(evaluation_content.length > 1000) {
+			alert("评价内容超过长度限制 ...");
+			return false;
+		}
+		
+		return true;
+	}
+	
+	function select_rank(num) {
+		document.getElementById("service_evaluation_point").value = num;
+		
+		var cr = document.getElementById("current_rating");
+		cr.style.width = num*100/5 + "%";
+		cr.inner_html = "当前: " + num;
+	}
+</script>
+

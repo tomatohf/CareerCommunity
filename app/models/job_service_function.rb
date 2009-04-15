@@ -7,7 +7,8 @@ class JobServiceFunction < ActiveRecord::Base
   has_and_belongs_to_many :job_services,
                           :foreign_key => "function_id",
                           :association_foreign_key => "job_service_id",
-                          :join_table => "job_services_functions"
+                          :join_table => "job_services_functions",
+                          :class_name => "JobService"
 
   # ---
 

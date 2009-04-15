@@ -21,7 +21,12 @@
 	
 	
 	<div class="community_block">
-		
+		<% JobService.find(:all).each do |s| %>
+			<div class="community_block">
+				<a href="/job_services/<%= s.id %>">
+					<%= h(s.name) %></a>
+			</div>
+		<% end %>
 	</div>
 </div>
 

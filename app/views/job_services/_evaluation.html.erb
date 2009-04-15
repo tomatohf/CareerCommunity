@@ -1,0 +1,54 @@
+<% can_del &&= true %>
+<% counter_shift ||= 0 %>
+
+<% account_id = evaluation.account.id %>
+<% account_nick = evaluation.account.get_nick %>
+<% account_pic_url = evaluation.account.get_profile_pic_url %>
+
+<% Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, evaluation.account.email) %>
+
+<div class="comment_container">
+	<div class="comment_title">
+		<div class="float_r form_info_s">
+			
+			<b>
+				<%= counter_shift + evaluation_counter %>
+			</b>
+			楼
+			&nbsp;&nbsp;&nbsp;
+			
+			<% if can_del || (evaluation.account_id == session[:account_id]) %>
+				<a title="删除" href="#" onclick="delete_evaluation(<%= evaluation.id %>); return false;">
+					<img src="/images/delete_small.gif" border="0" /></a>
+			<% end %>
+		</div>
+		
+		<b>
+			<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+				<%= account_nick %></a>
+		</b>
+		在
+		<%= format_datetime(evaluation.updated_at) %>
+		<span id="evaluation_<%= evaluation.id %>">评价说</span>
+		:
+		
+	</div>
+	
+	<div class="comment_content">
+		<a href="/spaces/show/<%= account_id %>">
+			<img class="float_l" src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+		<%= simple_format(h(evaluation.content)) %>
+	</div>
+
+	<div class="comment_info form_info_s">
+		评分
+		:
+		&nbsp;
+		<%= evaluation.point %>
+		&nbsp;
+		-
+		&nbsp;
+		<%= rank(evaluation.point, :small => false, :readonly => true) %>
+	</div>
+</div>
+

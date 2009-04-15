@@ -309,6 +309,10 @@ div.auto_complete ul li {
 	border-color: #A3988C;
 }
 
+textarea.text_field {
+	padding: 3px;
+}
+
 .text_field:hover {
 	border-style: inset;
 }
@@ -1515,6 +1519,35 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	overflow: hidden;
 	padding: 0px 10px 0px 24px;
 	background: transparent url(/images/index/exp_icon.gif) no-repeat scroll 2px 2px;
+}
+
+.point_number {
+	font-size: 14px;
+	font-weight: bold;
+	color: #CC3300;"
+}
+
+.point_number strong {
+	font-size: 28px;
+}
+
+.service_intro {
+	overflow: hidden;
+	padding: 0px 10px 5px;
+}
+
+.service_intro dt {
+	color: #EE9966;
+	float: left;
+	font-size: 14px;
+	padding-top: 1px;
+	width: 75px;
+}
+
+.service_intro dd {
+	color: #333333;
+	font-size: 13px;
+	margin-left: 75px;
 }
 
 
