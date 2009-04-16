@@ -167,14 +167,14 @@
 		    <%= ziya_chart("/votes/refresh_vote_result/#{@vote_topic_id}?chart_type=#{@chart_type}&token=#{Time.now.to_i}", :width => 500, :height => @vote_topic.calculate_chart_height) %>
 		</div>
 		<div>
-		    <a href="/votes/<%= @vote_topic_id %>/bar_h/comment/<%= @page %>#result_chart">
-		        <img src="/images/votes/chart_icons/bar.png" alt="柱状图[横]" title="柱状图[横]" border="0" /></a>
+		    <a href="/votes/<%= @vote_topic_id %>/bar_h/comment/<%= @page %>#result_chart" title="柱状图[横]">
+		        <img src="/images/votes/chart_icons/bar.png" alt="柱状图[横]" border="0" /></a>
 
-		    <a href="/votes/<%= @vote_topic_id %>/pie/comment/<%= @page %>#result_chart">
-				<img src="/images/votes/chart_icons/pie.png" alt="饼状图" title="饼状图" border="0" /></a>
+		    <a href="/votes/<%= @vote_topic_id %>/pie/comment/<%= @page %>#result_chart" title="饼状图">
+				<img src="/images/votes/chart_icons/pie.png" alt="饼状图" border="0" /></a>
 
-	    	<a href="/votes/<%= @vote_topic_id %>/pie_3d/comment/<%= @page %>#result_chart">
-	        	<img src="/images/votes/chart_icons/pie_3d.png" alt="饼状图[3D]" title="饼状图[3D]" border="0" /></a>
+	    	<a href="/votes/<%= @vote_topic_id %>/pie_3d/comment/<%= @page %>#result_chart" title="饼状图[3D]">
+	        	<img src="/images/votes/chart_icons/pie_3d.png" alt="饼状图[3D]" border="0" /></a>
 		</div>
 	</div>
 	

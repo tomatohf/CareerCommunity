@@ -1,7 +1,9 @@
 ﻿求职网址导航
-	- 添加服务和点评服务的 account action
+	- chart data cache
 	- 添加 function 标签
-	- 右侧放 统计数据图表 和 地图(如果有地点)
+	- 地图(如果有地点)
+	- 添加服务和点评服务的 account action
+	- cache job service 
 	- 打开 top services 里面的 cache
 
 

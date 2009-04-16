@@ -1530,25 +1530,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	font-size: 28px;
 }
 
-.service_intro {
-	overflow: hidden;
-	padding: 0px 10px 5px;
-}
-
-.service_intro dt {
-	color: #EE9966;
-	float: left;
-	font-size: 14px;
-	padding-top: 1px;
-	width: 75px;
-}
-
-.service_intro dd {
-	color: #333333;
-	font-size: 13px;
-	margin-left: 75px;
-}
-
 
 
 

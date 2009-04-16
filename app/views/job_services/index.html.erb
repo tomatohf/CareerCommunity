@@ -2,15 +2,10 @@
 <% community_page_title(page_title) %>
 
 <div class="float_r">
-	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 300px;" do %>
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 150px;" do %>
 		<div class="action_bar">
 			<a href="/job_services/new">
 				添加新的求职服务</a>
-			<% if info_editor?(session[:account_id]) %>
-				|
-				<a href="/job_services/categories">
-					管理求职服务的分类</a>
-			<% end %>
 		</div>
 	<% end %>
 </div>
@@ -20,6 +15,22 @@
 	
 	
 	<div style="height: 10px;"></div>
+	
+	
+	<% if info_editor?(session[:account_id]) %>
+		<div class="align_r">
+			<a href="/job_services/categories">
+				管理求职服务的分类</a>
+				
+			&nbsp;&nbsp;&nbsp;
+			|
+			&nbsp;&nbsp;&nbsp;
+			
+			<a href="/job_services/functions">
+				管理求职服务的功能标签</a>
+		</div>
+	<% end %>
+	
 	
 	<div class="overflow_hidden">
 		

@@ -24,6 +24,9 @@
 	
 	<%
 		hots = [
+			["面经大全", "exp.jpg", "/exps"],
+			["求职服务导航", "job_service.jpg", "/job_services"],
+			["求职目标管理", "job_target.jpg", "/job_targets"],
 			["乔布教练 医药专题", "pharm.jpg", "/coach/pharmaceutical"],
 			["医药求职讲座校园行", "pharm_campus_session.jpg", "/index/pharm_campus_session"]
 		]
@@ -36,7 +39,7 @@
 			</div>
 			<div>
 				<a href="<%= hot[2] %>" target="_blank">
-					<%= hot[0] %></a>
+					<strong><%= hot[0] %></strong></a>
 			</div>
 		</div>
 	<% end %>

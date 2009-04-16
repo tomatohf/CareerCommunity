@@ -1,16 +1,18 @@
 class JobServicesController < ApplicationController
   
-  Top_List_Num = 8
+  Top_List_Num = 10
   
-  Evaluation_Page_Size = 15
+  Evaluation_Page_Size = 30
   
   Rank_Titles = [
-    "1分",
-    "2分",
-    "3分",
-    "4分",
-    "5分"
+    "1 分",
+    "2 分",
+    "3 分",
+    "4 分",
+    "5 分"
   ]
+  
+  Point_Chart_Colors = %w{FFE0D0 FFD9BF FFB380 FF8D40 FF6600}
   
   
   layout "community"
@@ -44,7 +46,7 @@ class JobServicesController < ApplicationController
     query << " FROM job_services LEFT OUTER JOIN job_service_evaluations"
     query << " ON job_services.id = job_service_evaluations.job_service_id"
     query << " WHERE job_services.category_id = #{@category.id}"
-    query << " GROUP BY job_service_evaluations.job_service_id"
+    query << " GROUP BY job_services.id"
     query << " ORDER BY average DESC"
     
     @category_services = JobService.find_by_sql(query)
@@ -69,6 +71,36 @@ class JobServicesController < ApplicationController
       "point",
       :conditions => ["job_service_id = ?", @service.id]
     ) || 0
+  end
+  
+  def point_chart
+    service_id = params[:id]
+    chart_type = params[:chart_type]
+    
+    series = []
+    categories = []
+    colors = []
+    
+    1.upto(5) do |i|
+      count = JobServiceEvaluation.count(
+        :conditions => ["job_service_id = ? and point = ?", service_id, i]
+      )
+      
+      series << count
+      
+      # 65.chr = A
+      categories << "#{(i - 1 + 65).chr}: #{count}"
+      colors << Point_Chart_Colors[i-1]
+    end
+    
+    graph  = get_graph(chart_type)
+    graph.add(:axis_category_text, categories)
+    graph.add(:series, "series legend label", series)
+    graph.add(:theme, "vote")
+    graph.add(:user_data, :colors, colors.join(","))
+    graph.add(:user_data, :delay_count, series.size - 1)
+    
+    render(:xml => graph.to_xml)
   end
   
   def url_preview
@@ -259,6 +291,26 @@ class JobServicesController < ApplicationController
     @service = JobService.find(params[:id])
     
     jump_to("/job_services/#{@service.id}") unless @service.url && (@service.url != "")
+  end
+  
+  
+  def get_graph(chart_type, chart_id = "vote_result")
+    chart_title = "评分结果"
+    case chart_type
+      when "bar_h"
+        graph = Ziya::Charts::Bar.new(nil, chart_title, chart_id)
+      when "bar_v"
+        graph = Ziya::Charts::Column.new(nil, chart_title, chart_id)
+      when "pie"
+        graph = Ziya::Charts::Pie.new(nil, chart_title, chart_id)
+      when "pie_3d"
+        graph = Ziya::Charts::Pie3D.new(nil, chart_title, chart_id)
+      when "line"
+        graph = Ziya::Charts::Line.new(nil, chart_title, chart_id + "_line")
+      else
+        graph = Ziya::Charts::Column.new(nil, chart_title, chart_id)
+    end
+    graph
   end
   
 end

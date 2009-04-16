@@ -7,7 +7,7 @@
     	query << " FROM job_services LEFT OUTER JOIN job_service_evaluations"
 	    query << " ON job_services.id = job_service_evaluations.job_service_id"
 	    query << " WHERE job_services.category_id = #{category.id}"
-	    query << " GROUP BY job_service_evaluations.job_service_id"
+	    query << " GROUP BY job_services.id"
 	    query << " ORDER BY average DESC"
 		query << " limit #{JobServicesController::Top_List_Num}"
     
@@ -71,7 +71,7 @@
 								<tr class="align_r top_service_info">
 									<td colspan="3" align="right">
 										<a href="/job_services/category/<%= category.id %>">
-											更多<%= category_name %>服务 »</a>
+											更多 <%= category_name %> 服务 »</a>
 									</td>
 								</tr>
 								

@@ -14,6 +14,53 @@
 	<div class="community_block_narrow">
 		<%= thin_hr %>
 	</div>
+	
+	<div class="community_block align_c">
+		<div>
+			<% 5.downto(1) do |i| %>
+				<div style="color: #<%= JobServicesController::Point_Chart_Colors[i-1] %>; font-weight: bold;">
+					<%= (i - 1 + 65).chr %>
+					:
+					<%= i %>
+					分
+					&nbsp;
+					-
+					&nbsp;
+					<%= rank(i, :small => true, :readonly => true) %>
+				</div>
+			<% end %>
+		</div>
+		
+		<div id="point_chart_container">
+
+		</div>
+		
+		<div>
+			<a href="#" onclick="chart_type('bar_v'); return false;" title="柱状图[竖]">
+		        <img src="/images/votes/chart_icons/column.png" alt="柱状图[竖]" border="0" /></a>
+		
+		    <a href="#" onclick="chart_type('bar_h'); return false;" title="柱状图[横]">
+		        <img src="/images/votes/chart_icons/bar.png" alt="柱状图[横]" border="0" /></a>
+
+		    <a href="#" onclick="chart_type('pie'); return false;" title="饼状图">
+				<img src="/images/votes/chart_icons/pie.png" alt="饼状图" border="0" /></a>
+
+	    	<a href="#" onclick="chart_type('pie_3d'); return false;" title="饼状图[3D]">
+	        	<img src="/images/votes/chart_icons/pie_3d.png" alt="饼状图[3D]" border="0" /></a>
+		</div>
+	</div>
+	
+	<script language="JavaScript">
+		function chart_type(chart_type) {
+			document.getElementById("point_chart_container").innerHTML = get_chart_html(chart_type);
+		}
+		
+		function get_chart_html(chart_type) {
+			return "<embed width='280' height='250' src='/charts/charts.swf?library_path=/charts/charts_library&xml_source=/job_services/point_chart/<%= @service.id %>?chart_type=" + chart_type + "' quality='high' type='application/x-shockwave-flash'></embed>"
+		}
+		
+		chart_type("bar_v");
+	</script>
 
 </div>
 
@@ -41,54 +88,79 @@
 		</div>
 	</div>
 	
-	<div class="community_block" style="font-size: 13px; color: #222222; margin-top: 10px;">
+	<div class="community_block" style="font-size: 13px; color: #222222;">
 		<table cellpadding="0" cellspacing="5" class="main_part_w">
 			<tr>
 				<td align="left" valign="middle">
-					<% if @service.place && @service.place != "" %>
-						<div>
-							地址:
-							&nbsp;
-							<%= h(@service.place) %>
-						</div>
-					<% end %>
+					<table cellpadding="0" cellspacing="1" class="main_part_w">
+						<tr>
+							<td align="left" valign="top" style="width: 65px;"></td>
+							<td align="left" valign="top"></td>
+						</tr>
+						
+						<% if @service.place && @service.place != "" %>
+							<tr>
+								<td align="left" valign="top">
+									地址:
+								</td>
+								<td align="left" valign="top">
+									<%= h(@service.place) %>
+								</td>
+							</tr>
+						<% end %>
+						
+						<% if @service.phone && @service.phone != "" %>
+							<tr>
+								<td align="left" valign="top">
+									电话:
+								</td>
+								<td align="left" valign="top">
+									<%= h(@service.phone) %>
+								</td>
+							</tr>
+						<% end %>
+						
+						<% if @service.scope && @service.scope != "" %>
+							<tr>
+								<td align="left" valign="top">
+									服务范围:
+								</td>
+								<td align="left" valign="top">
+									<%= h(@service.scope) %>
+								</td>
+							</tr>
+						<% end %>
 
-					<% if @service.phone && @service.phone != "" %>
-						<div>
-							电话:
-							&nbsp;
-							<%= h(@service.phone) %>
-						</div>
-					<% end %>
+						<% if @service.cost %>
+							<tr>
+								<td align="left" valign="top">
+									价位:
+								</td>
+								<td align="left" valign="top">
+									￥<%= h(@service.cost) %>
+								</td>
+							</tr>
+						<% end %>
 
-					<% if @service.scope && @service.scope != "" %>
-						<div>
-							服务范围:
-							&nbsp;
-							<%= h(@service.scope) %>
-						</div>
-					<% end %>
+						<% if @service.url && @service.url != "" %>
+							<tr>
+								<td align="left" valign="top">
+									链接:
+								</td>
+								<td align="left" valign="top">
+									<a href="/job_services/<%= @service.id %>/url_preview" target="_blank" class="account_nick_link">
+										<%= h(@service.url) %></a>
 
-					<% if @service.cost %>
-						<div>
-							价位:
-							&nbsp;
-							￥<%= h(@service.cost) %>
-						</div>
-					<% end %>
+									<br />
 
-					<% if @service.url && @service.url != "" %>
-						<div>
-							链接:
-							
-							<a href="/job_services/<%= @service.id %>/url_preview" target="_blank" class="account_nick_link">
-								<%= h(@service.url) %></a>
-							(
-								<a href="/job_services/<%= @service.id %>/url_preview" target="_blank">
-									预览</a>
-							)
-						</div>
-					<% end %>
+									(
+										<a href="/job_services/<%= @service.id %>/url_preview" target="_blank">
+											预览</a>
+									)
+								</td>
+							</tr>
+						<% end %>
+					</table>
 				</td>
 				
 				<td style="width: 120px;" align="center" valign="middle">
@@ -100,19 +172,27 @@
 	</div>
 	
 	<div class="community_block">
-		<dl class="service_intro">
-			<dt>服务简介</dt>
-			<dd>
-				<%= h(@service.desc) %>
-			</dd>
-		</dl>
-		
-		<dl class="service_intro">
-			<dt>服务标签</dt>
-			<dd>
+		<table cellpadding="0" cellspacing="10" class="main_part_w">
+			<tr>
+				<td align="left" valign="top" style="width: 75px; color: #EE9966; font-size: 14px;">
+					服务简介
+				</td>
 				
-			</dd>
-		</dl>
+				<td style="font-size: 13px; color: #333333;">
+					<%= h(@service.desc) %>
+				</td>
+			</tr>
+			
+			<tr>
+				<td align="left" valign="top" style="width: 75px; color: #EE9966; font-size: 14px;">
+					服务标签
+				</td>
+				
+				<td style="font-size: 13px; color: #333333;">
+					
+				</td>
+			</tr>
+		</table>
 	</div>
 	
 	<div class="community_block align_r form_info_s">
@@ -166,6 +246,10 @@
 		</script>
 	<% end %>
 	
+	<div class="community_block_narrow align_c form_info_s">
+		以下点评仅代表网友个人观点
+	</div>
+	
 	<div class="community_block_narrow align_r">
 		<a href="#evaluation_new">添加点评</a>
 	</div>
@@ -205,7 +289,7 @@
 			</span>
 		</div>
 		<% form_tag "/job_services/#{@service.id}/create_evaluation", :method => :post, :onsubmit => "return validate_evaluation_form();" do %>
-			<textarea id="service_evaluation" name="service_evaluation" class="text_field" cols="60" rows="8"></textarea>
+			<textarea id="service_evaluation" name="service_evaluation" class="text_field" cols="50" rows="8"></textarea>
 			<input type="hidden" name="service_evaluation_point" id="service_evaluation_point" />
 			
 			<div style="margin-top: 5px;">
