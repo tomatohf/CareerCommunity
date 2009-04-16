@@ -5,11 +5,11 @@ class JobServicesController < ApplicationController
   Evaluation_Page_Size = 15
   
   Rank_Titles = [
-    "",
-    "",
-    "",
-    "",
-    ""
+    "1分",
+    "2分",
+    "3分",
+    "4分",
+    "5分"
   ]
   
   
@@ -34,7 +34,7 @@ class JobServicesController < ApplicationController
   
   
   def index
-    
+    @categories = JobServiceCategory.get_all_categories
   end
   
   def category

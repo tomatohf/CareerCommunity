@@ -1,0 +1,92 @@
+<% category = top_services %>
+
+<% cache("#{JobService::FCKP_top_services}_#{category.id}") do %>
+
+	<%
+		query = "SELECT job_services.id, name, url, AVG(job_service_evaluations.point) as average"
+    	query << " FROM job_services LEFT OUTER JOIN job_service_evaluations"
+	    query << " ON job_services.id = job_service_evaluations.job_service_id"
+	    query << " WHERE job_services.category_id = #{category.id}"
+	    query << " GROUP BY job_service_evaluations.job_service_id"
+	    query << " ORDER BY average DESC"
+		query << " limit #{JobServicesController::Top_List_Num}"
+    
+	    services = JobService.find_by_sql(query)
+	
+		category_name = h(category.name)
+	%>
+
+	<div align="center" class="float_l top_services">
+	
+		<div class="w t float_l clear_l"></div>
+		<div class="w t float_r clear_r"></div>
+		<div class="w o float_l clear_l"></div>
+		<div class="w o float_r clear_r"></div>
+		<div class="w p float_l clear_l"></div>
+		<div class="w p float_r clear_r"></div>
+	
+		<table cellspacing="0" cellpadding="0" border="0" class="main_part_w clear">
+			<tbody>
+				<tr align="center">
+					<td class="top_service_title">
+						<a href="/job_services/category/<%= category.id %>">
+							<%= category_name %></a>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding: 0pt 1px;">
+					
+						<table cellspacing="0" cellpadding="0" border="0" class="main_part_w top_service" style="padding: 0px 1px;">
+	         				<tbody>
+								
+								<% 1.upto(JobServicesController::Top_List_Num) do |i| %>
+									<% service = services[i-1] %>
+									<tr>
+										<td width="20" class="align_c top_service_ranking">
+											<%= i %>
+										</td>
+										<td align="left" nowrap="">
+											<% if service %>
+												<% service_name = h(service.name) %>
+												<a href="/job_services/<%= service.id %><%= %Q!/url_preview! if service.url && (service.url != "") %>" title="<%= service_name %>" target="_blank">
+													<%= truncate(service_name, 15) %></a>
+											<% else %>
+												<a href="/job_services/new" style="font-size: 12px; color: #DDDDDD; margin-left: 20px;">
+													...我来添加...</a>
+											<% end %>
+										</td>
+										<td align="right" width="35">
+											<% if service %>
+												<a href="/job_services/<%= service.id %>" target="_blank">
+													<span class="point_number">
+														<%= sprintf("%.1f", service.average || 0) %>
+													</span>
+													<img src="/images/job_services/right_arrow_icon.gif" border="0" />
+												</a>
+											<% end %>
+										</td>
+									</tr>
+								<% end %>
+     						
+								<tr class="align_r top_service_info">
+									<td colspan="3" align="right">
+										<a href="/job_services/category/<%= category.id %>">
+											更多<%= category_name %>服务 »</a>
+									</td>
+								</tr>
+								
+							</tbody>
+						</table>
+			
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<div style="height: 5px;"></div>
+
+	</div>
+	
+<% end %>
+
+

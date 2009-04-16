@@ -15,18 +15,85 @@
 	<% end %>
 </div>
 
-<div class="job_item_container">
+<div class="blog_container">
 	<h2><%= page_title %></h2>
 	
 	
+	<div style="height: 10px;"></div>
 	
-	<div class="community_block">
-		<% JobService.find(:all).each do |s| %>
-			<div class="community_block">
-				<a href="/job_services/<%= s.id %>">
-					<%= h(s.name) %></a>
-			</div>
-		<% end %>
+	<div class="overflow_hidden">
+		
+		<style>
+			.t {
+				font-size: 0px;
+				height: 1px;
+				width: 4px;
+			}
+			
+			.w {
+				background: #FFFFFF none repeat scroll 0 0;
+			}
+			
+			.o {
+				font-size: 0px;
+				height: 1px;
+				width: 2px;
+			}
+			
+			.p {
+				font-size: 0px;
+				height: 2px;
+				width: 1px;
+			}
+			
+			td.top_service_title {
+				font-size: 14px;
+				font-weight: bold;
+				padding: 2px 3px 1px 6px;
+			}
+			
+			table.top_service {
+				background: #FFFFFF none repeat scroll 0 0;
+				font-size: 14px;
+			}
+			
+			.top_service_info {
+				color: #666666;
+				font-size: 12px;
+				font-weight: normal;
+				line-height: 140%;
+			}
+			
+			table.top_service td {
+				border-top: 1px solid #E8EEF7;
+				line-height: 23px;
+				padding-right: 3px;
+				padding-top: 2px;
+			}
+			
+			.top_service_ranking {
+				color: #CBCBCB;
+				font-weight: bold;
+			}
+			
+			.top_services {
+				background-color: #F7DB7B;
+				width: 250px;
+				margin: 10px;
+			}
+			
+			.top_services a {
+				color: #3366CC;
+				text-decoration: none;
+			}
+			
+			.top_services a:hover {
+				text-decoration: underline;
+			}
+		</style>
+		
+		<%= render :partial => "top_services", :collection => @categories %>
+		
 	</div>
 </div>
 

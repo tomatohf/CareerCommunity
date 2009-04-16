@@ -20,12 +20,16 @@ class JobServiceCategory < ActiveRecord::Base
     self.clear_category_cache(category.id)
     
     self.clear_all_categories_cache
+    
+    JobService.clear_top_services_cache(category.id)
   }
   
   after_save { |category|
     self.set_category_cache(category)
     
     self.clear_all_categories_cache
+    
+    JobService.clear_top_services_cache(category.id)
   }
   
   

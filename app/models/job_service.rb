@@ -4,6 +4,10 @@ class JobService < ActiveRecord::Base
   
   
   
+  include CareerCommunity::Util
+  
+  
+  
   has_and_belongs_to_many :functions,
                           :foreign_key => "job_service_id",
                           :association_foreign_key => "function_id",
@@ -40,13 +44,25 @@ class JobService < ActiveRecord::Base
   
   
   
+  FCKP_top_services = :fc_top_services
+  
   after_destroy { |job_service|
     PointProfile.adjust_account_points_by_action(job_service.creator_id, :add_job_service, false)
+    
+    self.clear_top_services_cache(job_service.category_id)
   }
   
   after_create { |job_service|
     PointProfile.adjust_account_points_by_action(job_service.creator_id, :add_job_service, true)
   }
+  
+  after_save { |job_service|
+    self.clear_top_services_cache(job_service.category_id)
+  }
+  
+  def self.clear_top_services_cache(category_id)
+    Cache.delete(expand_cache_key("#{FCKP_top_services}_#{category_id}"))
+  end
  
 end
 
