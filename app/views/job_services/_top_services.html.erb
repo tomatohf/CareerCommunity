@@ -1,6 +1,6 @@
 <% category = top_services %>
 
-<%# cache("#{JobService::FCKP_top_services}_#{category.id}") do %>
+<% cache("#{JobService::FCKP_top_services}_#{category.id}") do %>
 
 	<%
 		query = "SELECT job_services.id, name, url, AVG(job_service_evaluations.point) as average"
@@ -87,6 +87,6 @@
 
 	</div>
 	
-<%# end %>
+<% end %>
 
 

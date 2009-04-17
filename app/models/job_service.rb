@@ -44,9 +44,13 @@ class JobService < ActiveRecord::Base
   
   
   
+  CKP_job_service = :job_service
+  
   FCKP_top_services = :fc_top_services
   
   after_destroy { |job_service|
+    self.clear_job_service_cache(job_service.id)
+    
     PointProfile.adjust_account_points_by_action(job_service.creator_id, :add_job_service, false)
     
     self.clear_top_services_cache(job_service.category_id)
@@ -57,11 +61,42 @@ class JobService < ActiveRecord::Base
   }
   
   after_save { |job_service|
+    self.set_job_service_cache(job_service)
+    
     self.clear_top_services_cache(job_service.category_id)
   }
   
   def self.clear_top_services_cache(category_id)
     Cache.delete(expand_cache_key("#{FCKP_top_services}_#{category_id}"))
+  end
+  
+  
+  
+  def self.get_job_service(job_service_id)
+    js = Cache.get("#{CKP_job_service}_#{job_service_id}".to_sym)
+    
+    unless js
+      js = self.find(job_service_id)
+      
+      self.set_job_service_cache(js)
+    end
+    js
+  end
+  
+  def self.set_job_service_cache(job_service)
+    Cache.set("#{CKP_job_service}_#{job_service.id}".to_sym, job_service.clear_association, Cache_TTL)
+  end
+  
+  def self.clear_job_service_cache(job_service_id)
+    Cache.delete("#{CKP_job_service}_#{job_service_id}".to_sym)
+  end
+  
+  
+  def clear_association
+    copy = deep_copy(self)
+    copy.clear_association_cache
+    copy.clear_aggregation_cache
+    copy
   end
  
 end

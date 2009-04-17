@@ -1,0 +1,19 @@
+<table cellpadding="0" cellspacing="0" class="main_part_w">
+	<tr>
+		<td>
+			<a href="/spaces/show/<%= operator[2] %>" class="account_nick_link">
+				<%= h(operator[0]) %></a>
+			添加了求职服务
+			<a href="/job_services/<%= job_service_id %>">
+				<%= h(job_service_name) %></a>
+		</td>
+		
+		<% unless save_space %>
+			<td style="width: 50px">
+				<a href="/spaces/show/<%= operator[2] %>">
+					<img src="<%= face_img_src(operator[1]) %>" border="0" /></a>
+			</td>
+		<% end %>
+	</tr>
+</table>
+

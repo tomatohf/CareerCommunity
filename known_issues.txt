@@ -1,10 +1,5 @@
 ﻿求职网址导航
-	- chart data cache
-	- 添加 function 标签
-	- 地图(如果有地点)
-	- 添加服务和点评服务的 account action
-	- cache job service 
-	- 打开 top services 里面的 cache
+	- 地图(如果有地点), 顺便看看 activity 的地图能否支持全国
 
 
 把 82B1 的东西整理整理部署上去?

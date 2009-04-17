@@ -25,7 +25,7 @@ class JobServiceEvaluation < ActiveRecord::Base
   after_destroy { |evaluation|
     PointProfile.adjust_account_points_by_action(evaluation.account_id, :add_job_service_evaluation, false)
     
-    JobService.clear_top_services_cache(JobService.find(evaluation.job_service_id).category_id)
+    JobService.clear_top_services_cache(JobService.get_job_service(evaluation.job_service_id).category_id)
   }
   
   after_create { |evaluation|
@@ -33,7 +33,7 @@ class JobServiceEvaluation < ActiveRecord::Base
   }
   
   after_save { |evaluation|
-    JobService.clear_top_services_cache(JobService.find(evaluation.job_service_id).category_id)
+    JobService.clear_top_services_cache(JobService.get_job_service(evaluation.job_service_id).category_id)
   }
   
   

@@ -821,14 +821,6 @@ ActiveRecord::Schema.define(:version => 30) do
   add_index "job_service_evaluations", ["point"], :name => "index_job_service_evaluations_on_point"
   add_index "job_service_evaluations", ["delta"], :name => "index_job_service_evaluations_on_delta"
 
-  create_table "job_service_functions", :force => true do |t|
-    t.string  "name"
-    t.boolean "delta"
-  end
-
-  add_index "job_service_functions", ["name"], :name => "index_job_service_functions_on_name"
-  add_index "job_service_functions", ["delta"], :name => "index_job_service_functions_on_delta"
-
   create_table "job_services", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -852,14 +844,6 @@ ActiveRecord::Schema.define(:version => 30) do
   add_index "job_services", ["category_id"], :name => "index_job_services_on_category_id"
   add_index "job_services", ["cost"], :name => "index_job_services_on_cost"
   add_index "job_services", ["delta"], :name => "index_job_services_on_delta"
-
-  create_table "job_services_functions", :id => false, :force => true do |t|
-    t.integer "job_service_id", :limit => 11
-    t.integer "function_id",    :limit => 11
-  end
-
-  add_index "job_services_functions", ["job_service_id"], :name => "index_job_services_functions_on_job_service_id"
-  add_index "job_services_functions", ["function_id"], :name => "index_job_services_functions_on_function_id"
 
   create_table "job_statuses", :force => true do |t|
     t.datetime "created_at"

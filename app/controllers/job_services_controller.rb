@@ -53,7 +53,7 @@ class JobServicesController < ApplicationController
   end
 
   def show
-    @service = JobService.find(params[:id])
+    @service = JobService.get_job_service(params[:id])
     
     @creator_nick_pic = Account.get_nick_and_pic(@service.creator_id)
     
@@ -81,10 +81,13 @@ class JobServicesController < ApplicationController
     categories = []
     colors = []
     
+    counts = JobServiceEvaluation.count(
+      :conditions => ["job_service_id = ?", service_id],
+      :group => "point"
+    )
+    
     1.upto(5) do |i|
-      count = JobServiceEvaluation.count(
-        :conditions => ["job_service_id = ? and point = ?", service_id, i]
-      )
+      count = counts[i] || 0
       
       series << count
       
@@ -108,7 +111,7 @@ class JobServicesController < ApplicationController
   end
   
   def url_preview_top
-    @service = JobService.find(params[:id])
+    @service = JobService.get_job_service(params[:id])
     
     render :layout => "empty"
   end
@@ -131,6 +134,12 @@ class JobServicesController < ApplicationController
     @service.phone = params[:service_phone] && params[:service_phone].strip
     
     if @service.save
+      # record account action
+      AccountAction.create_new(session[:account_id], "add_job_service", {
+        :job_service_id => @service.id,
+        :job_service_name => @service.name
+      })
+      
       jump_to("/job_services/#{@service.id}")
     else
       flash.now[:error_msg] = "操作失败, 再试一次吧"
@@ -139,11 +148,11 @@ class JobServicesController < ApplicationController
   end
   
   def edit
-    @service = JobService.find(params[:id])
+    @service = JobService.get_job_service(params[:id])
   end
   
   def update
-    @service = JobService.find(params[:id])
+    @service = JobService.get_job_service(params[:id])
     
     @service.updater_id = session[:account_id]
     
@@ -168,7 +177,7 @@ class JobServicesController < ApplicationController
   end
   
   def destroy
-    service = JobService.find(params[:id])
+    service = JobService.get_job_service(params[:id])
     
     service.destroy
     
@@ -192,6 +201,17 @@ class JobServicesController < ApplicationController
     evaluation.point = params[:service_evaluation_point] && params[:service_evaluation_point].strip
     
     evaluation_saved = evaluation.save
+    
+    
+    if evaluation_saved
+      AccountAction.create_new(session[:account_id], "evaluate_job_service", {
+        :job_service_id => evaluation.job_service_id,
+        :evaluation_id => evaluation.id,
+        :evaluation_content => evaluation.content,
+        :evaluation_point => evaluation.point
+      })
+    end
+    
     
     total_count = JobServiceEvaluation.get_count(evaluation.job_service_id)
     last_page = total_count > 0 ? (total_count.to_f/Evaluation_Page_Size).ceil : 1
@@ -288,7 +308,7 @@ class JobServicesController < ApplicationController
   end
   
   def check_service_url
-    @service = JobService.find(params[:id])
+    @service = JobService.get_job_service(params[:id])
     
     jump_to("/job_services/#{@service.id}") unless @service.url && (@service.url != "")
   end

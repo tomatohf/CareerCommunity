@@ -31,6 +31,8 @@ class AccountAction < ActiveRecord::Base
     "add_vote_comment" => "评论投票",
     "add_bookmark" => "添加推荐/收藏",
     "add_talk_comment" => "评论访谈录",
+    "add_job_service" => "添加求职服务",
+    "evaluate_job_service" => "点评求职服务"
   }
   
   Action_Types.keys.each do |t|
@@ -383,6 +385,44 @@ class AccountAction < ActiveRecord::Base
             :talk_id => #{talk_id},
             :comment_id => #{comment_id},
             :comment_content => #{comment_content.inspect},
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddJobService < Base
+      def action_text(data, operator, save_space)
+        job_service_id = data[:job_service_id]
+        job_service_name = data[:job_service_name]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_job_service", :locals => {
+            :operator => #{operator},
+            :job_service_id => #{job_service_id},
+            :job_service_name => #{job_service_name.inspect},
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class EvaluateJobService < Base
+      def action_text(data, operator, save_space)
+        evaluation_id = data[:evaluation_id]
+        evaluation_content = data[:evaluation_content]
+        evaluation_point = data[:evaluation_point]
+        job_service_id = data[:job_service_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/evaluate_job_service", :locals => {
+            :operator => #{operator},
+            :job_service_id => #{job_service_id},
+            :evaluation_id => #{evaluation_id},
+            :evaluation_point => #{evaluation_point},
+            :evaluation_content => #{evaluation_content.inspect},
             
             :save_space => #{save_space.inspect}
           })

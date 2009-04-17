@@ -165,7 +165,8 @@ class ApplicationController < ActionController::Base
       hwp = request.host_with_port
       previous_path = referer.include?(hwp) ? referer.split(hwp)[1] : referer
     
-      session[:original_url] = previous_path unless (previous_path =~ /login|register|accounts\/new/i) ||
+      filter_out_regexp = /login|register|accounts\/new|accounts\/send_password/i
+      session[:original_url] = previous_path unless (previous_path =~ filter_out_regexp) ||
         (ActionController::Routing::Routes.recognize_path(previous_path, :method => :get) rescue nil).nil?
     end
   end
