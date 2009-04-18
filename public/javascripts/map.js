@@ -28,6 +28,14 @@ var point_y;
 
 
 function draw_map(point) {
+	map = new google.maps.Map2(
+		document.getElementById("map_canvas"),
+		{
+			size: new GSize(small_map_width, small_map_height)
+		}
+	);
+	
+	
 	display_map(point);
 
 	document.getElementById("big_map_link").style.display = "";
@@ -159,13 +167,6 @@ function unrecognize_place() {
 function load_map() {
 	if (GBrowserIsCompatible()) {
 	
-		map = new google.maps.Map2(
-			document.getElementById("map_canvas"),
-			{
-				size: new GSize(small_map_width, small_map_height)
-			}
-		);
-		
 		geocoder = new GClientGeocoder();
 		
 		type_control = new GMapTypeControl();
