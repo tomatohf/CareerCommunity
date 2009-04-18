@@ -620,8 +620,8 @@
 		<% unless @activity.cancelled || @activity_setting[:hide_map] || @activity.online %>
 			<div>
 				<% form_tag "/activities/#{@activity_id}/cache_point", :method => :post, :target => "point_cache_operator", :id => "do_cache_form" do %>
-					<input type="hidden" name="point_lat" id="point_lat" value="" />
-					<input type="hidden" name="point_lng" id="point_lng" value="" />
+					<input type="hidden" name="point_x" id="point_x_input" value="" />
+					<input type="hidden" name="point_y" id="point_y_input" value="" />
 				<% end %>
 			</div>
 	
@@ -657,181 +657,19 @@
 
 <% unless @activity.cancelled || @activity_setting[:hide_map] || @activity.online %>
 	<script src="http://ditu.google.cn/maps?file=api&v=2&hl=zh&key=ABQIAAAAx5FxwPteEaekBa2OsGoGMhRhWPLdTYHlYKadOx9YMcM4H2s8ERRt0O5IDG1pAtx2TxjX-UMGlI5CLA" type="text/javascript"></script>
-
 	<script type="text/javascript">
-		window.onunload = GUnload;
-	
-		var map;
-	
-		var type_control = new GMapTypeControl();
-		var small_control = new GSmallMapControl();
-		var big_control = new GLargeMapControl();
-	
-		var lat_lng;
-
-		function draw_map(lat, lng) {
-			display_map(lat, lng);
-		
-			document.getElementById("big_map_link").style.display = "";
-		
-			<% if @is_admin %>
-				document.getElementById("wrong_map_link").style.display = "";
-			<% end %>
+		var IS_OWNER = <%= !!@is_admin %>;
+		var ADDRESS_NAME = "活动地点";
+		var IS_POINT_CACHED = <%= !!(@place_point && (point_x = @place_point[0]) && (point_y = @place_point[1]) && (point_x != "") && (point_y != "")) %>;
+		if(IS_POINT_CACHED) {
+			var parsed_point_x = parseInt("<%= point_x %>");
+			var parsed_point_y = parseInt("<%= point_y %>");
+		} else {
+			var ADDRESS = "<%= activity_place %>";
 		}
-	
-		function display_map(lat, lng) {
-			if (GBrowserIsCompatible()) {
-			
-				map = new google.maps.Map2(
-					document.getElementById("map_canvas"),
-					{
-						size: new GSize(200, 200)
-					}
-				);
-			
-				lat_lng = new GLatLng(lat/100000, lng/100000);
-			
-				reset_map_center();
-
-				map.addControl(type_control);
-				map.addControl(small_control);
-
-				//map.openInfoWindow(map.getCenter(), document.createTextNode("Hello, world"));
-			
-				show_marker();
-			}
-		}
-	
-		function show_marker() {
-			map.addOverlay(new GMarker(lat_lng));
-		}
-	
-		function reset_map_center() {
-			if(map.isLoaded()) {
-				map.panTo(lat_lng);
-			}
-			else {
-				map.setCenter(
-					lat_lng,
-					15
-				);
-			}
-		}
-	
-	
-		function big_map() {
-			if(map) {
-				var mc = document.getElementById("map_canvas");
-		
-				mc.style.position = "absolute";
-		
-				mc.style.top = "30px";
-				mc.style.left = "75px";
-		
-				mc.style.border = "10px solid #888888";
-		
-				mc.style.width = "800px";
-				mc.style.height = "500px";
-				map.checkResize();
-			
-				map.removeControl(small_control);
-				map.addControl(big_control);
-			
-				reset_map_center();
-			
-				document.getElementById("small_map_link").style.display = "";
-				document.getElementById("big_map_link").style.display = "none";
-			}
-		}
-	
-		function small_map() {
-			if(map) {
-				var mc = document.getElementById("map_canvas");
-		
-				mc.style.borderStyle = "none";
-		
-				mc.style.width = "200px";
-				mc.style.height = "200px";
-				map.checkResize();
-			
-				map.removeControl(big_control);
-				map.addControl(small_control);
-		
-				mc.style.top = "";
-				mc.style.left = "";
-		
-				mc.style.position = "relative";
-		
-				reset_map_center();
-			
-				document.getElementById("big_map_link").style.display = "";
-				document.getElementById("small_map_link").style.display = "none";
-			}
-		}
-	
-		function explain_wrong_map() {
-			alert("乔布圈根据搜索*活动地点*的结果自动呈现地图, 请尽量填写清晰和易于搜索的*活动地点*, 以获得最佳的地图匹配和呈现效果. (注: 目前仅支持上海市)");
-		}
-	
-		function explain_no_map() {
-			alert("乔布圈根据搜索*活动地点*的结果自动呈现地图, 如果所填写的*活动地点*无法识别或无法被搜索到, 则无法呈现地图. 请尽量填写清晰和易于搜索的*活动地点*. (注: 目前仅支持上海市)");
-		}
+		var AUTO_LOAD = true;
 	</script>
-
-
-
-	<script language="javascript" src="http://api.51ditu.com/js/search.js"></script>
-	<script language="javascript">
-		var lat;
-		var lng;
-	
-		function search_finish(result) {
-			var points = result.searchPoints;
-		
-			if(points.length > 0) {
-				var point = points[0].point;
-				lat = point[1];
-				lng = point[0];
-			
-				draw_map(lat, lng);
-			}
-			else {
-				lat = "no";
-				lng = "no";
-			
-				unrecognize_place();
-			}
-		
-			<% if @is_admin %>
-				document.getElementById("point_lat").value = String(lat);
-				document.getElementById("point_lng").value = String(lng);
-				document.getElementById("do_cache_form").submit();
-			<% end %>
-		}
-	
-		function unrecognize_place() {
-			<% if @is_admin %>
-				document.getElementById("no_map_link").style.display = "";
-			<% end %>
-		}
-	
-		<% if @place_point && (lat = @place_point[0]) && (lng = @place_point[1]) && (lat != "") && (lng != "") %>		
-			var parsed_lat = parseInt("<%= lat %>");
-			var parsed_lng = parseInt("<%= lng %>");
-		
-			if(isNaN(parsed_lat) || isNaN(parsed_lng)) {
-				unrecognize_place();
-			}
-			else {
-				draw_map(parsed_lat, parsed_lng);
-			}
-		<% else %>
-			var search = new LTLocalSearch(search_finish);
-
-			search.setCity("上海");
-			search.search("<%= activity_place %>");
-		<% end %>
-	</script>
+	<script language="JavaScript" src="/javascripts/map.js"></script>
 <% end %>
 
 

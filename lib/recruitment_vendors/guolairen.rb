@@ -161,8 +161,8 @@ module RecruitmentVendor
       lis.collect { |li|
         {
           li.search("//a")[0]["href"].strip => li.search("//span")[0].inner_html
-        }
-      }
+        } rescue nil
+      }.compact
     end
     
     def get_guolairen_lecture_new_links(url)

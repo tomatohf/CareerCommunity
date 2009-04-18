@@ -294,8 +294,8 @@ class Activity < ActiveRecord::Base
     Cache.get("#{CKP_activity_place_point}_#{activity_id}".to_sym)
   end
   
-  def self.set_activity_place_point(activity_id, lat, lng)
-    Cache.set("#{CKP_activity_place_point}_#{activity_id}".to_sym, [lat, lng])
+  def self.set_activity_place_point(activity_id, point_x, point_y)
+    Cache.set("#{CKP_activity_place_point}_#{activity_id}".to_sym, [point_x, point_y])
   end
   
   def self.clear_activity_place_point_cache(activity_id)

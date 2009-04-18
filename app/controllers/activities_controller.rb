@@ -660,9 +660,9 @@ class ActivitiesController < ApplicationController
     activity_id = params[:id]
     
     if ActivityMember.is_activity_admin(activity_id, session[:account_id])
-      lat = params[:point_lat]
-      lng = params[:point_lng]
-      Activity.set_activity_place_point(activity_id, lat, lng)
+      point_x = params[:point_x]
+      point_y = params[:point_y]
+      Activity.set_activity_place_point(activity_id, point_x, point_y)
     end
     
     render :layout => false, :text => ""
