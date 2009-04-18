@@ -71,6 +71,20 @@ class JobServicesController < ApplicationController
       "point",
       :conditions => ["job_service_id = ?", @service.id]
     ) || 0
+    
+    @place_point = JobService.get_place_point(@service.id)
+  end
+  
+  def cache_point
+    service_id = params[:id]
+    
+    if is_editor?
+      point_x = params[:point_x]
+      point_y = params[:point_y]
+      JobService.set_place_point(service_id, point_x, point_y)
+    end
+    
+    render :layout => false, :text => ""
   end
   
   def point_chart

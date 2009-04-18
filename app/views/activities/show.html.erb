@@ -658,12 +658,14 @@
 <% unless @activity.cancelled || @activity_setting[:hide_map] || @activity.online %>
 	<script src="http://ditu.google.cn/maps?file=api&v=2&hl=zh&key=ABQIAAAAx5FxwPteEaekBa2OsGoGMhRhWPLdTYHlYKadOx9YMcM4H2s8ERRt0O5IDG1pAtx2TxjX-UMGlI5CLA" type="text/javascript"></script>
 	<script type="text/javascript">
+		var small_map_width = 200;
+		var small_map_height = 200;
 		var IS_OWNER = <%= !!@is_admin %>;
 		var ADDRESS_NAME = "活动地点";
 		var IS_POINT_CACHED = <%= !!(@place_point && (point_x = @place_point[0]) && (point_y = @place_point[1]) && (point_x != "") && (point_y != "")) %>;
 		if(IS_POINT_CACHED) {
-			var parsed_point_x = parseInt("<%= point_x %>");
-			var parsed_point_y = parseInt("<%= point_y %>");
+			var parsed_point_x = parseFloat("<%= point_x %>");
+			var parsed_point_y = parseFloat("<%= point_y %>");
 		} else {
 			var ADDRESS = "<%= activity_place %>";
 		}

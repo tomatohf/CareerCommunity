@@ -100,8 +100,8 @@ function small_map() {
 
 		mc.style.borderStyle = "none";
 
-		mc.style.width = "200px";
-		mc.style.height = "200px";
+		mc.style.width = small_map_width + "px";
+		mc.style.height = small_map_height + "px";
 		map.checkResize();
 	
 		map.removeControl(big_control);
@@ -162,7 +162,7 @@ function load_map() {
 		map = new google.maps.Map2(
 			document.getElementById("map_canvas"),
 			{
-				size: new GSize(200, 200)
+				size: new GSize(small_map_width, small_map_height)
 			}
 		);
 		
@@ -178,7 +178,8 @@ function load_map() {
 				unrecognize_place();
 			}
 			else {
-				draw_map(new GPoint(parsed_point_x, parsed_point_y));
+				// reverse
+				draw_map(new GLatLng(parsed_point_y, parsed_point_x));
 			}
 		} else {
 			if(geocoder) {

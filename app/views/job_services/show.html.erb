@@ -3,29 +3,20 @@
 <% page_title = "点评 #{service_name}" %>
 <% community_page_title(page_title) %>
 
+<% has_place = @service.place && (@service.place != "") %>
+<% service_place = h(@service.place || "") %>
+
+<% is_info_editor = info_editor?(session[:account_id]) %>
+
 <div class="float_r community_container_r">
 
 	<div class="community_block align_c">
-		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/job_services/#{@service.id}", :title => "点评: #{service_name}"} %>
-	</div>
-	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
-	
-	<div class="community_block align_c">
-		<div>
-			<% 5.downto(1) do |i| %>
-				<div style="color: #<%= JobServicesController::Point_Chart_Colors[i-1] %>; font-weight: bold;">
-					<%= (i - 1 + 65).chr %>
-					:
-					<%= i %>
-					分
-					&nbsp;
-					-
-					&nbsp;
-					<%= rank(i, :small => true, :readonly => true) %>
-				</div>
+		<div class="align_r">
+			<% 1.upto(5) do |i| %>
+				<span style="color: #<%= JobServicesController::Point_Chart_Colors[i-1] %>; font-weight: bold; padding-left: 20px;">
+					<%= (i - 1 + 65).chr %>:
+					<%= i %>分
+				</span>
 			<% end %>
 		</div>
 		
@@ -54,11 +45,46 @@
 		}
 		
 		function get_chart_html(chart_type) {
-			return "<embed width='280' height='250' src='/charts/charts.swf?library_path=/charts/charts_library&xml_source=/job_services/point_chart/<%= @service.id %>?chart_type=" + chart_type + "' quality='high' type='application/x-shockwave-flash'></embed>"
+			return "<embed width='280' height='200' src='/charts/charts.swf?library_path=/charts/charts_library&xml_source=/job_services/point_chart/<%= @service.id %>?chart_type=" + chart_type + "' quality='high' type='application/x-shockwave-flash'></embed>"
 		}
 		
 		chart_type("bar_v");
 	</script>
+	
+	
+	
+	<% if has_place %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+
+		<div style="margin-left: 20px;">
+			<div id="map_canvas">
+
+			</div>
+
+			<div class="align_c">
+				<a id="big_map_link" href="#" onclick="big_map(); return false;" style="display: none;">
+					<img src="/images/show_big.gif" border="0" alt="大图" title="大图" width="12" height="12" />
+					查看大地图</a>
+			</div>
+
+			<% if is_info_editor %>
+				<div class="align_r">
+					<a id="wrong_map_link" href="#" onclick="explain_wrong_map(); return false;" style="display: none;">
+						(地图错误?)</a>
+				</div>
+
+				<div class="align_c">
+					<a id="no_map_link" href="#" onclick="explain_no_map(); return false;" style="display: none;">
+						(为什么没有显示地图?)</a>
+				</div>
+			<% end %>
+
+			<a id="small_map_link" href="#" onclick="small_map(); return false;" style="position: absolute; top: 5px; left: 875px; display: none;">
+				<img id="close_big_map_img" src="/images/activities/close_big_map_middle.gif" border="0" /></a>
+		</div>
+	<% end %>
 
 </div>
 
@@ -96,13 +122,13 @@
 							<td align="left" valign="top"></td>
 						</tr>
 						
-						<% if @service.place && @service.place != "" %>
+						<% if has_place %>
 							<tr>
 								<td align="left" valign="top">
 									地址:
 								</td>
 								<td align="left" valign="top">
-									<%= h(@service.place) %>
+									<%= service_place %>
 								</td>
 							</tr>
 						<% end %>
@@ -197,7 +223,11 @@
 		添加
 	</div>
 	
-	<% if info_editor?(session[:account_id]) %>
+	<div class="community_block align_r">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/job_services/#{@service.id}", :title => "点评: #{service_name}"} %>
+	</div>
+	
+	<% if is_info_editor %>
 		<% form_tag "/job_services/#{@service.id}", :method => :delete, :id => "service_delete_form" do %>
 		<% end %>
 		
@@ -219,7 +249,7 @@
 		条<span id="evaluation_list">点评</span> ...
 	</div>
 	
-	<% if info_editor?(session[:account_id]) %>
+	<% if is_info_editor %>
 		<% form_tag "", :method => :post, :id => "delete_evaluation_form" do %>
 		<% end %>
 		
@@ -243,7 +273,7 @@
 	</div>
 
 	<div class="community_block">
-		<%= render(:partial => "evaluation", :collection => @service_evaluations, :locals => {:can_del => info_editor?(session[:account_id]), :counter_shift => calculate_counter_shift(@service_evaluations)}) %>
+		<%= render(:partial => "evaluation", :collection => @service_evaluations, :locals => {:can_del => is_info_editor, :counter_shift => calculate_counter_shift(@service_evaluations)}) %>
 	</div>
 	
 	<div class="community_block">
@@ -286,6 +316,18 @@
 		<% end %>
 	</div>
 	
+	
+	<% if is_info_editor && has_place %>
+		<div>
+			<% form_tag "/job_services/#{@service.id}/cache_point", :method => :post, :target => "point_cache_operator", :id => "do_cache_form" do %>
+				<input type="hidden" name="point_x" id="point_x_input" value="" />
+				<input type="hidden" name="point_y" id="point_y_input" value="" />
+			<% end %>
+		</div>
+
+		<iframe name="point_cache_operator" id="point_cache_operator" style="display: none;"></iframe>
+	<% end %>
+	
 </div>
 
 
@@ -319,4 +361,25 @@
 		cr.inner_html = "当前: " + num;
 	}
 </script>
+
+
+
+<% if has_place %>
+	<script src="http://ditu.google.cn/maps?file=api&v=2&hl=zh&key=ABQIAAAAx5FxwPteEaekBa2OsGoGMhRhWPLdTYHlYKadOx9YMcM4H2s8ERRt0O5IDG1pAtx2TxjX-UMGlI5CLA" type="text/javascript"></script>
+	<script type="text/javascript">
+		var small_map_width = 280;
+		var small_map_height = 280;
+		var IS_OWNER = <%= !!is_info_editor %>;
+		var ADDRESS_NAME = "地点";
+		var IS_POINT_CACHED = <%= !!(@place_point && (point_x = @place_point[0]) && (point_y = @place_point[1]) && (point_x != "") && (point_y != "")) %>;
+		if(IS_POINT_CACHED) {
+			var parsed_point_x = parseFloat("<%= point_x %>");
+			var parsed_point_y = parseFloat("<%= point_y %>");
+		} else {
+			var ADDRESS = "<%= service_place %>";
+		}
+		var AUTO_LOAD = true;
+	</script>
+	<script language="JavaScript" src="/javascripts/map.js"></script>
+<% end %>
 

@@ -46,6 +46,8 @@ class JobService < ActiveRecord::Base
   
   CKP_job_service = :job_service
   
+  CKP_place_point = :job_service_place_point
+  
   FCKP_top_services = :fc_top_services
   
   after_destroy { |job_service|
@@ -54,6 +56,8 @@ class JobService < ActiveRecord::Base
     PointProfile.adjust_account_points_by_action(job_service.creator_id, :add_job_service, false)
     
     self.clear_top_services_cache(job_service.category_id)
+    
+    self.clear_place_point_cache(job_service.id)
   }
   
   after_create { |job_service|
@@ -61,9 +65,13 @@ class JobService < ActiveRecord::Base
   }
   
   after_save { |job_service|
-    self.set_job_service_cache(job_service)
-    
     self.clear_top_services_cache(job_service.category_id)
+    
+    self.clear_place_point_cache(job_service.id) if job_service.place_changed?
+    
+    # clear changed attributes, before we cache it ...
+    job_service.clean_myself
+    self.set_job_service_cache(job_service)
   }
   
   def self.clear_top_services_cache(category_id)
@@ -89,6 +97,19 @@ class JobService < ActiveRecord::Base
   
   def self.clear_job_service_cache(job_service_id)
     Cache.delete("#{CKP_job_service}_#{job_service_id}".to_sym)
+  end
+  
+  
+  def self.get_place_point(job_service_id)
+    Cache.get("#{CKP_place_point}_#{job_service_id}".to_sym)
+  end
+  
+  def self.set_place_point(job_service_id, point_x, point_y)
+    Cache.set("#{CKP_place_point}_#{job_service_id}".to_sym, [point_x, point_y])
+  end
+  
+  def self.clear_place_point_cache(job_service_id)
+    Cache.delete("#{CKP_place_point}_#{job_service_id}".to_sym)
   end
   
   

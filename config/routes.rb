@@ -600,7 +600,9 @@ ActionController::Routing::Routes.draw do |map|
     :delete_evaluation => :post,
     
     :url_preview => :get,
-    :url_preview_top => :get
+    :url_preview_top => :get,
+    
+    :cache_point => :post
     
   }
 
