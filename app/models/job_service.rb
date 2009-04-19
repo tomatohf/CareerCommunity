@@ -8,14 +8,6 @@ class JobService < ActiveRecord::Base
   
   
   
-  has_and_belongs_to_many :functions,
-                          :foreign_key => "job_service_id",
-                          :association_foreign_key => "function_id",
-                          :join_table => "job_services_functions",
-                          :class_name => "JobServiceFunction"
-  
-  
-  
   belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"
   belongs_to :updater, :class_name => "Account", :foreign_key => "updater_id"
   
