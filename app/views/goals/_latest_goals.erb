@@ -1,0 +1,38 @@
+<div>
+	<div style="background: #A2BDCF none repeat scroll 0px 0px; padding: 10px;">
+		<% form_tag "#", :method => :get do %>
+			我想要
+			:
+			
+			<input type="text" name="goal[name]" id="newgoal" class="text_field" size="30" />
+			
+			<input type="submit" value="添加到我的目标" class="button" />
+			
+			<a href="#">
+				去我的目标</a>
+		<% end %>
+	</div>
+	
+	<div style="color: #555555; background:#FFFFFF none repeat scroll 0px 0px; border-color: -moz-use-text-color #A2BDCF #A2BDCF; border-style: none solid solid; border-width: medium 2px 2px; padding: 5px;">
+		<div>
+			大家都想做什么 ...
+			
+			(
+				<a href="#">
+					全部的目标列表</a>
+			)
+		</div>
+		
+		<div>
+			<% 30.times do |i| %>
+				<span class="level1">
+					<a title="Have my own pottery studio" href="/things/view/56378/have-my-own-pottery-studio">
+						拥有自己的工作室</a>
+				</span>
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+

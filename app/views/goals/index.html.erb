@@ -1,0 +1,86 @@
+<% page_title = "定个目标 许下愿望 记录分享实现进度" %>
+<% community_page_title(page_title) %>
+
+
+<div class="float_r community_container_r">
+	
+	<div class="community_block align_c">
+		<a href="#" style="font-size: 14px;">
+			我的
+			<b>1541</b>
+			条目标</a>
+	</div>
+	<div class="community_block align_c">
+		<a href="#">
+			看看朋友们的目标</a>
+	</div>
+	<div class="community_block align_c">
+		<a href="#">
+			最新的目标列表</a>
+	</div>
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	<div class="community_block align_c">
+		<% form_tag "/community/search", :method => :get do %>
+			<input type="text" name="query" class="text_field" style="width: 50%" />
+			<input type="hidden" name="scope" value="goal" />
+
+			&nbsp;
+			<input type="submit" value="搜索目标" class="button" />
+		<% end %>
+	</div>
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_title">
+		最新进度 ...
+	</div>
+	<div class="align_r">
+		<% form_tag "/community/search", :method => :get do %>
+			<input type="text" name="query" class="text_field" style="width: 150px;" />
+			<input type="hidden" name="scope" value="goal_track" />
+
+			&nbsp;
+			<input type="submit" value="搜索目标进度" class="button" />
+		<% end %>
+	</div>
+	<div class="community_block">
+		
+	</div>
+	
+</div>
+
+<div class="community_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block">
+		<%= render :partial => "latest_goals" %>
+	</div>
+	
+	
+	<div class="community_title">
+		<div class="float_r">
+			<% form_tag "/community/search", :method => :get do %>
+				<input type="text" name="query" class="text_field" style="width: 150px;" />
+				<input type="hidden" name="scope" value="goal_post" />
+
+				&nbsp;
+				<input type="submit" value="搜索目标话题" class="button" />
+			<% end %>
+		</div>
+		
+		最新讨论话题 ...
+	</div>
+	<div class="community_block">
+		
+	</div>
+	
+</div>
+
+
