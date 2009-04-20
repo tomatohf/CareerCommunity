@@ -1,9 +1,5 @@
-class Education < ActiveRecord::Base
+class Education < StaticModel::StringBase
   
-  def self.find(id)
-    id ? id.to_s == "all" ? @@all : @@all[id-1] : ""
-  end
-
   @@all = [
           "其它", # 1
           "初中及以下", # 2

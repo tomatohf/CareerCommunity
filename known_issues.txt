@@ -1,6 +1,9 @@
 ﻿把 82B1 的东西整理整理部署上去?
 
 即时聊天功能?
+	- 统计/展示 页面
+	- 分析图表
+	- 分享互动
 
 问答?
 
@@ -39,6 +42,7 @@ new recruitment vendors - 面霸网
 Voting
 	启用嵌入投票客户端
 	给 MiniVote.swf 搜身 - 减小 SWF 文件大小
+Improve new vote topic performance
 
 
 

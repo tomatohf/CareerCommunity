@@ -605,6 +605,13 @@ ActionController::Routing::Routes.draw do |map|
     :cache_point => :post
     
   }
+  
+  
+  map.resources :goals, :collection => {
+    
+  }, :member => {
+    
+  }
 
   
   

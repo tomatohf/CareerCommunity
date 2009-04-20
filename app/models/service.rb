@@ -1,9 +1,5 @@
-class Service < ActiveRecord::Base
+class Service < StaticModel::StringBase
   
-  def self.find(id)
-    id ? id.to_s == "all" ? @@all : @@all[id-1] : ""
-  end
-
   @@all = [
           "咨询详情", # 1
           "申请 乔布堂求职顾问", # 2

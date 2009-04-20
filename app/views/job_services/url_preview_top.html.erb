@@ -49,7 +49,7 @@
 				
 				评分(<span style="color: red;">*</span>)
 				:
-				<%= rank(0, :small => false, :readonly => false, :titles => JobServicesController::Rank_Titles) %>
+				<%= rank(0, :small => false, :readonly => false, :handler => "select_rank", :titles => JobServicesController::Rank_Titles) %>
 				
 				|
 				

@@ -337,14 +337,14 @@ module ApplicationHelper
     readonly = options[:readonly] && true
     titles = options[:titles] || [1, 2, 3, 4, 5]
     current_rating_id = options[:current_rating_id] || "current_rating"
-    handler = options[:handler] || "select_rank"
+    handler = options[:handler]
     
     lis = ""
     5.times do |i|
       num = i+1
       lis += %Q!
         <li>
-          <a href="#" onclick="#{handler}(#{num}); return false;" title="#{titles[i]}" class="star_#{num}#{" readonly" if readonly}">
+          <a href="#"#{" onclick=\"#{handler}(#{num}); return false;\"" if handler} title="#{titles[i]}" class="star_#{num}#{" readonly" if readonly}">
             #{num}</a>
         </li>
       !

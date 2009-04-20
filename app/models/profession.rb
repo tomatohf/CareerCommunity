@@ -1,9 +1,5 @@
-class Profession < ActiveRecord::Base
+class Profession < StaticModel::StringBase
   
-  def self.find(id)
-    id ? id.to_s == "all" ? @@all : @@all[id-1] : ""
-  end
-
   @@all = [
           "计算机硬件", # 1
           "计算机服务(系统、数据服务，维修)", # 2

@@ -9,6 +9,41 @@
 <% is_info_editor = info_editor?(session[:account_id]) %>
 
 <div class="float_r community_container_r">
+	
+	<% if has_place %>
+		<div style="margin-left: 20px;">
+			<div id="map_canvas" style="z-index: 100;">
+
+			</div>
+
+			<div class="align_c">
+				<a id="big_map_link" href="#" onclick="big_map(); return false;" style="display: none;">
+					<img src="/images/show_big.gif" border="0" alt="大图" title="大图" width="12" height="12" />
+					查看大地图</a>
+			</div>
+
+			<% if is_info_editor %>
+				<div class="align_r">
+					<a id="wrong_map_link" href="#" onclick="explain_wrong_map(); return false;" style="display: none;">
+						(地图错误?)</a>
+				</div>
+
+				<div class="align_c">
+					<a id="no_map_link" href="#" onclick="explain_no_map(); return false;" style="display: none;">
+						(为什么没有显示地图?)</a>
+				</div>
+			<% end %>
+
+			<a id="small_map_link" href="#" onclick="small_map(); return false;" style="position: absolute; top: 5px; left: 875px; display: none; z-index: 200;">
+				<img id="close_big_map_img" src="/images/activities/close_big_map_middle.gif" border="0" /></a>
+		</div>
+		
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+	<% end %>
+	
+	
 
 	<div class="community_block align_c">
 		<div class="align_r">
@@ -50,41 +85,6 @@
 		
 		chart_type("bar_v");
 	</script>
-	
-	
-	
-	<% if has_place %>
-		<div class="community_block_narrow">
-			<%= thin_hr %>
-		</div>
-
-		<div style="margin-left: 20px;">
-			<div id="map_canvas">
-
-			</div>
-
-			<div class="align_c">
-				<a id="big_map_link" href="#" onclick="big_map(); return false;" style="display: none;">
-					<img src="/images/show_big.gif" border="0" alt="大图" title="大图" width="12" height="12" />
-					查看大地图</a>
-			</div>
-
-			<% if is_info_editor %>
-				<div class="align_r">
-					<a id="wrong_map_link" href="#" onclick="explain_wrong_map(); return false;" style="display: none;">
-						(地图错误?)</a>
-				</div>
-
-				<div class="align_c">
-					<a id="no_map_link" href="#" onclick="explain_no_map(); return false;" style="display: none;">
-						(为什么没有显示地图?)</a>
-				</div>
-			<% end %>
-
-			<a id="small_map_link" href="#" onclick="small_map(); return false;" style="position: absolute; top: 5px; left: 875px; display: none;">
-				<img id="close_big_map_img" src="/images/activities/close_big_map_middle.gif" border="0" /></a>
-		</div>
-	<% end %>
 
 </div>
 
@@ -293,7 +293,7 @@
 			评分(<span style="color: red;">*</span>)
 			:
 			&nbsp;
-			<%= rank(0, :small => false, :readonly => false, :titles => JobServicesController::Rank_Titles) %>
+			<%= rank(0, :small => false, :readonly => false, :handler => "select_rank", :titles => JobServicesController::Rank_Titles) %>
 		</div>
 		<div>
 			评价(<span style="color: red;">*</span>)
