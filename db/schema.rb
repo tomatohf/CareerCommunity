@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 30) do
+ActiveRecord::Schema.define(:version => 33) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(:version => 30) do
   add_index "activities", ["member_limit"], :name => "index_activities_on_member_limit"
   add_index "activities", ["in_group"], :name => "index_activities_on_in_group"
   add_index "activities", ["delta"], :name => "index_activities_on_delta"
+  add_index "activities", ["online"], :name => "index_activities_on_online"
 
   create_table "activity_images", :force => true do |t|
     t.integer  "activity_id", :limit => 11
@@ -238,6 +239,8 @@ ActiveRecord::Schema.define(:version => 30) do
   add_index "activity_posts", ["account_id"], :name => "index_activity_posts_on_account_id"
   add_index "activity_posts", ["top"], :name => "index_activity_posts_on_top"
   add_index "activity_posts", ["delta"], :name => "index_activity_posts_on_delta"
+  add_index "activity_posts", ["responded_at"], :name => "index_activity_posts_on_responded_at"
+  add_index "activity_posts", ["good"], :name => "index_activity_posts_on_good"
 
   create_table "albums", :force => true do |t|
     t.datetime "created_at"
@@ -424,6 +427,120 @@ ActiveRecord::Schema.define(:version => 30) do
   add_index "friends", ["account_id", "friend_id"], :name => "index_friends_on_account_id_and_friend_id"
   add_index "friends", ["delta"], :name => "index_friends_on_delta"
 
+  create_table "goal_follows", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",        :limit => 11
+    t.integer  "goal_id",           :limit => 11
+    t.string   "name"
+    t.boolean  "private",                         :default => false
+    t.integer  "status_id",         :limit => 2
+    t.datetime "status_updated_at"
+    t.integer  "type_id",           :limit => 2
+    t.boolean  "delta"
+  end
+
+  add_index "goal_follows", ["created_at"], :name => "index_goal_follows_on_created_at"
+  add_index "goal_follows", ["updated_at"], :name => "index_goal_follows_on_updated_at"
+  add_index "goal_follows", ["account_id"], :name => "index_goal_follows_on_account_id"
+  add_index "goal_follows", ["goal_id"], :name => "index_goal_follows_on_goal_id"
+  add_index "goal_follows", ["private"], :name => "index_goal_follows_on_private"
+  add_index "goal_follows", ["status_id"], :name => "index_goal_follows_on_status_id"
+  add_index "goal_follows", ["status_updated_at"], :name => "index_goal_follows_on_status_updated_at"
+  add_index "goal_follows", ["type_id"], :name => "index_goal_follows_on_type_id"
+  add_index "goal_follows", ["delta"], :name => "index_goal_follows_on_delta"
+
+  create_table "goal_post_attachments", :force => true do |t|
+    t.datetime "created_at"
+    t.integer  "goal_post_id",            :limit => 11
+    t.integer  "account_id",              :limit => 11
+    t.string   "desc",                    :limit => 1000
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size",    :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "goal_post_attachments", ["created_at"], :name => "index_goal_post_attachments_on_created_at"
+  add_index "goal_post_attachments", ["goal_post_id"], :name => "index_goal_post_attachments_on_goal_post_id"
+  add_index "goal_post_attachments", ["account_id"], :name => "index_goal_post_attachments_on_account_id"
+
+  create_table "goal_post_comments", :force => true do |t|
+    t.integer  "goal_post_id", :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",   :limit => 11
+    t.string   "content",      :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "goal_post_comments", ["goal_post_id"], :name => "index_goal_post_comments_on_goal_post_id"
+  add_index "goal_post_comments", ["account_id"], :name => "index_goal_post_comments_on_account_id"
+  add_index "goal_post_comments", ["created_at"], :name => "index_goal_post_comments_on_created_at"
+  add_index "goal_post_comments", ["delta"], :name => "index_goal_post_comments_on_delta"
+
+  create_table "goal_posts", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "goal_id",      :limit => 11
+    t.integer  "account_id",   :limit => 11
+    t.string   "title"
+    t.text     "content"
+    t.boolean  "top",                        :default => false
+    t.datetime "responded_at"
+    t.boolean  "good",                       :default => false
+    t.boolean  "delta"
+  end
+
+  add_index "goal_posts", ["created_at"], :name => "index_goal_posts_on_created_at"
+  add_index "goal_posts", ["goal_id"], :name => "index_goal_posts_on_goal_id"
+  add_index "goal_posts", ["account_id"], :name => "index_goal_posts_on_account_id"
+  add_index "goal_posts", ["top"], :name => "index_goal_posts_on_top"
+  add_index "goal_posts", ["responded_at"], :name => "index_goal_posts_on_responded_at"
+  add_index "goal_posts", ["good"], :name => "index_goal_posts_on_good"
+  add_index "goal_posts", ["delta"], :name => "index_goal_posts_on_delta"
+
+  create_table "goal_track_comments", :force => true do |t|
+    t.datetime "created_at"
+    t.integer  "goal_track_id", :limit => 11
+    t.integer  "account_id",    :limit => 11
+    t.string   "content",       :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "goal_track_comments", ["created_at"], :name => "index_goal_track_comments_on_created_at"
+  add_index "goal_track_comments", ["goal_track_id"], :name => "index_goal_track_comments_on_goal_track_id"
+  add_index "goal_track_comments", ["account_id"], :name => "index_goal_track_comments_on_account_id"
+  add_index "goal_track_comments", ["delta"], :name => "index_goal_track_comments_on_delta"
+
+  create_table "goal_tracks", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "goal_follow_id", :limit => 11
+    t.integer  "value",          :limit => 10, :precision => 10, :scale => 0
+    t.text     "info"
+    t.boolean  "delta"
+  end
+
+  add_index "goal_tracks", ["created_at"], :name => "index_goal_tracks_on_created_at"
+  add_index "goal_tracks", ["updated_at"], :name => "index_goal_tracks_on_updated_at"
+  add_index "goal_tracks", ["goal_follow_id"], :name => "index_goal_tracks_on_goal_follow_id"
+  add_index "goal_tracks", ["delta"], :name => "index_goal_tracks_on_delta"
+
+  create_table "goals", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id", :limit => 11
+    t.string   "title"
+    t.boolean  "deprecated",               :default => false
+    t.boolean  "delta"
+  end
+
+  add_index "goals", ["created_at"], :name => "index_goals_on_created_at"
+  add_index "goals", ["account_id"], :name => "index_goals_on_account_id"
+  add_index "goals", ["deprecated"], :name => "index_goals_on_deprecated"
+  add_index "goals", ["delta"], :name => "index_goals_on_delta"
+
   create_table "group_activities", :force => true do |t|
     t.datetime "created_at"
     t.integer  "activity_id", :limit => 11
@@ -578,6 +695,8 @@ ActiveRecord::Schema.define(:version => 30) do
   add_index "group_posts", ["account_id"], :name => "index_group_posts_on_account_id"
   add_index "group_posts", ["top"], :name => "index_group_posts_on_top"
   add_index "group_posts", ["delta"], :name => "index_group_posts_on_delta"
+  add_index "group_posts", ["responded_at"], :name => "index_group_posts_on_responded_at"
+  add_index "group_posts", ["good"], :name => "index_group_posts_on_good"
 
   create_table "groups", :force => true do |t|
     t.datetime "created_at"
@@ -803,6 +922,7 @@ ActiveRecord::Schema.define(:version => 30) do
 
   add_index "job_service_categories", ["created_at"], :name => "index_job_service_categories_on_created_at"
   add_index "job_service_categories", ["updated_at"], :name => "index_job_service_categories_on_updated_at"
+  add_index "job_service_categories", ["delta"], :name => "index_job_service_categories_on_delta"
 
   create_table "job_service_evaluations", :force => true do |t|
     t.integer  "job_service_id", :limit => 11

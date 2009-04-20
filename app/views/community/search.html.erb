@@ -18,8 +18,6 @@
 			[:exp, "面经"],
 			[:vote, "投票"],
 			[:talk, "访谈录"]
-			# ,
-			# [:qa, "问答"],
 		]
 	%>
 	<div class="community_block">
@@ -53,10 +51,6 @@
 					<option value="exp"<%= " selected=\"selected\"" if @scope == "exp" %>>面经</option>
 					<option value="vote"<%= " selected=\"selected\"" if @scope == "vote" %>>投票</option>
 					<option value="talk"<%= " selected=\"selected\"" if @scope == "talk" %>>访谈录</option>
-					<!--
-					<option value="qa"<%= " selected=\"selected\"" if @scope == "qa" %>>问答</option>
-					<option value="idea"<%= " selected=\"selected\"" if @scope == "idea" %>>想法</option>
-					-->
 				</select>
 				<input type="text" name="query" id="query_input" class="text_field search_input" size="35" value="<%= h(@query) %>" />
 				<input type="submit" value="搜索" class="button" />
