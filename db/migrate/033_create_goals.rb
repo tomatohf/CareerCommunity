@@ -18,6 +18,7 @@ class CreateGoals < ActiveRecord::Migration
     end
     add_index :goals, :created_at
     add_index :goals, :account_id
+    add_index :goals, :title
     add_index :goals, :deprecated
     add_index :goals, :delta
     # reserve first 1000 ID

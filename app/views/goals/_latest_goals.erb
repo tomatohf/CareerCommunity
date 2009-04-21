@@ -1,34 +1,33 @@
 <div>
-	<div style="background: #A2BDCF none repeat scroll 0px 0px; padding: 10px;">
-		<% form_tag "#", :method => :get do %>
-			我想要
-			:
+	<div class="add_goal_container">
+		<a href="#" class="float_r">
+			去我的目标</a>
 			
-			<input type="text" name="goal[name]" id="newgoal" class="text_field" size="30" />
+		<% form_tag "#", :method => :get do %>
+			<span style="font-size: 14px; font-weight: bold;">
+				我想要:
+			</span>
+			
+			<input type="text" name="goal_title" id="goal_title" class="text_field" style="font-size: 14px; width: 200px;" />
 			
 			<input type="submit" value="添加到我的目标" class="button" />
-			
-			<a href="#">
-				去我的目标</a>
 		<% end %>
 	</div>
 	
-	<div style="color: #555555; background:#FFFFFF none repeat scroll 0px 0px; border-color: -moz-use-text-color #A2BDCF #A2BDCF; border-style: none solid solid; border-width: medium 2px 2px; padding: 5px;">
-		<div>
-			大家都想做什么 ...
-			
-			(
+	<div class="goal_links_container">
+		<div class="goal_links_title">
+			<span class="float_r">
 				<a href="#">
-					全部的目标列表</a>
-			)
+					全部的目标列表 »</a>
+			</span>
+			
+			大家最近都想做什么 ...
 		</div>
 		
-		<div>
+		<div class="goal_links">
 			<% 30.times do |i| %>
-				<span class="level1">
-					<a title="Have my own pottery studio" href="/things/view/56378/have-my-own-pottery-studio">
-						拥有自己的工作室</a>
-				</span>
+				<a title="Have my own pottery studio" href="#">
+					拥有自己的工作室</a>
 			<% end %>
 		</div>
 		

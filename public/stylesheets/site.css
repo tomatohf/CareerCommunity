@@ -1617,6 +1617,36 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	font-size: 28px;
 }
 
+.add_goal_container {
+	background: #FFF5E8 none repeat scroll 0px 0px;
+	padding: 10px;
+}
+
+.goal_links_container {
+	color: #555555;
+	background: #FFFFFF none repeat scroll 0px 0px;
+	border-color: -moz-use-text-color #FFF5E8 #FFF5E8;
+	border-style: none solid solid;
+	border-width: medium 2px 2px;
+	padding: 5px;
+}
+
+.goal_links_title {
+	font-size: 14px;
+	margin:5px 5px 10px;
+}
+
+.goal_links a {
+	line-height: 25px;
+	margin: 0px 3px;
+	padding: 1px;
+	text-decoration: none;
+}
+
+.goal_links a:hover {
+	text-decoration: underline;
+}
+
 
 
 
