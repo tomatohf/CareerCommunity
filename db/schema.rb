@@ -531,14 +531,14 @@ ActiveRecord::Schema.define(:version => 33) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "account_id", :limit => 11
-    t.string   "title"
+    t.string   "name"
     t.boolean  "deprecated",               :default => false
     t.boolean  "delta"
   end
 
   add_index "goals", ["created_at"], :name => "index_goals_on_created_at"
   add_index "goals", ["account_id"], :name => "index_goals_on_account_id"
-  add_index "goals", ["title"], :name => "index_goals_on_title"
+  add_index "goals", ["name"], :name => "index_goals_on_name"
   add_index "goals", ["deprecated"], :name => "index_goals_on_deprecated"
   add_index "goals", ["delta"], :name => "index_goals_on_delta"
 

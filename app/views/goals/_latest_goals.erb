@@ -3,12 +3,12 @@
 		<a href="#" class="float_r">
 			去我的目标</a>
 			
-		<% form_tag "#", :method => :get do %>
+		<% form_tag "/goals", :method => :post do %>
 			<span style="font-size: 14px; font-weight: bold;">
 				我想要:
 			</span>
 			
-			<input type="text" name="goal_title" id="goal_title" class="text_field" style="font-size: 14px; width: 200px;" />
+			<input type="text" name="goal_name" id="goal_name" class="text_field" style="font-size: 14px; width: 200px;" />
 			
 			<input type="submit" value="添加到我的目标" class="button" />
 		<% end %>
@@ -25,10 +25,23 @@
 		</div>
 		
 		<div class="goal_links">
-			<% 30.times do |i| %>
-				<a title="Have my own pottery studio" href="#">
-					拥有自己的工作室</a>
-			<% end %>
+			<%# cache(Goal::FCKP_goal_links) do %>
+			
+				<%
+					goals = Goal.find(
+						:all,
+						:limit => 30,
+						:order => "created_at DESC"
+					)
+				%>
+				
+				<% goals.each do |goal| %>
+					<% goal_name = h(goal.name) %>
+					<a title="<%= goal_name %>" href="/goals/<%= goal.id %>">
+						<%= truncate(goal_name) %></a>
+				<% end %>
+				
+			<%# end %>
 		</div>
 		
 	</div>

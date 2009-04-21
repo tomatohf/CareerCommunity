@@ -8,7 +8,7 @@ class CreateGoals < ActiveRecord::Migration
       
       t.column :account_id, :integer
       
-      t.column :title, :string
+      t.column :name, :string
 
       t.column :deprecated, :boolean, :default => false
       
@@ -18,7 +18,7 @@ class CreateGoals < ActiveRecord::Migration
     end
     add_index :goals, :created_at
     add_index :goals, :account_id
-    add_index :goals, :title
+    add_index :goals, :name
     add_index :goals, :deprecated
     add_index :goals, :delta
     # reserve first 1000 ID

@@ -86,14 +86,7 @@ class AccountSetting < ActiveRecord::Base
   # account action settings
   # "true" or "false"
   AccountAction::Action_Types.each do |key, value|
-    @@default_values["hide_action_#{key}".to_sym] = (
-      [
-        "add_group_post_comment",
-        "add_activity_post_comment",
-        "add_vote_comment",
-        "add_talk_comment"
-      ].include?(key)
-    ).to_s
+    @@default_values["hide_action_#{key}".to_sym] = "false"
   end
   def self.default_value(name)
     @@default_values[name]
