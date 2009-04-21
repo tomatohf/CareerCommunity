@@ -6,12 +6,28 @@
 		</td>
 		
 		<td>
-			<a href="/spaces/show/<%= admin_id %>" class="account_nick_link" target="_blank">
-				<%= h(admin_nick) %></a>
-			<b><%= approve ? "批准" : "拒绝" %></b>
-			了你参加活动
-			<a href="/activities/<%= activity_id %>" target="_blank"><%= h(activity_title) %></a>
-			的申请
+			<div>
+				<a href="/spaces/show/<%= admin_id %>" class="account_nick_link" target="_blank">
+					<%= h(admin_nick) %></a>
+				<b><%= approve ? "批准" : "拒绝" %></b>
+				了你参加活动
+				<a href="/activities/<%= activity_id %>" target="_blank"><%= h(activity_title) %></a>
+				的申请
+			</div>
+			
+			<% unless approve %>
+				<div>
+					<% if message && message != "" %>
+						附加消息:
+						&nbsp;
+						<img src="/images/left_quote.gif" border="0" />
+						<%= h(message) %>
+						<img src="/images/right_quote.gif" border="0" />
+					<% else %>
+						无附加消息 ...
+					<% end %>
+				</div>
+			<% end %>
 		</td>
 		
 		<td style="width: 50px">

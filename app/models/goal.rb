@@ -54,5 +54,14 @@ class Goal < ActiveRecord::Base
   end
   
   
+  
+  def self.get_goal_by_name(goal_name)
+    goal = self.find(
+      :first,
+      :conditions => ["name = ?", goal_name]
+    )
+  end
+  
+  
 end
 

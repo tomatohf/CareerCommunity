@@ -6,12 +6,26 @@
 		</td>
 		
 		<td>
-			<a href="/spaces/show/<%= requester_id %>" class="account_nick_link" target="_blank">
-				<%= h(requester_nick) %></a>
-			报名参加活动
-			<a href="/activities/<%= activity_id %>" target="_blank"><%= h(activity_title) %></a>
-			,
-			<a href="/activities/unapproved/<%= activity_id %>" target="_blank">处理这个报名参加活动的申请</a>
+			<div>
+				<a href="/spaces/show/<%= requester_id %>" class="account_nick_link" target="_blank">
+					<%= h(requester_nick) %></a>
+				报名参加活动
+				<a href="/activities/<%= activity_id %>" target="_blank"><%= h(activity_title) %></a>
+				,
+				<a href="/activities/unapproved/<%= activity_id %>" target="_blank">处理这个报名参加活动的申请</a>
+			</div>
+			
+			<div>
+				<% if message && message != "" %>
+					附加消息:
+					&nbsp;
+					<img src="/images/left_quote.gif" border="0" />
+					<%= h(message) %>
+					<img src="/images/right_quote.gif" border="0" />
+				<% else %>
+					无附加消息 ...
+				<% end %>
+			</div>
 		</td>
 		
 		<td style="width: 50px">

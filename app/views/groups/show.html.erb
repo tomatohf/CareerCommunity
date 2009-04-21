@@ -87,8 +87,47 @@
 	
 	<% if @no_membership %>
 		<div class="community_block align_c">
-			<% form_tag "/groups/#{@group_id}/join", :method => :post do %>
-				<input type="submit" value="加入这个圈子" class="button" />
+			<% if @need_approve %>
+				<input id="show_apply_join_form_btn" type="button" value="加入这个圈子" class="button" onclick="show_apply_join_form();" />
+			<% end %>
+			
+			<% form_tag "/groups/#{@group_id}/join", :method => :post, :id => "apply_join_form" do %>
+				<% if @need_approve %>
+					<div style="color: #FF0000;">
+						需要经过管理员批准,
+						输入附加消息:
+					</div>
+					<div>
+						<textarea name="apply_msg" id="apply_msg" class="text_field" rows="5" cols="25"></textarea>
+					</div>
+				<% end %>
+				
+				<div>
+					<input type="submit" value="<%= @need_approve ? "申请加入圈子" : "加入这个圈子" %>" class="button" />
+					
+					<% if @need_approve %>
+						&nbsp;
+					
+						<a href="#" onclick="hide_apply_join_form(); return false;">
+							暂时不加入了</a>
+					<% end %>
+				</div>
+			<% end %>
+			
+			<% if @need_approve %>
+				<script language="JavaScript">
+					function show_apply_join_form() {
+						document.getElementById("show_apply_join_form_btn").style.display = "none";
+						document.getElementById("apply_join_form").style.display = "";
+					}
+
+					function hide_apply_join_form() {
+						document.getElementById("show_apply_join_form_btn").style.display = "";
+						document.getElementById("apply_join_form").style.display = "none";
+					}
+					
+					hide_apply_join_form();
+				</script>
 			<% end %>
 		</div>
 	<% else %>

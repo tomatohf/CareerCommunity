@@ -308,6 +308,8 @@ class GroupsController < ApplicationController
     
     @group_setting = @group.get_setting
     
+    @need_approve = @group_setting[:need_approve]
+    
     need_join_to_view_post_list = @group_setting[:need_join_to_view_post_list]
     @can_list_post = !(need_join_to_view_post_list && @no_membership)
     
@@ -891,7 +893,8 @@ class GroupsController < ApplicationController
       group_admins.each do |ga|
         SysMessage.create_new(ga.account_id, "join_group_request", {
           :requester_id => session[:account_id],
-          :group_id => @group_id
+          :group_id => @group_id,
+          :message => params[:apply_msg]
         })
       end
     end
@@ -1020,7 +1023,8 @@ class GroupsController < ApplicationController
       SysMessage.create_new(group_member.account_id, "approve_reject_join_group", {
           :admin_account_id => session[:account_id],
           :group_id => @group_id,
-          :approve => false
+          :approve => false,
+          :message => params[:reject_message]
         })
     end
     

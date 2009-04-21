@@ -853,11 +853,14 @@ class ActivitiesController < ApplicationController
 
     # check if need to check profile
     activity_setting = @activity.get_setting
-    @check_mobile = activity_setting[:check_mobile]
-    @check_real_name = activity_setting[:check_real_name]
-    @check_gender = activity_setting[:check_gender]
-    @check_birthday = activity_setting[:check_birthday]
-    if @activity.online || ((!@check_mobile) && (!@check_real_name) && (!@check_gender) && (!@check_birthday))
+    @check_mobile = activity_setting[:check_mobile] && (!@activity.online)
+    @check_real_name = activity_setting[:check_real_name] && (!@activity.online)
+    @check_gender = activity_setting[:check_gender] && (!@activity.online)
+    @check_birthday = activity_setting[:check_birthday] && (!@activity.online)
+    
+    @need_approve = activity_setting[:need_approve]
+    
+    if (!@need_approve) && (!@check_mobile) && (!@check_real_name) && (!@check_gender) && (!@check_birthday)
       join
       render(:action => "join") unless (@performed_render || @performed_redirect)
       return
@@ -947,7 +950,8 @@ class ActivitiesController < ApplicationController
       activity_admins.each do |aa|
         SysMessage.create_new(aa.account_id, "join_activity_request", {
           :requester_id => session[:account_id],
-          :activity_id => @activity_id
+          :activity_id => @activity_id,
+          :message => params[:apply_msg]
         })
       end
     end
@@ -1324,7 +1328,8 @@ class ActivitiesController < ApplicationController
       SysMessage.create_new(activity_member.account_id, "approve_reject_join_activity", {
           :admin_account_id => session[:account_id],
           :activity_id => @activity_id,
-          :approve => false
+          :approve => false,
+          :message => params[:reject_message]
         })
     end
     

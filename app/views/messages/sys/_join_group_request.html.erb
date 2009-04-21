@@ -6,12 +6,26 @@
 		</td>
 		
 		<td>
-			<a href="/spaces/show/<%= requester_id %>" class="account_nick_link" target="_blank">
-				<%= h(requester_nick) %></a>
-			申请加入圈子
-			<a href="/groups/<%= group_id %>" target="_blank"><%= h(group_name) %></a>
-			,
-			<a href="/groups/unapproved/<%= group_id %>" target="_blank">处理这个加入圈子的申请</a>
+			<div>
+				<a href="/spaces/show/<%= requester_id %>" class="account_nick_link" target="_blank">
+					<%= h(requester_nick) %></a>
+				申请加入圈子
+				<a href="/groups/<%= group_id %>" target="_blank"><%= h(group_name) %></a>
+				,
+				<a href="/groups/unapproved/<%= group_id %>" target="_blank">处理这个加入圈子的申请</a>
+			</div>
+			
+			<div>
+				<% if message && message != "" %>
+					附加消息:
+					&nbsp;
+					<img src="/images/left_quote.gif" border="0" />
+					<%= h(message) %>
+					<img src="/images/right_quote.gif" border="0" />
+				<% else %>
+					无附加消息 ...
+				<% end %>
+			</div>
 		</td>
 		
 		<td style="width: 50px">

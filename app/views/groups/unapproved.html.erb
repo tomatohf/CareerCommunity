@@ -75,6 +75,7 @@
 
 <% form_tag "/groups/#{@group_id}/reject_member", :method => :post, :id => "reject_member_form" do %>
 	<input type="hidden" id="reject_member_id" name="reject_member_id" />
+	<input type="hidden" id="reject_message" name="reject_message" />
 <% end %>
 
 <script language="JavaScript">
@@ -88,8 +89,11 @@
 	
 	function reject_member(account_id) {
 		if(confirm("确定拒绝其加入圈子么 ?")) {
+			var message = prompt("输入附加消息:");
+			
 			var reject_form = document.getElementById("reject_member_form");
 			document.getElementById("reject_member_id").value = account_id;
+			document.getElementById("reject_message").value = message;
 			reject_form.submit();
 		}
 	}

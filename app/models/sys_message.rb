@@ -171,6 +171,8 @@ class SysMessage < ActiveRecord::Base
         group_id = data[:group_id]
         group, group_image = Group.get_group_with_image(group_id)
         
+        message = data[:message] || ""
+        
         %Q!
           render(:partial => "/messages/sys/join_group_request", :locals => {
             :requester_id => #{requester_id},
@@ -179,7 +181,9 @@ class SysMessage < ActiveRecord::Base
             
             :group_id => #{group_id},
             :group_name => #{group.name.inspect},
-            :group_image => #{group_image.inspect}
+            :group_image => #{group_image.inspect},
+            
+            :message => #{message.inspect}
           })
         !
       end
@@ -197,6 +201,8 @@ class SysMessage < ActiveRecord::Base
         
         approve = data[:approve]
         
+        message = data[:message] || ""
+        
         %Q!
           render(:partial => "/messages/sys/approve_reject_join_group", :locals => {
             :admin_id => #{admin_id},
@@ -207,7 +213,9 @@ class SysMessage < ActiveRecord::Base
             :group_name => #{group.name.inspect},
             :group_image => #{group_image.inspect},
             
-            :approve => #{approve}
+            :approve => #{approve},
+            
+            :message => #{message.inspect}
           })
         !
       end
@@ -279,6 +287,8 @@ class SysMessage < ActiveRecord::Base
         activity_id = data[:activity_id]
         activity, activity_image = Activity.get_activity_with_image(activity_id)
         
+        message = data[:message] || ""
+        
         %Q!
           render(:partial => "/messages/sys/join_activity_request", :locals => {
             :requester_id => #{requester_id},
@@ -287,7 +297,9 @@ class SysMessage < ActiveRecord::Base
             
             :activity_id => #{activity_id},
             :activity_title => #{activity.get_title.inspect},
-            :activity_image => #{activity_image.inspect}
+            :activity_image => #{activity_image.inspect},
+            
+            :message => #{message.inspect}
           })
         !
       end
@@ -320,6 +332,8 @@ class SysMessage < ActiveRecord::Base
         
         approve = data[:approve]
         
+        message = data[:message] || ""
+        
         %Q!
           render(:partial => "/messages/sys/approve_reject_join_activity", :locals => {
             :admin_id => #{admin_id},
@@ -330,7 +344,9 @@ class SysMessage < ActiveRecord::Base
             :activity_title => #{activity.get_title.inspect},
             :activity_image => #{activity_image.inspect},
             
-            :approve => #{approve}
+            :approve => #{approve},
+            
+            :message => #{message.inspect}
           })
         !
       end

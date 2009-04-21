@@ -117,6 +117,29 @@
 				</tr>
 				<% end %>
 				
+				
+				<% if @need_approve %>
+				<tr>
+					<td></td>
+					<td>
+						<%= draw_hor_line("250px") %>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<div style="color: #FF0000;">
+							需要经过管理员批准,
+							输入附加消息:
+						</div>
+						<div>
+							<textarea name="apply_msg" id="apply_msg" class="text_field" rows="5" cols="25"></textarea>
+						</div>
+					</td>
+				</tr>
+				<% end %>
+				
+				
 				<tr>
 					<td></td>
 					<td>
