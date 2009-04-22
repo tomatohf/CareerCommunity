@@ -24,10 +24,14 @@ class GoalsController < ApplicationController
   def show
     @goal = Goal.get_goal(params[:id])
     
+    @goal_account = Account.get_nick_and_pic(@goal.account_id)
+    
     @follow = GoalFollow.find(
       :first,
       :conditions => ["goal_id = ? and account_id = ?", @goal.id, session[:account_id]]
     )
+    
+    
   end
   
   def list_index

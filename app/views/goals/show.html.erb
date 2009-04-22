@@ -1,24 +1,105 @@
-<% page_title = h(@goal.name) %>
+<% goal_name = h(@goal.name) %>
+
+<% page_title = goal_name %>
 <% community_page_title(page_title) %>
+
+<%
+	if @follow
+		follow_status = GoalFollowStatus.get_follow_status(@follow.status_id)
+		is_active = (follow_status[0] == GoalFollowStatus.active[0])
+	end
+%>
 
 
 <div class="float_r community_container_r">
 	
+	<div class="community_block align_c">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/goals/#{@goal.id}", :title => "目标: #{goal_name}"} %>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_block align_c">
+		<a href="#">
+			<img src="/images/groups/add_post_small.png" border="0" />
+			发起新的讨论话题</a>
+	</div>
+	
 	<% if @follow %>
-		<div class="community_block align_c activity_status">
-			我
-			<%= GoalFollowStatus.get_follow_status(@follow.status_id)[1] %>
-			这件事
+		<div class="community_block_narrow">
+			<%= thin_hr %>
 		</div>
 		
 		<div class="community_block align_c">
-			
-		</div>
-	<% else %>
-		<div class="community_block align_c">
-			
+			<a href="#">
+				查看我的实现进度</a>
+				
+			<% if is_active %>
+				&nbsp;&nbsp;&nbsp;
+				|
+				&nbsp;&nbsp;&nbsp;
+				
+				<a href="#">
+					添加我的实现进度</a>
+			<% end %>
 		</div>
 	<% end %>
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="finished_follows_section_expand" href="#" onclick="collapse_section('finished_follows_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="finished_follows_section_collapse" href="#" onclick="expand_section('finished_follows_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+		
+				<span class="float_r">
+					<a href="#">
+						查看全部</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			
+			<b>
+				已完成这件事的成员
+			</b>
+		</div>
+	
+		<div id="finished_follows_section">
+			
+		</div>
+	</div>
+	
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="cancelled_follows_section_expand" href="#" onclick="collapse_section('cancelled_follows_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="cancelled_follows_section_collapse" href="#" onclick="expand_section('cancelled_follows_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+		
+				<span class="float_r">
+					<a href="#">
+						查看全部</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			
+			<b>
+				已终止这件事的成员
+			</b>
+		</div>
+	
+		<div id="cancelled_follows_section">
+			
+		</div>
+	</div>
 	
 </div>
 
@@ -26,10 +107,111 @@
 	<h2><%= page_title %></h2>
 	
 	
-	<div class="community_block">
+	<div class="align_r form_info_s">
+		这个目标最早由
+		<a href="/spaces/show/<%= @goal.account_id %>" class="account_nick_link">
+			<%= h(@goal_account[0]) %></a>
+		于
+		<%= format_datetime(@goal.created_at) %>
+		添加
+	</div>
+	
+	
+	<% if @follow %>
+		<div class="community_block">
+			<div class="space_section_title">
+				<a class="float_r" title="收起" id="status_section_expand" href="#" onclick="collapse_section('status_section'); return false;">
+					<img src="/images/expand.png" border="0" /></a>
+				<a class="float_r" title="展开" id="status_section_collapse" href="#" onclick="expand_section('status_section'); return false;" style="display: none">
+					<img src="/images/collapse.png" border="0" /></a>
+			
+				<% if is_active %>
+					<span class="float_r">
+						<a href="#">
+							添加进度</a>
+						&nbsp;&nbsp;&nbsp;
+					</span>
+				<% end %>
+				
+				我
+				<span style="font-size: 14px; font-weight: bold;">
+					<%= follow_status[1] %>
+				</span>
+				这件事
+				&nbsp;&nbsp;&nbsp;
+				<a href="#">
+					(查看我的进度)</a>
+			</div>
 		
+			<div id="status_section" class="community_block align_c" style="word-spacing: 20px;">
+			
+				<% if is_active %>
+					<a href="#" title="我已完成这件事">
+						<img src="/images/goals/finish_goal_btn.png" border="0" alt="我已完成这件事" /></a>
+
+					<a href="#" title="我要终止这件事">
+						<img src="/images/goals/cancel_goal_btn.png" border="0" alt="我要终止这件事" /></a>
+				<% else %>
+					<a href="#" title="我要继续这件事">
+						<img src="/images/goals/reactive_goal_btn.png" border="0" alt="我要继续这件事" /></a>
+				<% end %>
+			</div>
+		</div>
+	<% else %>
+		<div class="community_block align_r" style="word-spacing: 20px;">
+			<a href="#" title="我也要做这件事">
+				<img src="/images/goals/follow_goal_btn.png" border="0" alt="我也要做这件事" /></a>
+
+			<a href="#" title="我已完成这件事">
+				<img src="/images/goals/finish_goal_btn.png" border="0" alt="我已完成这件事" /></a>
+		</div>
+	<% end %>
+	
+	
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="active_follows_section_expand" href="#" onclick="collapse_section('active_follows_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="active_follows_section_collapse" href="#" onclick="expand_section('active_follows_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+		
+				<span class="float_r">
+					<a href="#">
+						查看全部正在做这件事的成员</a>
+					&nbsp;&nbsp;&nbsp;
+				</span>
+			
+			<b>
+				正在做这件事的成员
+			</b>
+		</div>
+	
+		<div id="active_follows_section">
+			
+		</div>
 	</div>
 	
 </div>
 
+
+
+<script language="JavaScript">
+	function expand_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "";
+		document.getElementById(expand_icon).style.display = "";
+		document.getElementById(collapse_icon).style.display = "none";
+	}
+	
+	function collapse_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "none";
+		document.getElementById(expand_icon).style.display = "none";
+		document.getElementById(collapse_icon).style.display = "";
+	}
+</script>
 
