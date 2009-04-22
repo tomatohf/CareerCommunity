@@ -39,13 +39,19 @@ class Goal < ActiveRecord::Base
   
   
   
+  CKP_goal = :goal
+  
   FCKP_goal_links = :fc_index_blog
   
   after_save { |goal|
+    self.set_goal_cache(goal)
+    
     self.clear_goal_links_cache
   }
   
   after_destroy { |goal|
+    self.clear_goal_cache(goal.id)
+    
     self.clear_goal_links_cache
   }
   
@@ -55,13 +61,33 @@ class Goal < ActiveRecord::Base
   
   
   
-  def self.get_goal_by_name(goal_name)
-    goal = self.find(
-      :first,
-      :conditions => ["name = ?", goal_name]
-    )
+  def self.get_goal(goal_id)
+    g = Cache.get("#{CKP_goal}_#{goal_id}".to_sym)
+    
+    unless g
+      g = self.find(goal_id)
+      
+      self.set_goal_cache(g)
+    end
+    g
   end
   
+  def self.set_goal_cache(goal)
+    Cache.set("#{CKP_goal}_#{goal.id}".to_sym, goal.clear_association, Cache_TTL)
+  end
+  
+  def self.clear_goal_cache(goal_id)
+    Cache.delete("#{CKP_goal}_#{goal_id}".to_sym)
+  end
+  
+  
+  
+  def clear_association
+    copy = deep_copy(self)
+    copy.clear_association_cache
+    copy.clear_aggregation_cache
+    copy
+  end
   
 end
 

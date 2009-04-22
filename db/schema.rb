@@ -432,7 +432,6 @@ ActiveRecord::Schema.define(:version => 33) do
     t.datetime "updated_at"
     t.integer  "account_id",        :limit => 11
     t.integer  "goal_id",           :limit => 11
-    t.string   "name"
     t.boolean  "private",                         :default => false
     t.integer  "status_id",         :limit => 2
     t.datetime "status_updated_at"

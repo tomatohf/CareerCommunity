@@ -1,0 +1,35 @@
+<% page_title = h(@goal.name) %>
+<% community_page_title(page_title) %>
+
+
+<div class="float_r community_container_r">
+	
+	<% if @follow %>
+		<div class="community_block align_c activity_status">
+			我
+			<%= GoalFollowStatus.get_follow_status(@follow.status_id)[1] %>
+			这件事
+		</div>
+		
+		<div class="community_block align_c">
+			
+		</div>
+	<% else %>
+		<div class="community_block align_c">
+			
+		</div>
+	<% end %>
+	
+</div>
+
+<div class="community_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block">
+		
+	</div>
+	
+</div>
+
+

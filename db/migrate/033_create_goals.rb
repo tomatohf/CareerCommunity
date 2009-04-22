@@ -33,7 +33,6 @@ class CreateGoals < ActiveRecord::Migration
       t.column :account_id, :integer
       t.column :goal_id, :integer
       
-      t.column :name, :string
       t.column :private, :boolean, :default => false
 
       t.column :status_id, :integer, :limit => 2
