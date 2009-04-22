@@ -15,8 +15,6 @@
 	
 	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, member.account.email)
 	
-	ActivityMember.set_activity_member_cache(member.activity_id, member.account_id, member) if member.kind_of?(ActivityMember)
-	
 	ActivityInterest.set_activity_interest_cache(member.activity_id, member.account_id, member) if member.kind_of?(ActivityInterest)
 %>
 
@@ -33,34 +31,34 @@
 			<%= h(account_nick) %></a>
 			
 		<% if can_del %>
-			<a title="从活动成员中删除" href="#" onclick="delete_member(<%= account_id %>)">
+			<a title="从活动成员中删除" href="#" onclick="delete_member(<%= account_id %>); return false;">
 				<img src="/images/delete_small.gif" width="12" height="12" border="0" /></a>
 		<% end %>
 		
 		<% if can_plus_admin %>
-			<a title="升级为管理员" href="#" onclick="plus_admin(<%= account_id %>)">
+			<a title="升级为管理员" href="#" onclick="plus_admin(<%= account_id %>); return false;">
 				<img src="/images/groups/plus_small.png" width="12" height="12" border="0" /></a>
 		<% end %>
 		
 		<% if can_minus_admin %>
-			<a title="降为普通成员" href="#" onclick="minus_admin(<%= account_id %>)">
+			<a title="降为普通成员" href="#" onclick="minus_admin(<%= account_id %>); return false;">
 				<img src="/images/groups/minus_small.png" width="12" height="12" border="0" /></a>
 		<% end %>
 		
 		<% if can_add_absent %>
-			<a title="设为缺席活动" href="#" onclick="add_absent(<%= account_id %>)">
+			<a title="设为缺席活动" href="#" onclick="add_absent(<%= account_id %>); return false;">
 				<img src="/images/activities/absent_small.png" width="12" height="12" border="0" /></a>
 		<% end %>
 		
 		<% if can_del_absent %>
-			<a title="设为出席活动" href="#" onclick="del_absent(<%= account_id %>)">
+			<a title="设为出席活动" href="#" onclick="del_absent(<%= account_id %>); return false;">
 				<img src="/images/activities/attend_small.png" width="12" height="12" border="0" /></a>
 		<% end %>
 		
 		<% if can_approve_reject %>
-			<a title="批准报名参加活动" href="#" onclick="approve_member(<%= account_id %>)">
+			<a title="批准报名参加活动" href="#" onclick="approve_member(<%= account_id %>); return false;">
 				<img src="/images/groups/approve_small.png" width="12" height="12" border="0" /></a>
-			<a title="拒绝" href="#" onclick="reject_member(<%= account_id %>)">
+			<a title="拒绝" href="#" onclick="reject_member(<%= account_id %>, this); return false;">
 				<img src="/images/groups/reject_small.png" width="12" height="12" border="0" /></a>
 		<% end %>
 	</div>	

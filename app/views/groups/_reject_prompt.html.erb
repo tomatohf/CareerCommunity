@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="/stylesheets/bubble.css" type="text/css"></link>
+
+<div id="message_bubble" class="bubble" style="width: 300px; visibility: hidden;">
+	<div class="corner bubble-tl">
+		<div class="bubble-sprite"></div>
+	</div>
+	<div class="corner bubble-tr">
+		<div class="bubble-sprite"></div>
+	</div>
+	<div onmousedown="hide_reject_confirm();" title="关闭" class="closebutton"></div>
+	<div class="bubble-top"></div>
+	<div class="bubble-mid">
+		<div class="bubble_body">
+			
+			<div style="font-size: 14px;">
+				确定拒绝其加入<%= type_label %>么 ?
+			</div>
+			
+			<div style="padding-left: 15px; margin-top: 5px;">
+				<div style="color: #FF0000;">
+					输入附加消息:
+				</div>
+				<div>
+					<textarea id="reject_msg_field" class="text_field" rows="3" cols="25"></textarea>
+				</div>
+
+				<div style="margin-top: 10px;" class="form_info_s">
+					<input id="" type="button" value="确定" class="button" onclick="submit_reject_form(REJECTING_ACCOUNT_ID, document.getElementById('reject_msg_field').value);" />
+
+					&nbsp;&nbsp;
+					或
+					&nbsp;&nbsp;
+
+					<a href="#" onclick="hide_reject_confirm(); return false;">
+						(取消)</a>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<div class="corner bubble-bl">
+		<div class="bubble-sprite"></div>
+	</div>
+	<div class="corner bubble-br">
+		<div class="bubble-sprite"></div>
+	</div>
+	<div class="bubble-bottom">
+		<div id="message_bubble_prong" class="prong" style="left: 100px;">
+			<div class="bubble-sprite"></div>
+		</div>
+	</div>
+	
+	
+	<script language="JavaScript" type="text/javascript">
+		var REJECTING_ACCOUNT_ID = null;
+		
+		function get_element_position(ele) {
+			var top = ele.offsetTop;
+			var left = ele.offsetLeft;
+
+			while(ele=ele.offsetParent) {
+				top += ele.offsetTop;
+				left += ele.offsetLeft
+			}
+			
+			return [left, top];
+		}
+		
+		function show_reject_confirm(account_id, link) {
+			if(REJECTING_ACCOUNT_ID != account_id) {
+				document.getElementById("reject_msg_field").value = "";
+			}
+			REJECTING_ACCOUNT_ID = account_id;
+			
+			var bubble = document.getElementById("message_bubble");
+			var prong = document.getElementById("message_bubble_prong");
+			
+			var link_position = get_element_position(link);
+			var link_left = link_position[0];
+			var link_top = link_position[1];
+			var link_width = link.offsetWidth;
+			
+			var bubble_width = bubble.offsetWidth;
+			
+			var bubble_top = link_top-bubble.offsetHeight-5;
+			bubble_top = bubble_top-prong.offsetHeight+40;
+			bubble.style.top = bubble_top + "px";
+			
+			
+			var bubble_left = link_left-((bubble_width-link_width)/2);
+			bubble.style.left = bubble_left + "px";
+			
+			prong.style.left = (link_left-bubble_left+(link_width/2)-5) + "px";
+			
+			bubble.style.visibility = "visible";
+		}
+		
+		function hide_reject_confirm() {
+			document.getElementById("message_bubble").style.visibility = "hidden";
+		}
+	</script>
+</div>
+
+

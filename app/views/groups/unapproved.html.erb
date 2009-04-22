@@ -3,6 +3,7 @@
 <% page_title = "加入圈子 #{group_name} 的申请" %>
 <% community_page_title(page_title) %>
 
+
 <div class="float_r group_container_r">
 	
 	<div class="community_block">
@@ -67,6 +68,11 @@
 		<%= paging_buttons(@unapproved_members) %>
 	</div>
 	
+	
+	
+	<%= render :partial => "reject_prompt", :locals => {:type_label => "圈子"} %>
+	
+	
 </div>
 
 <% form_tag "/groups/#{@group_id}/approve_member", :method => :post, :id => "approve_member_form" do %>
@@ -87,15 +93,14 @@
 		}
 	}
 	
-	function reject_member(account_id) {
-		if(confirm("确定拒绝其加入圈子么 ?")) {
-			var message = prompt("输入附加消息:");
-			
-			var reject_form = document.getElementById("reject_member_form");
-			document.getElementById("reject_member_id").value = account_id;
-			document.getElementById("reject_message").value = message;
-			reject_form.submit();
-		}
+	function reject_member(account_id, link) {
+		show_reject_confirm(account_id, link);
+	}
+	
+	function submit_reject_form(account_id, message) {
+		document.getElementById("reject_member_id").value = account_id;
+		document.getElementById("reject_message").value = message;
+		document.getElementById("reject_member_form").submit();
 	}
 </script>
 
