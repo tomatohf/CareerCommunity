@@ -66,7 +66,7 @@ class CreateGoals < ActiveRecord::Migration
 
       t.column :value, :decimal
       
-      t.column :info, :text
+      t.column :desc, :string, :limit => 1000
       
       
       # enable sphinx delta index

@@ -1,9 +1,6 @@
 class GoalFollow < ActiveRecord::Base
   
   acts_as_trashable
-  
-  
-  include CareerCommunity::Util
 
   
   

@@ -1,0 +1,82 @@
+<% goal_name = h(@goal.name) %>
+
+<%
+	follow_type_str = GoalFollowType.find(@follow.type_id)
+	follow_type = GoalFollowType.get_follow_type(@follow.type_id)
+%>
+
+<% page_title = "添加目标 #{goal_name} 的进度" %>
+<% community_page_title(page_title) %>
+
+<div class="blog_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<br />
+	
+	<div class="community_block">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @track.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@track) %>
+			</p>
+		<% end %>
+		
+		<div>
+			<% form_tag "/goals/#{@follow.id}/track_create", :method => :post do %>
+			
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<tr>
+						<td align="center">
+							<img src="<%= follow_type[2] %>" border="0" />
+						</td>
+						<td>
+							
+						</td>
+					</tr>
+				
+					<tr>
+						<td style="width: 100px;">
+							完成情况(<span style="color: red;">*</span>)
+							:
+						</td>
+						<td style="color: #666666;">
+							<%= GoalFollowTypes.get_type(follow_type_str).display_input("track_value", "track_value") %>
+						</td>
+					</tr>
+					
+					<tr>
+						<td valign="top">
+							<label for="track_desc">
+						        进度描述
+								:
+						    </label>
+						</td>
+						<td>
+							<textarea id="track_desc" name="track_desc" class="text_field" cols="50" rows="5"><%= h(@track.desc) %></textarea>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "添加进度", :class => "button", :disabled => @account_limited %>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/goals/follow/<%= @follow.id %>">返回这个目标的进度</a>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</div>
+	</div>
+	
+</div>
+
+

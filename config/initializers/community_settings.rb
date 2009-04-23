@@ -65,6 +65,8 @@ require "contact"
 
 require "exp_vendors/base"
 
+require "goal_follow_types/base"
+
 ##################################################
 ### END
 ##################################################

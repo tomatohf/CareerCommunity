@@ -1,4 +1,12 @@
-module GoalFollowType
+module GoalFollowTypes
+  
+  @@types = [
+    "boolean_type",
+    "number_type",
+    "rank_type"
+  ]
+  
+  
 
   class TypeFactory
     # it should be a singleton class, only one copy of instance can exist
@@ -6,7 +14,7 @@ module GoalFollowType
     include Singleton
     
     def get_type(key)
-      "#{key.to_s.capitalize}Type".constantize.new
+      "GoalFollowTypes::#{key.to_s.capitalize}Type".constantize.new
     end    
   end
   
@@ -39,7 +47,7 @@ module GoalFollowType
       element_id ||= param_name
       
       %Q!
-        <input type="text" id="#{element_id}" name="#{param_name}" value="#{value}" />
+        <input type="text" id="#{element_id}" name="#{param_name}" value="#{value}" class="text_field" />
       !
     end
     
@@ -48,6 +56,9 @@ module GoalFollowType
     end
   
   end
+  
+  
+  @@types.each { |file| require_dependency "goal_follow_types/#{file}" }
 
 end
 

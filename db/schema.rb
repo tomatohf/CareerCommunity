@@ -516,8 +516,8 @@ ActiveRecord::Schema.define(:version => 33) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "goal_follow_id", :limit => 11
-    t.integer  "value",          :limit => 10, :precision => 10, :scale => 0
-    t.text     "info"
+    t.integer  "value",          :limit => 10,   :precision => 10, :scale => 0
+    t.string   "desc",           :limit => 1000
     t.boolean  "delta"
   end
 

@@ -1,0 +1,119 @@
+<% follower_name = @edit ? "我" : h(@follower[0]) %>
+<% goal_name = h(@goal.name) %>
+
+<%
+	follow_status = GoalFollowStatus.get_follow_status(@follow.status_id)
+	is_active = (follow_status[0] == GoalFollowStatus.active[0])
+	
+	follow_type = GoalFollowType.get_follow_type(@follow.type_id)
+%>
+
+<% page_title = "目标 #{goal_name} 的进度" %>
+<% community_page_title(page_title) %>
+
+
+<div class="float_r community_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/goals/<%= @goal.id %>">
+			返回目标 <%= goal_name %></a>
+	</div>
+	
+	<% if @edit && is_active %>
+		<div class="community_block align_c">
+			<a href="/goals/<%= @follow.id %>/track_new">
+				<img src="<%= follow_type[2] %>" border="0" />
+				添加新的进度</a>
+		</div>
+	<% end %>
+	
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	<% if @edit %>
+		<div class="community_block align_c">
+			我
+			<span style="font-size: 15px; font-weight: bold;">
+				<%= follow_status[1] %>
+			</span>
+			这件事
+		</div>
+	<% else %>
+		<div class="community_block align_c">
+			<a href="/spaces/show/<%= @follow.account_id %>">
+				<img src="<%= face_img_src(@follower[1]) %>" border="0" /></a>
+		</div>
+		<div class="community_block align_c">
+			<a href="/spaces/show/<%= @follow.account_id %>" class="account_nick_link">
+				<%= follower_name %></a>
+
+			<span style="font-size: 15px; font-weight: bold;">
+				<%= follow_status[1] %>
+			</span>
+
+			这件事
+		</div>
+	<% end %>
+	
+	
+	<div class="community_title">
+		最近进度评论 ...
+	</div>
+	<div class="community_block">
+		<%= render(:partial => "small_comment", :collection => @new_comments) %>
+	</div>
+	
+</div>
+
+<div class="community_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	
+	<div class="community_block">
+		进度统计分析图表
+	</div>
+	
+	
+	
+	<div class="community_title">
+		共有
+		<b>
+			<%= @tracks.total_entries %>
+		</b>
+		条进度 ...
+	</div>
+	<% if @edit %>
+		<div class="align_r form_info_s">
+			<% if is_active %>
+				<a href="/goals/<%= @follow.id %>/track_new">
+					<img src="<%= follow_type[2] %>" border="0" />
+					添加进度</a>
+			<% else %>
+				<%= follow_status[1] %> 这件事,
+				无法继续添加进度
+			<% end %>
+		</div>
+	<% end %>
+	<div class="community_block">
+		<% if @tracks.size > 0 %>
+			<%= render(:partial => "track", :collection => @tracks) %>
+		<% else %>
+			<div class="form_info_l">
+				还没有添加过进度 ...
+			</div>
+		<% end %>
+	</div>
+	
+	
+	
+	<div style="margin-top: 50px;">
+		<%= render :partial => "latest_goals" %>
+	</div>
+	
+	
+</div>
+
+

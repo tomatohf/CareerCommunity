@@ -611,11 +611,18 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/goals/friend_index", :controller => "goals", :action => "friend_index"
   map.connect "/goals/post/:id/:page", :controller => "goals", :action => "post", :id => /\d+/, :page => /\d+/
   map.connect "/goals/good_post/:id/:page", :controller => "goals", :action => "good_post", :id => /\d+/, :page => /\d+/
+  map.connect "/goals/follow/:id/:page", :controller => "goals", :action => "follow", :id => /\d+/, :page => /\d+/
   map.resources :goals, :collection => {
     
     :summary => :get
     
   }, :member => {
+    
+    :track_new => :get,
+    :track_create => :post,
+    :track_edit => :get,
+    :track_update => :post,
+    :track_destroy => :post
     
   }
 

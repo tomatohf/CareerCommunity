@@ -36,11 +36,11 @@
 	
 	<% if @follow %>
 		<div class="community_block align_c" style="word-spacing: 30px;">
-			<a href="#">
+			<a href="/goals/follow/<%= @follow.id %>">
 				查看我的实现进度</a>
 				
 			<% if is_active %>
-				<a href="#">
+				<a href="/goals/<%= @follow.id %>/track_new">
 					添加我的实现进度</a>
 			<% end %>
 		</div>
@@ -112,6 +112,14 @@
 	</div>
 	
 	
+	<div class="community_title">
+		最新进度 ...
+	</div>
+	<div class="community_block">
+		
+	</div>
+	
+	
 </div>
 
 <div class="community_container_l">
@@ -119,6 +127,22 @@
 	
 	
 	<div class="align_r form_info_s">
+		<% if general_admin?(session[:account_id]) %>
+			<span class="float_l">
+				<% if superadmin?(session[:account_id]) %>
+					<% form_tag "/goals/#{@goal.id}", :method => :delete, :id => "goal_delete_form" do %>
+					<% end %>
+				
+					<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('goal_delete_form').submit();}; return false;">
+						删除</a>
+					&nbsp;&nbsp;
+				<% end %>
+				
+				<a href="/goals/<%= @goal.id %>/edit">
+					编辑</a>
+			</span>
+		<% end %>
+		
 		这个目标最早由
 		<a href="/spaces/show/<%= @goal.account_id %>" class="account_nick_link">
 			<%= h(@goal_account[0]) %></a>
@@ -138,7 +162,7 @@
 			
 				<% if is_active %>
 					<span class="float_r">
-						<a href="#">
+						<a href="/goals/<%= @follow.id %>/track_new">
 							添加进度</a>
 						&nbsp;&nbsp;&nbsp;
 					</span>
@@ -150,7 +174,7 @@
 				</span>
 				这件事
 				&nbsp;&nbsp;&nbsp;
-				<a href="#">
+				<a href="/goals/follow/<%= @follow.id %>">
 					(查看我的进度)</a>
 			</div>
 		
@@ -253,6 +277,13 @@
 			<% end %>
 		</div>
 	</div>
+	
+	
+	
+	<div style="margin-top: 50px;">
+		<%= render :partial => "latest_goals" %>
+	</div>
+	
 	
 </div>
 
