@@ -86,14 +86,18 @@
 		<% end %>
 		
 		<div class="community_block tinymce_content">
-			<div class="align_r">
+			<div>
+				<span class="float_r">
+					<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/recruitments/#{@recruitment.id}", :title => "招聘信息: #{recruitment_title}"} %>
+				</span>
+				
 				<a href="#" onclick="if(confirm('确定要根据这条招聘信息创建求职目标么 ?')){document.getElementById('create_job_target_form').submit();}; return false;">
 					<img src="/images/recruitments/create_job_target_btn.png" border="0" /></a>
 			</div>
 			
 			<%= sanitize_tinymce(@recruitment.content) %>
 			
-			<div class="align_r">
+			<div class="community_block">
 				<a href="#" onclick="if(confirm('确定要根据这条招聘信息创建求职目标么 ?')){document.getElementById('create_job_target_form').submit();}; return false;">
 					<img src="/images/recruitments/create_job_target_btn.png" border="0" /></a>
 			</div>

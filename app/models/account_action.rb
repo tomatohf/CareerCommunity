@@ -32,7 +32,9 @@ class AccountAction < ActiveRecord::Base
     "add_bookmark" => "添加推荐/收藏",
     "add_talk_comment" => "评论访谈录",
     "add_job_service" => "添加求职服务",
-    "evaluate_job_service" => "点评求职服务"
+    "evaluate_job_service" => "点评求职服务",
+    "add_goal_post" => "发表目标话题",
+    "add_goal_post_comment" => "回应目标话题"
   }
   
   Action_Types.keys.each do |t|
@@ -423,6 +425,44 @@ class AccountAction < ActiveRecord::Base
             :evaluation_id => #{evaluation_id},
             :evaluation_point => #{evaluation_point},
             :evaluation_content => #{evaluation_content.inspect},
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddGoalPost < Base
+      def action_text(data, operator, save_space)
+        post_id = data[:post_id]
+        post_title = data[:post_title]
+        goal_id = data[:goal_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_goal_post", :locals => {
+            :operator => #{operator},
+            :post_id => #{post_id},
+            :post_title => #{post_title.inspect},
+            :goal_id => #{goal_id},
+          
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddGoalPostComment < Base
+      def action_text(data, operator, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        goal_post_id = data[:goal_post_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_goal_post_comment", :locals => {
+            :operator => #{operator},
+            :goal_post_id => #{goal_post_id},
+            :comment_id => #{comment_id},
+            :comment_content => #{comment_content.inspect},
             
             :save_space => #{save_space.inspect}
           })

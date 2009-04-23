@@ -3,9 +3,10 @@ class Goal < ActiveRecord::Base
   acts_as_trashable
   
   
+%Q!
   define_index do
     # fields
-    indexes :title
+    indexes :name
 
     # attributes
     has :created_at, :updated_at, :account_id, :deprecated
@@ -14,6 +15,7 @@ class Goal < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
+!
   
   
   

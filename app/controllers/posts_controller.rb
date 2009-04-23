@@ -32,7 +32,7 @@ class PostsController < ApplicationController
 
     @post = @type_handler.get_post_class.new
     
-    @type_name, @type_image = @type_handler.get_type_with_image(@type_id)
+    @type_name, @type_image, @display_image = @type_handler.get_type_with_image(@type_id)
     @type_label = @type_handler.get_type_label
   end
   
@@ -73,7 +73,7 @@ class PostsController < ApplicationController
     else
       flash.now[:error_msg] = "操作失败, 再试一次吧"
       
-      @type_name, @type_image = @type_handler.get_type_with_image(@type_id)
+      @type_name, @type_image, @display_image = @type_handler.get_type_with_image(@type_id)
       @type_label = @type_handler.get_type_label
     
       render :action => "compose"
@@ -82,7 +82,7 @@ class PostsController < ApplicationController
   
   def edit
     @type_id = @post.send(@type_handler.get_type_id)
-    @type_name, @type_image = @type_handler.get_type_with_image(@type_id)
+    @type_name, @type_image, @display_image = @type_handler.get_type_with_image(@type_id)
     @type_label = @type_handler.get_type_label
   end
   
@@ -99,7 +99,7 @@ class PostsController < ApplicationController
     end
     
     @type_id = @post.send(@type_handler.get_type_id)
-    @type_name, @type_image = @type_handler.get_type_with_image(@type_id)
+    @type_name, @type_image, @display_image = @type_handler.get_type_with_image(@type_id)
     @type_label = @type_handler.get_type_label
   
     render :action => "edit"
@@ -115,7 +115,7 @@ class PostsController < ApplicationController
     
     @poster_nick_pic = Account.get_nick_and_pic(@post.account_id)
     
-    @type_name, @type_image = type_handler.get_type_with_image(@type_id)
+    @type_name, @type_image, @display_image = type_handler.get_type_with_image(@type_id)
     @type_label = type_handler.get_type_label
     
     @can_view = type_handler.check_view_access(@type_id, session[:account_id])
@@ -426,7 +426,7 @@ class PostsController < ApplicationController
     class Group < Base
       def get_type_with_image(type_id)
         group, group_image = ::Group.get_group_with_image(type_id)
-        [group.name, group_image]
+        [group.name, group_image, true]
       end
       
       def get_type_label
@@ -504,7 +504,7 @@ class PostsController < ApplicationController
     class Activity < Base
       def get_type_with_image(type_id)
         activity, activity_image = ::Activity.get_activity_with_image(type_id)
-        [activity.get_title, activity_image]
+        [activity.get_title, activity_image, true]
       end
       
       def get_type_label
@@ -598,7 +598,62 @@ class PostsController < ApplicationController
         end
         access
       end
+    end
+    
+    
+    class Goal < Base
+      def get_type_with_image(type_id)
+        goal = ::Goal.get_goal(type_id)
+        [goal.name, nil, false]
+      end
       
+      def get_type_label
+        "目标"
+      end
+      
+      def check_compose_access(type_id, account_id)
+        true
+      end
+      
+      def check_create_access(type_id, account_id)
+        check_compose_access(type_id, account_id)
+      end
+      
+      def check_destroy_access(type_id, account_id)
+        ApplicationController.helpers.general_admin?(account_id)
+      end
+      
+      def check_create_comment_access(type_id, account_id)
+        check_view_access(type_id, account_id)
+      end
+      
+      def check_delete_comment_access(type_id, account_id)
+        check_destroy_access(type_id, account_id)
+      end
+      
+      def check_top_access(type_id, account_id)
+        check_destroy_access(type_id, account_id)
+      end
+      
+      def check_view_access(type_id, account_id)
+        true
+      end
+      
+      def check_attachment_access(type_id, account_id)
+        check_view_access(type_id, account_id)
+      end
+      
+      def get_access(current_account_id, poster_id, type_id)
+        access = []
+        
+        access << :can_compose
+        
+        if current_account_id
+          access << :admin if ApplicationController.helpers.general_admin?(current_account_id)
+          access << :author if (poster_id == current_account_id)
+        end
+        access
+      end
     end
     
   end

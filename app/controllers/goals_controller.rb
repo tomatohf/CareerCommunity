@@ -2,6 +2,8 @@ class GoalsController < ApplicationController
   
   Comment_Page_Size = 100
   Goal_Page_Size = 15
+  Goal_Post_Num = 20
+  Post_List_Size = 50
   
   
   layout "community"
@@ -18,6 +20,10 @@ class GoalsController < ApplicationController
   
   
   def index
+    jump_to("/goals/summary")
+  end
+  
+  def summary
     
   end
 
@@ -31,7 +37,68 @@ class GoalsController < ApplicationController
       :conditions => ["goal_id = ? and account_id = ?", @goal.id, session[:account_id]]
     )
     
+    @top_goal_posts = GoalPost.find(
+      :all,
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :conditions => ["goal_id = ? and top = ?", @goal.id, true],
+      :include => [:account],
+      :order => "responded_at DESC, created_at DESC"
+    )
     
+    @goal_posts = GoalPost.find(
+      :all,
+      :limit => Goal_Post_Num,
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :conditions => ["goal_id = ? and top = ?", @goal.id, false],
+      :include => [:account],
+      :order => "responded_at DESC, created_at DESC"
+    )
+  end
+  
+  def post
+    @goal = Goal.get_goal(params[:id])
+    
+    @top_goal_posts = GoalPost.find(
+      :all,
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :conditions => ["goal_id = ? and top = ?", @goal.id, true],
+      :include => [:account],
+      :order => "responded_at DESC, created_at DESC"
+    )
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @goal_posts = GoalPost.paginate(
+      :page => page,
+      :per_page => Post_List_Size,
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :conditions => ["goal_id = ? and top = ?", @goal.id, false],
+      :include => [:account],
+      :order => "responded_at DESC, created_at DESC"
+    )
+  end
+  
+  def good_post
+    @goal = Goal.get_goal(params[:id])
+    
+    @top_goal_posts = GoalPost.good.find(
+      :all,
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :conditions => ["goal_id = ? and top = ?", @goal.id, true],
+      :include => [:account],
+      :order => "responded_at DESC, created_at DESC"
+    )
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @goal_posts = GoalPost.good.paginate(
+      :page => page,
+      :per_page => Post_List_Size,
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :conditions => ["goal_id = ? and top = ?", @goal.id, false],
+      :include => [:account],
+      :order => "responded_at DESC, created_at DESC"
+    )
   end
   
   def list_index

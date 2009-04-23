@@ -10,10 +10,12 @@
 		<%= @type_label %> ...
 	</div>
 	
-	<div class="community_block">
-		<a href="/<%= pluralized_post_type %>/<%= @type_id %>">
-			<img src="<%= face_img_src(@type_image) %>" border="0" /></a>
-	</div>
+	<% if @display %>
+		<div class="community_block">
+			<a href="/<%= pluralized_post_type %>/<%= @type_id %>">
+				<img src="<%= face_img_src(@type_image) %>" border="0" /></a>
+		</div>
+	<% end %>
 	
 	<div class="community_block">
 		<a href="/<%= pluralized_post_type %>/<%= @type_id %>">

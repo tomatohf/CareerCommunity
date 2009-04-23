@@ -5,10 +5,12 @@
 <% community_page_title(page_title) %>
 
 <div class="blog_container">
-	<div class="community_block float_r">
-		<a href="/<%= pluralized_post_type %>/<%= @type_id %>">
-			<img src="<%= face_img_src(@type_image) %>" border="0" /></a>
-	</div>
+	<% if @display_image %>
+		<div class="community_block float_r">
+			<a href="/<%= pluralized_post_type %>/<%= @type_id %>">
+				<img src="<%= face_img_src(@type_image) %>" border="0" /></a>
+		</div>
+	<% end %>
 
 	<h2><%= page_title %></h2>
 	

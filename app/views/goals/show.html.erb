@@ -17,6 +17,36 @@
 		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/goals/#{@goal.id}", :title => "目标: #{goal_name}"} %>
 	</div>
 	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block align_c" style="word-spacing: 25px;">
+		<a href="/goals/list_index">
+			我的目标</a>
+			
+		<a href="#">
+			全部目标列表</a>
+			
+		<a href="/goals/summary">
+			目标最新概况</a>
+	</div>
+	
+	
+	<% if @follow %>
+		<div class="community_block align_c" style="word-spacing: 30px;">
+			<a href="#">
+				查看我的实现进度</a>
+				
+			<% if is_active %>
+				<a href="#">
+					添加我的实现进度</a>
+			<% end %>
+		</div>
+	<% end %>
+	
+	
 	<div class="community_block_narrow">
 		<%= thin_hr %>
 	</div>
@@ -27,26 +57,6 @@
 			<img src="/images/groups/add_post_small.png" border="0" />
 			发起新的讨论话题</a>
 	</div>
-	
-	<% if @follow %>
-		<div class="community_block_narrow">
-			<%= thin_hr %>
-		</div>
-		
-		<div class="community_block align_c">
-			<a href="#">
-				查看我的实现进度</a>
-				
-			<% if is_active %>
-				&nbsp;&nbsp;&nbsp;
-				|
-				&nbsp;&nbsp;&nbsp;
-				
-				<a href="#">
-					添加我的实现进度</a>
-			<% end %>
-		</div>
-	<% end %>
 	
 	
 	<div class="community_block_narrow">
@@ -100,6 +110,7 @@
 			
 		</div>
 	</div>
+	
 	
 </div>
 
@@ -188,6 +199,58 @@
 	
 		<div id="active_follows_section">
 			
+		</div>
+	</div>
+	
+	
+	<div class="community_title">
+		最近目标讨论 ...
+	</div>
+	<div>
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="post_section_expand" href="#" onclick="collapse_section('post_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="post_section_collapse" href="#" onclick="expand_section('post_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+				
+			<span class="float_r">
+				<a href="/goal/posts/compose/<%= @goal.id %>">发起新的讨论话题</a>
+				&nbsp;&nbsp;&nbsp;
+			</span>
+		
+			<img class="float_l" src="/images/groups/post_small.png" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<a href="/goals/post/<%= @goal.id %>">全部目标讨论</a>
+			
+			&nbsp;&nbsp;&nbsp;
+			<a href="/goals/good_post/<%= @goal.id %>">(查看目标精华区)</a>
+		</div>
+	
+		<div id="post_section">
+			<div style="padding-left: 10px;">
+				<a href="/groups/1" target="_blank" class="form_info_s account_nick_link">
+					举报话题内容, 或申请置顶,放入精华区等管理操作, 请到 乔布圈反馈小组</a>
+			</div>
+			
+			<table cellpadding="0" cellspacing="5" border="0" class="main_part_w">
+				<thead>
+					<tr>
+						<td width="51%">话题</td>
+						<td width="6%" align="right">评论</td>
+						<td width="18%" align="right">发起人</td>
+						<td width="25%" align="right">最后参与</td>
+					</tr>
+				</thead>
+				<tbody>
+					<%= render :partial => "goal_post", :collection => @top_goal_posts %>
+					<%= render :partial => "goal_post", :collection => @goal_posts %>
+				</tbody>
+			</table>
+			<% unless @top_goal_posts.size + @goal_posts.size > 0 %>
+				<div class="form_info_l">
+					还没有讨论话题 ...
+				</div>
+			<% end %>
 		</div>
 	</div>
 	

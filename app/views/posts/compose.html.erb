@@ -7,7 +7,12 @@
 <div class="blog_container">
 	<div class="community_block float_r">
 		<a href="/<%= pluralized_post_type %>/<%= @type_id %>">
-			<img src="<%= face_img_src(@type_image) %>" border="0" /></a>
+			<% if @display_image %>
+				<img src="<%= face_img_src(@type_image) %>" border="0" />
+			<% else %>
+				返回<%= @type_label %> <%= type_name %>
+			<% end %>
+		</a>
 	</div>
 
 	<h2><%= page_title %></h2>
