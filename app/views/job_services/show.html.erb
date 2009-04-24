@@ -273,7 +273,7 @@
 	</div>
 
 	<div class="community_block">
-		<%= render(:partial => "evaluation", :collection => @service_evaluations, :locals => {:can_del => is_info_editor, :counter_shift => calculate_counter_shift(@service_evaluations)}) %>
+		<%= render(:partial => "evaluation", :collection => @service_evaluations, :locals => {:can_del => is_info_editor}) %>
 	</div>
 	
 	<div class="community_block">

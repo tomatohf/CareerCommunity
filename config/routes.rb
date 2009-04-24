@@ -612,6 +612,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/goals/post/:id/:page", :controller => "goals", :action => "post", :id => /\d+/, :page => /\d+/
   map.connect "/goals/good_post/:id/:page", :controller => "goals", :action => "good_post", :id => /\d+/, :page => /\d+/
   map.connect "/goals/follow/:id/:page", :controller => "goals", :action => "follow", :id => /\d+/, :page => /\d+/
+  map.connect "/goals/track/:id/:page", :controller => "goals", :action => "track", :id => /\d+/, :page => /\d+/
   map.resources :goals, :collection => {
     
     :summary => :get

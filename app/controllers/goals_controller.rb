@@ -54,6 +54,26 @@ class GoalsController < ApplicationController
 
   end
   
+  def track
+    @track = GoalTrack.find(params[:id])
+    @follow = GoalFollow.find(@track.goal_follow_id)
+    @goal = Goal.get_goal(@follow.goal_id)
+    
+    @edit = (@follow.account_id == session[:account_id])
+    
+    @follower = Account.get_nick_and_pic(@follow.account_id) unless @edit
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @track_comments = @track.comments.paginate(
+      :page => page,
+      :per_page => Comment_Page_Size,
+      :total_entries => GoalTrackComment.get_count(@track.id),
+      :include => [:account => [:profile_pic]],
+      :order => "created_at ASC"
+    )
+  end
+  
   def track_new
     @track = GoalTrack.new
     
@@ -87,11 +107,22 @@ class GoalsController < ApplicationController
   end
   
   def track_edit
-    
+    @goal = Goal.get_goal(@follow.goal_id)
   end
   
   def track_update
+    @track.value = params[:track_value] && params[:track_value].strip
+    @track.desc = params[:track_desc] && params[:track_desc].strip
     
+    if @track.save
+      flash.now[:message] = "已成功保存"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+    
+    @goal = Goal.get_goal(@follow.goal_id)
+
+    render :action => "track_edit"
   end
   
   def track_destroy

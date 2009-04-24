@@ -17,6 +17,7 @@ class ShowService
       talk_info = talk.get_info
       talk_content[:title] = talk.title
       talk_content[:desc] = talk_info[:desc]
+      talk_content[:summary] = talk_info[:summary]
       talk_content[:reporters] = TalkReporter.get_talk_reporters(talk.id).collect{ |reporter| reporter[1] }
       talk_content[:publish_time] = ApplicationController.helpers.format_date(talk.publish_at)
       
@@ -84,6 +85,16 @@ class ShowService
     # increase view count
     view_count = talk.published ? ViewCounter.increase_count(:talk, talk.id) : ViewCounter.get_count(:talk, talk.id)
     talk_content[:view_count] = view_count
+    
+    
+    # get forecast
+    post_id = (ENV["RAILS_ENV"] == "production") ? 294 : 87
+    post = GroupPost.get_post(post_id)
+    talk_content[:forecast] = {
+      :title => post.title,
+      :desc => post.content,
+      :image => "http://www.qiaobutang.com/images/talks/forecast.jpg"
+    }
     
     
     talk_content

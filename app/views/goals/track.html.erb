@@ -8,7 +8,7 @@
 	follow_type = GoalFollowType.get_follow_type(@follow.type_id)
 %>
 
-<% page_title = "目标 #{goal_name} 的全部进度" %>
+<% page_title = "目标 #{goal_name} 的进度" %>
 <% community_page_title(page_title) %>
 
 
@@ -17,6 +17,11 @@
 	<div class="community_block align_c">
 		<a href="/goals/<%= @goal.id %>">
 			返回目标 <%= goal_name %></a>
+	</div>
+	
+	<div class="community_block align_c">
+		<a href="/goals/follow/<%= @follow.id %>">
+			返回目标 <%= goal_name %> 的全部进度</a>
 	</div>
 	
 	<% if @edit && is_active %>
@@ -57,20 +62,13 @@
 		</div>
 	<% end %>
 	
+	
+	
 	<div class="community_block_narrow">
 		<%= thin_hr %>
 	</div>
 	<div class="community_block align_c">
-		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/goals/follow/#{@follow.id}", :title => "目标的全部进度: #{goal_name}"} %>
-	</div>
-	
-	
-	
-	<div class="community_title">
-		最近进度评论 ...
-	</div>
-	<div class="community_block">
-		<%= render(:partial => "small_comment", :collection => @new_comments) %>
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/goals/track/#{@track.id}", :title => "目标的进度: #{goal_name}"} %>
 	</div>
 	
 </div>
@@ -80,37 +78,52 @@
 	
 	
 	
-	<div class="community_block">
-		进度统计分析图表
-	</div>
+	<%= render(:partial => "track", :object => @track, :locals => {:edit => @edit, :goal_follow_type => GoalFollowTypes.get_type(GoalFollowType.find(@follow.type_id)), :individual => true}) %>
 	
 	
 	
 	<div class="community_title">
 		共有
 		<b>
-			<%= @tracks.total_entries %>
+			<%= @track_comments.total_entries %>
 		</b>
-		条进度 ...
+		条<span id="comment_list">评论</span> ...
 	</div>
+	
 	<% if @edit %>
-		<div class="align_r form_info_s">
-			<% if is_active %>
-				<a href="/goals/<%= @follow.id %>/track_new">
-					<img src="<%= follow_type[2] %>" border="0" alt="<%= follow_type[1] %>" title="<%= follow_type[1] %>" />
-					添加进度</a>
-			<% else %>
-				<%= follow_status[1] %> 这件事,
-				无法继续添加进度
-			<% end %>
-		</div>
+		<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_comment(comment_id) {
+				if(confirm("确定要删除评论么 ?")) {
+					del_form = document.getElementById("delete_comment_form");
+					del_form.action = "/goals/" + comment_id + "/delete_track_comment";
+					del_form.submit();
+				}
+			}
+		</script>
 	<% end %>
+	
+	<div class="community_block_narrow align_r">
+		<a href="#comment_new">添加评论</a>
+	</div>
+
 	<div class="community_block">
-		<% if @tracks.size > 0 %>
-			<%= render(:partial => "track", :collection => @tracks, :locals => {:edit => @edit, :goal_follow_type => GoalFollowTypes.get_type(GoalFollowType.find(@follow.type_id))}) %>
-		<% else %>
-			<div class="form_info_l">
-				还没有添加过进度 ...
+		<%= render(:partial => "/common/comment", :collection => @track_comments, :locals => {:can_del => @edit, :counter_shift => calculate_counter_shift(@track_comments)}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@track_comments) %>
+	</div>
+	
+	<div class="community_block_narrow">
+		<span id="comment_new">添加评论 »</span>
+		<% form_tag "/goals/#{@track.id}/create_track_comment", :method => :post, :onsubmit => "if(document.getElementById('track_comment').value.replace(/(^\s*)|(\s*$)/g, '') == ''){ alert('请填写评论内容 ...'); return false; }" do %>
+			<textarea id="track_comment" name="track_comment" class="text_field" cols="50" rows="5"></textarea>
+			
+			<div>
+				<input type="submit" value="发表评论" class="button" />
 			</div>
 		<% end %>
 	</div>

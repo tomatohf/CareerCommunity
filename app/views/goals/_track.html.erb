@@ -1,6 +1,7 @@
 <% edit &&= true %>
 
-<% comment_count = GoalTrackComment.get_count(track.id) %>
+<% individual &&= true %>
+
 
 <div style="margin-bottom: 15px;">
 	<div style="font-size: 14px; color: #666666; background: transparent url(/images/index/goal_icon.gif) no-repeat scroll 0px 5px; padding-left: 25px;">
@@ -22,8 +23,13 @@
 		<% end %>
 		
 		<span style="word-spacing: 10px;">
-			<a href="/goals/track/<%= track.id %>#comment_list">
-				评论(<%= comment_count %>)</a>
+			<% unless individual %>
+				<a href="/goals/track/<%= track.id %>">
+					查看</a>
+				
+				<a href="/goals/track/<%= track.id %>#comment_list">
+					评论(<%= GoalTrackComment.get_count(track.id) %>)</a>
+			<% end %>
 			
 			<% if edit %>
 				<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('track_delete_form_<%= track.id %>').submit();}; return false;">
