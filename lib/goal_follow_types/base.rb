@@ -51,7 +51,7 @@ module GoalFollowTypes
       !
     end
     
-    def display_show(value)
+    def display_show(value, options = {})
       value
     end
   

@@ -620,6 +620,7 @@ ActionController::Routing::Routes.draw do |map|
     
     :track_new => :get,
     :track_create => :post,
+    
     :track_edit => :get,
     :track_update => :post,
     :track_destroy => :post

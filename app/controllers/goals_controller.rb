@@ -2,7 +2,8 @@ class GoalsController < ApplicationController
   
   Comment_Page_Size = 100
   Goal_Page_Size = 15
-  Track_Page_Size = 30
+  
+  Track_Page_Size = 20
   Goal_Post_Num = 25
   Post_List_Size = 50
   New_Comment_Size = 10
@@ -22,8 +23,8 @@ class GoalsController < ApplicationController
   
   before_filter :check_account_access, :only => [:list, :friend]
   
-  before_filter :check_follow_owner, :only => [:track_new, :track_edit,
-                                                :track_create, :track_update, :track_destroy]
+  before_filter :check_follow_owner, :only => [:track_new, :track_create]
+  before_filter :check_track_owner, :only => [:track_edit, :track_update, :track_destroy]
   
   
   
@@ -68,6 +69,7 @@ class GoalsController < ApplicationController
     @track.desc = params[:track_desc] && params[:track_desc].strip
     
     if @track.save
+      # TODO
       # record account action
       #AccountAction.create_new(session[:account_id], "add_blog", {
       #  :blog_id => @blog.id,
@@ -82,6 +84,20 @@ class GoalsController < ApplicationController
       
       render :action => "track_new"
     end
+  end
+  
+  def track_edit
+    
+  end
+  
+  def track_update
+    
+  end
+  
+  def track_destroy
+    @track.destroy
+    
+    jump_to("/goals/follow/#{@track.goal_follow_id}")
   end
   
   def follow
@@ -106,7 +122,7 @@ class GoalsController < ApplicationController
       :page => page,
       :per_page => Track_Page_Size,
       :conditions => ["goal_follow_id = ?", @follow.id],
-      :order => "created_at ASC"
+      :order => "created_at DESC"
     )
   end
 
@@ -269,6 +285,13 @@ class GoalsController < ApplicationController
   
   def check_follow_owner
     @follow = GoalFollow.find(params[:id])
+    
+    jump_to("/errors/forbidden") unless @follow.account_id == session[:account_id]
+  end
+  
+  def check_track_owner
+    @track = GoalTrack.find(params[:id])
+    @follow = GoalFollow.find(@track.goal_follow_id)
     
     jump_to("/errors/forbidden") unless @follow.account_id == session[:account_id]
   end

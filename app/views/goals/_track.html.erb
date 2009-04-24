@@ -1,0 +1,45 @@
+<% edit &&= true %>
+
+<% comment_count = GoalTrackComment.get_count(track.id) %>
+
+<div style="margin-bottom: 15px;">
+	<div style="font-size: 14px; color: #666666; background: transparent url(/images/index/goal_icon.gif) no-repeat scroll 0px 5px; padding-left: 25px;">
+		<%= format_datetime(track.created_at) %>
+		的进度:
+		
+		&nbsp;
+		<%= goal_follow_type.display_show(track.value, :small => true) %>
+	</div>
+	
+	<div style="color: #222222; padding: 0px 25px;">
+		<%= simple_format(h(track.desc)) %>
+	</div>
+	
+	<div class="form_info_s align_r">
+		<% if edit %>
+			<% form_tag "/goals/#{track.id}/track_destroy", :method => :post, :id => "track_delete_form_#{track.id}" do %>
+			<% end %>
+		<% end %>
+		
+		<span style="word-spacing: 10px;">
+			<a href="/goals/track/<%= track.id %>#comment_list">
+				评论(<%= comment_count %>)</a>
+			
+			<% if edit %>
+				<a href="#" onclick="if(confirm('确定要删除么 ?')){document.getElementById('track_delete_form_<%= track.id %>').submit();}; return false;">
+					删除</a>
+			
+				<a href="/goals/<%= track.id %>/track_edit">
+					修改</a>
+			<% end %>
+			|
+		</span>
+		
+		最后更新于
+		<%= format_datetime(track.updated_at) %>
+	</div>
+	
+	<div style="padding-left: 50px;">
+		<%= thin_hr %>
+	</div>
+</div>

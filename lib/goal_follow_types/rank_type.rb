@@ -8,13 +8,15 @@ module GoalFollowTypes
   
     def display_input(param_name, element_id= nil, value = 3)
       element_id ||= param_name
+      
+      titles = ["很差", "不好", "一般", "不错", "非常好"]
     
       lis = ""
       5.times do |i|
         num = i+1
         lis += %Q!
           <li>
-            <a href="#" class="star_#{num}" onclick="document.getElementById('#{element_id}').value=#{num}; document.getElementById('#{element_id}_current').style.width='#{num*100/5}%'; return false;">
+            <a href="#" title="#{titles[i]}" class="star_#{num}" onclick="document.getElementById('#{element_id}').value=#{num}; document.getElementById('#{element_id}_current').style.width='#{num*100/5}%'; return false;">
               #{num}</a>
           </li>
         !
@@ -37,7 +39,9 @@ module GoalFollowTypes
       !
     end
     
-    def display_show(value, small = false)
+    def display_show(value, options = {})
+      small = options[:small] && true
+      
       ApplicationController.helpers.rank(value, :readonly => true, :small => small)
     end
   

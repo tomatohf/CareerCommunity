@@ -22,7 +22,7 @@
 	<% if @edit && is_active %>
 		<div class="community_block align_c">
 			<a href="/goals/<%= @follow.id %>/track_new">
-				<img src="<%= follow_type[2] %>" border="0" />
+				<img src="<%= follow_type[2] %>" border="0" alt="<%= follow_type[1] %>" title="<%= follow_type[1] %>" />
 				添加新的进度</a>
 		</div>
 	<% end %>
@@ -89,7 +89,7 @@
 		<div class="align_r form_info_s">
 			<% if is_active %>
 				<a href="/goals/<%= @follow.id %>/track_new">
-					<img src="<%= follow_type[2] %>" border="0" />
+					<img src="<%= follow_type[2] %>" border="0" alt="<%= follow_type[1] %>" title="<%= follow_type[1] %>" />
 					添加进度</a>
 			<% else %>
 				<%= follow_status[1] %> 这件事,
@@ -99,7 +99,7 @@
 	<% end %>
 	<div class="community_block">
 		<% if @tracks.size > 0 %>
-			<%= render(:partial => "track", :collection => @tracks) %>
+			<%= render(:partial => "track", :collection => @tracks, :locals => {:edit => @edit, :goal_follow_type => GoalFollowTypes.get_type(GoalFollowType.find(@follow.type_id))}) %>
 		<% else %>
 			<div class="form_info_l">
 				还没有添加过进度 ...

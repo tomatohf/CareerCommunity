@@ -17,7 +17,7 @@ module GoalFollowTypes
         }
       end
     
-      def display_show(value)
+      def display_show(value, options = {})
         %Q{
           <input type="checkbox" onclick="return false;"#{ " checked=\"true\"" if value > 0} />
         }

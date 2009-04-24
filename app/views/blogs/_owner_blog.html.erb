@@ -12,9 +12,6 @@
 		</a>
 	</div>
 	
-	<% form_tag "/blogs/#{owner_blog.id}", :method => :delete, :id => "blog_delete_form_#{owner_blog.id}" do %>
-	<% end %>
-	
 	<div class="form_info_s">
 		<%= owner_name unless edit %>
 		发表于
@@ -28,6 +25,11 @@
 	</div>
 	
 	<div class="form_info_s owner_blog_action_bar">
+		<% if edit %>
+			<% form_tag "/blogs/#{owner_blog.id}", :method => :delete, :id => "blog_delete_form_#{owner_blog.id}" do %>
+			<% end %>
+		<% end %>
+		
 		<a href="<%= blog_show_url %>">完整阅读</a>
 		<!--
 		<a href="#">标签</a>
