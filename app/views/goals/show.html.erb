@@ -78,8 +78,9 @@
 				</span>
 			
 			<b>
-				已完成这件事的成员
+				已完成
 			</b>
+			这件事的成员
 		</div>
 	
 		<div id="finished_follows_section">
@@ -102,8 +103,9 @@
 				</span>
 			
 			<b>
-				已终止这件事的成员
+				已终止
 			</b>
+			这件事的成员
 		</div>
 	
 		<div id="cancelled_follows_section">
@@ -112,11 +114,12 @@
 	</div>
 	
 	
+	
 	<div class="community_title">
 		最新进度 ...
 	</div>
 	<div class="community_block">
-		
+		<%= render(:partial => "small_track", :collection => @new_tracks) %>
 	</div>
 	
 	
@@ -178,7 +181,7 @@
 					(查看我的进度)</a>
 			</div>
 		
-			<div id="status_section" class="community_block align_c" style="word-spacing: 20px;">
+			<div id="status_section" class="align_c" style="word-spacing: 20px; margin-top: 10px;">
 			
 				<% if is_active %>
 					<a href="#" title="我已完成这件事">
@@ -217,8 +220,9 @@
 				</span>
 			
 			<b>
-				正在做这件事的成员
+				正在做
 			</b>
+			这件事的成员
 		</div>
 	
 		<div id="active_follows_section">

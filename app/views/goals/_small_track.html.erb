@@ -1,0 +1,23 @@
+<div style="margin-bottom: 15px;">
+	<div style="color: #666666; background: transparent url(/images/index/goal_icon.gif) no-repeat scroll 0px 5px; padding-left: 25px;">
+		<%= format_datetime(small_track.created_at) %>
+		的进度
+	</div>
+	
+	<% track_desc = h(small_track.desc) %>
+	<div style="color: #222222; padding-left: 25px;" title="<%= track_desc %>">
+		<%= truncate(track_desc) %>
+	</div>
+	
+	<div class="form_info_s align_r" style="word-spacing: 10px;">
+		<a href="/goals/track/<%= small_track.id %>">
+			查看</a>
+		
+		<a href="/goals/track/<%= small_track.id %>#comment_list">
+			评论(<%= GoalTrackComment.get_count(small_track.id) %>)</a>
+	</div>
+	
+	<div style="padding-left: 50px;">
+		<%= thin_hr %>
+	</div>
+</div>

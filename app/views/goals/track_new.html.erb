@@ -70,6 +70,9 @@
 							<%= submit_tag "添加进度", :class => "button", :disabled => @account_limited %>
 							&nbsp;&nbsp;&nbsp;
 							<a href="/goals/follow/<%= @follow.id %>">返回这个目标的全部进度</a>
+							&nbsp;&nbsp;&nbsp;
+							<a href="/goals/<%= @goal.id %>">
+								返回目标 <%= goal_name %></a>
 						</td>
 					</tr>
 				</table>

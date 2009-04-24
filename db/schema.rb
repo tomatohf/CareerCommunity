@@ -501,6 +501,7 @@ ActiveRecord::Schema.define(:version => 33) do
 
   create_table "goal_track_comments", :force => true do |t|
     t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "goal_track_id", :limit => 11
     t.integer  "account_id",    :limit => 11
     t.string   "content",       :limit => 1000
@@ -508,6 +509,7 @@ ActiveRecord::Schema.define(:version => 33) do
   end
 
   add_index "goal_track_comments", ["created_at"], :name => "index_goal_track_comments_on_created_at"
+  add_index "goal_track_comments", ["updated_at"], :name => "index_goal_track_comments_on_updated_at"
   add_index "goal_track_comments", ["goal_track_id"], :name => "index_goal_track_comments_on_goal_track_id"
   add_index "goal_track_comments", ["account_id"], :name => "index_goal_track_comments_on_account_id"
   add_index "goal_track_comments", ["delta"], :name => "index_goal_track_comments_on_delta"

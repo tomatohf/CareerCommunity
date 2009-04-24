@@ -83,6 +83,7 @@ class CreateGoals < ActiveRecord::Migration
     # goal_track_comments table
     create_table :goal_track_comments, :force => true do |t|
       t.column :created_at, :datetime
+      t.column :updated_at, :datetime
       
       t.column :goal_track_id, :integer
       
@@ -94,6 +95,7 @@ class CreateGoals < ActiveRecord::Migration
       t.column :delta, :boolean
     end
     add_index :goal_track_comments, :created_at
+    add_index :goal_track_comments, :updated_at
     add_index :goal_track_comments, :goal_track_id
     add_index :goal_track_comments, :account_id
     add_index :goal_track_comments, :delta

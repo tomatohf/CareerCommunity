@@ -7,6 +7,7 @@ class GoalsController < ApplicationController
   Goal_Post_Num = 25
   Post_List_Size = 50
   New_Comment_Size = 10
+  New_Track_Size = 10
   
   
   layout "community"
@@ -14,9 +15,11 @@ class GoalsController < ApplicationController
   before_filter :check_current_account, :only => [:list_index, :friend_index]
   before_filter :check_login, :only => [:create, :edit, :update, :destroy,
                                         :list, :friend, :track_new, :track_edit,
-                                        :track_create, :track_update, :track_destroy]
+                                        :track_create, :track_update, :track_destroy,
+                                        :create_track_comment, :delete_track_comment]
   before_filter :check_limited, :only => [:create, :update, :destroy,
-                                          :track_create, :track_update, :track_destroy]
+                                          :track_create, :track_update, :track_destroy,
+                                          :create_track_comment, :delete_track_comment]
   
   before_filter :check_admin, :only => [:edit, :update]
   before_filter :check_superadmin, :only => [:destroy]
@@ -26,6 +29,8 @@ class GoalsController < ApplicationController
   before_filter :check_follow_owner, :only => [:track_new, :track_create]
   before_filter :check_track_owner, :only => [:track_edit, :track_update, :track_destroy]
   
+  before_filter :check_comment_owner, :only => [:delete_track_comment]
+  
   
   
   def index
@@ -33,7 +38,11 @@ class GoalsController < ApplicationController
   end
   
   def summary
-    
+    @new_tracks = GoalTrack.find(
+      :all,
+      :limit => New_Track_Size,
+      :order => "created_at DESC"
+    )
   end
 
   def list_index
@@ -52,6 +61,37 @@ class GoalsController < ApplicationController
   def friend
     @account_id
 
+  end
+  
+  def create_track_comment
+    track_comment = GoalTrackComment.new(:account_id => session[:account_id])
+    
+    track_comment.content = params[:track_comment] && params[:track_comment].strip
+    track_comment.goal_track_id = params[:id]
+    
+    comment_saved = track_comment.save
+    
+    
+    if comment_saved
+      #AccountAction.create_new(session[:account_id], "evaluate_job_service", {
+      #  :job_service_id => evaluation.job_service_id,
+      #  :evaluation_id => evaluation.id,
+      #  :evaluation_content => evaluation.content,
+      #  :evaluation_point => evaluation.point
+      #})
+    end
+    
+    
+    total_count = GoalTrackComment.get_count(track_comment.goal_track_id)
+    last_page = total_count > 0 ? (total_count.to_f/Comment_Page_Size).ceil : 1
+    
+    jump_to("/goals/track/#{track_comment.goal_track_id}/#{last_page}#{"#comment_#{track_comment.id}" if comment_saved}")
+  end
+  
+  def delete_track_comment
+    @track_comment.destroy
+    
+    jump_to("/goals/track/#{@track_id}")
   end
   
   def track
@@ -144,7 +184,7 @@ class GoalsController < ApplicationController
       :limit => New_Comment_Size,
       :conditions => ["goal_track_id in (select id from goal_tracks where goal_follow_id = ?)", @follow.id],
       :include => [:account => [:profile_pic]],
-      :order => "created_at DESC"
+      :order => "updated_at DESC"
     )
     
     page = params[:page]
@@ -182,6 +222,13 @@ class GoalsController < ApplicationController
       :conditions => ["goal_id = ? and top = ?", @goal.id, false],
       :include => [:account],
       :order => "responded_at DESC, created_at DESC"
+    )
+    
+    @new_tracks = GoalTrack.find(
+      :all,
+      :limit => New_Track_Size,
+      :conditions => ["goal_follow_id in (select id from goal_follows where goal_id = ?)", @goal.id],
+      :order => "created_at DESC"
     )
   end
   
@@ -325,6 +372,15 @@ class GoalsController < ApplicationController
     @follow = GoalFollow.find(@track.goal_follow_id)
     
     jump_to("/errors/forbidden") unless @follow.account_id == session[:account_id]
+  end
+  
+  def check_comment_owner
+    @track_comment = GoalTrackComment.find(params[:id])
+    @track_id = @track_comment.goal_track_id
+    track = GoalTrack.find(@track_id)
+    follow = GoalFollow.find(track.goal_follow_id)
+    
+    jump_to("/errors/forbidden") unless follow.account_id == session[:account_id]
   end
   
 end
