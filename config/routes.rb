@@ -608,14 +608,17 @@ ActionController::Routing::Routes.draw do |map|
   
   
   map.connect "/goals/list_index", :controller => "goals", :action => "list_index"
-  map.connect "/goals/friend_index", :controller => "goals", :action => "friend_index"
   map.connect "/goals/post/:id/:page", :controller => "goals", :action => "post", :id => /\d+/, :page => /\d+/
   map.connect "/goals/good_post/:id/:page", :controller => "goals", :action => "good_post", :id => /\d+/, :page => /\d+/
   map.connect "/goals/follow/:id/:page", :controller => "goals", :action => "follow", :id => /\d+/, :page => /\d+/
   map.connect "/goals/track/:id/:page", :controller => "goals", :action => "track", :id => /\d+/, :page => /\d+/
+  map.connect "/goals/all/:page", :controller => "goals", :action => "all", :page => /\d+/
+  map.connect "/goals/list/:id/:page", :controller => "goals", :action => "list", :id => /\d+/, :page => /\d+/
   map.resources :goals, :collection => {
     
-    :summary => :get
+    :summary => :get,
+    
+    :all => :get
     
   }, :member => {
     
@@ -627,7 +630,10 @@ ActionController::Routing::Routes.draw do |map|
     :track_destroy => :post,
     
     :create_track_comment => :post,
-    :delete_track_comment => :post
+    :delete_track_comment => :post,
+    
+    :follow_edit => :get,
+    :follow_update => :post
     
   }
 

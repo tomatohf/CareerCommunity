@@ -1,4 +1,5 @@
 <% hide_top &&= true %>
+<% show_goal_name &&= true %>
 
 <% comment_count = GoalPostComment.get_count(goal_post.id) %>
 
@@ -13,6 +14,14 @@
 			<% end %>
 		<% end %>
 		
+		<% if show_goal_name %>
+			<%
+				goal = Goal.get_goal(goal_post.goal_id)
+				goal_name = h(goal.name)
+			%>
+			[<a href="/goals/<%= goal_post.goal_id %>" class="account_nick_link" title="<%= goal_name %>"><%= truncate(goal_name, 10) %></a>]
+		<% end %>
+		
 		<% goal_post_title = h(goal_post.title) %>
 		<a href="/goal/posts/<%= goal_post.id %>" title="<%= goal_post_title %>" class="account_nick_link">
 			<%= truncate(goal_post_title) %>
@@ -20,7 +29,7 @@
 				&nbsp;
 				<img src="/images/groups/good_small.gif" border="0" alt="精华" title="精华" />
 			<% end %>
-			</a>
+		</a>
 	</td>
 	
 	<td align="right">

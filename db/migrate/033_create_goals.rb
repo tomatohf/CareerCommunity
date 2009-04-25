@@ -68,6 +68,8 @@ class CreateGoals < ActiveRecord::Migration
       
       t.column :desc, :string, :limit => 1000
       
+      t.column :goal_id, :integer
+      
       
       # enable sphinx delta index
       t.column :delta, :boolean
@@ -75,6 +77,7 @@ class CreateGoals < ActiveRecord::Migration
     add_index :goal_tracks, :created_at
     add_index :goal_tracks, :updated_at
     add_index :goal_tracks, :goal_follow_id
+    add_index :goal_tracks, :goal_id
     add_index :goal_tracks, :delta
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO goal_tracks (id) VALUES (1000)")

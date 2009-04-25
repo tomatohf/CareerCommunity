@@ -7,6 +7,8 @@
 	if @follow
 		follow_status = GoalFollowStatus.get_follow_status(@follow.status_id)
 		is_active = (follow_status[0] == GoalFollowStatus.active[0])
+		
+		follow_type = GoalFollowType.get_follow_type(@follow.type_id)
 	end
 %>
 
@@ -26,11 +28,11 @@
 		<a href="/goals/list_index">
 			我的目标</a>
 			
-		<a href="#">
+		<a href="/goals/all">
 			全部目标列表</a>
 			
 		<a href="/goals/summary">
-			目标最新概况</a>
+			目标概况</a>
 	</div>
 	
 	
@@ -53,7 +55,7 @@
 	
 	
 	<div class="community_block align_c">
-		<a href="#">
+		<a href="/goal/posts/compose/<%= @goal.id %>">
 			<img src="/images/groups/add_post_small.png" border="0" />
 			发起新的讨论话题</a>
 	</div>
@@ -171,6 +173,9 @@
 					</span>
 				<% end %>
 				
+				
+				<img src="<%= follow_type[2] %>" border="0" alt="<%= follow_type[1] %>" title="<%= follow_type[1] %>" />
+				&nbsp;
 				我
 				<span style="font-size: 14px; font-weight: bold;">
 					<%= follow_status[1] %>

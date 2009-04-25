@@ -9,7 +9,7 @@ class GoalTrack < ActiveRecord::Base
   belongs_to :goal_follow, :class_name => "GoalFollow", :foreign_key => "goal_follow_id"
   
   
-  validates_presence_of :goal_follow_id
+  validates_presence_of :goal_follow_id, :goal_id
   
   validates_presence_of :value, :message => "请输入 完成情况"
   validates_presence_of :desc, :message => "请输入 进度描述"

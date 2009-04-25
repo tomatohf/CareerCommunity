@@ -520,12 +520,14 @@ ActiveRecord::Schema.define(:version => 33) do
     t.integer  "goal_follow_id", :limit => 11
     t.integer  "value",          :limit => 10,   :precision => 10, :scale => 0
     t.string   "desc",           :limit => 1000
+    t.integer  "goal_id",        :limit => 11
     t.boolean  "delta"
   end
 
   add_index "goal_tracks", ["created_at"], :name => "index_goal_tracks_on_created_at"
   add_index "goal_tracks", ["updated_at"], :name => "index_goal_tracks_on_updated_at"
   add_index "goal_tracks", ["goal_follow_id"], :name => "index_goal_tracks_on_goal_follow_id"
+  add_index "goal_tracks", ["goal_id"], :name => "index_goal_tracks_on_goal_id"
   add_index "goal_tracks", ["delta"], :name => "index_goal_tracks_on_delta"
 
   create_table "goals", :force => true do |t|

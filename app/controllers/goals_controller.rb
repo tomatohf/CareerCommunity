@@ -1,7 +1,8 @@
 class GoalsController < ApplicationController
   
   Comment_Page_Size = 100
-  Goal_Page_Size = 15
+  Follow_Page_Size = 15
+  Goal_Page_Size = 30
   
   Track_Page_Size = 20
   Goal_Post_Num = 25
@@ -9,10 +10,13 @@ class GoalsController < ApplicationController
   New_Comment_Size = 10
   New_Track_Size = 10
   
+  Summary_New_Post_Size = 30
+  Summary_New_Track_Size = 10
+  
   
   layout "community"
   
-  before_filter :check_current_account, :only => [:list_index, :friend_index]
+  before_filter :check_current_account, :only => [:list_index]
   before_filter :check_login, :only => [:create, :edit, :update, :destroy,
                                         :list, :friend, :track_new, :track_edit,
                                         :track_create, :track_update, :track_destroy,
@@ -40,8 +44,42 @@ class GoalsController < ApplicationController
   def summary
     @new_tracks = GoalTrack.find(
       :all,
-      :limit => New_Track_Size,
+      :limit => Summary_New_Track_Size,
+      :include => [:goal_follow],
       :order => "created_at DESC"
+    )
+    
+    @new_posts = GoalPost.find(
+      :all,
+      :limit => Summary_New_Post_Size,
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :include => [:account],
+      :order => "responded_at DESC, created_at DESC"
+    )
+  end
+  
+  def all
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @goals = Goal.paginate(
+			:page => page,
+      :per_page => Goal_Page_Size,
+		  :order => "created_at DESC"
+		)
+		
+		goal_ids = @goals.collect { |goal| goal.id }
+		
+		@follow_counts = GoalFollow.count(
+      :conditions => ["goal_id in (?)", goal_ids],
+      :group => "goal_id"
+    )
+    
+		@goal_posts = GoalPost.find(
+      :all,
+      :limit => Summary_New_Post_Size,
+      :select => "id, created_at, goal_id, good, title, responded_at",
+      :conditions => ["goal_id in (?)", goal_ids],
+      :order => "responded_at DESC, created_at DESC"
     )
   end
 
@@ -50,17 +88,24 @@ class GoalsController < ApplicationController
   end
 
   def list
-    @account_id
-
-  end
-
-  def friend_index
-    jump_to("/goals/friend/#{session[:account_id]}")
-  end
-
-  def friend
-    @account_id
-
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @goal_follows = GoalFollow.paginate(
+			:page => page,
+      :per_page => Follow_Page_Size,
+			:conditions => ["account_id = ?", @account_id],
+			:include => [:goal],
+		  :order => "created_at DESC"
+		)
+		
+		goal_ids = @goal_follows.collect { |goal_follow| goal_follow.goal_id }
+		@goal_posts = GoalPost.find(
+      :all,
+      :limit => Summary_New_Post_Size,
+      :select => "id, created_at, goal_id, good, title, responded_at",
+      :conditions => ["goal_id in (?)", goal_ids],
+      :order => "responded_at DESC, created_at DESC"
+    )
   end
   
   def create_track_comment
@@ -73,12 +118,11 @@ class GoalsController < ApplicationController
     
     
     if comment_saved
-      #AccountAction.create_new(session[:account_id], "evaluate_job_service", {
-      #  :job_service_id => evaluation.job_service_id,
-      #  :evaluation_id => evaluation.id,
-      #  :evaluation_content => evaluation.content,
-      #  :evaluation_point => evaluation.point
-      #})
+      AccountAction.create_new(session[:account_id], "add_goal_track_comment", {
+        :track_id => track_comment.goal_track_id,
+        :comment_id => track_comment.id,
+        :comment_content => track_comment.content
+      })
     end
     
     
@@ -122,19 +166,21 @@ class GoalsController < ApplicationController
   
   def track_create
     @track = GoalTrack.new(
-      :goal_follow_id => @follow.id
+      :goal_follow_id => @follow.id,
+      :goal_id => @follow.goal_id
     )
     
     @track.value = params[:track_value] && params[:track_value].strip
     @track.desc = params[:track_desc] && params[:track_desc].strip
     
     if @track.save
-      # TODO
-      # record account action
-      #AccountAction.create_new(session[:account_id], "add_blog", {
-      #  :blog_id => @blog.id,
-      #  :blog_title => @blog.title
-      #})
+      AccountAction.create_new(session[:account_id], "add_goal_track", {
+        :track_id => @track.id,
+        :track_value => @track.value,
+        :track_desc => @track.desc,
+        :goal_follow_id => @track.goal_follow_id,
+        :goal_id => @track.goal_id
+      })
       
       jump_to("/goals/follow/#{@follow.id}")
     else
@@ -227,7 +273,8 @@ class GoalsController < ApplicationController
     @new_tracks = GoalTrack.find(
       :all,
       :limit => New_Track_Size,
-      :conditions => ["goal_follow_id in (select id from goal_follows where goal_id = ?)", @goal.id],
+      :conditions => ["goal_id = ?", @goal.id],
+      :include => [:goal_follow],
       :order => "created_at DESC"
     )
   end

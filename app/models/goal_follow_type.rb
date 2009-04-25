@@ -1,10 +1,12 @@
 class GoalFollowType < StaticModel::StringBase
   
-  @@all = [
-          "number", # 1
-          "rank", # 2
-          "boolean" # 3
-        ]
+  def self.all
+    [
+      "number", # 1
+      "rank", # 2
+      "boolean" # 3
+    ]
+  end
   
   
   

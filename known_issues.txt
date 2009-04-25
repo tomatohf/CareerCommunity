@@ -1,12 +1,16 @@
 ﻿escape URL
 
+大量运用 group_by
+	- 查看好友的 xxx
+	- group 动态
+	- group 重复信息
+
 把 82B1 的东西整理整理部署上去?
+	- track 的 图
 	- IE 上的 latest goals ....
 	- 测试一下不同类型添加进度的case
 	- 动态
 		- 添加目标
-		- 添加进度
-		- 回应进度
 	- 最热目标列表 和 latest goals 的根据参与人数字体变大
 	- 改变状态时 提示发帖子 说明 原因/感想
 	- 打开 _latest_goals 里面的 cache

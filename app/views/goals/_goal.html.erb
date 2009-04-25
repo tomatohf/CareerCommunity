@@ -1,0 +1,26 @@
+<%
+	Goal.set_goal_cache(goal)
+%>
+
+<div style="margin-bottom: 10px;">
+	
+	<div style="font-size: 16px; background: transparent url(/images/index/goal_icon.gif) no-repeat scroll 0px 3px; padding-left: 25px;">
+		
+		<span class="float_r" style="font-size: 12px; color: #666666; margin-left: 5px;">
+			参与:
+			<b>
+				<%= follow_counts[goal.id] %>
+			</b>
+		</span>
+		
+		<a href="/goals/<%= goal.id %>" class="account_nick_link">
+			<%= h(goal.name) %></a>
+			
+	</div>
+	
+	<div style="padding-left: 25px;">
+		<%= thin_hr %>
+	</div>
+	
+</div>
+

@@ -1,0 +1,49 @@
+<%
+	goal = goal_follow.goal
+	Goal.set_goal_cache(goal)
+%>
+
+<%
+	follow_status = GoalFollowStatus.get_follow_status(goal_follow.status_id)
+	is_active = (follow_status[0] == GoalFollowStatus.active[0])
+	
+	follow_type = GoalFollowType.get_follow_type(goal_follow.type_id)
+%>
+
+<div style="margin-bottom: 10px;">
+	
+	<div style="font-size: 16px; color: #666666; background: transparent url(<%= follow_type[2] %>) no-repeat scroll 0px 5px; padding-left: 25px;">
+		
+		<a href="/goals/<%= goal.id %>" class="account_nick_link">
+			<%= h(goal.name) %></a>
+			
+	</div>
+	
+	<div class="align_r form_info_s" style="border-bottom: solid 1px #EEEEEE; margin-top: 5px;">
+		<span style="word-spacing: 5px;">
+			<a href="/goals/<%= goal_follow.id %>/follow_edit" class="account_nick_link">
+				修改</a>
+			|
+			<%= follow_type[1] %>
+			(<a href="/goals/<%= goal_follow.id %>/follow_type_edit" class="account_nick_link">改类型</a>)
+			|
+		</span>
+		
+		
+		<% if is_active %>
+			从
+			<%= format_date(goal_follow.created_at) %>
+			开始
+		<% else %>
+			在
+			<%= format_date(goal_follow.status_updated_at) %>
+			<% if follow_status[0] == GoalFollowStatus.cancelled[0] %>
+				终止
+			<% else %>
+				完成
+			<% end %>
+		<% end %>
+	</div>
+	
+</div>
+

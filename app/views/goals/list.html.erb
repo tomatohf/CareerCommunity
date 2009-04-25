@@ -1,0 +1,46 @@
+<% page_title = "我的目标" %>
+<% community_page_title(page_title) %>
+
+
+<div class="float_r community_container_r">
+	
+	<div class="community_block align_c" style="word-spacing: 30px;">
+		<a href="/goals/all">
+			全部目标列表</a>
+			
+		<a href="/goals/summary">
+			目标概况</a>
+	</div>
+	
+	
+	<div class="community_title">
+		相关的目标讨论话题 ...
+	</div>
+	<div class="community_block">
+		<%= render :partial => "small_goal_post", :collection => @goal_posts %>
+	</div>
+	
+</div>
+
+<div class="community_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block">
+		<%= render :partial => "goal_follow", :collection => @goal_follows %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@goal_follows) %>
+	</div>
+	
+	
+	
+	<div style="margin-top: 50px;">
+		<%= render :partial => "latest_goals" %>
+	</div>
+	
+	
+</div>
+
+

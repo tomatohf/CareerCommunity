@@ -1,0 +1,11 @@
+<div style="margin: 5px 0px;">
+	» <a href="/goal/posts/<%= small_goal_post.id %>" class="account_nick_link" target="_blank">
+		<%= h(small_goal_post.title) %>
+		
+		<% if small_goal_post.good %>
+			&nbsp;
+			<img src="/images/groups/good_small.gif" border="0" alt="精华" title="精华" />
+		<% end %>
+	</a>
+</div>
+

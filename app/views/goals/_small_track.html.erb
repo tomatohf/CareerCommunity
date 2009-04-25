@@ -1,12 +1,20 @@
+<%
+	follow = small_track.goal_follow
+	goal_follow_type = GoalFollowTypes.get_type(GoalFollowType.find(follow.type_id))
+%>
+
 <div style="margin-bottom: 15px;">
 	<div style="color: #666666; background: transparent url(/images/index/goal_icon.gif) no-repeat scroll 0px 5px; padding-left: 25px;">
 		<%= format_datetime(small_track.created_at) %>
-		的进度
+		的进度:
+		
+		&nbsp;
+		<%= goal_follow_type.display_show(small_track.value, :small => true) %>
 	</div>
 	
 	<% track_desc = h(small_track.desc) %>
 	<div style="color: #222222; padding-left: 25px;" title="<%= track_desc %>">
-		<%= truncate(track_desc) %>
+		<%= truncate(track_desc, 50) %>
 	</div>
 	
 	<div class="form_info_s align_r" style="word-spacing: 10px;">

@@ -34,7 +34,9 @@ class AccountAction < ActiveRecord::Base
     "add_job_service" => "添加求职服务",
     "evaluate_job_service" => "点评求职服务",
     "add_goal_post" => "发表目标话题",
-    "add_goal_post_comment" => "回应目标话题"
+    "add_goal_post_comment" => "回应目标话题",
+    "add_goal_track" => "添加目标进度",
+    "add_goal_track_comment" => "评论目标进度"
   }
   
   Action_Types.keys.each do |t|
@@ -461,6 +463,49 @@ class AccountAction < ActiveRecord::Base
           render(:partial => "/spaces/actions/add_goal_post_comment", :locals => {
             :operator => #{operator},
             :goal_post_id => #{goal_post_id},
+            :comment_id => #{comment_id},
+            :comment_content => #{comment_content.inspect},
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddGoalTrack < Base
+      def action_text(data, operator, save_space)
+        track_id = data[:track_id]
+        track_value = data[:track_value]
+        track_desc = data[:track_desc]
+        
+        goal_follow_id = data[:goal_follow_id]
+        goal_id = data[:goal_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_goal_track", :locals => {
+            :operator => #{operator},
+            :goal_id => #{goal_id},
+            :goal_follow_id => #{goal_follow_id},
+            :track_id => #{track_id},
+            :track_value => #{track_value},
+            :track_desc => #{track_desc.inspect},
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddGoalTrackComment < Base
+      def action_text(data, operator, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        track_id = data[:track_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_goal_track_comment", :locals => {
+            :operator => #{operator},
+            :track_id => #{track_id},
             :comment_id => #{comment_id},
             :comment_content => #{comment_content.inspect},
             

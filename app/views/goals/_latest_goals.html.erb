@@ -17,7 +17,7 @@
 	<div class="goal_links_container">
 		<div class="goal_links_title">
 			<span class="float_r">
-				<a href="#">
+				<a href="/goals/all">
 					全部的目标列表 »</a>
 			</span>
 			
@@ -30,12 +30,17 @@
 				<%
 					goals = Goal.find(
 						:all,
-						:limit => 30,
+						:limit => 50,
 						:order => "created_at DESC"
 					)
 				%>
 				
 				<% goals.each do |goal| %>
+				
+					<%
+						Goal.set_goal_cache(goal)
+					%>
+				
 					<% goal_name = h(goal.name) %>
 					<a title="<%= goal_name %>" href="/goals/<%= goal.id %>">
 						<%= truncate(goal_name) %></a>
