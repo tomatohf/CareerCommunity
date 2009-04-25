@@ -20,17 +20,27 @@ class GoalsController < ApplicationController
   before_filter :check_login, :only => [:create, :edit, :update, :destroy,
                                         :list, :friend, :track_new, :track_edit,
                                         :track_create, :track_update, :track_destroy,
-                                        :create_track_comment, :delete_track_comment]
+                                        :create_track_comment, :delete_track_comment,
+                                        :follow_goal, :finish_goal,
+                                        :active_follow, :finish_follow, :cancel_follow,
+                                        :follow_edit, :follow_update,
+                                        :follow_type_edit, :follow_type_update]
   before_filter :check_limited, :only => [:create, :update, :destroy,
                                           :track_create, :track_update, :track_destroy,
-                                          :create_track_comment, :delete_track_comment]
+                                          :create_track_comment, :delete_track_comment,
+                                          :follow_goal, :finish_goal,
+                                          :active_follow, :finish_follow, :cancel_follow,
+                                          :follow_update, :follow_type_update]
   
   before_filter :check_admin, :only => [:edit, :update]
   before_filter :check_superadmin, :only => [:destroy]
   
   before_filter :check_account_access, :only => [:list, :friend]
   
-  before_filter :check_follow_owner, :only => [:track_new, :track_create]
+  before_filter :check_follow_owner, :only => [:track_new, :track_create,
+                                                :active_follow, :finish_follow, :cancel_follow,
+                                                :follow_edit, :follow_update,
+                                                :follow_type_edit, :follow_type_update]
   before_filter :check_track_owner, :only => [:track_edit, :track_update, :track_destroy]
   
   before_filter :check_comment_owner, :only => [:delete_track_comment]
@@ -325,37 +335,78 @@ class GoalsController < ApplicationController
     )
   end
   
+  def follow_edit
+    @goal = Goal.get_goal(@follow.goal_id)
+  end
+  
+  def follow_update
+    goal_name = params[:goal_name] && params[:goal_name].strip
+    
+    goal = get_goal_from_name(goal_name)
+    
+    @follow.goal_id = goal.id
+    @follow.save
+    
+    jump_to("/goals/#{@follow.goal_id}")
+  end
+  
+  def follow_type_edit
+    @goal = Goal.get_goal(@follow.goal_id)
+  end
+  
+  def follow_type_update
+    follow_type_id = params[:goal_follow_type] && params[:goal_follow_type].strip
+    
+    @follow.type_id = follow_type_id
+    @follow.save
+    
+    jump_to("/goals/#{@follow.goal_id}")
+  end
+  
+  def active_follow
+    change_follow_status(@follow, GoalFollowStatus.active[0])
+    
+    jump_to("/goals/#{@follow.goal_id}")
+  end
+  
+  def finish_follow
+    flash[:message] = [
+      ["刚刚完成了这个目标, 来"],
+      ["发个帖子跟大家分享一下你的经验和感想吧"]
+    ] if change_follow_status(@follow, GoalFollowStatus.finished[0])
+    
+    jump_to("/goals/#{@follow.goal_id}")
+  end
+  
+  def cancel_follow
+    flash[:message] = [
+      ["刚刚终止了这个目标, 来"],
+      ["发个帖子跟大家讨论一下为什么吧"]
+    ] if change_follow_status(@follow, GoalFollowStatus.cancelled[0])
+    
+    jump_to("/goals/#{@follow.goal_id}")
+  end
+  
+  def follow_goal
+    create_goal_follow(params[:id], GoalFollowStatus.active[0])
+    
+    jump_to("/goals/#{@goal_id}")
+  end
+  
+  def finish_goal
+    create_goal_follow(params[:id], GoalFollowStatus.finished[0])
+    
+    jump_to("/goals/#{@goal_id}")
+  end
+  
   def create
     goal_name = params[:goal_name] && params[:goal_name].strip
     
-    jump_to("/goals/list/#{session[:account_id]}") unless goal_name && (goal_name != "")
+    goal = get_goal_from_name(goal_name)
     
-    goal = Goal.find(
-      :first,
-      :conditions => ["name = ?", goal_name]
-    )
+    create_goal_follow(goal.id, GoalFollowStatus.active[0], goal)
     
-    unless goal
-      goal = Goal.new(
-        :account_id => session[:account_id],
-        :name => goal_name
-      )
-      
-      jump_to("/goals/list/#{session[:account_id]}") unless goal.save
-    end
-    
-    goal_follow = GoalFollow.new(
-      :account_id => session[:account_id],
-      :goal_id => goal.id,
-      :status_id => GoalFollowStatus.active[0],
-      :type_id => GoalFollowType.rank[0]
-    )
-    
-    if goal_follow.save
-      jump_to("/goals/#{goal.id}")
-    else
-      jump_to("/goals/list/#{session[:account_id]}")
-    end
+    jump_to("/goals/#{@goal_id}")
   end
   
   def edit
@@ -428,6 +479,58 @@ class GoalsController < ApplicationController
     follow = GoalFollow.find(track.goal_follow_id)
     
     jump_to("/errors/forbidden") unless follow.account_id == session[:account_id]
+  end
+  
+  def create_goal_follow(goal_id, status_id, goal = nil)
+    goal_follow = GoalFollow.find(
+      :first,
+      :conditions => ["goal_id = ? and account_id = ?", goal_id, session[:account_id]]
+    )
+    
+    unless goal_follow
+      goal_follow = GoalFollow.new(
+        :account_id => session[:account_id],
+        :goal_id => goal_id,
+        :status_id => status_id,
+        :type_id => GoalFollowType.rank[0]
+      )
+      
+      if goal_follow.save
+        goal ||= Goal.get_goal(goal_id)
+        
+        AccountAction.create_new(session[:account_id], "add_goal", {
+          :goal_id => goal_id,
+          :goal_name => goal.name
+        })
+      end
+    end
+  end
+  
+  def change_follow_status(follow, status_id)
+    follow.status_id = status_id
+    follow.status_updated_at = DateTime.now
+
+    follow.save
+  end
+  
+  def get_goal_from_name(goal_name)
+    jump_to("/goals/list/#{session[:account_id]}") unless goal_name && (goal_name != "")
+    
+    goal = Goal.find(
+      :first,
+      :conditions => ["name = ?", goal_name]
+    )
+    
+    unless goal
+      goal = Goal.new(
+        :account_id => session[:account_id],
+        :name => goal_name
+      )
+      
+      jump_to("/goals/list/#{session[:account_id]}") unless goal.save
+    end
+    
+    goal
   end
   
 end

@@ -1,0 +1,51 @@
+<% goal_name = h(@goal.name) %>
+
+<% page_title = "修改目标 #{goal_name} 的进度类型" %>
+<% community_page_title(page_title) %>
+
+<div class="blog_container">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block">
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<br />
+	
+	<div class="community_block_narrow">
+
+		<div class="div_form">
+			<% form_tag "/goals/#{@follow.id}/follow_type_update", :method => :post do %>
+			
+				<div>
+					进度类型(<span style="color: red;">*</span>)
+					:
+				</div>
+				<div style="padding: 20px 5px;">
+					<% GoalFollowType.find(:all).each do |type_name| %>
+						<% follow_type = GoalFollowType.send(type_name) %>
+						<input type="radio" value="<%= follow_type[0] %>" name="goal_follow_type" id="goal_follow_type_<%= follow_type[0] %>"<%= %Q! checked="checked"! if @follow.type_id == follow_type[0] %> />
+
+						<label for="goal_follow_type_<%= follow_type[0] %>">
+							<img src="<%= follow_type[2] %>" border="0" style="margin-left: 5px;" />
+							<%= follow_type[1] %>
+						</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<% end %>
+				</div>
+				
+				<br />
+				
+				<div>
+					<%= submit_tag "保存目标进度类型", :class => "button", :disabled => @account_limited %>
+					&nbsp;&nbsp;&nbsp;
+					<a href="/goals/list/<%= session[:account_id] %>">返回我的目标</a>
+				</div>
+			
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+

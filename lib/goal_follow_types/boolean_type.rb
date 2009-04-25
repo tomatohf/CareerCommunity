@@ -10,10 +10,11 @@ module GoalFollowTypes
       element_id ||= param_name
       
       %Q{
-          <input type="checkbox" id="#{element_id}" name="#{param_name}" value="1"#{" checked=\"checked\"" if value > 0} />
-          <label for="#{element_id}">
+          <input id="#{element_id}_checkbox" type="checkbox"#{" checked=\"checked\"" if value > 0} onclick="document.getElementById('#{element_id}').value = this.checked ? 1 : 0;" />
+          <label for="#{element_id}_checkbox">
             我做到了
           </label>
+          <input type="hidden" name="#{param_name}" id="#{element_id}" value="#{value}" />
         }
       end
     

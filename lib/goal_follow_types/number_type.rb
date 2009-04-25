@@ -21,7 +21,7 @@ module GoalFollowTypes
       
       %Q!
         <span class="point_number">
-  				#{sprintf("%.2f", value).gsub(/^([0-9])/, small ? "<span style='font-size: 16px;'>\\1</span>" : "<strong>\\1</strong>")}
+  				#{sprintf("%.2f", value).gsub(/^([0-9]*)/, small ? "<span style='font-size: 16px;'>\\1</span>" : "<strong>\\1</strong>")}
   			</span>
       !
     end

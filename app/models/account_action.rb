@@ -35,6 +35,7 @@ class AccountAction < ActiveRecord::Base
     "evaluate_job_service" => "点评求职服务",
     "add_goal_post" => "发表目标话题",
     "add_goal_post_comment" => "回应目标话题",
+    "add_goal" => "添加目标",
     "add_goal_track" => "添加目标进度",
     "add_goal_track_comment" => "评论目标进度"
   }
@@ -509,6 +510,23 @@ class AccountAction < ActiveRecord::Base
             :comment_id => #{comment_id},
             :comment_content => #{comment_content.inspect},
             
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddGoal < Base
+      def action_text(data, operator, save_space)
+        goal_id = data[:goal_id]
+        goal_name = data[:goal_name]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_goal", :locals => {
+            :operator => #{operator},
+            :goal_id => #{goal_id},
+            :goal_name => #{goal_name.inspect},
+          
             :save_space => #{save_space.inspect}
           })
         !

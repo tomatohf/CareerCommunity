@@ -632,8 +632,18 @@ ActionController::Routing::Routes.draw do |map|
     :create_track_comment => :post,
     :delete_track_comment => :post,
     
+    :follow_goal => :post,
+    :finish_goal => :post,
+    
+    :active_follow => :post,
+    :finish_follow => :post,
+    :cancel_follow => :post,
+    
     :follow_edit => :get,
-    :follow_update => :post
+    :follow_update => :post,
+    
+    :follow_type_edit => :get,
+    :follow_type_update => :post
     
   }
 

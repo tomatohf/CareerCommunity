@@ -37,11 +37,13 @@
 		<% else %>
 			在
 			<%= format_date(goal_follow.status_updated_at) %>
-			<% if follow_status[0] == GoalFollowStatus.cancelled[0] %>
-				终止
-			<% else %>
-				完成
-			<% end %>
+			<b>
+				<% if follow_status[0] == GoalFollowStatus.cancelled[0] %>
+					终止
+				<% else %>
+					完成
+				<% end %>
+			</b>
 		<% end %>
 	</div>
 	

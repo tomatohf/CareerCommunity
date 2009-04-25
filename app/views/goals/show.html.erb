@@ -131,6 +131,21 @@
 	<h2><%= page_title %></h2>
 	
 	
+	
+	<% if flash[:message] %>
+		<p id="status_updated_msg" class="align_c" style="padding: 10px 10px 5px 0px; background-color: #FFFDC0; border: 1px dashed #DDDDDD; color: #333333">
+			<span class="float_r">
+				<a href="#" onclick="document.getElementById('status_updated_msg').style.display = 'none'; return false;">
+					(知道了)</a>
+			</span>
+			
+			<%= flash[:message][0] %>
+			<a href="/goal/posts/compose/<%= @goal.id %>">
+				<%= flash[:message][1] %></a>
+		</p>
+	<% end %>
+
+
 	<div class="align_r form_info_s">
 		<% if general_admin?(session[:account_id]) %>
 			<span class="float_l">
@@ -189,23 +204,36 @@
 			<div id="status_section" class="align_c" style="word-spacing: 20px; margin-top: 10px;">
 			
 				<% if is_active %>
-					<a href="#" title="我已完成这件事">
+					<% form_tag "/goals/#{@follow.id}/finish_follow", :method => :post, :id => "finish_follow_form" do %>
+					<% end %>
+					<% form_tag "/goals/#{@follow.id}/cancel_follow", :method => :post, :id => "cancel_follow_form" do %>
+					<% end %>
+					
+					<a href="#" title="我已完成这件事" onclick="document.getElementById('finish_follow_form').submit(); return false;">
 						<img src="/images/goals/finish_goal_btn.png" border="0" alt="我已完成这件事" /></a>
 
-					<a href="#" title="我要终止这件事">
+					<a href="#" title="我要终止这件事" onclick="document.getElementById('cancel_follow_form').submit(); return false;">
 						<img src="/images/goals/cancel_goal_btn.png" border="0" alt="我要终止这件事" /></a>
 				<% else %>
-					<a href="#" title="我要继续这件事">
+					<% form_tag "/goals/#{@follow.id}/active_follow", :method => :post, :id => "active_follow_form" do %>
+					<% end %>
+					
+					<a href="#" title="我要继续这件事" onclick="document.getElementById('active_follow_form').submit(); return false;">
 						<img src="/images/goals/reactive_goal_btn.png" border="0" alt="我要继续这件事" /></a>
 				<% end %>
 			</div>
 		</div>
 	<% else %>
 		<div class="community_block align_r" style="word-spacing: 20px;">
-			<a href="#" title="我也要做这件事">
+			<% form_tag "/goals/#{@goal.id}/follow_goal", :method => :post, :id => "follow_goal_form" do %>
+			<% end %>
+			<% form_tag "/goals/#{@goal.id}/finish_goal", :method => :post, :id => "finish_goal_form" do %>
+			<% end %>
+			
+			<a href="#" title="我也要做这件事" onclick="if(confirm('确定要添加这个目标么 ?')){document.getElementById('follow_goal_form').submit();}; return false;">
 				<img src="/images/goals/follow_goal_btn.png" border="0" alt="我也要做这件事" /></a>
 
-			<a href="#" title="我已完成这件事">
+			<a href="#" title="我已完成这件事" onclick="if(confirm('确定要以已完成的状态添加这个目标么 ?')){document.getElementById('finish_goal_form').submit();}; return false;">
 				<img src="/images/goals/finish_goal_btn.png" border="0" alt="我已完成这件事" /></a>
 		</div>
 	<% end %>

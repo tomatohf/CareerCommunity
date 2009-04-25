@@ -1,0 +1,40 @@
+<% community_page_title("修改目标") %>
+
+<div class="blog_container">
+	<h2>修改目标</h2>
+	
+	<div class="community_block">
+		<%= unchecked_alert(@account_checked) %>
+	</div>
+	
+	<br />
+	
+	<div class="community_block_narrow">
+
+		<div class="div_form">
+			<% form_tag "/goals/#{@follow.id}/follow_update", :method => :post do %>
+			
+				<div>
+					<label for="goal_name">
+				        名称(<span style="color: red;">*</span>)
+				    </label>
+				</div>
+				<div>
+					<input type="text" id="goal_name" name="goal_name" class="text_field" size="75" value="<%= h(@goal.name) %>" />
+				</div>
+				
+				<br />
+				
+				<div>
+					<%= submit_tag "保存目标", :class => "button", :disabled => @account_limited %>
+					&nbsp;&nbsp;&nbsp;
+					<a href="/goals/list/<%= session[:account_id] %>">返回我的目标</a>
+				</div>
+			
+			<% end %>
+		</div>
+		
+	</div>
+</div>
+
+
