@@ -25,7 +25,7 @@
 		</div>
 		
 		<div class="goal_links">
-			<%# cache(Goal::FCKP_goal_links) do %>
+			<% cache(Goal::FCKP_goal_links) do %>
 			
 				<%
 					goals = Goal.find(
@@ -46,7 +46,7 @@
 						<%= truncate(goal_name) %></a>
 				<% end %>
 				
-			<%# end %>
+			<% end %>
 		</div>
 	</div>
 </div>

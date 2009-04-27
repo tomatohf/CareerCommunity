@@ -10,7 +10,8 @@ class PostsController < ApplicationController
   
   before_filter :check_login, :only => [:compose, :create, :create_comment, :delete_comment, :destroy,
                                         :top, :untop, :edit, :update,
-                                        :new_attachment, :create_attachment, :delete_attachment]
+                                        :new_attachment, :create_attachment, :delete_attachment,
+                                        :attachment]
   before_filter :check_limited, :only => [:create, :create_comment, :delete_comment, :destroy,
                                           :top, :untop, :update, :create_attachment, :delete_attachment]
   

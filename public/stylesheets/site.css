@@ -1610,11 +1610,24 @@ a.account_nick_link:hover, a.group_name_link:hover {
 .point_number {
 	font-size: 14px;
 	font-weight: bold;
-	color: #CC3300;"
+	color: #CC3300;
 }
 
 .point_number strong {
 	font-size: 28px;
+}
+
+.goal {
+	font-size: 16px;
+	background: transparent url(/images/index/goal_icon.gif) no-repeat scroll 0px 3px;
+	padding-left: 25px;
+}
+
+.goal_follow_account {
+	float: left;
+	margin: 5px;
+	text-align: center;
+	width: 85px;
 }
 
 .add_goal_container {
@@ -1646,19 +1659,6 @@ a.account_nick_link:hover, a.group_name_link:hover {
 
 .goal_links a:hover {
 	text-decoration: underline;
-}
-
-.goal {
-	font-size: 16px;
-	background: transparent url(/images/index/goal_icon.gif) no-repeat scroll 0px 3px;
-	padding-left: 25px;
-}
-
-.goal_follow_account {
-	float: left;
-	margin: 5px;
-	text-align: center;
-	width: 85px;
 }
 
 

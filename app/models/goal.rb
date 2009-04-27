@@ -42,7 +42,7 @@ class Goal < ActiveRecord::Base
   
   CKP_goal = :goal
   
-  FCKP_goal_links = :fc_index_blog
+  FCKP_goal_links = :fc_goal_links
   
   after_save { |goal|
     self.set_goal_cache(goal)
