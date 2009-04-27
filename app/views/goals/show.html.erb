@@ -74,7 +74,7 @@
 				<img src="/images/collapse.png" border="0" /></a>
 		
 				<span class="float_r">
-					<a href="#">
+					<a href="/goals/finished/<%= @goal.id %>">
 						查看全部</a>
 					&nbsp;&nbsp;&nbsp;
 				</span>
@@ -86,7 +86,17 @@
 		</div>
 	
 		<div id="finished_follows_section">
+			<div class="overflow_hidden">
+				<%= float_list(@finished_follows, "follow", :follow, {}, 3) %>
+
+				<div class="clear_l"></div>
+			</div>
 			
+			<% unless @finished_follows.size > 0 %>
+				<div class="form_info_l">
+					没有成员已完成这件事 ...
+				</div>
+			<% end %>
 		</div>
 	</div>
 	
@@ -99,7 +109,7 @@
 				<img src="/images/collapse.png" border="0" /></a>
 		
 				<span class="float_r">
-					<a href="#">
+					<a href="/goals/cancelled/<%= @goal.id %>">
 						查看全部</a>
 					&nbsp;&nbsp;&nbsp;
 				</span>
@@ -111,7 +121,17 @@
 		</div>
 	
 		<div id="cancelled_follows_section">
+			<div class="overflow_hidden">
+				<%= float_list(@cancelled_follows, "follow", :follow, {}, 3) %>
+
+				<div class="clear_l"></div>
+			</div>
 			
+			<% unless @cancelled_follows.size > 0 %>
+				<div class="form_info_l">
+					没有成员已终止这件事 ...
+				</div>
+			<% end %>
 		</div>
 	</div>
 	
@@ -247,7 +267,7 @@
 				<img src="/images/collapse.png" border="0" /></a>
 		
 				<span class="float_r">
-					<a href="#">
+					<a href="/goals/active/<%= @goal.id %>">
 						查看全部正在做这件事的成员</a>
 					&nbsp;&nbsp;&nbsp;
 				</span>
@@ -259,7 +279,17 @@
 		</div>
 	
 		<div id="active_follows_section">
+			<div class="overflow_hidden">
+				<%= float_list(@active_follows, "follow", :follow, {}, 5) %>
+
+				<div class="clear_l"></div>
+			</div>
 			
+			<% unless @active_follows.size > 0 %>
+				<div class="form_info_l">
+					没有成员正在做这件事 ...
+				</div>
+			<% end %>
 		</div>
 	</div>
 	

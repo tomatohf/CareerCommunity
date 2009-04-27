@@ -1,4 +1,4 @@
-<% page_title = "我的目标" %>
+<% page_title = "全部目标" %>
 <% community_page_title(page_title) %>
 
 
@@ -25,6 +25,14 @@
 <div class="community_container_l">
 	<h2><%= page_title %></h2>
 	
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b>
+			<%= @goals.total_entries %>
+		</b>
+		个目标
+	</div>
 	
 	<div class="community_block">
 		<%= render :partial => "goal", :collection => @goals, :locals => {:follow_counts => @follow_counts} %>

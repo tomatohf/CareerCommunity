@@ -3,7 +3,7 @@ class Goal < ActiveRecord::Base
   acts_as_trashable
   
   
-%Q!
+  
   define_index do
     # fields
     indexes :name
@@ -15,7 +15,6 @@ class Goal < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
-!
   
   
   

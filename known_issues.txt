@@ -1,21 +1,12 @@
 ﻿escape URL
+	- search
+	- bookmark
 
-大量运用 group_by
-	- 查看好友的 xxx
-	- group 动态
-	- group 重复信息
 
 把 82B1 的东西整理整理部署上去?
-	- 列出目标成员
-	- list_active, list_finished, list_cancelled
 	- track 的 图
 	- IE 上的 latest goals ....
-	- 最热目标列表 和 latest goals 的根据参与人数字体变大
 	- 打开 _latest_goals 里面的 cache
-目标相关的搜索
-	- 目标
-	- 目标话题
-	- 目标进度
 
 即时聊天功能?
 
@@ -25,7 +16,9 @@
 	- 提问的时候选择希望回答的人
 	- 对 提问 和 回答 的人做积分奖励
 
+
 圈子的分类
+Improve 首页
 
 
 与 行业/公司/职位 匹配的圈子(论坛)

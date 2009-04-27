@@ -1,4 +1,6 @@
-<% page_title = "我的目标" %>
+<% status_label = @follow_status ? @follow_status[1] : "" %>
+
+<% page_title = "我 #{status_label} 的目标" %>
 <% community_page_title(page_title) %>
 
 
@@ -25,6 +27,45 @@
 <div class="community_container_l">
 	<h2><%= page_title %></h2>
 	
+	
+	
+	<div class="community_block align_r" style="font-size: 13px; word-spacing: 20px;">
+		<% unless action_name == "list" %>
+			<a href="/goals/list/<%= @account_id %>">
+				我的全部目标</a>
+		<% end %>
+		
+		<% unless action_name == "list_active" %>
+			<a href="/goals/list_active/<%= @account_id %>">
+				我正在做的目标</a>
+		<% end %>
+		
+		<% unless action_name == "list_finished" %>
+			<a href="/goals/list_finished/<%= @account_id %>">
+				我已完成的目标</a>
+		<% end %>
+		
+		<% unless action_name == "list_cancelled" %>
+			<a href="/goals/list_cancelled/<%= @account_id %>">
+				我已终止的目标</a>
+		<% end %>
+	</div>
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_block form_info_s align_r">
+		共有
+		<b>
+			<%= @goal_follows.total_entries %>
+		</b>
+		个我
+		<b>
+			<%= status_label %>
+		</b>
+		的目标
+	</div>
 	
 	<div class="community_block">
 		<%= render :partial => "goal_follow", :collection => @goal_follows %>

@@ -1,7 +1,7 @@
 class CommunityController < ApplicationController
   
   New_Account_Size = 9
-  New_Action_Size = 15
+  New_Action_Size = 30
   New_Talk_Size = 5
   New_Activity_Size = 10
   New_Group_Size = 12
@@ -183,6 +183,69 @@ class CommunityController < ApplicationController
     @talks = search_talk(query, 1, Search_All_Result_Page_Size)
   end
   
+  def search_goal_track(query, page, per_page)
+    GoalTrack.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, created_at DESC",
+      :field_weights => {
+        :desc => 8,
+        :comments_content => 4,
+        :account_nick => 2,
+        :goal_name => 2,
+        :comments_account_nick => 1
+      },
+      :include => [
+        :goal_follow => [:goal, {:account => [:profile_pic]}]
+      ]
+    )
+  end
+  
+  def search_goal_post(query, page, per_page)
+    GoalPost.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, responded_at DESC",
+      :field_weights => {
+        :title => 8,
+        :content => 6,
+        :comments_content => 4,
+        :account_nick => 2,
+        :goal_name => 2,
+        :comments_account_nick => 1
+      },
+      :include => [
+        :goal,
+        {:account => [:profile_pic]}
+      ]
+    )
+  end
+  
+  def search_goal(query, page, per_page)
+    goals = Goal.search(
+      query,
+      :page => page,
+      :per_page => per_page,
+      :match_mode => Search_Match_Mode,
+      :order => "@relevance DESC, created_at DESC",
+      :field_weights => {
+        :name => 1
+      }
+    )
+    
+    goal_ids = goals.collect { |goal| goal.id }
+		@follow_counts = GoalFollow.count(
+      :conditions => ["goal_id in (?)", goal_ids],
+      :group => "goal_id"
+    )
+    
+    goals
+  end
+  
   def search_exp(query, page, per_page)
     Exp.search(
       query,
@@ -192,7 +255,7 @@ class CommunityController < ApplicationController
       :order => "@relevance DESC, publish_time DESC",
       :field_weights => {
         :title => 4,
-        :content => 3,
+        :content => 3
       }
     )
   end

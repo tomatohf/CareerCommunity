@@ -613,7 +613,13 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/goals/follow/:id/:page", :controller => "goals", :action => "follow", :id => /\d+/, :page => /\d+/
   map.connect "/goals/track/:id/:page", :controller => "goals", :action => "track", :id => /\d+/, :page => /\d+/
   map.connect "/goals/all/:page", :controller => "goals", :action => "all", :page => /\d+/
+  map.connect "/goals/active/:id/:page", :controller => "goals", :action => "active", :id => /\d+/, :page => /\d+/
+  map.connect "/goals/finished/:id/:page", :controller => "goals", :action => "finished", :id => /\d+/, :page => /\d+/
+  map.connect "/goals/cancelled/:id/:page", :controller => "goals", :action => "cancelled", :id => /\d+/, :page => /\d+/
   map.connect "/goals/list/:id/:page", :controller => "goals", :action => "list", :id => /\d+/, :page => /\d+/
+  map.connect "/goals/list_active/:id/:page", :controller => "goals", :action => "list_active", :id => /\d+/, :page => /\d+/
+  map.connect "/goals/list_finished/:id/:page", :controller => "goals", :action => "list_finished", :id => /\d+/, :page => /\d+/
+  map.connect "/goals/list_cancelled/:id/:page", :controller => "goals", :action => "list_cancelled", :id => /\d+/, :page => /\d+/
   map.resources :goals, :collection => {
     
     :summary => :get,

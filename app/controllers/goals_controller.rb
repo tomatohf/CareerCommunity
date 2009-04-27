@@ -3,6 +3,7 @@ class GoalsController < ApplicationController
   Comment_Page_Size = 100
   Follow_Page_Size = 15
   Goal_Page_Size = 30
+  Follow_Account_Page_Size = 25
   
   Track_Page_Size = 20
   Goal_Post_Num = 25
@@ -18,13 +19,14 @@ class GoalsController < ApplicationController
   
   before_filter :check_current_account, :only => [:list_index]
   before_filter :check_login, :only => [:create, :edit, :update, :destroy,
-                                        :list, :friend, :track_new, :track_edit,
+                                        :list, :track_new, :track_edit,
                                         :track_create, :track_update, :track_destroy,
                                         :create_track_comment, :delete_track_comment,
                                         :follow_goal, :finish_goal,
                                         :active_follow, :finish_follow, :cancel_follow,
                                         :follow_edit, :follow_update,
-                                        :follow_type_edit, :follow_type_update]
+                                        :follow_type_edit, :follow_type_update,
+                                        :list_active, :list_finished, :list_cancelled]
   before_filter :check_limited, :only => [:create, :update, :destroy,
                                           :track_create, :track_update, :track_destroy,
                                           :create_track_comment, :delete_track_comment,
@@ -35,7 +37,8 @@ class GoalsController < ApplicationController
   before_filter :check_admin, :only => [:edit, :update]
   before_filter :check_superadmin, :only => [:destroy]
   
-  before_filter :check_account_access, :only => [:list, :friend]
+  before_filter :check_account_access, :only => [:list,
+                                                  :list_active, :list_finished, :list_cancelled]
   
   before_filter :check_follow_owner, :only => [:track_new, :track_create,
                                                 :active_follow, :finish_follow, :cancel_follow,
@@ -98,12 +101,14 @@ class GoalsController < ApplicationController
   end
 
   def list
+    @conditions = @follow_status ? ["account_id = ? and status_id = ?", @account_id, @follow_status[0]] : ["account_id = ?", @account_id]
+    
     page = params[:page]
     page = 1 unless page =~ /\d+/
     @goal_follows = GoalFollow.paginate(
 			:page => page,
       :per_page => Follow_Page_Size,
-			:conditions => ["account_id = ?", @account_id],
+			:conditions => @conditions,
 			:include => [:goal],
 		  :order => "created_at DESC"
 		)
@@ -116,6 +121,24 @@ class GoalsController < ApplicationController
       :conditions => ["goal_id in (?)", goal_ids],
       :order => "responded_at DESC, created_at DESC"
     )
+  end
+  
+  def list_active
+    @follow_status = GoalFollowStatus.active
+    list
+    render :action => "list"
+  end
+  
+  def list_finished
+    @follow_status = GoalFollowStatus.finished
+    list
+    render :action => "list"
+  end
+  
+  def list_cancelled
+    @follow_status = GoalFollowStatus.cancelled
+    list
+    render :action => "list"
   end
   
   def create_track_comment
@@ -263,6 +286,12 @@ class GoalsController < ApplicationController
       :conditions => ["goal_id = ? and account_id = ?", @goal.id, session[:account_id]]
     )
     
+    @active_follows = get_follows(@goal.id, GoalFollowStatus.active[0], 10)
+    
+    @finished_follows = get_follows(@goal.id, GoalFollowStatus.finished[0], 6)
+    
+    @cancelled_follows = get_follows(@goal.id, GoalFollowStatus.cancelled[0], 6)
+    
     @top_goal_posts = GoalPost.find(
       :all,
       :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
@@ -287,6 +316,33 @@ class GoalsController < ApplicationController
       :include => [:goal_follow],
       :order => "created_at DESC"
     )
+  end
+  
+  def active
+    @goal = Goal.get_goal(params[:id])
+    
+    @follow_status = GoalFollowStatus.active
+    @follows = paginate_follows(@goal.id, @follow_status[0])
+    
+    render :action => "follows"
+  end
+  
+  def finished
+    @goal = Goal.get_goal(params[:id])
+    
+    @follow_status = GoalFollowStatus.finished
+    @follows = paginate_follows(@goal.id, @follow_status[0])
+    
+    render :action => "follows"
+  end
+  
+  def cancelled
+    @goal = Goal.get_goal(params[:id])
+    
+    @follow_status = GoalFollowStatus.cancelled
+    @follows = paginate_follows(@goal.id, @follow_status[0])
+    
+    render :action => "follows"
   end
   
   def post
@@ -390,13 +446,13 @@ class GoalsController < ApplicationController
   def follow_goal
     create_goal_follow(params[:id], GoalFollowStatus.active[0])
     
-    jump_to("/goals/#{@goal_id}")
+    jump_to("/goals/#{params[:id]}")
   end
   
   def finish_goal
     create_goal_follow(params[:id], GoalFollowStatus.finished[0])
     
-    jump_to("/goals/#{@goal_id}")
+    jump_to("/goals/#{params[:id]}")
   end
   
   def create
@@ -406,7 +462,7 @@ class GoalsController < ApplicationController
     
     create_goal_follow(goal.id, GoalFollowStatus.active[0], goal)
     
-    jump_to("/goals/#{@goal_id}")
+    jump_to("/goals/#{goal.id}")
   end
   
   def edit
@@ -495,6 +551,8 @@ class GoalsController < ApplicationController
         :type_id => GoalFollowType.rank[0]
       )
       
+      goal_follow.status_updated_at = DateTime.now unless (status_id == GoalFollowStatus.active[0])
+      
       if goal_follow.save
         goal ||= Goal.get_goal(goal_id)
         
@@ -531,6 +589,28 @@ class GoalsController < ApplicationController
     end
     
     goal
+  end
+  
+  def get_follows(goal_id, status_id, limit)
+    GoalFollow.find(
+      :all,
+      :limit => limit,
+      :conditions => ["goal_id = ? and status_id = ?", goal_id, status_id],
+      :include => [:account => [:profile_pic]],
+      :order => "created_at DESC"
+    )
+  end
+  
+  def paginate_follows(goal_id, status_id)
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    GoalFollow.paginate(
+      :page => page,
+      :per_page => Follow_Account_Page_Size,
+      :conditions => ["goal_id = ? and status_id = ?", goal_id, status_id],
+      :include => [:account => [:profile_pic]],
+      :order => "created_at DESC"
+    )
   end
   
 end

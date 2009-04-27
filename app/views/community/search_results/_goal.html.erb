@@ -1,0 +1,31 @@
+<% goal = result %>
+
+<%
+	Goal.set_goal_cache(goal)
+%>
+
+<%
+	excerpts = build_excerpts(
+		riddle_client,
+		[h(goal.name)],
+		query,
+		"goal_core"
+	)
+%>
+
+<div class="recruitment_container">
+	<div class="goal" style="margin-top: 10px;">
+		
+		<span class="float_r" style="font-size: 12px; color: #666666; margin-left: 5px;">
+			参与:
+			<b>
+				<%= @follow_counts[goal.id] || 0 %>
+			</b>
+		</span>
+		
+		<a href="/goals/<%= goal.id %>" class="account_nick_link">
+			<%= excerpts[0] %></a>
+			
+	</div>
+</div>
+

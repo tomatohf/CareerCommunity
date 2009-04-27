@@ -1,0 +1,81 @@
+<% goal_track = result %>
+
+<%
+	account = goal_track.goal_follow.account
+	account_id = account.id
+	account_nick = account.get_nick
+	account_pic_url = account.get_profile_pic_url
+
+	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
+%>
+
+<%
+	goal = goal_track.goal_follow.goal
+	Goal.set_goal_cache(goal)
+	
+	goal_follow_type = GoalFollowTypes.get_type(GoalFollowType.find(goal_track.goal_follow.type_id))
+%>
+
+
+<%
+	excerpts = build_excerpts(
+		riddle_client,
+		[h(goal_track.desc), h(account_nick), h(goal.name)],
+		query,
+		"goal_track_core"
+	)
+%>
+
+<% comment_count = GoalTrackComment.get_count(goal_track.id) %>
+
+<div>
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 90px">
+				<div class="align_c">
+					<div class="community_block">
+						<a href="/spaces/show/<%= account_id %>">
+							<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+					</div>
+					<div class="community_block">
+						<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+							<%= excerpts[1] %></a>
+					</div>
+				</div>
+			</td>
+			
+			<td valign="top">
+				<div class="search_result_title">
+					<a href="/goals/track/<%= goal_track.id %>" class="account_nick_link">
+						<%= format_datetime(goal_track.created_at) %>
+						的进度</a>
+					:
+					
+					&nbsp;
+					<%= goal_follow_type.display_show(goal_track.value, :small => true) %>
+				</div>
+				
+				<div class="search_result_body">
+					<%= excerpts[0] %>
+				</div>
+				
+				<div class="form_info_s search_result_info">
+					<a href="/goals/track/<%= goal_track.id %>" class="account_nick_link">
+						查看</a>
+						
+					|
+						
+					<a href="/goals/track/<%= goal_track.id %>#comment_list" class="account_nick_link">
+						评论(<%= comment_count %>)</a>
+					
+					|
+						
+					所属目标
+					<a href="/goals/<%= goal.id %>" class="account_nick_link">
+						<%= excerpts[2] %></a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+

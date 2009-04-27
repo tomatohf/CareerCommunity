@@ -17,7 +17,10 @@
 			[:recruitment, "招聘信息"],
 			[:exp, "面经"],
 			[:vote, "投票"],
-			[:talk, "访谈录"]
+			[:talk, "访谈录"],
+			[:goal, "目标"],
+			[:goal_post, "目标话题"],
+			[:goal_track, "目标进度"]
 		]
 	%>
 	<div class="community_block">
@@ -51,6 +54,9 @@
 					<option value="exp"<%= " selected=\"selected\"" if @scope == "exp" %>>面经</option>
 					<option value="vote"<%= " selected=\"selected\"" if @scope == "vote" %>>投票</option>
 					<option value="talk"<%= " selected=\"selected\"" if @scope == "talk" %>>访谈录</option>
+					<option value="goal"<%= " selected=\"selected\"" if @scope == "goal" %>>目标</option>
+					<option value="goal_post"<%= " selected=\"selected\"" if @scope == "goal_post" %>>目标话题</option>
+					<option value="goal_track"<%= " selected=\"selected\"" if @scope == "goal_track" %>>目标进度</option>
 				</select>
 				<input type="text" name="query" id="query_input" class="text_field search_input" size="35" value="<%= h(@query) %>" />
 				<input type="submit" value="搜索" class="button" />

@@ -1,0 +1,76 @@
+<% goal_post = result %>
+
+<% GoalPost.set_post_cache(goal_post.id, goal_post) %>
+
+<%
+	account = goal_post.account
+	account_id = account.id
+	account_nick = account.get_nick
+	account_pic_url = account.get_profile_pic_url
+
+	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
+%>
+
+<%
+	goal = goal_post.goal
+	Goal.set_goal_cache(goal)
+%>
+
+
+<%
+	excerpts = build_excerpts(
+		riddle_client,
+		[h(goal_post.title), sanitize_tinymce(extract_text(goal_post.content)), h(account_nick), h(goal.name)],
+		query,
+		"goal_post_core"
+	)
+%>
+
+<% comment_count = GoalPostComment.get_count(goal_post.id) %>
+
+<div>
+	<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+		<tr>
+			<td valign="top" style="width: 90px">
+				<div class="align_c">
+					<div class="community_block">
+						<a href="/spaces/show/<%= account_id %>">
+							<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+					</div>
+					<div class="community_block">
+						<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+							<%= excerpts[2] %></a>
+					</div>
+				</div>
+			</td>
+			
+			<td valign="top">
+				<div class="search_result_title">
+					<a href="/goal/posts/<%= goal_post.id %>" class="account_nick_link">
+						<%= excerpts[0] %></a>
+				</div>
+				
+				<div class="search_result_body">
+					<%= excerpts[1] %>
+				</div>
+				
+				<div class="form_info_s search_result_info">
+					<a href="/goal/posts/<%= goal_post.id %>#comment_list" class="account_nick_link">
+						回帖(<%= comment_count %>)</a>
+						
+					|
+						
+					最后参与
+					<%= format_datetime(goal_post.responded_at) %>
+					
+					|
+						
+					所属目标
+					<a href="/goals/<%= goal.id %>" class="account_nick_link">
+						<%= excerpts[3] %></a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+

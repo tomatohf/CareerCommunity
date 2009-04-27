@@ -1,0 +1,29 @@
+<%
+	account = follow.account
+	account_id = account.id
+	account_nick = account.get_nick
+	account_pic_url = account.get_profile_pic_url
+	
+	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
+%>
+
+<%
+	follow_type = GoalFollowType.get_follow_type(follow.type_id)
+%>
+
+<div class="goal_follow_account">
+	<div>
+		<a href="/spaces/show/<%= account_id %>">
+			<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+	</div>
+	<div>
+		<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+			<%= h(account_nick) %></a>
+	</div>
+	<div>
+		<a href="/goals/follow/<%= follow.id %>" class="account_nick_link" title="<%= follow_type[1] %>">
+			<img src="<%= follow_type[2] %>" border="0" alt="<%= follow_type[1] %>" />
+			进度</a>
+	</div>
+</div>
+

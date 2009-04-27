@@ -1,6 +1,24 @@
 class GoalTrack < ActiveRecord::Base
   
   acts_as_trashable
+  
+  
+  
+  define_index do
+    # fields
+    indexes :desc
+    indexes goal_follow.account.nick, :as => :account_nick
+    indexes goal_follow.goal.name, :as => :goal_name
+    indexes comments.content, :as => :comments_content
+    indexes comments.account.nick, :as => :comments_account_nick
+
+    # attributes
+    has :created_at, :updated_at, :goal_follow_id, :goal_id, :value
+    
+    set_property :delta => true
+    
+    # set_property :field_weights => {:field => number}
+  end
 
   
   

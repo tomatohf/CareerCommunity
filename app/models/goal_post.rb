@@ -3,7 +3,7 @@ class GoalPost < ActiveRecord::Base
   acts_as_trashable
   
   
-%Q!
+  
   define_index do
     # fields
     indexes :title, :content
@@ -13,13 +13,12 @@ class GoalPost < ActiveRecord::Base
     indexes comments.account.nick, :as => :comments_account_nick
 
     # attributes
-    has :created_at, :updated_at, :responded_at, :goal_id
+    has :created_at, :updated_at, :responded_at
     
     set_property :delta => true
     
     # set_property :field_weights => {:field => number}
   end
-!
   
   include CareerCommunity::Util
   
