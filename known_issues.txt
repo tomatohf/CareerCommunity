@@ -3,6 +3,9 @@
 	- bookmark
 	
 
+处理 recruitments 的速度问题, 增加索引?
+
+
 即时聊天功能?
 
 

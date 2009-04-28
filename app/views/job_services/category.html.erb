@@ -6,11 +6,20 @@
 
 <div class="blog_container">
 	<div class="float_r" style="margin-right: 30px;">
-		<a href="/job_services">
-			求职导航</a>
-		»
-		<a href="/job_services/category/<%= @category.id %>">
-			<%= category_name %></a>
+		<span style="word-spacing: 30px;">
+			<a href="/job_services/new" class="account_nick_link">
+				添加新的求职服务</a>
+				
+			|
+		</span>
+		
+		<span style="font-size: 14px;">
+			<a href="/job_services">
+				求职导航</a>
+			»
+			<a href="/job_services/category/<%= @category.id %>">
+				<%= category_name %></a>
+		</span>
 	</div>
 	
 	<h2><%= page_title %></h2>
