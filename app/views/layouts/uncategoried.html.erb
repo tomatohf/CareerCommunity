@@ -4,7 +4,13 @@
         <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
         <% this_year = Date.today.year %>
 		<meta name="Keywords" content="求职招聘,校园招聘,求职,求职培训,求职网,销售培训,销售实习,招聘,招聘网,全职招聘,招聘全职,招聘求职,兼职实习,兼职,实习,雇主品牌,面试猎头,职业发展,高校BBS,<%= this_year %>校园招聘,培训,英语,简历,招聘会,宣讲会,外企招聘,HR专家咨询,职业顾问,大学生实习" />
-		<meta name="Description" content="乔布堂(QiaoBuTang.com)是中国第一个功能型大学生求职网.为大学生提供求职培训,求职辅助工具,求职招聘信息,校园招聘信息,兼职实习信息,校园宣讲会信息和<%= this_year %>校园招聘会信息,是大学生找工作第一选择!" />
+		
+		<% page_desc = yield(:page_desc) %>
+		<% if page_desc && page_desc != "" %>
+			<meta name="Description" content="<%= page_desc %>" />
+		<% else %>
+			<meta name="Description" content="乔布堂(QiaoBuTang.com)是中国第一个功能型大学生求职网.为大学生提供求职培训,求职辅助工具,求职招聘信息,校园招聘信息,兼职实习信息,校园宣讲会信息和<%= this_year %>校园招聘会信息,是大学生找工作第一选择!" />
+		<% end %>
 		
 		<% page_title = yield(:page_title) %>
         <title><%= "#{page_title} - " if page_title && page_title != "" %>乔布堂</title>

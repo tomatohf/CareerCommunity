@@ -109,6 +109,10 @@ module ApplicationHelper
   def community_page_title(page_title)
     content_for(:page_title) { page_title }
   end
+  
+  def community_page_desc(page_desc)
+    content_for(:page_desc) { page_desc }
+  end
 
   def extract_text(text)
     Hpricot(text || "").inner_text || ""
