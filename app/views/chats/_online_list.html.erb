@@ -1,0 +1,10 @@
+<div id="online_list" class="chat_online_list">
+	<%
+		Juggernaut.show_clients_for_channels(channels).collect{ |client|
+			client["id"]
+		}.each do |account_id|
+	%>
+		<%= render :partial => "online_account", :locals => {:account_id => account_id} %>
+	<% end %>
+</div>
+

@@ -1,0 +1,26 @@
+<%
+	account_nick_pic = Account.get_nick_and_pic(account_id)
+%>
+	
+<div id="online_account_<%= account_id %>" class="chat_online_account">
+	<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+		<tr>
+			<td class="chat_online_account_img">
+				<a href="/spaces/show/<%= account_id %>" target="_blank">
+					<img src="<%= face_img_src(account_nick_pic[1]) %>" border="0" /></a>
+			</td>
+
+			<td class="chat_online_account_txt">
+				<div>
+					<a href="/spaces/show/<%= account_id %>" class="account_nick_link" target="_blank">
+						<%= h(account_nick_pic[0]) %></a>
+				</div>
+
+				<div class="align_r">
+					
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+

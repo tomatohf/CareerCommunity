@@ -132,6 +132,18 @@
 		</div>
 	<% else %>
 		<div class="community_block">
+			<a href="/chats/group/<%= @group_id %>" style="font-size: 14px;">
+				<img src="/images/chats/chat_small.png" border="0" />
+				进入圈子的聊天室</a>
+		</div>
+		
+		
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+		
+		
+		<div class="community_block">
 			<a href="/group/posts/compose/<%= @group_id %>">
 				<img src="/images/groups/add_post_small.png" border="0" />
 				发起新的讨论话题</a>

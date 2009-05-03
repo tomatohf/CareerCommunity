@@ -1,0 +1,88 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "圈子 #{group_name} 的聊天室" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	<div class="community_block align_c">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+	</div>
+
+	<div class="community_block align_c">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+	
+	
+	<div class="community_title">
+		聊天室中的成员 ...
+	</div>
+	<div id="online_list_container" style="display: none;">
+		<div style="margin-top: 20px;">
+			<img src="/images/loading_small.gif" />
+			&nbsp;
+			正在获取成员列表 ...
+		</div>
+	</div>
+	
+</div>
+
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<p id="error_msg_container" class="error_msg" style="display: none;">
+		连接服务器失败 ...
+		&nbsp;&nbsp;&nbsp;
+		<a href="/chats/group/<%= @group_id %>">
+			刷新页面, 重新连接</a>
+	</p>
+	<div id="loading_container" style="margin-top: 50px; padding-left: 50px; font-size: 14px;">
+		<img src="/images/loading_small.gif" />
+		&nbsp;
+		正在连接服务器 ...
+	</div>
+	
+	<script type="text/javascript" src="/lib/protopack/prototype-packer.js"></script>
+	<script type="text/javascript" src="/javascripts/juggernaut/swfobject.js"></script>
+	<script type="text/javascript" src="/javascripts/juggernaut/juggernaut.js"></script>
+	<script type="text/javascript" src="/javascripts/chat.js"></script>
+	<script language="JavaScript">
+		var channels = [];
+		<% @channels.each do |channel| %>
+			channels.push("<%= channel %>");
+		<% end %>
+		add_listeners(channels, encodeURIComponent("<%= form_authenticity_token %>"));
+	</script>
+	<%= juggernaut(
+			:channels => @channels,
+			:client_id => session[:account_id].to_s,
+			:debug => false,
+			:session_id => session.session_id
+		)
+	%>
+	
+	
+	<div id="chat_container" class="community_block" style="display: none;">
+		<div id="chat_area">
+			
+		</div>
+		
+		<div>
+			<%= form_remote_tag(
+					:url => { :action => :group, :id => @group.id },
+					:method => :post,
+					:complete => "$('chat_input').value = ''"
+				)
+			%>
+				<%= text_field_tag( 'chat_input', '', { :size => '50', :id => 'chat_input'} ) %>
+				<input type="hidden" name="nick" value="<%= @account_nick_pic[0] %>" />
+				<input type="hidden" name="pic" value="<%= @account_nick_pic[1] %>" />
+				<%= submit_tag "Chat" %>
+			</form>
+		</div>
+	</div>
+	
+</div>
+

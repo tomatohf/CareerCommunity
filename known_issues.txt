@@ -1,12 +1,23 @@
-﻿escape URL
+﻿即时聊天功能
+	- 更多的聊天模式
+		* 一对一聊天
+		* 随机聊天
+	- 每条消息的字数限制
+	- 处理聊天记录
+
+
+丰富 工具箱 中的内容
+
+
+
+escape URL
 	- search
 	- bookmark
+
 	
 
 处理 recruitments 的速度问题, 增加索引?
 
-
-即时聊天功能?
 
 
 问答
@@ -17,6 +28,11 @@
 
 圈子的分类
 Improve 首页
+
+
+实现微博客
+http://code.google.com/p/sparrow
+http://rubyforge.org/projects/starling
 
 
 与 行业/公司/职位 匹配的圈子(论坛)
@@ -212,6 +228,9 @@ Denpendencies:
 	xmpp4r-simple
 	SystemTimer
 	erubis
+	json
+	eventmachine
+	juggernaut
 	-----
 	
 	[only on production server]
@@ -237,33 +256,5 @@ respond_to do |wants|
 	wants.atom
 	wants.yaml
 ends
-
-
-======显示用户是否在线======
-		一个非常有用的功能，在application全局的角度获取不同用户的session信息
-		
-		程序代码 程序代码
-		
-		@user=CGI::Session::ActiveRecordStore::Session.find_by_session_id(@session_id).data[:user]
-		
-		
-		http://webonrails.com/2006/12/08/accessing-session-data-using-session_id/
-		
-		看看那些用户在线
-		程序代码 程序代码
-		
-		def who_is_online
-		  @whos_online = Array.new()
-		  onlines = CGI::Session::ActiveRecordStore::Session.find( :all, :conditions => [ 'updated_at = ?',  Time.now() - 10.minutes ] )
-		  onlines.each do |online|
-		    id = Marshal.load( Base64.decode64( online.data ) )
-		    @whos_online << id[ :member_id ]
-		  end
-		  return @whos_online
-		end
-		
-		
-		http://matt-beedle.com/2006/12/13/rails-how-to-find-out-who-is-online/ 
-======显示用户是否在线======
 
 
