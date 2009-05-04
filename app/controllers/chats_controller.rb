@@ -35,10 +35,27 @@ class ChatsController < ApplicationController
     client_id = params[:client_id]
     channels = params[:channels]
     
+    client_nick_pic = Account.get_nick_and_pic(client_id)
+    
     content = render_to_string :update do |page|
       page.call :remove_from_online_list, client_id
-      page.insert_html :bottom, "chat_area", "<div>#{client_id} 离开了~</div>"
-      #page.call :scrollChatPanel, 'chat_area'
+      page.insert_html :bottom, "chat_area", 
+        %Q!
+          <div class="chat_sys_msg">
+            系统通知:
+            &nbsp;
+            
+            <a href="#" class="account_nick_link" onclick="set_to_account('#{h(client_nick_pic[0])}'); return false;">
+              #{h(client_nick_pic[0])}</a>
+            离开了
+            
+            &nbsp;
+            <span class="chat_time">
+              (#{DateTime.now.strftime("%H:%M:%S")})
+            </span>
+          </div>
+        !
+      page.call :scroll_chat_area_to_bottom
     end
     Juggernaut.send_to_channel(content, channels)
     
@@ -50,12 +67,29 @@ class ChatsController < ApplicationController
     channels = params[:channels] || []
     client_id = session[:account_id].to_s
     
+    client_nick_pic = Account.get_nick_and_pic(client_id)
+    
     content = render_to_string :update do |page|
       page.replace_html "online_list_container",
                         :partial => "online_list",
                         :locals => {:channels => channels}      
-      page.insert_html :bottom, "chat_area", "<div>#{session[:account_id]} 加入了~</div>"
-      #page.call :scrollChatPanel, 'chat_area'
+      page.insert_html :bottom, "chat_area", 
+        %Q!
+          <div class="chat_sys_msg">
+            系统通知:
+            &nbsp;
+            
+            <a href="#" class="account_nick_link" onclick="set_to_account('#{h(client_nick_pic[0])}'); return false;">
+              #{h(client_nick_pic[0])}</a>
+            加入了
+            
+            &nbsp;
+            <span class="chat_time">
+              (#{DateTime.now.strftime("%H:%M:%S")})
+            </span>
+          </div>
+        !
+      page.call :scroll_chat_area_to_bottom
     end
     Juggernaut.send_to_channel(content, channels)
     
@@ -68,24 +102,29 @@ class ChatsController < ApplicationController
     @channels = ["group_#{@group_id}"]
     
     if request.post?
-      content = render_to_string :update do |page|
-        page.insert_html :bottom, "chat_area", 
-          %Q!
-            <div>
-              <span style="font-size: 10px;">
-                (#{DateTime.now.strftime("%H:%M:%S")})
-              </span>
-              <a href="/spaces/show/#{session[:account_id]}" target="_blank" class="account_nick_link">
-                #{h(params[:nick])}</a>
-              :
-              &nbsp;
-              #{h(params[:chat_input])}
-            </div>
-          !
-        #page.call :scrollChatPanel, 'chat_area'
-      end
+      msg = params[:chat_input] || ""
       
-      Juggernaut.send_to_channel(content, @channels)
+      msg_valid = validate_msg(msg)
+      
+      if msg_valid
+        content = render_to_string :update do |page|
+          page.insert_html :bottom, "chat_area", 
+            %Q!
+              <div>
+                <span class="chat_time">
+                  (#{DateTime.now.strftime("%H:%M:%S")})
+                </span>
+                <a href="#" class="account_nick_link" onclick="set_to_account('#{h(params[:nick])}'); return false;">
+                  #{h(params[:nick])}</a>
+                :
+                &nbsp;
+                #{h(msg)}
+              </div>
+            !
+          page.call :scroll_chat_area_to_bottom
+        end
+        Juggernaut.send_to_channel(content, @channels)
+      end
       
       return render(:nothing => true)
     end
@@ -99,6 +138,10 @@ class ChatsController < ApplicationController
   
   
   private
+  
+  def validate_msg(msg)
+    msg && (msg.strip != "") && msg.jsize <= 200
+  end
   
   def check_group_access
     @group_id = params[:id]

@@ -21,6 +21,16 @@ function add_listeners(channels, auth_token) {
 			$("error_msg_container").show();
 		}
 	);
+	
+	
+	// add page changing handler
+	Event.observe(
+		window,
+		"unload",
+		function() {
+			juggernaut.disconnect();
+		}
+	);
 }
 
 
@@ -60,7 +70,7 @@ function remove_from_online_list(account_id) {
 function send_msg() {
 	var send_form = $("send_msg_form");
 	
-	if(validate_msg($("chat_input").value)) {
+	if(validate_msg()) {
 		new Ajax.Request(
 			send_form.action, 
 			{
@@ -75,10 +85,14 @@ function send_msg() {
 	}
 }
 
-function validate_msg(msg) {
+function validate_msg() {
+	var msg = $("chat_input").value;
+	
 	if(msg == null) return false;
 	if(msg.blank()) return false;
 	
+	// cut the 200 chars ...
+	$("chat_input").value = msg.substr(0, 200);
 	return true;
 }
 
@@ -94,5 +108,33 @@ function add_enter_listener() {
 			}
 		}
 	);
+}
+
+var AUTO_SCROLL = true;
+function toggle_auto_scroll() {
+	AUTO_SCROLL = $("auto_scroll_switch").checked;
+}
+
+function scroll_chat_area_to_bottom() {
+	if(AUTO_SCROLL) {
+		var ca = $("chat_area");
+		ca.scrollTop = ca.scrollHeight;
+	}
+}
+
+function set_to_account(name) {
+	$("chat_input").value += name;
+}
+
+function toggle_online_list(show) {
+	var left_col = $("chat_left_col");
+	var right_col = $("chat_right_col");
+	if(show == null) {
+		show = (right_col.getStyle("display") == "none");
+	}
+	right_col.setStyle({
+		display:show ? "" : "none"
+	});
+	right_col.setStyle("marginRight") = show ? "200px" : "0px";
 }
 

@@ -157,8 +157,9 @@ module ApplicationHelper
   def info_editor?(account_id)
     # 1005 - job info editor account
     # 1019 - Kai
+    # 1380 - storm - 陆一鸣
     
-    general_admin?(account_id) || account_id == 1005 || account_id == 1019
+    general_admin?(account_id) || account_id == 1005 || account_id == 1019 || account_id == 1380
   end
   
   def tag_cloud_font_styling (total, lowest, highest, options={})

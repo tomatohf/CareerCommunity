@@ -85,10 +85,12 @@
 	
 	<div class="community_block">
 		<% form_tag "/job_targets/#{@target.id}/add_steps", :method => :post do %>
-			<div class="community_block" id="added_steps_container">
-				
+			<div class="community_block overflow_hidden">
+				<div id="added_steps_container">
+
+				</div>
+				<div class="clear_l"></div>
 			</div>
-			<div class="clear_l community_block"></div>
 			
 			<div class="community_block align_c">
 				<%= submit_tag "完成添加求职目标", :class => "button", :disabled => @account_limited %>

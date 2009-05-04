@@ -1665,7 +1665,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	padding: 0px 5px;
 	height: 480px;
 	overflow: auto;
-	border: 1px solid #EAEAEA;
+	border: 1px solid #DDDDDD;
 	
 	-moz-border-radius-topleft: 5px;
 	-moz-border-radius-topright: 5px;
@@ -1705,7 +1705,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	padding: 0px 5px;
 	height: 400px;
 	overflow: auto;
-	border: 1px solid #EAEAEA;
+	border: 1px solid #DDDDDD;
 	
 	-moz-border-radius-topleft: 10px;
 	-moz-border-radius-topright: 10px;
@@ -1713,9 +1713,26 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	-webkit-border-top-right-radius: 10px;
 }
 
+.chat_toolbar {
+	height: 20px;
+	border: 1px solid #DDDDDD;
+	margin-bottom: 5px;
+	padding: 0px 10px;
+	
+	display: none;
+}
+
+.chat_toolbar a {
+	text-decoration: none;
+}
+
+.chat_toolbar a:hover {
+	text-decoration: underline;
+}
+
 .chat_self_pic_cell {
 	text-align: center;
-	border: 1px solid #EAEAEA;
+	border: 1px solid #DDDDDD;
 	width: 70px;
 	height: 50px;
 	padding: 5px 0px;
@@ -1729,13 +1746,13 @@ a.account_nick_link:hover, a.group_name_link:hover {
 .chat_text_input {
 	height: 55px;
 	width: 420px;
-	border: 1px solid #EAEAEA;
+	border: 1px solid #DDDDDD;
 	padding: 5px;
 }
 
 .chat_send_btn_cell {
 	text-align: center;
-	border: 1px solid #EAEAEA;
+	border: 1px solid #DDDDDD;
 	font-size: 16px;
 	height: 50px;
 	width: 70px;
@@ -1751,6 +1768,17 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	height: 50px;
 	width: 65px;
 	font-size: 16px;
+}
+
+.chat_time {
+	font-size: 10px;
+	color: #666666;
+}
+
+.chat_sys_msg {
+	background: transparent url(/images/chats/sys_msg_icon.gif) no-repeat scroll 0px 4px;
+	padding-left: 23px;
+	color: #555555;
 }
 
 

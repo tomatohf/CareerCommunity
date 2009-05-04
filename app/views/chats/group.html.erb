@@ -3,7 +3,7 @@
 <% page_title = "圈子 #{group_name} 的聊天室" %>
 <% community_page_title(page_title) %>
 
-<div class="float_r blog_container_r">
+<div class="float_r blog_container_r" id="chat_right_col">
 	
 	<div class="community_title">
 		聊天室中的成员 ...
@@ -19,7 +19,7 @@
 </div>
 
 
-<div class="blog_container_l">
+<div class="blog_container_l" id="chat_left_col">
 	<div>
 		<a href="/groups/<%= @group_id %>" class="float_l">
 			<img src="<%= face_img_src(@group_image) %>" border="0" style="margin-right: 15px; margin-bottom: 5px;" /></a>
@@ -73,6 +73,10 @@
 		</div>
 		
 		<div class="chat_toolbar">
+			<span class="float_r">
+				
+			</span>
+			
 			
 		</div>
 		
@@ -99,6 +103,15 @@
 					</td>
 				</tr>
 			</table>
+		</div>
+		
+		<div class="align_r" style="padding: 0px 80px;">
+			<span class="float_l form_info_s">
+				(200 字以内, 大量文字请发起圈子话题)
+			</span>
+			
+			<input id="auto_scroll_switch" type="checkbox" onclick="toggle_auto_scroll();" checked="checked" />
+			<label for="auto_scroll_switch">自动滚屏</label>
 		</div>
 	</div>
 	
