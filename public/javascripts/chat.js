@@ -56,6 +56,10 @@ function notify_to_update_online_list(channels, auth_token) {
 function show_chat_container() {
 	add_enter_listener();
 	$("chat_container").show();
+	focus_chat_input();
+}
+
+function focus_chat_input() {
 	$("chat_input").focus();
 }
 
@@ -124,6 +128,8 @@ function scroll_chat_area_to_bottom() {
 
 function set_to_account(name) {
 	$("chat_input").value += name;
+	
+	focus_chat_input();
 }
 
 function toggle_online_list(show) {
