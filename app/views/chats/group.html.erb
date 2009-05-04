@@ -4,15 +4,6 @@
 <% community_page_title(page_title) %>
 
 <div class="float_r blog_container_r">
-	<div class="community_block align_c">
-		<a href="/groups/<%= @group_id %>">
-			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
-	</div>
-
-	<div class="community_block align_c">
-		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
-	</div>
-	
 	
 	<div class="community_title">
 		聊天室中的成员 ...
@@ -29,7 +20,19 @@
 
 
 <div class="blog_container_l">
-	<h2><%= page_title %></h2>
+	<div>
+		<a href="/groups/<%= @group_id %>" class="float_l">
+			<img src="<%= face_img_src(@group_image) %>" border="0" style="margin-right: 15px; margin-bottom: 5px;" /></a>
+		<div>
+			<div>
+				<h2 style="margin-bottom: 8px;"><%= page_title %></h2>
+			</div>
+			
+			<div>
+				<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+			</div>
+		</div>
+	</div>
 	
 	
 	<p id="error_msg_container" class="error_msg" style="display: none;">
@@ -64,23 +67,38 @@
 	%>
 	
 	
-	<div id="chat_container" class="community_block" style="display: none;">
-		<div id="chat_area">
+	<div id="chat_container" style="display: none;">
+		<div id="chat_area" class="chat_area">
+			
+		</div>
+		
+		<div class="chat_toolbar">
 			
 		</div>
 		
 		<div>
-			<%= form_remote_tag(
-					:url => { :action => :group, :id => @group.id },
-					:method => :post,
-					:complete => "$('chat_input').value = ''"
-				)
-			%>
-				<%= text_field_tag( 'chat_input', '', { :size => '50', :id => 'chat_input'} ) %>
-				<input type="hidden" name="nick" value="<%= @account_nick_pic[0] %>" />
-				<input type="hidden" name="pic" value="<%= @account_nick_pic[1] %>" />
-				<%= submit_tag "Chat" %>
-			</form>
+			<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+				<tr>
+					<td class="chat_self_pic_cell">
+						<img src="<%= face_img_src(@account_nick_pic[1]) %>" border="0" />
+					</td>
+					
+					<td align="center">
+						<% form_tag "/chats/group/#{@group.id}", :method => :post, :id => "send_msg_form" do %>
+							<textarea id="chat_input" name="chat_input" class="chat_text_input"></textarea>
+							
+							<input type="hidden" name="nick" value="<%= @account_nick_pic[0] %>" />
+							<% if false %>
+								<input type="hidden" name="pic" value="<%= @account_nick_pic[1] %>" />
+							<% end %>
+						<% end %>
+					</td>
+
+					<td class="chat_send_btn_cell">
+						<input type="button" value="发送" class="chat_send_btn" onclick="send_msg();" />
+					</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	

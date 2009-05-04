@@ -8,6 +8,8 @@ class ChatsController < ApplicationController
   
   before_filter :check_group_access, :only => [:group]
   
+  skip_before_filter :verify_authenticity_token, :only => [:subscription, :connection_logout]
+  
   
   
   def subscription
@@ -33,12 +35,9 @@ class ChatsController < ApplicationController
     client_id = params[:client_id]
     channels = params[:channels]
     
-    # remove client from channels
-    Juggernaut.remove_channels_from_clients(client_id, channels)
-    
     content = render_to_string :update do |page|
       page.call :remove_from_online_list, client_id
-      page.insert_html :bottom, "chat_area", "<p>#{client_id} 离开了~</p>"
+      page.insert_html :bottom, "chat_area", "<div>#{client_id} 离开了~</div>"
       #page.call :scrollChatPanel, 'chat_area'
     end
     Juggernaut.send_to_channel(content, channels)
@@ -49,12 +48,13 @@ class ChatsController < ApplicationController
   
   def update_online_list
     channels = params[:channels] || []
+    client_id = session[:account_id].to_s
     
     content = render_to_string :update do |page|
       page.replace_html "online_list_container",
                         :partial => "online_list",
                         :locals => {:channels => channels}      
-      page.insert_html :bottom, "chat_area", "<p>#{session[:account_id]} 加入了~</p>"
+      page.insert_html :bottom, "chat_area", "<div>#{session[:account_id]} 加入了~</div>"
       #page.call :scrollChatPanel, 'chat_area'
     end
     Juggernaut.send_to_channel(content, channels)
@@ -69,7 +69,19 @@ class ChatsController < ApplicationController
     
     if request.post?
       content = render_to_string :update do |page|
-        page.insert_html :bottom, "chat_area", "<p>#{h(params[:nick])}: #{h(params[:chat_input])}</p>"
+        page.insert_html :bottom, "chat_area", 
+          %Q!
+            <div>
+              <span style="font-size: 10px;">
+                (#{DateTime.now.strftime("%H:%M:%S")})
+              </span>
+              <a href="/spaces/show/#{session[:account_id]}" target="_blank" class="account_nick_link">
+                #{h(params[:nick])}</a>
+              :
+              &nbsp;
+              #{h(params[:chat_input])}
+            </div>
+          !
         #page.call :scrollChatPanel, 'chat_area'
       end
       

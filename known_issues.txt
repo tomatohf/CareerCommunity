@@ -4,6 +4,7 @@
 		* 随机聊天
 	- 每条消息的字数限制
 	- 处理聊天记录
+	- 离开页面时, disconnect from juggernaut server ...
 
 
 丰富 工具箱 中的内容
@@ -230,7 +231,7 @@ Denpendencies:
 	erubis
 	json
 	eventmachine
-	juggernaut
+	juggernaut (*need to update from source code manually* http://github.com/maccman/juggernaut_gem/tree/master)
 	-----
 	
 	[only on production server]

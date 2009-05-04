@@ -1662,16 +1662,29 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .chat_online_list {
-	height: 400px;
+	padding: 0px 5px;
+	height: 480px;
 	overflow: auto;
+	border: 1px solid #EAEAEA;
+	
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-webkit-background-clip: border;
+	-webkit-background-origin: padding;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
 }
 
 .chat_online_account {
-	margin: 15px 0px;
+	margin: 10px 0px;
 }
 
 .chat_online_account_img {
-	width: 65px;
+	width: 30px;
 	text-align: left;
 	vertical-align: top;
 }
@@ -1679,7 +1692,65 @@ a.account_nick_link:hover, a.group_name_link:hover {
 .chat_online_account_txt {
 	text-align: left;
 	vertical-align: top;
-	border-bottom: 1px solid #EAEAEA;
+	border-bottom: 1px dashed #EEEEEE;
+}
+
+.chat_account_pic {
+	width: 24px;
+	height: 24px;
+}
+
+.chat_area {
+	margin: 5px 0px;
+	padding: 0px 5px;
+	height: 400px;
+	overflow: auto;
+	border: 1px solid #EAEAEA;
+	
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-topright: 10px;
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-top-right-radius: 10px;
+}
+
+.chat_self_pic_cell {
+	text-align: center;
+	border: 1px solid #EAEAEA;
+	width: 70px;
+	height: 50px;
+	padding: 5px 0px;
+	
+	-moz-border-radius-bottomleft: 10px;
+	-webkit-background-clip: border;
+	-webkit-background-origin: padding;
+	-webkit-border-bottom-left-radius: 10px;
+}
+
+.chat_text_input {
+	height: 55px;
+	width: 420px;
+	border: 1px solid #EAEAEA;
+	padding: 5px;
+}
+
+.chat_send_btn_cell {
+	text-align: center;
+	border: 1px solid #EAEAEA;
+	font-size: 16px;
+	height: 50px;
+	width: 70px;
+	padding: 5px 0px;
+	
+	-moz-border-radius-bottomright: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+}
+
+.chat_send_btn {
+	background-color: #FFFFFF;
+	border: none;
+	height: 50px;
+	width: 65px;
+	font-size: 16px;
 }
 
 
