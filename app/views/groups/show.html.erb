@@ -132,9 +132,12 @@
 		</div>
 	<% else %>
 		<div class="community_block">
-			<a href="/chats/group/<%= @group_id %>" style="font-size: 14px;">
-				<img src="/images/chats/chat_small.png" border="0" />
-				进入圈子的聊天室</a>
+			<a href="/chats/group/<%= @group_id %>" style="font-size: 13px;">
+				<img src="/images/chats/chat_small.png" border="0" width="20" height="20" />
+				进入圈子的聊天室
+				(
+				<b><%= Juggernaut.show_clients_for_channels(["group_#{@group_id}"]).size %></b>
+				人在线)</a>
 		</div>
 		
 		
