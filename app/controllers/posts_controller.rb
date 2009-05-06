@@ -160,7 +160,7 @@ class PostsController < ApplicationController
     
     comment_saved = false
     if post_id && content
-      comment.content = content.strip
+      comment.content = content.rstrip
       comment.send("#{@type_handler.get_type_post_id}=", post_id)
       if comment.save
         comment_saved = true

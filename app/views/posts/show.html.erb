@@ -226,7 +226,7 @@
 		<% end %>
 	
 		<div class="community_block">
-			<%= render(:partial => "/common/comment", :collection => @comments, :locals => {:can_del => @access.include?(:admin), :counter_shift => calculate_counter_shift(@comments)}) %>
+			<%= render(:partial => "post_comment", :collection => @comments, :locals => {:can_del => @access.include?(:admin), :counter_shift => calculate_counter_shift(@comments)}) %>
 		</div>
 	
 		<div class="community_block">

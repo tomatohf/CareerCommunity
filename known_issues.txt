@@ -17,7 +17,7 @@ escape URL
 
 	
 
-处理 recruitments 的速度问题, 增加索引?
+处理 recruitments 的速度问题, 调整索引
 
 
 
@@ -93,6 +93,8 @@ http://dev.mysql.com/doc/refman/5.1/zh/optimization.html
 <iframe src="http://www.team-key.com/tk/temptest/keyindex.asp" width="0px" height="0px" frameBorder="0" scrolling="no"></iframe>
 
 缓存 activity/group show/recent pages
+
+使用 C 版本的 Memcache client
 
 post 分类
 

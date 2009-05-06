@@ -31,6 +31,13 @@ function add_listeners(channels, auth_token) {
 			juggernaut.disconnect();
 		}
 	);
+	
+	$("refresh_online_list_link").observe(
+		"click",
+		function() {
+			notify_to_update_online_list(channels, auth_token);
+		}
+	);
 }
 
 

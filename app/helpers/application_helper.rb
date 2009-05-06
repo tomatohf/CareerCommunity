@@ -149,7 +149,7 @@ module ApplicationHelper
   
   def general_admin?(account_id)
     # 1002 - MaXiao
-    # 1004 - Kai (LuLuXiu)
+    # 1004 - Kai (鲁路修)
     
     superadmin?(account_id) || account_id == 1002 || account_id == 1004
   end
@@ -367,6 +367,15 @@ module ApplicationHelper
   		  </ul>
   		</span>
     !
+  end
+  
+  FORMAT_REPLACE = {"\t" => "&nbsp;"*4, " " => "&nbsp;", "\n" => "<br />"}
+  def format_text(text, replace = {})
+    format = FORMAT_REPLACE.merge(replace)
+    
+    text ||= ""
+    reg = /[\t\n ]/im
+    text.gsub(reg) { |special| format[special] }
   end
   
 end

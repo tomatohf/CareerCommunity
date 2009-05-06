@@ -1,0 +1,53 @@
+<% can_del &&= true %>
+<% counter_shift ||= 0 %>
+
+<%
+	account = post_comment.account
+	account_id = account.id
+	account_nick = account.get_nick
+	account_pic_url = account.get_profile_pic_url
+	
+	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
+%>
+
+
+<div style="margin-bottom: 40px;">
+	<table cellpadding="0" cellspacing="5" border="0" class="main_part_w">
+		<tr>
+			<td align="left" valign="top" style="width: 75px;">
+				<a href="/spaces/show/<%= account_id %>">
+					<img class="float_l" src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+			</td>
+			
+			<td align="left" valign="top">
+				<div class="post_comment_title">
+					<div class="float_r">
+						<b>
+							<%= counter_shift + post_comment_counter %>
+						</b>
+						楼
+						&nbsp;&nbsp;&nbsp;
+
+						<% if can_del %>
+							<a title="删除" href="#" onclick="delete_comment(<%= post_comment.id %>); return false;">
+								<img src="/images/delete_small.gif" border="0" /></a>
+						<% end %>
+					</div>
+
+					<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+						<%= account_nick %></a>
+					在
+					<%= format_datetime(post_comment.created_at) %>
+					<span id="comment_<%= post_comment.id %>">说</span>
+					:
+
+				</div>
+				
+				<div class="post_comment_content">
+					<pre><%= h(post_comment.content) %></pre>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+

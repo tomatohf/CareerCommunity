@@ -851,6 +851,7 @@ a.browser_album_link:hover {
 .comment_container {
 	border: 1px dotted #C2E3EF;
 	margin-bottom: 10px;
+	overflow: hidden;
 }
 
 .comment_title {
@@ -1340,6 +1341,21 @@ a.account_nick_link:hover, a.group_name_link:hover {
 
 .post_attachment {
 	margin-top: 5px;
+}
+
+.post_comment_title {
+	padding: 5px 10px;
+	background-color: #FFF5E8;
+	color: #888888;
+}
+
+.post_comment_content {
+	padding: 0px 15px;
+	overflow: hidden;
+}
+
+.post_comment_content pre {
+	margin: 15px 0px;
 }
 
 .bookmark_container {
