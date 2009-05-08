@@ -18,14 +18,18 @@ module JobTargetsHelper
     target_name
   end
   
-  def get_target_company_name(target_or_id, company = nil, target_info = nil)
+  def get_target_company_name(target_or_id, company = nil, target_info = nil, with_desc = false)
     target = get_target_obj(target_or_id)
     
     company ||= Company.get_company(target.company_id)
     
     target_info ||= target.get_info
     
-    (company.id == Company::Null_Record_ID) ? target_info[:refer_name] : company.name
+    if company.id == Company::Null_Record_ID
+      with_desc ? [target_info[:refer_name], ""] : target_info[:refer_name]
+    else
+      with_desc ? [company.name, company.desc] : company.name
+    end
   end
   
   def get_target_obj(target_or_id)

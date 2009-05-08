@@ -1,4 +1,4 @@
-﻿redirect /spaces/show/1231 to 简历-求职信特训
+﻿EXT IE8 menu 宽度问题
 
 sphinx index rotate 的问题
 

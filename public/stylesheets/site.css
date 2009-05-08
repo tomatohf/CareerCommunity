@@ -1428,6 +1428,38 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	font-size: 14px;
 }
 
+a.add_target_industry_link, a.add_target_industry_link_selected {
+	display: block;
+	float: left;
+	width: 100px;
+	margin: 3px 5px;
+	padding: 1px 2px;
+	text-align: center;
+	text-decoration: none;
+	border: 1px solid #C2E3EF;
+}
+
+a.add_target_industry_link_selected {
+	background-color: #C2E3EF;
+	border: 1px solid #A2C3CD;
+}
+
+a.order_by, a.order_by_selected {
+	display: block;
+	float: right;
+	width: 100px;
+	margin: 0px 10px;
+	padding: 3px;
+	text-align: center;
+	text-decoration: none;
+	border: 1px solid #C2E3EF;
+}
+
+a.order_by_selected {
+	background-color: #C2E3EF;
+	border: 1px solid #A2C3CD;
+}
+
 .job_process {
 	margin: 5px 8px;
 	padding: 2px;

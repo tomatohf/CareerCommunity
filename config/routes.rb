@@ -359,7 +359,9 @@ ActionController::Routing::Routes.draw do |map|
   
   map.connect "/job_targets/list_closed/:id/:page", :controller => "job_targets", :action => "list_closed", :id => /\d+/, :page => /\d+/
   map.connect "/job_targets/:id/recruitments/:page", :controller => "job_targets", :action => "recruitments", :id => /\d+/, :page => /\d+/
+  map.connect "/job_targets/:id/recruitments_by_rel/:page", :controller => "job_targets", :action => "recruitments_by_rel", :id => /\d+/, :page => /\d+/
   map.connect "/job_targets/:id/exps/:page", :controller => "job_targets", :action => "exps", :id => /\d+/, :page => /\d+/
+  map.connect "/job_targets/:id/exps_by_time/:page", :controller => "job_targets", :action => "exps_by_time", :id => /\d+/, :page => /\d+/
   map.connect "/job_targets/calendar/:id/:month", :controller => "job_targets", :action => "calendar", :month => /\d\d\d\d\d\d/, :id => /\d+/
   map.resources :job_targets, :collection => {
     
@@ -377,7 +379,9 @@ ActionController::Routing::Routes.draw do |map|
     
     :create_account_item => :post,
     
-    :create_from_recruitment => :post
+    :create_from_recruitment => :post,
+    
+    :no_unclosed_target => :get
     
   }, :member => {
     
@@ -410,7 +414,9 @@ ActionController::Routing::Routes.draw do |map|
     :update_target_job_item => :post,
     
     :recruitments => :get,
+    :recruitments_by_rel => :get,
     :exps => :get,
+    :exps_by_time => :get,
     
     :edit_refer => :get,
     :update_refer => :post,

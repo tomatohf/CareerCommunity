@@ -33,7 +33,8 @@ class JobTargetsController < ApplicationController
                                                 :close_target, :open_target, :destroy, :star_target,
                                                 :unstar_target,
                                                 :edit_target_job_item, :update_target_job_item,
-                                                :recruitments, :exps,
+                                                :recruitments, :recruitments_by_rel,
+                                                :exps, :exps_by_time,
                                                 :edit_refer, :update_refer, :edit_note, :update_note]
   
 
@@ -43,6 +44,10 @@ class JobTargetsController < ApplicationController
     jump_to("/job_targets/list/#{session[:account_id]}")
   end
   
+  def no_unclosed_target
+    
+  end
+  
   def list
     @targets = JobTarget.unclosed.find(
       :all,
@@ -50,6 +55,10 @@ class JobTargetsController < ApplicationController
       :include => [:company, :job_position, :steps],
       :order => "created_at DESC"
     )
+    
+    unless @targets.size > 0
+      return jump_to("/job_targets/no_unclosed_target")
+    end
     
     @system_processes = JobProcess.get_system_processes
     @account_processes = JobProcess.get_account_processes(session[:account_id])
@@ -72,7 +81,11 @@ class JobTargetsController < ApplicationController
   end
   
   def new
-    @company_from = "system"
+    @company_from = "category"
+    @industries = Industry.find(
+      :all,
+      :include => [:companies]
+    )
     
     @query = params[:query] && params[:query].strip
     if @query && @query != ""
@@ -87,6 +100,8 @@ class JobTargetsController < ApplicationController
         :field_weights => JobItemsController::Search_Field_Weights
       ).compact
     end
+    
+    @company_from = "system" if @found_system_companies
   end
   
   def new_for_position
@@ -125,7 +140,11 @@ class JobTargetsController < ApplicationController
     session[:new_target_company_id] = company.id
     session[:new_target_company_name] = company.name
     
-    @position_from = "system"
+    @position_from = "category"
+    @job_positions = JobPosition.find(
+      :all,
+      :conditions => ["id != ?", JobPosition::Null_Record_ID]
+    )
     
     @query = params[:query] && params[:query].strip
     if @query && @query != ""
@@ -140,6 +159,8 @@ class JobTargetsController < ApplicationController
         :field_weights => JobItemsController::Search_Field_Weights
       ).compact
     end
+    
+    @position_from = "system" if @found_system_job_positions
     
   end
   
@@ -696,6 +717,13 @@ class JobTargetsController < ApplicationController
   end
   
   
+  def recruitments_by_rel
+    @by_rel = true
+    
+    recruitments
+    render :action => "recruitments"
+  end
+  
   def recruitments
     @company_name = JobTargetsController.helpers.get_target_company_name(@target)
     @target_name = JobTargetsController.helpers.append_job_position_name(@company_name, JobPosition.get_job_position(@target.job_position_id))
@@ -710,7 +738,7 @@ class JobTargetsController < ApplicationController
         :page => page,
         :per_page => 50,
         :match_mode => CommunityController::Search_Match_Mode,
-        :order => "publish_time DESC, @relevance DESC",
+        :order => @by_rel ? "@relevance DESC, publish_time DESC" : "publish_time DESC, @relevance DESC",
         :field_weights => {
           :title => 8,
           :content => 8,
@@ -727,6 +755,13 @@ class JobTargetsController < ApplicationController
     end
   end
   
+  def exps_by_time
+    @by_time = true
+    
+    exps
+    render :action => "exps"
+  end
+  
   def exps
     @company_name = JobTargetsController.helpers.get_target_company_name(@target)
     @target_name = JobTargetsController.helpers.append_job_position_name(@company_name, JobPosition.get_job_position(@target.job_position_id))
@@ -740,7 +775,7 @@ class JobTargetsController < ApplicationController
         :page => page,
         :per_page => 30,
         :match_mode => CommunityController::Search_Match_Mode,
-        :order => "publish_time DESC, @relevance DESC",
+        :order => @by_time ? "publish_time DESC, @relevance DESC" : "@relevance DESC, publish_time DESC",
         :field_weights => {
           :title => 4,
           :content => 3,

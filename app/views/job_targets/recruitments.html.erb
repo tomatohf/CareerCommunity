@@ -23,8 +23,15 @@
 		相关的招聘信息
 	</div>
 	
-	
-	<br />
+	<div class="overflow_hidden">
+		<a href="/job_targets/<%= @target.id %>/recruitments_by_rel" class="<%= @by_rel ? "order_by_selected" : "order_by" %>">
+			按相关度排序</a>
+		
+		<a href="/job_targets/<%= @target.id %>/recruitments" class="<%= @by_rel ? "order_by" : "order_by_selected" %>">
+			按发布时间排序</a>
+			
+		<div class="clear_r"></div>
+	</div>
 	
 	
 	<% form_tag "/job_targets/create_from_recruitment", :method => :post, :target => RecruitmentsController::Create_Job_Target_Page_Name, :id => "create_job_target_form" do %>

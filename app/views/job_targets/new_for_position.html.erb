@@ -10,15 +10,27 @@
 	
 	<%= render :partial => "new_job_target_order", :locals => {:current_order => 1, :company_name => session[:new_target_company_name]} %>
 	
+	<div>
+		职位来源:
+	</div>
+	
 	<div class="community_block">
-		<div class="info_msg float_r" style="width: 200px; color: #666666;">
+		<div class="info_msg float_r" style="width: 150px; color: #666666;">
 			友情提醒: 使用系统添加的职位可获得更多的关联信息噢~
 		</div>
 		
 		
+		<input type="radio" value="category" name="position_from" id="position_from_category"<%= %Q! checked="checked"! if @position_from == "category" %> onclick="change_position_from(this.value);" />
+		<label for="position_from_category">
+			选择系统添加的职位
+		</label>
+	
+		&nbsp;&nbsp;
+		&nbsp;&nbsp;
+		
 		<input type="radio" value="system" name="position_from" id="position_from_system"<%= %Q! checked="checked"! if @position_from == "system" %> onclick="change_position_from(this.value);" />
 		<label for="position_from_system">
-			从系统添加的职位中选择
+			搜索系统添加的职位
 		</label>
 	
 		&nbsp;&nbsp;
@@ -26,7 +38,7 @@
 		
 		<input type="radio" value="mine" name="position_from" id="position_from_mine"<%= %Q! checked="checked"! if @position_from == "mine" %> onclick="change_position_from(this.value);" />
 		<label for="position_from_mine">
-			从自己曾添加的职位中选择
+			选择自己曾添加的职位
 		</label>
 		
 		&nbsp;&nbsp;
@@ -39,6 +51,10 @@
 		
 	</div>
 	
+	
+	<div class="community_block_narrow" id="specify_position_from_category" style="display: none;">
+		<%= render :partial => "item", :collection => @job_positions %>
+	</div>
 	
 	<div class="community_block_narrow" id="specify_position_from_system" style="display: none;">
 		<div class="community_block_narrow form_info_s">
@@ -151,6 +167,7 @@
 	}
 
 	function change_position_from(position_from) {
+		document.getElementById("specify_position_from_category").style.display = "none";
 		document.getElementById("specify_position_from_system").style.display = "none";
 		document.getElementById("specify_position_from_mine").style.display = "none";
 		document.getElementById("specify_position_from_new").style.display = "none";

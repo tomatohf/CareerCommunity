@@ -68,6 +68,11 @@ class SpacesController < ApplicationController
   
   def show
     @account_id = params[:id]
+    
+    # redirect special account id
+    return jump_to("/coach/courses#resume_8_hrs") if @account_id == "1231"
+    
+    
     @account_nick_pic = Account.get_nick_and_pic(@account_id)
     
     @edit = (@account_id == session[:account_id].to_s)

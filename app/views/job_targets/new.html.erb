@@ -10,15 +10,27 @@
 	
 	<%= render :partial => "new_job_target_order", :locals => {:current_order => 0} %>
 	
+	<div>
+		公司来源:
+	</div>
+	
 	<div class="community_block">
-		<div class="info_msg float_r" style="width: 200px; color: #666666;">
+		<div class="info_msg float_r" style="width: 150px; color: #666666;">
 			友情提醒: 使用系统添加的公司可获得更多的关联信息噢~
 		</div>
 		
 		
+		<input type="radio" value="category" name="company_from" id="company_from_category"<%= %Q! checked="checked"! if @company_from == "category" %> onclick="change_company_from(this.value);" />
+		<label for="company_from_category">
+			按行业选择公司
+		</label>
+	
+		&nbsp;&nbsp;
+		&nbsp;&nbsp;
+		
 		<input type="radio" value="system" name="company_from" id="company_from_system"<%= %Q! checked="checked"! if @company_from == "system" %> onclick="change_company_from(this.value);" />
 		<label for="company_from_system">
-			从系统添加的公司中选择
+			搜索系统添加的公司
 		</label>
 	
 		&nbsp;&nbsp;
@@ -26,7 +38,7 @@
 		
 		<input type="radio" value="mine" name="company_from" id="company_from_mine"<%= %Q! checked="checked"! if @company_from == "mine" %> onclick="change_company_from(this.value);" />
 		<label for="company_from_mine">
-			从自己曾添加的公司中选择
+			选择自己曾添加的公司
 		</label>
 		
 		&nbsp;&nbsp;
@@ -39,6 +51,43 @@
 		
 	</div>
 	
+	
+	<div class="community_block" id="specify_company_from_category" style="width: 580px; display: none;">
+		<div class="overflow_hidden" style="border-bottom: 1px dashed #EEEEEE; margin-bottom: 10px; padding-bottom: 5px;">
+			<a id="category_link_industry_all" href="#" onclick="show_industry_category('all'); return false;" class="add_target_industry_link_selected">
+				显示全部行业</a>
+			<% industry_ids = [] %>
+			<% @industries.each do |industry| %>
+				<% companies = industry.companies %>
+				<% if companies.size > 0 %>
+					<% industry_ids << industry.id %>
+					<a id="category_link_industry_<%= industry.id %>" href="#" onclick="show_industry_category(<%= industry.id %>); return false;" class="add_target_industry_link">
+						<%= h(industry.name) %></a>
+				<% end %>
+			<% end %>
+			
+			<div class="clear_l"></div>
+		</div>
+		
+		<div>
+			<% @industries.each do |industry| %>
+				<% companies = industry.companies %>
+				<% if companies.size > 0 %>
+					<div id="category_industry_<%= industry.id %>" style="margin-bottom: 20px;">
+						<div style="font-size: 14px;" title="<%= h(industry.desc) %>">
+							<%= h(industry.name) %>
+						</div>
+						<div style="padding: 3px 0px 0px 15px; word-spacing: 15px;" class="add_target_item_title">
+							<% companies.each do |company| %>
+								<a href="#" title="<%= h(company.desc) %>" onclick="select_item(<%= company.id %>); return false;">
+									<%= h(company.name) %></a>
+							<% end %>
+						</div>
+					</div>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
 	
 	<div class="community_block_narrow" id="specify_company_from_system" style="display: none;">
 		<div class="community_block_narrow form_info_s">
@@ -150,11 +199,42 @@
 	}
 
 	function change_company_from(company_from) {
+		document.getElementById("specify_company_from_category").style.display = "none";
 		document.getElementById("specify_company_from_system").style.display = "none";
 		document.getElementById("specify_company_from_mine").style.display = "none";
 		document.getElementById("specify_company_from_new").style.display = "none";
 		
 		document.getElementById("specify_company_from_" + company_from).style.display = "";
+	}
+	
+	all_industry_ids = [<%= industry_ids.join(",") %>];
+	function show_industry_category(selected_industry_id) {
+		var link_all = document.getElementById("category_link_industry_all");
+		if(selected_industry_id == "all") {
+			link_all.className = "add_target_industry_link_selected";
+		}
+		else{
+			link_all.className = "add_target_industry_link";
+		}
+		
+		for(var i=0; i<all_industry_ids.length; i++) {
+			var industry_id = all_industry_ids[i];
+			var link = document.getElementById("category_link_industry_" + industry_id);
+			var block = document.getElementById("category_industry_" + industry_id)
+			if(industry_id == selected_industry_id) {
+				link.className = "add_target_industry_link_selected";
+				block.style.display = "";
+			}
+			else {
+				link.className = "add_target_industry_link";
+				if(selected_industry_id == "all") {
+					block.style.display = "";
+				}
+				else {
+					block.style.display = "none";
+				}
+			}
+		}
 	}
 	
 	change_company_from("<%= @company_from %>");

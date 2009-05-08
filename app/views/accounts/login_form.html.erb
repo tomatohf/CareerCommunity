@@ -2,11 +2,13 @@
 
 <div class="float_r community_container_r">
 	<div class="community_title">
-		还没有帐号 ...
+		还没有帐号? 注册其实很简单的 ...
 	</div>
-	<div class="community_block">
-		<a href="/accounts/new">快速注册</a>
-	</div>
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFFFFF" do %>
+		<div class="community_block">
+			<%= render :partial => "accounts/register_form", :locals => {:simple => true} %>
+		</div>
+	<% end %>
 	
 	<div class="community_title">
 		忘记了密码 ...
