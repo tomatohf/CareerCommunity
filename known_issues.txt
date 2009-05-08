@@ -1,13 +1,18 @@
-﻿即时聊天功能
-	- 更多的聊天模式
-		* 一对一聊天
-		* 随机聊天
+﻿redirect /spaces/show/1231 to 简历-求职信特训
+
+sphinx index rotate 的问题
+
+即时聊天功能
 	- 处理聊天记录
 	- 显示用户当前在哪些聊天室
-	
-
-
-丰富 工具箱 中的内容
+	- 收到消息时的提醒 UI, title 文字闪啊闪?
+	- 用户个人空间页面 显示 即时聊天状态, 和 与之聊天的链接
+	- 优化 即时聊天 在线/离线 的 UI
+	- call ensure_refresh_interval_loader() in show page after connected
+	- 处理 connection_logout 的消息发送
+	- 即时聊天页面 的 friend online list 的刷新问题
+		- 勾选每N分钟自动刷新
+		- 刷新链接
 
 
 
@@ -91,6 +96,11 @@ http://dev.mysql.com/doc/refman/5.1/zh/optimization.html
 
 
 <iframe src="http://www.team-key.com/tk/temptest/keyindex.asp" width="0px" height="0px" frameBorder="0" scrolling="no"></iframe>
+// _bottom_links.html.erb
+<div style="padding-left: <%= link_left_padding %>;">
+	<a href="http://www.team-key.com" target="_blank">
+		众基上海拓展培训</a>
+</div>
 
 缓存 activity/group show/recent pages
 

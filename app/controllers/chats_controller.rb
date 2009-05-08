@@ -1,12 +1,19 @@
 class ChatsController < ApplicationController
   
   
+  Community_Channel_Name = "community"
+  Public_Channel_Name = "public"
+  
+  
   layout "community"
   
+  before_filter :check_current_account, :only => [:index]
   before_filter :check_login, :only => [:group, :update_online_list]
   before_filter :check_limited, :only => []
   
   before_filter :check_group_access, :only => [:group]
+  
+  before_filter :check_account_access, :only => [:show]
   
   skip_before_filter :verify_authenticity_token, :only => [:subscription, :connection_logout]
   
@@ -21,7 +28,11 @@ class ChatsController < ApplicationController
     valid = (channels.size > 0)
     if valid
       channels.each do |channel|
-        valid = (channel =~ /^(.*)_(\d+)/) && self.respond_to?("has_#{$1}_access", true) && self.send("has_#{$1}_access", $2, client_id)
+        valid = if channel =~ /^(.*)_(\d+)$/
+                  self.respond_to?("has_#{$1}_access", true) && self.send("has_#{$1}_access", $2, client_id)
+                else
+                  self.respond_to?("has_#{channel}_access", true) && self.send("has_#{channel}_access", client_id)
+                end
         break unless valid
       end
     end
@@ -60,6 +71,12 @@ class ChatsController < ApplicationController
     Juggernaut.send_to_channel(content, channels)
     
     render :nothing => true
+  end
+  
+  
+  
+  def index
+    jump_to("/chats/show/#{session[:account_id]}")
   end
   
   
@@ -135,9 +152,20 @@ class ChatsController < ApplicationController
     
   end
   
+  def show
+    @channels = [Community_Channel_Name]
+    
+    @friends = Friend.get_account_friend_ids(@account_id)
+  end
+  
   
   
   private
+  
+  def check_account_access
+    @account_id = params[:id]
+    jump_to("/errors/forbidden") unless session[:account_id].to_s == @account_id
+  end
   
   def validate_msg(msg)
     msg && (msg.strip != "") && msg.jsize <= 200
@@ -150,6 +178,10 @@ class ChatsController < ApplicationController
   
   def has_group_access(group_id, account_id)
     GroupMember.is_group_member(group_id, account_id)
+  end
+  
+  def has_community_access(account_id)
+    true
   end
   
 end

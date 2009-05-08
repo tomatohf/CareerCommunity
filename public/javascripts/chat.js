@@ -1,19 +1,17 @@
-function add_listeners(channels, auth_token) {
-	$(document).observe(
-		"juggernaut:connected", 
-		function() {
-			$("loading_container").remove();
-			show_chat_container();
-			
-			setTimeout(
-				function() {
-					notify_to_update_online_list(channels, auth_token);
-				},
-				2 * 1000
-			);
-		}
-	);
+// common functions
+function toggle_online_list(show) {
+	var left_col = $("chat_left_col");
+	var right_col = $("chat_right_col");
+	if(show == null) {
+		show = (right_col.getStyle("display") == "none");
+	}
+	right_col.setStyle({
+		display:show ? "" : "none"
+	});
+	right_col.setStyle("marginRight") = show ? "200px" : "0px";
+}
 
+function add_common_listeners() {
 	$(document).observe(
 		"juggernaut:errorConnecting", 
 		function() {
@@ -31,6 +29,43 @@ function add_listeners(channels, auth_token) {
 			juggernaut.disconnect();
 		}
 	);
+}
+
+
+
+// personal chat functions
+function ensure_refresh_interval_loader() {
+	if(refresh_interval_loader) {
+		refresh_interval_loader();
+	}
+	else {
+		setTimeout(
+			function() {
+				ensure_refresh_interval_loader();
+			},
+			3 * 1000
+		);
+	}
+}
+
+
+
+// chatroom functions
+function add_chatroom_listeners(channels, auth_token) {
+	$(document).observe(
+		"juggernaut:connected", 
+		function() {
+			$("loading_container").remove();
+			show_chat_container();
+			
+			setTimeout(
+				function() {
+					notify_to_update_online_list(channels, auth_token);
+				},
+				2 * 1000
+			);
+		}
+	);
 	
 	$("refresh_online_list_link").observe(
 		"click",
@@ -38,8 +73,15 @@ function add_listeners(channels, auth_token) {
 			notify_to_update_online_list(channels, auth_token);
 		}
 	);
+	
+	add_common_listeners();
 }
 
+function show_chat_container() {
+	add_enter_listener();
+	$("chat_container").show();
+	focus_chat_input();
+}
 
 function notify_to_update_online_list(channels, auth_token) {
 	$("online_list_container").show();
@@ -59,17 +101,23 @@ function notify_to_update_online_list(channels, auth_token) {
     );
 }
 
-
-function show_chat_container() {
-	add_enter_listener();
-	$("chat_container").show();
-	focus_chat_input();
+function add_enter_listener() {
+	$("chat_input").observe(
+		"keypress", 
+		function(event) {
+			if(event.keyCode == Event.KEY_RETURN) {
+				send_msg();
+				
+				// stop processing the event
+				Event.stop(event);
+			}
+		}
+	);
 }
 
 function focus_chat_input() {
 	$("chat_input").focus();
 }
-
 
 function remove_from_online_list(account_id) {
 	var ele = $("online_account_" + account_id);
@@ -107,20 +155,6 @@ function validate_msg() {
 	return true;
 }
 
-function add_enter_listener() {
-	$("chat_input").observe(
-		"keypress", 
-		function(event) {
-			if(event.keyCode == Event.KEY_RETURN) {
-				send_msg();
-				
-				// stop processing the event
-				Event.stop(event);
-			}
-		}
-	);
-}
-
 var AUTO_SCROLL = true;
 function toggle_auto_scroll() {
 	AUTO_SCROLL = $("auto_scroll_switch").checked;
@@ -137,17 +171,5 @@ function set_to_account(name) {
 	$("chat_input").value += name;
 	
 	focus_chat_input();
-}
-
-function toggle_online_list(show) {
-	var left_col = $("chat_left_col");
-	var right_col = $("chat_right_col");
-	if(show == null) {
-		show = (right_col.getStyle("display") == "none");
-	}
-	right_col.setStyle({
-		display:show ? "" : "none"
-	});
-	right_col.setStyle("marginRight") = show ? "200px" : "0px";
 }
 

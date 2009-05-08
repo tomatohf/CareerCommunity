@@ -109,13 +109,18 @@ class CommunityController < ApplicationController
   
   def interval
     unread_msg_count_txt = ""
+    community_im_status_txt = ""
     
     if has_login?
       
-      unread_inbox_count = Message.get_unread_count(session[:account_id]) || 0
-      unread_sys_count = SysMessage.get_unread_count(session[:account_id]) || 0
+      account_id = session[:account_id]
+      
+      unread_inbox_count = Message.get_unread_count(account_id) || 0
+      unread_sys_count = SysMessage.get_unread_count(account_id) || 0
       total_unread_msg_count = unread_inbox_count + unread_sys_count
       unread_msg_count_txt = "(#{total_unread_msg_count})" if total_unread_msg_count > 0
+      
+      community_im_status_txt = ChatsController.helpers.online?(account_id) ? "(在线)" : "(离线)"
       
     end
     
@@ -125,7 +130,9 @@ class CommunityController < ApplicationController
       if(unread_msg_count_container.firstChild){ unread_msg_count_container.removeChild(unread_msg_count_container.firstChild); }
       unread_msg_count_container.appendChild(document.createTextNode("#{unread_msg_count_txt}"));
       
-      
+      var community_im_status_container = document.getElementById("community_im_status");
+      if(community_im_status_container.firstChild){ community_im_status_container.removeChild(community_im_status_container.firstChild); }
+      community_im_status_container.appendChild(document.createTextNode("#{community_im_status_txt}"));
       
       setTimeout("refresh_interval_loader();", #{1000 * 60 * 5});
       
