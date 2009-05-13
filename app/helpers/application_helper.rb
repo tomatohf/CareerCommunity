@@ -75,7 +75,7 @@ module ApplicationHelper
     (src && (src != "") && Pathname.new("#{RAILS_ROOT}/public#{src}").exist?) ? src : "/images/default_face.png"
   end
   
-  def paging_buttons(collection)
+  def paging_buttons(collection, params = {})
     will_paginate(
       collection,
       :previous_label => "« 上一页",
@@ -85,7 +85,8 @@ module ApplicationHelper
       # :separator => "", # string separator for page HTML elements (default: single space)
       # :inner_window => 4, # how many links are shown around the current page (default: 4)
       # :outer_window => 1, # how many links are around the first and the last page (default: 1)
-      :class => "pagination" # CSS class name for the generated DIV (default: "pagination")
+      :class => "pagination", # CSS class name for the generated DIV (default: "pagination")
+      :params => params # additional parameters when generating pagination links (eg. :controller => "foo", :action => nil)
     )
   end
   
