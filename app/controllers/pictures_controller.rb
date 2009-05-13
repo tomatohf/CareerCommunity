@@ -109,6 +109,7 @@ class PicturesController < ApplicationController
       response.headers["Content-Disposition"] = %Q!inline; filename="#{picture.image_file_name}"!
       response.headers["Content-Length"] = picture.image_file_size
       response.headers["X-LIGHTTPD-send-file"] = picture.image.path(picture_style)
+      # response.headers["X-sendfile"] = picture.image.path(picture_style)
       render :nothing => true
     else
       send_file(

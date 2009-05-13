@@ -281,6 +281,7 @@ class PostsController < ApplicationController
       response.headers["Content-Disposition"] = %Q!attachment; filename="#{@attachment.attachment_file_name}"!
       response.headers["Content-Length"] = @attachment.attachment_file_size
       response.headers["X-LIGHTTPD-send-file"] = @attachment.attachment.path
+      # response.headers["X-sendfile"] = @attachment.attachment.path
       render :nothing => true
     else
       send_file(

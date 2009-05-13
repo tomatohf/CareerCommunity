@@ -82,7 +82,7 @@ class JobTargetsController < ApplicationController
   
   def new
     @company_from = "category"
-    @industries = Industry.find(
+    @industries = Industry.system.find(
       :all,
       :include => [:companies]
     )
@@ -141,7 +141,7 @@ class JobTargetsController < ApplicationController
     session[:new_target_company_name] = company.name
     
     @position_from = "category"
-    @job_positions = JobPosition.find(
+    @job_positions = JobPosition.system.find(
       :all,
       :conditions => ["id != ?", JobPosition::Null_Record_ID]
     )

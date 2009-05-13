@@ -34,7 +34,7 @@
 			</span>
 			<span class="form_info_s">
 				<a title="删除行业 <%= industry_name %>" href="#" onclick="remove_industry(<%= industry.id %>); return false;">
-						<img src="/images/delete_small.gif" border="0" /></a>
+					<img src="/images/delete_small.gif" border="0" /></a>
 						
 				&nbsp;&nbsp;&nbsp;
 				|
@@ -74,7 +74,7 @@
 	
 	<% if @industries %>
 		<% form_tag "/company/job_items/#{@company.id}/add_company_industry", :method => :post, :id => "add_form" do %>
-			<input type="hidden" name="industry_id" id="industry_id" />
+			<input type="hidden" name="industry_id" id="add_industry_id" />
 		<% end %>
 	
 		<div class="community_block">
@@ -93,7 +93,7 @@
 
 	function select_item(industry_id) {
 		if(confirm("确定要添加此行业么 ?")) {
-			document.getElementById("industry_id").value = industry_id;
+			document.getElementById("add_industry_id").value = industry_id;
 			document.getElementById("add_form").submit();
 		}
 	}

@@ -1,7 +1,5 @@
 ﻿EXT IE8 menu 宽度问题
 
-sphinx index rotate 的问题
-
 即时聊天功能
 	- 处理聊天记录
 	- 显示用户当前在哪些聊天室
@@ -177,6 +175,9 @@ HR交流圈子:
 
 Ruby Patch of the GC for Rails
 	需要重新编译 Ruby
+	
+enable mod_deflate to replace rails output compress plugin
+	- upgrade lighttpd to 1.5
 	
 	
 	
