@@ -24,6 +24,8 @@ class PostsController < ApplicationController
   before_filter :check_top_access, :only => [:top, :untop, :good, :ungood]
   before_filter :check_attachment_access, :only => [:attachment]
   
+  skip_after_filter OutputCompressionFilter, :only => [:attachment]
+  
   
   
   def compose

@@ -127,12 +127,16 @@ class CommunityController < ApplicationController
     render :text => %Q!
     
       var unread_msg_count_container = document.getElementById("unread_msg_count");
-      if(unread_msg_count_container.firstChild){ unread_msg_count_container.removeChild(unread_msg_count_container.firstChild); }
-      unread_msg_count_container.appendChild(document.createTextNode("#{unread_msg_count_txt}"));
+      if(unread_msg_count_container) {
+        if(unread_msg_count_container.firstChild){ unread_msg_count_container.removeChild(unread_msg_count_container.firstChild); }
+        unread_msg_count_container.appendChild(document.createTextNode("#{unread_msg_count_txt}"));
+      }
       
       var community_im_status_container = document.getElementById("community_im_status");
-      if(community_im_status_container.firstChild){ community_im_status_container.removeChild(community_im_status_container.firstChild); }
-      community_im_status_container.appendChild(document.createTextNode("#{community_im_status_txt}"));
+      if(community_im_status_container) {
+        if(community_im_status_container.firstChild){ community_im_status_container.removeChild(community_im_status_container.firstChild); }
+        community_im_status_container.appendChild(document.createTextNode("#{community_im_status_txt}"));
+      }
       
       setTimeout("refresh_interval_loader();", #{1000 * 60 * 5});
       
