@@ -5,11 +5,22 @@
 		<div class="coach_menu_top" style="color: #FFFFFF; font-weight: bold;">
 			企业服务
 		</div>
+		<div 
+			onmouseover="this.className='coach_menu_selected'"
+			onmouseout="this.className=''"
+			style="padding-right: 3px;"
+			>
+			<a href="/info/cis" target="_blank">
+				企业实习生服务
+				&nbsp;
+				<img src="/images/coach/hot_icon.gif" border="0" />
+			</a>
+		</div>
 		<%
 			menus = [
+				# ["intern", "实习生外包服务"],
 				["hr", "企业人力资源培训"],
 				["recruit", "校园招聘外包服务"],
-				["intern", "实习生外包服务"],
 				["special", "行业专向人才招聘"],
 				["campus", "校园活动推广服务"],
 				["group", "企业定制圈子服务"]
@@ -178,6 +189,7 @@
 		<% end %>
 	</div>
 	
+	<% if false %>
 	<div class="coach_block">
 		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>
 			<div class="index_container_l_section">
@@ -266,6 +278,7 @@
 			</div>
 		<% end %>
 	</div>
+	<% end %>
 	
 	<div class="coach_block">
 		<% round_corner_div :border_color => "#C0C0C0", :bg_color => "#FFFFFF" do %>

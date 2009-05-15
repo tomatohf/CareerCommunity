@@ -64,7 +64,12 @@
 						<a href="/info/student" target="_blank" style="color: #000000">
 							学生服务</a>
 					</div>
-					
+					<div style="padding-left: <%= link_left_padding %>;">
+						<a href="/coach/stp" target="_blank">
+							销售实习生计划
+							&nbsp;
+							<img src="/images/coach/hot_icon.gif" border="0" /></a>
+					</div>
 					<%
 						student_infos = [
 							["乔布堂顾问", "/info/student#consultant"],
@@ -93,12 +98,17 @@
 						<a href="/info/company" target="_blank" style="color: #000000">
 							企业服务</a>
 					</div>
-					
+					<div style="padding-left: <%= link_left_padding %>;">
+						<a href="/info/cis" target="_blank">
+							企业实习生服务
+							&nbsp;
+							<img src="/images/coach/hot_icon.gif" border="0" /></a>
+					</div>
 					<%
 						company_infos = [
+							["实习生外包服务", "/info/company#intern"],
 							["企业人力资源培训", "/info/company#hr"],
 							["校园招聘外包服务", "/info/company#recruit"],
-							["实习生外包服务", "/info/company#intern"],
 							["行业专向人才招聘", "/info/company#special"],
 							["校园活动推广服务", "/info/company#campus"],
 							["企业定制圈子服务", "/info/company#group"]

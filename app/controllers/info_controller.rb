@@ -32,6 +32,10 @@ class InfoController < ApplicationController
   
   
   
+  def cis
+    render :layout => "uncategoried"
+  end
+  
 end
 
 
