@@ -21,6 +21,12 @@
 
 
 
+让用户能够收藏自己喜爱的面经，以便存档，日后直接浏览。
+
+sphinx 搜索 的 分词 问题
+
+
+
 escape URL
 	- search
 	- bookmark

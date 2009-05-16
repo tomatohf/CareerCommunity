@@ -106,10 +106,28 @@ JobTownGrid = function(table_id, config) {
 							}
 						}
 						
-						else if(i == 2 || i == 3) {
-							return function(value) {
+						else if(i == 2) {
+							return function(value, metadata, record, rowIndex, colIndex, store) {
+								var target_id = get_element_from_html(record.data.column_5).id.substr("step_group_".length);
+								var target = targets["target_" + target_id];
+								var desc = target.desc.company;
+								
 								var html = "";
-								html += "<div class='target_text'>";
+								html += "<div class='target_text' ext:qtip='" + desc + "'>";
+								html += value;
+								html += "</div>";
+								return html;
+							}
+						}
+						
+						else if(i == 3) {
+							return function(value, metadata, record, rowIndex, colIndex, store) {
+								var target_id = get_element_from_html(record.data.column_5).id.substr("step_group_".length);
+								var target = targets["target_" + target_id];
+								var desc = target.desc.position;
+								
+								var html = "";
+								html += "<div class='target_text' ext:qtip='" + desc + "'>";
 								html += value;
 								html += "</div>";
 								return html;

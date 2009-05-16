@@ -1668,6 +1668,13 @@ a.order_by_selected {
 	background: transparent url(/images/index/exp_icon.gif) no-repeat scroll 2px 2px;
 }
 
+.exp_content {
+	font-size: 14px;
+	line-height: 1.8;
+	color: #333333;
+	padding: 5px 10px;
+}
+
 .point_number {
 	font-size: 14px;
 	font-weight: bold;

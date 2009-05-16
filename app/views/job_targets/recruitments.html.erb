@@ -53,7 +53,16 @@
 	</div>
 	
 	<div class="community_block">
-		<%= render(:partial => "/recruitments/recruitment", :collection => @recruitments) %>
+		<%#= render(:partial => "/recruitments/recruitment", :collection => @recruitments) %>
+		<% @recruitments.each do |r| %>
+			<% if r %>
+				<%= render(:partial => "/community/search_results/recruitment", :locals => {:result => r, :query => @company_name, :riddle_client => get_riddle_client}) %>
+			
+				<div style="height: 15px; margin: 0px 100px 20px; border-bottom: 1px dashed #DDDDDD;">
+				
+				</div>
+			<% end %>
+		<% end %>
 	</div>
 
 	<div class="community_block">

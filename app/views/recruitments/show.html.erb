@@ -85,7 +85,7 @@
 			<input type="hidden" name="recruitment_id" value="<%= @recruitment.id %>" />
 		<% end %>
 		
-		<div class="community_block tinymce_content">
+		<div class="exp_content">
 			<div>
 				<span class="float_r">
 					<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/recruitments/#{@recruitment.id}", :title => "招聘信息: #{recruitment_title}"} %>
