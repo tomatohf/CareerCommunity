@@ -1,3 +1,5 @@
+var CURRENT_CLIENT_ID;
+
 // common functions
 function toggle_online_list(show) {
 	var left_col = $("chat_left_col");
@@ -31,6 +33,43 @@ function add_common_listeners() {
 	);
 }
 
+var blink_new_msg_interval = null;
+var blink_new_msg_switch = 0;
+var page_title = document.title;
+function blink_new_msg() {
+	$(document).title = (blink_new_msg_switch % 2 == 0) ? "[　　　] - " + page_title : "[新消息] - " + page_title;
+	blink_new_msg_switch++;
+}
+function start_blink_new_msg() {
+	if (!blink_new_msg_interval) {
+		blink_new_msg_switch = 0;
+		blink_new_msg_interval = setInterval(blink_new_msg, 1000);
+		
+		// add the event handler to clear the blink
+		Event.observe(document, "mousemove", stop_blink_new_msg);
+		Event.observe(document, "keydown", stop_blink_new_msg);
+		Event.observe(document, "focus", stop_blink_new_msg);
+		Event.observe(window, "mousemove", stop_blink_new_msg);
+		Event.observe(window, "keydown", stop_blink_new_msg);
+		Event.observe(window, "focus", stop_blink_new_msg);
+	}
+}
+function stop_blink_new_msg() {
+	if (blink_new_msg_interval) {
+		clearInterval(blink_new_msg_interval);
+		blink_new_msg_interval = null;
+		
+ 		$(document).title = page_title;
+
+		Event.stopObserving(document, "mousemove", stop_blink_new_msg);
+		Event.stopObserving(document, "keydown", stop_blink_new_msg);
+		Event.stopObserving(document, "focus", stop_blink_new_msg);
+		Event.stopObserving(window, "mousemove", stop_blink_new_msg);
+		Event.stopObserving(window, "keydown", stop_blink_new_msg);
+		Event.stopObserving(window, "focus", stop_blink_new_msg);
+	}
+}
+
 
 
 // personal chat functions
@@ -51,7 +90,10 @@ function ensure_refresh_interval_loader() {
 
 
 // chatroom functions
-function add_chatroom_listeners(channels, auth_token) {
+function add_chatroom_listeners(client_id, channels, auth_token) {
+	CURRENT_CLIENT_ID = client_id;
+	
+	
 	$(document).observe(
 		"juggernaut:connected", 
 		function() {
@@ -158,6 +200,15 @@ function validate_msg() {
 var AUTO_SCROLL = true;
 function toggle_auto_scroll() {
 	AUTO_SCROLL = $("auto_scroll_switch").checked;
+}
+
+function on_received_msg(client_id) {
+	scroll_chat_area_to_bottom();
+	
+	if(CURRENT_CLIENT_ID != client_id) {
+		start_blink_new_msg();
+	}
+	$(window).focus();
 }
 
 function scroll_chat_area_to_bottom() {

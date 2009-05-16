@@ -66,7 +66,7 @@ class ChatsController < ApplicationController
             </span>
           </div>
         !
-      page.call :scroll_chat_area_to_bottom
+      page.call :on_received_msg, client_id
     end
     Juggernaut.send_to_channel(content, channels)
     
@@ -106,7 +106,7 @@ class ChatsController < ApplicationController
             </span>
           </div>
         !
-      page.call :scroll_chat_area_to_bottom
+      page.call :on_received_msg, client_id
     end
     Juggernaut.send_to_channel(content, channels)
     
@@ -138,7 +138,7 @@ class ChatsController < ApplicationController
                 #{h(msg)}
               </div>
             !
-          page.call :scroll_chat_area_to_bottom
+          page.call :on_received_msg, session[:account_id].to_s
         end
         Juggernaut.send_to_channel(content, @channels)
       end
