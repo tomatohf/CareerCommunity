@@ -3,25 +3,21 @@
 
 <div class="float_r blog_container_r" id="chat_right_col">
 	
-	<div class="community_block">
-		<a href="#">
-			去公众聊天室
-			(
-			<b><%= Juggernaut.show_clients_for_channels([ChatsController::Public_Channel_Name]).size %></b>
-			人在线)</a>
-	</div>
-	
-	
-	<div class="community_title">
+	<div class="community_title" style="margin-top: 0px;">
 		即时聊天在线的朋友 ...
 	</div>
-	<div id="online_list_container">
-		<div id="online_list" class="chat_online_list">
-			<% @friends.each do |account_id| %>
-				<% if online?(account_id) %>
-					
-				<% end %>
-			<% end %>
+	<div>
+		
+	</div>
+	<div id="online_list_container" style="display: none;">
+		<div style="margin-top: 20px;">
+			<img src="/images/loading_small.gif" />
+			&nbsp;
+			正在获取在线的朋友 ...
+		</div>
+		<div style="margin-left: 30px;">
+			<a href="#" id="refresh_online_list_link">
+				(重试)</a>
 		</div>
 	</div>
 	
@@ -29,7 +25,15 @@
 
 
 <div class="blog_container_l" id="chat_left_col">
+	<a href="#" class="float_r" style="font-size: 13px;">
+		去公众聊天室
+		(
+		<b><%= Juggernaut.show_clients_for_channels([ChatsController::Public_Channel_Name]).size %></b>
+		人在线)</a>
+		
 	<h2><%= page_title %></h2>
+	
+	<br />
 	
 	
 	<p id="error_msg_container" class="error_msg" style="display: none;">
@@ -44,18 +48,26 @@
 		正在连接服务器 ...
 	</div>
 	
+	<% if false %>
 	<script type="text/javascript" src="/lib/protopack/prototype-packer.js"></script>
+	<% end %>
+	<script type="text/javascript" src="/lib/protopack/protoculous-packer.js"></script>
 	<script type="text/javascript" src="/javascripts/juggernaut/swfobject.js"></script>
 	<script type="text/javascript" src="/javascripts/juggernaut/juggernaut.js"></script>
+	<link rel="stylesheet" href="/lib/ext/resources/css/ext-all.css" type="text/css" media="screen"></link>
+	<link rel="stylesheet" href="/lib/ext/resources/css/xtheme-gray.css" type="text/css" media="screen"></link>
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/adapter/ext/ext-base.js"></script>
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/ext-all.js"></script>
+	<script language="JavaScript" type="text/javascript" src="/lib/ext/build/locale/ext-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="/javascripts/chat.js"></script>
 	<script language="JavaScript">
 		var channels = [];
 		<% @channels.each do |channel| %>
 			channels.push("<%= channel %>");
 		<% end %>
-		add_listeners(channels, encodeURIComponent("<%= form_authenticity_token %>"));
+		add_im_listeners("<%= session[:account_id].to_s %>", channels, encodeURIComponent("<%= form_authenticity_token %>"));
 	</script>
-	<%#= juggernaut(
+	<%= juggernaut(
 			:channels => @channels,
 			:client_id => @account_id,
 			:debug => false,
@@ -65,7 +77,7 @@
 	
 	
 	<div id="chat_container" style="display: none;">
-		<div id="chat_area" class="chat_area">
+		<div id="chatbox_tabs">
 			
 		</div>
 	</div>

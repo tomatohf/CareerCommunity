@@ -478,7 +478,7 @@ class JobTargetsController < ApplicationController
         @target.save
       end
   
-      return render(:partial => "step", :locals => {:step => step, :target => @target, :process => process}) if saved
+      return render(:partial => "step", :locals => {:step => step, :target => @target, :process => process, :status => nil}) if saved
     end
     
     render :layout => false, :text => "false"

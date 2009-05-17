@@ -8,7 +8,7 @@ class ChatsController < ApplicationController
   layout "community"
   
   before_filter :check_current_account, :only => [:index]
-  before_filter :check_login, :only => [:group, :update_online_list]
+  before_filter :check_login, :only => [:group, :update_online_list, :update_online_friends]
   before_filter :check_limited, :only => []
   
   before_filter :check_group_access, :only => [:group]
@@ -44,31 +44,56 @@ class ChatsController < ApplicationController
     # session_id = params[:session_id]
     
     client_id = params[:client_id]
-    channels = params[:channels]
+    channels = params[:channels] || []
     
     client_nick_pic = Account.get_nick_and_pic(client_id)
     
-    content = render_to_string :update do |page|
-      page.call :remove_from_online_list, client_id
-      page.insert_html :bottom, "chat_area", 
-        %Q!
-          <div class="chat_sys_msg">
-            系统通知:
-            &nbsp;
+    if channels.include?(Community_Channel_Name)
+      unless ChatsController.helpers.online?(client_id)
+        content = render_to_string :update do |page|
+          page.call :remove_from_online_list, client_id
+          page.call :insert_msg, client_id, 
+            %Q!
+              <div class="chat_sys_msg">
+                系统通知:
+                &nbsp;
+
+                <a href="/spaces/show/#{client_id}" class="account_nick_link" target="_blank">
+                  #{h(client_nick_pic[0])}</a>
+                离线了
+
+                &nbsp;
+                <span class="chat_time">
+                  (#{DateTime.now.strftime("%H:%M:%S")})
+                </span>
+              </div>
+            !
+        end
+        Juggernaut.send_to_channel(content, channels)
+      end
+    else
+      content = render_to_string :update do |page|
+        page.call :remove_from_online_list, client_id
+        page.insert_html :bottom, "chat_area", 
+          %Q!
+            <div class="chat_sys_msg">
+              系统通知:
+              &nbsp;
             
-            <a href="#" class="account_nick_link" onclick="set_to_account('#{h(client_nick_pic[0])}'); return false;">
-              #{h(client_nick_pic[0])}</a>
-            离开了
+              <a href="#" class="account_nick_link" onclick="set_to_account('#{h(client_nick_pic[0])}'); return false;">
+                #{h(client_nick_pic[0])}</a>
+              离开了
             
-            &nbsp;
-            <span class="chat_time">
-              (#{DateTime.now.strftime("%H:%M:%S")})
-            </span>
-          </div>
-        !
-      page.call :on_received_msg, client_id
+              &nbsp;
+              <span class="chat_time">
+                (#{DateTime.now.strftime("%H:%M:%S")})
+              </span>
+            </div>
+          !
+        page.call :on_received_msg, client_id
+      end
+      Juggernaut.send_to_channel(content, channels)
     end
-    Juggernaut.send_to_channel(content, channels)
     
     render :nothing => true
   end
@@ -113,6 +138,43 @@ class ChatsController < ApplicationController
     render :nothing => true
   end
   
+  def update_online_friends
+    channels = [Community_Channel_Name]
+    client_id = session[:account_id].to_s
+    
+    client_nick_pic = Account.get_nick_and_pic(client_id)
+    
+    html = render_to_string :partial => "online_friend", :locals => {:account_id => client_id, :account_nick => client_nick_pic[0], :account_img => client_nick_pic[1]}
+    
+    content = render_to_string :update do |page|
+      page.call :add_online_friend, client_id, html
+      
+      page.call :insert_msg, client_id, 
+        %Q!
+          <div class="chat_sys_msg">
+            系统通知:
+            &nbsp;
+            
+            <a href="#" class="account_nick_link" onclick="set_to_account('#{h(client_nick_pic[0])}'); return false;">
+              #{h(client_nick_pic[0])}</a>
+            在线了
+            
+            &nbsp;
+            <span class="chat_time">
+              (#{DateTime.now.strftime("%H:%M:%S")})
+            </span>
+          </div>
+        !
+    end
+    Juggernaut.send_to_clients_on_channels(
+      content,
+      Friend.get_account_be_friend_ids(client_id).collect { |a_id| a_id.to_s },
+      channels
+    )
+    
+    render :partial => "online_friend_list", :locals => {:friends => Friend.get_account_friend_ids(client_id)}
+  end
+  
   
   def group
     
@@ -154,8 +216,6 @@ class ChatsController < ApplicationController
   
   def show
     @channels = [Community_Channel_Name]
-    
-    @friends = Friend.get_account_friend_ids(@account_id)
   end
   
   

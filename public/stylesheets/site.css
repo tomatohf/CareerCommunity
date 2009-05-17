@@ -1849,6 +1849,16 @@ a.order_by_selected {
 	color: #555555;
 }
 
+.chatbox {
+	padding: 5px;
+	overflow: auto;
+}
+
+.chatbox_account_face {
+	margin-left: 10px;
+	margin-bottom: 5px;
+}
+
 
 
 

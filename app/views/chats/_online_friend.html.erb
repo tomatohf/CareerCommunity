@@ -1,0 +1,23 @@
+<%
+	account_nick = h(account_nick)
+	account_img = face_img_src(account_img)
+%>
+
+<div id="online_account_<%= account_id %>" class="chat_online_account">
+	<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+		<tr>
+			<td class="chat_online_account_img">
+				<a href="#" onclick="add_chatbox(<%= account_id %>, '<%= account_nick %>', '<%= account_img %>'); return false;">
+					<img src="<%= account_img %>" border="0" class="chat_account_pic" /></a>
+			</td>
+
+			<td class="chat_online_account_txt">
+				<div>
+					<a href="#" class="account_nick_link" onclick="add_chatbox(<%= account_id %>, '<%= account_nick %>', '<%= account_img %>'); return false;">
+						<%= account_nick %></a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+

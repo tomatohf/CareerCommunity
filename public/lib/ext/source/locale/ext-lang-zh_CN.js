@@ -169,7 +169,7 @@ if(Ext.grid.GridFilters){
 }
 
 // added by Tomato
-if(Ext.grid.filter.DateFilter){
+if(Ext.grid.filter && Ext.grid.filter.DateFilter){
   Ext.apply(Ext.grid.filter.DateFilter.prototype, {
     //dateFormat: "Y-m-d",
 	beforeText: "之前",
@@ -179,7 +179,7 @@ if(Ext.grid.filter.DateFilter){
 }
 
 // added by Tomato
-if(Ext.grid.filter.BooleanFilter){
+if(Ext.grid.filter && Ext.grid.filter.BooleanFilter){
   Ext.apply(Ext.grid.filter.BooleanFilter.prototype, {
 	yesText: "是",
     noText: "否"

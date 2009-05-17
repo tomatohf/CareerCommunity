@@ -120,7 +120,9 @@ class CommunityController < ApplicationController
       total_unread_msg_count = unread_inbox_count + unread_sys_count
       unread_msg_count_txt = "(#{total_unread_msg_count})" if total_unread_msg_count > 0
       
-      community_im_status_txt = ChatsController.helpers.online?(account_id) ? "(在线)" : "(离线)"
+      is_online = ChatsController.helpers.online?(account_id)
+      community_im_status_txt = is_online ? "即时聊天 在线" : "即时聊天 离线"
+      community_im_status_img = is_online ? "/images/chats/online_icon.gif" : "/images/chats/offline_icon.gif"
       
     end
     
@@ -132,10 +134,11 @@ class CommunityController < ApplicationController
         unread_msg_count_container.appendChild(document.createTextNode("#{unread_msg_count_txt}"));
       }
       
-      var community_im_status_container = document.getElementById("community_im_status");
-      if(community_im_status_container) {
-        if(community_im_status_container.firstChild){ community_im_status_container.removeChild(community_im_status_container.firstChild); }
-        community_im_status_container.appendChild(document.createTextNode("#{community_im_status_txt}"));
+      var community_im_status_ele = document.getElementById("community_im_status");
+      if(community_im_status_ele) {
+        community_im_status_ele.src = "#{community_im_status_img}";
+        community_im_status_ele.alt = "#{community_im_status_txt}";
+        community_im_status_ele.title = "#{community_im_status_txt}";
       }
       
       setTimeout("refresh_interval_loader();", #{1000 * 60 * 5});

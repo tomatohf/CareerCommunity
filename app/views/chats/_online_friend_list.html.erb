@@ -1,0 +1,15 @@
+<div id="online_list" class="chat_online_list">
+	<% friends.each do |account_id| %>
+		<% if online?(account_id) %>
+			<%
+				account_nick_pic = Account.get_nick_and_pic(account_id)
+				account_nick = account_nick_pic[0]
+				account_img = face_img_src(account_nick_pic[1])
+			%>
+
+			<%= render :partial => "online_friend", :locals => {:account_id => account_id, :account_nick => account_nick, :account_img => account_img} %>
+		<% end %>
+	<% end %>
+</div>
+
+
