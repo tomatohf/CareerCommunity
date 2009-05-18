@@ -451,7 +451,7 @@ select.dropdown_list, .dropdown_list select {
 	background-image: url(/images/index/search.png);
 	background-repeat: no-repeat;
 	background-position: 0px -2px;
-	padding-left: 25px;
+	padding: 1px 1px 1px 25px;
 }
 
 

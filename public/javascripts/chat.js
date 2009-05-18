@@ -92,9 +92,10 @@ function blink_page() {
 	blink_page_switch++;
 }
 function start_blink_page(text) {
+	blink_page_text = text;
+	
 	if (!blink_page_interval) {
 		blink_page_switch = 0;
-		blink_page_text = text;
 		blink_page_interval = setInterval(blink_page, 1000);
 		
 		// add the event handler to clear the blink
@@ -125,6 +126,60 @@ function stop_blink_page() {
 
 
 // personal chat functions
+var blink_tab_interval = {};
+var blink_tab_switch = {};
+var blink_tab_text = {};
+var blink_tab_title = {};
+function blink_tab(account_id) {
+	var tab = find_tab(account_id)
+	if(!tab) { return; }
+	
+	var tab_title = blink_tab_title[account_id];
+	
+	var blink_text = blink_tab_text[account_id];
+	if(!blink_text) {
+		blink_text = ["", ""];
+	}
+	
+	tab.setTitle((blink_tab_switch[account_id] % 2 == 0) ? blink_text[0] + tab_title : blink_text[1] + tab_title);
+	blink_tab_switch[account_id]++;
+}
+function start_blink_tab(text, account_id) {
+	blink_tab_text[account_id] = text;
+	
+	if (!blink_tab_interval[account_id]) {
+		blink_tab_switch[account_id] = 0;
+		
+		var tab = find_tab(account_id)
+		if(!tab) { return; }
+		
+		blink_tab_title[account_id] = tab.title;
+		
+		blink_tab_interval[account_id] = setInterval(blink_tab, 1000, account_id);
+	}
+}
+function stop_blink_tab(account_id) {
+	if (blink_tab_interval[account_id]) {
+		clearInterval(blink_tab_interval[account_id]);
+		blink_tab_interval[account_id] = null;
+		
+		var tab = find_tab(account_id)
+		if(!tab) { return; }
+		
+ 		tab.setTitle(blink_tab_title[account_id]);
+	}
+}
+
+function find_tab(account_id) {
+	var tab = null;
+	
+	if(tabs) {
+		tab = tabs.findById("chatbox_tab_" + account_id);
+	}
+	
+	return tab;
+}
+
 function add_im_listeners(client_id, channels, auth_token) {
 	CURRENT_CLIENT_ID = client_id;
 	
@@ -217,6 +272,15 @@ function add_chatbox(account_id, account_nick, account_img, silent) {
 					closable: true
 		    	}
 			);
+			
+			// add listeners
+			var clear_tab_blink_handler = function() {
+				stop_blink_tab(account_id);
+				scroll_chatbox_to_bottom(account_id);
+			}
+			tab.addListener("activate", clear_tab_blink_handler);
+			tab.addListener("show", clear_tab_blink_handler);
+			tab.addListener("close", clear_tab_blink_handler);
 		}
 		
 		if(!silent || !get_active_tab()) {
@@ -252,6 +316,8 @@ function insert_msg(account_id, msg) {
 				bottom: msg
 			}
 		);
+		
+		on_received_im_msg(account_id, account_id)
 	}
 }
 
@@ -323,6 +389,8 @@ function insert_im_msg(receiver_id, account_id, account_nick, account_img, msg) 
 				bottom: msg
 			}
 		);
+		
+		on_received_im_msg(receiver_id, account_id);
 	}
 }
 
@@ -349,7 +417,10 @@ function scroll_chatbox_to_bottom(account_id) {
 function start_blink_im_new_msg(account_id) {
 	start_blink_page(["[　　　] - ", "[新消息] - "]);
 	
-	
+	var active_tab = get_active_tab();
+	if(active_tab && (active_tab.getId() != "chatbox_tab_" + account_id)) {
+		start_blink_tab(["", "<b>*</b> "], account_id);
+	}
 }
 
 

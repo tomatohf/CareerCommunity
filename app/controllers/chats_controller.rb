@@ -241,7 +241,6 @@ class ChatsController < ApplicationController
                 #{h(msg)}
               </div>
             !
-          page.call :on_received_im_msg, to_account_id, @account_id
         end
         Juggernaut.send_to_clients_on_channels(content, [@account_id, to_account_id], @channels)
       end
