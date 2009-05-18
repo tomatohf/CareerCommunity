@@ -216,6 +216,42 @@ class ChatsController < ApplicationController
   
   def show
     @channels = [Community_Channel_Name]
+    
+    if request.post?
+      to_account_id = params[:to_account_id]
+      msg = params[:chat_input] || ""
+      
+      msg_valid = validate_msg(msg)
+      
+      if msg_valid
+        
+        account_nick_pic = Account.get_nick_and_pic(@account_id)
+        
+        content = render_to_string :update do |page|
+          page.call :insert_im_msg, to_account_id, @account_id, h(account_nick_pic[0]), face_img_src(account_nick_pic[1]), 
+            %Q!
+              <div>
+                <span class="chat_time">
+                  (#{DateTime.now.strftime("%H:%M:%S")})
+                </span>
+                <a href="/spaces/show/#{h(@account_id)}" class="account_nick_link" target="_blank">
+                  #{h(params[:nick])}</a>
+                :
+                &nbsp;
+                #{h(msg)}
+              </div>
+            !
+          page.call :on_received_im_msg, to_account_id, @account_id
+        end
+        Juggernaut.send_to_clients_on_channels(content, [@account_id, to_account_id], @channels)
+      end
+      
+      return render(:nothing => true)
+    end
+    
+    
+    @account_nick_pic = Account.get_nick_and_pic(@account_id)
+    
   end
   
   

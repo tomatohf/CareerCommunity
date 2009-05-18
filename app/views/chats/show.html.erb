@@ -3,11 +3,17 @@
 
 <div class="float_r blog_container_r" id="chat_right_col">
 	
-	<div class="community_title" style="margin-top: 0px;">
-		即时聊天在线的朋友 ...
-	</div>
 	<div>
-		
+		<a href="#" style="font-size: 13px;">
+			去公众聊天室
+			(
+			<b><%= Juggernaut.show_clients_for_channels([ChatsController::Public_Channel_Name]).size %></b>
+			人在线)</a>
+	</div>
+	
+	
+	<div class="community_title">
+		即时聊天在线的朋友 ...
 	</div>
 	<div id="online_list_container" style="display: none;">
 		<div style="margin-top: 20px;">
@@ -25,12 +31,6 @@
 
 
 <div class="blog_container_l" id="chat_left_col">
-	<a href="#" class="float_r" style="font-size: 13px;">
-		去公众聊天室
-		(
-		<b><%= Juggernaut.show_clients_for_channels([ChatsController::Public_Channel_Name]).size %></b>
-		人在线)</a>
-		
 	<h2><%= page_title %></h2>
 	
 	<br />
@@ -65,7 +65,7 @@
 		<% @channels.each do |channel| %>
 			channels.push("<%= channel %>");
 		<% end %>
-		add_im_listeners("<%= session[:account_id].to_s %>", channels, encodeURIComponent("<%= form_authenticity_token %>"));
+		add_im_listeners("<%= @account_id %>", channels, encodeURIComponent("<%= form_authenticity_token %>"));
 	</script>
 	<%= juggernaut(
 			:channels => @channels,
@@ -77,8 +77,51 @@
 	
 	
 	<div id="chat_container" style="display: none;">
-		<div id="chatbox_tabs">
+		<div id="chatbox_tabs" class="chatbox_tabs">
 			
+		</div>
+		
+		
+		<div class="chat_toolbar">
+			<span class="float_r">
+				
+			</span>
+			
+			
+		</div>
+		
+		<div>
+			<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+				<tr>
+					<td class="chat_self_pic_cell">
+						<img src="<%= face_img_src(@account_nick_pic[1]) %>" border="0" />
+					</td>
+					
+					<td align="center">
+						<% form_tag "/chats/show/#{@account_id}", :method => :post, :id => "send_msg_form" do %>
+							<textarea id="chat_input" name="chat_input" class="chat_text_input"></textarea>
+							
+							<input type="hidden" name="nick" value="<%= @account_nick_pic[0] %>" />
+							<% if false %>
+								<input type="hidden" name="pic" value="<%= @account_nick_pic[1] %>" />
+							<% end %>
+						<% end %>
+					</td>
+
+					<td class="chat_send_btn_cell">
+						<input type="button" value="发送" class="chat_send_btn" onclick="send_im_msg();" />
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="align_r" style="padding: 0px 80px;">
+			<span class="float_l form_info_s">
+				(200 字以内, 大量文字请发送站内消息)
+			</span>
+			
+			<input id="auto_scroll_switch" type="checkbox" onclick="toggle_auto_scroll();" checked="checked" />
+			<label for="auto_scroll_switch">自动滚屏</label>
 		</div>
 	</div>
 	

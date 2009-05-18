@@ -1,6 +1,48 @@
 var CURRENT_CLIENT_ID;
 
 // common functions
+function validate_msg() {
+	var msg = $("chat_input").value;
+	
+	if(msg == null) return false;
+	if(msg.blank()) return false;
+	
+	// cut the 200 chars ...
+	$("chat_input").value = msg.substr(0, 200);
+	return true;
+}
+
+function show_chat_container(enter_handler, args) {
+	add_enter_listener(enter_handler, args);
+	$("chat_container").show();
+	focus_chat_input();
+}
+
+function add_enter_listener(handler, args) {
+	if(!args) { args = []; }
+	
+	$("chat_input").observe(
+		"keypress", 
+		function(event) {
+			if(event.keyCode == Event.KEY_RETURN) {
+				handler.apply(this, args);
+				
+				// stop processing the event
+				Event.stop(event);
+			}
+		}
+	);
+}
+
+function focus_chat_input() {
+	$("chat_input").focus();
+}
+
+var AUTO_SCROLL = true;
+function toggle_auto_scroll() {
+	AUTO_SCROLL = $("auto_scroll_switch").checked;
+}
+
 function remove_from_online_list(account_id) {
 	var ele = $("online_account_" + account_id);
 	if(ele) {
@@ -24,7 +66,7 @@ function add_common_listeners() {
 	$(document).observe(
 		"juggernaut:errorConnecting", 
 		function() {
-			$("loading_container").remove();
+			if($("loading_container")) { $("loading_container").remove(); }
 			$("error_msg_container").show();
 		}
 	);
@@ -90,8 +132,8 @@ function add_im_listeners(client_id, channels, auth_token) {
 	$(document).observe(
 		"juggernaut:connected", 
 		function() {
-			$("loading_container").remove();
-			show_im_chat_container();
+			if($("loading_container")) { $("loading_container").remove(); }
+			show_chat_container(send_im_msg);
 			
 			$("community_im_status").src = "/images/chats/online_icon.gif";
 			$("community_im_status").alt = "即时聊天 在线";
@@ -142,10 +184,6 @@ function update_online_friends(auth_token) {
     );
 }
 
-function show_im_chat_container() {
-	$("chat_container").show();
-}
-
 var tabs = null;
 function prepare_chatbox_tab() {
 	Ext.onReady(function(){
@@ -157,7 +195,7 @@ function prepare_chatbox_tab() {
 				minTabWidth: 115,
 				tabWidth: 145,
 				//width: 600,
-				height: 400,
+				height: 410, // height of chatbox, plus 20
 				frame: true
 			}
 		);
@@ -165,24 +203,30 @@ function prepare_chatbox_tab() {
 	});
 }
 
-function add_chatbox(account_id, account_nick, account_img) {
+function add_chatbox(account_id, account_nick, account_img, silent) {
+	var tab = null;
 	if(tabs && tabs.rendered) {
 		var tab_id = "chatbox_tab_" + account_id;
-		var tab = tabs.findById(tab_id);
+		tab = tabs.findById(tab_id);
 		if(!tab) {
 			tab = tabs.add(
 				{
 					id: tab_id,
 					title: "<img src='" + account_img + "' border='0' width='16' height='16' style='margin-right: 5px; vertical-align: bottom;' />" + account_nick,
 					html: get_chatbox_html(account_id, account_nick, account_img),
-					closable: true,
-					icon: account_img
+					closable: true
 		    	}
 			);
 		}
 		
-		tabs.setActiveTab(tab);
+		if(!silent || !get_active_tab()) {
+			tabs.setActiveTab(tab);
+		}
 	}
+	
+	focus_chat_input();
+	
+	return tab;
 }
 
 function get_chatbox_html(account_id, account_nick, account_img) {
@@ -222,6 +266,92 @@ function add_online_friend(account_id, html) {
 	}
 }
 
+function get_active_tab() {
+	var tab = null;
+	
+	if(tabs) {
+		tab = tabs.getActiveTab();
+		if(tab) {
+			// the active tab may be not displayed on the page (be closed, for instance)
+			tab = tabs.findById(tab.getId());
+		}
+	}
+	
+	return tab;
+}
+
+function send_im_msg() {
+	if(!tabs) { return; }
+	
+	var tab = get_active_tab();
+	if(!tab) { return; }
+	
+	var to_account_id = tab.getId().substr("chatbox_tab_".length);
+	
+	if(validate_msg()) {
+		var send_form = $("send_msg_form");
+		
+		new Ajax.Request(
+			send_form.action, 
+			{
+				asynchronous:true, 
+				evalScripts:true, 
+				method:"post", 
+				parameters:"to_account_id=" + to_account_id + "&" + Form.serialize(send_form)
+			}
+		);
+		
+		$("chat_input").value = "";
+	}
+}
+
+function insert_im_msg(receiver_id, account_id, account_nick, account_img, msg) {
+	var chatbox = null;
+	
+	if(CURRENT_CLIENT_ID == account_id) {
+		chatbox = $("chatbox_" + receiver_id);
+	}
+	else {
+		add_chatbox(account_id, account_nick, account_img, true);
+		
+		chatbox = $("chatbox_" + account_id);
+	}
+	
+	if(chatbox) {
+		chatbox.insert(
+			{
+				bottom: msg
+			}
+		);
+	}
+}
+
+function on_received_im_msg(receiver_id, account_id) {	
+	if(CURRENT_CLIENT_ID != account_id) {
+		scroll_chatbox_to_bottom(account_id);
+		
+		start_blink_im_new_msg(account_id);
+	}
+	else {
+		scroll_chatbox_to_bottom(receiver_id);
+	}
+}
+
+function scroll_chatbox_to_bottom(account_id) {
+	if(AUTO_SCROLL) {
+		var chatbox = $("chatbox_" + account_id);
+		if(chatbox) {
+			chatbox.scrollTop = chatbox.scrollHeight;
+		}
+	}
+}
+
+function start_blink_im_new_msg(account_id) {
+	start_blink_page(["[　　　] - ", "[新消息] - "]);
+	
+	
+}
+
 
 
 
@@ -233,8 +363,8 @@ function add_chatroom_listeners(client_id, channels, auth_token) {
 	$(document).observe(
 		"juggernaut:connected", 
 		function() {
-			$("loading_container").remove();
-			show_chatroom_chat_container();
+			if($("loading_container")) { $("loading_container").remove(); }
+			show_chat_container(send_msg);
 			
 			setTimeout(
 				function() {
@@ -255,12 +385,6 @@ function add_chatroom_listeners(client_id, channels, auth_token) {
 	add_common_listeners();
 }
 
-function show_chatroom_chat_container() {
-	add_enter_listener();
-	$("chat_container").show();
-	focus_chat_input();
-}
-
 function notify_to_update_online_list(channels, auth_token) {
 	$("online_list_container").show();
 	
@@ -277,24 +401,6 @@ function notify_to_update_online_list(channels, auth_token) {
             parameters:params
         }
     );
-}
-
-function add_enter_listener() {
-	$("chat_input").observe(
-		"keypress", 
-		function(event) {
-			if(event.keyCode == Event.KEY_RETURN) {
-				send_msg();
-				
-				// stop processing the event
-				Event.stop(event);
-			}
-		}
-	);
-}
-
-function focus_chat_input() {
-	$("chat_input").focus();
 }
 
 function send_msg() {
@@ -315,22 +421,6 @@ function send_msg() {
 	}
 }
 
-function validate_msg() {
-	var msg = $("chat_input").value;
-	
-	if(msg == null) return false;
-	if(msg.blank()) return false;
-	
-	// cut the 200 chars ...
-	$("chat_input").value = msg.substr(0, 200);
-	return true;
-}
-
-var AUTO_SCROLL = true;
-function toggle_auto_scroll() {
-	AUTO_SCROLL = $("auto_scroll_switch").checked;
-}
-
 function on_received_msg(client_id) {
 	scroll_chat_area_to_bottom();
 	
@@ -346,7 +436,9 @@ function start_blink_chatroom_new_msg() {
 function scroll_chat_area_to_bottom() {
 	if(AUTO_SCROLL) {
 		var ca = $("chat_area");
-		ca.scrollTop = ca.scrollHeight;
+		if(ca) {
+			ca.scrollTop = ca.scrollHeight;
+		}
 	}
 }
 

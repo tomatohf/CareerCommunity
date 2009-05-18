@@ -77,7 +77,7 @@ class ExpsController < ApplicationController
         :page => page,
         :per_page => 10,
         :match_mode => CommunityController::Search_Match_Mode,
-        :order => "publish_time DESC, @relevance DESC",
+        :order => "@relevance DESC, publish_time DESC",
         :field_weights => {
           :title => 4,
           :content => 3,

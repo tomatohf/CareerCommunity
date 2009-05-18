@@ -1849,8 +1849,13 @@ a.order_by_selected {
 	color: #555555;
 }
 
+.chatbox_tabs {
+	margin: 5px 0px;
+}
+
 .chatbox {
 	padding: 5px;
+	height: 390px;
 	overflow: auto;
 }
 
