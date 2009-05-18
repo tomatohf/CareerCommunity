@@ -155,7 +155,12 @@ function start_blink_tab(text, account_id) {
 		
 		blink_tab_title[account_id] = tab.title;
 		
-		blink_tab_interval[account_id] = setInterval(blink_tab, 1000, account_id);
+		blink_tab_interval[account_id] = setInterval(
+			function() {
+				blink_tab(account_id);
+			},
+			1000
+		);
 	}
 }
 function stop_blink_tab(account_id) {
