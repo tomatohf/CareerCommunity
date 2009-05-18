@@ -17,7 +17,6 @@ EXT IE8 menu 宽度问题
 	
 	- 用户个人空间页面 显示 即时聊天状态, 和 与之聊天的链接
 	- 在别的页面点击 即时聊天时, 不刷新即时聊天的页面, 用标题闪烁提醒, 并试图 window.focus
-	- 一对一 聊天 消息来时, page title blink, chatbox 的 title 也 blink
 
 
 

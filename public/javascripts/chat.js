@@ -255,7 +255,8 @@ function prepare_chatbox_tab() {
 				minTabWidth: 115,
 				tabWidth: 145,
 				//width: 600,
-				height: 410, // height of chatbox, plus 20
+				height: 420, // height of chatbox, plus 20
+				tabPosition: "top",
 				frame: true
 			}
 		);
