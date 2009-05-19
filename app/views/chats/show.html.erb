@@ -4,10 +4,12 @@
 <div class="float_r photo_container_r" id="chat_right_col">
 	
 	<div>
-		<a href="#" style="font-size: 13px;">
+		<a href="/chats/public" style="font-size: 13px;" target="_blank">
 			去公众聊天室
 			(
-			<b><%= Juggernaut.show_clients_for_channels([ChatsController::Public_Channel_Name]).size %></b>
+			<b id="public_chatroom_online_count">
+				<%= Juggernaut.show_clients_for_channels([ChatsController::Public_Channel_Name]).size %>
+			</b>
 			人在线)</a>
 	</div>
 	
@@ -57,6 +59,22 @@
 	<script language="JavaScript" type="text/javascript" src="/lib/ext/ext-all.js"></script>
 	<script type="text/javascript" src="/javascripts/chat.js"></script>
 	<script language="JavaScript">
+		var update_public_chatroom_online_count_interval = setInterval(
+			function() {
+				new Ajax.Updater(
+					"public_chatroom_online_count",
+			        "/chats/update_public_chatroom_online_count",
+			        {
+			        	asynchronous:true,
+			            evalScripts:true,
+						method:"post",
+			            parameters:"authenticity_token=<%= form_authenticity_token %>"
+			        }
+			    );
+			},
+			60 * 1000
+		);
+	
 		var channels = [];
 		<% @channels.each do |channel| %>
 			channels.push("<%= channel %>");

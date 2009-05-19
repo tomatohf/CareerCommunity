@@ -1,0 +1,27 @@
+<% page_title = "公众聊天室" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r" id="chat_right_col">
+	
+	<%= render :partial => "chatroom_members" %>
+	
+</div>
+
+
+<div class="blog_container_l" id="chat_left_col">
+	<h2><%= page_title %></h2>
+	
+	
+	<%= 
+		render(
+			:partial => "chatroom_area", 
+			:locals => {
+				:channels => @channels, 
+				:account_nick_pic => @account_nick_pic,
+				:page_url => "/chats/public"
+			}
+		)
+	%>
+	
+</div>
+

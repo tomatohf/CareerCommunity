@@ -1,0 +1,80 @@
+<p id="error_msg_container" class="error_msg" style="display: none;">
+	连接服务器失败 ...
+	&nbsp;&nbsp;&nbsp;
+	<a href="<%= page_url %>">
+		刷新页面, 重新连接</a>
+</p>
+<div id="loading_container" style="margin-top: 50px; padding-left: 50px; font-size: 14px;">
+	<img src="/images/loading_small.gif" />
+	&nbsp;
+	正在连接服务器 ...
+</div>
+
+<script type="text/javascript" src="/lib/protopack/prototype-packer.js"></script>
+<script type="text/javascript" src="/javascripts/juggernaut/swfobject.js"></script>
+<script type="text/javascript" src="/javascripts/juggernaut/juggernaut.js"></script>
+<script type="text/javascript" src="/javascripts/chat.js"></script>
+<script language="JavaScript">
+	var channels = [];
+	<% channels.each do |channel| %>
+		channels.push("<%= channel %>");
+	<% end %>
+	add_chatroom_listeners("<%= session[:account_id].to_s %>", channels, encodeURIComponent("<%= form_authenticity_token %>"));
+</script>
+<%= juggernaut(
+		:channels => channels,
+		:client_id => session[:account_id].to_s,
+		:debug => false,
+		:session_id => session.session_id
+	)
+%>
+
+
+<div id="chat_container" style="display: none;">
+	<div id="chat_area" class="chat_area">
+		
+	</div>
+	
+	<div class="chat_toolbar">
+		<span class="float_r">
+			
+		</span>
+		
+		
+	</div>
+	
+	<div>
+		<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+			<tr>
+				<td class="chat_self_pic_cell">
+					<img src="<%= face_img_src(account_nick_pic[1]) %>" border="0" />
+				</td>
+				
+				<td align="center">
+					<% form_tag page_url, :method => :post, :id => "send_msg_form" do %>
+						<textarea id="chat_input" name="chat_input" class="chat_text_input"></textarea>
+						
+						<input type="hidden" name="nick" value="<%= account_nick_pic[0] %>" />
+						<% if false %>
+							<input type="hidden" name="pic" value="<%= account_nick_pic[1] %>" />
+						<% end %>
+					<% end %>
+				</td>
+
+				<td class="chat_send_btn_cell">
+					<input type="button" value="发送" class="chat_send_btn" onclick="send_msg();" />
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="align_r" style="padding: 0px 80px;">
+		<span class="float_l form_info_s">
+			(200 字以内, 大量文字请发起圈子话题)
+		</span>
+		
+		<input id="auto_scroll_switch" type="checkbox" onclick="toggle_auto_scroll();" checked="checked" />
+		<label for="auto_scroll_switch">自动滚屏</label>
+	</div>
+</div>
+

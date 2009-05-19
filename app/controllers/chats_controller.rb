@@ -8,7 +8,8 @@ class ChatsController < ApplicationController
   layout "community"
   
   before_filter :check_current_account, :only => [:index]
-  before_filter :check_login, :only => [:group, :update_online_list, :update_online_friends]
+  before_filter :check_login, :only => [:group, :update_online_list, :update_online_friends, :show,
+                                        :public, :update_public_chatroom_online_count]
   before_filter :check_limited, :only => []
   
   before_filter :check_group_access, :only => [:group]
@@ -177,33 +178,10 @@ class ChatsController < ApplicationController
   
   
   def group
-    
     @channels = ["group_#{@group_id}"]
     
     if request.post?
-      msg = params[:chat_input] || ""
-      
-      msg_valid = validate_msg(msg)
-      
-      if msg_valid
-        content = render_to_string :update do |page|
-          page.insert_html :bottom, "chat_area", 
-            %Q!
-              <div>
-                <span class="chat_time">
-                  (#{DateTime.now.strftime("%H:%M:%S")})
-                </span>
-                <a href="#" class="account_nick_link" onclick="set_to_account('#{h(params[:nick])}'); return false;">
-                  #{h(params[:nick])}</a>
-                :
-                &nbsp;
-                #{h(msg)}
-              </div>
-            !
-          page.call :on_received_msg, session[:account_id].to_s
-        end
-        Juggernaut.send_to_channel(content, @channels)
-      end
+      broadcast_chatroom_msg(session[:account_id].to_s, @channels)
       
       return render(:nothing => true)
     end
@@ -211,7 +189,19 @@ class ChatsController < ApplicationController
     
     @group, @group_image = Group.get_group_with_image(@group_id)
     @account_nick_pic = Account.get_nick_and_pic(session[:account_id])
+  end
+  
+  def public
+    @channels = [Public_Channel_Name]
     
+    if request.post?
+      broadcast_chatroom_msg(session[:account_id].to_s, @channels)
+      
+      return render(:nothing => true)
+    end
+    
+    
+    @account_nick_pic = Account.get_nick_and_pic(session[:account_id])
   end
   
   def show
@@ -253,9 +243,39 @@ class ChatsController < ApplicationController
     
   end
   
+  def update_public_chatroom_online_count
+    render :text => Juggernaut.show_clients_for_channels([Public_Channel_Name]).size, :layout => false
+  end
+  
   
   
   private
+  
+  def broadcast_chatroom_msg(sender_id, channels)
+    msg = params[:chat_input] || ""
+    
+    msg_valid = validate_msg(msg)
+    
+    if msg_valid
+      content = render_to_string :update do |page|
+        page.insert_html :bottom, "chat_area", 
+          %Q!
+            <div>
+              <span class="chat_time">
+                (#{DateTime.now.strftime("%H:%M:%S")})
+              </span>
+              <a href="#" class="account_nick_link" onclick="set_to_account('#{h(params[:nick])}'); return false;">
+                #{h(params[:nick])}</a>
+              :
+              &nbsp;
+              #{h(msg)}
+            </div>
+          !
+        page.call :on_received_msg, sender_id
+      end
+      Juggernaut.send_to_channel(content, channels)
+    end
+  end
   
   def check_account_access
     @account_id = params[:id]
@@ -276,6 +296,10 @@ class ChatsController < ApplicationController
   end
   
   def has_community_access(account_id)
+    true
+  end
+  
+  def has_public_access(account_id)
     true
   end
   
