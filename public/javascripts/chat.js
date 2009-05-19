@@ -185,7 +185,7 @@ function find_tab(account_id) {
 	return tab;
 }
 
-function add_im_listeners(client_id, channels, auth_token) {
+function add_im_listeners(client_id, channels, auth_token, custom_handler) {
 	CURRENT_CLIENT_ID = client_id;
 	
 	
@@ -205,6 +205,10 @@ function add_im_listeners(client_id, channels, auth_token) {
 				},
 				1.5 * 1000
 			);
+			
+			if(custom_handler) {
+				custom_handler.apply();
+			}
 		}
 	);
 	

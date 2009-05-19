@@ -136,26 +136,28 @@
 	</div>
 	
 	
-	<div class="community_block align_c form_info_s">
-		<% if @online %>
-			<img src="/images/chats/online_icon.gif" border="0" alt="在线" class="vertical_middle" />
-			&nbsp;
-			即时聊天
-			<b>
-				在线
-			</b>
-			,
-			<a href="#">
-				进行即时聊天</a>
-		<% else %>
-			<img src="/images/chats/offline_icon.gif" border="0" alt="离线" class="vertical_middle" />
-			&nbsp;
-			即时聊天
-			<b>
-				离线
-			</b>
-		<% end %>
-	</div>
+	<% unless @edit %>
+		<div class="community_block align_c form_info_s">
+			<% if @online %>
+				<img src="/images/chats/online_icon.gif" border="0" alt="在线" class="vertical_middle" />
+				&nbsp;
+				即时聊天
+				<b>
+					在线
+				</b>
+				,
+				<a href="/chats/to/<%= @account_id %>" target="community_person_im">
+					进行即时聊天</a>
+			<% else %>
+				<img src="/images/chats/offline_icon.gif" border="0" alt="离线" class="vertical_middle" />
+				&nbsp;
+				即时聊天
+				<b>
+					离线
+				</b>
+			<% end %>
+		</div>
+	<% end %>
 	
 	<div class="community_block align_c">
 		<a href="/spaces/resume/<%= @account_id %>">查看简历</a>

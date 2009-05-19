@@ -79,7 +79,19 @@
 		<% @channels.each do |channel| %>
 			channels.push("<%= channel %>");
 		<% end %>
-		add_im_listeners("<%= @account_id %>", channels, encodeURIComponent("<%= form_authenticity_token %>"));
+		add_im_listeners(
+			"<%= @account_id %>", 
+			channels, 
+			encodeURIComponent("<%= form_authenticity_token %>")
+			<% if @to_nick_pic %>
+				,
+				function() {
+					add_chatbox(<%= @to_id %>, "<%= h(@to_nick_pic[0]) %>", "<%= face_img_src(@to_nick_pic[1]) %>");
+				}
+			<% end %>
+		);
+		
+		window.focus();
 	</script>
 	<%= juggernaut(
 			:channels => @channels,
@@ -113,7 +125,7 @@
 					
 					<td align="center">
 						<% form_tag "/chats/show/#{@account_id}", :method => :post, :id => "send_msg_form" do %>
-							<textarea id="chat_input" name="chat_input" class="chat_text_input"></textarea>
+							<textarea id="chat_input" name="chat_input" class="chat_text_input" style="width: 440px;"></textarea>
 							
 							<input type="hidden" name="nick" value="<%= @account_nick_pic[0] %>" />
 							<% if false %>

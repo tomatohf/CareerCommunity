@@ -160,6 +160,16 @@ class BlogsController < ApplicationController
       comment_saved = blog_comment.save
     end
     
+    
+    if comment_saved
+      AccountAction.create_new(session[:account_id], "add_blog_comment", {
+        :blog_id => blog_comment.blog_id,
+        :comment_id => blog_comment.id,
+        :comment_content => blog_comment.content
+      })
+    end
+    
+    
     total_count = BlogComment.get_count(blog_comment.blog_id)
     last_page = total_count > 0 ? (total_count.to_f/Comment_Page_Size).ceil : 1
     

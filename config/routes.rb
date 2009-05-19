@@ -658,6 +658,9 @@ ActionController::Routing::Routes.draw do |map|
     :follow_type_update => :post
     
   }
+  
+  
+  map.connect "/chats/show/:id/to/:to_id", :controller => "chats", :action => "show", :id => /\d+/, :to_id => /\d+/
 
   
   

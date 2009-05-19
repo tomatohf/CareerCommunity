@@ -7,7 +7,7 @@ class ChatsController < ApplicationController
   
   layout "community"
   
-  before_filter :check_current_account, :only => [:index]
+  before_filter :check_current_account, :only => [:index, :to]
   before_filter :check_login, :only => [:group, :update_online_list, :update_online_friends, :show,
                                         :public, :update_public_chatroom_online_count]
   before_filter :check_limited, :only => []
@@ -241,6 +241,14 @@ class ChatsController < ApplicationController
     
     @account_nick_pic = Account.get_nick_and_pic(@account_id)
     
+    @to_id = params[:to_id]
+    if @to_id && @to_id != ""
+      @to_nick_pic = Account.get_nick_and_pic(@to_id)
+    end
+  end
+  
+  def to
+    jump_to("/chats/show/#{session[:account_id]}/to/#{params[:id]}")
   end
   
   def update_public_chatroom_online_count

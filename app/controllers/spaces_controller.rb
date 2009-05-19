@@ -120,7 +120,7 @@ class SpacesController < ApplicationController
     
     @points = PointProfile.get_account_points(@account_id)
     
-    @online = ChatsController.helpers.online?(@account_id)
+    @online = ChatsController.helpers.online?(@account_id) unless @edit
     
     
     @friends = Friend.get_all_by_account(

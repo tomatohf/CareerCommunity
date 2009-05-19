@@ -19,6 +19,7 @@ class AccountAction < ActiveRecord::Base
   Action_Types = {
     "add_space_comment" => "添加留言",
     "add_blog" => "发表博客",
+    "add_blog_comment" => "评论博客",
     "add_friend" => "添加朋友",
     "join_group" => "加入圈子",
     "join_activity" => "参加活动",
@@ -254,6 +255,25 @@ class AccountAction < ActiveRecord::Base
             :blog_id => #{blog_id},
             :blog_title => #{blog_title.inspect},
           
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+    end
+    
+    class AddBlogComment < Base
+      def action_text(data, operator, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        blog_id = data[:blog_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_blog_comment", :locals => {
+            :operator => #{operator},
+            :blog_id => #{blog_id},
+            :comment_id => #{comment_id},
+            :comment_content => #{comment_content.inspect},
+            
             :save_space => #{save_space.inspect}
           })
         !
