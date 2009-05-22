@@ -18,6 +18,17 @@ function show_chat_container(enter_handler, args) {
 	focus_chat_input();
 }
 
+function hide_loading() {
+	var loading_container_ele = $("loading_container");
+	loading_container_ele.hide();
+	loading_container_ele.setStyle(
+		{
+			marginTop: "0px",
+			marginBottom: "20px"
+		}
+	);
+}
+
 function add_enter_listener(handler, args) {
 	if(!args) { args = []; }
 	
@@ -66,8 +77,16 @@ function add_common_listeners() {
 	$(document).observe(
 		"juggernaut:errorConnecting", 
 		function() {
-			if($("loading_container")) { $("loading_container").remove(); }
+			hide_loading();
 			$("error_msg_container").show();
+		}
+	);
+	
+	$(document).observe(
+		"juggernaut:reconnect", 
+		function() {
+			$("loading_container").show();
+			$("error_msg_container").hide();
 		}
 	);
 	
@@ -192,7 +211,8 @@ function add_im_listeners(client_id, channels, auth_token, custom_handler) {
 	$(document).observe(
 		"juggernaut:connected", 
 		function() {
-			if($("loading_container")) { $("loading_container").remove(); }
+			hide_loading();
+			$("error_msg_container").hide();
 			show_chat_container(send_im_msg);
 			
 			$("community_im_status").src = "/images/chats/online_icon.gif";
@@ -444,7 +464,8 @@ function add_chatroom_listeners(client_id, channels, auth_token) {
 	$(document).observe(
 		"juggernaut:connected", 
 		function() {
-			if($("loading_container")) { $("loading_container").remove(); }
+			hide_loading();
+			$("error_msg_container").hide();
 			show_chat_container(send_msg);
 			
 			setTimeout(

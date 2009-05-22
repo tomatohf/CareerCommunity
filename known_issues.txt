@@ -13,8 +13,7 @@ EXT IE8 menu 宽度问题
 即时聊天功能
 	- 处理聊天记录
 	- 移动 IM 的 tab
-	
-	- 处理中途 断开, 重连接 这种情况的 UI 
+
 	- Juggernaut 断网的时候无法 调用 unbind ... 靠
 
 
