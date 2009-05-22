@@ -74,7 +74,19 @@
 			},
 			60 * 1000
 		);
-	
+		
+		new Ajax.Request(
+			"/chats/clear_chat_connections", 
+			{
+				asynchronous:true, 
+				evalScripts:true, 
+				method:"post", 
+				parameters:"authenticity_token=" + encodeURIComponent("<%= form_authenticity_token %>")
+			}
+		);
+		
+		
+		
 		var channels = [];
 		<% @channels.each do |channel| %>
 			channels.push("<%= channel %>");

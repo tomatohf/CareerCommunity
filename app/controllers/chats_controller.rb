@@ -9,7 +9,8 @@ class ChatsController < ApplicationController
   
   before_filter :check_current_account, :only => [:index, :to]
   before_filter :check_login, :only => [:group, :update_online_list, :update_online_friends, :show,
-                                        :public, :update_public_chatroom_online_count]
+                                        :public, :update_public_chatroom_online_count,
+                                        :clear_chat_connections]
   before_filter :check_limited, :only => []
   
   before_filter :check_group_access, :only => [:group]
@@ -253,6 +254,12 @@ class ChatsController < ApplicationController
   
   def update_public_chatroom_online_count
     render :text => ChatsController.helpers.juggernaut_show_clients_for_channels([Public_Channel_Name]).size, :layout => false
+  end
+  
+  def clear_chat_connections
+    Juggernaut.send_to_all("''")
+    
+    return render(:nothing => true)
   end
   
   

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 33) do
+ActiveRecord::Schema.define(:version => 34) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -1157,13 +1157,7 @@ ActiveRecord::Schema.define(:version => 33) do
     t.boolean  "delta"
   end
 
-  add_index "recruitments", ["publish_time"], :name => "index_recruitments_on_publish_time"
-  add_index "recruitments", ["location"], :name => "index_recruitments_on_location"
-  add_index "recruitments", ["recruitment_type"], :name => "index_recruitments_on_recruitment_type"
-  add_index "recruitments", ["source_link"], :name => "index_recruitments_on_source_link"
-  add_index "recruitments", ["active"], :name => "index_recruitments_on_active"
-  add_index "recruitments", ["created_at"], :name => "index_recruitments_on_created_at"
-  add_index "recruitments", ["updated_at"], :name => "index_recruitments_on_updated_at"
+  add_index "recruitments", ["recruitment_type", "publish_time"], :name => "index_recruitments_on_recruitment_type_and_publish_time"
 
   create_table "recruitments_recruitment_tags", :id => false, :force => true do |t|
     t.integer "recruitment_id",     :limit => 11
