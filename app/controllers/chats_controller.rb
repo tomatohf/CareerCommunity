@@ -252,7 +252,7 @@ class ChatsController < ApplicationController
   end
   
   def update_public_chatroom_online_count
-    render :text => Juggernaut.show_clients_for_channels([Public_Channel_Name]).size, :layout => false
+    render :text => ChatsController.helpers.juggernaut_show_clients_for_channels([Public_Channel_Name]).size, :layout => false
   end
   
   

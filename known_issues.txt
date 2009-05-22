@@ -1,4 +1,7 @@
-﻿EXT IE8 menu 宽度问题
+﻿处理 recruitments 的速度问题, 调整索引
+
+
+EXT IE8 menu 宽度问题
 
 将 一鸣 在校内上的求职管家启动文章添加到 求职管家系统作为帮助
 
@@ -9,7 +12,10 @@
 
 即时聊天功能
 	- 处理聊天记录
-	- 移动 tab
+	- 移动 IM 的 tab
+	
+	- 处理中途 断开, 重连接 这种情况的 UI 
+	- Juggernaut 断网的时候无法 调用 unbind ... 靠
 
 
 
@@ -24,10 +30,6 @@ sphinx 搜索 的 分词 问题
 escape URL
 	- search
 	- bookmark
-
-	
-
-处理 recruitments 的速度问题, 调整索引
 
 
 

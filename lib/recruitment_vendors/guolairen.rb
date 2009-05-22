@@ -208,7 +208,7 @@ module RecruitmentVendor
         h2_element.search("").remove
       end
       
-      r.content = content_div.search("//div[@class='paginate_content']")[0].inner_html
+      r.content = content_div.search("//div[@class='paginate_content']")[0].inner_html rescue ""
       
       
       # add the fixed attributes
