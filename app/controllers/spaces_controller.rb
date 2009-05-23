@@ -123,19 +123,8 @@ class SpacesController < ApplicationController
     @online = ChatsController.helpers.online?(@account_id) unless @edit
     
     
-    @friends = Friend.get_all_by_account(
-      @account_id,
-      :limit => Space_Friend_Num,
-      :include => [:friend => [:profile_pic]],
-      :order => "created_at DESC"
-    ).collect { |f|
-      account_id = f.friend.id
-      account_nick = f.friend.get_nick
-      account_pic_url = f.friend.get_profile_pic_url
-      
-      Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, f.friend.email)
-      
-      [account_nick, account_pic_url, f.friend.email, account_id]
+    @friends = Friend.get_account_friend_ids(@account_id).reverse[0, Space_Friend_Num].collect { |account_id|
+      Account.get_nick_and_pic(account_id) << account_id
     }
     
     @group_members = GroupMember.agreed.find(
@@ -149,10 +138,12 @@ class SpacesController < ApplicationController
     
     @account_actions = if @edit
       # find friends'
+      friends = Friend.get_account_friend_ids(@account_id)
+      
       AccountAction.visible.find(
         :all,
         :limit => Space_Action_Num,
-        :conditions => ["account_id in (select friend_id from friends where account_id = ?)", @account_id],
+        :conditions => ["account_id in (?)", friends],
         :include => [:account => [:profile_pic]],
         :order => "created_at DESC"
       )
@@ -285,10 +276,11 @@ class SpacesController < ApplicationController
   def friend_actions
     @account_id = params[:id]
     @account_nick_pic = Account.get_nick_and_pic(@account_id)
-
+    
     @action_type = params[:action_type]
-    friend_condition = "account_id in (select friend_id from friends where account_id = ?)"
-    condition = (@action_type && @action_type != "") ? ["#{friend_condition} and action_type = ?", @account_id, @action_type] : [friend_condition, @account_id]
+    friend_condition = "account_id in (?)"
+    friends = Friend.get_account_friend_ids(@account_id)
+    condition = (@action_type && @action_type != "") ? ["#{friend_condition} and action_type = ?", friends, @action_type] : [friend_condition, friends]
     
     page = params[:page]
     page = 1 unless page =~ /\d+/

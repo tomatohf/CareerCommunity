@@ -1,10 +1,8 @@
 <%
-	account = friend_selector.friend
-	account_id = account.id
-	account_nick = account.get_nick
-	account_pic_url = account.get_profile_pic_url
-	
-	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
+	account_id = friend_selector
+	account_nick_pic = Account.get_nick_and_pic(account_id)
+	account_nick = account_nick_pic[0]
+	account_pic_url = account_nick_pic[1]
 %>
 
 <div class="friend_nick_pic">

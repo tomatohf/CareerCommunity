@@ -244,11 +244,7 @@ class GroupsController < ApplicationController
     
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
-    @friends = Friend.get_all_by_account(
-      @owner_id,
-      :include => [:friend => [:profile_pic]],
-      :order => "created_at DESC"
-    )
+    @friends = Friend.get_account_friend_ids(@owner_id).reverse
   end
   
   
@@ -1042,11 +1038,7 @@ class GroupsController < ApplicationController
     
     @is_admin = GroupMember.is_group_admin(@group_id, session[:account_id])
     
-    @friends = Friend.get_all_by_account(
-      session[:account_id],
-      :include => [:friend => [:profile_pic]],
-      :order => "created_at DESC"
-    )
+    @friends = Friend.get_account_friend_ids(session[:account_id]).reverse
     
     @unaccepted_members = GroupMember.get_unaccepted_members(@group_id) if @is_admin
   end

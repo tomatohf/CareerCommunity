@@ -503,11 +503,7 @@ class VotesController < ApplicationController
     @vote_topic_id = params[:id]
     @vote_topic, @vote_image = VoteTopic.get_vote_topic_with_image(@vote_topic_id)
     
-    @friends = Friend.get_all_by_account(
-      session[:account_id],
-      :include => [:friend => [:profile_pic]],
-      :order => "created_at DESC"
-    )
+    @friends = Friend.get_account_friend_ids(session[:account_id]).reverse
   end
   
   def invite_member

@@ -20,11 +20,10 @@ ActiveRecord::Schema.define(:version => 34) do
     t.boolean  "hide",                      :default => false
   end
 
-  add_index "account_actions", ["account_id"], :name => "index_account_actions_on_account_id"
-  add_index "account_actions", ["created_at"], :name => "index_account_actions_on_created_at"
-  add_index "account_actions", ["action_type"], :name => "index_account_actions_on_action_type"
   add_index "account_actions", ["delta"], :name => "index_account_actions_on_delta"
-  add_index "account_actions", ["hide"], :name => "index_account_actions_on_hide"
+  add_index "account_actions", ["hide", "created_at"], :name => "index_account_actions_on_hide_and_created_at"
+  add_index "account_actions", ["hide", "account_id", "created_at"], :name => "index_account_actions_on_hide_and_account_id_and_created_at"
+  add_index "account_actions", ["hide", "account_id", "action_type", "created_at"], :name => "index_account_actions_on_hide_account_type_created_at"
 
   create_table "account_settings", :force => true do |t|
     t.integer  "account_id", :limit => 11
@@ -422,10 +421,9 @@ ActiveRecord::Schema.define(:version => 34) do
     t.boolean  "delta"
   end
 
+  add_index "friends", ["delta"], :name => "index_friends_on_delta"
   add_index "friends", ["account_id"], :name => "index_friends_on_account_id"
   add_index "friends", ["friend_id"], :name => "index_friends_on_friend_id"
-  add_index "friends", ["account_id", "friend_id"], :name => "index_friends_on_account_id_and_friend_id"
-  add_index "friends", ["delta"], :name => "index_friends_on_delta"
 
   create_table "goal_follows", :force => true do |t|
     t.datetime "created_at"
@@ -1054,12 +1052,9 @@ ActiveRecord::Schema.define(:version => 34) do
     t.boolean  "delta"
   end
 
-  add_index "messages", ["created_at"], :name => "index_messages_on_created_at"
-  add_index "messages", ["receiver_id"], :name => "index_messages_on_receiver_id"
-  add_index "messages", ["sender_id"], :name => "index_messages_on_sender_id"
-  add_index "messages", ["has_read"], :name => "index_messages_on_has_read"
-  add_index "messages", ["reply_to_id"], :name => "index_messages_on_reply_to_id"
   add_index "messages", ["delta"], :name => "index_messages_on_delta"
+  add_index "messages", ["receiver_id", "created_at"], :name => "index_messages_on_receiver_id_and_created_at"
+  add_index "messages", ["reply_to_id", "receiver_id", "sender_id"], :name => "index_messages_on_reply_to_id_and_receiver_id_and_sender_id"
 
   create_table "personal_bookmarks", :force => true do |t|
     t.datetime "created_at"
@@ -1157,7 +1152,13 @@ ActiveRecord::Schema.define(:version => 34) do
     t.boolean  "delta"
   end
 
-  add_index "recruitments", ["recruitment_type", "publish_time"], :name => "index_recruitments_on_recruitment_type_and_publish_time"
+  add_index "recruitments", ["publish_time"], :name => "index_recruitments_on_publish_time"
+  add_index "recruitments", ["location"], :name => "index_recruitments_on_location"
+  add_index "recruitments", ["recruitment_type"], :name => "index_recruitments_on_recruitment_type"
+  add_index "recruitments", ["source_link"], :name => "index_recruitments_on_source_link"
+  add_index "recruitments", ["active"], :name => "index_recruitments_on_active"
+  add_index "recruitments", ["created_at"], :name => "index_recruitments_on_created_at"
+  add_index "recruitments", ["updated_at"], :name => "index_recruitments_on_updated_at"
 
   create_table "recruitments_recruitment_tags", :id => false, :force => true do |t|
     t.integer "recruitment_id",     :limit => 11
@@ -1186,11 +1187,9 @@ ActiveRecord::Schema.define(:version => 34) do
     t.boolean  "delta"
   end
 
-  add_index "sent_messages", ["created_at"], :name => "index_sent_messages_on_created_at"
-  add_index "sent_messages", ["sender_id"], :name => "index_sent_messages_on_sender_id"
-  add_index "sent_messages", ["receiver_id"], :name => "index_sent_messages_on_receiver_id"
-  add_index "sent_messages", ["reply_to_id"], :name => "index_sent_messages_on_reply_to_id"
+  add_index "sent_messages", ["sender_id", "created_at"], :name => "index_sent_messages_on_sender_id_and_created_at", :unique => true
   add_index "sent_messages", ["delta"], :name => "index_sent_messages_on_delta"
+  add_index "sent_messages", ["reply_to_id", "sender_id", "receiver_id"], :name => "index_sent_messages_on_reply_to_id_and_sender_id_and_receiver_id"
 
   create_table "service_applications", :force => true do |t|
     t.datetime "created_at"
@@ -1223,10 +1222,8 @@ ActiveRecord::Schema.define(:version => 34) do
     t.boolean  "delta"
   end
 
-  add_index "space_comments", ["owner_id"], :name => "index_space_comments_on_owner_id"
-  add_index "space_comments", ["account_id"], :name => "index_space_comments_on_account_id"
-  add_index "space_comments", ["created_at"], :name => "index_space_comments_on_created_at"
   add_index "space_comments", ["delta"], :name => "index_space_comments_on_delta"
+  add_index "space_comments", ["owner_id", "created_at"], :name => "index_space_comments_on_owner_id_and_created_at"
 
   create_table "sys_messages", :force => true do |t|
     t.integer  "account_id", :limit => 11
@@ -1237,11 +1234,8 @@ ActiveRecord::Schema.define(:version => 34) do
     t.boolean  "delta"
   end
 
-  add_index "sys_messages", ["account_id"], :name => "index_sys_messages_on_account_id"
-  add_index "sys_messages", ["created_at"], :name => "index_sys_messages_on_created_at"
-  add_index "sys_messages", ["has_read"], :name => "index_sys_messages_on_has_read"
-  add_index "sys_messages", ["msg_type"], :name => "index_sys_messages_on_msg_type"
   add_index "sys_messages", ["delta"], :name => "index_sys_messages_on_delta"
+  add_index "sys_messages", ["account_id", "created_at"], :name => "index_sys_messages_on_account_id_and_created_at"
 
   create_table "talk_answers", :force => true do |t|
     t.integer  "talk_id",     :limit => 11

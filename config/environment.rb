@@ -24,6 +24,11 @@ MemCache_Options = {
   :readonly => false # If this is set, any attempt to write to the cache will generate an exception. Defaults to false.
 }
 
+class MemCache
+  def get(key, raw = false)
+    nil
+  end
+end
 Cache = MemCache.new("127.0.0.1", MemCache_Options)
 
 # in seconds, which means cache 1 day = 24 hours

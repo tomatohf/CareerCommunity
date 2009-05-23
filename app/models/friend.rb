@@ -1,7 +1,5 @@
 class Friend < ActiveRecord::Base
   
-  include CareerCommunity::AccountBelongings
-
   belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :friend, :class_name => "Account", :foreign_key => "friend_id"
 
@@ -88,21 +86,29 @@ class Friend < ActiveRecord::Base
     be_friend_ids.include?(f_id.to_i)
   end
   
-  def self.get_all_by_friend(friend_id, args = {})
-    self.find(:all, args.merge(:conditions => ["friend_id = ?", friend_id]))
+  def self.get_all_by_account(account_id, args = {})
+    self.find(
+      :all, 
+      args.merge(
+        :conditions => ["account_id = ?", account_id]
+      )
+    )
   end
   
-  def self.get_all_both_friends_by_account(account_id, order = nil)
-    sql = "select * from friends where account_id = ? and friend_id in (select account_id from friends where friend_id = ?)"
-    sql += (order && order != "") ? "order by #{order}" : ""
-    
-    self.find_by_sql(
-      [
-        sql,
-        account_id,
-        account_id
-      ]
+  def self.get_all_by_friend(friend_id, args = {})
+    self.find(
+      :all, 
+      args.merge(
+        :conditions => ["friend_id = ?", friend_id]
+      )
     )
+  end
+  
+  def self.get_all_both_friends_by_account(account_id)
+    friend_ids = self.get_account_friend_ids(account_id)
+    be_friend_ids = self.get_account_be_friend_ids(account_id)
+    
+    friend_ids & be_friend_ids
   end
   
   def self.count_friend(a_id)

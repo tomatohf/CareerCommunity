@@ -61,18 +61,8 @@ class FriendsController < ApplicationController
     
     @edit = (session[:account_id].to_s == @owner_id)
     
-    @friends = Friend.get_all_by_account(
-      @owner_id,
-      :include => [:friend => [:profile_pic]],
-      :order => "created_at DESC"
-    ).collect { |f|
-      account_id = f.friend.id
-      account_nick = f.friend.get_nick
-      account_pic_url = f.friend.get_profile_pic_url
-      
-      Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, f.friend.email)
-      
-      [account_nick, account_pic_url, f.friend.email, account_id]
+    @friends = Friend.get_account_friend_ids(@owner_id).reverse.collect { |account_id|
+      Account.get_nick_and_pic(account_id) << account_id
     }
   end
   
@@ -82,18 +72,8 @@ class FriendsController < ApplicationController
     
     @edit = (session[:account_id].to_s == @owner_id)
     
-    @accounts = Friend.get_all_by_friend(
-      @owner_id,
-      :include => [:account => [:profile_pic]],
-      :order => "created_at DESC"
-    ).collect { |a|
-      account_id = a.account.id
-      account_nick = a.account.get_nick
-      account_pic_url = a.account.get_profile_pic_url
-      
-      Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, a.account.email)
-      
-      [account_nick, account_pic_url, a.account.email, account_id]
+    @accounts = Friend.get_account_be_friend_ids(@owner_id).reverse.collect { |account_id|
+      Account.get_nick_and_pic(account_id) << account_id
     }
   end
   
@@ -103,17 +83,8 @@ class FriendsController < ApplicationController
     
     @edit = (session[:account_id].to_s == @owner_id)
     
-    @friends = Friend.get_all_both_friends_by_account(
-      @owner_id,
-      "created_at DESC"
-    ).collect { |f|
-      account_id = f.friend.id
-      account_nick = f.friend.get_nick
-      account_pic_url = f.friend.get_profile_pic_url
-      
-      Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, f.friend.email)
-      
-      [account_nick, account_pic_url, f.friend.email, account_id]
+    @friends = Friend.get_all_both_friends_by_account(@owner_id).reverse.collect { |account_id|
+      Account.get_nick_and_pic(account_id) << account_id
     }
   end
   

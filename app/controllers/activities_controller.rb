@@ -280,19 +280,12 @@ class ActivitiesController < ApplicationController
   
   def list_friend
     @owner_id = params[:id]
+    
+    @edit = (session[:account_id].to_s == params[:id])
+    
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
-    @friends = Friend.get_all_by_account(
-      @owner_id,
-      :include => [:friend => [:profile_pic]],
-      :order => "created_at DESC"
-    )
-  end
-  
-  def list_friend_edit
-    @edit = true
-    list_friend
-    render :action => "list_friend"
+    @friends = Friend.get_account_friend_ids(@owner_id).reverse
   end
   
   def created_post
@@ -1339,11 +1332,7 @@ class ActivitiesController < ApplicationController
   def invite
     @is_admin = ActivityMember.is_activity_admin(@activity_id, session[:account_id])
     
-    @friends = Friend.get_all_by_account(
-      session[:account_id],
-      :include => [:friend => [:profile_pic]],
-      :order => "created_at DESC"
-    )
+    @friends = Friend.get_account_friend_ids(session[:account_id]).reverse
     
     @unaccepted_members = ActivityMember.get_unaccepted_members(@activity_id) if @is_admin
   end
