@@ -108,11 +108,11 @@ class RecruitmentsController < ApplicationController
         @recruitments = Recruitment.paginate(
           :page => page,
           :per_page => Recruitment_List_Size,
-          :select => "recruitments.id, recruitments.title, recruitments.publish_time, recruitments.location, recruitments.recruitment_type",
+          :select => "recruitments.id, title, publish_time, location, recruitment_type",
           :joins => "INNER JOIN recruitments_recruitment_tags ON 
-                      recruitments_recruitment_tags.recruitment_id = recruitments.id AND 
-                      recruitments_recruitment_tags.recruitment_tag_id = #{@tag.id}",
-          :order => "recruitments.publish_time DESC",
+                      recruitments.id = recruitments_recruitment_tags.recruitment_id",
+          :conditions => ["recruitment_tag_id = ?", @tag.id],
+          :order => "publish_time DESC",
           :include => [:recruitment_tags]
         )
       end

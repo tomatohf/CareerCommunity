@@ -270,7 +270,7 @@ class SpacesController < ApplicationController
       :per_page => Action_Page_Size,
       :conditions => condition,
       :order => "created_at DESC"
-      )
+    )
   end
   
   def friend_actions
@@ -278,8 +278,8 @@ class SpacesController < ApplicationController
     @account_nick_pic = Account.get_nick_and_pic(@account_id)
     
     @action_type = params[:action_type]
-    friend_condition = "account_id in (?)"
     friends = Friend.get_account_friend_ids(@account_id)
+    friend_condition = "account_id in (?)"
     condition = (@action_type && @action_type != "") ? ["#{friend_condition} and action_type = ?", friends, @action_type] : [friend_condition, friends]
     
     page = params[:page]
@@ -290,7 +290,7 @@ class SpacesController < ApplicationController
       :conditions => condition,
       :include => [:account => [:profile_pic]],
       :order => "created_at DESC"
-      )
+    )
   end
   
   def create_comment

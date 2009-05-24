@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 34) do
+ActiveRecord::Schema.define(:version => 35) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -21,9 +21,9 @@ ActiveRecord::Schema.define(:version => 34) do
   end
 
   add_index "account_actions", ["delta"], :name => "index_account_actions_on_delta"
-  add_index "account_actions", ["hide", "created_at"], :name => "index_account_actions_on_hide_and_created_at"
-  add_index "account_actions", ["hide", "account_id", "created_at"], :name => "index_account_actions_on_hide_and_account_id_and_created_at"
   add_index "account_actions", ["hide", "account_id", "action_type", "created_at"], :name => "index_account_actions_on_hide_account_type_created_at"
+  add_index "account_actions", ["hide", "account_id", "created_at"], :name => "index_account_actions_on_hide_and_account_id_and_created_at"
+  add_index "account_actions", ["hide", "created_at"], :name => "index_account_actions_on_hide_and_created_at"
 
   create_table "account_settings", :force => true do |t|
     t.integer  "account_id", :limit => 11
@@ -1152,21 +1152,16 @@ ActiveRecord::Schema.define(:version => 34) do
     t.boolean  "delta"
   end
 
-  add_index "recruitments", ["publish_time"], :name => "index_recruitments_on_publish_time"
   add_index "recruitments", ["location"], :name => "index_recruitments_on_location"
-  add_index "recruitments", ["recruitment_type"], :name => "index_recruitments_on_recruitment_type"
-  add_index "recruitments", ["source_link"], :name => "index_recruitments_on_source_link"
-  add_index "recruitments", ["active"], :name => "index_recruitments_on_active"
-  add_index "recruitments", ["created_at"], :name => "index_recruitments_on_created_at"
-  add_index "recruitments", ["updated_at"], :name => "index_recruitments_on_updated_at"
+  add_index "recruitments", ["recruitment_type", "publish_time"], :name => "index_recruitments_on_recruitment_type_and_publish_time"
 
   create_table "recruitments_recruitment_tags", :id => false, :force => true do |t|
     t.integer "recruitment_id",     :limit => 11
     t.integer "recruitment_tag_id", :limit => 11
   end
 
-  add_index "recruitments_recruitment_tags", ["recruitment_id"], :name => "index_recruitments_recruitment_tags_on_recruitment_id"
-  add_index "recruitments_recruitment_tags", ["recruitment_tag_id"], :name => "index_recruitments_recruitment_tags_on_recruitment_tag_id"
+  add_index "recruitments_recruitment_tags", ["recruitment_id", "recruitment_tag_id"], :name => "recruitments_recruitment_tags_id", :unique => true
+  add_index "recruitments_recruitment_tags", ["recruitment_tag_id", "recruitment_id"], :name => "recruitment_tags_recruitments_id", :unique => true
 
   create_table "roles", :force => true do |t|
     t.string   "name"

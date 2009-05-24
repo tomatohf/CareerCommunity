@@ -31,10 +31,10 @@ class RecruitmentTag < ActiveRecord::Base
   
   
   def self.tags(options = {})
-    query = "select recruitment_tags.id, name, count(*) as count"
-    query << " from recruitments_recruitment_tags, recruitment_tags"
+    query = "select recruitment_tags.*, count(*) as count"
+    query << " from recruitment_tags, recruitments_recruitment_tags"
     query << " where recruitment_tags.id = recruitment_tag_id"
-    query << " group by recruitment_tag_id"
+    query << " group by recruitment_tags.id"
     query << " order by #{options[:order]}" if options[:order] != nil
     query << " limit #{options[:limit]}" if options[:limit] != nil
     tags = self.find_by_sql(query)

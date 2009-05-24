@@ -19,11 +19,16 @@ class ImproveRecruitmentsIndex < ActiveRecord::Migration
               [:recruitment_id, :recruitment_tag_id], 
               :unique => true, 
               :name => :recruitments_recruitment_tags_id
+    add_index :recruitments_recruitment_tags, 
+              [:recruitment_tag_id, :recruitment_id], 
+              :unique => true, 
+              :name => :recruitment_tags_recruitments_id
     
   end
 
   def self.down
     
+    remove_index :recruitments_recruitment_tags, :name => :recruitment_tags_recruitments_id
     remove_index :recruitments_recruitment_tags, :name => :recruitments_recruitment_tags_id
     
     add_index :recruitments_recruitment_tags, :recruitment_id

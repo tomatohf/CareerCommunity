@@ -4,16 +4,16 @@
 	- 可以方便地换回使用 MemCache
 
 
-处理 recruitments 的速度问题, 调整索引
-	- 调整数据库 index, 删除不需要的index以避免影响更新操作的速度. 为慢的查询添加需要的 index
-http://www.geekskillz.com/articles/16
-http://dev.mysql.com/doc/refman/5.1/zh/optimization.html
-http://hackmysql.com/case1
+优化 MySQL - SQL - 索引
+	- 处理含有 in (?) 的 SQL
+		- http://www.igvita.com/2006/09/22/eager-find-by-sql-pagination-in-rails
+		- 将 paginate 方法 改成 直接写 SQL
 related setting:
 	- query_reviewer.yml: inject_view
 	- application.rb: after_filter OutputCompressionFilter
 	- development.rb: config.action_controller.perform_caching
 	- environment.rb: re-def MemCache#get
+
 
 
 EXT IE8 menu 宽度问题

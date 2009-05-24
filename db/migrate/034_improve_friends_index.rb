@@ -45,18 +45,18 @@ class ImproveFriendsIndex < ActiveRecord::Migration
     remove_index :account_actions, :action_type
     remove_index :account_actions, :hide
     
-    add_index :account_actions, [:hide, :created_at]
-    add_index :account_actions, [:hide, :account_id, :created_at]
     add_index :account_actions, [:hide, :account_id, :action_type, :created_at],
               :name => :index_account_actions_on_hide_account_type_created_at
+    add_index :account_actions, [:hide, :account_id, :created_at]
+    add_index :account_actions, [:hide, :created_at]
     
   end
 
   def self.down
     
-    remove_index :account_actions, :name => :index_account_actions_on_hide_account_type_created_at
-    remove_index :account_actions, [:hide, :account_id, :created_at]
     remove_index :account_actions, [:hide, :created_at]
+    remove_index :account_actions, [:hide, :account_id, :created_at]
+    remove_index :account_actions, :name => :index_account_actions_on_hide_account_type_created_at
     
     add_index :account_actions, :account_id
     add_index :account_actions, :created_at
