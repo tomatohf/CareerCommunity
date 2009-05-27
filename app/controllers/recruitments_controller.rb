@@ -115,6 +115,13 @@ class RecruitmentsController < ApplicationController
           :order => "publish_time DESC",
           :include => [:recruitment_tags]
         )
+        
+        Recruitment.find_by_sql "select r.id, title, publish_time, location, recruitment_type
+          from recruitments_recruitment_tags as rrt left join recruitments as r on recruitment_id = r.id
+          where rrt.recruitment_tag_id = #{@tag.id}
+          order by r.publish_time DESC 
+          limit 0, 50
+        "
       end
       
     end
@@ -122,6 +129,8 @@ class RecruitmentsController < ApplicationController
   
   def search
     @recruitment_type = params[:recruitment_type].to_i
+    # nil.to_i => 0
+    # "".to_i => 0
     
     page = params[:page]
     page = 1 unless page =~ /\d+/

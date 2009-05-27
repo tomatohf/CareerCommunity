@@ -25,12 +25,17 @@ class AlbumsController < ApplicationController
     
     @edit = (session[:account_id].to_s == @owner_id)
     
-    @albums = Album.get_all_by_account_id(@owner_id)
+    @albums = Album.find(
+      :all,
+      :conditions => ["account_id = ?", @owner_id],
+      :order => "created_at DESC",
+      :include => [:cover_photo]
+    )
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id)
   end
   
   def show
-    @album ||= Album.find(params[:id])
+    @album = Album.find(params[:id])
     
     @edit = (session[:account_id] == @album.account_id)
     

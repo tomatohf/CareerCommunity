@@ -46,17 +46,25 @@ class BlogsController < ApplicationController
     @blogs = Blog.paginate(
       :page => page,
       :per_page => Blog_Page_Size,
-      :conditions => ["blogs.account_id = ?", @owner_id],
+      :conditions => ["account_id = ?", @owner_id],
       :order => "created_at DESC"
     )
     
-    @new_comments = BlogComment.find(
-      :all,
-      :limit => New_Comment_Size,
-      :conditions => ["blog_id in (select id from blogs where account_id = ?)", @owner_id],
-      :include => [:account => [:profile_pic]],
-      :order => "updated_at DESC"
-    )
+    #@new_comments = BlogComment.find(
+    #  :all,
+    #  :limit => New_Comment_Size,
+    #  :conditions => ["blog_id in (?)", @blogs.collect { |b| b.id }],
+    #  :include => [:account => [:profile_pic]],
+    #  :order => "created_at DESC"
+    #)
+
+    if @blogs.size > 0
+      sql = @blogs.collect { |b|
+        "(select * from blog_comments where blog_id = #{b.id})"
+      }.join(" UNION ")
+      sql << " ORDER BY created_at DESC LIMIT #{New_Comment_Size}"
+      @new_comments = BlogComment.find_by_sql(sql)
+    end
   end
   
   def feed
@@ -71,7 +79,7 @@ class BlogsController < ApplicationController
         @blogs = Blog.find(
           :all,
           :limit => Blog_Page_Size,
-          :conditions => ["blogs.account_id = ?", @owner_id],
+          :conditions => ["account_id = ?", @owner_id],
           :order => "created_at DESC"
         )
         

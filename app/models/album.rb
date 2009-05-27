@@ -29,14 +29,6 @@ class Album < ActiveRecord::Base
   
   
   
-  def self.get_all_by_account_id(account_id)
-    self.find(
-      :all,
-      :conditions => ["account_id = ?", account_id],
-      :include => [:cover_photo]
-    )
-  end
-  
   def self.get_all_names_by_account_id(account_id)
     aa = Cache.get("#{CKP_account_albums}_#{account_id}".to_sym)
     unless aa
@@ -57,12 +49,12 @@ class Album < ActiveRecord::Base
   end
   
   def get_cover_photo_img_src(style, photo = nil)
-    self.cover_photo_id ? (photo || self.get_cover_photo).image.url(style) : style.to_s == "thumb_80" ? "/images/album_thumb.png" : "/images/album.png"
+    self.cover_photo_id ? (photo || self.get_cover_photo).image.url(style) : (style.to_s == "thumb_80" ? "/images/album_thumb.png" : "/images/album.png")
   end
   
   # if it's sure that the cover photo object has been loaded ...
   def get_cover_photo_img_src_and_set_cache(style)
-    self.cover_photo_id ? self.get_cover_photo_and_set_cache.image.url(style) : style.to_s == "thumb_80" ? "/images/album_thumb.png" : "/images/album.png"
+    self.cover_photo_id ? self.get_cover_photo_and_set_cache.image.url(style) : (style.to_s == "thumb_80" ? "/images/album_thumb.png" : "/images/album.png")
   end
   
   
@@ -87,7 +79,8 @@ class Album < ActiveRecord::Base
   def get_cover_photo
     cp = Cache.get("#{CKP_cover_photo}_#{self.id}".to_sym)
     unless cp
-      cp = self.cover_photo
+      # cp = self.cover_photo
+      cp = Photo.find(self.cover_photo_id)
       
       set_cover_photo_cache(cp)
     end

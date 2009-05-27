@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 35) do
+ActiveRecord::Schema.define(:version => 37) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -251,10 +251,8 @@ ActiveRecord::Schema.define(:version => 35) do
     t.boolean  "delta"
   end
 
-  add_index "albums", ["account_id"], :name => "index_albums_on_account_id"
-  add_index "albums", ["created_at"], :name => "index_albums_on_created_at"
-  add_index "albums", ["updated_at"], :name => "index_albums_on_updated_at"
   add_index "albums", ["delta"], :name => "index_albums_on_delta"
+  add_index "albums", ["account_id", "created_at"], :name => "index_albums_on_account_id_and_created_at"
 
   create_table "autologins", :force => true do |t|
     t.string   "session_id"
@@ -283,12 +281,6 @@ ActiveRecord::Schema.define(:version => 35) do
   end
 
   add_index "basic_profiles", ["account_id"], :name => "index_basic_profiles_on_account_id"
-  add_index "basic_profiles", ["birthday"], :name => "index_basic_profiles_on_birthday"
-  add_index "basic_profiles", ["real_name"], :name => "index_basic_profiles_on_real_name"
-  add_index "basic_profiles", ["province_id"], :name => "index_basic_profiles_on_province_id"
-  add_index "basic_profiles", ["city_id"], :name => "index_basic_profiles_on_city_id"
-  add_index "basic_profiles", ["hometown_province_id"], :name => "index_basic_profiles_on_hometown_province_id"
-  add_index "basic_profiles", ["hometown_city_id"], :name => "index_basic_profiles_on_hometown_city_id"
   add_index "basic_profiles", ["delta"], :name => "index_basic_profiles_on_delta"
 
   create_table "blog_comments", :force => true do |t|
@@ -300,10 +292,8 @@ ActiveRecord::Schema.define(:version => 35) do
     t.boolean  "delta"
   end
 
-  add_index "blog_comments", ["blog_id"], :name => "index_blog_comments_on_blog_id"
-  add_index "blog_comments", ["account_id"], :name => "index_blog_comments_on_account_id"
-  add_index "blog_comments", ["created_at"], :name => "index_blog_comments_on_created_at"
   add_index "blog_comments", ["delta"], :name => "index_blog_comments_on_delta"
+  add_index "blog_comments", ["blog_id", "created_at"], :name => "index_blog_comments_on_blog_id_and_created_at"
 
   create_table "blogs", :force => true do |t|
     t.datetime "created_at"
@@ -314,9 +304,9 @@ ActiveRecord::Schema.define(:version => 35) do
     t.boolean  "delta"
   end
 
-  add_index "blogs", ["account_id"], :name => "index_blogs_on_account_id"
   add_index "blogs", ["created_at"], :name => "index_blogs_on_created_at"
   add_index "blogs", ["delta"], :name => "index_blogs_on_delta"
+  add_index "blogs", ["account_id", "created_at"], :name => "index_blogs_on_account_id_and_created_at"
 
   create_table "cities", :force => true do |t|
     t.string  "name"
@@ -390,10 +380,9 @@ ActiveRecord::Schema.define(:version => 35) do
     t.boolean  "delta"
   end
 
-  add_index "education_profiles", ["account_id"], :name => "index_education_profiles_on_account_id"
-  add_index "education_profiles", ["education_id"], :name => "index_education_profiles_on_education_id"
-  add_index "education_profiles", ["enter_year"], :name => "index_education_profiles_on_enter_year"
   add_index "education_profiles", ["delta"], :name => "index_education_profiles_on_delta"
+  add_index "education_profiles", ["edu_name"], :name => "index_education_profiles_on_edu_name"
+  add_index "education_profiles", ["account_id", "education_id", "enter_year"], :name => "index_edu_profiles_on_account_edu_year"
 
   create_table "exps", :force => true do |t|
     t.string   "title"
@@ -908,11 +897,9 @@ ActiveRecord::Schema.define(:version => 35) do
     t.boolean  "delta"
   end
 
-  add_index "job_profiles", ["account_id"], :name => "index_job_profiles_on_account_id"
-  add_index "job_profiles", ["profession_id"], :name => "index_job_profiles_on_profession_id"
-  add_index "job_profiles", ["enter_year"], :name => "index_job_profiles_on_enter_year"
-  add_index "job_profiles", ["enter_month"], :name => "index_job_profiles_on_enter_month"
   add_index "job_profiles", ["delta"], :name => "index_job_profiles_on_delta"
+  add_index "job_profiles", ["job_name"], :name => "index_job_profiles_on_job_name"
+  add_index "job_profiles", ["account_id", "enter_year", "enter_month"], :name => "index_job_profiles_on_account_year_month"
 
   create_table "job_service_categories", :force => true do |t|
     t.datetime "created_at"
@@ -1077,10 +1064,8 @@ ActiveRecord::Schema.define(:version => 35) do
     t.boolean  "delta"
   end
 
-  add_index "photo_comments", ["photo_id"], :name => "index_photo_comments_on_photo_id"
-  add_index "photo_comments", ["account_id"], :name => "index_photo_comments_on_account_id"
-  add_index "photo_comments", ["created_at"], :name => "index_photo_comments_on_created_at"
   add_index "photo_comments", ["delta"], :name => "index_photo_comments_on_delta"
+  add_index "photo_comments", ["photo_id", "created_at"], :name => "index_photo_comments_on_photo_id_and_created_at"
 
   create_table "photos", :force => true do |t|
     t.integer  "album_id",           :limit => 11
@@ -1094,10 +1079,9 @@ ActiveRecord::Schema.define(:version => 35) do
     t.boolean  "delta"
   end
 
-  add_index "photos", ["account_id"], :name => "index_photos_on_account_id"
   add_index "photos", ["album_id"], :name => "index_photos_on_album_id"
-  add_index "photos", ["created_at"], :name => "index_photos_on_created_at"
   add_index "photos", ["delta"], :name => "index_photos_on_delta"
+  add_index "photos", ["account_id", "created_at"], :name => "index_photos_on_account_id_and_created_at"
 
   create_table "pic_profiles", :force => true do |t|
     t.integer  "account_id", :limit => 11
@@ -1107,7 +1091,6 @@ ActiveRecord::Schema.define(:version => 35) do
   end
 
   add_index "pic_profiles", ["account_id"], :name => "index_pic_profiles_on_account_id"
-  add_index "pic_profiles", ["photo_id"], :name => "index_pic_profiles_on_photo_id"
   add_index "pic_profiles", ["delta"], :name => "index_pic_profiles_on_delta"
 
   create_table "point_profiles", :force => true do |t|
@@ -1119,8 +1102,6 @@ ActiveRecord::Schema.define(:version => 35) do
   end
 
   add_index "point_profiles", ["account_id"], :name => "index_point_profiles_on_account_id"
-  add_index "point_profiles", ["points"], :name => "index_point_profiles_on_points"
-  add_index "point_profiles", ["exp"], :name => "index_point_profiles_on_exp"
   add_index "point_profiles", ["delta"], :name => "index_point_profiles_on_delta"
 
   create_table "provinces", :force => true do |t|
