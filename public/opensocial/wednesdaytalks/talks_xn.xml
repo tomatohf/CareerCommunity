@@ -113,7 +113,7 @@
 				</div>
 				
 				<div style="margin-right: 210px; padding: 5px;">
-					<div id="talk_list">
+					<div id="talk_list" style="height: 785px; overflow: auto;">
 
 					</div>
 					

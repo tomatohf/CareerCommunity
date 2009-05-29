@@ -139,8 +139,8 @@ class PostsController < ApplicationController
       @other_posts = type_handler.get_post_class.find(
         :all,
         :limit => Same_Author_Post_Num,
-        :select => "id, created_at, #{type_handler.get_type_id}, account_id, title, responded_at",
-        :conditions => ["account_id = ? and #{type_handler.get_type_id} = ?", @post.account_id, @type_id],
+        :select => "id, created_at, account_id, title, responded_at",
+        :conditions => ["account_id = ?", @post.account_id],
         :order => "responded_at DESC, created_at DESC"
       )
     

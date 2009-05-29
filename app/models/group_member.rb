@@ -43,8 +43,7 @@ class GroupMember < ActiveRecord::Base
     unless a_g_id
       members = self.agreed.find(
     	  :all,
-    		:conditions => ["account_id = ?", account_id],
-    		:order => "join_at DESC"
+    		:conditions => ["account_id = ?", account_id]
     	)
       
       a_g_id = self.set_account_group_ids(account_id, members)
@@ -75,8 +74,7 @@ class GroupMember < ActiveRecord::Base
     unless a_g_id
       admin_members = self.agreed.find(
     	  :all,
-    		:conditions => ["account_id = ? and admin = ?", account_id, true],
-    		:order => "join_at DESC"
+    		:conditions => ["account_id = ? and admin = ?", account_id, true]
     	)
       
       a_g_id = self.set_account_admin_group_ids(account_id, admin_members)
@@ -186,8 +184,7 @@ class GroupMember < ActiveRecord::Base
       :page => page,
       :per_page => page_size,
       :conditions => ["group_id = ? and accepted = ? and approved = ?", group_id, true, false],
-      :include => [:account => [:profile_pic]],
-      :order => "created_at ASC"
+      :include => [:account => [:profile_pic]]
     )
   end
   
@@ -195,8 +192,7 @@ class GroupMember < ActiveRecord::Base
     self.find(
       :all,
       :conditions => ["group_id = ? and accepted = ? and approved = ?", group_id, false, true],
-      :include => [:account => [:profile_pic]],
-      :order => "created_at DESC"
+      :include => [:account => [:profile_pic]]
     )
   end
   

@@ -53,6 +53,8 @@ class Group < ActiveRecord::Base
   
   after_destroy { |group|
     self.decrease_created_count_cache(group.creator_id)
+    
+    self.clear_group_with_image_cache(group.id)
   }
   
   after_create { |group|

@@ -109,19 +109,13 @@ class RecruitmentsController < ApplicationController
           :page => page,
           :per_page => Recruitment_List_Size,
           :select => "recruitments.id, title, publish_time, location, recruitment_type",
-          :joins => "INNER JOIN recruitments_recruitment_tags ON 
+          :joins => "RIGHT JOIN recruitments_recruitment_tags ON 
                       recruitments.id = recruitments_recruitment_tags.recruitment_id",
           :conditions => ["recruitment_tag_id = ?", @tag.id],
-          :order => "publish_time DESC",
+          # :order => "publish_time DESC",
+          :order => "recruitment_id DESC",
           :include => [:recruitment_tags]
-        )
-        
-        Recruitment.find_by_sql "select r.id, title, publish_time, location, recruitment_type
-          from recruitments_recruitment_tags as rrt left join recruitments as r on recruitment_id = r.id
-          where rrt.recruitment_tag_id = #{@tag.id}
-          order by r.publish_time DESC 
-          limit 0, 50
-        "
+        ).sort! { |x, y| (y.publish_time || y.created_at) <=> (x.publish_time || x.created_at) }
       end
       
     end

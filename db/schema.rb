@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 37) do
+ActiveRecord::Schema.define(:version => 38) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -563,7 +563,6 @@ ActiveRecord::Schema.define(:version => 37) do
   end
 
   add_index "group_images", ["group_id"], :name => "index_group_images_on_group_id"
-  add_index "group_images", ["photo_id"], :name => "index_group_images_on_photo_id"
   add_index "group_images", ["delta"], :name => "index_group_images_on_delta"
 
   create_table "group_members", :force => true do |t|
@@ -578,16 +577,10 @@ ActiveRecord::Schema.define(:version => 37) do
     t.boolean  "delta"
   end
 
-  add_index "group_members", ["created_at"], :name => "index_group_members_on_created_at"
-  add_index "group_members", ["updated_at"], :name => "index_group_members_on_updated_at"
-  add_index "group_members", ["join_at"], :name => "index_group_members_on_join_at"
-  add_index "group_members", ["group_id"], :name => "index_group_members_on_group_id"
-  add_index "group_members", ["account_id"], :name => "index_group_members_on_account_id"
-  add_index "group_members", ["accepted"], :name => "index_group_members_on_accepted"
-  add_index "group_members", ["approved"], :name => "index_group_members_on_approved"
-  add_index "group_members", ["admin"], :name => "index_group_members_on_admin"
-  add_index "group_members", ["group_id", "account_id"], :name => "index_group_members_on_group_id_and_account_id"
   add_index "group_members", ["delta"], :name => "index_group_members_on_delta"
+  add_index "group_members", ["account_id", "accepted", "approved", "admin"], :name => "index_group_members_on_account_accepted_approved_admin"
+  add_index "group_members", ["group_id", "accepted", "approved", "admin", "join_at"], :name => "index_group_members_on_group_accepted_approved_admin_join"
+  add_index "group_members", ["group_id", "account_id", "accepted", "approved", "admin"], :name => "index_group_members_on_group_account_accepted_approved_admin"
 
   create_table "group_photos", :force => true do |t|
     t.datetime "created_at"
@@ -597,10 +590,8 @@ ActiveRecord::Schema.define(:version => 37) do
     t.boolean  "delta"
   end
 
-  add_index "group_photos", ["group_id"], :name => "index_group_photos_on_group_id"
-  add_index "group_photos", ["photo_id"], :name => "index_group_photos_on_photo_id"
-  add_index "group_photos", ["account_id"], :name => "index_group_photos_on_account_id"
   add_index "group_photos", ["delta"], :name => "index_group_photos_on_delta"
+  add_index "group_photos", ["group_id", "created_at"], :name => "index_group_photos_on_group_id_and_created_at"
 
   create_table "group_picture_comments", :force => true do |t|
     t.integer  "group_picture_id", :limit => 11
@@ -611,10 +602,8 @@ ActiveRecord::Schema.define(:version => 37) do
     t.boolean  "delta"
   end
 
-  add_index "group_picture_comments", ["group_picture_id"], :name => "index_group_picture_comments_on_group_picture_id"
-  add_index "group_picture_comments", ["account_id"], :name => "index_group_picture_comments_on_account_id"
-  add_index "group_picture_comments", ["created_at"], :name => "index_group_picture_comments_on_created_at"
   add_index "group_picture_comments", ["delta"], :name => "index_group_picture_comments_on_delta"
+  add_index "group_picture_comments", ["group_picture_id", "created_at"], :name => "index_group_picture_comments_on_group_picture_id_and_created_at"
 
   create_table "group_pictures", :force => true do |t|
     t.datetime "created_at"
@@ -631,13 +620,9 @@ ActiveRecord::Schema.define(:version => 37) do
     t.boolean  "delta"
   end
 
-  add_index "group_pictures", ["created_at"], :name => "index_group_pictures_on_created_at"
-  add_index "group_pictures", ["group_id"], :name => "index_group_pictures_on_group_id"
-  add_index "group_pictures", ["account_id"], :name => "index_group_pictures_on_account_id"
-  add_index "group_pictures", ["top"], :name => "index_group_pictures_on_top"
-  add_index "group_pictures", ["good"], :name => "index_group_pictures_on_good"
-  add_index "group_pictures", ["responded_at"], :name => "index_group_pictures_on_responded_at"
   add_index "group_pictures", ["delta"], :name => "index_group_pictures_on_delta"
+  add_index "group_pictures", ["group_id", "responded_at", "created_at"], :name => "index_group_pictures_on_group_id_and_responded_at_and_created_at"
+  add_index "group_pictures", ["group_id", "good", "responded_at", "created_at"], :name => "index_group_pictures_on_group_good_responded_created"
 
   create_table "group_post_attachments", :force => true do |t|
     t.datetime "created_at"
@@ -650,9 +635,7 @@ ActiveRecord::Schema.define(:version => 37) do
     t.boolean  "delta"
   end
 
-  add_index "group_post_attachments", ["created_at"], :name => "index_group_post_attachments_on_created_at"
   add_index "group_post_attachments", ["group_post_id"], :name => "index_group_post_attachments_on_group_post_id"
-  add_index "group_post_attachments", ["account_id"], :name => "index_group_post_attachments_on_account_id"
 
   create_table "group_post_comments", :force => true do |t|
     t.integer  "group_post_id", :limit => 11
@@ -663,10 +646,9 @@ ActiveRecord::Schema.define(:version => 37) do
     t.boolean  "delta"
   end
 
-  add_index "group_post_comments", ["group_post_id"], :name => "index_group_post_comments_on_group_post_id"
-  add_index "group_post_comments", ["account_id"], :name => "index_group_post_comments_on_account_id"
-  add_index "group_post_comments", ["created_at"], :name => "index_group_post_comments_on_created_at"
   add_index "group_post_comments", ["delta"], :name => "index_group_post_comments_on_delta"
+  add_index "group_post_comments", ["group_post_id", "created_at"], :name => "index_group_post_comments_on_group_post_id_and_created_at"
+  add_index "group_post_comments", ["account_id", "created_at"], :name => "index_group_post_comments_on_account_id_and_created_at"
 
   create_table "group_posts", :force => true do |t|
     t.datetime "created_at"
@@ -682,12 +664,13 @@ ActiveRecord::Schema.define(:version => 37) do
   end
 
   add_index "group_posts", ["created_at"], :name => "index_group_posts_on_created_at"
-  add_index "group_posts", ["group_id"], :name => "index_group_posts_on_group_id"
-  add_index "group_posts", ["account_id"], :name => "index_group_posts_on_account_id"
-  add_index "group_posts", ["top"], :name => "index_group_posts_on_top"
   add_index "group_posts", ["delta"], :name => "index_group_posts_on_delta"
   add_index "group_posts", ["responded_at"], :name => "index_group_posts_on_responded_at"
   add_index "group_posts", ["good"], :name => "index_group_posts_on_good"
+  add_index "group_posts", ["group_id", "responded_at", "created_at"], :name => "index_group_posts_on_group_id_and_responded_at_and_created_at"
+  add_index "group_posts", ["group_id", "top", "responded_at", "created_at"], :name => "index_group_posts_on_group_top_responded_created"
+  add_index "group_posts", ["group_id", "good", "top", "responded_at", "created_at"], :name => "index_group_posts_on_group_good_top_responded_created"
+  add_index "group_posts", ["account_id", "responded_at", "created_at"], :name => "index_group_posts_on_account_id_and_responded_at_and_created_at"
 
   create_table "groups", :force => true do |t|
     t.datetime "created_at"
@@ -702,10 +685,9 @@ ActiveRecord::Schema.define(:version => 37) do
     t.string   "custom_key"
   end
 
+  add_index "groups", ["delta"], :name => "index_groups_on_delta"
   add_index "groups", ["created_at"], :name => "index_groups_on_created_at"
   add_index "groups", ["creator_id"], :name => "index_groups_on_creator_id"
-  add_index "groups", ["master_id"], :name => "index_groups_on_master_id"
-  add_index "groups", ["delta"], :name => "index_groups_on_delta"
 
   create_table "hobby_profiles", :force => true do |t|
     t.integer  "account_id", :limit => 11

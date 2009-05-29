@@ -57,12 +57,11 @@ class BlogsController < ApplicationController
     #  :include => [:account => [:profile_pic]],
     #  :order => "created_at DESC"
     #)
-
     if @blogs.size > 0
       sql = @blogs.collect { |b|
-        "(select * from blog_comments where blog_id = #{b.id})"
+        "(select * from blog_comments where blog_id = #{b.id} ORDER BY created_at DESC)"
       }.join(" UNION ")
-      sql << " ORDER BY created_at DESC LIMIT #{New_Comment_Size}"
+      sql << " LIMIT #{New_Comment_Size}"
       @new_comments = BlogComment.find_by_sql(sql)
     end
   end

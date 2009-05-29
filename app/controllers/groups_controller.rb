@@ -134,9 +134,8 @@ class GroupsController < ApplicationController
     
     all_group_members = GroupMember.agreed.find(
       :all,
-      :conditions => ["account_id = ?", @owner_id],
-      :order => "join_at DESC"
-    )
+      :conditions => ["account_id = ?", @owner_id]
+    ).reverse
     
     joined_group_ids = []
     @group_members = []
@@ -215,9 +214,8 @@ class GroupsController < ApplicationController
       :page => page,
       :per_page => Group_List_Size,
       :conditions => conditions,
-      :include => [:group => [:image]],
-      :order => "join_at DESC"
-    )
+      :include => [:group => [:image]]
+    ).reverse
   end
   
   def list_admin
@@ -324,13 +322,13 @@ class GroupsController < ApplicationController
     need_join_to_view_notice = @group_setting[:need_join_to_view_notice]
     @can_view_notice = !(need_join_to_view_notice && @no_membership)
     
-    @new_members = GroupMember.agreed.find(
-      :all,
-      :limit => New_Member_Num,
-      :conditions => ["group_id = ?", @group_id],
-      :include => [:account => [:profile_pic]],
-      :order => "join_at DESC"
-    )
+    sql_safe_group_id = @group_id.to_s.scan(/\d+/)[0]
+    new_members_sql = ""
+    new_members_sql << "(SELECT * FROM group_members WHERE group_id = #{sql_safe_group_id} AND accepted = 1 AND approved = 1 AND admin = 1 ORDER BY join_at DESC)"
+    new_members_sql << " UNION "
+    new_members_sql << "(SELECT * FROM group_members WHERE group_id = #{sql_safe_group_id} AND accepted = 1 AND approved = 1 AND admin = 0 ORDER BY join_at DESC)"
+    new_members_sql << " LIMIT #{New_Member_Num}"
+    @new_members = GroupMember.agreed.find_by_sql(new_members_sql)
     
     @top_group_posts = GroupPost.find(
       :all,
@@ -467,13 +465,13 @@ class GroupsController < ApplicationController
         :order => "responded_at DESC, created_at DESC"
       )
       
-      @new_comments = GroupPictureComment.find(
-        :all,
-        :limit => New_Comment_Size,
-        :conditions => ["group_picture_id in (select id from group_pictures where group_id = ?)", @group_id],
-        :include => [:account => [:profile_pic]],
-        :order => "updated_at DESC"
-      )
+      if @group_pictures.size > 0
+        sql = @group_pictures.collect { |gp|
+          "(select * from group_picture_comments where group_picture_id = #{gp.id} ORDER BY created_at DESC)"
+        }.join(" UNION ")
+        sql << " LIMIT #{New_Comment_Size}"
+        @new_comments = GroupPictureComment.find_by_sql(sql)
+      end
     end
   end
   
@@ -495,13 +493,13 @@ class GroupsController < ApplicationController
         :order => "responded_at DESC, created_at DESC"
       )
       
-      @new_comments = GroupPictureComment.find(
-        :all,
-        :limit => New_Comment_Size,
-        :conditions => ["group_picture_id in (select id from group_pictures where group_id = ? and good = ?)", @group_id, true],
-        :include => [:account => [:profile_pic]],
-        :order => "updated_at DESC"
-      )
+      if @group_pictures.size > 0
+        sql = @group_pictures.collect { |gp|
+          "(select * from group_picture_comments where group_picture_id = #{gp.id} ORDER BY created_at DESC)"
+        }.join(" UNION ")
+        sql << " LIMIT #{New_Comment_Size}"
+        @new_comments = GroupPictureComment.find_by_sql(sql)
+      end
     end
   end
   
@@ -767,10 +765,12 @@ class GroupsController < ApplicationController
       :page => page,
       :per_page => Post_List_Size,
       :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.good, group_posts.responded_at, groups.name, accounts.email, accounts.nick",
-      :conditions => ["group_posts.id in (select group_post_id from group_post_comments where account_id = ?)", @owner_id],
+      :joins => "RIGHT JOIN group_post_comments ON group_posts.id = group_post_comments.group_post_id",
+      :conditions => ["group_post_comments.account_id = ?", @owner_id],
       :include => [:account, :group],
-      :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
-    )
+      # :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
+      :order => "group_post_comments.created_at DESC"
+    ).sort! { |x, y| (y.responded_at || y.created_at) <=> (x.responded_at || x.created_at) }
   end
   
   def edit_image

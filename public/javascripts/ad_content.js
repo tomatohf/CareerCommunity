@@ -5,6 +5,9 @@ function toggle_ad_col(show) {
 		show = (ad_col_ele.style.display == "none");
 	}
 	toggle_func_list(!show);
+	
+	return;
+	
 	content_col_ele.style.marginLeft = show ? "150px" : "0px";
 	ad_col_ele.style.display = show ? "" : "none";
 }

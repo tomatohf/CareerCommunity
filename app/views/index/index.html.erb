@@ -168,10 +168,9 @@
 							group_posts = GroupPost.find(
 								:all,
 								:limit => 20,
-								:conditions => ["group_posts.group_id in (?)", IndexController::Index_Group_Post_Group_Id_Scope],
-								:select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.title",
+								:select => "id, created_at, group_id, title",
 								:include => [:group],
-								:order => "group_posts.created_at DESC"
+								:order => "created_at DESC"
 						    )
 						%>
 						
