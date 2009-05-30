@@ -24,7 +24,7 @@
 	
 	<div class="community_block_narrow form_info_s">
 		共有
-		<b><%= @all_photos.total_entries %></b>
+		<b><%= (@all_photos && @all_photos.total_entries) || 0 %></b>
 		张链接到参加的圈子的照片,
 		<a href="/groups/recent/<%= @owner_id %>">
 			返回 <%= owner_name %> 的圈子近况
@@ -36,11 +36,11 @@
 	</div>
 	
 	<div class="overflow_hidden">
-		<%= float_list(@all_photos, "/linked_photos/linked_photo_for_all", :linked_photo_for_all, {:type => :group, :text => :name}, 6) %>
+		<%= float_list(@all_photos || [], "/linked_photos/linked_photo_for_all", :linked_photo_for_all, {:type => :group, :text => :name}, 6) %>
 	</div>
 	
 	<div class="community_block clear_l">
-		<%= paging_buttons(@all_photos) %>
+		<%= @all_photos && paging_buttons(@all_photos) %>
 	</div>
 
 </div>

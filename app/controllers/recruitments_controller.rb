@@ -109,7 +109,7 @@ class RecruitmentsController < ApplicationController
           :page => page,
           :per_page => Recruitment_List_Size,
           :select => "recruitments.id, title, publish_time, location, recruitment_type",
-          :joins => "RIGHT JOIN recruitments_recruitment_tags ON 
+          :joins => "INNER JOIN recruitments_recruitment_tags ON 
                       recruitments.id = recruitments_recruitment_tags.recruitment_id",
           :conditions => ["recruitment_tag_id = ?", @tag.id],
           # :order => "publish_time DESC",

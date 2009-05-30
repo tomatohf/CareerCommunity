@@ -138,10 +138,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%= render :partial => "group_post", :collection => @group_posts, :locals => {:hide_top => true} %>
+				<%= render :partial => "group_post", :collection => @group_posts || [], :locals => {:hide_top => true} %>
 			</tbody>
 		</table>
-		<% unless @group_posts.size > 0 %>
+		<% unless @group_posts && @group_posts.size > 0 %>
 			<div class="form_info_l">
 				还没有讨论话题 ...
 			</div>
@@ -166,9 +166,9 @@
 		</div>
 	</div>
 	<div id="activity_section" class="overflow_hidden">
-		<%= float_list(@group_activities, "activity_small", :activity_small, {}, 2) %>
+		<%= float_list(@group_activities || [], "activity_small", :activity_small, {}, 2) %>
 		
-		<% unless @group_activities.size > 0 %>
+		<% unless @group_activities && @group_activities.size > 0 %>
 			<div class="form_info_l">
 				还没有圈子活动 ...
 			</div>
@@ -195,9 +195,9 @@
 		</div>
 		
 		<div id="vote_section" class="community_block">
-			<%= render :partial => "vote_topic_small", :collection => @group_vote_topics %>
+			<%= render :partial => "vote_topic_small", :collection => @group_vote_topics || [] %>
 			
-			<% unless @group_vote_topics.size > 0 %>
+			<% unless @group_vote_topics && @group_vote_topics.size > 0 %>
 				<div class="form_info_l">
 					还没有圈内投票 ...
 				</div>
@@ -223,9 +223,9 @@
 		</div>
 		
 		<div id="bookmark_section" class="community_block">
-			<%= render :partial => "/bookmarks/bookmark_small", :collection => @group_bookmarks %>
+			<%= render :partial => "/bookmarks/bookmark_small", :collection => @group_bookmarks || [] %>
 
-			<% unless @group_bookmarks.size > 0 %>
+			<% unless @group_bookmarks && @group_bookmarks.size > 0 %>
 				<div class="form_info_l">
 					还没有圈内收藏 ...
 				</div>
@@ -255,9 +255,9 @@
 		</div>
 		
 		<div id="picture_section" class="community_block overflow_hidden">
-			<%= float_list(@group_pictures, "/pictures/picture_small", :picture_small, {:picture_type => :group}, 5) %>
+			<%= float_list(@group_pictures || [], "/pictures/picture_small", :picture_small, {:picture_type => :group}, 5) %>
 			
-			<% unless @group_pictures.size > 0 %>
+			<% unless @group_pictures && @group_pictures.size > 0 %>
 				<div class="form_info_l">
 					还没有圈子专属照片 ...
 				</div>
@@ -284,9 +284,9 @@
 		</div>
 		
 		<div id="photo_section" class="community_block overflow_hidden">
-			<%= float_list(@group_photos, "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
+			<%= float_list(@group_photos || [], "/linked_photos/linked_photo_small", :linked_photo_small, {}, 5) %>
 			
-			<% unless @group_photos.size > 0 %>
+			<% unless @group_photos && @group_photos.size > 0 %>
 				<div class="form_info_l">
 					还没有链接到参加的圈子的照片 ...
 				</div>

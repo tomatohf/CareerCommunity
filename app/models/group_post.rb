@@ -104,4 +104,9 @@ class GroupPost < ActiveRecord::Base
   end
   
   
+  def self.load_associations(posts, includes)
+    preload_associations(posts, includes)
+  end
+  
+  
 end

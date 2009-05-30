@@ -151,52 +151,56 @@ class GroupsController < ApplicationController
     
     GroupMember.set_account_group_ids_cache(@owner_id, joined_group_ids)
     
-    @group_posts = GroupPost.find(
-      :all,
-      :limit => Post_Recent_List_Size,
-      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.top, group_posts.good, group_posts.account_id, group_posts.title, group_posts.responded_at, groups.name, accounts.email, accounts.nick, accounts.email",
-      :conditions => ["group_id in (?)", joined_group_ids],
-      :include => [:account, :group],
-      :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
-    )
+    if joined_group_ids.size > 0
+      group_post_sqls = []
+      group_activity_sqls = []
+      group_vote_topic_sqls = []
+      group_bookmark_sqls = []
+      group_photo_sqls = []
+      group_picture_sqls = []
+      
+      joined_group_ids.each { |gid|
+        group_post_sqls << "(select id, created_at, group_id, top, good, account_id, title, responded_at from group_posts where group_id = #{gid} ORDER BY responded_at DESC, created_at DESC)"
+        group_photo_sqls << "(select * from group_photos where group_id = #{gid} ORDER BY created_at DESC)"
+        group_picture_sqls << "(select * from group_pictures where group_id = #{gid} ORDER BY responded_at DESC, created_at DESC)"
+      }
+      group_post_sql = group_post_sqls.join(" UNION ")
+      group_post_sql << " LIMIT #{Post_Recent_List_Size}"
+      @group_posts = GroupPost.find_by_sql(group_post_sql)
+      GroupPost.load_associations(@group_posts, [:account, :group]) if @group_posts.size > 0
     
-    @group_activities = Activity.uncancelled.find(
-      :all,
-      :limit => Activity_Recent_List_Size,
-      :conditions => ["in_group in (?)", joined_group_ids],
-      :include => [:image],
-      :order => "begin_at DESC"
-    )
+      @group_activities = Activity.uncancelled.find(
+        :all,
+        :limit => Activity_Recent_List_Size,
+        :conditions => ["in_group in (?)", joined_group_ids],
+        :include => [:image],
+        :order => "begin_at DESC"
+      )
 
-    @group_vote_topics = VoteTopic.find(
-      :all,
-      :limit => Group_Vote_Num,
-      :conditions => ["group_id in (?)", joined_group_ids],
-      :include => [:account],
-      :order => "created_at DESC"
-    )
+      @group_vote_topics = VoteTopic.find(
+        :all,
+        :limit => Group_Vote_Num,
+        :conditions => ["group_id in (?)", joined_group_ids],
+        :include => [:account],
+        :order => "created_at DESC"
+      )
     
-    @group_bookmarks = GroupBookmark.find(
-			:all,
-			:limit => Bookmark_Recent_List_Size,
-			:conditions => ["group_id in (?)", joined_group_ids],
-			:order => "created_at DESC"
-		)
+      @group_bookmarks = GroupBookmark.find(
+  			:all,
+  			:limit => Bookmark_Recent_List_Size,
+  			:conditions => ["group_id in (?)", joined_group_ids],
+  			:order => "created_at DESC"
+  		)
+      
+      group_photo_sql = group_photo_sqls.join(" UNION ")
+      group_photo_sql << " LIMIT #{Photo_Recent_List_Size}"
+      @group_photos = GroupPhoto.find_by_sql(group_photo_sql)
+      GroupPhoto.load_associations(@group_photos, [:photo]) if @group_photos.size > 0
     
-    @group_photos = GroupPhoto.find(
-      :all,
-      :limit => Photo_Recent_List_Size,
-      :conditions => ["group_id in (?)", joined_group_ids],
-      :include => [:photo],
-      :order => "created_at DESC"
-    )
-    
-    @group_pictures = GroupPicture.find(
-      :all,
-      :limit => Picture_Recent_List_Size,
-      :conditions => ["group_id in (?)", joined_group_ids],
-      :order => "responded_at DESC, created_at DESC"
-    )
+      group_picture_sql = group_picture_sqls.join(" UNION ")
+      group_picture_sql << " LIMIT #{Picture_Recent_List_Size}"
+      @group_pictures = GroupPicture.find_by_sql(group_picture_sql)
+    end
     
   end
   
@@ -614,14 +618,20 @@ class GroupsController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @all_posts = GroupPost.paginate(
-      :page => page,
-      :per_page => Post_List_Size,
-      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.good, group_posts.responded_at, groups.name, accounts.email, accounts.nick",
-      :conditions => ["group_id in (?)", joined_group_ids],
-      :include => [:account, :group],
-      :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
-    )
+    
+    if joined_group_ids.size > 0
+      total_entries = GroupPost.count(:conditions => ["group_id in (?)", joined_group_ids])
+      sql = joined_group_ids.collect { |gid|
+        "(select id, created_at, group_id, account_id, title, good, responded_at from group_posts where group_id = #{gid} ORDER BY responded_at DESC, created_at DESC)"
+      }.join(" UNION ")
+      @all_posts = GroupPost.paginate_by_sql(
+        sql,
+        :page => page,
+        :per_page => Post_List_Size,
+        :total_entries => total_entries
+      )
+      GroupPost.load_associations(@all_posts, [:account, :group]) if @all_posts.size > 0
+    end
   end
   
   def all_activity
@@ -695,14 +705,20 @@ class GroupsController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @all_photos = GroupPhoto.paginate(
-      :page => page,
-      :per_page => Photo_List_Size,
-      :select => "group_photos.id, group_photos.created_at, group_photos.group_id, group_photos.account_id, group_photos.photo_id, groups.name, accounts.email, accounts.nick, photos.*",
-      :conditions => ["group_id in (?)", joined_group_ids],
-      :include => [:photo, :account, :group],
-      :order => "group_photos.created_at DESC"
-    )
+    
+    if joined_group_ids.size > 0
+      total_entries = GroupPhoto.count(:conditions => ["group_id in (?)", joined_group_ids])
+      sql = joined_group_ids.collect { |gid|
+        "(select * from group_photos where group_id = #{gid} ORDER BY created_at DESC)"
+      }.join(" UNION ")
+      @all_photos = GroupPhoto.paginate_by_sql(
+        sql,
+        :page => page,
+        :per_page => Photo_List_Size,
+        :total_entries => total_entries
+      )
+      GroupPhoto.load_associations(@all_photos, [:photo, :account, :group]) if @all_photos.size > 0
+    end
   end
   
   def all_picture
@@ -716,21 +732,29 @@ class GroupsController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @all_pictures = GroupPicture.paginate(
-      :page => page,
-      :per_page => Picture_List_Size,
-      :conditions => ["group_id in (?)", joined_group_ids],
-      :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
-    )
     
-    @new_comments = GroupPictureComment.find(
-      :all,
-      :limit => New_Comment_Size,
-      :conditions => ["group_picture_id in (select id from group_pictures where group_id in (?))", joined_group_ids],
-      :include => [:account => [:profile_pic]],
-      :order => "updated_at DESC"
-    )
+    if joined_group_ids.size > 0
+      total_entries = GroupPicture.count(:conditions => ["group_id in (?)", joined_group_ids])
+      sql = joined_group_ids.collect { |gid|
+        "(select * from group_pictures where group_id = #{gid} ORDER BY responded_at DESC, created_at DESC)"
+      }.join(" UNION ")
+      @all_pictures = GroupPicture.paginate_by_sql(
+        sql,
+        :page => page,
+        :per_page => Picture_List_Size,
+        :total_entries => total_entries
+      )
+      
+      if @all_pictures.size > 0
+        GroupPhoto.load_associations(@all_pictures, [:account])
+        
+        sql = @all_pictures.collect { |gp|
+          "(select * from group_picture_comments where group_picture_id = #{gp.id} ORDER BY created_at DESC)"
+        }.join(" UNION ")
+        sql << " LIMIT #{New_Comment_Size}"
+        @new_comments = GroupPictureComment.find_by_sql(sql)
+      end
+    end
   end
   
   def created_post
@@ -765,7 +789,7 @@ class GroupsController < ApplicationController
       :page => page,
       :per_page => Post_List_Size,
       :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.good, group_posts.responded_at, groups.name, accounts.email, accounts.nick",
-      :joins => "RIGHT JOIN group_post_comments ON group_posts.id = group_post_comments.group_post_id",
+      :joins => "INNER JOIN group_post_comments ON group_posts.id = group_post_comments.group_post_id",
       :conditions => ["group_post_comments.account_id = ?", @owner_id],
       :include => [:account, :group],
       # :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
