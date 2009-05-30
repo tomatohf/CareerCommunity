@@ -5,7 +5,7 @@
 		How to avoid Using temporary and Using filesort
 	- 处理含有 in (?) 的 SQL, UNION 代替
 		- http://www.igvita.com/2006/09/22/eager-find-by-sql-pagination-in-rails
-		- 将 paginate 方法 改成 直接写 SQL
+		- paginate_by_sql
 related setting:
 	- query_reviewer.yml: inject_view
 	- application.rb: after_filter OutputCompressionFilter
