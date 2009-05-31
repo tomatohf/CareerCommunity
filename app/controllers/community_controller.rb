@@ -78,7 +78,7 @@ class CommunityController < ApplicationController
       :limit => New_Group_Post_Size,
       :select => "id, title, created_at, account_id",
       :include => [:account],
-      :order => "created_at DESC"
+      :order => "responded_at DESC, created_at DESC"
     )
     
     @new_blogs = Blog.find(

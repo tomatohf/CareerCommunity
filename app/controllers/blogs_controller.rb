@@ -50,20 +50,12 @@ class BlogsController < ApplicationController
       :order => "created_at DESC"
     )
     
-    #@new_comments = BlogComment.find(
-    #  :all,
-    #  :limit => New_Comment_Size,
-    #  :conditions => ["blog_id in (?)", @blogs.collect { |b| b.id }],
-    #  :include => [:account => [:profile_pic]],
-    #  :order => "created_at DESC"
-    #)
-    if @blogs.size > 0
-      sql = @blogs.collect { |b|
-        "(select * from blog_comments where blog_id = #{b.id} ORDER BY created_at DESC)"
-      }.join(" UNION ")
-      sql << " LIMIT #{New_Comment_Size}"
-      @new_comments = BlogComment.find_by_sql(sql)
-    end
+    @new_comments = BlogComment.find(
+      :all,
+      :limit => New_Comment_Size,
+      :conditions => ["blog_id in (?)", @blogs],
+      :order => "id DESC"
+    )
   end
   
   def feed

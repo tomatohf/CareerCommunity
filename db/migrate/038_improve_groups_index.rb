@@ -18,6 +18,8 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     
     add_index :group_members, [:account_id, :accepted, :approved, :admin], 
               :name => :index_group_members_on_account_accepted_approved_admin
+    add_index :group_members, [:group_id, :accepted, :approved, :join_at], 
+              :name => :index_group_members_on_group_accepted_approved_join
     add_index :group_members, [:group_id, :accepted, :approved, :admin, :join_at], 
               :name => :index_group_members_on_group_accepted_approved_admin_join
     add_index :group_members, [:group_id, :account_id, :accepted, :approved, :admin], 
@@ -28,11 +30,12 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     remove_index :group_images, :photo_id
     
     
-    # remove_index :group_posts, :created_at
+    remove_index :group_posts, :created_at
     remove_index :group_posts, :group_id
     remove_index :group_posts, :account_id
     remove_index :group_posts, :top
     
+    add_index :group_posts, [:responded_at, :created_at]
     add_index :group_posts, [:group_id, :responded_at, :created_at]
     add_index :group_posts, [:group_id, :top, :responded_at, :created_at], 
               :name => :index_group_posts_on_group_top_responded_created
@@ -53,6 +56,7 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     remove_index :group_photos, :photo_id
     remove_index :group_photos, :account_id
     
+    add_index :group_photos, :created_at
     add_index :group_photos, [:group_id, :created_at]
     
     
@@ -68,6 +72,7 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     remove_index :group_pictures, :good
     remove_index :group_pictures, :responded_at
     
+    add_index :group_pictures, [:responded_at, :created_at]
     add_index :group_pictures, [:group_id, :responded_at, :created_at]
     add_index :group_pictures, [:group_id, :good, :responded_at, :created_at], 
               :name => :index_group_pictures_on_group_good_responded_created
@@ -92,6 +97,7 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     
     remove_index :group_pictures, :name => :index_group_pictures_on_group_good_responded_created
     remove_index :group_pictures, [:group_id, :responded_at, :created_at]
+    remove_index :group_pictures, [:responded_at, :created_at]
     
     add_index :group_pictures, :created_at
     add_index :group_pictures, :group_id
@@ -107,6 +113,7 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     
     
     remove_index :group_photos, [:group_id, :created_at]
+    remove_index :group_photos, :created_at
     
     add_index :group_photos, :group_id
     add_index :group_photos, :photo_id
@@ -125,8 +132,9 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     remove_index :group_posts, :name => :index_group_posts_on_group_good_top_responded_created
     remove_index :group_posts, :name => :index_group_posts_on_group_top_responded_created
     remove_index :group_posts, [:group_id, :responded_at, :created_at]
+    remove_index :group_posts, [:responded_at, :created_at]
     
-    # add_index :group_posts, :created_at
+    add_index :group_posts, :created_at
     add_index :group_posts, :group_id
     add_index :group_posts, :account_id
     add_index :group_posts, :top
@@ -138,6 +146,7 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     
     remove_index :group_members, :name => :index_group_members_on_group_account_accepted_approved_admin
     remove_index :group_members, :name => :index_group_members_on_group_accepted_approved_admin_join
+    remove_index :group_members, :name => :index_group_members_on_group_accepted_approved_join
     remove_index :group_members, :name => :index_group_members_on_account_accepted_approved_admin
     
     add_index :group_members, :created_at

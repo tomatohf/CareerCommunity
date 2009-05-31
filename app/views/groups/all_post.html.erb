@@ -43,7 +43,7 @@
 	
 	<div class="community_block_narrow form_info_s">
 		共有
-		<b><%= (@all_posts && @all_posts.total_entries) || 0 %></b>
+		<b><%= @all_posts.total_entries %></b>
 		个讨论话题
 	</div>
 
@@ -58,10 +58,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%= render :partial => "group_post", :collection => (@all_posts || []), :locals => {:hide_top => true} %>
+				<%= render :partial => "group_post", :collection => @all_posts, :locals => {:hide_top => true} %>
 			</tbody>
 		</table>
-		<% unless @all_posts && @all_posts.size > 0 %>
+		<% unless @all_posts.size > 0 %>
 			<div class="form_info_l">
 				还没有讨论话题 ...
 			</div>
@@ -69,7 +69,7 @@
 	</div>
 	
 	<div class="community_block">
-		<%= @all_posts && paging_buttons(@all_posts) %>
+		<%= paging_buttons(@all_posts) %>
 	</div>
 </div>
 

@@ -126,13 +126,13 @@
 					</div>
 					<% cache(Activity::FCKP_index_activity) do %>
 						<%
-							activities = Activity.find(
+							activities = Activity.uncancelled.find(
 								:all,
 								:limit => 5,
-								:conditions => ["creator_id in (?) and cancelled = ?", IndexController::Index_Activity_Account_Id_Scope, false],
+								:conditions => ["creator_id in (?)", IndexController::Index_Activity_Account_Id_Scope],
 								:select => "id, created_at, creator_id, cancelled, online, title, begin_at, end_at, application_deadline",
 								:order => "created_at DESC"
-						    )
+							)
 						%>
 						
 						<% activities.each do |activity| %>
@@ -170,7 +170,7 @@
 								:limit => 20,
 								:select => "id, created_at, group_id, title",
 								:include => [:group],
-								:order => "created_at DESC"
+								:order => "id DESC"
 						    )
 						%>
 						

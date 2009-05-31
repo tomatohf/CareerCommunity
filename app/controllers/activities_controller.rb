@@ -387,7 +387,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.uncancelled.paginate_list_by_begin_at(@date, 1.days.since(@date), page, Activity_List_Size)
+    @activities = Activity.paginate_list_by_begin_at(@date, 1.days.since(@date), page, Activity_List_Size)
     
     render(:action => "day")
   end
@@ -397,7 +397,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.uncancelled.paginate_list_by_begin_at(@date, 1.weeks.since(@date), page, Activity_List_Size)
+    @activities = Activity.paginate_list_by_begin_at(@date, 1.weeks.since(@date), page, Activity_List_Size)
     
     render(:action => "day")
   end
@@ -407,7 +407,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.uncancelled.paginate_list_by_begin_at(@date, 1.months.since(@date), page, Activity_List_Size)
+    @activities = Activity.paginate_list_by_begin_at(@date, 1.months.since(@date), page, Activity_List_Size)
     
     render(:action => "day")
   end
@@ -417,7 +417,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.uncancelled.paginate_list_by_begin_at(@date, 6.months.since(@date), page, Activity_List_Size)
+    @activities = Activity.paginate_list_by_begin_at(@date, 6.months.since(@date), page, Activity_List_Size)
     
     render(:action => "day")
   end
@@ -431,7 +431,7 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @activities = Activity.uncancelled.paginate_list_by_begin_at(@date, 1.days.since(@date), page, Activity_List_Size)
+    @activities = Activity.paginate_list_by_begin_at(@date, 1.days.since(@date), page, Activity_List_Size)
     
     render(:action => "day")
   end
@@ -723,7 +723,6 @@ class ActivitiesController < ApplicationController
         :page => page,
         :per_page => Picture_List_Size,
         :conditions => ["activity_id = ?", @activity_id],
-        :include => [:account],
         :order => "responded_at DESC, created_at DESC"
       )
       
@@ -751,7 +750,6 @@ class ActivitiesController < ApplicationController
         :page => page,
         :per_page => Picture_List_Size,
         :conditions => ["activity_id = ?", @activity_id],
-        :include => [:account],
         :order => "responded_at DESC, created_at DESC"
       )
       
@@ -826,7 +824,6 @@ class ActivitiesController < ApplicationController
       :page => page,
       :per_page => Picture_List_Size,
       :conditions => ["activity_id in (?)", joined_activity_ids],
-      :include => [:account],
       :order => "responded_at DESC, created_at DESC"
     )
     

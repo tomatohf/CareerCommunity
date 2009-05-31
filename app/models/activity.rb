@@ -311,6 +311,11 @@ class Activity < ActiveRecord::Base
   end
   
   
+  def self.load_associations(activities, includes)
+    preload_associations(activities, includes)
+  end
+  
+  
   module Status
     Registering = [1, "报名中"]
     Registered = [2, "报名结束"]

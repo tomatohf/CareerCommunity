@@ -1,4 +1,10 @@
-<% account = picture.account %>
+<%
+	account_id = picture.account_id
+	account_nick_pic = Account.get_nick_and_pic(account_id)
+	account_nick = account_nick_pic[0]
+	# no need to extract pic
+	# account_pic_url = account_nick_pic[1]
+%>
 
 <% comment_count = "#{picture_type.to_s.camelize}PictureComment".constantize.get_count(picture.id) %>
 
@@ -10,8 +16,8 @@
 	
 	<div class="form_info_s" style="margin-top: 5px;">
 		来自
-		<a href="/spaces/show/<%= account.id %>" class="account_nick_link">
-			<%= h(account.get_nick) %></a>
+		<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+			<%= h(account_nick) %></a>
 			
 		&nbsp;&nbsp;&nbsp;
 		|

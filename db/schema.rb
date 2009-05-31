@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 38) do
+ActiveRecord::Schema.define(:version => 39) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -80,17 +80,11 @@ ActiveRecord::Schema.define(:version => 38) do
     t.boolean  "online",                                                            :default => false
   end
 
-  add_index "activities", ["created_at"], :name => "index_activities_on_created_at"
-  add_index "activities", ["creator_id"], :name => "index_activities_on_creator_id"
-  add_index "activities", ["master_id"], :name => "index_activities_on_master_id"
-  add_index "activities", ["begin_at"], :name => "index_activities_on_begin_at"
-  add_index "activities", ["end_at"], :name => "index_activities_on_end_at"
-  add_index "activities", ["application_deadline"], :name => "index_activities_on_application_deadline"
-  add_index "activities", ["cost"], :name => "index_activities_on_cost"
-  add_index "activities", ["member_limit"], :name => "index_activities_on_member_limit"
-  add_index "activities", ["in_group"], :name => "index_activities_on_in_group"
   add_index "activities", ["delta"], :name => "index_activities_on_delta"
-  add_index "activities", ["online"], :name => "index_activities_on_online"
+  add_index "activities", ["cancelled", "created_at"], :name => "index_activities_on_cancelled_and_created_at"
+  add_index "activities", ["cancelled", "begin_at"], :name => "index_activities_on_cancelled_and_begin_at"
+  add_index "activities", ["cancelled", "creator_id", "created_at"], :name => "index_activities_on_cancelled_and_creator_id_and_created_at"
+  add_index "activities", ["cancelled", "in_group", "begin_at"], :name => "index_activities_on_cancelled_and_in_group_and_begin_at"
 
   create_table "activity_images", :force => true do |t|
     t.integer  "activity_id", :limit => 11
@@ -579,6 +573,7 @@ ActiveRecord::Schema.define(:version => 38) do
 
   add_index "group_members", ["delta"], :name => "index_group_members_on_delta"
   add_index "group_members", ["account_id", "accepted", "approved", "admin"], :name => "index_group_members_on_account_accepted_approved_admin"
+  add_index "group_members", ["group_id", "accepted", "approved", "join_at"], :name => "index_group_members_on_group_accepted_approved_join"
   add_index "group_members", ["group_id", "accepted", "approved", "admin", "join_at"], :name => "index_group_members_on_group_accepted_approved_admin_join"
   add_index "group_members", ["group_id", "account_id", "accepted", "approved", "admin"], :name => "index_group_members_on_group_account_accepted_approved_admin"
 
@@ -591,6 +586,7 @@ ActiveRecord::Schema.define(:version => 38) do
   end
 
   add_index "group_photos", ["delta"], :name => "index_group_photos_on_delta"
+  add_index "group_photos", ["created_at"], :name => "index_group_photos_on_created_at"
   add_index "group_photos", ["group_id", "created_at"], :name => "index_group_photos_on_group_id_and_created_at"
 
   create_table "group_picture_comments", :force => true do |t|
@@ -621,6 +617,7 @@ ActiveRecord::Schema.define(:version => 38) do
   end
 
   add_index "group_pictures", ["delta"], :name => "index_group_pictures_on_delta"
+  add_index "group_pictures", ["responded_at", "created_at"], :name => "index_group_pictures_on_responded_at_and_created_at"
   add_index "group_pictures", ["group_id", "responded_at", "created_at"], :name => "index_group_pictures_on_group_id_and_responded_at_and_created_at"
   add_index "group_pictures", ["group_id", "good", "responded_at", "created_at"], :name => "index_group_pictures_on_group_good_responded_created"
 
@@ -663,10 +660,10 @@ ActiveRecord::Schema.define(:version => 38) do
     t.boolean  "good",                       :default => false
   end
 
-  add_index "group_posts", ["created_at"], :name => "index_group_posts_on_created_at"
   add_index "group_posts", ["delta"], :name => "index_group_posts_on_delta"
   add_index "group_posts", ["responded_at"], :name => "index_group_posts_on_responded_at"
   add_index "group_posts", ["good"], :name => "index_group_posts_on_good"
+  add_index "group_posts", ["responded_at", "created_at"], :name => "index_group_posts_on_responded_at_and_created_at"
   add_index "group_posts", ["group_id", "responded_at", "created_at"], :name => "index_group_posts_on_group_id_and_responded_at_and_created_at"
   add_index "group_posts", ["group_id", "top", "responded_at", "created_at"], :name => "index_group_posts_on_group_top_responded_created"
   add_index "group_posts", ["group_id", "good", "top", "responded_at", "created_at"], :name => "index_group_posts_on_group_good_top_responded_created"
