@@ -122,10 +122,6 @@ class ActivityMember < ActiveRecord::Base
     self.agreed.find(:all, options)
   end
   
-  def self.count_admin(activity_id)
-    self.agreed.count(:conditions => ["activity_id = ? and admin = ?", activity_id, true])
-  end
-  
   def self.paginate_activity_members(activity_id, page, page_size)
     self.agreed.paginate(
       :page => page,
@@ -145,8 +141,7 @@ class ActivityMember < ActiveRecord::Base
       :page => page,
       :per_page => page_size,
       :conditions => ["activity_id = ? and accepted = ? and approved = ?", activity_id, true, false],
-      :include => [:account => [:profile_pic]],
-      :order => "created_at ASC"
+      :include => [:account => [:profile_pic]]
     )
   end
   
@@ -154,8 +149,7 @@ class ActivityMember < ActiveRecord::Base
     self.find(
       :all,
       :conditions => ["activity_id = ? and accepted = ? and approved = ?", activity_id, false, true],
-      :include => [:account => [:profile_pic]],
-      :order => "created_at DESC"
+      :include => [:account => [:profile_pic]]
     )
   end
   

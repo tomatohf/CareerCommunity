@@ -97,8 +97,6 @@ class ActivitiesController < ApplicationController
         "list_join/#{account_id}"
       when "week"
         "coming_week"
-      when "join_notbegin"
-        "list_notbegin_join/#{account_id}"
       when "create"
         "list_create/#{account_id}"
       else
@@ -122,49 +120,31 @@ class ActivitiesController < ApplicationController
     
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
-    all_activity_members = ActivityMember.agreed.find(
+    
+    @join_activity_members = ActivityMember.agreed.find(
       :all,
+      :limit => Activity_Recent_List_Size,
       :conditions => ["account_id = ?", @owner_id],
+      :include => [:activity => [:image]],
       :order => "join_at DESC"
     )
     
-    joined_activity_ids = []
-    @join_activity_members = []
-    all_activity_members.each_index do |i|
-      m = all_activity_members[i]
-      
-      joined_activity_ids << m.activity_id
-      
-      @join_activity_members << m if i < Activity_Recent_List_Size
-    end
-    
-    ActivityMember.load_activity_with_image(@join_activity_members)
-    
-    
-    all_activity_interests = ActivityInterest.find(
+    @activity_interests = ActivityInterest.find(
       :all,
+      :limit => Activity_Recent_List_Size,
       :conditions => ["account_id = ?", @owner_id],
+      :include => [:activity => [:image]],
       :order => "created_at DESC"
     )
-    
-    activity_interest_ids = []
-    @activity_interests = []
-    all_activity_interests.each_index do |i|
-      interests = all_activity_interests[i]
-      
-      activity_interest_ids << interests.activity_id
-      
-      @activity_interests << interests if i < Activity_Recent_List_Size
-    end
-    
-    ActivityInterest.load_activity_with_image(@activity_interests)
     
     
     @join_activity_posts = ActivityPost.find(
       :all,
       :limit => Post_Recent_List_Size,
       :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.good, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
-      :conditions => ["activity_id in (?)", joined_activity_ids],
+      :joins => "INNER JOIN activity_members ON activity_posts.activity_id = activity_members.activity_id",
+      :conditions => ["activity_members.account_id = ? and activity_members.accepted = 1 and activity_members.approved = 1", 
+                      @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
     )
@@ -173,7 +153,8 @@ class ActivitiesController < ApplicationController
       :all,
       :limit => Post_Recent_List_Size,
       :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.good, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
-      :conditions => ["activity_id in (?)", activity_interest_ids],
+      :joins => "INNER JOIN activity_interests ON activity_posts.activity_id = activity_interests.activity_id",
+      :conditions => ["activity_interests.account_id = ?", @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
     )
@@ -181,16 +162,20 @@ class ActivitiesController < ApplicationController
     @activity_photos = ActivityPhoto.find(
       :all,
       :limit => Photo_Recent_List_Size,
-      :conditions => ["activity_id in (?)", joined_activity_ids],
+      :joins => "INNER JOIN activity_members ON activity_photos.activity_id = activity_members.activity_id",
+      :conditions => ["activity_members.account_id = ? and activity_members.accepted = 1 and activity_members.approved = 1", 
+                      @owner_id],
       :include => [:photo],
-      :order => "created_at DESC"
+      :order => "activity_photos.created_at DESC"
     )
     
     @activity_pictures = ActivityPicture.find(
       :all,
       :limit => Picture_Recent_List_Size,
-      :conditions => ["activity_id in (?)", joined_activity_ids],
-      :order => "responded_at DESC, created_at DESC"
+      :joins => "INNER JOIN activity_members ON activity_pictures.activity_id = activity_members.activity_id",
+      :conditions => ["activity_members.account_id = ? and activity_members.accepted = 1 and activity_members.approved = 1", 
+                      @owner_id],
+      :order => "activity_pictures.responded_at DESC, activity_pictures.created_at DESC"
     )
     
   end
@@ -253,30 +238,30 @@ class ActivitiesController < ApplicationController
     activity_id = params[:id]
     ActivityInterest.find(
       :all,
-      :conditions => ["account_id = ? and activity_id = ?", session[:account_id], activity_id]
+      :conditions => ["activity_id = ? and account_id = ?", activity_id, session[:account_id]]
     ).each { |ai| ai.destroy }
     
     jump_to("/activities/list_interest/#{session[:account_id]}")
   end
   
   
-  def list_notbegin_join
-    @owner_id = params[:id]
-    
-    @edit = (session[:account_id].to_s == params[:id])
-    
-    @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
-    
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    @activities = ActivityMember.agreed.paginate(
-      :page => page,
-      :per_page => Activity_List_Size,
-      :conditions => ["account_id = ? and activities.begin_at > ?", @owner_id, DateTime.now],
-      :include => [:activity => [:image]],
-      :order => "activities.begin_at ASC"
-    )
-  end
+  # def list_notbegin_join
+  #   @owner_id = params[:id]
+  #   
+  #   @edit = (session[:account_id].to_s == params[:id])
+  #   
+  #   @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
+  #   
+  #   page = params[:page]
+  #   page = 1 unless page =~ /\d+/
+  #   @activities = ActivityMember.agreed.paginate(
+  #     :page => page,
+  #     :per_page => Activity_List_Size,
+  #     :conditions => ["account_id = ? and activities.begin_at > ?", @owner_id, DateTime.now],
+  #     :include => [:activity => [:image]],
+  #     :order => "activities.begin_at ASC"
+  #   )
+  # end
   
   def list_friend
     @owner_id = params[:id]
@@ -807,32 +792,22 @@ class ActivitiesController < ApplicationController
     
     @owner_nick_pic = Account.get_nick_and_pic(@owner_id) unless @edit
     
-    activity_members = ActivityMember.agreed.find(
-      :all,
-      :conditions => ["account_id = ?", @owner_id],
-      :order => "join_at DESC"
-    )
-    joined_activity_ids = activity_members.collect do |member|
-      ActivityMember.set_activity_member_cache(member.activity_id, member.account_id, member)
-      
-      member.activity_id
-    end
-    
     page = params[:page]
     page = 1 unless page =~ /\d+/
     @all_pictures = ActivityPicture.paginate(
       :page => page,
       :per_page => Picture_List_Size,
-      :conditions => ["activity_id in (?)", joined_activity_ids],
-      :order => "responded_at DESC, created_at DESC"
+      :joins => "INNER JOIN activity_members ON activity_pictures.activity_id = activity_members.activity_id",
+      :conditions => ["activity_members.account_id = ? and activity_members.accepted = 1 and activity_members.approved = 1", 
+                      @owner_id],
+      :order => "activity_pictures.responded_at DESC, activity_pictures.created_at DESC"
     )
     
     @new_comments = ActivityPictureComment.find(
       :all,
       :limit => New_Comment_Size,
-      :conditions => ["activity_picture_id in (select id from activity_pictures where activity_id in (?))", joined_activity_ids],
-      :include => [:account => [:profile_pic]],
-      :order => "updated_at DESC"
+      :conditions => ["activity_picture_id in (?)", @all_pictures],
+      :order => "id DESC"
     )
   end
   
@@ -1248,14 +1223,17 @@ class ActivitiesController < ApplicationController
   def add_admin
     member_id = params[:add_admin_id] && params[:add_admin_id].strip
     
-    admin_count = ActivityMember.count_admin(@activity_id)
-    if admin_count < Activity_Admin_Max_Count
+    # disable admin count check ...
+    # since it's not so necessary
+    # while it would require extra index
+    # admin_count = ActivityMember.agreed.count(:conditions => ["activity_id = ? and admin = ?", @activity_id, true])
+    # if admin_count < Activity_Admin_Max_Count
       activity_member = ActivityMember.get_by_activity_and_account(@activity_id, member_id)
       if activity_member && activity_member.agreed && (!activity_member.admin)
         activity_member.admin = true
         activity_member.save
       end
-    end
+    # end
     
     jump_to("/activities/members_master/#{@activity_id}")
   end

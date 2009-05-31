@@ -1,4 +1,9 @@
-﻿群发邮件
+﻿检查之前调整的索引
+	- account_actions
+	- 改变查看动态的逻辑
+
+
+群发邮件
 	- http://www.google.cn/search?hl=zh-CN&newwindow=1&q=%E5%8F%91+newsletter&btnG=Google+%E6%90%9C%E7%B4%A2&meta=&aq=f&oq=
 	- http://bbs.fobshanghai.com/viewthread.php?tid=1772261&sid=OcE3ep
 	- http://www.etobao.com/ETO/newsletter/login.jsp

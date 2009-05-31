@@ -132,7 +132,7 @@ class SpacesController < ApplicationController
       :limit => Space_Group_Num,
       :conditions => ["account_id = ?", @account_id],
       :include => [:group => [:image]],
-      :order => "join_at DESC"
+      :order => "admin DESC, join_at DESC"
     )
     
     

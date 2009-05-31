@@ -78,7 +78,7 @@ class AccountSetting < ActiveRecord::Base
     # "all" or "recent" or "join" or "admin"
     :module_group_index => "recent",
     # activity
-    # "all" or "week" or "recent" or "join" or "join_notbegin" or "create"
+    # "all" or "week" or "recent" or "join" or "create"
     :module_activity_index => "all",
     
     :dumy => ""
@@ -108,7 +108,7 @@ class AccountSetting < ActiveRecord::Base
   end
   
   def self.valid_activity_index_setting_values
-    ["all", "week", "recent", "join", "join_notbegin", "create"]
+    ["all", "week", "recent", "join", "create"]
   end
   
   def self.valid_account_action_setting_values

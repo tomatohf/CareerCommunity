@@ -217,8 +217,9 @@ class GroupsController < ApplicationController
       :page => page,
       :per_page => Group_List_Size,
       :conditions => conditions,
-      :include => [:group => [:image]]
-    ).reverse
+      :include => [:group => [:image]],
+      :order => "admin DESC, join_at DESC"
+    )
   end
   
   def list_admin

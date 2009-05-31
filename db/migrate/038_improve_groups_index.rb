@@ -16,8 +16,8 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     remove_index :group_members, :admin
     remove_index :group_members, [:group_id, :account_id]
     
-    add_index :group_members, [:account_id, :accepted, :approved, :admin], 
-              :name => :index_group_members_on_account_accepted_approved_admin
+    add_index :group_members, [:account_id, :accepted, :approved, :admin, :join_at], 
+              :name => :index_group_members_on_account_accepted_approved_admin_join
     add_index :group_members, [:group_id, :accepted, :approved, :join_at], 
               :name => :index_group_members_on_group_accepted_approved_join
     add_index :group_members, [:group_id, :accepted, :approved, :admin, :join_at], 
@@ -147,7 +147,7 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     remove_index :group_members, :name => :index_group_members_on_group_account_accepted_approved_admin
     remove_index :group_members, :name => :index_group_members_on_group_accepted_approved_admin_join
     remove_index :group_members, :name => :index_group_members_on_group_accepted_approved_join
-    remove_index :group_members, :name => :index_group_members_on_account_accepted_approved_admin
+    remove_index :group_members, :name => :index_group_members_on_account_accepted_approved_admin_join
     
     add_index :group_members, :created_at
     add_index :group_members, :updated_at

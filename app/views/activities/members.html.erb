@@ -122,11 +122,14 @@
 				<img src="/images/groups/minus_small.png" border="0" /></a>
 			将活动的管理员降为普通成员
 		</div>
+		
+		<% if false %>
 		<div class="community_block_narrow form_info_s">
 			注意: 除负责人外, 最多只能再设置
 			<b><%= ActivitiesController::Activity_Admin_Max_Count - 1 %></b>
 			名管理员
 		</div>
+		<% end %>
 	<% end %>
 	
 	

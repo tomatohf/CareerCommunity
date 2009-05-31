@@ -191,7 +191,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/activities/list_join/:id/:page", :controller => "activities", :action => "list_join", :id => /\d+/, :page => /\d+/
   map.connect "/activities/list_create/:id/:page", :controller => "activities", :action => "list_create", :id => /\d+/, :page => /\d+/
   map.connect "/activities/list_interest/:id/:page", :controller => "activities", :action => "list_interest", :id => /\d+/, :page => /\d+/
-  map.connect "/activities/list_notbegin_join/:id/:page", :controller => "activities", :action => "list_notbegin_join", :id => /\d+/, :page => /\d+/
+  # map.connect "/activities/list_notbegin_join/:id/:page", :controller => "activities", :action => "list_notbegin_join", :id => /\d+/, :page => /\d+/
   map.connect "/activities/list_attend/:id/:page", :controller => "activities", :action => "list_attend", :id => /\d+/, :page => /\d+/
   map.connect "/activities/list_absent/:id/:page", :controller => "activities", :action => "list_absent", :id => /\d+/, :page => /\d+/
   map.connect "/activities/post/:id/:page", :controller => "activities", :action => "post", :id => /\d+/, :page => /\d+/

@@ -75,11 +75,13 @@
 	<div class="community_title">
 		报名参加的活动 ...
 	</div>
+	<% if false %>
 	<div class="community_block">
 		<a href="/activities/list_notbegin_join/<%= @owner_id %>">
 			所有参加的尚未开始的活动
 		</a>
 	</div>
+	<% end %>
 	<div class="community_block">
 		<div class="space_section_title">
 			<a class="float_r" title="收起" id="join_activity_section_expand" href="#" onclick="collapse_section('join_activity_section'); return false;">
