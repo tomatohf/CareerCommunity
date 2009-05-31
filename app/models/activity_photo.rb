@@ -15,4 +15,9 @@ class ActivityPhoto < ActiveRecord::Base
   Count_Cache_Group_Field = :activity_id
   include CareerCommunity::CountCacheable
   
+  
+  def self.load_associations(photos, includes)
+    preload_associations(photos, includes)
+  end
+  
 end

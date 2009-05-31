@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 38) do
+ActiveRecord::Schema.define(:version => 39) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -81,16 +81,10 @@ ActiveRecord::Schema.define(:version => 38) do
   end
 
   add_index "activities", ["delta"], :name => "index_activities_on_delta"
-  add_index "activities", ["created_at"], :name => "index_activities_on_created_at"
-  add_index "activities", ["creator_id"], :name => "index_activities_on_creator_id"
-  add_index "activities", ["master_id"], :name => "index_activities_on_master_id"
-  add_index "activities", ["begin_at"], :name => "index_activities_on_begin_at"
-  add_index "activities", ["end_at"], :name => "index_activities_on_end_at"
-  add_index "activities", ["application_deadline"], :name => "index_activities_on_application_deadline"
-  add_index "activities", ["cost"], :name => "index_activities_on_cost"
-  add_index "activities", ["member_limit"], :name => "index_activities_on_member_limit"
-  add_index "activities", ["in_group"], :name => "index_activities_on_in_group"
-  add_index "activities", ["online"], :name => "index_activities_on_online"
+  add_index "activities", ["cancelled", "created_at"], :name => "index_activities_on_cancelled_and_created_at"
+  add_index "activities", ["cancelled", "begin_at"], :name => "index_activities_on_cancelled_and_begin_at"
+  add_index "activities", ["cancelled", "creator_id", "created_at"], :name => "index_activities_on_cancelled_and_creator_id_and_created_at"
+  add_index "activities", ["cancelled", "in_group", "begin_at"], :name => "index_activities_on_cancelled_and_in_group_and_begin_at"
 
   create_table "activity_images", :force => true do |t|
     t.integer  "activity_id", :limit => 11
@@ -100,7 +94,6 @@ ActiveRecord::Schema.define(:version => 38) do
   end
 
   add_index "activity_images", ["activity_id"], :name => "index_activity_images_on_activity_id"
-  add_index "activity_images", ["photo_id"], :name => "index_activity_images_on_photo_id"
   add_index "activity_images", ["delta"], :name => "index_activity_images_on_delta"
 
   create_table "activity_interests", :force => true do |t|
@@ -111,9 +104,8 @@ ActiveRecord::Schema.define(:version => 38) do
   end
 
   add_index "activity_interests", ["delta"], :name => "index_activity_interests_on_delta"
-  add_index "activity_interests", ["created_at"], :name => "index_activity_interests_on_created_at"
-  add_index "activity_interests", ["activity_id"], :name => "index_activity_interests_on_activity_id"
-  add_index "activity_interests", ["account_id"], :name => "index_activity_interests_on_account_id"
+  add_index "activity_interests", ["account_id", "created_at"], :name => "index_activity_interests_on_account_id_and_created_at"
+  add_index "activity_interests", ["activity_id", "created_at"], :name => "index_activity_interests_on_activity_id_and_created_at"
   add_index "activity_interests", ["activity_id", "account_id"], :name => "index_activity_interests_on_activity_id_and_account_id"
 
   create_table "activity_members", :force => true do |t|
@@ -130,16 +122,11 @@ ActiveRecord::Schema.define(:version => 38) do
   end
 
   add_index "activity_members", ["delta"], :name => "index_activity_members_on_delta"
-  add_index "activity_members", ["created_at"], :name => "index_activity_members_on_created_at"
-  add_index "activity_members", ["updated_at"], :name => "index_activity_members_on_updated_at"
-  add_index "activity_members", ["join_at"], :name => "index_activity_members_on_join_at"
-  add_index "activity_members", ["activity_id"], :name => "index_activity_members_on_activity_id"
-  add_index "activity_members", ["account_id"], :name => "index_activity_members_on_account_id"
-  add_index "activity_members", ["accepted"], :name => "index_activity_members_on_accepted"
-  add_index "activity_members", ["approved"], :name => "index_activity_members_on_approved"
-  add_index "activity_members", ["absent"], :name => "index_activity_members_on_absent"
-  add_index "activity_members", ["activity_id", "account_id"], :name => "index_activity_members_on_activity_id_and_account_id"
-  add_index "activity_members", ["admin"], :name => "index_activity_members_on_admin"
+  add_index "activity_members", ["account_id", "accepted", "approved", "join_at"], :name => "index_activity_members_on_account_accepted_approved_join"
+  add_index "activity_members", ["activity_id", "accepted", "approved", "join_at"], :name => "index_activity_members_on_activity_accepted_approved_join"
+  add_index "activity_members", ["activity_id", "accepted", "approved", "admin", "join_at"], :name => "index_activity_members_on_activity_accepted_approved_admin_join"
+  add_index "activity_members", ["activity_id", "account_id", "accepted", "approved", "admin"], :name => "index_activity_members_on_act_acc_accepted_approved_admin"
+  add_index "activity_members", ["activity_id", "accepted", "approved", "absent", "join_at"], :name => "index_activity_members_on_act_acc_approved_absent_join"
 
   create_table "activity_photos", :force => true do |t|
     t.datetime "created_at"
@@ -149,10 +136,9 @@ ActiveRecord::Schema.define(:version => 38) do
     t.boolean  "delta"
   end
 
-  add_index "activity_photos", ["activity_id"], :name => "index_activity_photos_on_activity_id"
-  add_index "activity_photos", ["photo_id"], :name => "index_activity_photos_on_photo_id"
-  add_index "activity_photos", ["account_id"], :name => "index_activity_photos_on_account_id"
   add_index "activity_photos", ["delta"], :name => "index_activity_photos_on_delta"
+  add_index "activity_photos", ["created_at"], :name => "index_activity_photos_on_created_at"
+  add_index "activity_photos", ["activity_id", "created_at"], :name => "index_activity_photos_on_activity_id_and_created_at"
 
   create_table "activity_picture_comments", :force => true do |t|
     t.integer  "activity_picture_id", :limit => 11
@@ -163,10 +149,8 @@ ActiveRecord::Schema.define(:version => 38) do
     t.boolean  "delta"
   end
 
-  add_index "activity_picture_comments", ["activity_picture_id"], :name => "index_activity_picture_comments_on_activity_picture_id"
-  add_index "activity_picture_comments", ["account_id"], :name => "index_activity_picture_comments_on_account_id"
-  add_index "activity_picture_comments", ["created_at"], :name => "index_activity_picture_comments_on_created_at"
   add_index "activity_picture_comments", ["delta"], :name => "index_activity_picture_comments_on_delta"
+  add_index "activity_picture_comments", ["activity_picture_id", "created_at"], :name => "index_activity_picture_comments_on_picture_created"
 
   create_table "activity_pictures", :force => true do |t|
     t.datetime "created_at"
@@ -183,13 +167,9 @@ ActiveRecord::Schema.define(:version => 38) do
     t.boolean  "delta"
   end
 
-  add_index "activity_pictures", ["created_at"], :name => "index_activity_pictures_on_created_at"
-  add_index "activity_pictures", ["activity_id"], :name => "index_activity_pictures_on_activity_id"
-  add_index "activity_pictures", ["account_id"], :name => "index_activity_pictures_on_account_id"
-  add_index "activity_pictures", ["top"], :name => "index_activity_pictures_on_top"
-  add_index "activity_pictures", ["good"], :name => "index_activity_pictures_on_good"
-  add_index "activity_pictures", ["responded_at"], :name => "index_activity_pictures_on_responded_at"
   add_index "activity_pictures", ["delta"], :name => "index_activity_pictures_on_delta"
+  add_index "activity_pictures", ["activity_id", "responded_at", "created_at"], :name => "index_activity_pictures_on_activity_responded_created"
+  add_index "activity_pictures", ["activity_id", "good", "responded_at", "created_at"], :name => "index_activity_pictures_on_activity_good_responded_created"
 
   create_table "activity_post_attachments", :force => true do |t|
     t.datetime "created_at"
@@ -202,9 +182,7 @@ ActiveRecord::Schema.define(:version => 38) do
     t.boolean  "delta"
   end
 
-  add_index "activity_post_attachments", ["created_at"], :name => "index_activity_post_attachments_on_created_at"
   add_index "activity_post_attachments", ["activity_post_id"], :name => "index_activity_post_attachments_on_activity_post_id"
-  add_index "activity_post_attachments", ["account_id"], :name => "index_activity_post_attachments_on_account_id"
 
   create_table "activity_post_comments", :force => true do |t|
     t.integer  "activity_post_id", :limit => 11
@@ -215,10 +193,9 @@ ActiveRecord::Schema.define(:version => 38) do
     t.boolean  "delta"
   end
 
-  add_index "activity_post_comments", ["activity_post_id"], :name => "index_activity_post_comments_on_activity_post_id"
-  add_index "activity_post_comments", ["account_id"], :name => "index_activity_post_comments_on_account_id"
-  add_index "activity_post_comments", ["created_at"], :name => "index_activity_post_comments_on_created_at"
   add_index "activity_post_comments", ["delta"], :name => "index_activity_post_comments_on_delta"
+  add_index "activity_post_comments", ["activity_post_id", "created_at"], :name => "index_activity_post_comments_on_activity_post_id_and_created_at"
+  add_index "activity_post_comments", ["account_id", "created_at"], :name => "index_activity_post_comments_on_account_id_and_created_at"
 
   create_table "activity_posts", :force => true do |t|
     t.datetime "created_at"
@@ -233,13 +210,13 @@ ActiveRecord::Schema.define(:version => 38) do
     t.boolean  "good",                       :default => false
   end
 
-  add_index "activity_posts", ["created_at"], :name => "index_activity_posts_on_created_at"
-  add_index "activity_posts", ["activity_id"], :name => "index_activity_posts_on_activity_id"
-  add_index "activity_posts", ["account_id"], :name => "index_activity_posts_on_account_id"
-  add_index "activity_posts", ["top"], :name => "index_activity_posts_on_top"
   add_index "activity_posts", ["delta"], :name => "index_activity_posts_on_delta"
   add_index "activity_posts", ["responded_at"], :name => "index_activity_posts_on_responded_at"
   add_index "activity_posts", ["good"], :name => "index_activity_posts_on_good"
+  add_index "activity_posts", ["activity_id", "responded_at", "created_at"], :name => "index_activity_posts_on_activity_responded_created"
+  add_index "activity_posts", ["activity_id", "top", "responded_at", "created_at"], :name => "index_activity_posts_on_activity_top_responded_created"
+  add_index "activity_posts", ["activity_id", "good", "top", "responded_at", "created_at"], :name => "index_activity_posts_on_activity_good_top_responded_created"
+  add_index "activity_posts", ["account_id", "responded_at", "created_at"], :name => "index_activity_posts_on_account_responded_created"
 
   create_table "albums", :force => true do |t|
     t.datetime "created_at"

@@ -17,12 +17,17 @@
 	]
 	
 	
-	all_photos = ActivityPhoto.find(
-		:all,
-		:conditions => ["activity_id in (?)", activities.collect { |a| a[0] }],
-		:include => [:photo],
-		:order => "created_at DESC"
-	)
+	# all_photos = ActivityPhoto.find(
+	# 	:all,
+	# 	:conditions => ["activity_id in (?)", activities.collect { |a| a[0] }],
+	# 	:include => [:photo],
+	# 	:order => "created_at DESC"
+	# )
+	sql = activities.collect { |a| 
+		"(SELECT * FROM activity_photos WHERE activity_id = #{a[0]})"
+	}.join(" UNION ")
+	all_photos = ActivityPhoto.find_by_sql(sql)
+	ActivityPhoto.load_associations(all_photos, [:photo])
 %>
 
 <% activities.each_index do |i| %>

@@ -70,7 +70,7 @@ class CommunityController < ApplicationController
       :limit => New_Activity_Post_Size,
       :select => "id, title, created_at, account_id",
       :include => [:account],
-      :order => "created_at DESC"
+      :order => "id DESC"
     )
 
     @new_group_posts = GroupPost.find(

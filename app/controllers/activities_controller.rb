@@ -305,10 +305,12 @@ class ActivitiesController < ApplicationController
       :page => page,
       :per_page => Post_List_Size,
       :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
-      :conditions => ["activity_posts.id in (select activity_post_id from activity_post_comments where account_id = ?)", @owner_id],
+      :joins => "INNER JOIN activity_post_comments ON activity_posts.id = activity_post_comments.activity_post_id",
+      :conditions => ["activity_post_comments.account_id = ?", @owner_id],
       :include => [:account, :activity],
-      :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
-    )
+      # :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
+      :order => "activity_post_comments.created_at DESC"
+    ).sort! { |x, y| (y.responded_at || y.created_at) <=> (x.responded_at || x.created_at) }
   end
   
   def all_join_post
@@ -325,8 +327,10 @@ class ActivitiesController < ApplicationController
     @all_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
-      :conditions => ["activity_id in (select activity_id from activity_members where account_id = ? and accepted = ? and approved = ?)", @owner_id, true, true],
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.good, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
+      :joins => "INNER JOIN activity_members ON activity_posts.activity_id = activity_members.activity_id",
+      :conditions => ["activity_members.account_id = ? and activity_members.accepted = 1 and activity_members.approved = 1", 
+                      @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
     )
@@ -349,7 +353,8 @@ class ActivitiesController < ApplicationController
       :page => page,
       :per_page => Post_List_Size,
       :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
-      :conditions => ["activity_id in (select activity_id from activity_interests where account_id = ?)", @owner_id],
+      :joins => "INNER JOIN activity_interests ON activity_posts.activity_id = activity_interests.activity_id",
+      :conditions => ["activity_interests.account_id = ?", @owner_id],
       :include => [:account, :activity],
       :order => "activity_posts.responded_at DESC, activity_posts.created_at DESC"
     )
@@ -715,7 +720,6 @@ class ActivitiesController < ApplicationController
         :all,
         :limit => New_Comment_Size,
         :conditions => ["activity_picture_id in (select id from activity_pictures where activity_id = ?)", @activity_id],
-        :include => [:account => [:profile_pic]],
         :order => "updated_at DESC"
       )
     end
@@ -742,7 +746,6 @@ class ActivitiesController < ApplicationController
         :all,
         :limit => New_Comment_Size,
         :conditions => ["activity_picture_id in (select id from activity_pictures where activity_id = ? and good = ?)", @activity_id, true],
-        :include => [:account => [:profile_pic]],
         :order => "updated_at DESC"
       )
     end
