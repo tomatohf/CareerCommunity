@@ -141,7 +141,7 @@ class PostsController < ApplicationController
         :limit => Same_Author_Post_Num,
         :select => "id, created_at, account_id, title, responded_at",
         :conditions => ["account_id = ?", @post.account_id],
-        :order => "responded_at DESC, created_at DESC"
+        :order => "responded_at DESC"
       )
     
       # should NOT cache the access check
@@ -280,7 +280,7 @@ class PostsController < ApplicationController
     if ENV["RAILS_ENV"] == "production"
       # invoke the x-sendfile of lighttpd to download file
       response.headers["Content-Type"] = @attachment.attachment_content_type
-      response.headers["Content-Disposition"] = %Q!attachment; filename="#{@attachment.attachment_file_name}"!
+      response.headers["Content-Disposition"] = %Q!attachment; filename="#{URI.encode(@attachment.attachment_file_name)}"!
       response.headers["Content-Length"] = @attachment.attachment_file_size
       response.headers["X-LIGHTTPD-send-file"] = @attachment.attachment.path
       # response.headers["X-sendfile"] = @attachment.attachment.path

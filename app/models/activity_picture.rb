@@ -112,7 +112,7 @@ class ActivityPicture < ActiveRecord::Base
         :all,
         :select => "id",
         :conditions => ["activity_id = ?", activity_id],
-        :order => "responded_at DESC, created_at DESC"
+        :order => "responded_at DESC"
       ).collect { |p| p.id }
       
       Cache.set("#{CKP_activity_pictures_id}_#{activity_id}".to_sym, pictures_id, Cache_TTL)

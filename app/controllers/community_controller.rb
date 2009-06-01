@@ -78,7 +78,7 @@ class CommunityController < ApplicationController
       :limit => New_Group_Post_Size,
       :select => "id, title, created_at, account_id",
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
     
     @new_blogs = Blog.find(
@@ -109,7 +109,8 @@ class CommunityController < ApplicationController
   
   def interval
     unread_msg_count_txt = ""
-    community_im_status_txt = ""
+    community_im_status_txt = "即时聊天 离线"
+    community_im_status_img = "/images/chats/offline_icon.gif"
     
     if has_login?
       
@@ -120,9 +121,10 @@ class CommunityController < ApplicationController
       total_unread_msg_count = unread_inbox_count + unread_sys_count
       unread_msg_count_txt = "(#{total_unread_msg_count})" if total_unread_msg_count > 0
       
-      is_online = ChatsController.helpers.online?(account_id)
-      community_im_status_txt = is_online ? "即时聊天 在线" : "即时聊天 离线"
-      community_im_status_img = is_online ? "/images/chats/online_icon.gif" : "/images/chats/offline_icon.gif"
+      if ChatsController.helpers.online?(account_id)
+        community_im_status_txt = "即时聊天 在线"
+        community_im_status_img = "/images/chats/online_icon.gif"
+      end
       
     end
     

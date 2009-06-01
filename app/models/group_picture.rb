@@ -101,7 +101,7 @@ class GroupPicture < ActiveRecord::Base
         :all,
         :select => "id",
         :conditions => ["group_id = ?", group_id],
-        :order => "responded_at DESC, created_at DESC"
+        :order => "responded_at DESC"
       ).collect { |p| p.id }
       
       Cache.set("#{CKP_group_pictures_id}_#{group_id}".to_sym, pictures_id, Cache_TTL)

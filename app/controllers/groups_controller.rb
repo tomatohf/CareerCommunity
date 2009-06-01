@@ -89,7 +89,7 @@ class GroupsController < ApplicationController
           :limit => Post_List_Size,
           :conditions => ["group_id = ?", @group_id],
           :include => [:account],
-          :order => "responded_at DESC, created_at DESC"
+          :order => "responded_at DESC"
         )
 
         render :layout => false
@@ -157,7 +157,7 @@ class GroupsController < ApplicationController
         :limit => Post_Recent_List_Size,
         :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
         :conditions => ["group_id in (?)", joined_group_ids],
-        :order => "responded_at DESC, created_at DESC"
+        :order => "responded_at DESC"
       )
       GroupPost.load_associations(@group_posts, [:account, :group]) if @group_posts.size > 0
           
@@ -197,7 +197,7 @@ class GroupsController < ApplicationController
         :all,
         :limit => Picture_Recent_List_Size,
         :conditions => ["group_id in (?)", joined_group_ids],
-        :order => "responded_at DESC, created_at DESC"
+        :order => "responded_at DESC"
       )
     end
     
@@ -339,7 +339,7 @@ class GroupsController < ApplicationController
       :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
       :conditions => ["group_id = ? and top = ?", @group_id, true],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     ) if @can_list_post
     
     @group_posts = GroupPost.find(
@@ -348,7 +348,7 @@ class GroupsController < ApplicationController
       :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
       :conditions => ["group_id = ? and top = ?", @group_id, false],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     ) if @can_list_post
     
     @group_activities = Activity.uncancelled.find(
@@ -380,7 +380,7 @@ class GroupsController < ApplicationController
       :all,
       :limit => Group_Photo_Num,
       :conditions => ["group_id = ?", @group_id],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
     @all_group_picture_count = GroupPicture.get_count(@group_id) if @group_pictures.size > 0
     
@@ -404,7 +404,7 @@ class GroupsController < ApplicationController
       :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
       :conditions => ["group_id = ? and top = ?", @group_id, true],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     ) if @can_view
     
     if @can_view
@@ -416,7 +416,7 @@ class GroupsController < ApplicationController
         :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
         :conditions => ["group_id = ? and top = ?", @group_id, false],
         :include => [:account],
-        :order => "responded_at DESC, created_at DESC"
+        :order => "responded_at DESC"
       )
     end
   end
@@ -434,7 +434,7 @@ class GroupsController < ApplicationController
       :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
       :conditions => ["group_id = ? and top = ?", @group_id, true],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     ) if @can_view
     
     if @can_view
@@ -446,7 +446,7 @@ class GroupsController < ApplicationController
         :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
         :conditions => ["group_id = ? and top = ?", @group_id, false],
         :include => [:account],
-        :order => "responded_at DESC, created_at DESC"
+        :order => "responded_at DESC"
       )
     end
   end
@@ -465,7 +465,7 @@ class GroupsController < ApplicationController
         :page => page,
         :per_page => Picture_List_Size,
         :conditions => ["group_id = ?", @group_id],
-        :order => "responded_at DESC, created_at DESC"
+        :order => "responded_at DESC"
       )
       
       @new_comments = GroupPictureComment.find(
@@ -491,7 +491,7 @@ class GroupsController < ApplicationController
         :page => page,
         :per_page => Picture_List_Size,
         :conditions => ["group_id = ?", @group_id],
-        :order => "responded_at DESC, created_at DESC"
+        :order => "responded_at DESC"
       )
       
       @new_comments = GroupPictureComment.find(
@@ -619,7 +619,7 @@ class GroupsController < ApplicationController
       :per_page => Post_List_Size,
       :select => "id, created_at, group_id, account_id, title, good, responded_at",
       :conditions => ["group_id in (?)", joined_group_ids],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
     GroupPost.load_associations(@all_posts, [:account, :group]) if @all_posts.size > 0
   end
@@ -720,7 +720,7 @@ class GroupsController < ApplicationController
       :page => page,
       :per_page => Picture_List_Size,
       :conditions => ["group_id in (?)", joined_group_ids],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
     
     @new_comments = GroupPictureComment.find(
@@ -746,7 +746,7 @@ class GroupsController < ApplicationController
       :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.good, group_posts.responded_at, groups.name, accounts.email, accounts.nick",
       :conditions => ["account_id = ?", @owner_id],
       :include => [:account, :group],
-      :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
+      :order => "group_posts.responded_at DESC"
     )
   end
   
@@ -766,9 +766,9 @@ class GroupsController < ApplicationController
       :joins => "INNER JOIN group_post_comments ON group_posts.id = group_post_comments.group_post_id",
       :conditions => ["group_post_comments.account_id = ?", @owner_id],
       :include => [:account, :group],
-      # :order => "group_posts.responded_at DESC, group_posts.created_at DESC"
+      # :order => "group_posts.responded_at DESC"
       :order => "group_post_comments.created_at DESC"
-    ).sort! { |x, y| (y.responded_at || y.created_at) <=> (x.responded_at || x.created_at) }
+    ).sort! { |x, y| y.responded_at <=> x.responded_at }
   end
   
   def edit_image

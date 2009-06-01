@@ -34,14 +34,13 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     remove_index :group_posts, :group_id
     remove_index :group_posts, :account_id
     remove_index :group_posts, :top
+    remove_index :group_posts, :good
+    # remove_index :group_posts, :responded_at
     
-    add_index :group_posts, [:responded_at, :created_at]
-    add_index :group_posts, [:group_id, :responded_at, :created_at]
-    add_index :group_posts, [:group_id, :top, :responded_at, :created_at], 
-              :name => :index_group_posts_on_group_top_responded_created
-    add_index :group_posts, [:group_id, :good, :top, :responded_at, :created_at], 
-              :name => :index_group_posts_on_group_good_top_responded_created
-    add_index :group_posts, [:account_id, :responded_at, :created_at]
+    add_index :group_posts, [:group_id, :responded_at]
+    add_index :group_posts, [:group_id, :top, :responded_at]
+    add_index :group_posts, [:group_id, :good, :top, :responded_at]
+    add_index :group_posts, [:account_id, :responded_at]
     
     
     remove_index :group_post_comments, :group_post_id
@@ -70,12 +69,10 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     remove_index :group_pictures, :account_id
     remove_index :group_pictures, :top
     remove_index :group_pictures, :good
-    remove_index :group_pictures, :responded_at
+    # remove_index :group_pictures, :responded_at
     
-    add_index :group_pictures, [:responded_at, :created_at]
-    add_index :group_pictures, [:group_id, :responded_at, :created_at]
-    add_index :group_pictures, [:group_id, :good, :responded_at, :created_at], 
-              :name => :index_group_pictures_on_group_good_responded_created
+    add_index :group_pictures, [:group_id, :responded_at]
+    add_index :group_pictures, [:group_id, :good, :responded_at]
     
     
     remove_index :group_picture_comments, :group_picture_id
@@ -95,16 +92,15 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     add_index :group_picture_comments, :created_at
     
     
-    remove_index :group_pictures, :name => :index_group_pictures_on_group_good_responded_created
-    remove_index :group_pictures, [:group_id, :responded_at, :created_at]
-    remove_index :group_pictures, [:responded_at, :created_at]
+    remove_index :group_pictures, [:group_id, :good, :responded_at]
+    remove_index :group_pictures, [:group_id, :responded_at]
     
     add_index :group_pictures, :created_at
     add_index :group_pictures, :group_id
     add_index :group_pictures, :account_id
     add_index :group_pictures, :top
     add_index :group_pictures, :good
-    add_index :group_pictures, :responded_at
+    # add_index :group_pictures, :responded_at
     
     
     add_index :group_post_attachments, :created_at
@@ -128,16 +124,17 @@ class ImproveGroupsIndex < ActiveRecord::Migration
     add_index :group_post_comments, :created_at
     
     
-    remove_index :group_posts, [:account_id, :responded_at, :created_at]
-    remove_index :group_posts, :name => :index_group_posts_on_group_good_top_responded_created
-    remove_index :group_posts, :name => :index_group_posts_on_group_top_responded_created
-    remove_index :group_posts, [:group_id, :responded_at, :created_at]
-    remove_index :group_posts, [:responded_at, :created_at]
+    remove_index :group_posts, [:account_id, :responded_at]
+    remove_index :group_posts, [:group_id, :good, :top, :responded_at]
+    remove_index :group_posts, [:group_id, :top, :responded_at]
+    remove_index :group_posts, [:group_id, :responded_at]
     
     add_index :group_posts, :created_at
     add_index :group_posts, :group_id
     add_index :group_posts, :account_id
     add_index :group_posts, :top
+    add_index :group_posts, :good
+    # add_index :group_posts, :responded_at
     
     
     # add_index :group_images, :group_id

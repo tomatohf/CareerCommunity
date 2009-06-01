@@ -40,9 +40,9 @@ class RecruitmentsController < ApplicationController
       format.atom {
         @recruitments = Recruitment.find(
           :all,
-          :limit => 100,
+          :limit => 50,
           :include => [:recruitment_tags],
-          :order => "publish_time DESC"
+          :order => "id DESC"
         )
         
         render :layout => false

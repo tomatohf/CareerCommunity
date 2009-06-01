@@ -60,15 +60,14 @@ class ImproveActivitiesIndex < ActiveRecord::Migration
     remove_index :activity_posts, :activity_id
     remove_index :activity_posts, :account_id
     remove_index :activity_posts, :top
+    remove_index :activity_posts, :good
+    # remove_index :activity_posts, :responded_at
     
-    add_index :activity_posts, [:activity_id, :responded_at, :created_at], 
-              :name => :index_activity_posts_on_activity_responded_created
-    add_index :activity_posts, [:activity_id, :top, :responded_at, :created_at], 
-              :name => :index_activity_posts_on_activity_top_responded_created
-    add_index :activity_posts, [:activity_id, :good, :top, :responded_at, :created_at], 
-              :name => :index_activity_posts_on_activity_good_top_responded_created
-    add_index :activity_posts, [:account_id, :responded_at, :created_at], 
-              :name => :index_activity_posts_on_account_responded_created
+    add_index :activity_posts, [:activity_id, :responded_at]
+    add_index :activity_posts, [:activity_id, :top, :responded_at]
+    add_index :activity_posts, [:activity_id, :good, :top, :responded_at], 
+              :name => :index_activity_posts_on_activity_good_top_responded
+    add_index :activity_posts, [:account_id, :responded_at]
     
     
     remove_index :activity_post_comments, :activity_post_id
@@ -97,12 +96,10 @@ class ImproveActivitiesIndex < ActiveRecord::Migration
     remove_index :activity_pictures, :account_id
     remove_index :activity_pictures, :top
     remove_index :activity_pictures, :good
-    remove_index :activity_pictures, :responded_at
+    # remove_index :activity_pictures, :responded_at
     
-    add_index :activity_pictures, [:activity_id, :responded_at, :created_at], 
-              :name => :index_activity_pictures_on_activity_responded_created
-    add_index :activity_pictures, [:activity_id, :good, :responded_at, :created_at], 
-              :name => :index_activity_pictures_on_activity_good_responded_created
+    add_index :activity_pictures, [:activity_id, :responded_at]
+    add_index :activity_pictures, [:activity_id, :good, :responded_at]
     
     
     remove_index :activity_picture_comments, :activity_picture_id
@@ -123,15 +120,15 @@ class ImproveActivitiesIndex < ActiveRecord::Migration
     add_index :activity_picture_comments, :created_at
     
     
-    remove_index :activity_pictures, :name => :index_activity_pictures_on_activity_good_responded_created
-    remove_index :activity_pictures, :name => :index_activity_pictures_on_activity_responded_created
+    remove_index :activity_pictures, [:activity_id, :good, :responded_at]
+    remove_index :activity_pictures, [:activity_id, :responded_at]
     
     add_index :activity_pictures, :created_at
     add_index :activity_pictures, :activity_id
     add_index :activity_pictures, :account_id
     add_index :activity_pictures, :top
     add_index :activity_pictures, :good
-    add_index :activity_pictures, :responded_at
+    # add_index :activity_pictures, :responded_at
     
     
     add_index :activity_post_attachments, :created_at
@@ -155,15 +152,17 @@ class ImproveActivitiesIndex < ActiveRecord::Migration
     add_index :activity_post_comments, :created_at
     
     
-    remove_index :activity_posts, :name => :index_activity_posts_on_account_responded_created
-    remove_index :activity_posts, :name => :index_activity_posts_on_activity_good_top_responded_created
-    remove_index :activity_posts, :name => :index_activity_posts_on_activity_top_responded_created
-    remove_index :activity_posts, :name => :index_activity_posts_on_activity_responded_created
+    remove_index :activity_posts, [:account_id, :responded_at]
+    remove_index :activity_posts, :name => :index_activity_posts_on_activity_good_top_responded
+    remove_index :activity_posts, [:activity_id, :top, :responded_at]
+    remove_index :activity_posts, [:activity_id, :responded_at]
     
     add_index :activity_posts, :created_at
     add_index :activity_posts, :activity_id
     add_index :activity_posts, :account_id
     add_index :activity_posts, :top
+    add_index :activity_posts, :good
+    # add_index :activity_posts, :responded_at
     
     
     # add_index :activity_images, :activity_id

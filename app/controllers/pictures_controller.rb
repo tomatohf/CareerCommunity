@@ -108,7 +108,7 @@ class PicturesController < ApplicationController
     if ENV["RAILS_ENV"] == "production"
       # invoke the x-sendfile of lighttpd to download file
       response.headers["Content-Type"] = picture.image_content_type
-      response.headers["Content-Disposition"] = %Q!inline; filename="#{picture.image_file_name}"!
+      response.headers["Content-Disposition"] = %Q!inline; filename="#{URI.encode(picture.image_file_name)}"!
       response.headers["Content-Length"] = picture.image_file_size
       response.headers["X-LIGHTTPD-send-file"] = picture.image.path(picture_style)
       # response.headers["X-sendfile"] = picture.image.path(picture_style)

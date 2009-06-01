@@ -168,8 +168,9 @@ ActiveRecord::Schema.define(:version => 39) do
   end
 
   add_index "activity_pictures", ["delta"], :name => "index_activity_pictures_on_delta"
-  add_index "activity_pictures", ["activity_id", "responded_at", "created_at"], :name => "index_activity_pictures_on_activity_responded_created"
-  add_index "activity_pictures", ["activity_id", "good", "responded_at", "created_at"], :name => "index_activity_pictures_on_activity_good_responded_created"
+  add_index "activity_pictures", ["responded_at"], :name => "index_activity_pictures_on_responded_at"
+  add_index "activity_pictures", ["activity_id", "responded_at"], :name => "index_activity_pictures_on_activity_id_and_responded_at"
+  add_index "activity_pictures", ["activity_id", "good", "responded_at"], :name => "index_activity_pictures_on_activity_id_and_good_and_responded_at"
 
   create_table "activity_post_attachments", :force => true do |t|
     t.datetime "created_at"
@@ -212,11 +213,10 @@ ActiveRecord::Schema.define(:version => 39) do
 
   add_index "activity_posts", ["delta"], :name => "index_activity_posts_on_delta"
   add_index "activity_posts", ["responded_at"], :name => "index_activity_posts_on_responded_at"
-  add_index "activity_posts", ["good"], :name => "index_activity_posts_on_good"
-  add_index "activity_posts", ["activity_id", "responded_at", "created_at"], :name => "index_activity_posts_on_activity_responded_created"
-  add_index "activity_posts", ["activity_id", "top", "responded_at", "created_at"], :name => "index_activity_posts_on_activity_top_responded_created"
-  add_index "activity_posts", ["activity_id", "good", "top", "responded_at", "created_at"], :name => "index_activity_posts_on_activity_good_top_responded_created"
-  add_index "activity_posts", ["account_id", "responded_at", "created_at"], :name => "index_activity_posts_on_account_responded_created"
+  add_index "activity_posts", ["activity_id", "responded_at"], :name => "index_activity_posts_on_activity_id_and_responded_at"
+  add_index "activity_posts", ["activity_id", "top", "responded_at"], :name => "index_activity_posts_on_activity_id_and_top_and_responded_at"
+  add_index "activity_posts", ["activity_id", "good", "top", "responded_at"], :name => "index_activity_posts_on_activity_good_top_responded"
+  add_index "activity_posts", ["account_id", "responded_at"], :name => "index_activity_posts_on_account_id_and_responded_at"
 
   create_table "albums", :force => true do |t|
     t.datetime "created_at"
@@ -600,9 +600,9 @@ ActiveRecord::Schema.define(:version => 39) do
   end
 
   add_index "group_pictures", ["delta"], :name => "index_group_pictures_on_delta"
-  add_index "group_pictures", ["responded_at", "created_at"], :name => "index_group_pictures_on_responded_at_and_created_at"
-  add_index "group_pictures", ["group_id", "responded_at", "created_at"], :name => "index_group_pictures_on_group_id_and_responded_at_and_created_at"
-  add_index "group_pictures", ["group_id", "good", "responded_at", "created_at"], :name => "index_group_pictures_on_group_good_responded_created"
+  add_index "group_pictures", ["responded_at"], :name => "index_group_pictures_on_responded_at"
+  add_index "group_pictures", ["group_id", "responded_at"], :name => "index_group_pictures_on_group_id_and_responded_at"
+  add_index "group_pictures", ["group_id", "good", "responded_at"], :name => "index_group_pictures_on_group_id_and_good_and_responded_at"
 
   create_table "group_post_attachments", :force => true do |t|
     t.datetime "created_at"
@@ -645,12 +645,10 @@ ActiveRecord::Schema.define(:version => 39) do
 
   add_index "group_posts", ["delta"], :name => "index_group_posts_on_delta"
   add_index "group_posts", ["responded_at"], :name => "index_group_posts_on_responded_at"
-  add_index "group_posts", ["good"], :name => "index_group_posts_on_good"
-  add_index "group_posts", ["responded_at", "created_at"], :name => "index_group_posts_on_responded_at_and_created_at"
-  add_index "group_posts", ["group_id", "responded_at", "created_at"], :name => "index_group_posts_on_group_id_and_responded_at_and_created_at"
-  add_index "group_posts", ["group_id", "top", "responded_at", "created_at"], :name => "index_group_posts_on_group_top_responded_created"
-  add_index "group_posts", ["group_id", "good", "top", "responded_at", "created_at"], :name => "index_group_posts_on_group_good_top_responded_created"
-  add_index "group_posts", ["account_id", "responded_at", "created_at"], :name => "index_group_posts_on_account_id_and_responded_at_and_created_at"
+  add_index "group_posts", ["group_id", "responded_at"], :name => "index_group_posts_on_group_id_and_responded_at"
+  add_index "group_posts", ["group_id", "top", "responded_at"], :name => "index_group_posts_on_group_id_and_top_and_responded_at"
+  add_index "group_posts", ["group_id", "good", "top", "responded_at"], :name => "index_group_posts_on_group_id_and_good_and_top_and_responded_at"
+  add_index "group_posts", ["account_id", "responded_at"], :name => "index_group_posts_on_account_id_and_responded_at"
 
   create_table "groups", :force => true do |t|
     t.datetime "created_at"

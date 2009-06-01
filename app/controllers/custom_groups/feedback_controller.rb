@@ -27,7 +27,7 @@ class CustomGroups::FeedbackController < CustomGroups::CustomGroupsController
       :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
       :conditions => ["group_id = ? and top = ?", @group_id, true],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
     
     @group_posts = GroupPost.find(
@@ -36,7 +36,7 @@ class CustomGroups::FeedbackController < CustomGroups::CustomGroupsController
       :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
       :conditions => ["group_id = ? and top = ?", @group_id, false],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
   end
   
