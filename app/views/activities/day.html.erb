@@ -28,19 +28,19 @@
 			我参加的圈子的全部圈内活动</a>
 	</div>
 	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
-	
-	<div class="community_block">
-		<% form_tag "/community/search", :method => :get do %>
-			<input type="text" name="query" class="text_field" style="width: 50%" />
-			<input type="hidden" name="scope" value="activity" />
-
-			&nbsp;
-			<input type="submit" value="搜索活动" class="button" />
-		<% end %>
-	</div>
+	<% if session[:account_id] %>
+		<div class="community_block">
+			<a href="/activities/list_join/<%= session[:account_id] %>">我参加的活动</a>
+		</div>
+		
+		<div class="community_block">
+			<a href="/activities/list_interest/<%= session[:account_id] %>">我感兴趣的活动</a>
+		</div>
+		
+		<div class="community_block">
+			<a href="/activities/list_create/<%= session[:account_id] %>">我发起的活动</a>
+		</div>
+	<% end %>
 	
 	<div class="community_block_narrow">
 		<%= thin_hr %>
@@ -53,6 +53,16 @@
 </div>
 
 <div class="group_container_l">
+	<div class="float_r" style="margin-right: 20px;">
+		<% form_tag "/community/search", :method => :get do %>
+			<input type="text" name="query" class="text_field" size="20" />
+			<input type="hidden" name="scope" value="activity" />
+
+			&nbsp;
+			<input type="submit" value="搜索活动" class="button" />
+		<% end %>
+	</div>
+	
 	<h2>浏览活动</h2>
 	
 	<div class="community_block">

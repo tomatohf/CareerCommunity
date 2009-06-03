@@ -126,15 +126,19 @@
 		</div>
 		
 	
-		<% if @access.include?(:admin) %>	
+		<% if @access.include?(:can_top) %>	
 			<% top_action = @post.top ? "untop" : "top" %>
 			<% form_tag "/#{@post_type}/posts/#{@post_id}/#{top_action}", :method => :post, :id => "adjust_top_form" do %>
 			<% end %>
+		<% end %>
 			
+		<% if @access.include?(:can_good) %>	
 			<% good_action = @post.good ? "ungood" : "good" %>
 			<% form_tag "/#{@post_type}/posts/#{@post_id}/#{good_action}", :method => :post, :id => "adjust_good_form" do %>
 			<% end %>
+		<% end %>
 	
+		<% if @access.include?(:can_del_comment) %>	
 			<% form_tag "", :method => :post, :id => "delete_comment_form" do %>
 			<% end %>
 		
@@ -150,7 +154,7 @@
 		<% end %>
 	
 		<div class="community_block_narrow">
-			<% if @access.include?(:admin) || @access.include?(:author) %>
+			<% if @access.include?(:can_del) %>
 				<% form_tag "/#{@post_type}/posts/#{@post_id}", :method => :delete, :id => "post_delete_form" do %>
 				<% end %>
 			
@@ -158,22 +162,26 @@
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<% end %>
 			
-			<% if @access.include?(:admin) %>
+			<% if @access.include?(:can_good) %>
 				<a href="#" onclick="document.getElementById('adjust_good_form').submit(); return false;"><%= @post.good ? "从精华区移除" : "放入精华区" %></a>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				
+			<% end %>
+			
+			<% if @access.include?(:can_top) %>
 				<a href="#" onclick="document.getElementById('adjust_top_form').submit(); return false;"><%= @post.top ? "取消置顶" : "置顶" %></a>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<% end %>
 		
-			<% if @access.include?(:author) %>
+			<% if @access.include?(:can_edit) %>
 				<a href="/<%= @post_type %>/posts/<%= @post_id %>/edit">修改</a>
-			
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<% end %>
 			
+			<% if @access.include?(:can_add_attachment) %>
 				<a href="/<%= @post_type %>/posts/<%= @post_id %>/new_attachment">添加附件</a>
+			<% end %>
 			
-			
+			<% if @access.include?(:can_del_attachment) %>
 				<% form_tag "/#{@post_type}/posts/#{@post_id}/delete_attachment", :method => :post, :id => "delete_attachment_form" do %>
 					<input type="hidden" id="delete_attachment_id" name="delete_attachment_id" value="" />
 				<% end %>
@@ -202,7 +210,7 @@
 			</div>
 		
 			<div class="community_block_narrow">
-				<%= render :partial => "post_attachment", :collection => @attachments, :locals => {:can_del => @access.include?(:author), :post_type => @post_type} %>
+				<%= render :partial => "post_attachment", :collection => @attachments, :locals => {:can_del => @access.include?(:can_del_attachment), :post_type => @post_type} %>
 			</div>
 		<% end %>
 	
@@ -226,7 +234,7 @@
 		<% end %>
 	
 		<div class="community_block">
-			<%= render(:partial => "post_comment", :collection => @comments, :locals => {:can_del => @access.include?(:admin), :counter_shift => calculate_counter_shift(@comments)}) %>
+			<%= render(:partial => "post_comment", :collection => @comments, :locals => {:can_del => @access.include?(:can_del_comment), :counter_shift => calculate_counter_shift(@comments)}) %>
 		</div>
 	
 		<div class="community_block">

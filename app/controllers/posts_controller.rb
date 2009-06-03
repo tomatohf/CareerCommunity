@@ -17,9 +17,10 @@ class PostsController < ApplicationController
   
   before_filter :check_compose_access, :only => [:compose]
   before_filter :check_create_access, :only => [:create]
-  before_filter :check_update_access, :only => [:edit, :update, :new_attachment, :create_attachment, :delete_attachment]
+  before_filter :check_update_access, :only => [:edit, :update, :new_attachment, :create_attachment]
   before_filter :check_create_comment_access, :only => [:create_comment]
   before_filter :check_delete_comment_access, :only => [:delete_comment]
+  before_filter :check_delete_attachment_access, :only => [:delete_attachment]
   before_filter :check_destroy_access, :only => [:destroy]
   before_filter :check_top_access, :only => [:top, :untop, :good, :ungood]
   before_filter :check_attachment_access, :only => [:attachment]
@@ -358,6 +359,17 @@ class PostsController < ApplicationController
     jump_to("/errors/forbidden") unless @type_handler.check_delete_comment_access(type_id, account_id)
   end
   
+  def check_delete_attachment_access
+    @type_handler = get_type_handler(@post_type)
+    @post = @type_handler.get_post_class.get_post(params[:id])
+    
+    type_id = @post.send(@type_handler.get_type_id)
+    
+    account_id = session[:account_id]
+    
+    jump_to("/errors/forbidden") unless @type_handler.check_delete_attachment_access(type_id, account_id, @post.account_id)
+  end
+  
   def check_destroy_access
     @type_handler = get_type_handler(@post_type)
     @post = @type_handler.get_post_class.get_post(params[:id])
@@ -366,7 +378,7 @@ class PostsController < ApplicationController
     
     account_id = session[:account_id]
     
-    jump_to("/errors/forbidden") unless (@post.account_id == account_id || @type_handler.check_destroy_access(@type_id, account_id))
+    jump_to("/errors/forbidden") unless @type_handler.check_destroy_access(@type_id, account_id, @post.account_id)
   end
   
   def check_top_access
@@ -445,8 +457,8 @@ class PostsController < ApplicationController
         check_compose_access(type_id, account_id)
       end
       
-      def check_destroy_access(type_id, account_id)
-        GroupMember.is_group_admin(type_id, account_id)
+      def check_destroy_access(type_id, account_id, poster_id)
+        can_del_post(type_id, GroupMember.is_group_admin(type_id, account_id), (account_id == poster_id))
       end
       
       def check_create_comment_access(type_id, account_id)
@@ -454,11 +466,11 @@ class PostsController < ApplicationController
       end
       
       def check_delete_comment_access(type_id, account_id)
-        check_destroy_access(type_id, account_id)
+        GroupMember.is_group_admin(type_id, account_id)
       end
       
       def check_top_access(type_id, account_id)
-        check_destroy_access(type_id, account_id)
+        GroupMember.is_group_admin(type_id, account_id)
       end
       
       def check_view_access(type_id, account_id)
@@ -472,15 +484,28 @@ class PostsController < ApplicationController
         check_view_access(type_id, account_id)
       end
       
+      def check_delete_attachment_access(type_id, account_id, poster_id)
+        can_del_attachment(type_id, GroupMember.is_group_admin(type_id, account_id), (account_id == poster_id))
+      end
+      
       def get_access(current_account_id, poster_id, type_id)
         access = []
         if current_account_id
           is_member = GroupMember.is_group_member(type_id, current_account_id)
-          if is_member
-            access << :can_compose
-            access << :admin if GroupMember.is_group_admin(type_id, current_account_id)
-          end
-          access << :author if (poster_id == current_account_id)
+          is_admin = is_member && GroupMember.is_group_admin(type_id, current_account_id)
+          is_author = (poster_id == current_account_id)
+          
+          # to grant access ...
+          access << :can_compose if is_member
+          
+          access << :can_top if is_admin
+          access << :can_good if is_admin
+          access << :can_del_comment if is_admin
+          
+          access << :can_edit if is_author
+          access << :can_del if can_del_post(type_id, is_admin, is_author)
+          access << :can_add_attachment if is_author
+          access << :can_del_attachment if can_del_attachment(type_id, is_admin, is_author)
         end
         
         # to append access for check_compose_access
@@ -501,6 +526,25 @@ class PostsController < ApplicationController
         end
         
         compose_access
+      end
+      
+      
+      private
+      
+      def can_del_post(type_id, is_admin, is_author)
+        return is_admin if is_resume_group(type_id)
+        
+        is_admin || is_author
+      end
+      
+      def can_del_attachment(type_id, is_admin, is_author)
+        return is_admin if is_resume_group(type_id)
+        
+        is_author || is_admin
+      end
+      
+      def is_resume_group(type_id)
+        type_id == 3
       end
     end
     
@@ -543,8 +587,8 @@ class PostsController < ApplicationController
         check_compose_access(type_id, account_id)
       end
       
-      def check_destroy_access(type_id, account_id)
-        ActivityMember.is_activity_admin(type_id, account_id)
+      def check_destroy_access(type_id, account_id, poster_id)
+        (account_id == poster_id) || ActivityMember.is_activity_admin(type_id, account_id)
       end
       
       def check_create_comment_access(type_id, account_id)
@@ -552,11 +596,11 @@ class PostsController < ApplicationController
       end
       
       def check_delete_comment_access(type_id, account_id)
-        check_destroy_access(type_id, account_id)
+        ActivityMember.is_activity_admin(type_id, account_id)
       end
       
       def check_top_access(type_id, account_id)
-        check_destroy_access(type_id, account_id)
+        ActivityMember.is_activity_admin(type_id, account_id)
       end
       
       def check_view_access(type_id, account_id)
@@ -587,18 +631,32 @@ class PostsController < ApplicationController
         check_view_access(type_id, account_id)
       end
       
+      def check_delete_attachment_access(type_id, account_id, poster_id)
+        (account_id == poster_id) || ActivityMember.is_activity_admin(type_id, account_id)
+      end
+      
       def get_access(current_account_id, poster_id, type_id)
         access = []
-        
-        activity = ::Activity.get_activity_with_image(type_id)[0]
-        
-        need_join_to_add_post = activity.get_setting[:need_join_to_add_post]
-        
-        access << :can_compose unless need_join_to_add_post && (!ActivityMember.is_activity_member(type_id, current_account_id))
-        
         if current_account_id
-          access << :admin if ActivityMember.is_activity_admin(type_id, current_account_id)
-          access << :author if (poster_id == current_account_id)
+          activity = ::Activity.get_activity_with_image(type_id)[0]
+        
+          need_join_to_add_post = activity.get_setting[:need_join_to_add_post]
+        
+          is_member = ActivityMember.is_activity_member(type_id, current_account_id)
+          access << :can_compose unless need_join_to_add_post && (!is_member)
+        
+        
+          is_admin = is_member && ActivityMember.is_activity_admin(type_id, current_account_id)
+          is_author = (poster_id == current_account_id)
+          
+          access << :can_top if is_admin
+          access << :can_good if is_admin
+          access << :can_del_comment if is_admin
+          
+          access << :can_edit if is_author
+          access << :can_del if (is_admin || is_author)
+          access << :can_add_attachment if is_author
+          access << :can_del_attachment if (is_author || is_admin)
         end
         access
       end
@@ -623,8 +681,8 @@ class PostsController < ApplicationController
         check_compose_access(type_id, account_id)
       end
       
-      def check_destroy_access(type_id, account_id)
-        ApplicationController.helpers.general_admin?(account_id)
+      def check_destroy_access(type_id, account_id, poster_id)
+        (account_id == poster_id) || ApplicationController.helpers.general_admin?(account_id)
       end
       
       def check_create_comment_access(type_id, account_id)
@@ -632,11 +690,11 @@ class PostsController < ApplicationController
       end
       
       def check_delete_comment_access(type_id, account_id)
-        check_destroy_access(type_id, account_id)
+        ApplicationController.helpers.general_admin?(account_id)
       end
       
       def check_top_access(type_id, account_id)
-        check_destroy_access(type_id, account_id)
+        ApplicationController.helpers.general_admin?(account_id)
       end
       
       def check_view_access(type_id, account_id)
@@ -647,14 +705,27 @@ class PostsController < ApplicationController
         check_view_access(type_id, account_id)
       end
       
+      def check_delete_attachment_access(type_id, account_id, poster_id)
+        (account_id == poster_id) || ApplicationController.helpers.general_admin?(account_id)
+      end
+      
       def get_access(current_account_id, poster_id, type_id)
         access = []
         
         access << :can_compose
         
         if current_account_id
-          access << :admin if ApplicationController.helpers.general_admin?(current_account_id)
-          access << :author if (poster_id == current_account_id)
+          is_admin = ApplicationController.helpers.general_admin?(current_account_id)
+          is_author = (poster_id == current_account_id)
+          
+          access << :can_top if is_admin
+          access << :can_good if is_admin
+          access << :can_del_comment if is_admin
+          
+          access << :can_edit if is_author
+          access << :can_del if (is_admin || is_author)
+          access << :can_add_attachment if is_author
+          access << :can_del_attachment if (is_author || is_admin)
         end
         access
       end
