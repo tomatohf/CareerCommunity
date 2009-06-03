@@ -10,7 +10,7 @@ class Autologin < ActiveRecord::Base
   end
   
   def self.find_record(session_id, account_id)
-    self.find(:first, :conditions => ["session_id = ? and account_id = ?", session_id, account_id])
+    self.find(:first, :conditions => ["account_id = ? and session_id = ?", account_id, session_id])
   end
   
   def self.get_by_account_id(account_id)
@@ -22,7 +22,7 @@ class Autologin < ActiveRecord::Base
   end
   
   def self.delete_record(session_id, account_id)
-    self.delete_all(["session_id = ? and account_id = ?", session_id, account_id])
+    self.delete_all(["account_id = ? and session_id = ?", account_id, session_id])
   end
   
 end

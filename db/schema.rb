@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 39) do
+ActiveRecord::Schema.define(:version => 40) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -49,7 +49,6 @@ ActiveRecord::Schema.define(:version => 39) do
   end
 
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
-  add_index "accounts", ["enabled"], :name => "index_accounts_on_enabled"
   add_index "accounts", ["delta"], :name => "index_accounts_on_delta"
 
   create_table "accounts_roles", :id => false, :force => true do |t|
@@ -58,7 +57,6 @@ ActiveRecord::Schema.define(:version => 39) do
     t.boolean "delta"
   end
 
-  add_index "accounts_roles", ["account_id", "role_id"], :name => "index_accounts_roles_on_account_id_and_role_id"
   add_index "accounts_roles", ["delta"], :name => "index_accounts_roles_on_delta"
 
   create_table "activities", :force => true do |t|
@@ -240,8 +238,9 @@ ActiveRecord::Schema.define(:version => 39) do
     t.boolean  "delta"
   end
 
-  add_index "autologins", ["account_id"], :name => "index_autologins_on_account_id"
   add_index "autologins", ["delta"], :name => "index_autologins_on_delta"
+  add_index "autologins", ["account_id", "session_id"], :name => "index_autologins_on_account_id_and_session_id"
+  add_index "autologins", ["expire_time"], :name => "index_autologins_on_expire_time"
 
   create_table "basic_profiles", :force => true do |t|
     t.integer  "account_id",           :limit => 11
@@ -1111,7 +1110,6 @@ ActiveRecord::Schema.define(:version => 39) do
     t.boolean  "delta"
   end
 
-  add_index "roles", ["name"], :name => "index_roles_on_name"
   add_index "roles", ["delta"], :name => "index_roles_on_delta"
 
   create_table "sent_messages", :force => true do |t|
@@ -1362,7 +1360,6 @@ ActiveRecord::Schema.define(:version => 39) do
     t.boolean "delta"
   end
 
-  add_index "timezones", ["name"], :name => "index_timezones_on_name"
   add_index "timezones", ["delta"], :name => "index_timezones_on_delta"
 
   create_table "trash_records", :force => true do |t|

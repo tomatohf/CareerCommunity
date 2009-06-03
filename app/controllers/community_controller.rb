@@ -29,12 +29,14 @@ class CommunityController < ApplicationController
   end
   
   def welcome
-    @new_accounts = Account.enabled.unlimited.find(
-      :all,
-      :limit => New_Account_Size,
-      :include => [:profile_pic],
-      :order => "created_at DESC"
-    ) if @has_login
+    if @has_login
+      @new_accounts = Account.find(
+        :all,
+        :limit => New_Account_Size*2,
+        :include => [:profile_pic],
+        :order => "id DESC"
+      ).select{|a| a.enabled && (!a.limited?)}[0, New_Account_Size]
+    end
     
     @new_actions = AccountAction.visible.find(
       :all,

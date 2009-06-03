@@ -11,7 +11,7 @@
 
 <div class="account_action_item">
 	<div>
-		<%= eval(action.action_text([account_nick, account_pic_url, account_id], save_space)) %>
+		<%= eval(action.action_text([account_nick, account_pic_url, account_id], save_space)) rescue "" %>
 	</div>
 	
 	<div class="form_info_s account_action_datetime">
