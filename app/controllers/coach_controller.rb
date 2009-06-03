@@ -22,7 +22,15 @@ class CoachController < ApplicationController
   
   
   def stp
-    render :layout => "uncategoried"
+    @content = "stp_index"
+    
+    render :action => "stp", :layout => "uncategoried"
+  end
+  
+  def stp_pic
+    @content = "stp_pic"
+    
+    render :action => "stp", :layout => "uncategoried"
   end
   
   

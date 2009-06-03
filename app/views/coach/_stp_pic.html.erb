@@ -1,0 +1,20 @@
+<link rel="stylesheet" href="/lib/lightbox/css/lightbox.css" type="text/css" media="screen"></link>
+
+<script language="JavaScript" src="/lib/protopack/protoculous-packer.js"></script>
+<script language="JavaScript" src="/lib/lightbox/js/lightbox.js"></script>
+
+<div class="stp_pic_container">
+	<% 
+		19.times do |i|
+			index = i+1
+			index = "0#{index}" if index < 10
+	%>
+		
+		<div class="stp_pic">
+			<a rel="lightbox[stp]" href="/images/coach/stp/pic/big/<%= "#{index}.jpg" %>" title="ESC 或 X 键退出, N 键到下一张, P 键到上一张">
+				<img src="/images/coach/stp/pic/thumb/<%= "#{index}.jpg" %>" border="0" /></a>
+		</div>
+		
+	<% end %>
+</div>
+

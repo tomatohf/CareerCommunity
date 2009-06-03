@@ -278,10 +278,13 @@ class PostsController < ApplicationController
   
   def attachment
     
+    file_name = @attachment.attachment_file_name
+    file_name = URI.encode(file_name) if (request.env["HTTP_USER_AGENT"] || "") =~ /MSIE/i
+    
     if ENV["RAILS_ENV"] == "production"
       # invoke the x-sendfile of lighttpd to download file
       response.headers["Content-Type"] = @attachment.attachment_content_type
-      response.headers["Content-Disposition"] = %Q!attachment; filename="#{URI.encode(@attachment.attachment_file_name)}"!
+      response.headers["Content-Disposition"] = %Q!attachment; filename=#{file_name}!
       response.headers["Content-Length"] = @attachment.attachment_file_size
       response.headers["X-LIGHTTPD-send-file"] = @attachment.attachment.path
       # response.headers["X-sendfile"] = @attachment.attachment.path
@@ -290,7 +293,7 @@ class PostsController < ApplicationController
       send_file(
         @attachment.attachment.path,
         :type => @attachment.attachment_content_type,
-        :disposition => %Q!attachment; filename="#{@attachment.attachment_file_name}"!
+        :disposition => %Q!attachment; filename=#{file_name}!
       )
     end
   end

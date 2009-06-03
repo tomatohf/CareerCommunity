@@ -105,10 +105,14 @@ class PicturesController < ApplicationController
     
     return jump_to("/#{@picture_type.pluralize}/#{type_id}") unless type_handler.check_view_access(type_id, session[:account_id])
     
+    
+    file_name = picture.image_file_name
+    file_name = URI.encode(file_name) if (request.env["HTTP_USER_AGENT"] || "") =~ /MSIE/i
+    
     if ENV["RAILS_ENV"] == "production"
       # invoke the x-sendfile of lighttpd to download file
       response.headers["Content-Type"] = picture.image_content_type
-      response.headers["Content-Disposition"] = %Q!inline; filename="#{URI.encode(picture.image_file_name)}"!
+      response.headers["Content-Disposition"] = %Q!inline; filename=#{file_name}!
       response.headers["Content-Length"] = picture.image_file_size
       response.headers["X-LIGHTTPD-send-file"] = picture.image.path(picture_style)
       # response.headers["X-sendfile"] = picture.image.path(picture_style)
@@ -117,7 +121,7 @@ class PicturesController < ApplicationController
       send_file(
         picture.image.path(picture_style),
         :type => picture.image_content_type,
-        :disposition => %Q!inline; filename="#{picture.image_file_name}"!
+        :disposition => %Q!inline; filename=#{file_name}!
       )
     end
   end
