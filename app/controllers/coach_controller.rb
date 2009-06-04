@@ -124,7 +124,7 @@ class CoachController < ApplicationController
       :page => page,
       :per_page => 20,
       :conditions => conditions,
-      :order => "created_at DESC"
+      :order => %Q!#{conditions.size > 0 ? "created_at" : "id"} DESC!
     )
     
     render :layout => false

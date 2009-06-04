@@ -57,7 +57,7 @@ class Company < ActiveRecord::Base
   
   
   
-  named_scope :system, :conditions => ["account_id = ? or account_id = ?", 0, nil]
+  named_scope :system, :conditions => ["account_id = ?", 0]
   
   
   

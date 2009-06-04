@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 40) do
+ActiveRecord::Schema.define(:version => 44) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -301,15 +301,16 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "delta"
   end
 
-  add_index "companies", ["created_at"], :name => "index_companies_on_created_at"
+  add_index "companies", ["name", "account_id"], :name => "index_companies_on_name_and_account_id", :unique => true
+  add_index "companies", ["account_id", "created_at"], :name => "index_companies_on_account_id_and_created_at"
 
   create_table "companies_industries", :id => false, :force => true do |t|
     t.integer "company_id",  :limit => 11
     t.integer "industry_id", :limit => 11
   end
 
-  add_index "companies_industries", ["company_id"], :name => "index_companies_industries_on_company_id"
-  add_index "companies_industries", ["industry_id"], :name => "index_companies_industries_on_industry_id"
+  add_index "companies_industries", ["company_id", "industry_id"], :name => "index_companies_industries_on_company_id_and_industry_id", :unique => true
+  add_index "companies_industries", ["industry_id", "company_id"], :name => "index_companies_industries_on_industry_id_and_company_id", :unique => true
 
   create_table "company_infos", :force => true do |t|
     t.datetime "created_at"
@@ -528,8 +529,7 @@ ActiveRecord::Schema.define(:version => 40) do
   end
 
   add_index "group_bookmarks", ["created_at"], :name => "index_group_bookmarks_on_created_at"
-  add_index "group_bookmarks", ["account_id"], :name => "index_group_bookmarks_on_account_id"
-  add_index "group_bookmarks", ["group_id"], :name => "index_group_bookmarks_on_group_id"
+  add_index "group_bookmarks", ["group_id", "created_at"], :name => "index_group_bookmarks_on_group_id_and_created_at"
 
   create_table "group_images", :force => true do |t|
     t.integer  "group_id",   :limit => 11
@@ -697,8 +697,7 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "delta"
   end
 
-  add_index "industries", ["created_at"], :name => "index_industries_on_created_at"
-  add_index "industries", ["account_id"], :name => "index_industries_on_account_id"
+  add_index "industries", ["account_id", "created_at"], :name => "index_industries_on_account_id_and_created_at"
 
   create_table "industry_infos", :force => true do |t|
     t.datetime "created_at"
@@ -831,7 +830,8 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "delta"
   end
 
-  add_index "job_positions", ["created_at"], :name => "index_job_positions_on_created_at"
+  add_index "job_positions", ["name", "account_id"], :name => "index_job_positions_on_name_and_account_id", :unique => true
+  add_index "job_positions", ["account_id", "created_at"], :name => "index_job_positions_on_account_id_and_created_at"
 
   create_table "job_processes", :force => true do |t|
     t.datetime "created_at"
@@ -841,7 +841,8 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "delta"
   end
 
-  add_index "job_processes", ["created_at"], :name => "index_job_processes_on_created_at"
+  add_index "job_processes", ["name", "account_id"], :name => "index_job_processes_on_name_and_account_id", :unique => true
+  add_index "job_processes", ["account_id", "created_at"], :name => "index_job_processes_on_account_id_and_created_at"
 
   create_table "job_profiles", :force => true do |t|
     t.integer  "account_id",     :limit => 11
@@ -922,9 +923,7 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "delta"
   end
 
-  add_index "job_statuses", ["created_at"], :name => "index_job_statuses_on_created_at"
-  add_index "job_statuses", ["account_id"], :name => "index_job_statuses_on_account_id"
-  add_index "job_statuses", ["color"], :name => "index_job_statuses_on_color"
+  add_index "job_statuses", ["account_id", "created_at"], :name => "index_job_statuses_on_account_id_and_created_at"
 
   create_table "job_steps", :force => true do |t|
     t.datetime "created_at"
@@ -940,11 +939,8 @@ ActiveRecord::Schema.define(:version => 40) do
     t.datetime "remind_at"
   end
 
-  add_index "job_steps", ["created_at"], :name => "index_job_steps_on_created_at"
-  add_index "job_steps", ["job_target_id"], :name => "index_job_steps_on_job_target_id"
-  add_index "job_steps", ["account_id"], :name => "index_job_steps_on_account_id"
-  add_index "job_steps", ["job_process_id"], :name => "index_job_steps_on_job_process_id"
-  add_index "job_steps", ["job_status_id"], :name => "index_job_steps_on_job_status_id"
+  add_index "job_steps", ["remind_at"], :name => "index_job_steps_on_remind_at"
+  add_index "job_steps", ["account_id", "end_at"], :name => "index_job_steps_on_account_id_and_end_at"
 
   create_table "job_tags", :force => true do |t|
     t.string  "name"
@@ -980,13 +976,9 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "starred",                           :default => false
   end
 
-  add_index "job_targets", ["created_at"], :name => "index_job_targets_on_created_at"
-  add_index "job_targets", ["updated_at"], :name => "index_job_targets_on_updated_at"
-  add_index "job_targets", ["account_id"], :name => "index_job_targets_on_account_id"
   add_index "job_targets", ["company_id"], :name => "index_job_targets_on_company_id"
   add_index "job_targets", ["job_position_id"], :name => "index_job_targets_on_job_position_id"
-  add_index "job_targets", ["current_job_step_id"], :name => "index_job_targets_on_current_job_step_id"
-  add_index "job_targets", ["closed"], :name => "index_job_targets_on_closed"
+  add_index "job_targets", ["closed", "account_id", "created_at"], :name => "index_job_targets_on_closed_and_account_id_and_created_at"
 
   create_table "messages", :force => true do |t|
     t.datetime "created_at"
@@ -1011,8 +1003,7 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "delta"
   end
 
-  add_index "personal_bookmarks", ["created_at"], :name => "index_personal_bookmarks_on_created_at"
-  add_index "personal_bookmarks", ["account_id"], :name => "index_personal_bookmarks_on_account_id"
+  add_index "personal_bookmarks", ["account_id", "created_at"], :name => "index_personal_bookmarks_on_account_id_and_created_at"
 
   create_table "photo_comments", :force => true do |t|
     t.integer  "photo_id",   :limit => 11
@@ -1141,11 +1132,9 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "delta"
   end
 
-  add_index "service_applications", ["created_at"], :name => "index_service_applications_on_created_at"
   add_index "service_applications", ["account_id"], :name => "index_service_applications_on_account_id"
-  add_index "service_applications", ["service_id"], :name => "index_service_applications_on_service_id"
-  add_index "service_applications", ["closed"], :name => "index_service_applications_on_closed"
   add_index "service_applications", ["delta"], :name => "index_service_applications_on_delta"
+  add_index "service_applications", ["closed", "created_at"], :name => "index_service_applications_on_closed_and_created_at"
 
   create_table "space_comments", :force => true do |t|
     t.integer  "owner_id",   :limit => 11
@@ -1391,7 +1380,6 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean "delta"
   end
 
-  add_index "vote_categories", ["name"], :name => "index_vote_categories_on_name"
   add_index "vote_categories", ["delta"], :name => "index_vote_categories_on_delta"
 
   create_table "vote_comments", :force => true do |t|
@@ -1403,10 +1391,8 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "delta"
   end
 
-  add_index "vote_comments", ["vote_topic_id"], :name => "index_vote_comments_on_vote_topic_id"
-  add_index "vote_comments", ["account_id"], :name => "index_vote_comments_on_account_id"
-  add_index "vote_comments", ["created_at"], :name => "index_vote_comments_on_created_at"
   add_index "vote_comments", ["delta"], :name => "index_vote_comments_on_delta"
+  add_index "vote_comments", ["vote_topic_id", "created_at"], :name => "index_vote_comments_on_vote_topic_id_and_created_at"
 
   create_table "vote_images", :force => true do |t|
     t.integer  "vote_topic_id", :limit => 11
@@ -1416,7 +1402,6 @@ ActiveRecord::Schema.define(:version => 40) do
   end
 
   add_index "vote_images", ["vote_topic_id"], :name => "index_vote_images_on_vote_topic_id"
-  add_index "vote_images", ["photo_id"], :name => "index_vote_images_on_photo_id"
   add_index "vote_images", ["delta"], :name => "index_vote_images_on_delta"
 
   create_table "vote_options", :force => true do |t|
@@ -1428,10 +1413,7 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "delta"
   end
 
-  add_index "vote_options", ["created_at"], :name => "index_vote_options_on_created_at"
-  add_index "vote_options", ["account_id"], :name => "index_vote_options_on_account_id"
   add_index "vote_options", ["vote_topic_id"], :name => "index_vote_options_on_vote_topic_id"
-  add_index "vote_options", ["color"], :name => "index_vote_options_on_color"
   add_index "vote_options", ["delta"], :name => "index_vote_options_on_delta"
 
   create_table "vote_records", :force => true do |t|
@@ -1444,13 +1426,9 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "delta"
   end
 
-  add_index "vote_records", ["created_at"], :name => "index_vote_records_on_created_at"
-  add_index "vote_records", ["updated_at"], :name => "index_vote_records_on_updated_at"
-  add_index "vote_records", ["account_id"], :name => "index_vote_records_on_account_id"
-  add_index "vote_records", ["vote_topic_id"], :name => "index_vote_records_on_vote_topic_id"
-  add_index "vote_records", ["vote_option_id"], :name => "index_vote_records_on_vote_option_id"
-  add_index "vote_records", ["voter_ip"], :name => "index_vote_records_on_voter_ip"
   add_index "vote_records", ["delta"], :name => "index_vote_records_on_delta"
+  add_index "vote_records", ["vote_option_id"], :name => "index_vote_records_on_vote_option_id"
+  add_index "vote_records", ["vote_topic_id", "account_id", "voter_ip"], :name => "index_vote_records_on_vote_topic_id_and_account_id_and_voter_ip"
 
   create_table "vote_topics", :force => true do |t|
     t.datetime "created_at"
@@ -1467,12 +1445,10 @@ ActiveRecord::Schema.define(:version => 40) do
     t.boolean  "allow_anonymous",                    :default => false
   end
 
-  add_index "vote_topics", ["created_at"], :name => "index_vote_topics_on_created_at"
-  add_index "vote_topics", ["account_id"], :name => "index_vote_topics_on_account_id"
-  add_index "vote_topics", ["category_id"], :name => "index_vote_topics_on_category_id"
-  add_index "vote_topics", ["multiple"], :name => "index_vote_topics_on_multiple"
-  add_index "vote_topics", ["allow_add_option"], :name => "index_vote_topics_on_allow_add_option"
   add_index "vote_topics", ["delta"], :name => "index_vote_topics_on_delta"
-  add_index "vote_topics", ["allow_anonymous"], :name => "index_vote_topics_on_allow_anonymous"
+  add_index "vote_topics", ["created_at"], :name => "index_vote_topics_on_created_at"
+  add_index "vote_topics", ["account_id", "created_at"], :name => "index_vote_topics_on_account_id_and_created_at"
+  add_index "vote_topics", ["category_id", "created_at"], :name => "index_vote_topics_on_category_id_and_created_at"
+  add_index "vote_topics", ["group_id", "created_at"], :name => "index_vote_topics_on_group_id_and_created_at"
 
 end

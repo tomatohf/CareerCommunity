@@ -140,12 +140,6 @@ class VoteRecord < ActiveRecord::Base
     Cache.delete("#{CKP_count_by_option}_#{option_id}".to_sym)
   end
   
-  
-  
-  def self.count_by(field, value)
-    self.count(:conditions => ["#{field} = ?", value])
-  end
-  
 end
 
 

@@ -22,13 +22,13 @@ class JobProcess < ActiveRecord::Base
   
   validates_presence_of :name, :message => "请输入 名称"
   
-  validates_uniqueness_of :name, :case_sensitive => false, :message => "名称 已经存在"
+  validates_uniqueness_of :name, :case_sensitive => false, :scope => :account_id, :message => "名称 已经存在"
   
   validates_length_of :name, :maximum => 250, :message => "名称 超过长度限制", :allow_nil => false
   
   
   
-  named_scope :system, :conditions => ["account_id = ? or account_id = ?", 0, nil]
+  named_scope :system, :conditions => ["account_id = ?", 0]
   
   
   

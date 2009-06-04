@@ -75,7 +75,7 @@ class JobTargetsController < ApplicationController
       :page => @page,
       :per_page => Closed_Target_Page_Size,
       :conditions => ["account_id = ?", session[:account_id]],
-      :include => [:company, :job_position, :steps],
+      :include => [:company, :job_position],
       :order => "created_at DESC"
     )
   end

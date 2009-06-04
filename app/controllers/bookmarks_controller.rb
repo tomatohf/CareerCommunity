@@ -25,7 +25,7 @@ class BookmarksController < ApplicationController
       :page => page,
       :per_page => Bookmark_List_Size,
       :include => [:account => [:profile_pic]],
-      :order => "created_at DESC"
+      :order => "id DESC"
     )
     
     render :action => "list"

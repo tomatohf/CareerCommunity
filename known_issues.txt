@@ -8,6 +8,7 @@
 招聘信息的过期处理
 	对于已经年久没删除的信息, 页面访问时给出信息说明, 不要只显示不存在
 优化 MySQL - SQL - 索引
+	- 处理 validates_uniqueness_of 需要的索引
 	- A many to many join B, where column is in B, but order by column is in A.
 		How to avoid Using temporary and Using filesort
 related setting:
