@@ -698,7 +698,9 @@ class TalksController < ApplicationController
     @names = JobTag.find(
       :all,
       :limit => 20,
-      :conditions => ["name like ?", "%#{partial_tag_names}%"]
+      # :conditions => ["name like ?", "%#{partial_tag_names}%"]
+      # to use the index (index_job_tags_on_name)
+      :conditions => ["name like ?", "#{partial_tag_names}%"]
     ).collect do |tag|
       tag.name
     end

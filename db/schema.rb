@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 52) do
+ActiveRecord::Schema.define(:version => 54) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -20,7 +20,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "hide",                      :default => false
   end
 
-  add_index "account_actions", ["delta"], :name => "index_account_actions_on_delta"
   add_index "account_actions", ["hide", "account_id", "action_type", "created_at"], :name => "index_account_actions_on_hide_account_type_created_at"
   add_index "account_actions", ["hide", "account_id", "created_at"], :name => "index_account_actions_on_hide_and_account_id_and_created_at"
   add_index "account_actions", ["hide", "created_at"], :name => "index_account_actions_on_hide_and_created_at"
@@ -33,7 +32,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "account_settings", ["account_id"], :name => "index_account_settings_on_account_id"
-  add_index "account_settings", ["delta"], :name => "index_account_settings_on_delta"
 
   create_table "accounts", :force => true do |t|
     t.string   "email"
@@ -49,15 +47,12 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
-  add_index "accounts", ["delta"], :name => "index_accounts_on_delta"
 
   create_table "accounts_roles", :id => false, :force => true do |t|
     t.integer "account_id", :limit => 11
     t.integer "role_id",    :limit => 11
     t.boolean "delta"
   end
-
-  add_index "accounts_roles", ["delta"], :name => "index_accounts_roles_on_delta"
 
   create_table "activities", :force => true do |t|
     t.datetime "created_at"
@@ -78,7 +73,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "online",                                                            :default => false
   end
 
-  add_index "activities", ["delta"], :name => "index_activities_on_delta"
   add_index "activities", ["cancelled", "created_at"], :name => "index_activities_on_cancelled_and_created_at"
   add_index "activities", ["cancelled", "begin_at"], :name => "index_activities_on_cancelled_and_begin_at"
   add_index "activities", ["cancelled", "creator_id", "created_at"], :name => "index_activities_on_cancelled_and_creator_id_and_created_at"
@@ -92,7 +86,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "activity_images", ["activity_id"], :name => "index_activity_images_on_activity_id"
-  add_index "activity_images", ["delta"], :name => "index_activity_images_on_delta"
 
   create_table "activity_interests", :force => true do |t|
     t.datetime "created_at"
@@ -101,7 +94,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "activity_interests", ["delta"], :name => "index_activity_interests_on_delta"
   add_index "activity_interests", ["account_id", "created_at"], :name => "index_activity_interests_on_account_id_and_created_at"
   add_index "activity_interests", ["activity_id", "created_at"], :name => "index_activity_interests_on_activity_id_and_created_at"
   add_index "activity_interests", ["activity_id", "account_id"], :name => "index_activity_interests_on_activity_id_and_account_id"
@@ -119,7 +111,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "activity_members", ["delta"], :name => "index_activity_members_on_delta"
   add_index "activity_members", ["account_id", "accepted", "approved", "join_at"], :name => "index_activity_members_on_account_accepted_approved_join"
   add_index "activity_members", ["activity_id", "accepted", "approved", "join_at"], :name => "index_activity_members_on_activity_accepted_approved_join"
   add_index "activity_members", ["activity_id", "accepted", "approved", "admin", "join_at"], :name => "index_activity_members_on_activity_accepted_approved_admin_join"
@@ -134,7 +125,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "activity_photos", ["delta"], :name => "index_activity_photos_on_delta"
   add_index "activity_photos", ["created_at"], :name => "index_activity_photos_on_created_at"
   add_index "activity_photos", ["activity_id", "created_at"], :name => "index_activity_photos_on_activity_id_and_created_at"
 
@@ -147,7 +137,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "activity_picture_comments", ["delta"], :name => "index_activity_picture_comments_on_delta"
   add_index "activity_picture_comments", ["activity_picture_id", "created_at"], :name => "index_activity_picture_comments_on_picture_created"
 
   create_table "activity_pictures", :force => true do |t|
@@ -165,7 +154,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "activity_pictures", ["delta"], :name => "index_activity_pictures_on_delta"
   add_index "activity_pictures", ["responded_at"], :name => "index_activity_pictures_on_responded_at"
   add_index "activity_pictures", ["activity_id", "responded_at"], :name => "index_activity_pictures_on_activity_id_and_responded_at"
   add_index "activity_pictures", ["activity_id", "good", "responded_at"], :name => "index_activity_pictures_on_activity_id_and_good_and_responded_at"
@@ -192,7 +180,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "activity_post_comments", ["delta"], :name => "index_activity_post_comments_on_delta"
   add_index "activity_post_comments", ["activity_post_id", "created_at"], :name => "index_activity_post_comments_on_activity_post_id_and_created_at"
   add_index "activity_post_comments", ["account_id", "created_at"], :name => "index_activity_post_comments_on_account_id_and_created_at"
 
@@ -209,7 +196,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "good",                       :default => false
   end
 
-  add_index "activity_posts", ["delta"], :name => "index_activity_posts_on_delta"
   add_index "activity_posts", ["responded_at"], :name => "index_activity_posts_on_responded_at"
   add_index "activity_posts", ["activity_id", "responded_at"], :name => "index_activity_posts_on_activity_id_and_responded_at"
   add_index "activity_posts", ["activity_id", "top", "responded_at"], :name => "index_activity_posts_on_activity_id_and_top_and_responded_at"
@@ -226,7 +212,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "albums", ["delta"], :name => "index_albums_on_delta"
   add_index "albums", ["account_id", "created_at"], :name => "index_albums_on_account_id_and_created_at"
 
   create_table "autologins", :force => true do |t|
@@ -238,7 +223,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "autologins", ["delta"], :name => "index_autologins_on_delta"
   add_index "autologins", ["account_id", "session_id"], :name => "index_autologins_on_account_id_and_session_id"
   add_index "autologins", ["expire_time"], :name => "index_autologins_on_expire_time"
 
@@ -257,7 +241,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "basic_profiles", ["account_id"], :name => "index_basic_profiles_on_account_id"
-  add_index "basic_profiles", ["delta"], :name => "index_basic_profiles_on_delta"
 
   create_table "blog_comments", :force => true do |t|
     t.integer  "blog_id",    :limit => 11
@@ -268,7 +251,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "blog_comments", ["delta"], :name => "index_blog_comments_on_delta"
   add_index "blog_comments", ["blog_id", "created_at"], :name => "index_blog_comments_on_blog_id_and_created_at"
 
   create_table "blogs", :force => true do |t|
@@ -281,7 +263,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "blogs", ["created_at"], :name => "index_blogs_on_created_at"
-  add_index "blogs", ["delta"], :name => "index_blogs_on_delta"
   add_index "blogs", ["account_id", "created_at"], :name => "index_blogs_on_account_id_and_created_at"
 
   create_table "cities", :force => true do |t|
@@ -289,8 +270,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.integer "province_id", :limit => 11
     t.boolean "delta"
   end
-
-  add_index "cities", ["delta"], :name => "index_cities_on_delta"
 
   create_table "companies", :force => true do |t|
     t.datetime "created_at"
@@ -324,7 +303,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "company_infos", ["company_id"], :name => "index_company_infos_on_company_id"
-  add_index "company_infos", ["delta"], :name => "index_company_infos_on_delta"
 
   create_table "contact_profiles", :force => true do |t|
     t.integer  "account_id", :limit => 11
@@ -341,7 +319,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "contact_profiles", ["account_id"], :name => "index_contact_profiles_on_account_id"
-  add_index "contact_profiles", ["delta"], :name => "index_contact_profiles_on_delta"
 
   create_table "education_profiles", :force => true do |t|
     t.integer  "account_id",   :limit => 11
@@ -353,7 +330,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "education_profiles", ["delta"], :name => "index_education_profiles_on_delta"
   add_index "education_profiles", ["edu_name"], :name => "index_education_profiles_on_edu_name"
   add_index "education_profiles", ["account_id", "education_id", "enter_year"], :name => "index_edu_profiles_on_account_edu_year"
 
@@ -370,9 +346,8 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
+  add_index "exps", ["source_link"], :name => "index_exps_on_source_link", :unique => true
   add_index "exps", ["publish_time"], :name => "index_exps_on_publish_time"
-  add_index "exps", ["source_link"], :name => "index_exps_on_source_link"
-  add_index "exps", ["delta"], :name => "index_exps_on_delta"
 
   create_table "friends", :force => true do |t|
     t.datetime "created_at"
@@ -381,7 +356,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "friends", ["delta"], :name => "index_friends_on_delta"
   add_index "friends", ["account_id"], :name => "index_friends_on_account_id"
   add_index "friends", ["friend_id"], :name => "index_friends_on_friend_id"
 
@@ -397,7 +371,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "goal_follows", ["delta"], :name => "index_goal_follows_on_delta"
   add_index "goal_follows", ["account_id", "created_at"], :name => "index_goal_follows_on_account_id_and_created_at"
   add_index "goal_follows", ["account_id", "status_id", "created_at"], :name => "index_goal_follows_on_account_id_and_status_id_and_created_at"
   add_index "goal_follows", ["goal_id", "account_id"], :name => "index_goal_follows_on_goal_id_and_account_id"
@@ -425,7 +398,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "goal_post_comments", ["delta"], :name => "index_goal_post_comments_on_delta"
   add_index "goal_post_comments", ["goal_post_id", "created_at"], :name => "index_goal_post_comments_on_goal_post_id_and_created_at"
 
   create_table "goal_posts", :force => true do |t|
@@ -442,7 +414,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "goal_posts", ["responded_at"], :name => "index_goal_posts_on_responded_at"
-  add_index "goal_posts", ["delta"], :name => "index_goal_posts_on_delta"
   add_index "goal_posts", ["goal_id", "top", "responded_at"], :name => "index_goal_posts_on_goal_id_and_top_and_responded_at"
   add_index "goal_posts", ["goal_id", "good", "top", "responded_at"], :name => "index_goal_posts_on_goal_id_and_good_and_top_and_responded_at"
   add_index "goal_posts", ["account_id", "responded_at"], :name => "index_goal_posts_on_account_id_and_responded_at"
@@ -456,7 +427,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "goal_track_comments", ["delta"], :name => "index_goal_track_comments_on_delta"
   add_index "goal_track_comments", ["goal_track_id", "created_at"], :name => "index_goal_track_comments_on_goal_track_id_and_created_at"
 
   create_table "goal_tracks", :force => true do |t|
@@ -469,7 +439,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "goal_tracks", ["delta"], :name => "index_goal_tracks_on_delta"
   add_index "goal_tracks", ["goal_id", "created_at"], :name => "index_goal_tracks_on_goal_id_and_created_at"
   add_index "goal_tracks", ["goal_follow_id", "created_at"], :name => "index_goal_tracks_on_goal_follow_id_and_created_at"
 
@@ -483,7 +452,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "goals", ["name"], :name => "index_goals_on_name"
-  add_index "goals", ["delta"], :name => "index_goals_on_delta"
 
   create_table "group_activities", :force => true do |t|
     t.datetime "created_at"
@@ -491,8 +459,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.integer  "account_id",  :limit => 11
     t.boolean  "delta"
   end
-
-  add_index "group_activities", ["delta"], :name => "index_group_activities_on_delta"
 
   create_table "group_bookmarks", :force => true do |t|
     t.datetime "created_at"
@@ -515,7 +481,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "group_images", ["group_id"], :name => "index_group_images_on_group_id"
-  add_index "group_images", ["delta"], :name => "index_group_images_on_delta"
 
   create_table "group_members", :force => true do |t|
     t.datetime "created_at"
@@ -529,7 +494,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "group_members", ["delta"], :name => "index_group_members_on_delta"
   add_index "group_members", ["account_id", "accepted", "approved", "admin", "join_at"], :name => "index_group_members_on_account_accepted_approved_admin_join"
   add_index "group_members", ["group_id", "accepted", "approved", "join_at"], :name => "index_group_members_on_group_accepted_approved_join"
   add_index "group_members", ["group_id", "accepted", "approved", "admin", "join_at"], :name => "index_group_members_on_group_accepted_approved_admin_join"
@@ -543,7 +507,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "group_photos", ["delta"], :name => "index_group_photos_on_delta"
   add_index "group_photos", ["created_at"], :name => "index_group_photos_on_created_at"
   add_index "group_photos", ["group_id", "created_at"], :name => "index_group_photos_on_group_id_and_created_at"
 
@@ -556,7 +519,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "group_picture_comments", ["delta"], :name => "index_group_picture_comments_on_delta"
   add_index "group_picture_comments", ["group_picture_id", "created_at"], :name => "index_group_picture_comments_on_group_picture_id_and_created_at"
 
   create_table "group_pictures", :force => true do |t|
@@ -574,7 +536,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "group_pictures", ["delta"], :name => "index_group_pictures_on_delta"
   add_index "group_pictures", ["responded_at"], :name => "index_group_pictures_on_responded_at"
   add_index "group_pictures", ["group_id", "responded_at"], :name => "index_group_pictures_on_group_id_and_responded_at"
   add_index "group_pictures", ["group_id", "good", "responded_at"], :name => "index_group_pictures_on_group_id_and_good_and_responded_at"
@@ -601,7 +562,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "group_post_comments", ["delta"], :name => "index_group_post_comments_on_delta"
   add_index "group_post_comments", ["group_post_id", "created_at"], :name => "index_group_post_comments_on_group_post_id_and_created_at"
   add_index "group_post_comments", ["account_id", "created_at"], :name => "index_group_post_comments_on_account_id_and_created_at"
 
@@ -618,7 +578,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "good",                       :default => false
   end
 
-  add_index "group_posts", ["delta"], :name => "index_group_posts_on_delta"
   add_index "group_posts", ["responded_at"], :name => "index_group_posts_on_responded_at"
   add_index "group_posts", ["group_id", "responded_at"], :name => "index_group_posts_on_group_id_and_responded_at"
   add_index "group_posts", ["group_id", "top", "responded_at"], :name => "index_group_posts_on_group_id_and_top_and_responded_at"
@@ -638,7 +597,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.string   "custom_key"
   end
 
-  add_index "groups", ["delta"], :name => "index_groups_on_delta"
   add_index "groups", ["created_at"], :name => "index_groups_on_created_at"
   add_index "groups", ["creator_id"], :name => "index_groups_on_creator_id"
 
@@ -662,7 +620,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "hobby_profiles", ["account_id"], :name => "index_hobby_profiles_on_account_id"
-  add_index "hobby_profiles", ["delta"], :name => "index_hobby_profiles_on_delta"
 
   create_table "industries", :force => true do |t|
     t.datetime "created_at"
@@ -673,6 +630,7 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
+  add_index "industries", ["name", "account_id"], :name => "index_industries_on_name_and_account_id", :unique => true
   add_index "industries", ["account_id", "created_at"], :name => "index_industries_on_account_id_and_created_at"
 
   create_table "industry_infos", :force => true do |t|
@@ -687,7 +645,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "industry_infos", ["industry_id"], :name => "index_industry_infos_on_industry_id"
-  add_index "industry_infos", ["delta"], :name => "index_industry_infos_on_delta"
 
   create_table "job_info_categories", :force => true do |t|
     t.datetime "created_at"
@@ -697,6 +654,8 @@ ActiveRecord::Schema.define(:version => 52) do
     t.integer  "parent_category_id", :limit => 11
     t.boolean  "delta"
   end
+
+  add_index "job_info_categories", ["name"], :name => "index_job_info_categories_on_name", :unique => true
 
   create_table "job_infos", :force => true do |t|
     t.datetime "created_at"
@@ -708,8 +667,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "general",                  :default => false
     t.boolean  "delta"
   end
-
-  add_index "job_infos", ["delta"], :name => "index_job_infos_on_delta"
 
   create_table "job_infos_companies", :id => false, :force => true do |t|
     t.integer "job_info_id", :limit => 11
@@ -758,7 +715,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "job_position_infos", ["job_position_id"], :name => "index_job_position_infos_on_job_position_id"
-  add_index "job_position_infos", ["delta"], :name => "index_job_position_infos_on_delta"
 
   create_table "job_position_infos_companies", :id => false, :force => true do |t|
     t.integer "job_position_info_id", :limit => 11
@@ -810,7 +766,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "job_profiles", ["delta"], :name => "index_job_profiles_on_delta"
   add_index "job_profiles", ["job_name"], :name => "index_job_profiles_on_job_name"
   add_index "job_profiles", ["account_id", "enter_year", "enter_month"], :name => "index_job_profiles_on_account_year_month"
 
@@ -822,7 +777,7 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "job_service_categories", ["delta"], :name => "index_job_service_categories_on_delta"
+  add_index "job_service_categories", ["name"], :name => "index_job_service_categories_on_name", :unique => true
 
   create_table "job_service_evaluations", :force => true do |t|
     t.integer  "job_service_id", :limit => 11
@@ -834,7 +789,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "job_service_evaluations", ["delta"], :name => "index_job_service_evaluations_on_delta"
   add_index "job_service_evaluations", ["job_service_id", "updated_at"], :name => "index_job_service_evaluations_on_job_service_id_and_updated_at"
   add_index "job_service_evaluations", ["job_service_id", "account_id"], :name => "index_job_service_evaluations_on_job_service_id_and_account_id"
   add_index "job_service_evaluations", ["job_service_id", "point"], :name => "index_job_service_evaluations_on_job_service_id_and_point"
@@ -855,7 +809,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "job_services", ["delta"], :name => "index_job_services_on_delta"
   add_index "job_services", ["category_id"], :name => "index_job_services_on_category_id"
 
   create_table "job_statuses", :force => true do |t|
@@ -891,8 +844,7 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean "delta"
   end
 
-  add_index "job_tags", ["name"], :name => "index_job_tags_on_name"
-  add_index "job_tags", ["delta"], :name => "index_job_tags_on_delta"
+  add_index "job_tags", ["name"], :name => "index_job_tags_on_name", :unique => true
 
   create_table "job_target_notes", :force => true do |t|
     t.datetime "created_at"
@@ -903,7 +855,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "job_target_notes", ["job_target_id"], :name => "index_job_target_notes_on_job_target_id"
-  add_index "job_target_notes", ["delta"], :name => "index_job_target_notes_on_delta"
 
   create_table "job_targets", :force => true do |t|
     t.datetime "created_at"
@@ -932,7 +883,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "messages", ["delta"], :name => "index_messages_on_delta"
   add_index "messages", ["receiver_id", "created_at"], :name => "index_messages_on_receiver_id_and_created_at"
   add_index "messages", ["reply_to_id", "receiver_id", "sender_id"], :name => "index_messages_on_reply_to_id_and_receiver_id_and_sender_id"
 
@@ -956,7 +906,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "photo_comments", ["delta"], :name => "index_photo_comments_on_delta"
   add_index "photo_comments", ["photo_id", "created_at"], :name => "index_photo_comments_on_photo_id_and_created_at"
 
   create_table "photos", :force => true do |t|
@@ -972,7 +921,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "photos", ["album_id"], :name => "index_photos_on_album_id"
-  add_index "photos", ["delta"], :name => "index_photos_on_delta"
   add_index "photos", ["account_id", "created_at"], :name => "index_photos_on_account_id_and_created_at"
 
   create_table "pic_profiles", :force => true do |t|
@@ -983,7 +931,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "pic_profiles", ["account_id"], :name => "index_pic_profiles_on_account_id"
-  add_index "pic_profiles", ["delta"], :name => "index_pic_profiles_on_delta"
 
   create_table "point_profiles", :force => true do |t|
     t.integer  "account_id", :limit => 11
@@ -994,21 +941,18 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "point_profiles", ["account_id"], :name => "index_point_profiles_on_account_id"
-  add_index "point_profiles", ["delta"], :name => "index_point_profiles_on_delta"
 
   create_table "provinces", :force => true do |t|
     t.string  "name"
     t.boolean "delta"
   end
 
-  add_index "provinces", ["delta"], :name => "index_provinces_on_delta"
-
   create_table "recruitment_tags", :force => true do |t|
     t.string  "name"
     t.boolean "delta"
   end
 
-  add_index "recruitment_tags", ["name"], :name => "index_recruitment_tags_on_name"
+  add_index "recruitment_tags", ["name"], :name => "index_recruitment_tags_on_name", :unique => true
 
   create_table "recruitments", :force => true do |t|
     t.string   "title"
@@ -1025,9 +969,9 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
+  add_index "recruitments", ["source_link"], :name => "index_recruitments_on_source_link", :unique => true
   add_index "recruitments", ["location"], :name => "index_recruitments_on_location"
   add_index "recruitments", ["recruitment_type", "publish_time"], :name => "index_recruitments_on_recruitment_type_and_publish_time"
-  add_index "recruitments", ["source_link"], :name => "index_recruitments_on_source_link"
 
   create_table "recruitments_recruitment_tags", :id => false, :force => true do |t|
     t.integer "recruitment_id",     :limit => 11
@@ -1044,8 +988,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "roles", ["delta"], :name => "index_roles_on_delta"
-
   create_table "sent_messages", :force => true do |t|
     t.datetime "created_at"
     t.integer  "sender_id",   :limit => 11
@@ -1056,7 +998,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "sent_messages", ["sender_id", "created_at"], :name => "index_sent_messages_on_sender_id_and_created_at", :unique => true
-  add_index "sent_messages", ["delta"], :name => "index_sent_messages_on_delta"
   add_index "sent_messages", ["reply_to_id", "sender_id", "receiver_id"], :name => "index_sent_messages_on_reply_to_id_and_sender_id_and_receiver_id"
 
   create_table "service_applications", :force => true do |t|
@@ -1076,7 +1017,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "service_applications", ["account_id"], :name => "index_service_applications_on_account_id"
-  add_index "service_applications", ["delta"], :name => "index_service_applications_on_delta"
   add_index "service_applications", ["closed", "created_at"], :name => "index_service_applications_on_closed_and_created_at"
 
   create_table "space_comments", :force => true do |t|
@@ -1088,7 +1028,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "space_comments", ["delta"], :name => "index_space_comments_on_delta"
   add_index "space_comments", ["owner_id", "created_at"], :name => "index_space_comments_on_owner_id_and_created_at"
 
   create_table "sys_messages", :force => true do |t|
@@ -1100,7 +1039,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "sys_messages", ["delta"], :name => "index_sys_messages_on_delta"
   add_index "sys_messages", ["account_id", "created_at"], :name => "index_sys_messages_on_account_id_and_created_at"
 
   create_table "talk_answers", :force => true do |t|
@@ -1117,7 +1055,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "talk_answers", ["question_id"], :name => "index_talk_answers_on_question_id"
-  add_index "talk_answers", ["delta"], :name => "index_talk_answers_on_delta"
 
   create_table "talk_comments", :force => true do |t|
     t.integer  "talk_id",    :limit => 11
@@ -1128,7 +1065,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "talk_comments", ["delta"], :name => "index_talk_comments_on_delta"
   add_index "talk_comments", ["talk_id", "created_at"], :name => "index_talk_comments_on_talk_id_and_created_at"
 
   create_table "talk_question_categories", :force => true do |t|
@@ -1157,7 +1093,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "talk_questions", ["talk_id"], :name => "index_talk_questions_on_talk_id"
-  add_index "talk_questions", ["delta"], :name => "index_talk_questions_on_delta"
 
   create_table "talk_questions_job_tags", :id => false, :force => true do |t|
     t.integer "talk_question_id", :limit => 11
@@ -1174,7 +1109,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "talk_reporters", ["talk_id"], :name => "index_talk_reporters_on_talk_id"
-  add_index "talk_reporters", ["delta"], :name => "index_talk_reporters_on_delta"
 
   create_table "talk_talkers", :force => true do |t|
     t.integer  "talk_id",    :limit => 11
@@ -1185,7 +1119,6 @@ ActiveRecord::Schema.define(:version => 52) do
 
   add_index "talk_talkers", ["talk_id"], :name => "index_talk_talkers_on_talk_id"
   add_index "talk_talkers", ["talker_id"], :name => "index_talk_talkers_on_talker_id"
-  add_index "talk_talkers", ["delta"], :name => "index_talk_talkers_on_delta"
 
   create_table "talkers", :force => true do |t|
     t.datetime "created_at"
@@ -1208,8 +1141,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "talkers", ["delta"], :name => "index_talkers_on_delta"
-
   create_table "talks", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -1226,7 +1157,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "talks", ["delta"], :name => "index_talks_on_delta"
   add_index "talks", ["published", "publish_at"], :name => "index_talks_on_published_and_publish_at"
 
   create_table "talks_companies", :id => false, :force => true do |t|
@@ -1263,8 +1193,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean "delta"
   end
 
-  add_index "timezones", ["delta"], :name => "index_timezones_on_delta"
-
   create_table "trash_records", :force => true do |t|
     t.string   "trashable_type"
     t.integer  "trashable_id",   :limit => 11
@@ -1284,14 +1212,11 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "view_counters", ["counter_key"], :name => "index_view_counters_on_counter_key"
-  add_index "view_counters", ["delta"], :name => "index_view_counters_on_delta"
 
   create_table "vote_categories", :force => true do |t|
     t.string  "name"
     t.boolean "delta"
   end
-
-  add_index "vote_categories", ["delta"], :name => "index_vote_categories_on_delta"
 
   create_table "vote_comments", :force => true do |t|
     t.integer  "vote_topic_id", :limit => 11
@@ -1302,7 +1227,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "vote_comments", ["delta"], :name => "index_vote_comments_on_delta"
   add_index "vote_comments", ["vote_topic_id", "created_at"], :name => "index_vote_comments_on_vote_topic_id_and_created_at"
 
   create_table "vote_images", :force => true do |t|
@@ -1313,7 +1237,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "vote_images", ["vote_topic_id"], :name => "index_vote_images_on_vote_topic_id"
-  add_index "vote_images", ["delta"], :name => "index_vote_images_on_delta"
 
   create_table "vote_options", :force => true do |t|
     t.datetime "created_at"
@@ -1325,7 +1248,6 @@ ActiveRecord::Schema.define(:version => 52) do
   end
 
   add_index "vote_options", ["vote_topic_id"], :name => "index_vote_options_on_vote_topic_id"
-  add_index "vote_options", ["delta"], :name => "index_vote_options_on_delta"
 
   create_table "vote_records", :force => true do |t|
     t.datetime "created_at"
@@ -1337,7 +1259,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "delta"
   end
 
-  add_index "vote_records", ["delta"], :name => "index_vote_records_on_delta"
   add_index "vote_records", ["vote_option_id"], :name => "index_vote_records_on_vote_option_id"
   add_index "vote_records", ["vote_topic_id", "account_id", "voter_ip"], :name => "index_vote_records_on_vote_topic_id_and_account_id_and_voter_ip"
 
@@ -1356,7 +1277,6 @@ ActiveRecord::Schema.define(:version => 52) do
     t.boolean  "allow_anonymous",                    :default => false
   end
 
-  add_index "vote_topics", ["delta"], :name => "index_vote_topics_on_delta"
   add_index "vote_topics", ["created_at"], :name => "index_vote_topics_on_created_at"
   add_index "vote_topics", ["account_id", "created_at"], :name => "index_vote_topics_on_account_id_and_created_at"
   add_index "vote_topics", ["category_id", "created_at"], :name => "index_vote_topics_on_category_id_and_created_at"
