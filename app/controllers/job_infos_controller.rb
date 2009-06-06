@@ -29,7 +29,7 @@ class JobInfosController < ApplicationController
       :per_page => Info_Page_Size,
       :select => "id, title, general, created_at",
       :include => [:job_info_categories, :industries, :companies, :job_positions, :job_processes],
-      :order => "created_at DESC"
+      :order => "id DESC"
     )
   end
   
@@ -40,23 +40,16 @@ class JobInfosController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @info_ids = JobInfo.search_for_ids(
+    @infos = JobInfo.search(
       @info_tip,
       :page => page,
       :per_page => Info_Page_Size,
       :match_mode => Search_Match_Mode,
       :order => Search_Sort_Order,
-      :field_weights => Search_Field_Weights
-    ).compact
-    
-    @infos = JobInfo.find(
-      :all,
-      :limit => Info_Page_Size,
+      :field_weights => Search_Field_Weights,
       :select => "id, title, general, created_at",
-      :conditions => ["id in (?)", @info_ids],
-      :include => [:job_info_categories, :industries, :companies, :job_positions, :job_processes],
-      :order => "created_at DESC"
-    )
+      :include => [:job_info_categories, :industries, :companies, :job_positions, :job_processes]
+    ).compact
   end
   
   def show

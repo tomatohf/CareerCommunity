@@ -1,7 +1,8 @@
-<% 
-	account_id = small_comment.account.id
-	account_nick = small_comment.account.get_nick
-	account_pic_url = small_comment.account.get_profile_pic_url
+<%
+	account_id = small_comment.account_id
+	account_nick_pic = Account.get_nick_and_pic(account_id)
+	account_nick = account_nick_pic[0]
+	account_pic_url = account_nick_pic[1]
 %>
 
 <% Account.set_account_nick_pic_cache(small_comment.account_id, account_nick, account_pic_url, small_comment.account.email) %>

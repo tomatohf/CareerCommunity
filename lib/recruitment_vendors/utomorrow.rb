@@ -83,7 +83,11 @@ module RecruitmentVendor
           url = "#{link}&page=#{page}"
           gotten_new_links = get_utomorrow_new_links(url)
           
-          existing_links = Recruitment.find(:all, :conditions => ["source_link in (?)", gotten_new_links.collect { |l| l[0] }]).collect { |r| r.source_link }
+          existing_links = Recruitment.find(
+            :all, 
+            :select => "source_link", 
+            :conditions => ["source_link in (?)", gotten_new_links.collect { |l| l[0] }]
+          ).collect { |r| r.source_link }
           non_existing_links = gotten_new_links.delete_if { |l| existing_links.include?(l[0]) }
           
           non_existing_links.each do |msg_link_info|
@@ -256,7 +260,11 @@ module RecruitmentVendor
       url = "#{link}&page=1"
       gotten_new_links = get_utomorrow_new_links(url)
       
-      existing_links = Recruitment.find(:all, :conditions => ["source_link in (?)", gotten_new_links.collect { |l| l[0] }]).collect { |r| r.source_link }
+      existing_links = Recruitment.find(
+        :all, 
+        :select => "source_link", 
+        :conditions => ["source_link in (?)", gotten_new_links.collect { |l| l[0] }]
+      ).collect { |r| r.source_link }
       non_existing_links = gotten_new_links.delete_if { |l| existing_links.include?(l[0]) }
       
       non_existing_links[0..1].each do |msg_link_info|

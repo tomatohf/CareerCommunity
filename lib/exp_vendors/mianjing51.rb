@@ -74,7 +74,11 @@ module ExpVendor
         urls(link, start_page, page_count).each { |url|
           gotten_new_links = get_mianjing51_new_links(url)
           
-          existing_links = Exp.find(:all, :conditions => ["source_link in (?)", gotten_new_links]).collect { |e| e.source_link }
+          existing_links = Exp.find(
+            :all, 
+            :select => "source_link", 
+            :conditions => ["source_link in (?)", gotten_new_links]
+          ).collect { |e| e.source_link }
           non_existing_links = gotten_new_links.delete_if { |l| existing_links.include?(l) }
           
           non_existing_links.each do |msg_link|

@@ -104,7 +104,11 @@ module RecruitmentVendor
           url = "#{link}&page=#{page}"
           gotten_new_links = get_hiall_new_links(url)
           
-          existing_links = Recruitment.find(:all, :conditions => ["source_link in (?)", gotten_new_links]).collect { |r| r.source_link }
+          existing_links = Recruitment.find(
+            :all, 
+            :select => "source_link", 
+            :conditions => ["source_link in (?)", gotten_new_links]
+          ).collect { |r| r.source_link }
           non_existing_links = gotten_new_links.delete_if { |l| existing_links.include?(l) }
           
           non_existing_links.each do |msg_link|

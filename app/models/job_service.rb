@@ -72,6 +72,26 @@ class JobService < ActiveRecord::Base
   
   
   
+  def self.get_job_services_by_category_with_order(category_id)
+    query = "SELECT job_services.id, name, url, AVG(job_service_evaluations.point) as average, COUNT(*) as count"
+    query << " FROM job_services LEFT OUTER JOIN job_service_evaluations"
+    query << " ON job_services.id = job_service_evaluations.job_service_id"
+    query << " WHERE job_services.category_id = #{category_id}"
+    query << " GROUP BY job_services.id"
+    # query << " ORDER BY average DESC, count DESC"
+    # do the sort in rails, but not mysql(DB)
+    
+    self.find_by_sql(query).sort { |x, y|
+      x_avg = (x.average || 0).to_f
+      y_avg = (y.average || 0).to_f
+      
+      x_count = (x.count || 0).to_f
+      y_count = (y.count || 0).to_f
+      
+      (x_avg == y_avg) ? (y_count <=> x_count) : (y_avg <=> x_avg)
+    }
+  end
+  
   def self.get_job_service(job_service_id)
     js = Cache.get("#{CKP_job_service}_#{job_service_id}".to_sym)
     

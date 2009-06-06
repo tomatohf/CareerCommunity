@@ -82,9 +82,9 @@ class Exp < ActiveRecord::Base
   end
   
   def self.filter_out_by_key_words
-    all_ids = Exp.find(:all, :select => "id")
+    all_ids = self.find(:all, :select => "id")
     all_ids.each do |id|
-      r = Exp.find(id.id)
+      r = self.find(id.id)
       
       Filter_Out_Key_Words.each do |word|
         if r.title =~ word || r.content =~ word

@@ -115,7 +115,7 @@ class RecruitmentsController < ApplicationController
           # :order => "publish_time DESC",
           :order => "recruitment_id DESC",
           :include => [:recruitment_tags]
-        ).sort! { |x, y| (y.publish_time || y.created_at) <=> (x.publish_time || x.created_at) }
+        ).sort { |x, y| (y.publish_time || y.created_at) <=> (x.publish_time || x.created_at) }
       end
       
     end

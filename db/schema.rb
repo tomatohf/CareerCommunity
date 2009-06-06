@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 44) do
+ActiveRecord::Schema.define(:version => 52) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -323,10 +323,6 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "company_infos", ["created_at"], :name => "index_company_infos_on_created_at"
-  add_index "company_infos", ["updated_at"], :name => "index_company_infos_on_updated_at"
-  add_index "company_infos", ["creator_id"], :name => "index_company_infos_on_creator_id"
-  add_index "company_infos", ["updater_id"], :name => "index_company_infos_on_updater_id"
   add_index "company_infos", ["company_id"], :name => "index_company_infos_on_company_id"
   add_index "company_infos", ["delta"], :name => "index_company_infos_on_delta"
 
@@ -376,8 +372,6 @@ ActiveRecord::Schema.define(:version => 44) do
 
   add_index "exps", ["publish_time"], :name => "index_exps_on_publish_time"
   add_index "exps", ["source_link"], :name => "index_exps_on_source_link"
-  add_index "exps", ["active"], :name => "index_exps_on_active"
-  add_index "exps", ["created_at"], :name => "index_exps_on_created_at"
   add_index "exps", ["delta"], :name => "index_exps_on_delta"
 
   create_table "friends", :force => true do |t|
@@ -403,15 +397,11 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "goal_follows", ["created_at"], :name => "index_goal_follows_on_created_at"
-  add_index "goal_follows", ["updated_at"], :name => "index_goal_follows_on_updated_at"
-  add_index "goal_follows", ["account_id"], :name => "index_goal_follows_on_account_id"
-  add_index "goal_follows", ["goal_id"], :name => "index_goal_follows_on_goal_id"
-  add_index "goal_follows", ["private"], :name => "index_goal_follows_on_private"
-  add_index "goal_follows", ["status_id"], :name => "index_goal_follows_on_status_id"
-  add_index "goal_follows", ["status_updated_at"], :name => "index_goal_follows_on_status_updated_at"
-  add_index "goal_follows", ["type_id"], :name => "index_goal_follows_on_type_id"
   add_index "goal_follows", ["delta"], :name => "index_goal_follows_on_delta"
+  add_index "goal_follows", ["account_id", "created_at"], :name => "index_goal_follows_on_account_id_and_created_at"
+  add_index "goal_follows", ["account_id", "status_id", "created_at"], :name => "index_goal_follows_on_account_id_and_status_id_and_created_at"
+  add_index "goal_follows", ["goal_id", "account_id"], :name => "index_goal_follows_on_goal_id_and_account_id"
+  add_index "goal_follows", ["goal_id", "status_id", "created_at"], :name => "index_goal_follows_on_goal_id_and_status_id_and_created_at"
 
   create_table "goal_post_attachments", :force => true do |t|
     t.datetime "created_at"
@@ -424,9 +414,7 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "goal_post_attachments", ["created_at"], :name => "index_goal_post_attachments_on_created_at"
   add_index "goal_post_attachments", ["goal_post_id"], :name => "index_goal_post_attachments_on_goal_post_id"
-  add_index "goal_post_attachments", ["account_id"], :name => "index_goal_post_attachments_on_account_id"
 
   create_table "goal_post_comments", :force => true do |t|
     t.integer  "goal_post_id", :limit => 11
@@ -437,10 +425,8 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "goal_post_comments", ["goal_post_id"], :name => "index_goal_post_comments_on_goal_post_id"
-  add_index "goal_post_comments", ["account_id"], :name => "index_goal_post_comments_on_account_id"
-  add_index "goal_post_comments", ["created_at"], :name => "index_goal_post_comments_on_created_at"
   add_index "goal_post_comments", ["delta"], :name => "index_goal_post_comments_on_delta"
+  add_index "goal_post_comments", ["goal_post_id", "created_at"], :name => "index_goal_post_comments_on_goal_post_id_and_created_at"
 
   create_table "goal_posts", :force => true do |t|
     t.datetime "created_at"
@@ -455,13 +441,11 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "goal_posts", ["created_at"], :name => "index_goal_posts_on_created_at"
-  add_index "goal_posts", ["goal_id"], :name => "index_goal_posts_on_goal_id"
-  add_index "goal_posts", ["account_id"], :name => "index_goal_posts_on_account_id"
-  add_index "goal_posts", ["top"], :name => "index_goal_posts_on_top"
   add_index "goal_posts", ["responded_at"], :name => "index_goal_posts_on_responded_at"
-  add_index "goal_posts", ["good"], :name => "index_goal_posts_on_good"
   add_index "goal_posts", ["delta"], :name => "index_goal_posts_on_delta"
+  add_index "goal_posts", ["goal_id", "top", "responded_at"], :name => "index_goal_posts_on_goal_id_and_top_and_responded_at"
+  add_index "goal_posts", ["goal_id", "good", "top", "responded_at"], :name => "index_goal_posts_on_goal_id_and_good_and_top_and_responded_at"
+  add_index "goal_posts", ["account_id", "responded_at"], :name => "index_goal_posts_on_account_id_and_responded_at"
 
   create_table "goal_track_comments", :force => true do |t|
     t.datetime "created_at"
@@ -472,11 +456,8 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "goal_track_comments", ["created_at"], :name => "index_goal_track_comments_on_created_at"
-  add_index "goal_track_comments", ["updated_at"], :name => "index_goal_track_comments_on_updated_at"
-  add_index "goal_track_comments", ["goal_track_id"], :name => "index_goal_track_comments_on_goal_track_id"
-  add_index "goal_track_comments", ["account_id"], :name => "index_goal_track_comments_on_account_id"
   add_index "goal_track_comments", ["delta"], :name => "index_goal_track_comments_on_delta"
+  add_index "goal_track_comments", ["goal_track_id", "created_at"], :name => "index_goal_track_comments_on_goal_track_id_and_created_at"
 
   create_table "goal_tracks", :force => true do |t|
     t.datetime "created_at"
@@ -488,11 +469,9 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "goal_tracks", ["created_at"], :name => "index_goal_tracks_on_created_at"
-  add_index "goal_tracks", ["updated_at"], :name => "index_goal_tracks_on_updated_at"
-  add_index "goal_tracks", ["goal_follow_id"], :name => "index_goal_tracks_on_goal_follow_id"
-  add_index "goal_tracks", ["goal_id"], :name => "index_goal_tracks_on_goal_id"
   add_index "goal_tracks", ["delta"], :name => "index_goal_tracks_on_delta"
+  add_index "goal_tracks", ["goal_id", "created_at"], :name => "index_goal_tracks_on_goal_id_and_created_at"
+  add_index "goal_tracks", ["goal_follow_id", "created_at"], :name => "index_goal_tracks_on_goal_follow_id_and_created_at"
 
   create_table "goals", :force => true do |t|
     t.datetime "created_at"
@@ -503,10 +482,7 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "goals", ["created_at"], :name => "index_goals_on_created_at"
-  add_index "goals", ["account_id"], :name => "index_goals_on_account_id"
   add_index "goals", ["name"], :name => "index_goals_on_name"
-  add_index "goals", ["deprecated"], :name => "index_goals_on_deprecated"
   add_index "goals", ["delta"], :name => "index_goals_on_delta"
 
   create_table "group_activities", :force => true do |t|
@@ -710,10 +686,6 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "industry_infos", ["created_at"], :name => "index_industry_infos_on_created_at"
-  add_index "industry_infos", ["updated_at"], :name => "index_industry_infos_on_updated_at"
-  add_index "industry_infos", ["creator_id"], :name => "index_industry_infos_on_creator_id"
-  add_index "industry_infos", ["updater_id"], :name => "index_industry_infos_on_updater_id"
   add_index "industry_infos", ["industry_id"], :name => "index_industry_infos_on_industry_id"
   add_index "industry_infos", ["delta"], :name => "index_industry_infos_on_delta"
 
@@ -726,10 +698,6 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "job_info_categories", ["created_at"], :name => "index_job_info_categories_on_created_at"
-  add_index "job_info_categories", ["updated_at"], :name => "index_job_info_categories_on_updated_at"
-  add_index "job_info_categories", ["parent_category_id"], :name => "index_job_info_categories_on_parent_category_id"
-
   create_table "job_infos", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -741,10 +709,6 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "job_infos", ["created_at"], :name => "index_job_infos_on_created_at"
-  add_index "job_infos", ["updated_at"], :name => "index_job_infos_on_updated_at"
-  add_index "job_infos", ["creator_id"], :name => "index_job_infos_on_creator_id"
-  add_index "job_infos", ["updater_id"], :name => "index_job_infos_on_updater_id"
   add_index "job_infos", ["delta"], :name => "index_job_infos_on_delta"
 
   create_table "job_infos_companies", :id => false, :force => true do |t|
@@ -752,40 +716,35 @@ ActiveRecord::Schema.define(:version => 44) do
     t.integer "company_id",  :limit => 11
   end
 
-  add_index "job_infos_companies", ["job_info_id"], :name => "index_job_infos_companies_on_job_info_id"
-  add_index "job_infos_companies", ["company_id"], :name => "index_job_infos_companies_on_company_id"
+  add_index "job_infos_companies", ["job_info_id", "company_id"], :name => "index_job_infos_companies_on_job_info_id_and_company_id", :unique => true
 
   create_table "job_infos_industries", :id => false, :force => true do |t|
     t.integer "job_info_id", :limit => 11
     t.integer "industry_id", :limit => 11
   end
 
-  add_index "job_infos_industries", ["job_info_id"], :name => "index_job_infos_industries_on_job_info_id"
-  add_index "job_infos_industries", ["industry_id"], :name => "index_job_infos_industries_on_industry_id"
+  add_index "job_infos_industries", ["job_info_id", "industry_id"], :name => "index_job_infos_industries_on_job_info_id_and_industry_id", :unique => true
 
   create_table "job_infos_job_info_categories", :id => false, :force => true do |t|
     t.integer "job_info_id",          :limit => 11
     t.integer "job_info_category_id", :limit => 11
   end
 
-  add_index "job_infos_job_info_categories", ["job_info_id"], :name => "index_job_infos_job_info_categories_on_job_info_id"
-  add_index "job_infos_job_info_categories", ["job_info_category_id"], :name => "index_job_infos_job_info_categories_on_job_info_category_id"
+  add_index "job_infos_job_info_categories", ["job_info_id", "job_info_category_id"], :name => "index_job_infos_job_info_categories_on_info_category", :unique => true
 
   create_table "job_infos_job_positions", :id => false, :force => true do |t|
     t.integer "job_info_id",     :limit => 11
     t.integer "job_position_id", :limit => 11
   end
 
-  add_index "job_infos_job_positions", ["job_info_id"], :name => "index_job_infos_job_positions_on_job_info_id"
-  add_index "job_infos_job_positions", ["job_position_id"], :name => "index_job_infos_job_positions_on_job_position_id"
+  add_index "job_infos_job_positions", ["job_info_id", "job_position_id"], :name => "index_job_infos_job_positions_on_job_info_id_and_job_position_id", :unique => true
 
   create_table "job_infos_job_processes", :id => false, :force => true do |t|
     t.integer "job_info_id",    :limit => 11
     t.integer "job_process_id", :limit => 11
   end
 
-  add_index "job_infos_job_processes", ["job_info_id"], :name => "index_job_infos_job_processes_on_job_info_id"
-  add_index "job_infos_job_processes", ["job_process_id"], :name => "index_job_infos_job_processes_on_job_process_id"
+  add_index "job_infos_job_processes", ["job_info_id", "job_process_id"], :name => "index_job_infos_job_processes_on_job_info_id_and_job_process_id", :unique => true
 
   create_table "job_position_infos", :force => true do |t|
     t.datetime "created_at"
@@ -798,10 +757,6 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "job_position_infos", ["created_at"], :name => "index_job_position_infos_on_created_at"
-  add_index "job_position_infos", ["updated_at"], :name => "index_job_position_infos_on_updated_at"
-  add_index "job_position_infos", ["creator_id"], :name => "index_job_position_infos_on_creator_id"
-  add_index "job_position_infos", ["updater_id"], :name => "index_job_position_infos_on_updater_id"
   add_index "job_position_infos", ["job_position_id"], :name => "index_job_position_infos_on_job_position_id"
   add_index "job_position_infos", ["delta"], :name => "index_job_position_infos_on_delta"
 
@@ -810,16 +765,14 @@ ActiveRecord::Schema.define(:version => 44) do
     t.integer "company_id",           :limit => 11
   end
 
-  add_index "job_position_infos_companies", ["job_position_info_id"], :name => "index_job_position_infos_companies_on_job_position_info_id"
-  add_index "job_position_infos_companies", ["company_id"], :name => "index_job_position_infos_companies_on_company_id"
+  add_index "job_position_infos_companies", ["job_position_info_id", "company_id"], :name => "index_job_position_infos_industries_on_info_company", :unique => true
 
   create_table "job_position_infos_industries", :id => false, :force => true do |t|
     t.integer "job_position_info_id", :limit => 11
     t.integer "industry_id",          :limit => 11
   end
 
-  add_index "job_position_infos_industries", ["job_position_info_id"], :name => "index_job_position_infos_industries_on_job_position_info_id"
-  add_index "job_position_infos_industries", ["industry_id"], :name => "index_job_position_infos_industries_on_industry_id"
+  add_index "job_position_infos_industries", ["job_position_info_id", "industry_id"], :name => "index_job_position_infos_industries_on_info_industry", :unique => true
 
   create_table "job_positions", :force => true do |t|
     t.datetime "created_at"
@@ -869,8 +822,6 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "job_service_categories", ["created_at"], :name => "index_job_service_categories_on_created_at"
-  add_index "job_service_categories", ["updated_at"], :name => "index_job_service_categories_on_updated_at"
   add_index "job_service_categories", ["delta"], :name => "index_job_service_categories_on_delta"
 
   create_table "job_service_evaluations", :force => true do |t|
@@ -883,12 +834,10 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "job_service_evaluations", ["created_at"], :name => "index_job_service_evaluations_on_created_at"
-  add_index "job_service_evaluations", ["updated_at"], :name => "index_job_service_evaluations_on_updated_at"
-  add_index "job_service_evaluations", ["job_service_id"], :name => "index_job_service_evaluations_on_job_service_id"
-  add_index "job_service_evaluations", ["account_id"], :name => "index_job_service_evaluations_on_account_id"
-  add_index "job_service_evaluations", ["point"], :name => "index_job_service_evaluations_on_point"
   add_index "job_service_evaluations", ["delta"], :name => "index_job_service_evaluations_on_delta"
+  add_index "job_service_evaluations", ["job_service_id", "updated_at"], :name => "index_job_service_evaluations_on_job_service_id_and_updated_at"
+  add_index "job_service_evaluations", ["job_service_id", "account_id"], :name => "index_job_service_evaluations_on_job_service_id_and_account_id"
+  add_index "job_service_evaluations", ["job_service_id", "point"], :name => "index_job_service_evaluations_on_job_service_id_and_point"
 
   create_table "job_services", :force => true do |t|
     t.datetime "created_at"
@@ -906,13 +855,8 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "job_services", ["created_at"], :name => "index_job_services_on_created_at"
-  add_index "job_services", ["updated_at"], :name => "index_job_services_on_updated_at"
-  add_index "job_services", ["creator_id"], :name => "index_job_services_on_creator_id"
-  add_index "job_services", ["updater_id"], :name => "index_job_services_on_updater_id"
-  add_index "job_services", ["category_id"], :name => "index_job_services_on_category_id"
-  add_index "job_services", ["cost"], :name => "index_job_services_on_cost"
   add_index "job_services", ["delta"], :name => "index_job_services_on_delta"
+  add_index "job_services", ["category_id"], :name => "index_job_services_on_category_id"
 
   create_table "job_statuses", :force => true do |t|
     t.datetime "created_at"
@@ -959,8 +903,6 @@ ActiveRecord::Schema.define(:version => 44) do
   end
 
   add_index "job_target_notes", ["job_target_id"], :name => "index_job_target_notes_on_job_target_id"
-  add_index "job_target_notes", ["updated_at"], :name => "index_job_target_notes_on_updated_at"
-  add_index "job_target_notes", ["created_at"], :name => "index_job_target_notes_on_created_at"
   add_index "job_target_notes", ["delta"], :name => "index_job_target_notes_on_delta"
 
   create_table "job_targets", :force => true do |t|
@@ -1085,6 +1027,7 @@ ActiveRecord::Schema.define(:version => 44) do
 
   add_index "recruitments", ["location"], :name => "index_recruitments_on_location"
   add_index "recruitments", ["recruitment_type", "publish_time"], :name => "index_recruitments_on_recruitment_type_and_publish_time"
+  add_index "recruitments", ["source_link"], :name => "index_recruitments_on_source_link"
 
   create_table "recruitments_recruitment_tags", :id => false, :force => true do |t|
     t.integer "recruitment_id",     :limit => 11
@@ -1173,12 +1116,7 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "talk_answers", ["talk_id"], :name => "index_talk_answers_on_talk_id"
-  add_index "talk_answers", ["created_at"], :name => "index_talk_answers_on_created_at"
-  add_index "talk_answers", ["creator_id"], :name => "index_talk_answers_on_creator_id"
-  add_index "talk_answers", ["updater_id"], :name => "index_talk_answers_on_updater_id"
   add_index "talk_answers", ["question_id"], :name => "index_talk_answers_on_question_id"
-  add_index "talk_answers", ["talker_id"], :name => "index_talk_answers_on_talker_id"
   add_index "talk_answers", ["delta"], :name => "index_talk_answers_on_delta"
 
   create_table "talk_comments", :force => true do |t|
@@ -1190,10 +1128,8 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "talk_comments", ["talk_id"], :name => "index_talk_comments_on_talk_id"
-  add_index "talk_comments", ["account_id"], :name => "index_talk_comments_on_account_id"
-  add_index "talk_comments", ["created_at"], :name => "index_talk_comments_on_created_at"
   add_index "talk_comments", ["delta"], :name => "index_talk_comments_on_delta"
+  add_index "talk_comments", ["talk_id", "created_at"], :name => "index_talk_comments_on_talk_id_and_created_at"
 
   create_table "talk_question_categories", :force => true do |t|
     t.integer  "talk_id",    :limit => 11
@@ -1206,10 +1142,7 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "talk_question_categories", ["created_at"], :name => "index_talk_question_categories_on_created_at"
   add_index "talk_question_categories", ["talk_id"], :name => "index_talk_question_categories_on_talk_id"
-  add_index "talk_question_categories", ["creator_id"], :name => "index_talk_question_categories_on_creator_id"
-  add_index "talk_question_categories", ["updater_id"], :name => "index_talk_question_categories_on_updater_id"
 
   create_table "talk_questions", :force => true do |t|
     t.integer  "talk_id",     :limit => 11
@@ -1224,10 +1157,6 @@ ActiveRecord::Schema.define(:version => 44) do
   end
 
   add_index "talk_questions", ["talk_id"], :name => "index_talk_questions_on_talk_id"
-  add_index "talk_questions", ["created_at"], :name => "index_talk_questions_on_created_at"
-  add_index "talk_questions", ["creator_id"], :name => "index_talk_questions_on_creator_id"
-  add_index "talk_questions", ["updater_id"], :name => "index_talk_questions_on_updater_id"
-  add_index "talk_questions", ["category_id"], :name => "index_talk_questions_on_category_id"
   add_index "talk_questions", ["delta"], :name => "index_talk_questions_on_delta"
 
   create_table "talk_questions_job_tags", :id => false, :force => true do |t|
@@ -1235,8 +1164,7 @@ ActiveRecord::Schema.define(:version => 44) do
     t.integer "job_tag_id",       :limit => 11
   end
 
-  add_index "talk_questions_job_tags", ["talk_question_id"], :name => "index_talk_questions_job_tags_on_talk_question_id"
-  add_index "talk_questions_job_tags", ["job_tag_id"], :name => "index_talk_questions_job_tags_on_job_tag_id"
+  add_index "talk_questions_job_tags", ["talk_question_id", "job_tag_id"], :name => "index_talk_questions_job_tags_on_talk_question_id_and_job_tag_id", :unique => true
 
   create_table "talk_reporters", :force => true do |t|
     t.integer  "talk_id",    :limit => 11
@@ -1246,7 +1174,6 @@ ActiveRecord::Schema.define(:version => 44) do
   end
 
   add_index "talk_reporters", ["talk_id"], :name => "index_talk_reporters_on_talk_id"
-  add_index "talk_reporters", ["created_at"], :name => "index_talk_reporters_on_created_at"
   add_index "talk_reporters", ["delta"], :name => "index_talk_reporters_on_delta"
 
   create_table "talk_talkers", :force => true do |t|
@@ -1257,7 +1184,6 @@ ActiveRecord::Schema.define(:version => 44) do
   end
 
   add_index "talk_talkers", ["talk_id"], :name => "index_talk_talkers_on_talk_id"
-  add_index "talk_talkers", ["created_at"], :name => "index_talk_talkers_on_created_at"
   add_index "talk_talkers", ["talker_id"], :name => "index_talk_talkers_on_talker_id"
   add_index "talk_talkers", ["delta"], :name => "index_talk_talkers_on_delta"
 
@@ -1282,7 +1208,6 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "talkers", ["real_name"], :name => "index_talkers_on_real_name"
   add_index "talkers", ["delta"], :name => "index_talkers_on_delta"
 
   create_table "talks", :force => true do |t|
@@ -1301,47 +1226,36 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "talks", ["created_at"], :name => "index_talks_on_created_at"
-  add_index "talks", ["creator_id"], :name => "index_talks_on_creator_id"
-  add_index "talks", ["updater_id"], :name => "index_talks_on_updater_id"
-  add_index "talks", ["sn"], :name => "index_talks_on_sn"
-  add_index "talks", ["begin_at"], :name => "index_talks_on_begin_at"
-  add_index "talks", ["end_at"], :name => "index_talks_on_end_at"
-  add_index "talks", ["published"], :name => "index_talks_on_published"
-  add_index "talks", ["publish_at"], :name => "index_talks_on_publish_at"
   add_index "talks", ["delta"], :name => "index_talks_on_delta"
+  add_index "talks", ["published", "publish_at"], :name => "index_talks_on_published_and_publish_at"
 
   create_table "talks_companies", :id => false, :force => true do |t|
     t.integer "talk_id",    :limit => 11
     t.integer "company_id", :limit => 11
   end
 
-  add_index "talks_companies", ["talk_id"], :name => "index_talks_companies_on_talk_id"
-  add_index "talks_companies", ["company_id"], :name => "index_talks_companies_on_company_id"
+  add_index "talks_companies", ["talk_id", "company_id"], :name => "index_talks_companies_on_talk_id_and_company_id", :unique => true
 
   create_table "talks_industries", :id => false, :force => true do |t|
     t.integer "talk_id",     :limit => 11
     t.integer "industry_id", :limit => 11
   end
 
-  add_index "talks_industries", ["talk_id"], :name => "index_talks_industries_on_talk_id"
-  add_index "talks_industries", ["industry_id"], :name => "index_talks_industries_on_industry_id"
+  add_index "talks_industries", ["talk_id", "industry_id"], :name => "index_talks_industries_on_talk_id_and_industry_id", :unique => true
 
   create_table "talks_job_positions", :id => false, :force => true do |t|
     t.integer "talk_id",         :limit => 11
     t.integer "job_position_id", :limit => 11
   end
 
-  add_index "talks_job_positions", ["talk_id"], :name => "index_talks_job_positions_on_talk_id"
-  add_index "talks_job_positions", ["job_position_id"], :name => "index_talks_job_positions_on_job_position_id"
+  add_index "talks_job_positions", ["talk_id", "job_position_id"], :name => "index_talks_job_positions_on_talk_id_and_job_position_id", :unique => true
 
   create_table "talks_job_processes", :id => false, :force => true do |t|
     t.integer "talk_id",        :limit => 11
     t.integer "job_process_id", :limit => 11
   end
 
-  add_index "talks_job_processes", ["talk_id"], :name => "index_talks_job_processes_on_talk_id"
-  add_index "talks_job_processes", ["job_process_id"], :name => "index_talks_job_processes_on_job_process_id"
+  add_index "talks_job_processes", ["talk_id", "job_process_id"], :name => "index_talks_job_processes_on_talk_id_and_job_process_id", :unique => true
 
   create_table "timezones", :force => true do |t|
     t.string  "name"
@@ -1369,10 +1283,7 @@ ActiveRecord::Schema.define(:version => 44) do
     t.boolean  "delta"
   end
 
-  add_index "view_counters", ["updated_at"], :name => "index_view_counters_on_updated_at"
-  add_index "view_counters", ["created_at"], :name => "index_view_counters_on_created_at"
   add_index "view_counters", ["counter_key"], :name => "index_view_counters_on_counter_key"
-  add_index "view_counters", ["view_count"], :name => "index_view_counters_on_view_count"
   add_index "view_counters", ["delta"], :name => "index_view_counters_on_delta"
 
   create_table "vote_categories", :force => true do |t|

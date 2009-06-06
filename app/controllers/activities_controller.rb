@@ -309,7 +309,7 @@ class ActivitiesController < ApplicationController
       :conditions => ["activity_post_comments.account_id = ?", @owner_id],
       # :order => "activity_posts.responded_at DESC"
       :order => "activity_post_comments.created_at DESC"
-    ).sort! { |x, y| y.responded_at <=> x.responded_at }
+    ).sort { |x, y| y.responded_at <=> x.responded_at }
     ActivityPost.load_associations(@commented_posts, [:account, :activity]) if @commented_posts.size > 0
   end
   

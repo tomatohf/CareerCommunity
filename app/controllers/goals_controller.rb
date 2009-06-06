@@ -59,7 +59,7 @@ class GoalsController < ApplicationController
       :all,
       :limit => Summary_New_Track_Size,
       :include => [:goal_follow],
-      :order => "created_at DESC"
+      :order => "id DESC"
     )
     
     @new_posts = GoalPost.find(
@@ -67,7 +67,7 @@ class GoalsController < ApplicationController
       :limit => Summary_New_Post_Size,
       :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
   end
   
@@ -77,13 +77,11 @@ class GoalsController < ApplicationController
     @goals = Goal.paginate(
 			:page => page,
       :per_page => Goal_Page_Size,
-		  :order => "created_at DESC"
+		  :order => "id DESC"
 		)
 		
-		goal_ids = @goals.collect { |goal| goal.id }
-		
 		@follow_counts = GoalFollow.count(
-      :conditions => ["goal_id in (?)", goal_ids],
+      :conditions => ["goal_id in (?)", @goals],
       :group => "goal_id"
     )
     
@@ -91,8 +89,8 @@ class GoalsController < ApplicationController
       :all,
       :limit => Summary_New_Post_Size,
       :select => "id, created_at, goal_id, good, title, responded_at",
-      :conditions => ["goal_id in (?)", goal_ids],
-      :order => "responded_at DESC, created_at DESC"
+      :conditions => ["goal_id in (?)", @goals],
+      :order => "responded_at DESC"
     )
   end
 
@@ -119,7 +117,7 @@ class GoalsController < ApplicationController
       :limit => Summary_New_Post_Size,
       :select => "id, created_at, goal_id, good, title, responded_at",
       :conditions => ["goal_id in (?)", goal_ids],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
   end
   
@@ -258,21 +256,20 @@ class GoalsController < ApplicationController
     @goal = Goal.get_goal(@follow.goal_id)
     @follower = Account.get_nick_and_pic(@follow.account_id) unless @edit
     
-    @new_comments = GoalTrackComment.find(
-      :all,
-      :limit => New_Comment_Size,
-      :conditions => ["goal_track_id in (select id from goal_tracks where goal_follow_id = ?)", @follow.id],
-      :include => [:account => [:profile_pic]],
-      :order => "updated_at DESC"
-    )
-    
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @tracks = @follow.tracks.paginate(
+    @tracks = GoalTrack.paginate(
       :page => page,
       :per_page => Track_Page_Size,
       :conditions => ["goal_follow_id = ?", @follow.id],
       :order => "created_at DESC"
+    )
+    
+    @new_comments = GoalTrackComment.find(
+      :all,
+      :limit => New_Comment_Size,
+      :conditions => ["goal_track_id in (?)", @tracks],
+      :order => "id DESC"
     )
   end
 
@@ -297,7 +294,7 @@ class GoalsController < ApplicationController
       :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
       :conditions => ["goal_id = ? and top = ?", @goal.id, true],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
     
     @goal_posts = GoalPost.find(
@@ -306,7 +303,7 @@ class GoalsController < ApplicationController
       :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
       :conditions => ["goal_id = ? and top = ?", @goal.id, false],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
     
     @new_tracks = GoalTrack.find(
@@ -353,7 +350,7 @@ class GoalsController < ApplicationController
       :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
       :conditions => ["goal_id = ? and top = ?", @goal.id, true],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
     
     page = params[:page]
@@ -364,7 +361,7 @@ class GoalsController < ApplicationController
       :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
       :conditions => ["goal_id = ? and top = ?", @goal.id, false],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
   end
   
@@ -376,7 +373,7 @@ class GoalsController < ApplicationController
       :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
       :conditions => ["goal_id = ? and top = ?", @goal.id, true],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
     
     page = params[:page]
@@ -387,7 +384,7 @@ class GoalsController < ApplicationController
       :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
       :conditions => ["goal_id = ? and top = ?", @goal.id, false],
       :include => [:account],
-      :order => "responded_at DESC, created_at DESC"
+      :order => "responded_at DESC"
     )
   end
   

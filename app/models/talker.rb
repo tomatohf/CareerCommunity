@@ -84,7 +84,7 @@ class Talker < ActiveRecord::Base
       a_t_n = self.find(
         :all,
         :select => "id, real_name, nick",
-        :order => "created_at DESC"
+        :order => "id DESC"
       ).collect { |talker|
         [talker.id, talker.get_name]
       }

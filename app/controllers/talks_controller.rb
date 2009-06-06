@@ -107,7 +107,7 @@ class TalksController < ApplicationController
       :page => page,
       :per_page => Comment_Page_Size,
       :total_entries => TalkComment.get_count(@talk.id),
-      :order => "updated_at ASC"
+      :order => "created_at ASC"
     )
   end
   
@@ -334,7 +334,7 @@ class TalksController < ApplicationController
     @talkers = Talker.paginate(
       :page => page,
       :per_page => Talker_Page_Size,
-      :order => "created_at DESC"
+      :order => "id DESC"
     )
   end
   
@@ -744,8 +744,7 @@ class TalksController < ApplicationController
     page = 1 unless page =~ /\d+/
     @talks = Talk.unpublished.paginate(
       :page => page,
-      :per_page => Talk_Page_Size,
-      :order => "created_at DESC"
+      :per_page => Talk_Page_Size
     )
     
   end

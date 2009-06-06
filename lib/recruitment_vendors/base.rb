@@ -133,7 +133,11 @@ module RecruitmentVendor
     end
     
     def remove_existing_links(links)
-      existing_links = Recruitment.find(:all, :conditions => ["source_link in (?)", links.keys]).collect { |r| r.source_link }
+      existing_links = Recruitment.find(
+        :all, 
+        :select => "source_link", 
+        :conditions => ["source_link in (?)", links.keys]
+      ).collect { |r| r.source_link }
       links.delete_if { |key, value| existing_links.include?(key) }
     end
     

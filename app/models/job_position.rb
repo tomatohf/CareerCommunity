@@ -24,10 +24,6 @@ class JobPosition < ActiveRecord::Base
                           #:order => "created_at DESC",
                           :after_add => Proc.new { |job_position, talk| JobPosition.clear_talk_job_positions_cache(talk.id) },
                           :after_remove => Proc.new { |job_position, talk| JobPosition.clear_talk_job_positions_cache(talk.id) }
-  has_and_belongs_to_many :job_infos,
-                          :foreign_key => "job_position_id",
-                          :association_foreign_key => "job_info_id",
-                          :join_table => "job_infos_job_positions"
   
   
   

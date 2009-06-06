@@ -14,7 +14,7 @@ class GoalFollow < ActiveRecord::Base
   
   
   
-  named_scope :private, :conditions => ["private = ?", true]
+  # named_scope :private, :conditions => ["private = ?", true]
   
   
 end

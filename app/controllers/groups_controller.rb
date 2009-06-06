@@ -768,7 +768,7 @@ class GroupsController < ApplicationController
       :include => [:account, :group],
       # :order => "group_posts.responded_at DESC"
       :order => "group_post_comments.created_at DESC"
-    ).sort! { |x, y| y.responded_at <=> x.responded_at }
+    ).sort { |x, y| y.responded_at <=> x.responded_at }
   end
   
   def edit_image

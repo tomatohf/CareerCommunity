@@ -73,7 +73,11 @@ module ExpVendor
           gotten_new_links_info = get_esojob_new_links(url).to_hash { |info| [info[0], info[1]] }
           gotten_new_links = gotten_new_links_info.keys
           
-          existing_links = Exp.find(:all, :conditions => ["source_link in (?)", gotten_new_links]).collect { |e| e.source_link }
+          existing_links = Exp.find(
+            :all, 
+            :select => "source_link", 
+            :conditions => ["source_link in (?)", gotten_new_links]
+          ).collect { |e| e.source_link }
           non_existing_links = gotten_new_links.delete_if { |l| existing_links.include?(l) }
           
           non_existing_links.each do |msg_link|

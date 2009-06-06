@@ -165,10 +165,11 @@ class JobTargetsController < ApplicationController
   end
   
   def create
-    jump_to("/job_targets/new") unless session[:new_target_company_id] &&
+    return jump_to("/job_targets/new") unless session[:new_target_company_id] &&
                       session[:new_target_company_id] > 0 &&
                       session[:new_target_company_name] &&
                       session[:new_target_company_name] != ""
+    
     
     position_id = params[:position_id] && params[:position_id].strip
     
@@ -210,7 +211,7 @@ class JobTargetsController < ApplicationController
     )
     
     
-    jump_to("/job_targets/list/#{session[:account_id]}") unless @target.save # should never happen normally ...
+    return jump_to("/job_targets/list/#{session[:account_id]}") unless @target.save # should never happen normally ...
     
   end
   
