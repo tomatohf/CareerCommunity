@@ -1294,6 +1294,14 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	margin: 5px;
 }
 
+.tinymce_content pre {
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+}
+
 .vote_topic_item {
 	margin-bottom: 25px;
 }
@@ -1374,6 +1382,14 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	white-space: -pre-wrap;
 	white-space: -o-pre-wrap;
 	word-wrap: break-word;
+}
+
+.post_comment_content a {
+	text-decoration: none;
+}
+
+.post_comment_content a:hover {
+	text-decoration: underline;
 }
 
 .bookmark_container {

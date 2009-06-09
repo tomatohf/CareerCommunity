@@ -13,11 +13,11 @@ class SysMessage < ActiveRecord::Base
   
   
   after_destroy { |sys_message|
-    SysMessage.decrease_unread_count_cache(sys_message.account_id, 1) unless sys_message.has_read
+    self.decrease_unread_count_cache(sys_message.account_id, 1) unless sys_message.has_read
   }
   
   after_create { |sys_message|
-    SysMessage.increase_unread_count_cache(sys_message.account_id, 1)
+    self.increase_unread_count_cache(sys_message.account_id, 1)
   }
   
   
@@ -27,7 +27,7 @@ class SysMessage < ActiveRecord::Base
   def self.get_unread_count(account_id)
     u_c = Cache.get("#{CKP_unread_count}_#{account_id}".to_sym)
     unless u_c
-      u_c = SysMessage.count(:conditions => ["account_id = ? and has_read = ?", account_id, false])
+      u_c = self.count(:conditions => ["account_id = ? and has_read = ?", account_id, false])
       
       Cache.set("#{CKP_unread_count}_#{account_id}".to_sym, u_c, Cache_TTL)
     end
@@ -86,7 +86,7 @@ class SysMessage < ActiveRecord::Base
   
   
   def self.create_new(a_id, type_id, data)
-    sm = SysMessage.new
+    sm = self.new
     sm.msg_type = sm.send(type_id)
     sm.account_id = a_id
     sm.raw_data = sm.get_type_obj(type_id).build_raw_data(data)

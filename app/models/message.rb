@@ -16,11 +16,11 @@ class Message < ActiveRecord::Base
   
   
   after_destroy { |message|
-    Message.decrease_unread_count_cache(message.receiver_id, 1) unless message.has_read
+    self.decrease_unread_count_cache(message.receiver_id, 1) unless message.has_read
   }
   
   after_create { |message|
-    Message.increase_unread_count_cache(message.receiver_id, 1)
+    self.increase_unread_count_cache(message.receiver_id, 1)
   }
   
   
@@ -36,9 +36,10 @@ class Message < ActiveRecord::Base
   end
   
   def self.get_unread_count(account_id)
-    u_c = Cache.get("#{CKP_unread_count}_#{account_id}".to_sym)
+    #u_c = Cache.get("#{CKP_unread_count}_#{account_id}".to_sym)
+    u_c = nil
     unless u_c
-      u_c = Message.count(:conditions => ["receiver_id = ? and has_read = ?", account_id, false])
+      u_c = self.count(:conditions => ["receiver_id = ? and has_read = ?", account_id, false])
       
       Cache.set("#{CKP_unread_count}_#{account_id}".to_sym, u_c, Cache_TTL)
     end

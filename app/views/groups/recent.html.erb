@@ -5,15 +5,15 @@
 
 <div class="float_r group_container_r">
 	<% if @edit %>
-		<div class="community_block">
+		<div class="community_block align_c">
 			<a href="/spaces/show/<%= @owner_id %>">我的空间</a>
 		</div>
 	<% else %>
-		<div class="community_block">
+		<div class="community_block align_c">
 			<a href="/spaces/show/<%= @owner_id %>">
 				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
 		</div>
-		<div class="community_block">
+		<div class="community_block align_c">
 			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
 				<%= owner_name %></a>
 		</div>
@@ -99,11 +99,12 @@
 </div>
 
 <div class="group_container_l">
-	<h2><%= page_title %></h2>
-	
 	<a href="/groups/all" style="font-size: 14px; padding-right: 20px;" class="account_nick_link float_r">
 		<img src="/images/groups/all_group_small.png" border="0" />
 		查看全部的圈子</a>
+		
+	<h2><%= page_title %></h2>
+
 	
 	<div class="community_title">
 		最近讨论话题 ...

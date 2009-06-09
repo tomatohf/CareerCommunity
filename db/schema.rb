@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 54) do
+ActiveRecord::Schema.define(:version => 55) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -885,6 +885,7 @@ ActiveRecord::Schema.define(:version => 54) do
 
   add_index "messages", ["receiver_id", "created_at"], :name => "index_messages_on_receiver_id_and_created_at"
   add_index "messages", ["reply_to_id", "receiver_id", "sender_id"], :name => "index_messages_on_reply_to_id_and_receiver_id_and_sender_id"
+  add_index "messages", ["receiver_id", "has_read"], :name => "index_messages_on_receiver_id_and_has_read"
 
   create_table "personal_bookmarks", :force => true do |t|
     t.datetime "created_at"
@@ -1040,6 +1041,7 @@ ActiveRecord::Schema.define(:version => 54) do
   end
 
   add_index "sys_messages", ["account_id", "created_at"], :name => "index_sys_messages_on_account_id_and_created_at"
+  add_index "sys_messages", ["account_id", "has_read"], :name => "index_sys_messages_on_account_id_and_has_read"
 
   create_table "talk_answers", :force => true do |t|
     t.integer  "talk_id",     :limit => 11

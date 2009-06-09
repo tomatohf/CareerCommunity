@@ -15,8 +15,13 @@
 	</div>
 	
 	<div class="community_block align_c">
-		<a href="/talks">
-			返回 周三访谈录列表</a>
+		阅读访谈录需要
+		<a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" target="_blank">
+			Adobe Flash Player</a>
+	</div>
+	<div class="community_block align_c">
+		<a href="http://www.adobe.com/go/getflashplayer" target="_blank">
+			<img src="/images/get_flash_player.gif" border="0" alt="获取 Adobe Flash 播放器" /></a>
 	</div>
 	
 	
@@ -241,16 +246,18 @@
 	
 
 	<div class="community_block align_r">
-		<% if @edit %>
-			<span class="float_l">
+		<span class="float_l">
+			<% if @edit %>
 				<a href="/talks/unpublished">
 					尚未发布的访谈录列表</a>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="/talks/<%= @talk.id %>/manage">
 					管理这篇访谈录</a>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			</span>
-		<% end %>
+			<% end %>
+			<a href="/talks" style="font-size: 13px;">
+				返回 周三访谈录列表</a>
+		</span>
 		
 		
 		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/talks/#{@talk.id}", :title => page_title} %>
