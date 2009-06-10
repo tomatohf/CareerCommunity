@@ -12,7 +12,24 @@
 	<script type="text/javascript" src="/lib/greybox/gb_scripts.js"></script>
 <% end %>
 
-<a rel="gb_page_center[580, 260]" title="推荐/收藏- <%= title %>" href="/bookmarks/inline_add_form?url=<%= url %>&title=<%= title %>">
-	<img src="/images/bookmarks/inline_add.png" border="0" /></a>
+<script type="text/javascript">
+	var bookmark_link_html = "";
+	bookmark_link_html += "<a ";
+	bookmark_link_html +=  	"rel=\"gb_page_center[580, 260]\" ";
+	bookmark_link_html +=  	"title=\"推荐/收藏- <%= title %>\" ";
+	bookmark_link_html +=  	"href=\"/bookmarks/inline_add_form?";
+	bookmark_link_html +=  		"url=" + encodeURIComponent("<%= url %>");
+	bookmark_link_html +=  		"&title=" + encodeURIComponent("<%= title %>");
+	bookmark_link_html +=	"\" ";
+	bookmark_link_html +=  	"target=\"_blank\"";
+	bookmark_link_html +=  ">";
+	bookmark_link_html +=  		"<img src=\"/images/bookmarks/inline_add.png\" ";
+	bookmark_link_html +=  			"border=\"0\" ";
+	bookmark_link_html +=  		"/>";
+	bookmark_link_html +=  "</a>";
+	
+	document.write(bookmark_link_html);
+</script>
+
 
 

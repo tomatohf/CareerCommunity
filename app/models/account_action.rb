@@ -71,7 +71,22 @@ class AccountAction < ActiveRecord::Base
   
   def action_text(operator, save_space = false)
     type_obj = get_type_obj(self.action_type)
-    type_obj.action_text(type_obj.parse_raw_data(self.raw_data), %Q!["#{operator[0]}", "#{operator[1]}", #{operator[2]}]!, save_space)
+    
+    begin
+      type_obj.action_text(type_obj.parse_raw_data(self.raw_data), %Q!["#{operator[0]}", "#{operator[1]}", #{operator[2]}]!, save_space)
+    rescue Exception => e
+	      ""
+	  end
+  end
+  
+  def render_info(save_space = false)
+    type_obj = get_type_obj(self.action_type)
+    
+    begin
+      type_obj.render_info(type_obj.parse_raw_data(self.raw_data), save_space)
+    rescue Exception => e
+	      nil
+	  end
   end
   
   
@@ -80,12 +95,13 @@ class AccountAction < ActiveRecord::Base
     class Base
       include Singleton # use .instance() to return the single instance object
       
-      def build_raw_data(data)
-        data.kind_of?(String) ? data : data.inspect
+      def build_raw_data(data = "")
+        # data.kind_of?(String) ? data : data.inspect
+        data.inspect
       end
       
-      def parse_raw_data(data)
-        eval(data)
+      def parse_raw_data(data = "")
+				eval(data)
       end
       
     end
@@ -113,6 +129,29 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        owner_id = data[:owner_id]
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        
+        owner_nick_pic = Account.get_nick_and_pic(owner_id)
+        owner_nick = owner_nick_pic[0]
+        owner_pic_url = owner_nick_pic[1]
+        
+        [
+          "add_space_comment",
+          {
+            :owner_id => owner_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            :owner_nick => owner_nick,
+            :owner_pic_url => owner_pic_url,
+            
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class AddFriend < Base
@@ -133,6 +172,24 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        friend_id = data[:friend_id]
+        friend_nick_pic = Account.get_nick_and_pic(friend_id)
+        friend_nick = friend_nick_pic[0]
+        friend_pic_url = friend_nick_pic[1]
+        
+        [
+          "add_friend",
+          {
+            :friend_id => friend_id,
+            :friend_nick => friend_nick,
+            :friend_pic_url => friend_pic_url,
+            
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class JoinGroup < Base
@@ -151,6 +208,23 @@ class AccountAction < ActiveRecord::Base
             :save_space => #{save_space.inspect}
           })
         !
+      end
+      
+      def render_info(data, save_space)
+        group_id = data[:group_id]
+        group, group_image = Group.get_group_with_image(group_id)
+        
+        [
+          "join_group",
+          {
+            :group_id => group_id,
+            :group_name => group.name,
+            :group_image => group_image,
+            :creator_id => group.creator_id,
+            
+            :save_space => save_space
+          }
+        ]
       end
     end
     
@@ -186,6 +260,38 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        activity_id = data[:activity_id]
+        
+        begin
+          activity, activity_image = Activity.get_activity_with_image(activity_id)
+          
+          activity_title = activity.get_title
+          activity_creator_id = activity.creator_id
+        rescue
+          activity_title ||= ""
+          
+          # the creator_id will be -1 if the activity does not exist
+          activity_creator_id ||= -1
+          
+        end
+        
+        activity_deleted = activity.nil?
+        
+        [
+          "join_activity",
+          {
+            :activity_id => activity_id,
+            :activity_title => activity_title,
+            :activity_image => activity_image,
+            :creator_id => activity_creator_id,
+            :activity_deleted => activity_deleted,
+            
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class CreateVoteTopic < Base
@@ -213,6 +319,32 @@ class AccountAction < ActiveRecord::Base
             :save_space => #{save_space.inspect}
           })
         !
+      end
+      
+      def render_info(data, save_space)
+        vote_topic_id = data[:vote_topic_id]
+        
+        begin
+          vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+          
+          vote_topic_title = vote_topic.title
+        rescue
+          vote_topic_title ||= ""
+        end
+        
+        vote_topic_deleted = vote_topic.nil?
+        
+        [
+          "create_vote_topic",
+          {
+            :vote_topic_id => vote_topic_id,
+            :vote_topic_title => vote_topic_title,
+            :vote_image => vote_image,
+            :vote_topic_deleted => vote_topic_deleted,
+            
+            :save_space => save_space
+          }
+        ]
       end
     end
     
@@ -242,6 +374,32 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        vote_topic_id = data[:vote_topic_id]
+        
+        begin
+          vote_topic, vote_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+          
+          vote_topic_title = vote_topic.title
+        rescue
+          vote_topic_title ||= ""
+        end
+        
+        vote_topic_deleted = vote_topic.nil?
+        
+        [
+          "join_vote_topic",
+          {
+            :vote_topic_id => vote_topic_id,
+            :vote_topic_title => vote_topic_title,
+            :vote_image => vote_image,
+            :vote_topic_deleted => vote_topic_deleted,
+            
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class AddBlog < Base
@@ -258,6 +416,21 @@ class AccountAction < ActiveRecord::Base
             :save_space => #{save_space.inspect}
           })
         !
+      end
+      
+      def render_info(data, save_space)
+        blog_id = data[:blog_id]
+        blog_title = data[:blog_title]
+        
+        [
+          "add_blog",
+          {
+            :blog_id => blog_id,
+            :blog_title => blog_title,
+          
+            :save_space => save_space
+          }
+        ]
       end
     end
     
@@ -277,6 +450,23 @@ class AccountAction < ActiveRecord::Base
             :save_space => #{save_space.inspect}
           })
         !
+      end
+      
+      def render_info(data, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        blog_id = data[:blog_id]
+        
+        [
+          "add_blog_comment",
+          {
+            :blog_id => blog_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            
+            :save_space => save_space
+          }
+        ]
       end
     end
     
@@ -301,6 +491,27 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        bookmark_class_name = data[:bookmark_class_name]
+        bookmark_id = data[:bookmark_id]
+        bookmark_title = data[:bookmark_title]
+        bookmark_url = data[:bookmark_url]
+        bookmark_desc = data[:bookmark_desc]
+        
+        [
+          "add_bookmark",
+          {
+            :bookmark_class_name => bookmark_class_name,
+            :bookmark_id => bookmark_id,
+            :bookmark_title => bookmark_title,
+            :bookmark_url => bookmark_url,
+            :bookmark_desc => bookmark_desc,
+          
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class AddGroupPost < Base
@@ -319,6 +530,23 @@ class AccountAction < ActiveRecord::Base
             :save_space => #{save_space.inspect}
           })
         !
+      end
+      
+      def render_info(data, save_space)
+        post_id = data[:post_id]
+        post_title = data[:post_title]
+        group_id = data[:group_id]
+        
+        [
+          "add_group_post",
+          {
+            :post_id => post_id,
+            :post_title => post_title,
+            :group_id => group_id,
+          
+            :save_space => save_space
+          }
+        ]
       end
     end
     
@@ -339,6 +567,23 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        post_id = data[:post_id]
+        post_title = data[:post_title]
+        activity_id = data[:activity_id]
+        
+        [
+          "add_activity_post",
+          {
+            :post_id => post_id,
+            :post_title => post_title,
+            :activity_id => activity_id,
+          
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class AddVoteComment < Base
@@ -357,6 +602,23 @@ class AccountAction < ActiveRecord::Base
             :save_space => #{save_space.inspect}
           })
         !
+      end
+      
+      def render_info(data, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        vote_topic_id = data[:vote_topic_id]
+        
+        [
+          "add_vote_comment",
+          {
+            :vote_topic_id => vote_topic_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            
+            :save_space => save_space
+          }
+        ]
       end
     end
     
@@ -377,6 +639,23 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        group_post_id = data[:group_post_id]
+        
+        [
+          "add_group_post_comment",
+          {
+            :group_post_id => group_post_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class AddActivityPostComment < Base
@@ -395,6 +674,23 @@ class AccountAction < ActiveRecord::Base
             :save_space => #{save_space.inspect}
           })
         !
+      end
+      
+      def render_info(data, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        activity_post_id = data[:activity_post_id]
+        
+        [
+          "add_activity_post_comment",
+          {
+            :activity_post_id => activity_post_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            
+            :save_space => save_space
+          }
+        ]
       end
     end
 
@@ -415,6 +711,23 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        talk_id = data[:talk_id]
+        
+        [
+          "add_talk_comment",
+          {
+            :talk_id => talk_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class AddJobService < Base
@@ -431,6 +744,21 @@ class AccountAction < ActiveRecord::Base
             :save_space => #{save_space.inspect}
           })
         !
+      end
+      
+      def render_info(data, save_space)
+        job_service_id = data[:job_service_id]
+        job_service_name = data[:job_service_name]
+        
+        [
+          "add_job_service",
+          {
+            :job_service_id => job_service_id,
+            :job_service_name => job_service_name,
+            
+            :save_space => save_space
+          }
+        ]
       end
     end
     
@@ -453,6 +781,25 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        evaluation_id = data[:evaluation_id]
+        evaluation_content = data[:evaluation_content]
+        evaluation_point = data[:evaluation_point]
+        job_service_id = data[:job_service_id]
+        
+        [
+          "evaluate_job_service",
+          {
+            :job_service_id => job_service_id,
+            :evaluation_id => evaluation_id,
+            :evaluation_point => evaluation_point,
+            :evaluation_content => evaluation_content,
+            
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class AddGoalPost < Base
@@ -472,6 +819,23 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        post_id = data[:post_id]
+        post_title = data[:post_title]
+        goal_id = data[:goal_id]
+        
+        [
+          "add_goal_post",
+          {
+            :post_id => post_id,
+            :post_title => post_title,
+            :goal_id => goal_id,
+          
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class AddGoalPostComment < Base
@@ -490,6 +854,23 @@ class AccountAction < ActiveRecord::Base
             :save_space => #{save_space.inspect}
           })
         !
+      end
+      
+      def render_info(data, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        goal_post_id = data[:goal_post_id]
+        
+        [
+          "add_goal_post_comment",
+          {
+            :goal_post_id => goal_post_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            
+            :save_space => save_space
+          }
+        ]
       end
     end
     
@@ -515,6 +896,28 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        track_id = data[:track_id]
+        track_value = data[:track_value]
+        track_desc = data[:track_desc]
+        
+        goal_follow_id = data[:goal_follow_id]
+        goal_id = data[:goal_id]
+        
+        [
+          "add_goal_track",
+          {
+            :goal_id => goal_id,
+            :goal_follow_id => goal_follow_id,
+            :track_id => track_id,
+            :track_value => track_value,
+            :track_desc => track_desc,
+            
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class AddGoalTrackComment < Base
@@ -534,6 +937,23 @@ class AccountAction < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        track_id = data[:track_id]
+        
+        [
+          "add_goal_track_comment",
+          {
+            :track_id => track_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            
+            :save_space => save_space
+          }
+        ]
+      end
     end
     
     class AddGoal < Base
@@ -550,6 +970,21 @@ class AccountAction < ActiveRecord::Base
             :save_space => #{save_space.inspect}
           })
         !
+      end
+      
+      def render_info(data, save_space)
+        goal_id = data[:goal_id]
+        goal_name = data[:goal_name]
+        
+        [
+          "add_goal",
+          {
+            :goal_id => goal_id,
+            :goal_name => goal_name,
+          
+            :save_space => save_space
+          }
+        ]
       end
     end
     

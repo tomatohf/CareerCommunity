@@ -11,10 +11,25 @@
 
 <div class="account_action_item">
 	<div>
-		<%= eval(action.action_text([account_nick, account_pic_url, account_id], save_space)) rescue "" %>
+		<%#= eval(action.action_text([account_nick, account_pic_url, account_id], save_space)) %>
+		
+		<%
+			render_info = action.render_info(save_space)
+			
+			if render_info
+				render_locals = {
+					:operator => [account_nick, account_pic_url, account_id]
+				}.merge(render_info[1])
+		%>
+				<%= render(:partial => "/spaces/actions/#{render_info[0]}", :locals => render_locals) %>
+			
+		<%
+			end
+		%>
 	</div>
 	
 	<div class="form_info_s account_action_datetime">
 		<%= format_datetime(action.created_at) %>
 	</div>
 </div>
+

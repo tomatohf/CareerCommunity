@@ -41,11 +41,8 @@ sphinx 搜索 的 分词 问题
 
 
 
-escape URL
+escape/encodeURIComponent URL
 	- search
-	- bookmark
-	
-bookmark title 为什么总是乱码
 
 
 
