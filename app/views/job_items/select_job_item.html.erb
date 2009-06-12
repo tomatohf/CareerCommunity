@@ -1,4 +1,4 @@
-<% page_title = "添加求职信息 #{h(@info.title)} 涉及的#{@item_label}" %>
+<% page_title = "添加#{@owner_handler.get_type_label} #{h(@owner_handler.get_label(@owner_id))} 的#{@item_label}" %>
 <% community_page_title(page_title) %>
 
 <div class="job_item_container">
@@ -15,14 +15,13 @@
 			个结果,
 		<% end %>
 		&nbsp;&nbsp;&nbsp;
-		<a href="/job_infos">
-			返回求职信息列表</a>
+		<a href="<%= @owner_handler.get_return_url(@owner_id) %>">
+			<%= @owner_handler.get_return_text %></a>
 	</div>
 	
 	<div class="community_block align_r">
-		<% form_tag "/job_infos/#{@info.id}/select_job_item", :method => :get do %>
+		<% form_tag "/#{@item_type}/job_items/#{@owner_type}/#{@owner_id}/select_job_item", :method => :get do %>
 			<input type="text" name="query" class="text_field search_input" size="30" value="<%= h(@query) %>" />
-			<input type="hidden" name="type" value="<%= @item_type %>" />
 			&nbsp;&nbsp;&nbsp;
 			<input type="submit" value="搜索<%= @item_label %>" class="button" />
 			
@@ -33,9 +32,9 @@
 	</div>
 	
 	<% if @items %>
-		<% form_tag "/job_infos/#{@info.id}/add_job_item", :method => :post, :id => "add_form" do %>
-			<input type="hidden" name="item_type" value="<%= @item_type %>" />
+		<% form_tag "/#{@item_type}/job_items/#{@owner_id}/add_job_item", :method => :post, :id => "add_form" do %>
 			<input type="hidden" name="item_id" id="item_id" />
+			<input type="hidden" name="owner_type" value="<%= @owner_type %>" />
 		<% end %>
 	
 		<div class="community_block">

@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   
   
   # enable output GZip compression
-  after_filter OutputCompressionFilter
+  after_filter OutputCompressionFilter unless ENV["RAILS_ENV"] == "development"
   
   
   

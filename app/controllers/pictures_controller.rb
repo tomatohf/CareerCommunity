@@ -253,8 +253,7 @@ class PicturesController < ApplicationController
   end
 
   def get_type_handler(picture_type)
-    type_class = picture_type.downcase.capitalize
-    eval("Types::#{type_class}").instance
+    eval("Types::#{picture_type.camelize}").instance
   end
   
   def check_create_access

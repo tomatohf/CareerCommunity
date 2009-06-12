@@ -15,7 +15,8 @@ class JobItemsController < ApplicationController
   before_filter :check_limited, :only => [:create, :update, :destroy,
                                           :add_company_industry, :del_company_industry,
                                           :add_job_position_info_item, :del_job_position_info_item,
-                                          :info_create, :info_update, :info_destroy]
+                                          :info_create, :info_update, :info_destroy,
+                                          :add_job_item, :del_job_item]
   
   before_filter :check_editor
   
@@ -129,15 +130,15 @@ class JobItemsController < ApplicationController
       @industries = Industry.system.search(
         @query,
         :page => page,
-        :per_page => JobItemsController::Item_Page_Size,
-        :match_mode => JobItemsController::Search_Match_Mode,
-        :order => JobItemsController::Search_Sort_Order,
-        :field_weights => JobItemsController::Search_Field_Weights
+        :per_page => Item_Page_Size,
+        :match_mode => Search_Match_Mode,
+        :order => Search_Sort_Order,
+        :field_weights => Search_Field_Weights
       ).compact
     else
       @industries = Industry.system.find(
         :all,
-        :limit => JobItemsController::Item_Page_Size,
+        :limit => Item_Page_Size,
         :order => "created_at DESC"
       )
     end
@@ -257,15 +258,15 @@ class JobItemsController < ApplicationController
       @items = get_item_class.system.search(
         @query,
         :page => page,
-        :per_page => JobItemsController::Item_Page_Size,
-        :match_mode => JobItemsController::Search_Match_Mode,
-        :order => JobItemsController::Search_Sort_Order,
-        :field_weights => JobItemsController::Search_Field_Weights
+        :per_page => Item_Page_Size,
+        :match_mode => Search_Match_Mode,
+        :order => Search_Sort_Order,
+        :field_weights => Search_Field_Weights
       ).compact
     else
       @items = get_item_class.system.find(
         :all,
-        :limit => JobItemsController::Item_Page_Size,
+        :limit => Item_Page_Size,
         :order => "created_at DESC"
       )
     end
@@ -290,6 +291,70 @@ class JobItemsController < ApplicationController
     
     jump_to("/job_position/job_items/#{info.job_position_id}/info")
   end
+  
+  
+  
+  def select_job_item
+    @owner_type = params[:owner_type]
+    @query = params[:query] && params[:query].strip
+    
+    @item_label = get_item_label
+    
+    @owner_handler = get_owner_handler(@owner_type)
+    @owner_id = params[:id]
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    
+    if @query && @query != ""
+      @items = @item_type.camelize.constantize.system.search(
+        @query,
+        :page => page,
+        :per_page => Item_Page_Size,
+        :match_mode => Search_Match_Mode,
+        :order => Search_Sort_Order,
+        :field_weights => Search_Field_Weights
+      ).compact
+    else
+      @items = @item_type.camelize.constantize.system.find(
+        :all,
+        :limit => Item_Page_Size,
+        :order => "created_at DESC"
+      )
+    end
+    
+  end
+  
+  def add_job_item
+    owner_id = params[:id]
+    owner_type = params[:owner_type]
+    item_id = params[:item_id]
+    
+    owner_handler = get_owner_handler(owner_type)
+    
+    item = @item_type.camelize.constantize.send("get_#{@item_type}", item_id)
+    
+    owner_items = owner_handler.get_items(owner_id, @item_type)
+    
+    owner_items << item unless owner_items.exists?(item)
+    
+    jump_to(owner_handler.get_jump_url(owner_id))
+  end
+  
+  def del_job_item
+    owner_id = params[:id]
+    owner_type = params[:owner_type]
+    item_id = params[:item_id]
+    
+    owner_handler = get_owner_handler(owner_type)
+    
+    item = @item_type.camelize.constantize.send("get_#{@item_type}", item_id)
+    
+    owner_handler.get_items(owner_id, @item_type).delete(item)
+    
+    jump_to(owner_handler.get_jump_url(owner_id))
+  end
+  
   
   
   private
@@ -331,6 +396,137 @@ class JobItemsController < ApplicationController
   
   def check_editor
     jump_to("/errors/forbidden") unless is_editor?
+  end
+  
+  
+  def get_owner_handler(owner_type)
+    eval("Owners::#{owner_type.camelize}").instance
+  end
+  
+  
+  
+  module Owners
+    
+    class Base
+      include Singleton
+      
+      def get_owner(owner_id)
+        nil
+      end
+      
+      def get_label(owner_id)
+        ""
+      end
+      
+      def get_type_label
+        ""
+      end
+      
+      def get_return_text
+        "返回"
+      end
+      
+      def get_return_url(owner_id)
+        "/community"
+      end
+      
+      def get_items(owner_id, item_type)
+        get_owner(owner_id).send(item_type.pluralize)
+      end
+      
+      def get_jump_url(owner_id)
+        get_return_url(owner_id)
+      end
+    end
+    
+    class Talk < Base
+      def get_owner(owner_id)
+        ::Talk.get_talk(owner_id)
+      end
+      
+      def get_label(owner_id)
+        get_owner(owner_id).get_title
+      end
+      
+      def get_type_label
+        "访谈录"
+      end
+      
+      def get_return_text
+        "返回管理访谈录"
+      end
+      
+      def get_return_url(owner_id)
+        "/talks/#{owner_id}/manage"
+      end
+    end
+    
+    class JobInfo < Base
+      def get_owner(owner_id)
+        ::JobInfo.find(owner_id)
+      end
+      
+      def get_label(owner_id)
+        get_owner(owner_id).title
+      end
+      
+      def get_type_label
+        "求职信息"
+      end
+      
+      def get_return_text
+        "返回求职信息列表"
+      end
+      
+      def get_return_url(owner_id)
+        "/job_infos"
+      end
+    end
+    
+    class Recruitment < Base
+      def get_owner(owner_id)
+        ::Recruitment.find(owner_id)
+      end
+      
+      def get_label(owner_id)
+        get_owner(owner_id).title
+      end
+      
+      def get_type_label
+        "招聘信息"
+      end
+      
+      def get_return_text
+        "返回招聘信息"
+      end
+      
+      def get_return_url(owner_id)
+        "/recruitments/#{owner_id}"
+      end
+    end
+    
+    class Exp < Base
+      def get_owner(owner_id)
+        ::Exp.find(owner_id)
+      end
+      
+      def get_label(owner_id)
+        get_owner(owner_id).title
+      end
+      
+      def get_type_label
+        "面经"
+      end
+      
+      def get_return_text
+        "返回面经"
+      end
+      
+      def get_return_url(owner_id)
+        "/exps/#{owner_id}"
+      end
+    end
+    
   end
   
 end

@@ -504,10 +504,6 @@ ActionController::Routing::Routes.draw do |map|
     :answer_update => :post,
     :answer_destroy => :post,
     
-    :select_job_item => :any,
-    :add_job_item => :post,
-    :del_job_item => :post,
-    
     :job_tags => :get,
     :add_job_tag => :post,
     :del_job_tag => :post,
@@ -519,6 +515,7 @@ ActionController::Routing::Routes.draw do |map|
   
   
   map.connect "/:item_type/job_items/p/:page", :controller => "job_items", :action => "index", :page => /\d+/
+  map.connect "/:item_type/job_items/:owner_type/:id/select_job_item", :controller => "job_items", :action => "select_job_item"
   map.resources :job_items, :path_prefix => "/:item_type", :collection => {
     
     :search => :any
@@ -538,7 +535,10 @@ ActionController::Routing::Routes.draw do |map|
     
     :manage_job_position_info_items => :get,
     :add_job_position_info_item => :post,
-    :del_job_position_info_item => :post
+    :del_job_position_info_item => :post,
+    
+    :add_job_item => :post,
+    :del_job_item => :post
     
   }
   
@@ -557,10 +557,6 @@ ActionController::Routing::Routes.draw do |map|
     :category_edit => :get,
     :category_update => :post,
     :category_destroy => :post,
-    
-    :select_job_item => :any,
-    :add_job_item => :post,
-    :del_job_item => :post,
     
     :add_job_process => :post,
     :del_job_process => :post,

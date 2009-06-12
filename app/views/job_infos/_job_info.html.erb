@@ -5,9 +5,9 @@
 	<% form_tag "/job_infos/#{job_info.id}", :method => :delete, :id => "del_form_#{job_info.id}" do %>
 	<% end %>
 	
-	<% form_tag "/job_infos/#{job_info.id}/del_job_item", :method => :post, :id => "remove_job_item_form_#{job_info.id}" do %>
+	<% form_tag "", :method => :post, :id => "remove_job_item_form_#{job_info.id}" do %>
 		<input type="hidden" name="item_id" id="remove_item_id_<%= job_info.id %>" />
-		<input type="hidden" name="item_type" id="remove_item_type_<%= job_info.id %>" />
+		<input type="hidden" name="owner_type" value="job_info" />
 	<% end %>
 	
 	<% form_tag "/job_infos/#{job_info.id}/del_job_process", :method => :post, :id => "remove_job_process_form_#{job_info.id}" do %>
@@ -109,7 +109,7 @@
 					<a href="/<%= item_type_info[0] %>/job_items/<%= item.id %>" target="_blank" title="<%= h(item.desc) %>">
 						<%= item_name %></a>
 					<span class="form_info_s">
-						<a title="移除<%= item_type_info[1] %> <%= item_name %>" href="#" onclick="if(confirm('确定要移除<%= item_type_info[1] %> <%= item_name %> 么 ?')) { var info_id = <%= job_info.id %>; var item_type = '<%= item_type_info[0] %>'; var item_id = <%= item.id %>; document.getElementById('remove_item_id_' + info_id).value = item_id; document.getElementById('remove_item_type_' + info_id).value = item_type; document.getElementById('remove_job_item_form_' + info_id).submit(); }; return false;">
+						<a title="移除<%= item_type_info[1] %> <%= item_name %>" href="#" onclick="if(confirm('确定要移除<%= item_type_info[1] %> <%= item_name %> 么 ?')) { var info_id = <%= job_info.id %>; var item_type = '<%= item_type_info[0] %>'; var item_id = <%= item.id %>; document.getElementById('remove_item_id_' + info_id).value = item_id; var del_item_form = document.getElementById('remove_job_item_form_' + info_id); del_item_form.action = '/' + item_type + '/job_items/' + info_id + '/del_job_item'; del_item_form.submit(); }; return false;">
 								<img src="/images/delete_small.gif" border="0" /></a>
 
 						&nbsp;&nbsp;&nbsp;
@@ -154,11 +154,11 @@
 	
 	<div class="align_r form_info_s" style="word-spacing: 6px; margin-top: 5px;">
 		添加涉及的:
-		<a href="/job_infos/<%= job_info.id %>/select_job_item?type=industry">
+		<a href="/industry/job_items/job_info/<%= job_info.id %>/select_job_item">
 			行业</a>
-		<a href="/job_infos/<%= job_info.id %>/select_job_item?type=company">
+		<a href="/company/job_items/job_info/<%= job_info.id %>/select_job_item">
 			公司</a>
-		<a href="/job_infos/<%= job_info.id %>/select_job_item?type=job_position">
+		<a href="/job_position/job_items/job_info/<%= job_info.id %>/select_job_item">
 			职位</a>
 
 		|

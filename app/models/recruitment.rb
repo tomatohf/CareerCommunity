@@ -21,6 +21,14 @@ class Recruitment < ActiveRecord::Base
                           :join_table => "recruitments_recruitment_tags",
                           :after_add => Proc.new { |r, rt| RecruitmentTag.clear_top_tags_cache },
                           :after_remove => Proc.new { |r, rt| RecruitmentTag.clear_top_tags_cache }
+  has_and_belongs_to_many :companies,
+                          :foreign_key => "recruitment_id",
+                          :association_foreign_key => "company_id",
+                          :join_table => "recruitments_companies"
+  has_and_belongs_to_many :job_positions,
+                          :foreign_key => "recruitment_id",
+                          :association_foreign_key => "job_position_id",
+                          :join_table => "recruitments_job_positions"
   
   
   

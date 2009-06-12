@@ -307,8 +307,7 @@ class PostsController < ApplicationController
   end
   
   def get_type_handler(post_type)
-    type_class = post_type.downcase.capitalize
-    eval("Types::#{type_class}").instance
+    eval("Types::#{post_type.camelize}").instance
   end
   
   def check_compose_access

@@ -51,7 +51,10 @@ class RecruitmentsController < ApplicationController
   end
   
   def show
-    @recruitment = Recruitment.find(params[:id], :include => [:recruitment_tags])
+    @recruitment = Recruitment.find(
+      params[:id], 
+      :include => [:recruitment_tags, :companies, :job_positions]
+    )
     
     @can_edit = has_login? && has_edit_access(@recruitment)
   end

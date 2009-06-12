@@ -48,7 +48,10 @@ class ExpsController < ApplicationController
   end
   
   def show
-    @exp = Exp.find(params[:id])
+    @exp = Exp.find(
+      params[:id],
+      :include => [:companies, :job_positions]
+    )
     
     @can_edit = has_login? && has_edit_access(@exp)
   end

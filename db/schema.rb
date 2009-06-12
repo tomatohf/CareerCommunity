@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 55) do
+ActiveRecord::Schema.define(:version => 56) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -348,6 +348,22 @@ ActiveRecord::Schema.define(:version => 55) do
 
   add_index "exps", ["source_link"], :name => "index_exps_on_source_link", :unique => true
   add_index "exps", ["publish_time"], :name => "index_exps_on_publish_time"
+
+  create_table "exps_companies", :id => false, :force => true do |t|
+    t.integer "exp_id",     :limit => 11
+    t.integer "company_id", :limit => 11
+  end
+
+  add_index "exps_companies", ["exp_id", "company_id"], :name => "index_exps_companies_on_exp_id_and_company_id", :unique => true
+  add_index "exps_companies", ["company_id", "exp_id"], :name => "index_exps_companies_on_company_id_and_exp_id", :unique => true
+
+  create_table "exps_job_positions", :id => false, :force => true do |t|
+    t.integer "exp_id",          :limit => 11
+    t.integer "job_position_id", :limit => 11
+  end
+
+  add_index "exps_job_positions", ["exp_id", "job_position_id"], :name => "index_exps_job_positions_on_exp_id_and_job_position_id", :unique => true
+  add_index "exps_job_positions", ["job_position_id", "exp_id"], :name => "index_exps_job_positions_on_job_position_id_and_exp_id", :unique => true
 
   create_table "friends", :force => true do |t|
     t.datetime "created_at"
@@ -973,6 +989,22 @@ ActiveRecord::Schema.define(:version => 55) do
   add_index "recruitments", ["source_link"], :name => "index_recruitments_on_source_link", :unique => true
   add_index "recruitments", ["location"], :name => "index_recruitments_on_location"
   add_index "recruitments", ["recruitment_type", "publish_time"], :name => "index_recruitments_on_recruitment_type_and_publish_time"
+
+  create_table "recruitments_companies", :id => false, :force => true do |t|
+    t.integer "recruitment_id", :limit => 11
+    t.integer "company_id",     :limit => 11
+  end
+
+  add_index "recruitments_companies", ["recruitment_id", "company_id"], :name => "index_recruitments_companies_on_recruitment_id_and_company_id", :unique => true
+  add_index "recruitments_companies", ["company_id", "recruitment_id"], :name => "index_recruitments_companies_on_company_id_and_recruitment_id", :unique => true
+
+  create_table "recruitments_job_positions", :id => false, :force => true do |t|
+    t.integer "recruitment_id",  :limit => 11
+    t.integer "job_position_id", :limit => 11
+  end
+
+  add_index "recruitments_job_positions", ["recruitment_id", "job_position_id"], :name => "index_recruitments_job_positions_on_recruitment_position", :unique => true
+  add_index "recruitments_job_positions", ["job_position_id", "recruitment_id"], :name => "index_recruitments_job_positions_on_position_recruitment", :unique => true
 
   create_table "recruitments_recruitment_tags", :id => false, :force => true do |t|
     t.integer "recruitment_id",     :limit => 11

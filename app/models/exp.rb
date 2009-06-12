@@ -14,6 +14,15 @@ class Exp < ActiveRecord::Base
   
   include CareerCommunity::Util
   
+  has_and_belongs_to_many :companies,
+                          :foreign_key => "exp_id",
+                          :association_foreign_key => "company_id",
+                          :join_table => "exps_companies"
+  has_and_belongs_to_many :job_positions,
+                          :foreign_key => "exp_id",
+                          :association_foreign_key => "job_position_id",
+                          :join_table => "exps_job_positions"
+  
   
   
   attr_protected :active, :created_at, :updated_at

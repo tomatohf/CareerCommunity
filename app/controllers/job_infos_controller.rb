@@ -12,7 +12,6 @@ class JobInfosController < ApplicationController
   before_filter :check_login
   before_filter :check_limited, :only => [:create, :update, :destroy,
                                           :category_create, :category_update, :category_destroy,
-                                          :add_job_item, :del_job_item,
                                           :add_job_process, :del_job_process,
                                           :add_category, :del_category]
   
@@ -160,72 +159,6 @@ class JobInfosController < ApplicationController
     jump_to("/job_infos/categories")
   end
   
-  
-  def select_job_item
-    @item_type = params[:type]
-    @query = params[:query] && params[:query].strip
-    
-    @info = JobInfo.find(params[:id])
-    
-    @item_label = case @item_type
-      when "company"
-        "公司"
-      when "job_position"
-        "职位"
-      when "industry"
-        "行业"
-      else
-        nil
-    end
-    
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    
-    if @query && @query != ""
-      @items = @item_type.camelize.constantize.system.search(
-        @query,
-        :page => page,
-        :per_page => JobItemsController::Item_Page_Size,
-        :match_mode => JobItemsController::Search_Match_Mode,
-        :order => JobItemsController::Search_Sort_Order,
-        :field_weights => JobItemsController::Search_Field_Weights
-      ).compact
-    else
-      @items = @item_type.camelize.constantize.system.find(
-        :all,
-        :limit => JobItemsController::Item_Page_Size,
-        :order => "created_at DESC"
-      )
-    end
-  end
-  
-  def add_job_item
-    info = JobInfo.find(params[:id])
-    
-    item_type = params[:item_type]
-    item_id = params[:item_id]
-    
-    item = item_type.camelize.constantize.send("get_#{item_type}", item_id)
-    
-    info_items = info.send(item_type.pluralize)
-    
-    info_items << item unless info_items.exists?(item)
-    
-    jump_to("/job_infos")
-  end
-  
-  def del_job_item
-    info = JobInfo.find(params[:id])
-    
-    item_type = params[:item_type]
-    item_id = params[:item_id]
-    
-    item = item_type.camelize.constantize.send("get_#{item_type}", item_id)
-    
-    info.send(item_type.pluralize).delete(item)
-    
-    jump_to("/job_infos")
-  end
   
   def add_job_process
     info = JobInfo.find(params[:id])

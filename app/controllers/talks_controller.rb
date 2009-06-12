@@ -17,7 +17,6 @@ class TalksController < ApplicationController
                                         :question_edit, :question_update, :answer_new, :answer_create,
                                         :answer_edit, :answer_update, :answer, :answer_destroy,
                                         :question_destroy, :create_comment, :delete_comment,
-                                        :select_job_item, :add_job_item, :del_job_item,
                                         :add_job_process, :del_job_process,
                                         :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
                                         :destroy, :unpublished]
@@ -27,7 +26,7 @@ class TalksController < ApplicationController
                                           :add_question_category, :del_question_category,
                                           :question_category_update, :add_question, :question_update,
                                           :answer_create, :answer_update, :answer_destroy, :question_destroy,
-                                          :create_comment, :delete_comment, :add_job_item, :del_job_item,
+                                          :create_comment, :delete_comment,
                                           :add_job_process, :del_job_process,
                                           :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
                                           :destroy]
@@ -40,8 +39,8 @@ class TalksController < ApplicationController
                                           :question_category_edit, :question_category_update, :add_question,
                                           :question_edit, :question_update, :answer_new, :answer_create,
                                           :answer_edit, :answer_update, :answer, :answer_destroy,
-                                          :question_destroy, :delete_comment, :select_job_item,
-                                          :add_job_item, :del_job_item, :add_job_process, :del_job_process,
+                                          :question_destroy, :delete_comment,
+                                          :add_job_process, :del_job_process,
                                           :job_tags, :add_job_tag, :del_job_tag, :auto_complete_for_job_tags,
                                           :destroy, :unpublished]
                                           
@@ -598,71 +597,6 @@ class TalksController < ApplicationController
     answer.destroy
     
     jump_to("/talks/#{answer.talk_id}/manage")
-  end
-  
-  def select_job_item
-    @item_type = params[:type]
-    @query = params[:query] && params[:query].strip
-    
-    @talk = Talk.get_talk(params[:id])
-    
-    @item_label = case @item_type
-      when "company"
-        "公司"
-      when "job_position"
-        "职位"
-      when "industry"
-        "行业"
-      else
-        nil
-    end
-    
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    
-    if @query && @query != ""
-      @items = @item_type.camelize.constantize.system.search(
-        @query,
-        :page => page,
-        :per_page => JobItemsController::Item_Page_Size,
-        :match_mode => JobItemsController::Search_Match_Mode,
-        :order => JobItemsController::Search_Sort_Order,
-        :field_weights => JobItemsController::Search_Field_Weights
-      ).compact
-    else
-      @items = @item_type.camelize.constantize.system.find(
-        :all,
-        :limit => JobItemsController::Item_Page_Size,
-        :order => "created_at DESC"
-      )
-    end
-    
-  end
-  
-  def add_job_item
-    talk = Talk.get_talk(params[:id])
-    item_type = params[:item_type]
-    item_id = params[:item_id]
-    
-    item = item_type.camelize.constantize.send("get_#{item_type}", item_id)
-    
-    talk_items = talk.send(item_type.pluralize)
-    
-    talk_items << item unless talk_items.exists?(item)
-    
-    jump_to("/talks/#{talk.id}/manage")
-  end
-  
-  def del_job_item
-    talk = Talk.get_talk(params[:id])
-    item_type = params[:item_type]
-    item_id = params[:item_id]
-    
-    item = item_type.camelize.constantize.send("get_#{item_type}", item_id)
-    
-    talk.send(item_type.pluralize).delete(item)
-    
-    jump_to("/talks/#{talk.id}/manage")
   end
   
   def add_job_process

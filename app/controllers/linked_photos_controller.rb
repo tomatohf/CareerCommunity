@@ -76,8 +76,7 @@ class LinkedPhotosController < ApplicationController
   end
   
   def get_type_handler(linked_photo_type)
-    type_class = linked_photo_type.downcase.capitalize
-    eval("Types::#{type_class}").instance
+    eval("Types::#{linked_photo_type.camelize}").instance
   end
   
   def check_create_link_access
