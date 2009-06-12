@@ -1,6 +1,4 @@
-﻿是否有其他操作可以 复用 select_job_item
-
-群发邮件
+﻿群发邮件
 	- http://www.google.cn/search?hl=zh-CN&newwindow=1&q=%E5%8F%91+newsletter&btnG=Google+%E6%90%9C%E7%B4%A2&meta=&aq=f&oq=
 	- http://bbs.fobshanghai.com/viewthread.php?tid=1772261&sid=OcE3ep
 	- http://www.etobao.com/ETO/newsletter/login.jsp

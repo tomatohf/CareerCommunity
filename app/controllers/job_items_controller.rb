@@ -14,7 +14,6 @@ class JobItemsController < ApplicationController
   before_filter :check_login
   before_filter :check_limited, :only => [:create, :update, :destroy,
                                           :add_company_industry, :del_company_industry,
-                                          :add_job_position_info_item, :del_job_position_info_item,
                                           :info_create, :info_update, :info_destroy,
                                           :add_job_item, :del_job_item]
   
@@ -244,55 +243,6 @@ class JobItemsController < ApplicationController
   end
   
   
-  def manage_job_position_info_items
-    @info = JobPositionInfo.find(params[:id])
-    
-    @item_label = get_item_label
-    
-    @query = params[:query] && params[:query].strip
-    
-    page = params[:page]
-    page = 1 unless page =~ /\d+/
-    
-    if @query && @query != ""
-      @items = get_item_class.system.search(
-        @query,
-        :page => page,
-        :per_page => Item_Page_Size,
-        :match_mode => Search_Match_Mode,
-        :order => Search_Sort_Order,
-        :field_weights => Search_Field_Weights
-      ).compact
-    else
-      @items = get_item_class.system.find(
-        :all,
-        :limit => Item_Page_Size,
-        :order => "created_at DESC"
-      )
-    end
-  end
-  
-  def add_job_position_info_item
-    info = JobPositionInfo.find(params[:id])
-    item = get_item_instance(params[:item_id])
-    
-    info_items = info.send(@item_type.pluralize)
-    
-    info_items << item unless info_items.exists?(item)
-    
-    jump_to("/job_position/job_items/#{info.job_position_id}/info")
-  end
-  
-  def del_job_position_info_item
-    info = JobPositionInfo.find(params[:id])
-    item = get_item_instance(params[:item_id])
-    
-    info.send(@item_type.pluralize).delete(item)
-    
-    jump_to("/job_position/job_items/#{info.job_position_id}/info")
-  end
-  
-  
   
   def select_job_item
     @owner_type = params[:owner_type]
@@ -301,7 +251,7 @@ class JobItemsController < ApplicationController
     @item_label = get_item_label
     
     @owner_handler = get_owner_handler(@owner_type)
-    @owner_id = params[:id]
+    @owner = @owner_handler.get_owner(params[:id])
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
@@ -334,11 +284,12 @@ class JobItemsController < ApplicationController
     
     item = @item_type.camelize.constantize.send("get_#{@item_type}", item_id)
     
-    owner_items = owner_handler.get_items(owner_id, @item_type)
+    owner = owner_handler.get_owner(owner_id)
+    owner_items = owner_handler.get_items(owner, @item_type)
     
     owner_items << item unless owner_items.exists?(item)
     
-    jump_to(owner_handler.get_jump_url(owner_id))
+    jump_to(owner_handler.get_jump_url(owner))
   end
   
   def del_job_item
@@ -350,9 +301,10 @@ class JobItemsController < ApplicationController
     
     item = @item_type.camelize.constantize.send("get_#{@item_type}", item_id)
     
-    owner_handler.get_items(owner_id, @item_type).delete(item)
+    owner = owner_handler.get_owner(owner_id)
+    owner_handler.get_items(owner, @item_type).delete(item)
     
-    jump_to(owner_handler.get_jump_url(owner_id))
+    jump_to(owner_handler.get_jump_url(owner))
   end
   
   
@@ -414,7 +366,7 @@ class JobItemsController < ApplicationController
         nil
       end
       
-      def get_label(owner_id)
+      def get_label(owner)
         ""
       end
       
@@ -426,16 +378,16 @@ class JobItemsController < ApplicationController
         "返回"
       end
       
-      def get_return_url(owner_id)
+      def get_return_url(owner)
         "/community"
       end
       
-      def get_items(owner_id, item_type)
-        get_owner(owner_id).send(item_type.pluralize)
+      def get_items(owner, item_type)
+        owner.send(item_type.pluralize)
       end
       
-      def get_jump_url(owner_id)
-        get_return_url(owner_id)
+      def get_jump_url(owner)
+        get_return_url(owner)
       end
     end
     
@@ -444,8 +396,8 @@ class JobItemsController < ApplicationController
         ::Talk.get_talk(owner_id)
       end
       
-      def get_label(owner_id)
-        get_owner(owner_id).get_title
+      def get_label(owner)
+        owner.get_title
       end
       
       def get_type_label
@@ -456,8 +408,8 @@ class JobItemsController < ApplicationController
         "返回管理访谈录"
       end
       
-      def get_return_url(owner_id)
-        "/talks/#{owner_id}/manage"
+      def get_return_url(owner)
+        "/talks/#{owner.id}/manage"
       end
     end
     
@@ -466,8 +418,8 @@ class JobItemsController < ApplicationController
         ::JobInfo.find(owner_id)
       end
       
-      def get_label(owner_id)
-        get_owner(owner_id).title
+      def get_label(owner)
+        owner.title
       end
       
       def get_type_label
@@ -478,7 +430,7 @@ class JobItemsController < ApplicationController
         "返回求职信息列表"
       end
       
-      def get_return_url(owner_id)
+      def get_return_url(owner)
         "/job_infos"
       end
     end
@@ -488,8 +440,8 @@ class JobItemsController < ApplicationController
         ::Recruitment.find(owner_id)
       end
       
-      def get_label(owner_id)
-        get_owner(owner_id).title
+      def get_label(owner)
+        owner.title
       end
       
       def get_type_label
@@ -500,8 +452,8 @@ class JobItemsController < ApplicationController
         "返回招聘信息"
       end
       
-      def get_return_url(owner_id)
-        "/recruitments/#{owner_id}"
+      def get_return_url(owner)
+        "/recruitments/#{owner.id}"
       end
     end
     
@@ -510,8 +462,8 @@ class JobItemsController < ApplicationController
         ::Exp.find(owner_id)
       end
       
-      def get_label(owner_id)
-        get_owner(owner_id).title
+      def get_label(owner)
+        owner.title
       end
       
       def get_type_label
@@ -522,8 +474,30 @@ class JobItemsController < ApplicationController
         "返回面经"
       end
       
-      def get_return_url(owner_id)
-        "/exps/#{owner_id}"
+      def get_return_url(owner)
+        "/exps/#{owner.id}"
+      end
+    end
+    
+    class JobPositionInfo < Base
+      def get_owner(owner_id)
+        ::JobPositionInfo.find(owner_id)
+      end
+      
+      def get_label(owner)
+        owner.title
+      end
+      
+      def get_type_label
+        "职位信息"
+      end
+      
+      def get_return_text
+        "返回职位信息列表"
+      end
+      
+      def get_return_url(owner)
+        "/job_position/job_items/#{owner.job_position_id}/info"
       end
     end
     

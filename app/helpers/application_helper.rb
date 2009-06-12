@@ -150,17 +150,17 @@ module ApplicationHelper
   
   def general_admin?(account_id)
     # 1002 - MaXiao
-    # 1004 - Kai (鲁路修)
+    # 1019 - Kai
     
-    superadmin?(account_id) || account_id == 1002 || account_id == 1004
+    superadmin?(account_id) || account_id == 1002 || account_id == 1019
   end
   
   def info_editor?(account_id)
     # 1005 - job info editor account
-    # 1019 - Kai
-    # 1380 - storm - 陆一鸣
+    # 1004 - 鲁路修
+    # 1380 - storm - 沈一鸣
     
-    general_admin?(account_id) || account_id == 1005 || account_id == 1019 || account_id == 1380
+    general_admin?(account_id) || account_id == 1005 || account_id == 1004 || account_id == 1380
   end
   
   def tag_cloud_font_styling (total, lowest, highest, options={})

@@ -203,7 +203,7 @@ class RecruitmentsController < ApplicationController
   private
   
   def has_edit_access(recruitment)
-    ApplicationController.helpers.general_admin?(session[:account_id]) || (recruitment.account_id == session[:account_id])
+    ApplicationController.helpers.info_editor?(session[:account_id]) || (recruitment.account_id == session[:account_id])
   end
   
   def check_edit_access

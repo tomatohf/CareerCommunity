@@ -38,10 +38,10 @@
 						<% if @item_type == "job_position" %>
 							添加涉及的:
 							&nbsp;
-							<a href="/industry/job_items/<%= info[0] %>/manage_job_position_info_items">
+							<a href="/industry/job_items/job_position_info/<%= info[0] %>/select_job_item">
 								行业</a>
 							&nbsp;
-							<a href="/company/job_items/<%= info[0] %>/manage_job_position_info_items">
+							<a href="/company/job_items/job_position_info/<%= info[0] %>/select_job_item">
 								公司</a>
 
 							&nbsp;&nbsp;
@@ -76,8 +76,9 @@
 				%>
 				
 				<% if info_industries.size > 0 %>
-					<% form_tag "/industry/job_items/#{info_data.id}/del_job_position_info_item", :method => :post, :id => "remove_industry_form_#{info[0]}" do %>
+					<% form_tag "/industry/job_items/#{info_data.id}/del_job_item", :method => :post, :id => "remove_industry_form_#{info[0]}" do %>
 						<input type="hidden" name="item_id" id="remove_industry_id_<%= info[0] %>" />
+						<input type="hidden" name="owner_type" value="job_position_info" />
 					<% end %>
 					
 					<div class="community_block_narrow form_info_s">
@@ -102,8 +103,9 @@
 				<% end %>
 				
 				<% if info_companies.size > 0 %>
-					<% form_tag "/company/job_items/#{info_data.id}/del_job_position_info_item", :method => :post, :id => "remove_company_form_#{info[0]}" do %>
+					<% form_tag "/company/job_items/#{info_data.id}/del_job_item", :method => :post, :id => "remove_company_form_#{info[0]}" do %>
 						<input type="hidden" name="item_id" id="remove_company_id_<%= info[0] %>" />
+						<input type="hidden" name="owner_type" value="job_position_info" />
 					<% end %>
 					
 					<div class="community_block_narrow form_info_s">
