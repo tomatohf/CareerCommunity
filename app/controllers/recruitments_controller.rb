@@ -51,9 +51,9 @@ class RecruitmentsController < ApplicationController
   end
   
   def show
-    @recruitment = Recruitment.find(
+    @recruitment, @old = get_recruitment(
       params[:id], 
-      :include => [:recruitment_tags, :companies, :job_positions]
+      [:recruitment_tags, :companies, :job_positions]
     )
     
     @can_edit = has_login? && has_edit_access(@recruitment)
@@ -208,7 +208,7 @@ class RecruitmentsController < ApplicationController
   
   def check_edit_access
     @recruitment_id = params[:id]
-    @recruitment = Recruitment.find(@recruitment_id)
+    @recruitment, old = get_recruitment(@recruitment_id)
     
     jump_to("/errors/forbidden") unless has_edit_access(@recruitment)
   end
@@ -217,6 +217,21 @@ class RecruitmentsController < ApplicationController
     @type_label = Recruitment.recruitment_type_label(params[:id].to_i)
     
     jump_to("/errors/forbidden") unless @type_label && (@type_label != "")
+  end
+  
+  def get_recruitment(rid, includes = nil)
+    begin
+      r = Recruitment.find(
+        rid,
+        :include => includes
+      )
+      old = false
+    rescue ActiveRecord::RecordNotFound => no_record_error
+      r = ArchivedRecruitment.find(rid)
+      old = true
+    end
+    
+    [r, old]
   end
   
 end

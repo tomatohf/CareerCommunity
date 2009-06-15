@@ -32,19 +32,25 @@
 		
 		<div class="community_block">
 			<div class="float_r align_c">
-				<div style="padding: 5px;">
-					<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/recruitments/#{@recruitment.id}", :title => "招聘信息: #{recruitment_title}"} %>
-				</div>
+				<% unless @old %>
+					<div style="padding: 5px;">
+						<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/recruitments/#{@recruitment.id}", :title => "招聘信息: #{recruitment_title}"} %>
+					</div>
 				
-				<div style="padding: 5px;">
-					<% form_tag "/job_targets/create_from_recruitment", :method => :post, :id => "create_job_target_form" do %>
-						<input type="hidden" name="recruitment_title" value="<%= recruitment_title %>" />
-						<input type="hidden" name="recruitment_id" value="<%= @recruitment.id %>" />
-					<% end %>
+					<div style="padding: 5px;">
+						<% form_tag "/job_targets/create_from_recruitment", :method => :post, :id => "create_job_target_form" do %>
+							<input type="hidden" name="recruitment_title" value="<%= recruitment_title %>" />
+							<input type="hidden" name="recruitment_id" value="<%= @recruitment.id %>" />
+						<% end %>
 					
-					<a href="#" onclick="if(confirm('确定要根据这条招聘信息创建求职目标么 ?')){document.getElementById('create_job_target_form').submit();}; return false;">
-						<img src="/images/recruitments/create_job_target_btn.png" border="0" /></a>
-				</div>
+						<a href="#" onclick="if(confirm('确定要根据这条招聘信息创建求职目标么 ?')){document.getElementById('create_job_target_form').submit();}; return false;">
+							<img src="/images/recruitments/create_job_target_btn.png" border="0" /></a>
+					</div>
+				<% else %>
+					<div style="padding-right: 10px; font-size: 14px; color: #FF0000;">
+						已存档的老信息
+					</div>
+				<% end %>
 			</div>
 			
 			
@@ -73,60 +79,46 @@
 				</div>
 
 
-				<% tags = @recruitment.recruitment_tags %>
-				<% if tags.size > 0 %>
-					<div>
-						标签:
-						<% tags.each do |tag|%>
-							<% tag_name = h(tag.name) %>
-							<a href="/recruitments/tag?name=<%= tag_name %>" class="account_nick_link">
-								<%= tag_name %></a>
-						<% end %>
-					</div>
-				<% end %>
+				<% unless @old %>
+					<% tags = @recruitment.recruitment_tags %>
+					<% if tags.size > 0 %>
+						<div>
+							标签:
+							<% tags.each do |tag|%>
+								<% tag_name = h(tag.name) %>
+								<a href="/recruitments/tag?name=<%= tag_name %>" class="account_nick_link">
+									<%= tag_name %></a>
+							<% end %>
+						</div>
+					<% end %>
 				
 				
-				<% companies = @recruitment.companies %>
-				<% if companies.size > 0 %>
-					<div>
-						涉及的公司:
-						<% companies.each do |company|%>
-							<% company_name = h(company.name) %>
-							<%= company_name %><% if @can_edit %><a title="移除公司 <%= company_name %>" href="#" onclick="remove_job_item('company', <%= company.id %>); return false;">(移除)</a><% end %>
-						<% end %>
-					</div>
-				<% end %>
+					<% companies = @recruitment.companies %>
+					<% if companies.size > 0 %>
+						<div>
+							涉及的公司:
+							<% companies.each do |company|%>
+								<% company_name = h(company.name) %>
+								<%= company_name %><% if @can_edit %><a title="移除公司 <%= company_name %>" href="#" onclick="remove_job_item('company', <%= company.id %>); return false;">(移除)</a><% end %>
+							<% end %>
+						</div>
+					<% end %>
 				
 				
-				<% job_positions = @recruitment.job_positions %>
-				<% if job_positions.size > 0 %>
-					<div>
-						涉及的职位:
-						<% job_positions.each do |job_position|%>
-							<% job_position_name = h(job_position.name) %>
-							<%= job_position_name %><% if @can_edit %><a title="移除职位 <%= job_position_name %>" href="#" onclick="remove_job_item('job_position', <%= job_position.id %>); return; return false;">(移除)</a><% end %>
-						<% end %>
-					</div>
+					<% job_positions = @recruitment.job_positions %>
+					<% if job_positions.size > 0 %>
+						<div>
+							涉及的职位:
+							<% job_positions.each do |job_position|%>
+								<% job_position_name = h(job_position.name) %>
+								<%= job_position_name %><% if @can_edit %><a title="移除职位 <%= job_position_name %>" href="#" onclick="remove_job_item('job_position', <%= job_position.id %>); return; return false;">(移除)</a><% end %>
+							<% end %>
+						</div>
+					<% end %>
 				<% end %>
 
 
 				<% if @can_edit %>
-					<% form_tag "", :method => :post, :id => "remove_job_item_form" do %>
-						<input type="hidden" name="item_id" id="item_id" />
-						<input type="hidden" name="owner_type" value="recruitment" />
-					<% end %>
-					
-					<script language="JavaScript" type="text/javascript">
-						function remove_job_item(item_type, job_item_id) {
-							if(confirm('确定要移除么 ?')) {
-								document.getElementById("item_id").value = job_item_id;
-								var remove_form = document.getElementById("remove_job_item_form");
-								remove_form.action = "/" + item_type + "/job_items/<%= @recruitment.id %>/del_job_item";
-								remove_form.submit();
-							}
-						}
-					</script>
-					
 					<div>
 						<% form_tag "/recruitments/#{@recruitment.id}", :method => :delete, :id => "delete_recruitment_form" do %>
 						<% end %>
@@ -134,12 +126,30 @@
 						|
 						<a href="/recruitments/<%= @recruitment.id %>/edit">编辑快照</a>
 
-						|
-						<a href="/job_position/job_items/recruitment/<%= @recruitment.id %>/select_job_item">
-							添加涉及的职位</a>
-						|
-						<a href="/company/job_items/recruitment/<%= @recruitment.id %>/select_job_item">
-							添加涉及的公司</a>
+						<% unless @old %>
+							|
+							<a href="/job_position/job_items/recruitment/<%= @recruitment.id %>/select_job_item">
+								添加涉及的职位</a>
+							|
+							<a href="/company/job_items/recruitment/<%= @recruitment.id %>/select_job_item">
+								添加涉及的公司</a>
+								
+							<% form_tag "", :method => :post, :id => "remove_job_item_form" do %>
+								<input type="hidden" name="item_id" id="item_id" />
+								<input type="hidden" name="owner_type" value="recruitment" />
+							<% end %>
+
+							<script language="JavaScript" type="text/javascript">
+								function remove_job_item(item_type, job_item_id) {
+									if(confirm('确定要移除么 ?')) {
+										document.getElementById("item_id").value = job_item_id;
+										var remove_form = document.getElementById("remove_job_item_form");
+										remove_form.action = "/" + item_type + "/job_items/<%= @recruitment.id %>/del_job_item";
+										remove_form.submit();
+									}
+								}
+							</script>
+						<% end %>
 					</div>
 				<% end %>
 			</div>
@@ -148,10 +158,12 @@
 		<div class="exp_content">
 			<%= sanitize_tinymce(@recruitment.content) %>
 			
-			<div class="community_block">
-				<a href="#" onclick="if(confirm('确定要根据这条招聘信息创建求职目标么 ?')){document.getElementById('create_job_target_form').submit();}; return false;">
-					<img src="/images/recruitments/create_job_target_btn.png" border="0" /></a>
-			</div>
+			<% unless @old %>
+				<div class="community_block">
+					<a href="#" onclick="if(confirm('确定要根据这条招聘信息创建求职目标么 ?')){document.getElementById('create_job_target_form').submit();}; return false;">
+						<img src="/images/recruitments/create_job_target_btn.png" border="0" /></a>
+				</div>
+			<% end %>
 		</div>
 	</div>
 	

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 56) do
+ActiveRecord::Schema.define(:version => 57) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -213,6 +213,36 @@ ActiveRecord::Schema.define(:version => 56) do
   end
 
   add_index "albums", ["account_id", "created_at"], :name => "index_albums_on_account_id_and_created_at"
+
+  create_table "archived_recruitments", :force => true do |t|
+    t.string   "title"
+    t.text     "content"
+    t.datetime "publish_time"
+    t.string   "location"
+    t.integer  "recruitment_type", :limit => 1
+    t.string   "source_name"
+    t.string   "source_link"
+    t.boolean  "active"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",       :limit => 11
+    t.boolean  "delta"
+  end
+
+  create_table "archived_recruitments_companies", :id => false, :force => true do |t|
+    t.integer "archived_recruitment_id", :limit => 11
+    t.integer "company_id",              :limit => 11
+  end
+
+  create_table "archived_recruitments_job_positions", :id => false, :force => true do |t|
+    t.integer "archived_recruitment_id", :limit => 11
+    t.integer "job_position_id",         :limit => 11
+  end
+
+  create_table "archived_recruitments_recruitment_tags", :id => false, :force => true do |t|
+    t.integer "archived_recruitment_id", :limit => 11
+    t.integer "recruitment_tag_id",      :limit => 11
+  end
 
   create_table "autologins", :force => true do |t|
     t.string   "session_id"

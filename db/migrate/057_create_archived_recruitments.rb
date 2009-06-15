@@ -3,16 +3,14 @@ class CreateArchivedRecruitments < ActiveRecord::Migration
     
     # archived_recruitments table
     # archived table whose id will be set everytime it's being inserted
-    create_table :archived_recruitments, :id => false, :force => true do |t|
+    create_table :archived_recruitments, :force => true do |t|
 
-      t.column :id, :integer
-      
       t.column :title, :string
       t.column :content, :text
       
       t.column :publish_time, :datetime
       t.column :location, :string
-      t.column :recruitment_type, :string
+      t.column :recruitment_type, :integer, :limit => 1
       
       t.column :source_name, :string
       t.column :source_link, :string
