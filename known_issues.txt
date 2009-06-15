@@ -1,9 +1,4 @@
-﻿招聘信息的过期处理
-	对于已经年久没删除的信息, 页面访问时给出信息说明, 不要只显示不存在
-	
-	
-
-群发邮件
+﻿群发邮件
 	- http://www.google.cn/search?hl=zh-CN&newwindow=1&q=%E5%8F%91+newsletter&btnG=Google+%E6%90%9C%E7%B4%A2&meta=&aq=f&oq=
 	- http://bbs.fobshanghai.com/viewthread.php?tid=1772261&sid=OcE3ep
 	- http://www.etobao.com/ETO/newsletter/login.jsp
