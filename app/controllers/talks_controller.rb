@@ -440,13 +440,15 @@ class TalksController < ApplicationController
     talk_id = params[:id]
     category_name = params[:category_name] && params[:category_name].strip
     category_desc = params[:category_desc] && params[:category_desc].strip
+    category_order_weight = params[:category_order_weight] && params[:category_order_weight].strip
     
     question_category = TalkQuestionCategory.new(
       :talk_id => talk_id,
       :creator_id => session[:account_id],
       :updater_id => session[:account_id],
       :name => category_name,
-      :desc => category_desc
+      :desc => category_desc,
+      :order_weight => category_order_weight
     )
     
     question_category.save
@@ -475,6 +477,7 @@ class TalksController < ApplicationController
     
     @question_category.name = params[:category_name] && params[:category_name].strip
     @question_category.desc = params[:category_desc] && params[:category_desc].strip
+    @question_category.order_weight = params[:category_order_weight] && params[:category_order_weight].strip
     
     if @question_category.save
       flash.now[:message] = "已成功保存"
@@ -490,6 +493,7 @@ class TalksController < ApplicationController
     question_question = params[:question_question] && params[:question_question].strip
     question_category = params[:question_category] && params[:question_category].strip
     question_summary = params[:question_summary] && params[:question_summary].strip
+    question_order_weight = params[:question_order_weight] && params[:question_order_weight].strip
     
     question = TalkQuestion.new(
       :talk_id => talk_id,
@@ -497,7 +501,8 @@ class TalksController < ApplicationController
       :updater_id => session[:account_id],
       :question => question_question,
       :category_id => question_category,
-      :summary => question_summary
+      :summary => question_summary,
+      :order_weight => question_order_weight
     )
     
     question.save
@@ -516,6 +521,7 @@ class TalksController < ApplicationController
     @question.question = params[:question_question] && params[:question_question].strip
     @question.category_id = params[:question_category] && params[:question_category].strip
     @question.summary = params[:question_summary] && params[:question_summary].strip
+    @question.order_weight = params[:question_order_weight] && params[:question_order_weight].strip
     
     if @question.save
       flash.now[:message] = "已成功保存"
@@ -552,6 +558,7 @@ class TalksController < ApplicationController
     
     @answer.answer = params[:answer_answer]# && params[:answer_answer].strip
     @answer.summary = params[:answer_summary] && params[:answer_summary].strip
+    @answer.order_weight = params[:answer_order_weight] && params[:answer_order_weight].strip
     
     if @answer.save
       jump_to("/talks/#{@question.talk_id}/manage")
@@ -576,6 +583,7 @@ class TalksController < ApplicationController
     
     @answer.answer = params[:answer_answer]# && params[:answer_answer].strip
     @answer.summary = params[:answer_summary] && params[:answer_summary].strip
+    @answer.order_weight = params[:answer_order_weight] && params[:answer_order_weight].strip
     
     if @answer.save
       flash.now[:message] = "已成功保存"

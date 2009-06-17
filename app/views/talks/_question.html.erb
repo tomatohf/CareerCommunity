@@ -27,7 +27,7 @@
 		<% end %>
 	</span>
 
-	问题 <%= question_counter %>
+	问题 <%= question.order_weight %>
 </div>
 
 <div id="talk_question_<%= question.id %>_section">
@@ -73,6 +73,11 @@
 			<div>
 				<span class="activity_info_label">点评:</span>
 				<%= h(answer.summary) %>
+			</div>
+			
+			<div>
+				<span class="activity_info_label">顺序权重:</span>
+				<%= answer.order_weight %>
 			</div>
 			
 			<div style="padding-left: 20px;">

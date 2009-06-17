@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 57) do
+ActiveRecord::Schema.define(:version => 58) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -1106,19 +1106,20 @@ ActiveRecord::Schema.define(:version => 57) do
   add_index "sys_messages", ["account_id", "has_read"], :name => "index_sys_messages_on_account_id_and_has_read"
 
   create_table "talk_answers", :force => true do |t|
-    t.integer  "talk_id",     :limit => 11
+    t.integer  "talk_id",      :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "creator_id",  :limit => 11
-    t.integer  "updater_id",  :limit => 11
-    t.integer  "question_id", :limit => 11
-    t.integer  "talker_id",   :limit => 11
+    t.integer  "creator_id",   :limit => 11
+    t.integer  "updater_id",   :limit => 11
+    t.integer  "question_id",  :limit => 11
+    t.integer  "talker_id",    :limit => 11
     t.text     "answer"
     t.string   "summary"
     t.boolean  "delta"
+    t.integer  "order_weight", :limit => 15
   end
 
-  add_index "talk_answers", ["question_id"], :name => "index_talk_answers_on_question_id"
+  add_index "talk_answers", ["question_id", "order_weight"], :name => "index_talk_answers_on_question_id_and_order_weight"
 
   create_table "talk_comments", :force => true do |t|
     t.integer  "talk_id",    :limit => 11
@@ -1132,31 +1133,33 @@ ActiveRecord::Schema.define(:version => 57) do
   add_index "talk_comments", ["talk_id", "created_at"], :name => "index_talk_comments_on_talk_id_and_created_at"
 
   create_table "talk_question_categories", :force => true do |t|
-    t.integer  "talk_id",    :limit => 11
+    t.integer  "talk_id",      :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "creator_id", :limit => 11
-    t.integer  "updater_id", :limit => 11
+    t.integer  "creator_id",   :limit => 11
+    t.integer  "updater_id",   :limit => 11
     t.string   "name"
-    t.string   "desc",       :limit => 1000
+    t.string   "desc",         :limit => 1000
     t.boolean  "delta"
+    t.integer  "order_weight", :limit => 15
   end
 
-  add_index "talk_question_categories", ["talk_id"], :name => "index_talk_question_categories_on_talk_id"
+  add_index "talk_question_categories", ["talk_id", "order_weight"], :name => "index_talk_question_categories_on_talk_id_and_order_weight"
 
   create_table "talk_questions", :force => true do |t|
-    t.integer  "talk_id",     :limit => 11
+    t.integer  "talk_id",      :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "creator_id",  :limit => 11
-    t.integer  "updater_id",  :limit => 11
+    t.integer  "creator_id",   :limit => 11
+    t.integer  "updater_id",   :limit => 11
     t.string   "question"
     t.string   "summary"
-    t.integer  "category_id", :limit => 11
+    t.integer  "category_id",  :limit => 11
     t.boolean  "delta"
+    t.integer  "order_weight", :limit => 15
   end
 
-  add_index "talk_questions", ["talk_id"], :name => "index_talk_questions_on_talk_id"
+  add_index "talk_questions", ["talk_id", "order_weight"], :name => "index_talk_questions_on_talk_id_and_order_weight"
 
   create_table "talk_questions_job_tags", :id => false, :force => true do |t|
     t.integer "talk_question_id", :limit => 11

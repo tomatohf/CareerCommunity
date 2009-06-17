@@ -67,7 +67,8 @@ class TalkQuestionCategory < ActiveRecord::Base
     unless t_q_c
       t_q_c = self.find(
         :all,
-        :conditions => ["talk_id = ?", talk_id]
+        :conditions => ["talk_id = ?", talk_id],
+        :order => "order_weight ASC"
       )
       
       Cache.set("#{CKP_talk_question_categories}_#{talk_id}".to_sym, t_q_c, Cache_TTL)

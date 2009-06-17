@@ -66,7 +66,8 @@ class TalkAnswer < ActiveRecord::Base
     unless t_q_as
       t_q_as = self.find(
         :all,
-        :conditions => ["question_id = ?", question_id]
+        :conditions => ["question_id = ?", question_id],
+        :order => "order_weight ASC"
       )
       
       Cache.set("#{CKP_talk_question_answers}_#{question_id}".to_sym, t_q_as, Cache_TTL)
