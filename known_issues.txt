@@ -1,4 +1,12 @@
-﻿群发邮件
+﻿sphinx 搜索 的 分词 问题
+	- 词典 ???
+	
+	
+高亮页面中的指定关键字
+
+
+
+群发邮件
 	- http://www.google.cn/search?hl=zh-CN&newwindow=1&q=%E5%8F%91+newsletter&btnG=Google+%E6%90%9C%E7%B4%A2&meta=&aq=f&oq=
 	- http://bbs.fobshanghai.com/viewthread.php?tid=1772261&sid=OcE3ep
 	- http://www.etobao.com/ETO/newsletter/login.jsp
@@ -23,13 +31,6 @@ EXT IE8 menu 宽度问题
 	- Juggernaut 断网的时候无法 调用 unbind ... 靠
 		- 解决: 每隔一段时间 send_to_all 一次 ... push 数据失败 connection 则会调用 unbind 方法
 
-
-
-让用户能够收藏自己喜爱的面经，以便存档，日后直接浏览。
-
-sphinx 搜索 的 分词 问题
-
-高亮页面中的指定关键字
 
 
 访谈录可以针对每个问题回答(Answer) 顶 和 踩

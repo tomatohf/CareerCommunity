@@ -56,20 +56,17 @@
 	
 	<%
 		partners = [
-			["", "hrm.png", "http://www.hrm.org.cn"], # 上海市心理学会
-			["", "blacking.jpg", "http://www.blacking.cn"], # Blacking
-			["", "team_key.jpg", "http://www.team-key.com"] # 上海拓展培训训练
+			["上海市心理学会", "hrm.png", "http://www.hrm.org.cn"],
+			["Blacking", "blacking.jpg", "http://www.blacking.cn"],
+			["上海拓展培训训练", "team_key.jpg", "http://www.team-key.com"],
+			["油面筋", "youmianjing.png", "http://www.youmianjing.com"]
 		]
 	%>
 	<% partners.each do |partner| %>
 		<div class="index_partner">
 			<div>
-				<a href="<%= partner[2] %>" target="_blank">
+				<a href="<%= partner[2] %>" title="<%= partner[0] %>" target="_blank">
 					<img src="/images/real_index/partners/<%= partner[1] %>" border="0" /></a>
-			</div>
-			<div>
-				<a href="<%= partner[2] %>" target="_blank">
-					<%= partner[0] %></a>
 			</div>
 		</div>
 	<% end %>

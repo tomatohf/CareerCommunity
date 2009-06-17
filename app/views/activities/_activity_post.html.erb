@@ -12,8 +12,10 @@
 				&nbsp;
 			<% end %>
 		<% else %>
-			<% activity_title  =h(activity_post.activity.get_title) %>
-			[<a href="/activities/<%= activity_post.activity_id %>" title="<%= activity_title %>" class="account_nick_link"><%= truncate(activity_title) %></a>]
+			<% activity_title  = h(activity_post.activity.get_title) %>
+			<a href="/activities/<%= activity_post.activity_id %>" title="<%= activity_title %>" class="account_nick_link form_info_s">(<%= truncate(activity_title) %>)</a>
+			<br />
+			&nbsp;&nbsp;&nbsp;
 		<% end %>
 		
 		<% activity_post_title = h(activity_post.title) %>

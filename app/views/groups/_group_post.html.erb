@@ -12,7 +12,12 @@
 				&nbsp;
 			<% end %>
 		<% else %>
-			[<a href="/groups/<%= group_post.group_id %>" class="account_nick_link"><%= h(group_post.group.name) %></a>]
+			<% h_group_name = h(group_post.group.name) %>
+			<a href="/groups/<%= group_post.group_id %>" class="account_nick_link form_info_s">(<%= h_group_name %>)</a>
+			<% if h_group_name.jsize > 12 %>
+				<br />
+				&nbsp;&nbsp;&nbsp;
+			<% end %>
 		<% end %>
 		
 		<% group_post_title = h(group_post.title) %>
