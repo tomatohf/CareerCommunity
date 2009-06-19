@@ -29,7 +29,7 @@
 		
 		<b>
 			<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
-				<%= account_nick %></a>
+				<%= h(account_nick) %></a>
 		</b>
 		在
 		<%= format_datetime(comment.created_at) %>

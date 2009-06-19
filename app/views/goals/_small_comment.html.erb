@@ -17,7 +17,7 @@
 			
 			<td align="left" valign="top">
 				<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
-					<%= account_nick %></a>
+					<%= h(account_nick) %></a>
 				说:
 				<% comment_content = h(small_comment.content) %>
 				<a href="/goals/<%= small_comment.goal_track_id %>#comment_list" class="account_nick_link" title="<%= comment_content %>">

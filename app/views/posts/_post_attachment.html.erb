@@ -1,5 +1,12 @@
 <% can_del &&= true %>
 
+<%
+	account_id = post_attachment.account_id
+	account_nick_pic = Account.get_nick_and_pic(account_id)
+	account_nick = account_nick_pic[0]
+	# account_pic_url = account_nick_pic[1]
+%>
+
 <div class="post_attachment">
 	<a href="/<%= post_type %>/posts/attachment/<%= post_attachment.id %>" title="<%= h(post_attachment.desc) %>" class="account_nick_link">
 		<img src="<%= get_content_type_icon(post_attachment.attachment_content_type, post_attachment.attachment_file_name) %>" border="0" />
@@ -9,6 +16,15 @@
 		
 	<span class="form_info_s">
 		(<%= format("%.1f", post_attachment.attachment_file_size.to_f / 1024) %> K)
+		&nbsp;
+		
+		<% h_account_nick = h(account_nick) %>
+		<span title="<%= h_account_nick %> 在 <%= format_datetime(post_attachment.created_at) %> 添加了这个附件">
+			(由
+			<a href="/spaces/show/<%= account_id %>" class="account_nick_link form_info_s" target="_blank">
+				<%= h_account_nick %></a>
+			添加)
+		</span>
 	</span>
 	
 	<% if can_del %>

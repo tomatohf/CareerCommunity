@@ -35,7 +35,7 @@
 					</div>
 
 					<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
-						<%= account_nick %></a>
+						<%= h(account_nick) %></a>
 					在
 					<%= format_datetime(post_comment.created_at) %>
 					<span id="comment_<%= post_comment.id %>">说</span>
