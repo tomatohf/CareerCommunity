@@ -1,12 +1,4 @@
-﻿sphinx 搜索 的 分词 问题
-	- 词典 ???
-	
-	
-高亮页面中的指定关键字
-
-
-
-群发邮件
+﻿群发邮件
 	- http://www.google.cn/search?hl=zh-CN&newwindow=1&q=%E5%8F%91+newsletter&btnG=Google+%E6%90%9C%E7%B4%A2&meta=&aq=f&oq=
 	- http://bbs.fobshanghai.com/viewthread.php?tid=1772261&sid=OcE3ep
 	- http://www.etobao.com/ETO/newsletter/login.jsp
@@ -24,6 +16,8 @@ EXT IE8 menu 宽度问题
 求职管家里面的步骤链接
 	- 简历 链接到 简历圈子
 	- 面试 链接到 面试圈子
+
+高亮页面中的指定关键字
 
 即时聊天功能
 	- 处理聊天记录

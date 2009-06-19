@@ -17,9 +17,10 @@ class PostsController < ApplicationController
   
   before_filter :check_compose_access, :only => [:compose]
   before_filter :check_create_access, :only => [:create]
-  before_filter :check_update_access, :only => [:edit, :update, :new_attachment, :create_attachment]
+  before_filter :check_update_access, :only => [:edit, :update]
   before_filter :check_create_comment_access, :only => [:create_comment]
   before_filter :check_delete_comment_access, :only => [:delete_comment]
+  before_filter :check_create_attachment_access, :only => [:new_attachment, :create_attachment]
   before_filter :check_delete_attachment_access, :only => [:delete_attachment]
   before_filter :check_destroy_access, :only => [:destroy]
   before_filter :check_top_access, :only => [:top, :untop, :good, :ungood]
@@ -361,6 +362,17 @@ class PostsController < ApplicationController
     jump_to("/errors/forbidden") unless @type_handler.check_delete_comment_access(type_id, account_id)
   end
   
+  def check_create_attachment_access
+    @type_handler = get_type_handler(@post_type)
+    @post = @type_handler.get_post_class.get_post(params[:id])
+    
+    type_id = @post.send(@type_handler.get_type_id)
+    
+    account_id = session[:account_id]
+    
+    jump_to("/errors/forbidden") unless @type_handler.check_create_attachment_access(type_id, account_id, @post.account_id)
+  end
+  
   def check_delete_attachment_access
     @type_handler = get_type_handler(@post_type)
     @post = @type_handler.get_post_class.get_post(params[:id])
@@ -486,6 +498,10 @@ class PostsController < ApplicationController
         check_view_access(type_id, account_id)
       end
       
+      def check_create_attachment_access(type_id, account_id, poster_id)
+        can_add_attachment(type_id, GroupMember.is_group_admin(type_id, account_id), (account_id == poster_id))
+      end
+      
       def check_delete_attachment_access(type_id, account_id, poster_id)
         can_del_attachment(type_id, GroupMember.is_group_admin(type_id, account_id), (account_id == poster_id))
       end
@@ -506,7 +522,7 @@ class PostsController < ApplicationController
           
           access << :can_edit if is_author
           access << :can_del if can_del_post(type_id, is_admin, is_author)
-          access << :can_add_attachment if is_author
+          access << :can_add_attachment if can_add_attachment(type_id, is_admin, is_author)
           access << :can_del_attachment if can_del_attachment(type_id, is_admin, is_author)
         end
         
@@ -543,6 +559,10 @@ class PostsController < ApplicationController
         return is_admin if is_resume_group(type_id)
         
         is_author || is_admin
+      end
+      
+      def can_add_attachment(type_id, is_admin, is_author)
+        is_author || (is_resume_group(type_id) && is_admin)
       end
       
       def is_resume_group(type_id)
@@ -633,6 +653,10 @@ class PostsController < ApplicationController
         check_view_access(type_id, account_id)
       end
       
+      def check_create_attachment_access(type_id, account_id, poster_id)
+        account_id == poster_id
+      end
+      
       def check_delete_attachment_access(type_id, account_id, poster_id)
         (account_id == poster_id) || ActivityMember.is_activity_admin(type_id, account_id)
       end
@@ -705,6 +729,10 @@ class PostsController < ApplicationController
       
       def check_attachment_access(type_id, account_id)
         check_view_access(type_id, account_id)
+      end
+      
+      def check_create_attachment_access(type_id, account_id, poster_id)
+        account_id == poster_id
       end
       
       def check_delete_attachment_access(type_id, account_id, poster_id)
