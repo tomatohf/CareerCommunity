@@ -108,7 +108,7 @@ class AccountSettingsController < ApplicationController
     settings = @account_setting.get_setting
     
     @setting_values = {}
-    AccountAction::Action_Types.each do |key, value|
+    AccountAction.action_types.each do |key, value|
       @setting_values[key] = @account_setting.get_setting_value("hide_action_#{key}".to_sym, settings)
     end
   end
@@ -117,7 +117,7 @@ class AccountSettingsController < ApplicationController
     account_action_setting = {}
     @setting_values = {}
     
-    AccountAction::Action_Types.each do |key, value|
+    AccountAction.action_types.each do |key, value|
       symbol_key = key.to_sym
       setting_value = params[symbol_key] && params[symbol_key].strip
       

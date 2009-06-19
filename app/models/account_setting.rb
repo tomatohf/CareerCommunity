@@ -85,7 +85,7 @@ class AccountSetting < ActiveRecord::Base
   }
   # account action settings
   # "true" or "false"
-  AccountAction::Action_Types.each do |key, value|
+  AccountAction.action_types.each do |key, value|
     @@default_values["hide_action_#{key}".to_sym] = "false"
   end
   def self.default_value(name)

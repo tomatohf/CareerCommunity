@@ -16,7 +16,7 @@ class AccountAction < ActiveRecord::Base
   
   # define account action types
   
-  Action_Types = {
+  @@action_types = {
     "add_space_comment" => "添加留言",
     "add_blog" => "发表博客",
     "add_blog_comment" => "评论博客",
@@ -41,7 +41,11 @@ class AccountAction < ActiveRecord::Base
     "add_goal_track_comment" => "评论目标进度"
   }
   
-  Action_Types.keys.each do |t|
+  def self.action_types
+    @@action_types
+  end
+  
+  @@action_types.keys.each do |t|
     define_method(t) {
       t.to_s
     }

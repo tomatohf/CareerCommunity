@@ -19,7 +19,7 @@
 	<div class="community_block">
 		<a href="/spaces/friend_actions/<%= @account_id %>">显示所有动态</a>
 	</div>
-	<% AccountAction::Action_Types.each do |key, value| %>
+	<% AccountAction.action_types.each do |key, value| %>
 		<div class="community_block">
 				<a href="/spaces/friend_actions/<%= @account_id %>/<%= key %>"<%= " class=\"link_selected\"" if key == @action_type %> >
 					<%= value %>

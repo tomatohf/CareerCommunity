@@ -116,6 +116,10 @@ class PicturesController < ApplicationController
       response.headers["Content-Length"] = picture.image_file_size
       response.headers["X-LIGHTTPD-send-file"] = picture.image.path(picture_style)
       # response.headers["X-sendfile"] = picture.image.path(picture_style)
+      
+      # make the image can be cached by browsers
+      expires_in(1.days, :public => true)
+        
       render :nothing => true
     else
       send_file(
