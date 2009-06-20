@@ -72,6 +72,9 @@ class Blog < ActiveRecord::Base
   
   def self.clear_blogs_account_feed_cache(account_id)
     Cache.delete(expand_cache_key("#{BlogsController::ACKP_blogs_account_feed}_#{account_id}.atom"))
+    
+    # clear all blogs feed cache
+    Cache.delete(expand_cache_key("#{BlogsController::ACKP_blogs_all_feed}.atom"))
   end
   
   

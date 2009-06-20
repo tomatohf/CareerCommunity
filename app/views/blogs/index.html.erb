@@ -1,0 +1,52 @@
+<% page_title = "最新博客" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_small_container_r">
+	<div class="community_block">
+		<a href="/blogs/list_index" style="font-size: 14px; font-weight: bold;">
+			去我的博客</a>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block">
+		<a href="/blogs/new">
+			+ 写新日志</a>
+	</div>
+	
+	<% if @new_comments.size > 0 %>
+		<div class="community_title">
+			最近评论 ...
+		</div>
+		
+		<div class="community_block">
+			<%= render(:partial => "small_comment", :collection => @new_comments) %>
+		</div>
+	<% end %>
+</div>
+
+<div class="blog_small_container_l">
+	<a class="float_r" href="/blogs/feed/<%= BlogsController::Blog_All_Feed_ID %>.atom">
+		<img src="/images/feed_icon.gif" border="0" alt="订阅最新博客" title="订阅最新博客" /></a>
+	
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow">
+		<div class="form_info_l">
+			列表中只包含纯文字内容, 请点击 标题 或 完整阅读, 来阅读文章的全部内容
+		</div>
+	</div>
+	
+	<br />
+
+	<div>
+		<%= render(:partial => "owner_blog", :collection => @blogs, :locals => {:edit => false, :show_face => true}) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@blogs) %>
+	</div>
+</div>
+

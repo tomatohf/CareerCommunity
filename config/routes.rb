@@ -82,6 +82,8 @@ ActionController::Routing::Routes.draw do |map|
   }
   
   
+  map.connect "/blogs/list_index", :controller => "blogs", :action => "list_index"
+  map.connect "/blogs/p/:page", :controller => "blogs", :action => "index", :page => /\d+/
   map.connect "/blogs/list/:id/:page", :controller => "blogs", :action => "list", :id => /\d+/, :page => /\d+/
   map.connect "/blogs/:id/comment/:page", :controller => "blogs", :action => "show", :id => /\d+/, :page => /\d+/
   map.resources :blogs, :member => {

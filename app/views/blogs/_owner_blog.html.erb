@@ -1,3 +1,14 @@
+<%
+	show_face &&= true
+	
+	account_id = owner_blog.account_id
+	if show_face
+		account_nick_pic = Account.get_nick_and_pic(account_id)
+		account_nick = account_nick_pic[0]
+		account_pic_url = account_nick_pic[1]
+	end
+%>
+
 <% blog_show_url = "/blogs/#{owner_blog.id}" %>
 
 <% blog_content = extract_text(owner_blog.content) %>
@@ -7,15 +18,28 @@
 
 <div class="owner_blog">
 	<div>
-		<a href="<%= blog_show_url %>" class="owner_blog_title">
-			<%= h(owner_blog.title) %>
-		</a>
-	</div>
-	
-	<div class="form_info_s">
-		<%= owner_name unless edit %>
-		发表于
-		<%= format_datetime(owner_blog.created_at) %>
+		<% if show_face %>
+			<div class="float_l" style="width: 50px; margin: 0px 20px 10px 0px;">
+				<a href="/spaces/show/<%= account_id %>">
+					<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+			</div>
+		<% end %>
+		
+		<div style="margin-bottom: 5px;">
+			<a href="<%= blog_show_url %>" class="owner_blog_title">
+				<%= h(owner_blog.title) %></a>
+		</div>
+
+		<div class="form_info_s">
+			<% if show_face %>
+				<a href="/spaces/show/<%= account_id %>" class="account_nick_link form_info_s">
+					<%= h(account_nick) %></a>
+			<% else %>
+				<%= owner_name %></a>
+			<% end %>
+			发表于
+			<%= format_datetime(owner_blog.created_at) %>
+		</div>
 	</div>
 	
 	<div class="owner_blog_content">

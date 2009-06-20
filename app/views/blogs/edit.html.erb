@@ -53,7 +53,7 @@
 				<div>
 					<%= submit_tag "保存博客文章", :class => "button", :disabled => @account_limited %>
 					&nbsp;&nbsp;&nbsp;
-					<a href="/blogs">返回我的博客文章列表</a>
+					<a href="/blogs/list/<%= session[:account_id] %>">返回我的博客文章列表</a>
 					&nbsp;&nbsp;&nbsp;
 					<a href="/blogs/<%= @blog.id %>">返回这篇博客文章</a>
 				</div>

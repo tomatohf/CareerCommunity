@@ -50,7 +50,7 @@
 				<div>
 					<%= submit_tag "发表博客文章", :class => "button", :disabled => @account_limited %>
 					&nbsp;&nbsp;&nbsp;
-					<a href="/blogs" onclick="if(!confirm('当前正在编辑的内容将全部丢失, 确定返回么 ?')){ return false; }">返回我的博客文章列表</a>
+					<a href="/blogs/list/<%= session[:account_id] %>" onclick="if(!confirm('当前正在编辑的内容将全部丢失, 确定返回么 ?')){ return false; }">返回我的博客文章列表</a>
 				</div>
 			
 			<% end %>

@@ -6,7 +6,7 @@ class BlogsController < ApplicationController
   New_Comment_Size = 30
   
   layout "community"
-  before_filter :check_current_account, :only => [:index]
+  before_filter :check_current_account, :only => [:list_index]
   before_filter :check_login, :only => [:new, :create, :edit, :update, :destroy,
                                         :create_comment, :delete_comment]
   before_filter :check_limited, :only => [:create, :update, :destroy, :create_comment, :delete_comment]
@@ -17,11 +17,13 @@ class BlogsController < ApplicationController
   
   
   ACKP_blogs_account_feed = :ac_blogs_account_feed
+  ACKP_blogs_all_feed = :ac_blogs_all_feed
+  Blog_All_Feed_ID = "all"
   
   caches_action :feed,
     :cache_path => Proc.new { |controller|
       owner_id = controller.params[:id]
-      "#{ACKP_blogs_account_feed}_#{owner_id}"
+      (owner_id == Blog_All_Feed_ID) ? ACKP_blogs_all_feed.to_s : "#{ACKP_blogs_account_feed}_#{owner_id}"
     },
     :if => Proc.new { |controller|
       controller.request.format.atom?
@@ -29,8 +31,24 @@ class BlogsController < ApplicationController
   
   
   
-  # ! current account needed !
   def index
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @blogs = Blog.paginate(
+      :page => page,
+      :per_page => Blog_Page_Size,
+      :order => "created_at DESC"
+    )
+    
+    @new_comments = BlogComment.find(
+      :all,
+      :limit => New_Comment_Size,
+      :order => "id DESC"
+    )
+  end
+  
+  # ! current account needed !
+  def list_index
     jump_to("/blogs/list/#{session[:account_id]}")
   end
   
@@ -61,18 +79,33 @@ class BlogsController < ApplicationController
   def feed
     @owner_id = params[:id]
     
+    @is_all = (@owner_id == Blog_All_Feed_ID)
+    
     respond_to do |format|
-      format.html { jump_to("/blogs/list/#{@owner_id}") }
+      format.html {
+        jump_to(
+          @is_all ? "/blogs" : "/blogs/list/#{@owner_id}"
+        )
+      }
       
       format.atom {
-        @owner_nick_pic = Account.get_nick_and_pic(@owner_id)
+        if @is_all
+          @blogs = Blog.find(
+            :all,
+            :limit => Blog_Page_Size,
+            :include => [:account],
+            :order => "created_at DESC"
+          )
+        else
+          @owner_nick_pic = Account.get_nick_and_pic(@owner_id)
         
-        @blogs = Blog.find(
-          :all,
-          :limit => Blog_Page_Size,
-          :conditions => ["account_id = ?", @owner_id],
-          :order => "created_at DESC"
-        )
+          @blogs = Blog.find(
+            :all,
+            :limit => Blog_Page_Size,
+            :conditions => ["account_id = ?", @owner_id],
+            :order => "created_at DESC"
+          )
+        end
         
         render :layout => false
       }

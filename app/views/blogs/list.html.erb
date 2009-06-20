@@ -4,19 +4,28 @@
 <% community_page_title(page_title) %>
 
 <div class="float_r blog_small_container_r">
+	<div class="community_block">
+		<a href="/blogs">
+			最新博客列表</a>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
 	<% if @edit %>
 		<div class="community_block align_c">
-			<h2><a href="/blogs/new">+ 写新文章</a></h2>
+			<h2><a href="/blogs/new">+ 写新日志</a></h2>
 		</div>
 	<% else %>
 		<div class="community_title">
 			博客的主人 ...
 		</div>
-		<div class="community_block">
+		<div class="community_block align_c">
 			<a href="/spaces/show/<%= @owner_id %>">
 				<img src="<%= face_img_src(@owner_nick_pic[1]) %>" border="0" /></a>
 		</div>
-		<div class="community_block">
+		<div class="community_block align_c">
 			<a href="/spaces/show/<%= @owner_id %>" class="account_nick_link">
 				<%= owner_name %></a>
 		</div>

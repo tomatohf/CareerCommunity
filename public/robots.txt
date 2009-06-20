@@ -2,11 +2,13 @@
 
 
 
+Sitemap: http://www.qiaobutang.com/blogs/feed/all.atom
 Sitemap: http://www.qiaobutang.com/exps/feed.atom
 Sitemap: http://www.qiaobutang.com/recruitments/feed.atom
 Sitemap: http://www.qiaobutang.com/talks/feed.atom
 
 
+Sitemap: http://qiaobutang.com/blogs/feed/all.atom
 Sitemap: http://qiaobutang.com/exps/feed.atom
 Sitemap: http://qiaobutang.com/recruitments/feed.atom
 Sitemap: http://qiaobutang.com/talks/feed.atom
