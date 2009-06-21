@@ -1,0 +1,9 @@
+<div style="padding: 30px;">
+	<% @tests.each_index do |i| %>
+		<% test = CareerTest.get_test(i+1) %>
+		<div>
+			<a href="/career_tests/show/<%= i+1 %>">
+				<%= test.title %></a>
+		</div>
+	<% end %>
+</div>
