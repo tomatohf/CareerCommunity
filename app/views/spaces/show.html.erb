@@ -331,6 +331,42 @@
 		</div>
 	</div>
 	
+	
+	<div class="community_title">
+		<%= owner_name %> 的博客 ...
+	</div>
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="blog_section_expand" href="#" onclick="collapse_section('blog_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="blog_section_collapse" href="#" onclick="expand_section('blog_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			
+			<a href="/blogs/list/<%= @account_id %>">所有博客</a>
+		</div>
+		
+		<div id="blog_section" class="community_block">
+			<% cache("#{Blog::FCKP_spaces_show_blog}_#{@account_id}") do %>
+				<%
+					@blogs = Blog.find(
+						:all,
+						:limit => SpacesController::Space_Blog_Num,
+						:conditions => ["account_id = ?", @account_id],
+						:order => "created_at DESC"
+					)
+				%>
+				<%= render(:partial => "blog", :collection => @blogs, :locals => {:edit => @edit}) %>
+			
+				<% unless @blogs.size > 0 %>
+					<div class="form_info_l">
+						还没有写过博客 ...
+					</div>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+	
+	
 	<div class="community_title">
 		<%= owner_name %> 的活动 ...
 	</div>
@@ -494,40 +530,7 @@
 	</div>
 	<div class="clear_l" />
 	
-	<div class="community_title">
-		<%= owner_name %> 的博客 ...
-	</div>
-	<div class="community_block">
-		<div class="space_section_title">
-			<a class="float_r" title="收起" id="blog_section_expand" href="#" onclick="collapse_section('blog_section'); return false;">
-				<img src="/images/expand.png" border="0" /></a>
-			<a class="float_r" title="展开" id="blog_section_collapse" href="#" onclick="expand_section('blog_section'); return false;" style="display: none">
-				<img src="/images/collapse.png" border="0" /></a>
-			
-			<a href="/blogs/list/<%= @account_id %>">所有博客</a>
-		</div>
-		
-		<div id="blog_section" class="community_block">
-			<% cache("#{Blog::FCKP_spaces_show_blog}_#{@account_id}") do %>
-				<%
-					@blogs = Blog.find(
-						:all,
-						:limit => SpacesController::Space_Blog_Num,
-						:conditions => ["account_id = ?", @account_id],
-						:order => "created_at DESC"
-					)
-				%>
-				<%= render(:partial => "blog", :collection => @blogs, :locals => {:edit => @edit}) %>
-			
-				<% unless @blogs.size > 0 %>
-					<div class="form_info_l">
-						还没有写过博客 ...
-					</div>
-				<% end %>
-			<% end %>
-		</div>
-	</div>
-	
+
 	<div class="community_title">
 		<%= owner_name %> 的留言板 ...
 	</div>

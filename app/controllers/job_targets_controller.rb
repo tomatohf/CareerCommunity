@@ -737,7 +737,7 @@ class JobTargetsController < ApplicationController
       @recruitments = Recruitment.search(
         @company_name,
         :page => page,
-        :per_page => 50,
+        :per_page => 20,
         :match_mode => CommunityController::Search_Match_Mode,
         :order => @by_rel ? "@relevance DESC, publish_time DESC" : "publish_time DESC, @relevance DESC",
         :field_weights => {

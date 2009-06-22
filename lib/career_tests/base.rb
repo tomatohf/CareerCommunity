@@ -30,8 +30,12 @@ module CareerTests
       ]
     end
     
-    def display_title(index, title)
+    def display_question_title(index, title)
       "#{index+1} - #{title}"
+    end
+    
+    def display_category_title(index, title)
+      display_question_title(index, title)
     end
     
   end
