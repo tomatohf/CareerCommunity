@@ -38,7 +38,8 @@ class AccountAction < ActiveRecord::Base
     "add_goal_post_comment" => "回应目标话题",
     "add_goal" => "添加目标",
     "add_goal_track" => "添加目标进度",
-    "add_goal_track_comment" => "评论目标进度"
+    "add_goal_track_comment" => "评论目标进度",
+    "add_career_test_result" => "参与测试"
   }
   
   def self.action_types
@@ -985,6 +986,38 @@ class AccountAction < ActiveRecord::Base
           {
             :goal_id => goal_id,
             :goal_name => goal_name,
+          
+            :save_space => save_space
+          }
+        ]
+      end
+    end
+    
+    class AddCareerTestResult < Base
+      def action_text(data, operator, save_space)
+        career_test_id = data[:career_test_id]
+        career_test_name = CareerTest.get_test(career_test_id).name
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_career_test_result", :locals => {
+            :operator => #{operator},
+            :career_test_id => #{career_test_id},
+            :career_test_name => #{career_test_name.inspect},
+          
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+      
+      def render_info(data, save_space)
+        career_test_id = data[:career_test_id]
+        career_test_name = CareerTest.get_test(career_test_id).name
+        
+        [
+          "add_career_test_result",
+          {
+            :career_test_id => career_test_id,
+            :career_test_name => career_test_name,
           
             :save_space => save_space
           }

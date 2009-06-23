@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 58) do
+ActiveRecord::Schema.define(:version => 59) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -294,6 +294,17 @@ ActiveRecord::Schema.define(:version => 58) do
 
   add_index "blogs", ["created_at"], :name => "index_blogs_on_created_at"
   add_index "blogs", ["account_id", "created_at"], :name => "index_blogs_on_account_id_and_created_at"
+
+  create_table "career_test_results", :force => true do |t|
+    t.datetime "created_at"
+    t.integer  "account_id",     :limit => 11
+    t.integer  "career_test_id", :limit => 11
+    t.text     "answer"
+  end
+
+  add_index "career_test_results", ["account_id", "created_at"], :name => "index_career_test_results_on_account_id_and_created_at"
+  add_index "career_test_results", ["career_test_id", "created_at"], :name => "index_career_test_results_on_career_test_id_and_created_at"
+  add_index "career_test_results", ["account_id", "career_test_id", "created_at"], :name => "index_career_test_results_on_account_career_created"
 
   create_table "cities", :force => true do |t|
     t.string  "name"

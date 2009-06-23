@@ -65,7 +65,7 @@
 								<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
 									<tr>
 										<td valign="top" style="width: 30px;">
-											<input type="radio" name="question_<%= question[0] %>" id="option_<%= option[0] %>_of_question_<%= question[0] %>" value="<%= option[0] %>" onclick="update_question_status(<%= question[0] %>, true);" />
+											<input type="radio" name="question_<%= question[0] %>" id="option_<%= option[0] %>_of_question_<%= question[0] %>" value="<%= option[0] %>" onclick="update_question_status(<%= question[0] %>, true);"<%= %Q! checked="checked"! if flash.now[:answers] && flash.now[:answers][question[0]] == option[0].to_s %> />
 										</td>
 										
 										<td>
@@ -117,13 +117,7 @@
 		}
 		
 		if(unfilled_question_ids.length > 0) {
-			var msg = "";
-			msg += "<p class='error_msg'>"
-			msg += 	"还有 <b>" + unfilled_question_ids.length + "</b> 道题目没有填写 ...";
-			msg += 	"<br />";
-			msg += 	"未填写的题目已经用 红色 标识出来了 ~";
-			msg += "</p>";
-			document.getElementById("msg_container").innerHTML = msg;
+			show_unfilled_msg(unfilled_question_ids)
 			
 			window.location.href = "#";
 			
@@ -142,5 +136,19 @@
 			question_title_div.className = "unfilled_question_title";
 		}
 	}
+	
+	function show_unfilled_msg(unfilled_ids) {
+		var msg = "";
+		msg += "<p class='error_msg'>"
+		msg += 	"还有 <b>" + unfilled_ids.length + "</b> 道题目没有填写 ...";
+		msg += 	"<br />";
+		msg += 	"未填写的题目已经用 红色 标识出来了 ~";
+		msg += "</p>";
+		document.getElementById("msg_container").innerHTML = msg;
+	}
+	
+	<% if flash.now[:answers] %>
+		check_test();
+	<% end %>
 </script>
 
