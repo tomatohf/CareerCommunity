@@ -1,9 +1,25 @@
-<div style="padding: 30px;">
+<% page_title = "职业测评列表" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r community_container_r">
+	<div class="community_block">
+		
+	</div>
+</div>
+
+<div class="community_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	
 	<% @tests.each_index do |i| %>
 		<% test = CareerTest.get_test(i+1) %>
-		<div>
+		
+		<div class="community_block">
 			<a href="/career_tests/show/<%= i+1 %>">
 				<%= test.name %></a>
 		</div>
 	<% end %>
+	
 </div>
+

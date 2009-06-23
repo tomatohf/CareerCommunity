@@ -7,11 +7,15 @@ module CareerTests
       ""
     end
     
+    def desc
+      ""
+    end
+    
     def questions
       # array as the container hold the items in their display order ...
       
       # category item format => [category_title, category_desc, questions_in_this_category]
-      # question item format => [internal_id, question_title, question_options_array]
+      # question item format => [internal_id, question_title, options_of_this_question]
       # question option item format => [internal_id, option_title]
       
       [
@@ -36,6 +40,14 @@ module CareerTests
     
     def display_category_title(index, title)
       display_question_title(index, title)
+    end
+    
+    def category_title_bg_color
+      "FFFFFF"
+    end
+    
+    def display_option_title(index, title)
+      title
     end
     
   end

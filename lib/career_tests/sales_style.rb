@@ -272,6 +272,14 @@ module CareerTests
       "<b>情景 #{index+1}</b> - #{title}"
     end
     
+    def display_category_title(index, title)
+      ""
+    end
+    
+    def display_option_title(index, title)
+      "<b>#{(index+65).chr}</b>: #{title}"
+    end
+    
   end
 
 end

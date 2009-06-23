@@ -1239,11 +1239,15 @@ module CareerTests
     end
     
     def display_question_title(index, title)
-      "<b>#{index+1}.</b> #{title}"
+      "<b>#{index+1}. #{title}</b>"
     end
     
     def display_category_title(index, title)
-      "第 #{index+1} 部分 - #{title}"
+      "第 #{index+1} 部分: #{title}"
+    end
+    
+    def category_title_bg_color
+      "F0F3FA"
     end
     
   end

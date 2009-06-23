@@ -59,13 +59,13 @@ require "system_timer"
 require "util"
 require "noisy_image"
 
-require_dependency "recruitment_vendors/base"
+require "recruitment_vendors/base"
 
-require_dependency "contact"
+require "contact"
 
-require_dependency "exp_vendors/base"
+require "exp_vendors/base"
 
-require_dependency "goal_follow_types/base"
+require "goal_follow_types/base"
 
 require_dependency "career_tests/base"
 

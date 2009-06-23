@@ -1,0 +1,146 @@
+<% test_name = @test.name %>
+
+<% question_ids = [] %>
+
+<% community_page_title(test_name) %>
+
+<div class="float_r community_container_r">
+	<div class="community_block align_c">
+		<a href="/career_tests">
+			返回职业测评列表</a>
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block align_c">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/career_tests/show/#{@test_id}", :title => "职业测评: #{test_name}"} %>
+	</div>
+</div>
+
+<div class="community_container_l">
+	<h2><%= test_name %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		<%= @test.desc %>
+	</div>
+	
+	
+	<div class="community_block" id="msg_container">
+		
+	</div>
+	
+	
+	<div class="community_block">
+		<% form_tag "/career_tests/result/#{@test_id}", :method => :post, :onsubmit => "return check_test();" do %>
+			<% question_index = 0 %>
+			<% categories = @test.questions %>
+			<% categories.each_index do |category_index| %>
+				<% category = categories[category_index] %>
+				<div class="community_block test_category_title" style="background-color: #<%= @test.category_title_bg_color %>;">
+					<%= @test.display_category_title(category_index, category[0]) %>
+				</div>
+				
+				<div class="community_block_narrow form_info_s test_category_desc">
+					<%= category[1] %>
+				</div>
+				
+				<% questions = category[2..-1] %>
+				<% questions.each do |question| %>
+					<div class="community_block">
+						<div id="question_title_<%= question[0] %>">
+							<%= @test.display_question_title(question_index, question[1]) %>
+							<% question_index += 1 %>
+							<% question_ids << question[0] %>
+						</div>
+					</div>
+					
+					<div class="community_block_narrow test_question_options">
+						<% options = question[2..-1] %>
+						<% options.each_index do |option_index| %>
+							<% option = options[option_index] %>
+							<div class="community_block">
+								<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+									<tr>
+										<td valign="top" style="width: 30px;">
+											<input type="radio" name="question_<%= question[0] %>" id="option_<%= option[0] %>_of_question_<%= question[0] %>" value="<%= option[0] %>" onclick="update_question_status(<%= question[0] %>, true);" />
+										</td>
+										
+										<td>
+											<label for="option_<%= option[0] %>_of_question_<%= question[0] %>">
+												<%= @test.display_option_title(option_index, option[1]) %>
+											</label>
+										</td>
+									</tr>
+								</table>
+							</div>
+						<% end %>
+					</div>
+				<% end %>
+			<% end %>
+			
+			
+			<div class="community_block align_c">
+				<%= submit_tag "哈哈, 总算做完了, 提交吧 ~", :class => "button", :disabled => @account_limited %>
+			</div>
+		<% end %>
+	</div>
+	
+</div>
+
+
+<script language="JavaScript">
+	var question_ids = <%= question_ids.inspect %>;
+	
+	function check_test() {
+		var unfilled_question_ids = [];
+		
+		for(var i=0; i < question_ids.length; i++) {
+			var question_id = question_ids[i];
+			
+			var filled = false;
+			var options = document.getElementsByName("question_" + question_id);
+			for(var j=0; j < options.length; j++) {
+				var option = options[j];
+				if(option.checked) {
+					filled = true;
+					break;
+				}
+			}
+			
+			if(!filled) {
+				unfilled_question_ids.push(question_id);
+			}
+			update_question_status(question_id, filled);
+		}
+		
+		if(unfilled_question_ids.length > 0) {
+			var msg = "";
+			msg += "<p class='error_msg'>"
+			msg += 	"还有 <b>" + unfilled_question_ids.length + "</b> 道题目没有填写 ...";
+			msg += 	"<br />";
+			msg += 	"未填写的题目已经用 红色 标识出来了 ~";
+			msg += "</p>";
+			document.getElementById("msg_container").innerHTML = msg;
+			
+			window.location.href = "#";
+			
+			return false;
+		}
+		
+		return true;
+	}
+	
+	function update_question_status(question_id, filled) {
+		var question_title_div = document.getElementById("question_title_" + question_id);
+		if(filled) {
+			question_title_div.className = "";
+		}
+		else {
+			question_title_div.className = "unfilled_question_title";
+		}
+	}
+</script>
+

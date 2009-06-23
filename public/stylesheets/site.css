@@ -1885,6 +1885,28 @@ a.order_by_selected {
 	margin-bottom: 5px;
 }
 
+.test_category_title {
+	font-size: 14px;
+}
+
+.test_category_desc {
+	font-size: 13px;
+	margin: 10px 0px;
+}
+
+.test_question_options {
+	border-bottom: 1px dashed #CCCCCC;
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+}
+
+.unfilled_question_title {
+	color: #FF0000;
+	margin: 5px;
+	padding: 5px;
+	border: 1px dashed #FF0000;
+}
+
 
 
 
