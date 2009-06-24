@@ -1908,8 +1908,16 @@ a.order_by_selected {
 }
 
 .test_result_container {
-	margin-top: 30px;
-	font-size: 14px;
+	margin-top: 25px;
+	font-size: 13px;
+}
+
+.test_result_container p {
+	text-indent: 25px;
+}
+
+.test_result_container .community_title {
+	font-weight: bolder;
 }
 
 

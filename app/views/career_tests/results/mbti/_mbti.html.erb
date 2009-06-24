@@ -1,27 +1,2 @@
-<%
-	kind = info[0]
-	descs = info[1]
-%>
-
-<div class="community_title">
-	<strong><%= kind %></strong>
-	型
-</div>
-
-<div class="community_block" style="text-indent: 25px;">
-	<%= descs[0] %>
-</div>
-
-
-<div class="community_title">
-	适合的职业 ...
-</div>
-
-<div class="community_block_narrow">
-	<% descs[1].each do |position_name| %>
-		<div class="community_block">
-			<%= position_name %>
-		</div>
-	<% end %>
-</div>
+<%= render(:partial => "/career_tests/results/mbti/#{info[0].downcase}") %>
 
