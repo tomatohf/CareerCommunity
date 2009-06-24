@@ -71,19 +71,21 @@
 	</div>
 	
 	
-	<div class="community_block">
-		<script type="text/javascript"><!--
-		google_ad_client = "pub-3439613867319084";
-		/* 728x90 */
-		google_ad_slot = "8878841011";
-		google_ad_width = 728;
-		google_ad_height = 90;
-		//-->
-		</script>
-		<script type="text/javascript"
-		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-		</script>
-	</div>
+	<% if ApplicationController::Show_Google_Ad %>
+		<div class="community_block">
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-3439613867319084";
+			/* 728x90 */
+			google_ad_slot = "8878841011";
+			google_ad_width = 728;
+			google_ad_height = 90;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+		</div>
+	<% end %>
 </div>
 
 
