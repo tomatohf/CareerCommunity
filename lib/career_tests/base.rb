@@ -34,6 +34,16 @@ module CareerTests
       ]
     end
     
+    def question_ids
+      ids = []
+      questions.each do |category|
+        category[2..-1].each do |question|
+          ids << question[0]
+        end
+      end
+      ids
+    end
+    
     def display_question_title(index, title)
       "#{index+1} - #{title}"
     end
@@ -48,6 +58,19 @@ module CareerTests
     
     def display_option_title(index, title)
       title
+    end
+    
+    
+    def process_answer(answer)
+      nil
+    end
+    
+    def result_template
+      nil
+    end
+    
+    def side_template
+      nil
     end
     
   end

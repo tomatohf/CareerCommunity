@@ -1907,6 +1907,11 @@ a.order_by_selected {
 	border: 1px dashed #FF0000;
 }
 
+.test_result_container {
+	margin-top: 30px;
+	font-size: 14px;
+}
+
 
 
 

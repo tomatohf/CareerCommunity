@@ -2,8 +2,8 @@ class CareerTest < StaticModel::StringBase
   
   def self.all
     [
-      "mbti", # 1
-      "sales_style" # 2
+      "mbti" # 1
+      #"sales_style" # 2
     ]
   end
   

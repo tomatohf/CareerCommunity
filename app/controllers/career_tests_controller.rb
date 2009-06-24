@@ -3,8 +3,10 @@ class CareerTestsController < ApplicationController
   
   layout "community"
   
-  before_filter :check_login, :only => [:result]
-  before_filter :check_limited, :only => [:result]
+  before_filter :check_login, :only => [:create_result, :result]
+  before_filter :check_limited, :only => [:create_result]
+  
+  before_filter :check_result_owner, :only => [:result]
 
   
   
@@ -19,7 +21,7 @@ class CareerTestsController < ApplicationController
     @test = CareerTest.get_test(@test_id)
   end
   
-  def result
+  def create_result
     @test_id = params[:id].to_i
     
     return jump_to("/career_tests/show/#{@test_id}") unless request.post?
@@ -27,16 +29,9 @@ class CareerTestsController < ApplicationController
     
     @test = CareerTest.get_test(@test_id)
     
-    question_ids = []
-    @test.questions.each do |category|
-      category[2..-1].each do |question|
-        question_ids << question[0]
-      end
-    end
-    
     all_filled = true
     answers = {}
-    question_ids.each do |question_id|
+    @test.question_ids.each do |question_id|
       answers[question_id] = params["question_#{question_id}".to_sym]
       all_filled &&= answers[question_id] && answers[question_id] != ""
     end
@@ -56,22 +51,40 @@ class CareerTestsController < ApplicationController
       :career_test_id => @test_id
     )
     result.fill_answer(answers)
-    result.save
+
+    if result.save
+      # record account action
+      AccountAction.create_new(session[:account_id], "add_career_test_result", {
+        :career_test_id => @test_id,
+        :career_test_result_id => result.id,
+        :answer => answers
+      })
+      
+      jump_to("/career_tests/result/#{result.id}")    
+    else
+      flash.now[:answers] = answers
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+      
+      @has_login = has_login?
+      
+      return render(:action => "show")
+    end
     
-    
-    # record account action
-    AccountAction.create_new(session[:account_id], "add_career_test_result", {
-      :career_test_id => @test_id
-    })
-    
+  end
+  
+  def result
+    @test = CareerTest.get_test(@result.career_test_id)
+    @result_info = @test.process_answer(@result.get_answer)
   end
   
   
   
   private
   
-  #def private_method
-  #  
-  #end
+  def check_result_owner
+    @result = CareerTestResult.find(params[:id])
+    
+    jump_to("/errors/forbidden") unless session[:account_id] == @result.account_id
+  end
   
 end

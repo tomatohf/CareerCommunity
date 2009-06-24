@@ -32,9 +32,13 @@
 		
 	</div>
 	
+	<% if flash[:error_msg] %>
+		<p class="error_msg"><%= flash[:error_msg] %></p>
+	<% end %>
+	
 	
 	<div class="community_block">
-		<% form_tag "/career_tests/result/#{@test_id}", :method => :post, :onsubmit => "return check_test();" do %>
+		<% form_tag "/career_tests/create_result/#{@test_id}", :method => :post, :onsubmit => "return check_test();" do %>
 			<% question_index = 0 %>
 			<% categories = @test.questions %>
 			<% categories.each_index do |category_index| %>
