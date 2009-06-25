@@ -1,6 +1,10 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   
+  
+  Show_Google_Ad = true
+  
+  
   def round_corner_div(attr = {}, &block)
     attr[:border_color] ||= "#A3988C"
     attr[:bg_color] ||= "#FAFFE7"

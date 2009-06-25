@@ -7,6 +7,7 @@ tinyMCE.init(
 		language : "ch",
 		relative_urls : false,
 		remove_script_host : false,
+		convert_urls : false,
 	
 		// Theme options
 		theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,formatselect,fontsizeselect,|,justifyleft,justifycenter,justifyright,|,forecolor,backcolor,|,bullist,numlist,|,outdent,indent,blockquote",

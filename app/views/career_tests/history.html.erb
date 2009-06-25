@@ -1,0 +1,79 @@
+<% page_title = %Q!我的 #{@test ? @test.name : "职业测评"} 结果列表! %>
+<% community_page_title(page_title) %>
+
+<div class="float_r community_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/career_tests">
+			返回职业测评列表</a>
+	</div>
+	
+	<% if @test %>
+		
+		<div class="community_block align_c">
+			<a href="/career_tests/show/<%= @test_id %>">
+				返回 <%= @test.name %></a>
+		</div>
+		
+	<% end %>
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_title">
+		按测试名称查看 ...
+	</div>
+	
+	<div class="community_block_narrow">
+		<div class="community_block">
+			<a href="/career_tests/history/<%= session[:account_id] %>">
+				显示全部</a>
+		</div>
+		
+		<% CareerTest.find(:all).each_index do |i| %>
+			<% test = CareerTest.get_test(i+1) %>
+
+			<div class="community_block">
+				<a href="/career_tests/history/<%= session[:account_id] %>/<%= i+1 %>"<%= %Q! class="link_selected"! if @test_id && @test_id == (i+1) %>>
+					<%= test.name %></a>
+			</div>
+		<% end %>
+	</div>
+	
+</div>
+
+<div class="community_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	
+	<div class="community_block_narrow form_info_s">
+		曾经共做过
+		<b><%= @results.total_entries %></b>
+		次测试
+	</div>
+
+	<div class="community_block">
+		<% @results.each do |result| %>
+			<div class="test_result_item">
+				<a href="/career_tests/result/<%= result.id %>" class="account_nick_link">
+					<%= CareerTest.get_test(result.career_test_id).name %>
+					@
+					<%= format_datetime(result.created_at) %></a>
+			</div>
+			
+			<div style="padding-left: 25px;">
+				<%= thin_hr %>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@results) %>
+	</div>
+	
+</div>
+

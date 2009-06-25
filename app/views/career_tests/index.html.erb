@@ -18,6 +18,8 @@
 		<div class="community_block">
 			<a href="/career_tests/show/<%= i+1 %>">
 				<%= test.name %></a>
+			&nbsp;
+			参与(<%= CareerTestResult.get_count(i+1) %>)
 		</div>
 	<% end %>
 	

@@ -11,9 +11,8 @@ class CreateCareerTestResults < ActiveRecord::Migration
       t.column :answer, :text
     end
     add_index :career_test_results, [:account_id, :created_at]
-    add_index :career_test_results, [:career_test_id, :created_at]
     add_index :career_test_results, [:account_id, :career_test_id, :created_at],
-              :name => :index_career_test_results_on_account_career_created
+              :name => :index_career_test_results_on_account_test_created
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO career_test_results (id) VALUES (1000)")
     ActiveRecord::Base.connection.execute("DELETE FROM career_test_results WHERE id = 1000")

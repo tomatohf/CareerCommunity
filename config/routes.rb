@@ -659,6 +659,11 @@ ActionController::Routing::Routes.draw do |map|
   
   
   map.connect "/chats/show/:id/to/:to_id", :controller => "chats", :action => "show", :id => /\d+/, :to_id => /\d+/
+  
+  
+  map.connect "/career_tests/history/:id/p/:page", :controller => "career_tests", :action => "history", :id => /\d+/, :page => /\d+/
+  map.connect "/career_tests/history/:id/:test_id", :controller => "career_tests", :action => "history", :id => /\d+/, :test_id => /\d+/
+  map.connect "/career_tests/history/:id/:test_id/p/:page", :controller => "career_tests", :action => "history", :id => /\d+/, :test_id => /\d+/, :page => /\d+/
 
   
   

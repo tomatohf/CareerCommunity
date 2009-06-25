@@ -1,9 +1,9 @@
-class CareerTest < StaticModel::StringBase
+class CareerTest < StaticModel::OrderedStringBase
   
   def self.all
     [
-      "mbti" # 1
-      #"sales_style" # 2
+      ["mbti", 10] # 1
+      #["sales_style", 20] # 2
     ]
   end
   

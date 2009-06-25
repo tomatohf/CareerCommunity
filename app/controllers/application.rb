@@ -23,10 +23,6 @@ class ApplicationController < ActionController::Base
   
   
   
-  Show_Google_Ad = false
-  
-  
-  
   
   private
   

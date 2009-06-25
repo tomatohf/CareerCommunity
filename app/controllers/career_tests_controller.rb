@@ -1,12 +1,16 @@
 class CareerTestsController < ApplicationController
   
   
+  Result_List_Size = 30
+  
+  
   layout "community"
   
-  before_filter :check_login, :only => [:create_result, :result]
+  before_filter :check_login, :only => [:show, :create_result, :result, :history]
   before_filter :check_limited, :only => [:create_result]
   
   before_filter :check_result_owner, :only => [:result]
+  before_filter :check_history_owner, :only => [:history]
 
   
   
@@ -17,7 +21,6 @@ class CareerTestsController < ApplicationController
   def show
     @test_id = params[:id].to_i
     @has_login = has_login?
-    # TODO - handle whether the user has loged in ...
     @test = CareerTest.get_test(@test_id)
   end
   
@@ -77,6 +80,27 @@ class CareerTestsController < ApplicationController
     @result_info = @test.process_answer(@result.get_answer)
   end
   
+  def history
+    @test_id = params[:test_id] && params[:test_id] != "" && params[:test_id].to_i
+    account_id = params[:id]
+    
+    conditions = ["account_id = ?", account_id]
+    
+    if @test_id && @test_id != ""
+      @test = CareerTest.get_test(@test_id)
+      conditions = ["account_id = ? and career_test_id = ?", account_id, @test_id]
+    end
+    
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @results = CareerTestResult.paginate(
+      :page => page,
+      :per_page => Result_List_Size,
+      :conditions => conditions,
+      :order => "created_at DESC"
+    )
+  end
+  
   
   
   private
@@ -85,6 +109,10 @@ class CareerTestsController < ApplicationController
     @result = CareerTestResult.find(params[:id])
     
     jump_to("/errors/forbidden") unless session[:account_id] == @result.account_id
+  end
+  
+  def check_history_owner
+    jump_to("/errors/forbidden") unless session[:account_id].to_s == params[:id]
   end
   
 end

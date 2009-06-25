@@ -303,8 +303,7 @@ ActiveRecord::Schema.define(:version => 59) do
   end
 
   add_index "career_test_results", ["account_id", "created_at"], :name => "index_career_test_results_on_account_id_and_created_at"
-  add_index "career_test_results", ["career_test_id", "created_at"], :name => "index_career_test_results_on_career_test_id_and_created_at"
-  add_index "career_test_results", ["account_id", "career_test_id", "created_at"], :name => "index_career_test_results_on_account_career_created"
+  add_index "career_test_results", ["account_id", "career_test_id", "created_at"], :name => "index_career_test_results_on_account_test_created"
 
   create_table "cities", :force => true do |t|
     t.string  "name"

@@ -1920,6 +1920,13 @@ a.order_by_selected {
 	font-weight: bolder;
 }
 
+.test_result_item {
+	font-size: 15px;
+	margin: 10px;
+	padding-left: 25px;
+	background: transparent url(/images/index/career_test_icon.gif) no-repeat scroll left 2px;
+}
+
 
 
 
