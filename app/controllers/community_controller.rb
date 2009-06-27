@@ -71,7 +71,6 @@ class CommunityController < ApplicationController
       :all,
       :limit => New_Activity_Post_Size,
       :select => "id, title, created_at, account_id",
-      :include => [:account],
       :order => "id DESC"
     )
 
@@ -79,7 +78,6 @@ class CommunityController < ApplicationController
       :all,
       :limit => New_Group_Post_Size,
       :select => "id, title, created_at, account_id",
-      :include => [:account],
       :order => "responded_at DESC"
     )
     

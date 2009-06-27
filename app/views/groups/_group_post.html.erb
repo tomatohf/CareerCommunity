@@ -3,7 +3,7 @@
 <% comment_count = GroupPostComment.get_count(group_post.id) %>
 
 <tr>
-	<td style="border-bottom: dashed 1px #DDDDDD;">
+	<td valign="middle" style="border-bottom: dashed 1px #DDDDDD;">
 		<% unless hide_top %>
 			<% if group_post.top %>
 				<b>
@@ -12,9 +12,9 @@
 				&nbsp;
 			<% end %>
 		<% else %>
-			<% h_group_name = h(group_post.group.name) %>
-			<a href="/groups/<%= group_post.group_id %>" class="account_nick_link form_info_s">(<%= h_group_name %>)</a>
-			<% if h_group_name.jsize > 12 %>
+			<% group_name = h(Group.get_group_with_image(group_post.group_id)[0].name) %>
+			<a href="/groups/<%= group_post.group_id %>" class="account_nick_link form_info_s">(<%= group_name %>)</a>
+			<% if group_name.jsize > 12 %>
 				<br />
 				&nbsp;&nbsp;&nbsp;
 			<% end %>
@@ -30,18 +30,32 @@
 			</a>
 	</td>
 	
-	<td align="right">
+	<td valign="middle" align="right">
 		<a href="/group/posts/<%= group_post.id %>#comment_list" class="account_nick_link">
 			<%= comment_count %></a>
 	</td>
 	
-	<td align="right">
+	<td valign="middle" align="right">
+		<% account_nick = Account.get_nick_and_pic(group_post.account_id)[0] %>
 		<a href="/spaces/show/<%= group_post.account_id %>" class="account_nick_link">
-			<%= h(group_post.account.get_nick) %></a>
+			<%= h(account_nick) %></a>
 	</td>
 	
-	<td align="right" class="form_info_s">
-		<%= format_datetime(group_post.responded_at || group_post.created_at) %>
+	<td valign="middle" align="right" class="form_info_s" style="line-height: 1.2;">
+		<div>
+			<% if group_post.responded_by %>
+				<%
+					responded_account_id = group_post.responded_by
+					responded_account_nick = Account.get_nick_and_pic(responded_account_id)[0]
+				%>
+				<a href="/spaces/show/<%= responded_account_id %>" class="account_nick_link form_info_s">
+					<%= h(responded_account_nick) %></a>
+			<% end %>
+		</div>
+		
+		<div style="font-size: 9px;">
+			<%= format_datetime(group_post.responded_at || group_post.created_at) %>
+		</div>
 	</td>
 </tr>
 

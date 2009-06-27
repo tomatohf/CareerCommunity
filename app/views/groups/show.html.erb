@@ -268,10 +268,11 @@
 			</b>
 		</div>
 		
-		<div id="notice_section" class="community_block_narrow">
+		<div id="notice_section" class="community_block_narrow group_notice">
 			<% if @can_view_notice %>
 			
-				<%= simple_format(h(@group_setting[:notice])) %>
+				<%#= simple_format(h(@group_setting[:notice])) %>
+				<%= textilize_format(@group_setting[:notice]) %>
 				
 			<% else %>
 				
@@ -314,7 +315,7 @@
 				<a href="/groups/good_post/<%= @group_id %>">(查看圈子精华区)</a>
 			</div>
 		
-			<div id="post_section" class="community_block">
+			<div id="post_section">
 				<table cellpadding="0" cellspacing="5" class="main_part_w">
 					<thead>
 						<tr>

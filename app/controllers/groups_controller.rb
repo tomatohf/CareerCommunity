@@ -155,11 +155,10 @@ class GroupsController < ApplicationController
       @group_posts = GroupPost.find(
         :all,
         :limit => Post_Recent_List_Size,
-        :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
+        :select => "id, created_at, group_id, top, good, account_id, title, responded_at, responded_by",
         :conditions => ["group_id in (?)", joined_group_ids],
         :order => "responded_at DESC"
       )
-      GroupPost.load_associations(@group_posts, [:account, :group]) if @group_posts.size > 0
           
       @group_activities = Activity.uncancelled.find(
         :all,
@@ -336,18 +335,16 @@ class GroupsController < ApplicationController
     
     @top_group_posts = GroupPost.find(
       :all,
-      :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, group_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["group_id = ? and top = ?", @group_id, true],
-      :include => [:account],
       :order => "responded_at DESC"
     ) if @can_list_post
     
     @group_posts = GroupPost.find(
       :all,
       :limit => Group_Post_Num,
-      :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, group_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["group_id = ? and top = ?", @group_id, false],
-      :include => [:account],
       :order => "responded_at DESC"
     ) if @can_list_post
     
@@ -401,9 +398,8 @@ class GroupsController < ApplicationController
     
     @top_group_posts = GroupPost.find(
       :all,
-      :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, group_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["group_id = ? and top = ?", @group_id, true],
-      :include => [:account],
       :order => "responded_at DESC"
     ) if @can_view
     
@@ -413,9 +409,8 @@ class GroupsController < ApplicationController
       @group_posts = GroupPost.paginate(
         :page => page,
         :per_page => Post_List_Size,
-        :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
+        :select => "id, created_at, group_id, top, good, account_id, title, responded_at, responded_by",
         :conditions => ["group_id = ? and top = ?", @group_id, false],
-        :include => [:account],
         :order => "responded_at DESC"
       )
     end
@@ -431,9 +426,8 @@ class GroupsController < ApplicationController
     
     @top_group_posts = GroupPost.good.find(
       :all,
-      :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, group_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["group_id = ? and top = ?", @group_id, true],
-      :include => [:account],
       :order => "responded_at DESC"
     ) if @can_view
     
@@ -443,9 +437,8 @@ class GroupsController < ApplicationController
       @group_posts = GroupPost.good.paginate(
         :page => page,
         :per_page => Post_List_Size,
-        :select => "id, created_at, group_id, top, good, account_id, title, responded_at",
+        :select => "id, created_at, group_id, top, good, account_id, title, responded_at, responded_by",
         :conditions => ["group_id = ? and top = ?", @group_id, false],
-        :include => [:account],
         :order => "responded_at DESC"
       )
     end
@@ -617,11 +610,10 @@ class GroupsController < ApplicationController
     @all_posts = GroupPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "id, created_at, group_id, account_id, title, good, responded_at",
+      :select => "id, created_at, group_id, account_id, title, good, responded_at, responded_by",
       :conditions => ["group_id in (?)", joined_group_ids],
       :order => "responded_at DESC"
     )
-    GroupPost.load_associations(@all_posts, [:account, :group]) if @all_posts.size > 0
   end
   
   def all_activity
@@ -743,10 +735,9 @@ class GroupsController < ApplicationController
     @created_posts = GroupPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.good, group_posts.responded_at, groups.name, accounts.email, accounts.nick",
+      :select => "id, created_at, group_id, account_id, title, good, responded_at, responded_by",
       :conditions => ["account_id = ?", @owner_id],
-      :include => [:account, :group],
-      :order => "group_posts.responded_at DESC"
+      :order => "responded_at DESC"
     )
   end
   
@@ -762,10 +753,9 @@ class GroupsController < ApplicationController
     @commented_posts = GroupPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.good, group_posts.responded_at, groups.name, accounts.email, accounts.nick",
+      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.good, group_posts.responded_at, group_posts.responded_by",
       :joins => "INNER JOIN group_post_comments ON group_posts.id = group_post_comments.group_post_id",
       :conditions => ["group_post_comments.account_id = ?", @owner_id],
-      :include => [:account, :group],
       # :order => "group_posts.responded_at DESC"
       :order => "group_post_comments.created_at DESC"
     ).sort { |x, y| y.responded_at <=> x.responded_at }

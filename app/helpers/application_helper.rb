@@ -383,4 +383,14 @@ module ApplicationHelper
     text.gsub(reg) { |special| format[special] }
   end
   
+  def textilize_format(text)
+    if text.blank?
+      ""
+    else
+      textilized = RedCloth.new(text)
+      textilized.filter_html = true
+      textilized.to_html
+    end
+  end
+  
 end

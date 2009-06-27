@@ -9,9 +9,12 @@
 		
 		<span class="form_info_s">
 			来自:
-			<% account = group_post.account %>
-			<a href="/spaces/show/<%= account.id%>" class="account_nick_link">
-				<%= h(account.get_nick) %></a>
+			<%
+				account_id = group_post.account_id
+				account_nick = Account.get_nick_and_pic(account_id)[0]
+			%>
+			<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
+				<%= h(account_nick) %></a>
 			
 			|
 			

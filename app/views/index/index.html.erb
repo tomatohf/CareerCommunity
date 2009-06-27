@@ -165,7 +165,6 @@
 								:all,
 								:limit => 20,
 								:select => "id, created_at, group_id, title",
-								:include => [:group],
 								:order => "id DESC"
 						    )
 						%>
@@ -176,7 +175,7 @@
 								<a href="/group/posts/<%= group_post.id %>" target="_blank" title="<%= group_post_title %>">
 									<%= truncate(group_post_title, 20) %></a>
 
-								<% group_name = h(group_post.group.name) %>
+								<% group_name = h(Group.get_group_with_image(group_post.group_id)[0].name) %>
 								<a href="/groups/<%= group_post.group_id %>" target="_blank" title="<%= group_name %>" style="color: #999999;">
 									(<%= truncate(group_name, 8) %>)
 								</a>

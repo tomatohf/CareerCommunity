@@ -65,8 +65,7 @@ class GoalsController < ApplicationController
     @new_posts = GoalPost.find(
       :all,
       :limit => Summary_New_Post_Size,
-      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
-      :include => [:account],
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at, responded_by",
       :order => "responded_at DESC"
     )
   end
@@ -291,18 +290,16 @@ class GoalsController < ApplicationController
     
     @top_goal_posts = GoalPost.find(
       :all,
-      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["goal_id = ? and top = ?", @goal.id, true],
-      :include => [:account],
       :order => "responded_at DESC"
     )
     
     @goal_posts = GoalPost.find(
       :all,
       :limit => Goal_Post_Num,
-      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["goal_id = ? and top = ?", @goal.id, false],
-      :include => [:account],
       :order => "responded_at DESC"
     )
     
@@ -347,9 +344,8 @@ class GoalsController < ApplicationController
     
     @top_goal_posts = GoalPost.find(
       :all,
-      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["goal_id = ? and top = ?", @goal.id, true],
-      :include => [:account],
       :order => "responded_at DESC"
     )
     
@@ -358,9 +354,8 @@ class GoalsController < ApplicationController
     @goal_posts = GoalPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["goal_id = ? and top = ?", @goal.id, false],
-      :include => [:account],
       :order => "responded_at DESC"
     )
   end
@@ -370,9 +365,8 @@ class GoalsController < ApplicationController
     
     @top_goal_posts = GoalPost.good.find(
       :all,
-      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["goal_id = ? and top = ?", @goal.id, true],
-      :include => [:account],
       :order => "responded_at DESC"
     )
     
@@ -381,9 +375,8 @@ class GoalsController < ApplicationController
     @goal_posts = GoalPost.good.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, goal_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["goal_id = ? and top = ?", @goal.id, false],
-      :include => [:account],
       :order => "responded_at DESC"
     )
   end

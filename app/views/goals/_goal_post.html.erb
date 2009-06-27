@@ -4,7 +4,7 @@
 <% comment_count = GoalPostComment.get_count(goal_post.id) %>
 
 <tr>
-	<td style="border-bottom: dashed 1px #DDDDDD;">
+	<td valign="middle" style="border-bottom: dashed 1px #DDDDDD;">
 		<% unless hide_top %>
 			<% if goal_post.top %>
 				<b>
@@ -32,18 +32,32 @@
 		</a>
 	</td>
 	
-	<td align="right">
+	<td valign="middle" align="right">
 		<a href="/goal/posts/<%= goal_post.id %>#comment_list" class="account_nick_link">
 			<%= comment_count %></a>
 	</td>
 	
-	<td align="right">
+	<td valign="middle" align="right">
+		<% account_nick = Account.get_nick_and_pic(goal_post.account_id)[0] %>
 		<a href="/spaces/show/<%= goal_post.account_id %>" class="account_nick_link">
-			<%= h(goal_post.account.get_nick) %></a>
+			<%= h(account_nick) %></a>
 	</td>
 	
-	<td align="right" class="form_info_s">
-		<%= format_datetime(goal_post.responded_at || goal_post.created_at) %>
+	<td valign="middle" align="right" class="form_info_s" style="line-height: 1.2;">
+		<div>
+			<% if goal_post.responded_by %>
+				<%
+					responded_account_id = goal_post.responded_by
+					responded_account_nick = Account.get_nick_and_pic(responded_account_id)[0]
+				%>
+				<a href="/spaces/show/<%= responded_account_id %>" class="account_nick_link form_info_s">
+					<%= h(responded_account_nick) %></a>
+			<% end %>
+		</div>
+		
+		<div style="font-size: 9px;">
+			<%= format_datetime(goal_post.responded_at || goal_post.created_at) %>
+		</div>
 	</td>
 </tr>
 

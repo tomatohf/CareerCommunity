@@ -3,7 +3,7 @@
 <% comment_count = ActivityPostComment.get_count(activity_post.id) %>
 
 <tr>
-	<td style="border-bottom: dashed 1px #DDDDDD;">
+	<td valign="middle" style="border-bottom: dashed 1px #DDDDDD;">
 		<% unless hide_top %>
 			<% if activity_post.top %>
 				<b>
@@ -12,7 +12,7 @@
 				&nbsp;
 			<% end %>
 		<% else %>
-			<% activity_title  = h(activity_post.activity.get_title) %>
+			<% activity_title = h(Activity.get_activity_with_image(activity_post.activity_id)[0].get_title) %>
 			<a href="/activities/<%= activity_post.activity_id %>" title="<%= activity_title %>" class="account_nick_link form_info_s">(<%= truncate(activity_title) %>)</a>
 			<br />
 			&nbsp;&nbsp;&nbsp;
@@ -28,18 +28,32 @@
 			</a>
 	</td>
 	
-	<td align="right">
+	<td valign="middle" align="right">
 		<a href="/activity/posts/<%= activity_post.id %>#comment_list" class="account_nick_link">
 			<%= comment_count %></a>
 	</td>
 	
-	<td align="right">
+	<td valign="middle" align="right">
+		<% account_nick = Account.get_nick_and_pic(activity_post.account_id)[0] %>
 		<a href="/spaces/show/<%= activity_post.account_id %>" class="account_nick_link">
-			<%= h(activity_post.account.get_nick) %></a>
+			<%= h(account_nick) %></a>
 	</td>
 	
-	<td align="right" class="form_info_s">
-		<%= format_datetime(activity_post.responded_at || activity_post.created_at) %>
+	<td valign="middle" align="right" class="form_info_s" style="line-height: 1.2;">
+		<div>
+			<% if activity_post.responded_by %>
+				<%
+					responded_account_id = activity_post.responded_by
+					responded_account_nick = Account.get_nick_and_pic(responded_account_id)[0]
+				%>
+				<a href="/spaces/show/<%= responded_account_id %>" class="account_nick_link form_info_s">
+					<%= h(responded_account_nick) %></a>
+			<% end %>
+		</div>
+		
+		<div style="font-size: 9px;">
+			<%= format_datetime(activity_post.responded_at || activity_post.created_at) %>
+		</div>
 	</td>
 </tr>
 

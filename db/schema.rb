@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 59) do
+ActiveRecord::Schema.define(:version => 60) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(:version => 59) do
     t.datetime "responded_at"
     t.boolean  "delta"
     t.boolean  "good",                       :default => false
+    t.integer  "responded_by", :limit => 11
   end
 
   add_index "activity_posts", ["responded_at"], :name => "index_activity_posts_on_responded_at"
@@ -467,6 +468,7 @@ ActiveRecord::Schema.define(:version => 59) do
     t.datetime "responded_at"
     t.boolean  "good",                       :default => false
     t.boolean  "delta"
+    t.integer  "responded_by", :limit => 11
   end
 
   add_index "goal_posts", ["responded_at"], :name => "index_goal_posts_on_responded_at"
@@ -632,6 +634,7 @@ ActiveRecord::Schema.define(:version => 59) do
     t.datetime "responded_at"
     t.boolean  "delta"
     t.boolean  "good",                       :default => false
+    t.integer  "responded_by", :limit => 11
   end
 
   add_index "group_posts", ["responded_at"], :name => "index_group_posts_on_responded_at"

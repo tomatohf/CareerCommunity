@@ -1,4 +1,4 @@
-﻿tinyMCE 的链接 相对路径 问题
+﻿面试题功能
 
 
 
@@ -14,8 +14,6 @@
 EXT IE8 menu 宽度问题
 
 将 一鸣 在校内上的求职管家启动文章添加到 求职管家系统作为帮助
-
-面试题功能
 
 求职管家里面的步骤链接
 	- 简历 链接到 简历圈子
@@ -242,6 +240,7 @@ Denpendencies:
 	json
 	eventmachine
 	juggernaut (*need to update from source code manually* http://github.com/maccman/juggernaut_gem/tree/master)
+	RedCloth (NB: The RedCloth gem name is CamelCase, not lowercase. If you mistakenly do a gem install redcloth, you’ll get ERROR: could not find redcloth locally or in a repository.)
 	-----
 	
 	[only on production server]

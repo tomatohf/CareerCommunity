@@ -49,6 +49,7 @@ class PostsController < ApplicationController
     @post = @type_handler.get_post_class.new(
       :account_id => session[:account_id],
       :responded_at => DateTime.now,
+      :responded_by => session[:account_id],
       @type_handler.get_type_id.to_sym => @type_id
     )
     
@@ -170,6 +171,7 @@ class PostsController < ApplicationController
         comment_saved = true
         
         @post.responded_at = comment.created_at
+        @post.responded_by = session[:account_id]
         @post.save
       end
     end
@@ -192,6 +194,9 @@ class PostsController < ApplicationController
   
   def delete_comment
     @post_comment.destroy
+    
+    # it's better to check if it's the last comment being deleted
+    # if so, need to update the post's responded_at and responded_by values
     
     jump_to("/#{@post_type}/posts/#{@post_id}")
   end

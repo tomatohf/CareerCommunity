@@ -141,23 +141,21 @@ class ActivitiesController < ApplicationController
     @join_activity_posts = ActivityPost.find(
       :all,
       :limit => Post_Recent_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.good, activity_posts.account_id, activity_posts.title, activity_posts.responded_at",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.good, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activity_posts.responded_by",
       :joins => "INNER JOIN activity_members ON activity_posts.activity_id = activity_members.activity_id",
       :conditions => ["activity_members.account_id = ? and activity_members.accepted = 1 and activity_members.approved = 1", 
                       @owner_id],
       :order => "activity_posts.responded_at DESC"
     )
-    ActivityPost.load_associations(@join_activity_posts, [:account, :activity]) if @join_activity_posts.size > 0
     
     @interest_activity_posts = ActivityPost.find(
       :all,
       :limit => Post_Recent_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.good, activity_posts.account_id, activity_posts.title, activity_posts.responded_at",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.good, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activity_posts.responded_by",
       :joins => "INNER JOIN activity_interests ON activity_posts.activity_id = activity_interests.activity_id",
       :conditions => ["activity_interests.account_id = ?", @owner_id],
       :order => "activity_posts.responded_at DESC"
     )
-    ActivityPost.load_associations(@interest_activity_posts, [:account, :activity]) if @interest_activity_posts.size > 0
     
     @activity_photos = ActivityPhoto.find(
       :all,
@@ -285,10 +283,9 @@ class ActivitiesController < ApplicationController
     @created_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activities.title, activities.cancelled, accounts.email, accounts.nick",
+      :select => "id, created_at, activity_id, account_id, title, good, responded_at, responded_by",
       :conditions => ["account_id = ?", @owner_id],
-      :include => [:account, :activity],
-      :order => "activity_posts.responded_at DESC"
+      :order => "responded_at DESC"
     )
   end
   
@@ -304,13 +301,12 @@ class ActivitiesController < ApplicationController
     @commented_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activity_posts.responded_by",
       :joins => "INNER JOIN activity_post_comments ON activity_posts.id = activity_post_comments.activity_post_id",
       :conditions => ["activity_post_comments.account_id = ?", @owner_id],
       # :order => "activity_posts.responded_at DESC"
       :order => "activity_post_comments.created_at DESC"
     ).sort { |x, y| y.responded_at <=> x.responded_at }
-    ActivityPost.load_associations(@commented_posts, [:account, :activity]) if @commented_posts.size > 0
   end
   
   def all_join_post
@@ -327,13 +323,12 @@ class ActivitiesController < ApplicationController
     @all_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.good, activity_posts.account_id, activity_posts.title, activity_posts.responded_at",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.top, activity_posts.good, activity_posts.account_id, activity_posts.title, activity_posts.responded_at, activity_posts.responded_by",
       :joins => "INNER JOIN activity_members ON activity_posts.activity_id = activity_members.activity_id",
       :conditions => ["activity_members.account_id = ? and activity_members.accepted = 1 and activity_members.approved = 1", 
                       @owner_id],
       :order => "activity_posts.responded_at DESC"
     )
-    ActivityPost.load_associations(@all_posts, [:account, :activity]) if @all_posts.size > 0
     
     render(:action => "all_post")
   end
@@ -352,12 +347,11 @@ class ActivitiesController < ApplicationController
     @all_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at",
+      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activity_posts.responded_by",
       :joins => "INNER JOIN activity_interests ON activity_posts.activity_id = activity_interests.activity_id",
       :conditions => ["activity_interests.account_id = ?", @owner_id],
       :order => "activity_posts.responded_at DESC"
     )
-    ActivityPost.load_associations(@all_posts, [:account, :activity]) if @all_posts.size > 0
     
     render(:action => "all_post")
   end
@@ -588,18 +582,16 @@ class ActivitiesController < ApplicationController
     
     @top_activity_posts = ActivityPost.find(
       :all,
-      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["activity_id = ? and top = ?", @activity_id, true],
-      :include => [:account],
       :order => "responded_at DESC"
     )
     
     @activity_posts = ActivityPost.find(
       :all,
       :limit => Activity_Post_Num,
-      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["activity_id = ? and top = ?", @activity_id, false],
-      :include => [:account],
       :order => "responded_at DESC"
     )
     
@@ -657,9 +649,8 @@ class ActivitiesController < ApplicationController
     
     @top_activity_posts = ActivityPost.find(
       :all,
-      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["activity_id = ? and top = ?", @activity_id, true],
-      :include => [:account],
       :order => "responded_at DESC"
     )
     
@@ -668,9 +659,8 @@ class ActivitiesController < ApplicationController
     @activity_posts = ActivityPost.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["activity_id = ? and top = ?", @activity_id, false],
-      :include => [:account],
       :order => "responded_at DESC"
     )
   end
@@ -681,9 +671,8 @@ class ActivitiesController < ApplicationController
     
     @top_activity_posts = ActivityPost.good.find(
       :all,
-      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["activity_id = ? and top = ?", @activity_id, true],
-      :include => [:account],
       :order => "responded_at DESC"
     )
     
@@ -692,9 +681,8 @@ class ActivitiesController < ApplicationController
     @activity_posts = ActivityPost.good.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at",
+      :select => "id, created_at, activity_id, top, good, account_id, title, responded_at, responded_by",
       :conditions => ["activity_id = ? and top = ?", @activity_id, false],
-      :include => [:account],
       :order => "responded_at DESC"
     )
   end
