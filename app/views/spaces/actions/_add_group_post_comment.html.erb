@@ -8,10 +8,14 @@
 				圈子话题</a>
 			说:
 			&nbsp;
-			<% h_comment_content = h(comment_content) %>
-			<span title="<%= h_comment_content %>">
+			<% 
+				# since the access related setting of group,
+				# do NOT show the complete content here ...
+				comment_content = h(truncate(comment_content))
+			%>
+			<span>
 				<img src="/images/left_quote.gif" border="0" />
-					<%= truncate(h_comment_content) %>
+					<%= comment_content %>
 				<img src="/images/right_quote.gif" border="0" />
 			</span>
 		</td>

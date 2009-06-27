@@ -1,4 +1,15 @@
-﻿面试题功能
+﻿问答
+	- 会员的身份标识
+	- 提问的时候选择希望回答的人
+	- 对 提问 和 回答 的人做积分奖励
+	
+	
+	
+与 行业/公司/职位 匹配的圈子(论坛)
+
+
+
+面试题功能
 
 
 
@@ -19,8 +30,6 @@ EXT IE8 menu 宽度问题
 	- 简历 链接到 简历圈子
 	- 面试 链接到 面试圈子
 
-高亮页面中的指定关键字
-
 即时聊天功能
 	- 处理聊天记录
 	- 移动 IM 的 tab
@@ -32,16 +41,13 @@ EXT IE8 menu 宽度问题
 访谈录可以针对每个问题回答(Answer) 顶 和 踩
 
 
+高亮页面中的指定关键字
+
+
 
 escape/encodeURIComponent URL
 	- search
 
-
-
-问答
-	- 会员的身份标识
-	- 提问的时候选择希望回答的人
-	- 对 提问 和 回答 的人做积分奖励
 
 
 圈子的分类
@@ -51,9 +57,6 @@ escape/encodeURIComponent URL
 实现微博客
 http://code.google.com/p/sparrow
 http://rubyforge.org/projects/starling
-
-
-与 行业/公司/职位 匹配的圈子(论坛)
 
 
 
