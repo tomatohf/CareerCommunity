@@ -1,0 +1,58 @@
+<% page_title = "全部公司讨论区导航" %>
+<% community_page_title(page_title) %>
+
+
+<div class="float_r blog_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/companies">
+			返回公司讨论区话题列表</a>
+	</div>
+
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+
+	<div class="community_block align_c">
+		<a href="/job_targets" style="font-size: 14px;">
+			<img src="/images/index/job_targets_icon.png" border="0" />
+			去我的求职管家</a>
+	</div>
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		按行业选择公司
+	</div>
+	
+	
+	<% @industries.each do |industry| %>
+		<% companies = industry.companies %>
+		<% if companies.size > 0 %>
+			<div class="community_block overflow_hidden">
+				
+				<div class="company_disscussion_industry">
+					<%= h(industry.name) %>
+				</div>
+
+				<div>
+					<%= float_list(companies, "company_name", :company, {}, 3) %>
+				</div>
+
+			</div>
+		<% end %>
+	<% end %>
+	
+</div>
+
+

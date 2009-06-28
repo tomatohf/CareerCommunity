@@ -39,7 +39,9 @@ class AccountAction < ActiveRecord::Base
     "add_goal" => "添加目标",
     "add_goal_track" => "添加目标进度",
     "add_goal_track_comment" => "评论目标进度",
-    "add_career_test_result" => "参与测试"
+    "add_career_test_result" => "参与测试",
+    "add_company_post" => "发表公司讨论话题",
+    "add_company_post_comment" => "回应公司讨论话题"
   }
   
   def self.action_types
@@ -1019,6 +1021,78 @@ class AccountAction < ActiveRecord::Base
             :career_test_id => career_test_id,
             :career_test_name => career_test_name,
           
+            :save_space => save_space
+          }
+        ]
+      end
+    end
+    
+    class AddCompanyPost < Base
+      def action_text(data, operator, save_space)
+        post_id = data[:post_id]
+        post_title = data[:post_title]
+        company_id = data[:company_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_company_post", :locals => {
+            :operator => #{operator},
+            :post_id => #{post_id},
+            :post_title => #{post_title.inspect},
+            :company_id => #{company_id},
+          
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+      
+      def render_info(data, save_space)
+        post_id = data[:post_id]
+        post_title = data[:post_title]
+        company_id = data[:company_id]
+        
+        [
+          "add_company_post",
+          {
+            :post_id => post_id,
+            :post_title => post_title,
+            :company_id => company_id,
+          
+            :save_space => save_space
+          }
+        ]
+      end
+    end
+    
+    class AddCompanyPostComment < Base
+      def action_text(data, operator, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        company_post_id = data[:company_post_id]
+        
+        %Q!
+          render(:partial => "/spaces/actions/add_company_post_comment", :locals => {
+            :operator => #{operator},
+            :company_post_id => #{company_post_id},
+            :comment_id => #{comment_id},
+            :comment_content => #{comment_content.inspect},
+            
+            :save_space => #{save_space.inspect}
+          })
+        !
+      end
+      
+      def render_info(data, save_space)
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        company_post_id = data[:company_post_id]
+        
+        [
+          "add_company_post_comment",
+          {
+            :company_post_id => company_post_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            
             :save_space => save_space
           }
         ]

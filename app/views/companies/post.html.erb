@@ -1,20 +1,12 @@
-<% goal_name = h(@goal.name) %>
+<% company_name = h(@company.name) %>
 
-<% page_title = "目标 #{goal_name} 的全部讨论话题" %>
+<% page_title = "公司 #{company_name} 的全部讨论话题" %>
 <% community_page_title(page_title) %>
 
 <div class="float_r blog_container_r">
-	<div class="community_title">
-		目标 ...
-	</div>
-
-	<div class="community_block">
-		<a href="/goals/<%= @goal.id %>">返回目标 <%= goal_name %></a>
-	</div>
-	
-	<div class="community_block">
-		<a href="/goals/good_post/<%= @goal.id %>">
-			查看目标的精华区</a>
+	<div class="community_block align_c">
+		<a href="/companies/good_post/<%= @company.id %>">
+			查看公司讨论话题的精华区</a>
 	</div>
 	
 	<div class="community_block_narrow">
@@ -22,7 +14,7 @@
 	</div>
 	
 	<div class="community_block align_c">
-		<a href="/goal/posts/compose/<%= @goal.id %>" style="font-size: 14px;">
+		<a href="/company/posts/compose/<%= @company.id %>" style="font-size: 14px;">
 			<img src="/images/groups/add_post_small.png" border="0" />
 			发起新的讨论话题</a>
 	</div>
@@ -34,8 +26,8 @@
 
 	<div class="community_block align_c">
 		<br />
-		<a href="/goals/feed/<%= @goal.id %>.atom">
-			<img src="/images/feed_icon.gif" border="0" alt="订阅目标<%= goal_name %>的讨论话题" title="订阅目标<%= goal_name %>的讨论话题" /></a>
+		<a href="/companies/feed/<%= @company.id %>.atom">
+			<img src="/images/feed_icon.gif" border="0" alt="订阅公司<%= company_name %>的讨论话题" title="订阅公司<%= company_name %>的讨论话题" /></a>
 	</div>
 
 </div>
@@ -46,17 +38,17 @@
 	
 	<div class="community_block_narrow form_info_s">
 		共有
-		<b><%= @goal_posts.total_entries + @top_goal_posts.size %></b>
+		<b><%= @company_posts.total_entries + @top_company_posts.size %></b>
 		个讨论话题
 	</div>
-
+	
 	<div class="community_block_narrow">
 		<a href="/groups/1" target="_blank" class="form_info_s account_nick_link">
 			举报话题内容, 或申请置顶,放入精华区等管理操作, 请到 乔布圈反馈小组</a>
 	</div>
 	
-	
-	<% if @top_goal_posts.size > 0 %>
+
+	<% if @top_company_posts.size > 0 %>
 		<div class="community_title">
 			置顶的话题 ...
 		</div>
@@ -72,7 +64,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<%= render :partial => "goal_post", :collection => @top_goal_posts %>
+					<%= render :partial => "company_post", :collection => @top_company_posts %>
 				</tbody>
 			</table>
 		</div>
@@ -93,13 +85,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%= render :partial => "goal_post", :collection => @goal_posts %>
+				<%= render :partial => "company_post", :collection => @company_posts %>
 			</tbody>
 		</table>
 	</div>
 
 	<div class="community_block">
-		<%= paging_buttons(@goal_posts) %>
+		<%= paging_buttons(@company_posts) %>
 	</div>
 	
 </div>

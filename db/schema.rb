@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 60) do
+ActiveRecord::Schema.define(:version => 62) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -345,6 +345,50 @@ ActiveRecord::Schema.define(:version => 60) do
 
   add_index "company_infos", ["company_id"], :name => "index_company_infos_on_company_id"
 
+  create_table "company_post_attachments", :force => true do |t|
+    t.datetime "created_at"
+    t.integer  "company_post_id",         :limit => 11
+    t.integer  "account_id",              :limit => 11
+    t.string   "desc",                    :limit => 1000
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size",    :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "company_post_attachments", ["company_post_id"], :name => "index_company_post_attachments_on_company_post_id"
+
+  create_table "company_post_comments", :force => true do |t|
+    t.integer  "company_post_id", :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",      :limit => 11
+    t.string   "content",         :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "company_post_comments", ["company_post_id", "created_at"], :name => "index_company_post_comments_on_company_post_id_and_created_at"
+
+  create_table "company_posts", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "company_id",   :limit => 11
+    t.integer  "account_id",   :limit => 11
+    t.string   "title"
+    t.text     "content"
+    t.boolean  "top",                        :default => false
+    t.boolean  "good",                       :default => false
+    t.datetime "responded_at"
+    t.integer  "responded_by", :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "company_posts", ["responded_at"], :name => "index_company_posts_on_responded_at"
+  add_index "company_posts", ["company_id", "responded_at"], :name => "index_company_posts_on_company_id_and_responded_at"
+  add_index "company_posts", ["company_id", "top", "responded_at"], :name => "index_company_posts_on_company_id_and_top_and_responded_at"
+  add_index "company_posts", ["company_id", "good", "top", "responded_at"], :name => "index_company_posts_on_company_good_top_responded"
+  add_index "company_posts", ["account_id", "responded_at"], :name => "index_company_posts_on_account_id_and_responded_at"
+
   create_table "contact_profiles", :force => true do |t|
     t.integer  "account_id", :limit => 11
     t.datetime "updated_at"
@@ -475,6 +519,7 @@ ActiveRecord::Schema.define(:version => 60) do
   add_index "goal_posts", ["goal_id", "top", "responded_at"], :name => "index_goal_posts_on_goal_id_and_top_and_responded_at"
   add_index "goal_posts", ["goal_id", "good", "top", "responded_at"], :name => "index_goal_posts_on_goal_id_and_good_and_top_and_responded_at"
   add_index "goal_posts", ["account_id", "responded_at"], :name => "index_goal_posts_on_account_id_and_responded_at"
+  add_index "goal_posts", ["goal_id", "responded_at"], :name => "index_goal_posts_on_goal_id_and_responded_at"
 
   create_table "goal_track_comments", :force => true do |t|
     t.datetime "created_at"

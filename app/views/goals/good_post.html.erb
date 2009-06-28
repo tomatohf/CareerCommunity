@@ -17,6 +17,16 @@
 			全部目标讨论话题</a>
 	</div>
 	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block align_c">
+		<a href="/goal/posts/compose/<%= @goal.id %>" style="font-size: 14px;">
+			<img src="/images/groups/add_post_small.png" border="0" />
+			发起新的讨论话题</a>
+	</div>
+	
 </div>
 
 <div class="blog_container_l">
@@ -28,6 +38,12 @@
 		<b><%= @goal_posts.total_entries + @top_goal_posts.size %></b>
 		个讨论话题
 	</div>
+	
+	<div class="community_block_narrow">
+		<a href="/groups/1" target="_blank" class="form_info_s account_nick_link">
+			举报话题内容, 或申请置顶,放入精华区等管理操作, 请到 乔布圈反馈小组</a>
+	</div>
+	
 
 	<% if @top_goal_posts.size > 0 %>
 		<div class="community_title">

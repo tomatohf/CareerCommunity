@@ -50,6 +50,40 @@ class GoalsController < ApplicationController
   
   
   
+  ACKP_posts_goal_feed = :ac_posts_goal_feed
+  
+  caches_action :feed,
+    :cache_path => Proc.new { |controller|
+      goal_id = controller.params[:id]
+      "#{ACKP_posts_goal_feed}_#{goal_id}"
+    },
+    :if => Proc.new { |controller|
+      controller.request.format.atom?
+    }
+  
+  
+  
+  def feed
+    @goal_id = params[:id]
+    
+    respond_to do |format|
+      format.html { jump_to("/goals/#{@goal_id}") }
+
+      format.atom {
+        @posts = GoalPost.find(
+          :all,
+          :limit => Post_List_Size,
+          :conditions => ["goal_id = ?", @goal_id],
+          :include => [:account],
+          :order => "responded_at DESC"
+        )
+
+        render :layout => false
+      }
+    end
+  end
+    
+    
   def index
     jump_to("/goals/summary")
   end

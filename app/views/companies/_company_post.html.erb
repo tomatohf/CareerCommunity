@@ -1,0 +1,65 @@
+<% hide_top &&= true %>
+<% show_company_name &&= true %>
+
+<% comment_count = CompanyPostComment.get_count(company_post.id) %>
+
+<tr>
+	<td valign="middle" style="border-bottom: dashed 1px #DDDDDD;">
+		<% unless hide_top %>
+			<% if company_post.top %>
+				<b>
+					[置顶]
+				</b>
+				&nbsp;
+			<% end %>
+		<% end %>
+		
+		<% if show_company_name %>
+			<%
+				company = Company.get_company(company_post.company_id)
+				company_name = h(company.name)
+			%>
+			<a href="/companies/post/<%= company_post.company_id %>" title="<%= company_name %>" class="account_nick_link form_info_s">(<%= truncate(company_name) %>)</a>
+			<br />
+			&nbsp;&nbsp;&nbsp;
+		<% end %>
+		
+		<% company_post_title = h(company_post.title) %>
+		<a href="/company/posts/<%= company_post.id %>" title="<%= company_post_title %>" class="account_nick_link">
+			<%= truncate(company_post_title) %>
+			<% if company_post.good %>
+				&nbsp;
+				<img src="/images/groups/good_small.gif" border="0" alt="精华" title="精华" />
+			<% end %>
+		</a>
+	</td>
+	
+	<td valign="middle" align="right">
+		<a href="/company/posts/<%= company_post.id %>#comment_list" class="account_nick_link">
+			<%= comment_count %></a>
+	</td>
+	
+	<td valign="middle" align="right">
+		<% account_nick = Account.get_nick_and_pic(company_post.account_id)[0] %>
+		<a href="/spaces/show/<%= company_post.account_id %>" class="account_nick_link">
+			<%= h(account_nick) %></a>
+	</td>
+	
+	<td valign="middle" align="right" class="form_info_s" style="line-height: 1.2;">
+		<div>
+			<% if company_post.responded_by %>
+				<%
+					responded_account_id = company_post.responded_by
+					responded_account_nick = Account.get_nick_and_pic(responded_account_id)[0]
+				%>
+				<a href="/spaces/show/<%= responded_account_id %>" class="account_nick_link form_info_s">
+					<%= h(responded_account_nick) %></a>
+			<% end %>
+		</div>
+		
+		<div style="font-size: 9px;">
+			<%= format_datetime(company_post.responded_at || company_post.created_at) %>
+		</div>
+	</td>
+</tr>
+

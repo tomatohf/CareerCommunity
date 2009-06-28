@@ -57,6 +57,7 @@
 					<option value="goal"<%= " selected=\"selected\"" if @scope == "goal" %>>目标</option>
 					<option value="goal_post"<%= " selected=\"selected\"" if @scope == "goal_post" %>>目标话题</option>
 					<option value="goal_track"<%= " selected=\"selected\"" if @scope == "goal_track" %>>目标进度</option>
+					<option value="company_post"<%= " selected=\"selected\"" if @scope == "company_post" %>>公司讨论区</option>
 				</select>
 				<input type="text" name="query" id="query_input" class="text_field search_input" size="35" value="<%= h(@query) %>" />
 				<input type="submit" value="搜索" class="button" />

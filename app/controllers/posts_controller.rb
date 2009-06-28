@@ -766,6 +766,18 @@ class PostsController < ApplicationController
       end
     end
     
+    
+    class Company < Goal
+      def get_type_with_image(type_id)
+        company = ::Company.get_company(type_id)
+        [company.name, nil, false]
+      end
+      
+      def get_type_label
+        "公司讨论区"
+      end
+    end
+    
   end
   
 end

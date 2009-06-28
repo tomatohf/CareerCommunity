@@ -528,6 +528,22 @@ function create_table_grid() {
 		);
 		
 		
+		if(target.company_id != null_record_id) {
+			menu_items.push("-");
+
+			menu_items.push(
+				{
+					//id: "",
+					text: "去目标公司的讨论区",
+					icon: "/images/index/company_discussion_icon.gif",
+					handler: function() {
+						link_to_blank("/companies/post/" + target.company_id);
+					}
+				}
+			);
+		}
+		
+		
 		menu_items.push("-");
 		
 		menu_items.push(

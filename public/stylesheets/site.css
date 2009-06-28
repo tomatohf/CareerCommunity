@@ -1935,6 +1935,23 @@ a.order_by_selected {
 	background: transparent url(/images/index/career_test_icon.gif) no-repeat scroll left 2px;
 }
 
+.company_disscussion_industry {
+	background-color: #F0F3FA;
+	margin: 10px 0px;
+	padding: 3px 10px 2px;
+}
+
+.company_disscussion_name {
+	font-size: 14px;
+	float: left;
+	margin: 5px;
+	width: 170px;
+	padding-left: 10px;
+	background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left center;
+	padding-bottom: 5px;
+	border-bottom: 1px dashed #EAEAEA;
+}
+
 
 
 
