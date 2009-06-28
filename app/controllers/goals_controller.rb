@@ -62,9 +62,11 @@ class GoalsController < ApplicationController
       :order => "id DESC"
     )
     
-    @new_posts = GoalPost.find(
-      :all,
-      :limit => Summary_New_Post_Size,
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @posts = GoalPost.paginate(
+      :page => page,
+      :per_page => Summary_New_Post_Size,
       :select => "id, created_at, goal_id, top, good, account_id, title, responded_at, responded_by",
       :order => "responded_at DESC"
     )

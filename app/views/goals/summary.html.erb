@@ -86,14 +86,18 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%= render :partial => "goal_post", :collection => @new_posts, :locals => {:show_goal_name => true} %>
+				<%= render :partial => "goal_post", :collection => @posts, :locals => {:show_goal_name => true} %>
 			</tbody>
 		</table>
-		<% unless @new_posts.size > 0 %>
+		<% unless @posts.size > 0 %>
 			<div class="form_info_l">
 				还没有讨论话题 ...
 			</div>
 		<% end %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@posts) %>
 	</div>
 	
 </div>

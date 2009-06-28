@@ -19,7 +19,9 @@
 				goal = Goal.get_goal(goal_post.goal_id)
 				goal_name = h(goal.name)
 			%>
-			[<a href="/goals/<%= goal_post.goal_id %>" class="account_nick_link" title="<%= goal_name %>"><%= truncate(goal_name, 10) %></a>]
+			<a href="/goals/<%= goal_post.goal_id %>" title="<%= goal_name %>" class="account_nick_link form_info_s">(<%= truncate(goal_name) %>)</a>
+			<br />
+			&nbsp;&nbsp;&nbsp;
 		<% end %>
 		
 		<% goal_post_title = h(goal_post.title) %>
