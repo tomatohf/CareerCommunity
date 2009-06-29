@@ -146,8 +146,8 @@
 
 				Ext.get("loading_container").remove();
 				
-				if(Ext.get("bottom_storm_tips")) {
-					Ext.get("bottom_storm_tips").show(true);
+				if(Ext.get("bottom_tips")) {
+					Ext.get("bottom_tips").show(true);
 				}
 			}
 		);
@@ -180,8 +180,8 @@
 	
 	
 	<% unless @targets.size > 5 %>
-		<div id="bottom_storm_tips" class="community_block align_c" style="display: none;">
-			<img src="/images/job_targets/storm_tips_2.jpg" border="0" />
+		<div id="bottom_tips" class="community_block align_c" style="display: none;">
+			<img src="/images/job_targets/list_bottom_tip.jpg" border="0" />
 		</div>
 	<% end %>
 	
