@@ -42,7 +42,10 @@
 		<% @messages.each do |message| %>
 			<div class="<%= message.has_read ? "account_action_item" : "unread_account_action_item" %>">
 				<div>
-					<%= eval(message.msg_text(message.account_id)) %>
+					<%#= eval(message.msg_text(message.account_id)) %>
+					
+					<% render_info = message.render_info(message.account_id) %>
+					<%= render(:partial => "/messages/sys/#{render_info[0]}", :locals => render_info[1]) %>
 				</div>
 				
 				<div class="form_info_s account_action_datetime">

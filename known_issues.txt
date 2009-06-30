@@ -38,6 +38,9 @@ EXT IE8 menu 宽度问题
 高亮页面中的指定关键字
 
 
+post 分类
+
+
 
 escape/encodeURIComponent URL
 	- search
@@ -103,10 +106,6 @@ Improve new vote topic performance
 
 使用 C 版本的 Memcache client
 
-post 分类
-
-提问频道 - 参考 JavaEye
-
 调整查看数的实现方法 ... 把查看数记录到各自的表
 
 照片按相册设置查看权限 - 私密相册, 之前的相册都叫公开相册?
@@ -124,11 +123,6 @@ post 分类
 
 enable 投票客户端, 放到工具箱里面
 
-
-
-求职管家:
-	删除添加的公司 和 职位 - 处理已经关联的目标
-	删除添加的流程 和 状态 - 处理已经关联的步骤
 
 
 将活动功能包装成一个 APP

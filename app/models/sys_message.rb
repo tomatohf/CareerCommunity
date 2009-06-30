@@ -99,7 +99,22 @@ class SysMessage < ActiveRecord::Base
   
   def msg_text(owner_id)
     type_obj = get_type_obj(self.msg_type)
-    type_obj.msg_text(type_obj.parse_raw_data(self.raw_data), owner_id)
+    
+    begin
+      type_obj.msg_text(type_obj.parse_raw_data(self.raw_data), owner_id)
+    rescue Exception => e
+	      ""
+	  end
+  end
+  
+  def render_info(owner_id)
+    type_obj = get_type_obj(self.msg_type)
+    
+    begin
+      type_obj.render_info(type_obj.parse_raw_data(self.raw_data), owner_id)
+    rescue Exception => e
+	      nil
+	  end
   end
   
   
@@ -139,6 +154,28 @@ class SysMessage < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, owner_id)
+        account_id = data[:account_id]
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        
+        account_nick_pic = Account.get_nick_and_pic(account_id)
+        account_nick = account_nick_pic[0]
+        account_pic_url = account_nick_pic[1]
+        
+        [
+          "add_space_comment",
+          {
+            :owner_id => owner_id,
+            :account_id => account_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            :account_nick => account_nick,
+            :account_pic_url => account_pic_url
+          }
+        ]
+      end
     end
     
     class AddFriend < Base
@@ -158,6 +195,25 @@ class SysMessage < ActiveRecord::Base
             :account_pic_url => #{account_pic_url.inspect}
           })
         !
+      end
+      
+      def render_info(data, owner_id)
+        account_id = data[:account_id]
+        account_nick_pic = Account.get_nick_and_pic(account_id)
+        account_nick = account_nick_pic[0]
+        account_pic_url = account_nick_pic[1]
+        
+        not_friend = !Friend.is_friend(owner_id, account_id)
+        
+        [
+          "add_friend",
+          {
+            :not_friend => not_friend,
+            :account_id => account_id,
+            :account_nick => account_nick,
+            :account_pic_url => account_pic_url
+          }
+        ]
       end
     end
     
@@ -186,6 +242,33 @@ class SysMessage < ActiveRecord::Base
             :message => #{message.inspect}
           })
         !
+      end
+      
+      def render_info(data, owner_id)
+        requester_id = data[:requester_id]
+        requester_nick_pic = Account.get_nick_and_pic(requester_id)
+        requester_nick = requester_nick_pic[0]
+        requester_pic_url = requester_nick_pic[1]
+        
+        group_id = data[:group_id]
+        group, group_image = Group.get_group_with_image(group_id)
+        
+        message = data[:message] || ""
+        
+        [
+          "join_group_request",
+          {
+            :requester_id => requester_id,
+            :requester_nick => requester_nick,
+            :requester_pic_url => requester_pic_url,
+            
+            :group_id => group_id,
+            :group_name => group.name,
+            :group_image => group_image,
+            
+            :message => message
+          }
+        ]
       end
     end
     
@@ -219,6 +302,37 @@ class SysMessage < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, owner_id)
+        admin_id = data[:admin_account_id]
+        admin_nick_pic = Account.get_nick_and_pic(admin_id)
+        admin_nick = admin_nick_pic[0]
+        admin_pic_url = admin_nick_pic[1]
+        
+        group_id = data[:group_id]
+        group, group_image = Group.get_group_with_image(group_id)
+        
+        approve = data[:approve]
+        
+        message = data[:message] || ""
+        
+        [
+          "approve_reject_join_group",
+          {
+            :admin_id => admin_id,
+            :admin_nick => admin_nick,
+            :admin_pic_url => admin_pic_url,
+            
+            :group_id => group_id,
+            :group_name => group.name,
+            :group_image => group_image,
+            
+            :approve => approve,
+            
+            :message => message
+          }
+        ]
+      end
     end
     
     class InviteJoinGroup < Base
@@ -246,6 +360,33 @@ class SysMessage < ActiveRecord::Base
             :invitation_words => #{invitation_words.inspect}
           })
         !
+      end
+      
+      def render_info(data, owner_id)
+        inviter_id = data[:inviter_id]
+        inviter_nick_pic = Account.get_nick_and_pic(inviter_id)
+        inviter_nick = inviter_nick_pic[0]
+        inviter_pic_url = inviter_nick_pic[1]
+        
+        group_id = data[:group_id]
+        group, group_image = Group.get_group_with_image(group_id)
+        
+        invitation_words = data[:invitation_words]
+        
+        [
+          "invite_join_group",
+          {
+            :inviter_id => inviter_id,
+            :inviter_nick => inviter_nick,
+            :inviter_pic_url => inviter_pic_url,
+            
+            :group_id => group_id,
+            :group_name => group.name,
+            :group_image => group_image,
+            
+            :invitation_words => invitation_words
+          }
+        ]
       end
     end
     
@@ -275,6 +416,33 @@ class SysMessage < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, owner_id)
+        inviter_id = data[:inviter_id]
+        inviter_nick_pic = Account.get_nick_and_pic(inviter_id)
+        inviter_nick = inviter_nick_pic[0]
+        inviter_pic_url = inviter_nick_pic[1]
+        
+        activity_id = data[:activity_id]
+        activity, activity_image = Activity.get_activity_with_image(activity_id)
+        
+        invitation_words = data[:invitation_words]
+        
+        [
+          "invite_join_activity",
+          {
+            :inviter_id => inviter_id,
+            :inviter_nick => inviter_nick,
+            :inviter_pic_url => inviter_pic_url,
+            
+            :activity_id => activity_id,
+            :activity_title => activity.get_title,
+            :activity_image => activity_image,
+            
+            :invitation_words => invitation_words
+          }
+        ]
+      end
     end
     
     class JoinActivityRequest < Base
@@ -303,6 +471,33 @@ class SysMessage < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, owner_id)
+        requester_id = data[:requester_id]
+        requester_nick_pic = Account.get_nick_and_pic(requester_id)
+        requester_nick = requester_nick_pic[0]
+        requester_pic_url = requester_nick_pic[1]
+        
+        activity_id = data[:activity_id]
+        activity, activity_image = Activity.get_activity_with_image(activity_id)
+        
+        message = data[:message] || ""
+        
+        [
+          "join_activity_request",
+          {
+            :requester_id => requester_id,
+            :requester_nick => requester_nick,
+            :requester_pic_url => requester_pic_url,
+            
+            :activity_id => activity_id,
+            :activity_title => activity.get_title,
+            :activity_image => activity_image,
+            
+            :message => message
+          }
+        ]
+      end
     end
     
     class DeletedFromActivity < Base
@@ -317,6 +512,20 @@ class SysMessage < ActiveRecord::Base
             :activity_image => #{activity_image.inspect}
           })
         !
+      end
+      
+      def render_info(data, owner_id)
+        activity_id = data[:activity_id]
+        activity, activity_image = Activity.get_activity_with_image(activity_id)
+        
+        [
+          "deleted_from_activity",
+          {
+            :activity_id => activity_id,
+            :activity_title => activity.get_title,
+            :activity_image => activity_image
+          }
+        ]
       end
     end
     
@@ -350,6 +559,37 @@ class SysMessage < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, owner_id)
+        admin_id = data[:admin_account_id] || data[:master_account_id]
+        admin_nick_pic = Account.get_nick_and_pic(admin_id)
+        admin_nick = admin_nick_pic[0]
+        admin_pic_url = admin_nick_pic[1]
+        
+        activity_id = data[:activity_id]
+        activity, activity_image = Activity.get_activity_with_image(activity_id)
+        
+        approve = data[:approve]
+        
+        message = data[:message] || ""
+        
+        [
+          "approve_reject_join_activity",
+          {
+            :admin_id => admin_id,
+            :admin_nick => admin_nick,
+            :admin_pic_url => admin_pic_url,
+            
+            :activity_id => activity_id,
+            :activity_title => activity.get_title,
+            :activity_image => activity_image,
+            
+            :approve => approve,
+            
+            :message => message
+          }
+        ]
+      end
     end
     
     class InviteJoinVote < Base
@@ -378,6 +618,33 @@ class SysMessage < ActiveRecord::Base
           })
         !
       end
+      
+      def render_info(data, owner_id)
+        inviter_id = data[:inviter_id]
+        inviter_nick_pic = Account.get_nick_and_pic(inviter_id)
+        inviter_nick = inviter_nick_pic[0]
+        inviter_pic_url = inviter_nick_pic[1]
+        
+        vote_topic_id = data[:vote_topic_id]
+        vote_topic, vote_topic_image = VoteTopic.get_vote_topic_with_image(vote_topic_id)
+        
+        invitation_words = data[:invitation_words]
+        
+        [
+          "invite_join_vote",
+          {
+            :inviter_id => inviter_id,
+            :inviter_nick => inviter_nick,
+            :inviter_pic_url => inviter_pic_url,
+            
+            :vote_topic_id => vote_topic_id,
+            :vote_topic_title => vote_topic.title,
+            :vote_topic_image => vote_topic_image,
+            
+            :invitation_words => invitation_words
+          }
+        ]
+      end
     end
     
     class AdjustPoint < Base
@@ -391,6 +658,19 @@ class SysMessage < ActiveRecord::Base
             :reason => #{reason.inspect}
           })
         !
+      end
+      
+      def render_info(data, owner_id)
+        points = data[:points]
+        reason = data[:reason]
+        
+        [
+          "adjust_point",
+          {
+            :points => points,
+            :reason => reason
+          }
+        ]
       end
     end
     

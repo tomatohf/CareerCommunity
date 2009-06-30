@@ -333,12 +333,15 @@ class SpacesController < ApplicationController
       points = params[:points] && params[:points].strip
       reason = params[:reason] && params[:reason].strip
       
-      if PointProfile.adjust_account_points(account_id, points.to_i)
-        # remind user by sending sys message
-        SysMessage.create_new(account_id, "adjust_point", {
-          :points => points,
-          :reason => reason
-        })
+      if points && (points != "") && reason && (reason != "")
+        points_num = points.to_i
+        if PointProfile.adjust_account_points(account_id, points_num)
+          # remind user by sending sys message
+          SysMessage.create_new(account_id, "adjust_point", {
+            :points => points_num,
+            :reason => reason
+          })
+        end
       end
     end
     
