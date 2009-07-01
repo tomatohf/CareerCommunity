@@ -11,10 +11,6 @@
 		<% if @edit %>
 			<a href="/profiles/<%= @account_id %>/pic" title="更改头像">
 				<img src="<%= face_img_src(big_face_image_url) %>" border="0" /></a>
-			<div>
-				<a href="/profiles/<%= @account_id %>/pic">
-					更改头像</a>
-			</div>
 		<% else %>
 			<img src="<%= face_img_src(big_face_image_url) %>" border="0" />
 		<% end %>
@@ -60,76 +56,70 @@
 		</div>
 	<% end %>
 	<div class="community_block align_c">
-		<a href="/group/posts/276" title="这是什么? 积分有什么用?" target="_blank">
+		<a href="/group/posts/276" title="这是什么? 积分是如何计算的?" target="_blank">
 			<img src="/images/spaces/question_mark_tiny.gif" border="0" style="margin-bottom: -3px;" alt="这是什么? 积分有什么用?" /></a>
 		&nbsp;
-			
+		
 		<span class="activity_info_label">积分:</span>
-		<span class="point_number"><%= @points %></span>
+		<% if false %>
 		<img src="/images/spaces/points_icon.gif" border="0" />
+		<% end %>
+		<span class="point_number"><%= @points %></span>
+		&nbsp;
+		<% point_level = PointProfile.calculate_level(@points) %>
+		<img src="/images/spaces/point_levels/<%= point_level %>.gif" width="16" title="<%= point_level %> 级" alt="<%= point_level %> 级" border="0" />
 		
 		<% if general_admin?(session[:account_id]) %>
 			&nbsp;&nbsp;&nbsp;
-			<a href="#" onclick="var f = document.getElementById('adjust_point_form'); if(f.style.display == 'none') { f.style.display = ''; } else { f.style.display = 'none'; }; return false;" title="增加/扣除这个用户的积分">
-				(+/-)</a>
+			<a href="/spaces/edit_point/<%= @account_id %>">
+				(调整积分)</a>
+		<% end %>
+	</div>
+	
+	<% if @is_brain_trust || @is_vip || info_editor?(session[:account_id]) %>
+		<div class="community_block align_c">
+			<a href="/group/posts/489" title="这些是什么?" target="_blank">
+				<img src="/images/spaces/question_mark_tiny.gif" border="0" alt="这些是什么?" /></a>
+				&nbsp;
 				
-			<div id="adjust_point_form" class="community_block" style="border: dashed 1px #DDDDDD; display: none;">
-				<% form_tag "/spaces/update_point/#{@account_id}", :method => :post do %>
-					<table cellpadding="0" cellspacing="5" border="0" class="main_part_w" style="text-align: left;">
-						<tr>
-							<td>
-								<label for="points_input">
-									增加的积分:
-								</label>
-							</td>
-							
-							<td>
-								<input type="text" name="points" id="adjust_points" class="text_field" size="10" />
-							</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td>
-								<span class="form_info_l">
-									填写负数扣除积分
-								</span>
-							</td>
-						</tr>
-						
-						<tr>
-							<td>
-								<label for="adjust_reason">
-									调整的理由:
-								</label>
-								
-								<br />
-								
-								<span class="form_info_s">
-									将作为系统消息发送给用户
-								</span>
-							</td>
-							
-							<td>
-								<textarea name="reason" id="adjust_reason" class="text_field" rows="5" cols="20"></textarea>
-							</td>
-						</tr>
-						
-						<tr>
-							<td></td>
-							<td>
-								<input type="submit" value="调整用户积分" class="button" />
-								
-								&nbsp;&nbsp;&nbsp;
-								
-								<a href="#" onclick="document.getElementById('adjust_point_form').style.display = 'none'; return false;">
-									不了先</a>
-							</td>
-						</tr>
-					</table>
+			<% if @is_brain_trust %>
+				&nbsp;
+				<%= SpacesController::Expert_Title %>
+			<% end %>
+			<% if @is_vip %>
+				&nbsp;
+				<img src="/images/spaces/vip_icon.gif" title="<%= SpacesController::VIP_Title %>" alt="<%= SpacesController::VIP_Title %>" border="0" />
+			<% end %>
+		
+			<% if info_editor?(session[:account_id]) %>
+				&nbsp;&nbsp;&nbsp;
+				<a href="/spaces/edit_role/<%= @account_id %>">
+					(调整角色)</a>
+			<% end %>
+		</div>
+	<% end %>
+	
+	<% if @is_kind_hearted %>
+		<div class="community_block align_c">
+			<a href="/group/posts/490" title="这是什么?" target="_blank">
+				<img src="/images/spaces/question_mark_tiny.gif" border="0" alt="这是什么?" /></a>
+			&nbsp;
+			
+			<img src="/images/spaces/kind_hearted_icon.gif" title="<%= SpacesController::Kind_Hearted_Title %>" alt="<%= SpacesController::Kind_Hearted_Title %>" border="0" />
+		</div>
+	<% else %>
+		<% if @edit %>
+			<div class="community_block align_c">
+				<% form_tag "/spaces/create_kind_hearted_role/#{@account_id}", :method => :post, :onsubmit => "if(confirm('确定要做出此承诺么 ?')) { return true; }; return false;" do %>
+					<a href="/group/posts/490" title="这是什么?" target="_blank">
+						<img src="/images/spaces/question_mark_tiny.gif" border="0" alt="这是什么?" /></a>
+					&nbsp;
+					
+					<input type="submit" value="<%= SpacesController::Kind_Hearted_Title %>" class="button" />
 				<% end %>
 			</div>
 		<% end %>
-	</div>
+	<% end %>
 	
 	<div class="community_block_narrow">
 		<%= thin_hr %>

@@ -1,0 +1,158 @@
+<% account_nick = h(@account_nick_pic[0]) %>
+
+<% page_title = "调整 #{account_nick} 的角色" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r community_container_r">
+	<div class="community_block align_c">
+		<a href="/spaces/show/<%= @account_id %>">
+			返回 <%= account_nick %> 的空间</a>
+	</div>
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_block align_c">
+		<a href="/spaces/show/<%= @account_id %>">
+			<img src="<%= face_img_src(@account_nick_pic[1]) %>" border="0" /></a>
+	</div>
+	<div class="community_block align_c">
+		<a href="/spaces/show/<%= @account_id %>" class="account_nick_link">
+			<%= account_nick %></a>
+	</div>
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_block align_c">
+		
+	</div>
+</div>
+
+<div class="community_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	
+	<div class="community_block_narrow form_info_s">
+		注意确定用户的唯一性编号(ID), 以免误操作 ...
+	</div>
+	<div class="community_block_narrow" style="color: #666666">
+		用户的唯一性编号(ID)为:
+		&nbsp;
+		<span class="point_number"><%= @account_id %></span>
+	</div>
+	<br />
+	
+	
+	<div class="community_block">
+		<table cellpadding="3" cellspacing="5" border="0" class="main_part_w">
+			<tr class="table_header">
+				<td style="width: 40px;">
+					
+				</td>
+				
+				<th style="width: 100px;">
+					角色名称
+				</th>
+				
+				<th>
+					简介
+				</th>
+				
+				<td style="width: 40px;">
+					
+				</td>
+			</tr>
+			<% @roles.each do |role| %>
+				<%
+					handler = RoleProfile.get_role_type_handler(role[1])
+					name = handler.name
+				%>
+				<tr>
+					<td valign="top">
+						<img src="<%= handler.icon %>" border="0" alt="<%= name %>" title="<%= name %>" />
+					</td>
+					
+					<td valign="top" style="border-bottom: 1px dashed #CCCCCC;">
+						<%=  name %>
+					</td>
+					
+					<td style="border-bottom: 1px dashed #CCCCCC;">
+						<%= role[2] %>
+					</td>
+					
+					<td align="center">
+						<% form_tag "/spaces/destroy_role/#{@account_id}", :method => :post, :onsubmit => "if(confirm('确定要删除角色 #{name} 么 ?')) { return true; }; return false;" do %>
+							<input type="hidden" name="role_id" value="<%= role[0] %>" />
+							<input type="submit" value="删除" class="button" />
+						<% end %>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+	
+	<br />
+	
+	<div class="community_title">
+		添加新的角色 ...
+	</div>
+	<div class="community_block_narrow">
+		<% form_tag "/spaces/update_role/#{@account_id}", :method => :post do %>
+			<table cellpadding="0" cellspacing="10" border="0" class="main_part_w">
+				<tr>
+					<td style="width: 100px;">
+						<label for="role_type">
+							角色类型(<span style="color: red;">*</span>):
+						</label>
+					</td>
+					
+					<td>
+						<select name="role_type" id="role_type" class="dropdown_list">
+							<% RoleProfile::Role_Types.each_index do |i| %>
+								<%
+									type_id = i+1
+									handler = RoleProfile.get_role_type_handler(type_id)
+								%>
+								<option value="<%= type_id %>"><%= handler.name %></option>
+							<% end %>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td valign="top">
+						<label for="role_desc">
+							简介(<span style="color: red;">*</span>):
+						</label>
+					</td>
+					
+					<td>
+						<textarea name="role_desc" id="role_desc" class="text_field" rows="5" cols="40"></textarea>
+					</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" value="添加" class="button" />
+						
+						&nbsp;&nbsp;&nbsp;
+						
+						<a href="/spaces/show/<%= @account_id %>">
+							返回 <%= account_nick %> 的空间</a>
+					</td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+	
+</div>
+	

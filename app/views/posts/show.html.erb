@@ -91,20 +91,50 @@
 	<h2><%= page_title %></h2>
 	
 	<div class="community_block form_info_s">
-		<a href="/spaces/show/<%= @post.account_id %>">
-			<img src="<%= face_img_src(@poster_nick_pic[1]) %>" border="0" /></a>
-		&nbsp;&nbsp;&nbsp;
-		<a href="/spaces/show/<%= @post.account_id %>" class="account_nick_link">
-			<%= poster_name %></a>
-		&nbsp;&nbsp;&nbsp;
-		发表于
-		<%= format_datetime(@post.created_at) %>
-		
-		&nbsp;&nbsp;&nbsp;
-		查看:
-		<b>
-			<%= ViewCounter.increase_count("#{@post_type}_post".to_sym, @post.id) %>
-		</b>
+		<table border="0" cellspacing="0" cellpadding="0" class="main_part_w">
+			<tr>
+				<td align="left" valign="top" style="width: 50px;">
+					<a href="/spaces/show/<%= @post.account_id %>">
+						<img src="<%= face_img_src(@poster_nick_pic[1]) %>" border="0" /></a>
+				</td>
+				
+				<td align="center" valign="top" style="width: 50px; padding-top: 2px;">
+					<% point_level = PointProfile.calculate_level(@poster_points) %>
+					<img src="/images/spaces/point_levels/<%= point_level %>.gif" width="16" title="<%= point_level %> 级" alt="<%= point_level %> 级" border="0" />
+				</td>
+				
+				<td align="left" valign="bottom">
+					<div style="margin-bottom: 2px;">
+						<% if @is_brain_trust %>
+							<%= SpacesController::Expert_Title %>
+							&nbsp;
+						<% end %>
+						<% if @is_vip %>
+							<img src="/images/spaces/vip_icon.gif" title="<%= SpacesController::VIP_Title %>" alt="<%= SpacesController::VIP_Title %>" border="0" />
+							&nbsp;
+						<% end %>
+						<% if @is_kind_hearted %>
+							<img src="/images/spaces/kind_hearted_icon.gif" title="<%= SpacesController::Kind_Hearted_Title %>" alt="<%= SpacesController::Kind_Hearted_Title %>" border="0" />
+							&nbsp;
+						<% end %>
+					</div>
+					
+					<div>
+						<a href="/spaces/show/<%= @post.account_id %>" class="account_nick_link">
+							<%= poster_name %></a>
+						&nbsp;&nbsp;&nbsp;
+						发表于
+						<%= format_datetime(@post.created_at) %>
+
+						&nbsp;&nbsp;&nbsp;
+						查看:
+						<b>
+							<%= ViewCounter.increase_count("#{@post_type}_post".to_sym, @post.id) %>
+						</b>
+					</div>
+				</td>
+			</tr>
+		</table>
 	</div>
 	
 	

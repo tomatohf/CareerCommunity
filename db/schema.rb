@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 62) do
+ActiveRecord::Schema.define(:version => 64) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -1102,6 +1102,16 @@ ActiveRecord::Schema.define(:version => 62) do
   add_index "recruitments_recruitment_tags", ["recruitment_id", "recruitment_tag_id"], :name => "recruitments_recruitment_tags_id", :unique => true
   add_index "recruitments_recruitment_tags", ["recruitment_tag_id", "recruitment_id"], :name => "recruitment_tags_recruitments_id", :unique => true
 
+  create_table "role_profiles", :force => true do |t|
+    t.integer  "account_id", :limit => 11
+    t.datetime "updated_at"
+    t.integer  "role_type",  :limit => 2
+    t.string   "desc",       :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "role_profiles", ["account_id"], :name => "index_role_profiles_on_account_id"
+
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -1174,7 +1184,7 @@ ActiveRecord::Schema.define(:version => 62) do
     t.text     "answer"
     t.string   "summary"
     t.boolean  "delta"
-    t.integer  "order_weight", :limit => 15
+    t.integer  "order_weight", :limit => 2
   end
 
   add_index "talk_answers", ["question_id", "order_weight"], :name => "index_talk_answers_on_question_id_and_order_weight"
@@ -1199,7 +1209,7 @@ ActiveRecord::Schema.define(:version => 62) do
     t.string   "name"
     t.string   "desc",         :limit => 1000
     t.boolean  "delta"
-    t.integer  "order_weight", :limit => 15
+    t.integer  "order_weight", :limit => 2
   end
 
   add_index "talk_question_categories", ["talk_id", "order_weight"], :name => "index_talk_question_categories_on_talk_id_and_order_weight"
@@ -1214,7 +1224,7 @@ ActiveRecord::Schema.define(:version => 62) do
     t.string   "summary"
     t.integer  "category_id",  :limit => 11
     t.boolean  "delta"
-    t.integer  "order_weight", :limit => 15
+    t.integer  "order_weight", :limit => 2
   end
 
   add_index "talk_questions", ["talk_id", "order_weight"], :name => "index_talk_questions_on_talk_id_and_order_weight"

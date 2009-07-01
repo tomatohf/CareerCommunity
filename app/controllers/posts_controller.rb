@@ -120,6 +120,18 @@ class PostsController < ApplicationController
     @type_id = @post.send(type_handler.get_type_id)
     
     @poster_nick_pic = Account.get_nick_and_pic(@post.account_id)
+    @poster_points = PointProfile.get_account_points(@post.account_id)
+    
+    @is_vip = false
+    @is_brain_trust = false
+    @is_kind_hearted = false
+    RoleProfile.get_account_roles(@post.account_id).each do |role|
+      role_type_id = role[1]
+      
+      @is_vip ||= (role_type_id == RoleProfile.ids.customer_role_id)
+      @is_brain_trust ||= (role_type_id == RoleProfile.ids.industry_expert_role_id) || (role_type_id == RoleProfile.ids.trainer_role_id)
+      @is_kind_hearted ||= (role_type_id == RoleProfile.ids.kind_hearted_role_id)
+    end
     
     @type_name, @type_image, @display_image = type_handler.get_type_with_image(@type_id)
     @type_label = type_handler.get_type_label
@@ -133,7 +145,6 @@ class PostsController < ApplicationController
         :page => page,
         :per_page => Comment_Page_Size,
         :total_entries => type_handler.get_post_comment_class.get_count(@post_id),
-        :include => [:account => [:profile_pic]],
         :order => "created_at ASC"
       )
     

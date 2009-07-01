@@ -12,6 +12,9 @@ class SysMessage < ActiveRecord::Base
   validates_presence_of :account_id, :msg_type
   
   
+  
+  CKP_unread_count = :sys_message_unread_count
+  
   after_destroy { |sys_message|
     self.decrease_unread_count_cache(sys_message.account_id, 1) unless sys_message.has_read
   }
@@ -20,8 +23,6 @@ class SysMessage < ActiveRecord::Base
     self.increase_unread_count_cache(sys_message.account_id, 1)
   }
   
-  
-  CKP_unread_count = :sys_message_unread_count
   
   
   def self.get_unread_count(account_id)

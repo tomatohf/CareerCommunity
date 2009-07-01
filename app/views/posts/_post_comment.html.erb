@@ -1,22 +1,55 @@
 <% can_del &&= true %>
 <% counter_shift ||= 0 %>
 
+
 <%
-	account = post_comment.account
-	account_id = account.id
-	account_nick = account.get_nick
-	account_pic_url = account.get_profile_pic_url
+	account_id = post_comment.account_id
+	account_nick_pic = Account.get_nick_and_pic(account_id)
+	account_nick = account_nick_pic[0]
+	account_pic_url = account_nick_pic[1]
 	
-	Account.set_account_nick_pic_cache(account_id, account_nick, account_pic_url, account.email)
+	
+	account_points = PointProfile.get_account_points(account_id)
+	
+	
+	is_vip = false
+	is_brain_trust = false
+	is_kind_hearted = false
+	RoleProfile.get_account_roles(account_id).each do |role|
+		role_type_id = role[1]
+  
+		is_vip ||= (role_type_id == RoleProfile.ids.customer_role_id)
+		is_brain_trust ||= (role_type_id == RoleProfile.ids.industry_expert_role_id) || (role_type_id == RoleProfile.ids.trainer_role_id)
+		is_kind_hearted ||= (role_type_id == RoleProfile.ids.kind_hearted_role_id)
+	end
 %>
 
 
 <div style="margin-bottom: 40px;">
-	<table cellpadding="0" cellspacing="5" border="0" class="main_part_w">
+	<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
 		<tr>
-			<td align="left" valign="top" style="width: 75px;">
-				<a href="/spaces/show/<%= account_id %>">
-					<img class="float_l" src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+			<td align="center" valign="top" style="width: 50px;">
+				<div>
+					<a href="/spaces/show/<%= account_id %>">
+						<img src="<%= face_img_src(account_pic_url) %>" border="0" /></a>
+				</div>
+				
+				<% if is_vip %>
+					<div style="margin-top: 5px;">
+						<img src="/images/spaces/vip_icon.gif" title="<%= SpacesController::VIP_Title %>" alt="<%= SpacesController::VIP_Title %>" border="0" />
+					</div>
+				<% end %>
+
+				<% if is_kind_hearted %>
+					<div style="margin-top: 5px;">
+						<img src="/images/spaces/kind_hearted_icon.gif" title="<%= SpacesController::Kind_Hearted_Title %>" alt="<%= SpacesController::Kind_Hearted_Title %>" border="0" />
+					</div>
+				<% end %>
+			</td>
+
+			<td align="center" valign="top" style="width: 30px; padding-top: 2px;">
+				<% point_level = PointProfile.calculate_level(account_points) %>
+				<img src="/images/spaces/point_levels/<%= point_level %>.gif" width="16" title="<%= point_level %> 级" alt="<%= point_level %> 级" border="0" />
 			</td>
 			
 			<td align="left" valign="top">
@@ -26,7 +59,7 @@
 							<%= counter_shift + post_comment_counter %>
 						</b>
 						楼
-						&nbsp;&nbsp;&nbsp;
+						&nbsp;
 
 						<% if can_del %>
 							<a title="删除" href="#" onclick="delete_comment(<%= post_comment.id %>); return false;">
@@ -34,6 +67,9 @@
 						<% end %>
 					</div>
 
+					<% if is_brain_trust %>
+						<%= SpacesController::Expert_Title %>
+					<% end %>
 					<a href="/spaces/show/<%= account_id %>" class="account_nick_link">
 						<%= h(account_nick) %></a>
 					在

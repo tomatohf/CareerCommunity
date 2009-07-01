@@ -13,13 +13,25 @@ class SpacesController < ApplicationController
   Space_Blog_Num = 5
   Space_Bookmark_Num = 5
   
+  
+  VIP_Title = "VIP"
+  Kind_Hearted_Title = "我承诺尽我所能与大家互相帮助"
+  Expert_Title = "<strong>[本站智囊]</strong>"
+  
+  
   layout "community"
   before_filter :check_current_account, :only => [:index]
-  before_filter :check_login, :only => [:create_comment, :delete_comment, :update_point]
-  before_filter :check_limited, :only => [:create_comment, :delete_comment, :update_point]
+  before_filter :check_login, :only => [:create_comment, :delete_comment, 
+                                        :edit_point, :update_point,
+                                        :edit_role, :update_role, :destroy_role,
+                                        :create_kind_hearted_role]
+  before_filter :check_limited, :only => [:create_comment, :delete_comment, 
+                                          :update_point, :update_role, :destroy_role,
+                                          :create_kind_hearted_role]
   before_filter :check_comment_owner, :only => [:delete_comment]
   
-  before_filter :check_general_admin, :only => [:update_point]
+  before_filter :check_general_admin, :only => [:edit_point, :update_point]
+  before_filter :check_info_editor, :only => [:edit_role, :update_role, :destroy_role]
   
   
   # ! current account needed !
@@ -119,6 +131,18 @@ class SpacesController < ApplicationController
     
     
     @points = PointProfile.get_account_points(@account_id)
+    
+    @is_vip = false
+    @is_brain_trust = false
+    @is_kind_hearted = false
+    RoleProfile.get_account_roles(@account_id).each do |role|
+      role_type_id = role[1]
+      
+      @is_vip ||= (role_type_id == RoleProfile.ids.customer_role_id)
+      @is_brain_trust ||= (role_type_id == RoleProfile.ids.industry_expert_role_id) || (role_type_id == RoleProfile.ids.trainer_role_id)
+      @is_kind_hearted ||= (role_type_id == RoleProfile.ids.kind_hearted_role_id)
+    end
+    
     
     @online = ChatsController.helpers.online?(@account_id) unless @edit
     
@@ -326,6 +350,15 @@ class SpacesController < ApplicationController
     jump_to("/spaces/wall/#{session[:account_id]}")
   end
   
+  
+  def edit_point
+    @account_id = params[:id]
+    
+    @account_nick_pic = Account.get_nick_and_pic(@account_id)
+    
+    @points = PointProfile.get_account_points(@account_id)
+  end
+  
   def update_point
     account_id = params[:id]
     
@@ -349,6 +382,71 @@ class SpacesController < ApplicationController
   end
   
   
+  def edit_role
+    @account_id = params[:id]
+    
+    @account_nick_pic = Account.get_nick_and_pic(@account_id)
+    
+    @roles = RoleProfile.get_account_roles(@account_id)
+  end
+  
+  def update_role
+    account_id = params[:id]
+    
+    if request.post?
+      role_type = params[:role_type] && params[:role_type].strip
+      role_desc = params[:role_desc] && params[:role_desc].strip
+      
+      role_profile = RoleProfile.new(
+        :account_id => account_id,
+        :role_type => role_type,
+        :desc => role_desc
+      )
+      
+      role_profile.save
+    end
+    
+    jump_to("/spaces/edit_role/#{account_id}")
+  end
+  
+  def destroy_role
+    account_id = params[:id]
+    role_id = params[:role_id]
+    
+    if request.post?
+      role_profile = RoleProfile.find(role_id)
+      
+      role_profile.destroy
+    end
+    
+    jump_to("/spaces/edit_role/#{account_id}")
+  end
+  
+  
+  def create_kind_hearted_role
+    account_id = params[:id]
+    jump_to("/errors/forbidden") unless session[:account_id].to_s == account_id
+    
+    if request.post?
+      is_kind_hearted = false
+      kind_hearted_role_id = RoleProfile.ids.kind_hearted_role_id
+      RoleProfile.get_account_roles(account_id).each do |role|
+        is_kind_hearted ||= (role[1] == kind_hearted_role_id)
+      end
+      
+      unless is_kind_hearted
+        role_profile = RoleProfile.new(
+          :account_id => account_id,
+          :role_type => kind_hearted_role_id
+        )
+        role_profile.save
+      end
+    end
+    
+    jump_to("/spaces/show/#{account_id}")
+  end
+  
+  
   private
   
   def check_comment_owner
@@ -359,6 +457,10 @@ class SpacesController < ApplicationController
   
   def check_general_admin
     return jump_to("/errors/forbidden") unless ApplicationController.helpers.general_admin?(session[:account_id])
+  end
+  
+  def check_info_editor
+    return jump_to("/errors/forbidden") unless ApplicationController.helpers.info_editor?(session[:account_id])
   end
   
 end

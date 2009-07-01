@@ -1370,7 +1370,7 @@ a.account_nick_link:hover, a.group_name_link:hover {
 }
 
 .post_comment_title {
-	padding: 5px 10px;
+	padding: 5px 10px 4px;
 	background-color: #FFF5E8;
 	color: #888888;
 }
