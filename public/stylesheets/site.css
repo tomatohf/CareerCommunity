@@ -386,8 +386,12 @@ div.auto_complete ul li {
 }
 
 #func_list li {
-	margin: 5px 0px 10px 30px;
-	padding-left: 5px;
+	margin: 5px 0px 10px 6px;
+	padding-left: 29px;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	background-position: left center;
 }
 
 #func_list a {
