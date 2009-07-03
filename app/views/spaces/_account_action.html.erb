@@ -35,6 +35,13 @@
 	
 	<div class="form_info_s account_action_datetime">
 		<%= format_datetime(account_action.created_at) %>
+		
+		<% if general_admin?(session[:account_id]) %>
+			<a style="margin-left: 5px;" href="#" onclick="if(confirm('确定要删除这个动态么 ?')) { document.getElementById('account_action_del_form_<%= account_action.id %>').submit(); }; return false;">
+				X</a>
+			<% form_tag "/spaces/destroy_account_action/#{account_action.id}", :id => "account_action_del_form_#{account_action.id}", :method => :post do %>
+			<% end %>
+		<% end %>
 	</div>
 </div>
 

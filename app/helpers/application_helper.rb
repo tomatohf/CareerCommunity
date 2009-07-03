@@ -156,15 +156,14 @@ module ApplicationHelper
     # 1002 - MaXiao
     # 1019 - Kai
     
-    superadmin?(account_id) || account_id == 1002 || account_id == 1019
+    superadmin?(account_id) || [1002, 1019].include?(account_id)
   end
   
   def info_editor?(account_id)
     # 1005 - job info editor account
     # 1004 - 鲁路修
-    # 1380 - storm - 沈一鸣
     
-    general_admin?(account_id) || account_id == 1005 || account_id == 1004 || account_id == 1380
+    general_admin?(account_id) || [1004, 1005].include?(account_id)
   end
   
   def tag_cloud_font_styling (total, lowest, highest, options={})

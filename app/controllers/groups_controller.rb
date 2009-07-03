@@ -750,15 +750,22 @@ class GroupsController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @commented_posts = GroupPost.paginate(
+    @commented = GroupPostComment.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "group_posts.id, group_posts.created_at, group_posts.group_id, group_posts.account_id, group_posts.title, group_posts.good, group_posts.responded_at, group_posts.responded_by",
-      :joins => "INNER JOIN group_post_comments ON group_posts.id = group_post_comments.group_post_id",
-      :conditions => ["group_post_comments.account_id = ?", @owner_id],
-      # :order => "group_posts.responded_at DESC"
+      :select => "group_post_comments.group_post_id, group_post_comments.created_at",
+      :joins => "LEFT JOIN group_post_comments comments ON group_post_comments.group_post_id = comments.group_post_id AND group_post_comments.created_at < comments.created_at",
+      :conditions => ["comments.group_post_id IS NULL and group_post_comments.account_id = ?", @owner_id],
       :order => "group_post_comments.created_at DESC"
-    ).sort { |x, y| y.responded_at <=> x.responded_at }
+    )
+    # the posts are order by the latest time when it's commented
+    post_ids = @commented.collect { |comment| comment.group_post_id }
+    posts = GroupPost.find(
+      :all,
+      :select => "id, created_at, group_id, account_id, title, good, responded_at, responded_by",
+      :conditions => ["id in (?)", post_ids]
+    )
+    @commented_posts = post_ids.collect { |post_id| posts.detect { |post| post.id == post_id } }
   end
   
   def edit_image

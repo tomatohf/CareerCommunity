@@ -298,15 +298,22 @@ class ActivitiesController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @commented_posts = ActivityPost.paginate(
+    @commented = ActivityPostComment.paginate(
       :page => page,
       :per_page => Post_List_Size,
-      :select => "activity_posts.id, activity_posts.created_at, activity_posts.activity_id, activity_posts.account_id, activity_posts.title, activity_posts.good, activity_posts.responded_at, activity_posts.responded_by",
-      :joins => "INNER JOIN activity_post_comments ON activity_posts.id = activity_post_comments.activity_post_id",
-      :conditions => ["activity_post_comments.account_id = ?", @owner_id],
-      # :order => "activity_posts.responded_at DESC"
+      :select => "activity_post_comments.activity_post_id, activity_post_comments.created_at",
+      :joins => "LEFT JOIN activity_post_comments comments ON activity_post_comments.activity_post_id = comments.activity_post_id AND activity_post_comments.created_at < comments.created_at",
+      :conditions => ["comments.activity_post_id IS NULL and activity_post_comments.account_id = ?", @owner_id],
       :order => "activity_post_comments.created_at DESC"
-    ).sort { |x, y| y.responded_at <=> x.responded_at }
+    )
+    # the posts are order by the latest time when it's commented
+    post_ids = @commented.collect { |comment| comment.activity_post_id }
+    posts = ActivityPost.find(
+      :all,
+      :select => "id, created_at, activity_id, account_id, title, good, responded_at, responded_by",
+      :conditions => ["id in (?)", post_ids]
+    )
+    @commented_posts = post_ids.collect { |post_id| posts.detect { |post| post.id == post_id } }
   end
   
   def all_join_post

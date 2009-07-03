@@ -4,6 +4,10 @@
 
 
 
+完成 职业测评
+
+
+
 面试题功能
 
 
@@ -25,6 +29,7 @@ EXT IE8 menu 宽度问题
 
 即时聊天功能
 	- 处理聊天记录
+	- 将即时聊天集成到每个页面, 可以参考 BBS web 的消息 UI 方式
 	- 移动 IM 的 tab
 	- Juggernaut 断网的时候无法 调用 unbind ... 靠
 		- 解决: 每隔一段时间 send_to_all 一次 ... push 数据失败 connection 则会调用 unbind 方法

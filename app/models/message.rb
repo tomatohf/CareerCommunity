@@ -36,8 +36,7 @@ class Message < ActiveRecord::Base
   end
   
   def self.get_unread_count(account_id)
-    #u_c = Cache.get("#{CKP_unread_count}_#{account_id}".to_sym)
-    u_c = nil
+    u_c = Cache.get("#{CKP_unread_count}_#{account_id}".to_sym)
     unless u_c
       u_c = self.count(:conditions => ["receiver_id = ? and has_read = ?", account_id, false])
       

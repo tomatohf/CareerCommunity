@@ -24,14 +24,18 @@ class SpacesController < ApplicationController
   before_filter :check_login, :only => [:create_comment, :delete_comment, 
                                         :edit_point, :update_point,
                                         :edit_role, :update_role, :destroy_role,
-                                        :create_kind_hearted_role]
+                                        :create_kind_hearted_role,
+                                        :destroy_account_action]
   before_filter :check_limited, :only => [:create_comment, :delete_comment, 
                                           :update_point, :update_role, :destroy_role,
-                                          :create_kind_hearted_role]
+                                          :create_kind_hearted_role,
+                                          :destroy_account_action]
   before_filter :check_comment_owner, :only => [:delete_comment]
   
   before_filter :check_general_admin, :only => [:edit_point, :update_point]
   before_filter :check_info_editor, :only => [:edit_role, :update_role, :destroy_role]
+  
+  before_filter :check_destroy_account_action, :only => [:destroy_account_action]
   
   
   # ! current account needed !
@@ -447,6 +451,15 @@ class SpacesController < ApplicationController
   end
   
   
+  def destroy_account_action
+    aa = AccountAction.find(params[:id])
+    
+    aa.destroy
+    
+    jump_to("/community")
+  end
+  
+  
   private
   
   def check_comment_owner
@@ -461,6 +474,10 @@ class SpacesController < ApplicationController
   
   def check_info_editor
     return jump_to("/errors/forbidden") unless ApplicationController.helpers.info_editor?(session[:account_id])
+  end
+  
+  def check_destroy_account_action
+    check_general_admin
   end
   
 end

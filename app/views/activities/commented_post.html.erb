@@ -39,7 +39,7 @@
 	
 	<div class="community_block_narrow form_info_s">
 		共有
-		<b><%= @commented_posts.total_entries %></b>
+		<b><%= @commented.total_entries %></b>
 		个讨论话题
 	</div>
 
@@ -65,7 +65,7 @@
 	</div>
 	
 	<div class="community_block">
-		<%= paging_buttons(@commented_posts) %>
+		<%= paging_buttons(@commented) %>
 	</div>
 </div>
 
