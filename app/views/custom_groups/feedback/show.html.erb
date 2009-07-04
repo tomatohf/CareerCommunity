@@ -4,20 +4,25 @@
 <div class="float_r group_container_r">
 	<div class="community_block align_c">
 		<% face_image_url = @group_image || "" %>
-		<% if face_image_url.include?("thumb_48") %>
-			<img src="<%= face_img_src(face_image_url.gsub("thumb_48", "thumb_200")) %>" border="0" />
-		<% else %>
-			<img src="<%= face_img_src(face_image_url) %>" border="0" />
-		<% end %>
+		<% face_image_url = face_image_url.gsub("thumb_48", "thumb_200") if face_image_url.include?("thumb_48") %>
+		<img src="<%= face_img_src(face_image_url) %>" border="0" />
+	</div>
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
 	</div>
 	
 	
 	
 	<% if @relationship == "master" || @relationship == "admin" %>
 		<div class="community_block">
-			<a href="/groups/<%= @group_id %>/edit">修改圈子的设置</a>
+			<a href="/groups/<%= @group_id %>/edit">
+				<img src="/images/groups/edit_small.gif" border="0" />
+				修改圈子的设置</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="/groups/<%= @group_id %>/edit_image">设置圈子的图标</a>
+			<a href="/groups/<%= @group_id %>/edit_image">
+				<img src="/images/groups/edit_image_small.gif" border="0" />
+				设置圈子的图标</a>
 		</div>
 		<div class="community_block">
 			<a href="/groups/members_edit/<%= @group_id %>">
@@ -30,12 +35,12 @@
 					设置圈子的管理员</a>
 			<% end %>
 		</div>
+		
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
 	<% end %>
 	
-	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
 
 	<div class="community_block">
 		<a href="/group/posts/compose/<%= @group_id %>">

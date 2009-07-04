@@ -239,4 +239,8 @@ class ApplicationController < ActionController::Base
     c
   end
   
+  def performed_render_or_redirect
+    @performed_render || @performed_redirect
+  end
+  
 end

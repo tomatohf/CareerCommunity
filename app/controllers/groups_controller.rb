@@ -754,7 +754,7 @@ class GroupsController < ApplicationController
       :page => page,
       :per_page => Post_List_Size,
       :select => "group_post_comments.group_post_id, group_post_comments.created_at",
-      :joins => "LEFT JOIN group_post_comments comments ON group_post_comments.group_post_id = comments.group_post_id AND group_post_comments.created_at < comments.created_at",
+      :joins => "LEFT JOIN group_post_comments comments ON group_post_comments.group_post_id = comments.group_post_id AND group_post_comments.account_id = comments.account_id AND group_post_comments.created_at < comments.created_at",
       :conditions => ["comments.group_post_id IS NULL and group_post_comments.account_id = ?", @owner_id],
       :order => "group_post_comments.created_at DESC"
     )

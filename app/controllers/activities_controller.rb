@@ -302,7 +302,7 @@ class ActivitiesController < ApplicationController
       :page => page,
       :per_page => Post_List_Size,
       :select => "activity_post_comments.activity_post_id, activity_post_comments.created_at",
-      :joins => "LEFT JOIN activity_post_comments comments ON activity_post_comments.activity_post_id = comments.activity_post_id AND activity_post_comments.created_at < comments.created_at",
+      :joins => "LEFT JOIN activity_post_comments comments ON activity_post_comments.activity_post_id = comments.activity_post_id AND activity_post_comments.account_id = comments.account_id AND activity_post_comments.created_at < comments.created_at",
       :conditions => ["comments.activity_post_id IS NULL and activity_post_comments.account_id = ?", @owner_id],
       :order => "activity_post_comments.created_at DESC"
     )
@@ -826,7 +826,7 @@ class ActivitiesController < ApplicationController
     
     if (!@need_approve) && (!@check_mobile) && (!@check_real_name) && (!@check_gender) && (!@check_birthday)
       join
-      render(:action => "join") unless (@performed_render || @performed_redirect)
+      render(:action => "join") unless performed_render_or_redirect
       return
     end
     

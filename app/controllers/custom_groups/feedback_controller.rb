@@ -39,7 +39,8 @@ class CustomGroups::FeedbackController < CustomGroups::CustomGroupsController
   end
   
   
-  private
+  
+  # controller class methods ... which are used be called by others out of this controller/class
   
   def self.check_compose_access(group_id, account_id)
     true
