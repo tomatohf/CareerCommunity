@@ -30,6 +30,9 @@ class GroupsController < ApplicationController
 
   
   layout "community"
+  
+  before_filter :check_custom_group, :only => [:show, :post, :good_post, :picture, :good_picture]
+  
   before_filter :check_current_account, :only => [:recent_index]
   before_filter :check_login, :only => [:new, :create,:edit_image, :update_image,
                                         :edit, :update, :update_access, :join, :quit, :members_edit,
@@ -61,8 +64,6 @@ class GroupsController < ApplicationController
                                         :all_photo, :all_picture, :created_post, :commented_post]
   
   before_filter :check_view_feed, :only => [:feed]
-    
-  before_filter :check_custom_group, :only => [:show]
   
   
   
@@ -1202,7 +1203,20 @@ class GroupsController < ApplicationController
     custom_key = @group.custom_key
     custom_group = custom_key && Group::Custom_Groups[custom_key]
     
-    jump_to("/custom_groups/#{custom_group}/show/#{@group_id}") if custom_group && (custom_group != "")
+    if custom_group && (custom_group != "")
+      controller = "CustomGroups::#{custom_group.camelize}Controller".constantize
+      
+      if controller.new.respond_to?(action_name, false)
+        # to handle pagination
+        
+        page = params[:page]
+        
+        custom_group_url = "/custom_groups/#{custom_group}/#{action_name}/#{@group_id}"
+        custom_group_url += "/#{page}" if page && page != ""
+        
+        jump_to(custom_group_url)
+      end
+    end
   end
   
   def check_group_admin

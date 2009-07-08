@@ -1897,6 +1897,12 @@ a.order_by_selected {
 	margin-bottom: 5px;
 }
 
+.test_item {
+	padding-left: 25px;
+	background: transparent url(/images/career_tests/test_small.gif) no-repeat scroll left center;
+	margin: 10px 0px 15px 20px;
+}
+
 .test_category_title {
 	font-size: 14px;
 }

@@ -15,13 +15,19 @@ class CareerTestsController < ApplicationController
   
   
   def index
+    return jump_to("/career_tests/show/1")
+    
     @tests = CareerTest.find(:all)
+    
+    @has_login = has_login?
   end
   
   def show
     @test_id = params[:id].to_i
     @has_login = has_login?
     @test = CareerTest.get_test(@test_id)
+    
+    @result_count = CareerTestResult.get_count(@test_id)
   end
   
   def create_result

@@ -1,2 +1,27 @@
-<%#= render(:partial => "/career_tests/results/mbti/#{info[0].downcase}") %>
-<%= info[0] %>
+<div class="community_block align_c" style="font-size: 15px;">
+	<strong>
+		<%= info[0] %>
+	</strong>
+	型
+</div>
+
+
+<div class="community_block" style="text-indent: 25px;">
+	<%= info[1][0] %>
+</div>
+
+
+<div class="community_title">
+	适合的职业 ...
+</div>
+
+<div class="community_block">
+	<div class="community_block_narrow">
+		<% info[1][1].each do |position| %>
+			<div class="community_block">
+				<strong><%= position %></strong>
+			</div>
+		<% end %>
+	</div>
+</div>
+

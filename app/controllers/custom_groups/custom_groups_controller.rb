@@ -1,7 +1,7 @@
 class CustomGroups::CustomGroupsController < GroupsController
   
-  # skip all filters
-  skip_filter filter_chain
+  # skip not needed filters
+  skip_before_filter [:check_custom_group]
   
   # make all groups controller actions private, to avoid being visited
   private(*(public_instance_methods - superclass.superclass.public_instance_methods))
@@ -21,6 +21,14 @@ class CustomGroups::CustomGroupsController < GroupsController
     custom_group = custom_key && Group::Custom_Groups[custom_key]
     
     jump_to("/groups/#{@group_id}") unless controller_name == custom_group
+  end
+  
+  
+  # use groups_controller's view template if no custom_groups specific view template found ...
+  alias_method :old_default_template_name, :default_template_name
+  def default_template_name(action_name = self.action_name)
+    template_name = old_default_template_name(action_name)
+    (self.respond_to?(action_name, false) && !template_exists?(template_name)) ? "groups/#{action_name}" : template_name
   end
   
 end
