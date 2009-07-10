@@ -1,6 +1,7 @@
 <% group_name = h(@group.name) %>
 
-<% page_title = "圈子 #{group_name} 的全部讨论话题" %>
+<% page_title = %Q!圈子 #{group_name} 的#{@category ? "分类" : "全部"}讨论话题! %>
+<% page_title += " - #{h(@category.name)}" if @category %>
 <% community_page_title(page_title) %>
 
 <div class="float_r blog_container_r">
@@ -9,18 +10,37 @@
 	</div>
 	
 	<div class="community_block">
-		<a href="/groups/<%= @group_id %>">
+		<a href="/groups/<%= @group.id %>">
 			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
 	</div>
 
 	<div class="community_block">
-		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+		<a href="/groups/<%= @group.id %>">返回圈子 <%= group_name %></a>
 	</div>
 	
 	<div class="community_block">
-		<a href="/groups/good_post/<%= @group_id %>">
+		<a href="/groups/good_post/<%= @group.id %>">
 			查看圈子的精华区</a>
 	</div>
+	
+	
+	<% if @categories && @categories.size > 0 %>
+		<div class="community_title">
+			讨论话题分类 ...
+		</div>
+		
+		<div class="post_category">
+			<a href="/groups/post/<%= @group.id %>"<%= %Q! class="selected_category"! unless @category %>>
+				所有讨论话题</a>
+		</div>
+		
+		<% @categories.each do |category| %>
+			<div class="post_category">
+				<a href="/groups/post_category/<%= category.id %>"<%= %Q! class="selected_category"! if @category && @category.id == category.id %>>
+					<%= h(category.name) %></a>
+			</div>
+		<% end %>
+	<% end %>
 	
 	
 	<% if @can_view_post %>
@@ -30,7 +50,7 @@
 	
 		<div class="community_block align_c">
 			<br />
-			<a href="/groups/feed/<%= @group_id %>.atom">
+			<a href="/groups/feed/<%= @group.id %>.atom">
 				<img src="/images/feed_icon.gif" border="0" alt="订阅圈子<%= group_name %>的讨论话题" title="订阅圈子<%= group_name %>的讨论话题" /></a>
 		</div>
 	<% end %>
@@ -101,13 +121,13 @@
 		
 		<p class="warning_msg">
 			根据圈子
-			<a href="/groups/<%= @group_id %>">
+			<a href="/groups/<%= @group.id %>">
 				<%= group_name %></a>
 			的设置, 只有圈子成员可以查看圈内讨论话题列表
 		</p>
 		
 		<p>
-			<% form_tag "/groups/#{@group_id}/join", :method => :post do %>
+			<% form_tag "/groups/#{@group.id}/join", :method => :post do %>
 				<input type="submit" value="我要加入这个圈子" class="button" />
 			<% end %>
 		</p>

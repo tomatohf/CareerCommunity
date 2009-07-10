@@ -42,12 +42,16 @@ class GroupsController < ApplicationController
                                         :photo_selector_for_group_image, :remove_activity, :remove_vote,
                                         :invite_contact, :select_contact, :send_contact_invitations,
                                         :recent, :all_post, :all_activity, :all_vote, :all_bookmark,
-                                        :all_photo, :created_post, :commented_post]
+                                        :all_photo, :created_post, :commented_post,
+                                        :post_categories, :post_category_create, :post_category_update, 
+                                        :post_category_destroy]
   before_filter :check_limited, :only => [:create, :update_image, :update, :update_access, :join,
                                           :quit, :del_member, :add_admin, :del_admin,
                                           :approve_member, :reject_member, :approve_all,
                                           :invite_member, :update_master, :remove_activity, :remove_vote,
-                                          :send_contact_invitations]
+                                          :send_contact_invitations,
+                                          :post_category_create, :post_category_update, 
+                                          :post_category_destroy]
   
   before_filter :check_can_create_group, :only => [:new, :create]
   
@@ -55,7 +59,10 @@ class GroupsController < ApplicationController
                                               :update_access, :members_edit, :del_member,
                                               :unapproved, :approve_member, :reject_member, :approve_all,
                                               :remove_activity, :remove_vote]
-  before_filter :check_group_master, :only => [:members_master, :add_admin, :del_admin, :edit_master, :update_master]
+  before_filter :check_group_master, :only => [:members_master, :add_admin, :del_admin, 
+                                                :edit_master, :update_master,
+                                                :post_categories, :post_category_create, :post_category_update, 
+                                                :post_category_destroy]
   
   before_filter :check_group_member, :only => [:invite, :invite_member, :invite_contact,
                                                 :select_contact, :send_contact_invitations]
@@ -385,8 +392,8 @@ class GroupsController < ApplicationController
   end
   
   def post
-    @group_id = params[:id]
-    @group, @group_image = Group.get_group_with_image(@group_id)
+    # @group_id = params[:id]
+    # @group, @group_image = Group.get_group_with_image(@group_id)
     
     group_setting = @group.get_setting
     not_member = !GroupMember.is_group_member(@group_id, session[:account_id])
@@ -414,12 +421,52 @@ class GroupsController < ApplicationController
         :conditions => ["group_id = ? and top = ?", @group_id, false],
         :order => "responded_at DESC"
       )
+      
+      @categories = GroupPostCategory.get_categories(@group.id)
     end
   end
   
+  def post_category
+    @category = GroupPostCategory.find(params[:id])
+    
+    @group, @group_image = Group.get_group_with_image(@category.group_id)
+    
+    group_setting = @group.get_setting
+    not_member = !GroupMember.is_group_member(@group.id, session[:account_id])
+    
+    need_join_to_view_post_list = group_setting[:need_join_to_view_post_list]
+    @can_view = !(need_join_to_view_post_list && not_member)
+    
+    need_join_to_view_post = group_setting[:need_join_to_view_post]
+    @can_view_post = !(need_join_to_view_post && not_member)
+    
+    @top_group_posts = GroupPost.find(
+      :all,
+      :select => "id, created_at, group_id, top, good, account_id, title, responded_at, responded_by",
+      :conditions => ["category_id = ? and top = ?", @category.id, true],
+      :order => "responded_at DESC"
+    ) if @can_view
+    
+    if @can_view
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @group_posts = GroupPost.paginate(
+        :page => page,
+        :per_page => Post_List_Size,
+        :select => "id, created_at, group_id, top, good, account_id, title, responded_at, responded_by",
+        :conditions => ["category_id = ? and top = ?", @category.id, false],
+        :order => "responded_at DESC"
+      )
+      
+      @categories = GroupPostCategory.get_categories(@group.id)
+    end
+    
+    render :action => "post"
+  end
+  
   def good_post
-    @group_id = params[:id]
-    @group, @group_image = Group.get_group_with_image(@group_id)
+    # @group_id = params[:id]
+    # @group, @group_image = Group.get_group_with_image(@group_id)
     
     need_join_to_view_post_list = @group.get_setting[:need_join_to_view_post_list]
     
@@ -446,8 +493,8 @@ class GroupsController < ApplicationController
   end
   
   def picture
-    @group_id = params[:id]
-    @group, @group_image = Group.get_group_with_image(@group_id)
+    # @group_id = params[:id]
+    # @group, @group_image = Group.get_group_with_image(@group_id)
     
     need_join_to_view_picture = @group.get_setting[:need_join_to_view_picture]
     @can_view = !(need_join_to_view_picture && (!GroupMember.is_group_member(@group_id, session[:account_id])))
@@ -472,8 +519,8 @@ class GroupsController < ApplicationController
   end
   
   def good_picture
-    @group_id = params[:id]
-    @group, @group_image = Group.get_group_with_image(@group_id)
+    # @group_id = params[:id]
+    # @group, @group_image = Group.get_group_with_image(@group_id)
     
     need_join_to_view_picture = @group.get_setting[:need_join_to_view_picture]
     @can_view = !(need_join_to_view_picture && (!GroupMember.is_group_member(@group_id, session[:account_id])))
@@ -799,6 +846,41 @@ class GroupsController < ApplicationController
   def photo_selector_for_group_image
     albums = Album.get_all_names_by_account_id(session[:account_id])
     render :partial => "albums/photo_selector", :locals => {:albums => albums, :photo_list_template => "/profiles/album_photo_list_for_face"}
+  end
+  
+  def post_categories
+    @categories = GroupPostCategory.get_categories(@group.id)
+  end
+  
+  def post_category_create
+    category = GroupPostCategory.new
+    
+    category.group_id = @group.id
+    category.name = params[:category_name] && params[:category_name].strip
+    
+    category.save
+    
+    jump_to("/groups/post_categories/#{@group.id}")
+  end
+  
+  def post_category_update
+    category_id = params[:category_id]
+    category = GroupPostCategory.find(category_id)
+    
+    category.name = params[:category_name] && params[:category_name].strip
+    
+    category.save
+    
+    jump_to("/groups/post_categories/#{@group.id}")
+  end
+  
+  def post_category_destroy
+    category_id = params[:category_id]
+    category = GroupPostCategory.find(category_id)
+    
+    category.destroy
+    
+    jump_to("/groups/post_categories/#{@group.id}")
   end
   
   def edit

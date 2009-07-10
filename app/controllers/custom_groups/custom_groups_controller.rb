@@ -9,6 +9,11 @@ class CustomGroups::CustomGroupsController < GroupsController
   # check if it's a REAL custom group
   before_filter :check_group_type
   
+  # where to find view template if it's not found under current controller directory
+  def self.inherited_template_dir
+    "groups"
+  end
+  
   
   
   private
@@ -28,7 +33,7 @@ class CustomGroups::CustomGroupsController < GroupsController
   alias_method :old_default_template_name, :default_template_name
   def default_template_name(action_name = self.action_name)
     template_name = old_default_template_name(action_name)
-    (self.respond_to?(action_name, false) && !template_exists?(template_name)) ? "groups/#{action_name}" : template_name
+    (self.respond_to?(action_name, false) && !template_exists?(template_name)) ? "#{self.class.inherited_template_dir}/#{action_name}" : template_name
   end
   
 end

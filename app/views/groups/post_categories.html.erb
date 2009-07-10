@@ -1,0 +1,129 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "管理圈子 #{group_name} 的讨论话题的分类" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/groups/<%= @group_id %>">
+			<img src="<%= face_img_src(@group_image) %>" border="0" /></a>
+	</div>
+	<div class="community_block">
+		<a href="/groups/<%= @group_id %>">返回圈子 <%= group_name %></a>
+	</div>
+		
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		有
+		<b><%= @categories.size %></b>
+		个讨论话题分类
+	</div>
+	
+	<div class="community_block_narrow">
+		
+		<% form_tag "/groups/#{@group.id}/post_category_destroy", :method => :post, :id => "delete_category_form" do %>
+			<input type="hidden" id="del_form_category_id" name="category_id" />
+		<% end %>
+		
+		<script language="JavaScript">
+			function delete_category(category_id) {
+				if(confirm("确定要删除这个分类么 ? 删除这个分类并不会也删除所有这个分类下的讨论话题. 删除这个分类后, 这个分类下的讨论话题变为不属于任何分类.")) {
+					document.getElementById("del_form_category_id").value = category_id;
+					
+					document.getElementById("delete_category_form").submit();
+				}
+			}
+			
+			function toggle_category_edit(category_id) {
+				var toggle_category_edit_link = document.getElementById("toggle_category_edit_link_" + category_id);
+				var in_edit = (toggle_category_edit_link.style.display == "none");
+				
+				toggle_category_edit_link.style.display = in_edit ? "": "none";
+				document.getElementById("update_category_btn_" + category_id).style.display = in_edit ? "none" : "";
+				
+				document.getElementById("category_name_show_" + category_id).style.display = in_edit ? "" : "none";
+				document.getElementById("category_name_edit_" + category_id).style.display = in_edit ? "none" : "";
+			}
+		</script>
+		
+		<table cellpadding="0" cellspacing="10" border="0" class="main_part_w">
+			<thead>
+				<tr class="table_header">
+					<th style="width: 40px;">删除</th>
+					<th style="width: 200px;">分类的名称</th>
+					<td></td>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<% @categories.each do |category| %>
+					
+					<% form_tag "/groups/#{@group.id}/post_category_update", :method => :post do %>
+						<tr>
+							<td align="left" valign="middle">
+								<a title="删除" href="#" onclick="delete_category(<%= category.id %>); return false;">
+									<img src="/images/delete_small.gif" border="0" /></a>
+							</td>
+						
+							<td align="left" valign="middle" style="font-size: 14px;">
+								<% h_category_name = h(category.name) %>
+								<span id="category_name_show_<%= category.id %>">
+									<%= h_category_name %>
+								</span>
+								
+								<input type="text" class="text_field" id="category_name_edit_<%= category.id %>" name="category_name" value="<%= h_category_name %>" style="display: none;" />
+								<input type="hidden" name="category_id" value="<%= category.id %>" />
+							</td>
+						
+							<td style="padding-left: 50px;">
+								<a href="#" onclick="toggle_category_edit(<%= category.id %>); return false;" id="toggle_category_edit_link_<%= category.id %>">
+									修改分类的名称</a>
+									
+								<span id="update_category_btn_<%= category.id %>" style="display: none;">
+									<input type="submit" value="更新" class="button" />
+									&nbsp;&nbsp;&nbsp;
+									<a href="#" onclick="toggle_category_edit(<%= category.id %>); return false;">
+										先不修改了</a>
+								</span>
+							</td>
+						</tr>
+					<% end %>
+					
+				<% end %>
+			</tbody>
+		</table>
+		
+	</div>
+	
+	
+	<div class="community_title">
+		添加新的分类 ...
+	</div>
+
+	<div class="community_block">
+		<% form_tag "/groups/#{@group.id}/post_category_create", :method => :post do %>
+			<table cellpadding="0" cellspacing="10" border="0" class="main_part_w">
+				<tr class="table_header">
+					<th>新分类的名称</th>
+					<td></td>
+				</tr>
+				<tr>
+					<td align="left" valign="middle" style="font-size: 14px; width: 200px;">
+						<input type="text" class="text_field" name="category_name" />
+					</td>
+			
+					<td style="padding-left: 50px;">
+						<input type="submit" value="添加" class="button" />
+					</td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+	
+</div>

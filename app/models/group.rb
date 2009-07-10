@@ -72,7 +72,8 @@ class Group < ActiveRecord::Base
   #   some views(HTML) under /app/views/custom_groups directory by controllers
   #   the static index page under /public directory
   Custom_Groups = {
-    "feedback" => "feedback"
+    "feedback" => "feedback",
+    "problem" => "problem"
   }
   
   

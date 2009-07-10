@@ -1369,6 +1369,27 @@ a.account_nick_link:hover, a.group_name_link:hover {
 	width: 220px;
 }
 
+.post_category {
+	margin-top: 5px;
+}
+
+.post_category a {
+	padding-left: 5px;
+	text-decoration: none;
+}
+
+.post_category a:hover {
+	text-decoration: underline;
+}
+
+.post_category a.selected_category {
+	display: block;
+	font-weight: bold;
+	padding: 1px 5px 0px;
+	background-color: #EEEEEE;
+	border: 1px solid #E2E2E2;
+}
+
 .post_attachment {
 	margin-top: 5px;
 }

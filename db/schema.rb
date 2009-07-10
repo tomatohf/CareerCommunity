@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 64) do
+ActiveRecord::Schema.define(:version => 65) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -656,6 +656,16 @@ ActiveRecord::Schema.define(:version => 64) do
 
   add_index "group_post_attachments", ["group_post_id"], :name => "index_group_post_attachments_on_group_post_id"
 
+  create_table "group_post_categories", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "group_id",   :limit => 11
+    t.string   "name"
+    t.boolean  "delta"
+  end
+
+  add_index "group_post_categories", ["group_id"], :name => "index_group_post_categories_on_group_id"
+
   create_table "group_post_comments", :force => true do |t|
     t.integer  "group_post_id", :limit => 11
     t.datetime "created_at"
@@ -680,6 +690,7 @@ ActiveRecord::Schema.define(:version => 64) do
     t.boolean  "delta"
     t.boolean  "good",                       :default => false
     t.integer  "responded_by", :limit => 11
+    t.integer  "category_id",  :limit => 11, :default => 0
   end
 
   add_index "group_posts", ["responded_at"], :name => "index_group_posts_on_responded_at"
@@ -687,6 +698,7 @@ ActiveRecord::Schema.define(:version => 64) do
   add_index "group_posts", ["group_id", "top", "responded_at"], :name => "index_group_posts_on_group_id_and_top_and_responded_at"
   add_index "group_posts", ["group_id", "good", "top", "responded_at"], :name => "index_group_posts_on_group_id_and_good_and_top_and_responded_at"
   add_index "group_posts", ["account_id", "responded_at"], :name => "index_group_posts_on_account_id_and_responded_at"
+  add_index "group_posts", ["category_id", "top", "responded_at"], :name => "index_group_posts_on_category_id_and_top_and_responded_at"
 
   create_table "groups", :force => true do |t|
     t.datetime "created_at"

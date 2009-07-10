@@ -120,6 +120,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/groups/members_master/:id/:page", :controller => "groups", :action => "members_master", :id => /\d+/, :page => /\d+/
   map.connect "/groups/unapproved/:id/:page", :controller => "groups", :action => "unapproved", :id => /\d+/, :page => /\d+/
   map.connect "/groups/post/:id/:page", :controller => "groups", :action => "post", :id => /\d+/, :page => /\d+/
+  map.connect "/groups/post_category/:id/:page", :controller => "groups", :action => "post_category", :id => /\d+/, :page => /\d+/
   map.connect "/groups/good_post/:id/:page", :controller => "groups", :action => "good_post", :id => /\d+/, :page => /\d+/
   map.connect "/groups/picture/:id/:page", :controller => "groups", :action => "picture", :id => /\d+/, :page => /\d+/
   map.connect "/groups/good_picture/:id/:page", :controller => "groups", :action => "good_picture", :id => /\d+/, :page => /\d+/
@@ -161,7 +162,11 @@ ActionController::Routing::Routes.draw do |map|
     :remove_activity => :post,
     :remove_vote => :post,
     
-    :send_contact_invitations => :post
+    :send_contact_invitations => :post,
+    
+    :post_category_create => :post,
+    :post_category_update => :post,
+    :post_category_destroy => :post
     
   }, :collection => {
     :photo_selector_for_group_image => :get,

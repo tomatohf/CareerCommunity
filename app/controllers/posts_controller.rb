@@ -39,6 +39,8 @@ class PostsController < ApplicationController
     
     @type_name, @type_image, @display_image = @type_handler.get_type_with_image(@type_id)
     @type_label = @type_handler.get_type_label
+    
+    @categories = @type_handler.get_post_category_class.get_categories(@type_id) if @post.respond_to?(:category_id, false)
   end
   
   def create
@@ -55,6 +57,8 @@ class PostsController < ApplicationController
     
     @post.title = params[:title] && params[:title].strip
     @post.content = params[:content] && params[:content].strip
+    
+    @post.category_id = params[:post_category] if @post.respond_to?(:category_id, false)
     
     if @post.save
       uploaded_file = params[:attachment_file]
@@ -448,15 +452,19 @@ class PostsController < ApplicationController
       end
       
       def get_post_class
-        eval("#{@type.capitalize}Post")
+        "#{@type.camelize}Post".constantize
       end
       
       def get_post_comment_class
-        eval("#{@type.capitalize}PostComment")
+        "#{@type.camelize}PostComment".constantize
+      end
+      
+      def get_post_category_class
+        "#{@type.camelize}PostCategory".constantize
       end
       
       def get_post_attachment_class
-        eval("#{@type.capitalize}PostAttachment")
+        "#{@type.camelize}PostAttachment".constantize
       end
       
       def get_type_id
