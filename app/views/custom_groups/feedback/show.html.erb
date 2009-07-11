@@ -28,13 +28,14 @@
 			<a href="/groups/members_edit/<%= @group_id %>">
 				<img src="/images/groups/members_small.gif" border="0" />
 				管理圈子成员</a>
-			<% if @relationship == "master" %>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</div>
+		<% if @relationship == "master" %>
+			<div class="community_block">
 				<a href="/groups/members_master/<%= @group_id %>">
 					<img src="/images/groups/admin_icon.png" border="0" />
 					设置圈子的管理员</a>
-			<% end %>
-		</div>
+			</div>
+		<% end %>
 		
 		<div class="community_block_narrow">
 			<%= thin_hr %>
@@ -114,7 +115,7 @@
 				<thead>
 					<tr>
 						<td width="51%">话题</td>
-						<td width="6%" align="right">评论</td>
+						<td width="6%" align="right">回帖</td>
 						<td width="18%" align="right">发起人</td>
 						<td width="25%" align="right">最后参与</td>
 					</tr>

@@ -3,8 +3,6 @@ class CustomGroups::FeedbackController < CustomGroups::CustomGroupsController
   
   Group_Post_Num = 30
   
-  Group_Vote_Num = 20
-  
 
   def show
     # @group_id = params[:id]

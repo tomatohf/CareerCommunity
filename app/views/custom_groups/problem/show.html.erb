@@ -4,17 +4,6 @@
 <% community_page_title(page_title) %>
 
 <div class="float_r group_container_r">
-	<div class="community_block align_c">
-		<% face_image_url = @group_image || "" %>
-		<% face_image_url = face_image_url.gsub("thumb_48", "thumb_200") if face_image_url.include?("thumb_48") %>
-		<img src="<%= face_img_src(face_image_url) %>" border="0" />
-	</div>
-	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
-	
-	
 	
 	<% if @relationship == "master" || @relationship == "admin" %>
 		<div class="community_block">
@@ -30,13 +19,20 @@
 			<a href="/groups/members_edit/<%= @group_id %>">
 				<img src="/images/groups/members_small.gif" border="0" />
 				管理圈子成员</a>
-			<% if @relationship == "master" %>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</div>
+		<% if @relationship == "master" %>
+			<div class="community_block">
 				<a href="/groups/members_master/<%= @group_id %>">
 					<img src="/images/groups/admin_icon.png" border="0" />
 					设置圈子的管理员</a>
-			<% end %>
-		</div>
+			</div>
+				
+			<div class="community_block">
+				<a href="/groups/post_categories/<%= @group_id %>">
+					<img src="/images/groups/post_category_small.gif" border="0" />
+					管理圈子讨论话题的分类</a>
+			</div>
+		<% end %>
 		
 		<div class="community_block_narrow">
 			<%= thin_hr %>
@@ -51,14 +47,14 @@
 	</div>
 	
 	
-	<div class="community_title">
-		订阅圈子讨论话题 ...
+	<div class="community_block_narrow">
+		<%= thin_hr %>
 	</div>
 
 	<div class="community_block align_c">
 		<br />
 		<a href="/groups/feed/<%= @group_id %>.atom">
-			<img src="/images/feed_icon.gif" border="0" alt="订阅圈子<%= group_name %>的讨论话题" title="订阅圈子<%= group_name %>的讨论话题" /></a>
+			<img src="/images/feed_icon.gif" border="0" alt="订阅全部问题" title="订阅全部问题" /></a>
 	</div>
 
 </div>
@@ -71,33 +67,28 @@
 		<%= h(@group.desc) %>
 	</div>
 	
-	<div class="community_block">
-		<div class="space_section_title">
-			<a class="float_r" title="收起" id="notice_section_expand" href="#" onclick="collapse_section('notice_section'); return false;">
-				<img src="/images/expand.png" border="0" /></a>
-			<a class="float_r" title="展开" id="notice_section_collapse" href="#" onclick="expand_section('notice_section'); return false;" style="display: none">
-				<img src="/images/collapse.png" border="0" /></a>
-			<span class="float_r">
-				圈子创建于 <%= format_date(@group.created_at) %>
+	<% notice = @group_setting[:notice] %>
+	<% if notice && notice != "" %>
+		<div class="community_block">
+			<div class="space_section_title">
+				<a class="float_r" title="收起" id="notice_section_expand" href="#" onclick="collapse_section('notice_section'); return false;">
+					<img src="/images/expand.png" border="0" /></a>
+				<a class="float_r" title="展开" id="notice_section_collapse" href="#" onclick="expand_section('notice_section'); return false;" style="display: none">
+					<img src="/images/collapse.png" border="0" /></a>
+				
+				<img class="float_l" src="/images/groups/notice_small.png" border="0" />
 				&nbsp;&nbsp;&nbsp;
-			</span>
-			
-			<img class="float_l" src="/images/groups/notice_small.png" border="0" />
-			&nbsp;&nbsp;&nbsp;
-			<b>
-				圈子公告
-			</b>
-		</div>
+				<b>
+					公告栏
+				</b>
+			</div>
 		
-		<div id="notice_section" class="community_block_narrow group_notice">
-			<%= textilize_format(@group_setting[:notice]) %>
+			<div id="notice_section" class="community_block_narrow group_notice">
+				<%= textilize_format(notice) %>
+			</div>
 		</div>
-	</div>
+	<% end %>
 	
-	
-	<div class="community_title">
-		最近圈内讨论 ...
-	</div>
 	
 	<div class="community_block">
 		<div class="space_section_title">
@@ -107,22 +98,29 @@
 				<img src="/images/collapse.png" border="0" /></a>
 
 			<span class="float_r">
-				<a href="/group/posts/compose/<%= @group_id %>">发起新的讨论话题</a>
+				<a href="/groups/post/<%= @group_id %>">查看全部问题</a>
+				<% if true %>
+					&nbsp;&nbsp;&nbsp;
+					<a href="#">
+						(查看我的提问)</a>
+				<% end %>
 				&nbsp;&nbsp;&nbsp;
 			</span>
 			
 			<img class="float_l" src="/images/groups/post_small.png" border="0" />
 			&nbsp;&nbsp;&nbsp;
-			<a href="/groups/post/<%= @group_id %>">全部圈内讨论</a>
+			<b>
+				提问列表
+			</b>
 		</div>
 		
 		<div id="post_section">
 			<table cellpadding="0" cellspacing="5" class="main_part_w">
 				<thead>
 					<tr>
-						<td width="51%">话题</td>
-						<td width="6%" align="right">评论</td>
-						<td width="18%" align="right">发起人</td>
+						<td width="51%">问题</td>
+						<td width="6%" align="right">回答</td>
+						<td width="18%" align="right">提问者</td>
 						<td width="25%" align="right">最后参与</td>
 					</tr>
 				</thead>
@@ -131,11 +129,6 @@
 					<%= render :partial => "/groups/group_post", :collection => @group_posts %>
 				</tbody>
 			</table>
-			<% unless @top_group_posts.size + @group_posts.size > 0 %>
-				<div class="form_info_l">
-					还没有讨论话题 ...
-				</div>
-			<% end %>
 		</div>
 	</div>
 	
