@@ -707,7 +707,7 @@ class TalksController < ApplicationController
   def check_talk_publish
     @talk = Talk.get_talk(params[:id])
     
-    jump_to("/errors/forbidden") unless @talk.published || is_info_editor?
+    jump_to("/errors/status/404") unless @talk.published || is_info_editor?
   end
   
 end
