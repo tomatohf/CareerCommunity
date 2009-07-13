@@ -95,9 +95,10 @@
 
 			<span class="float_r">
 				<a href="/groups/post/<%= @group_id %>">查看全部问题</a>
-				<% if true %>
+				<% current_account = session[:account_id] %>
+				<% if current_account && current_account != "" %>
 					&nbsp;&nbsp;&nbsp;
-					<a href="#">
+					<a href="/custom_groups/problem/asked/<%= @group.id %>?account=<%= current_account %>">
 						(查看我的提问)</a>
 				<% end %>
 				&nbsp;&nbsp;&nbsp;

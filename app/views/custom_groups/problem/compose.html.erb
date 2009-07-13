@@ -1,0 +1,130 @@
+<% h_question = @question && h(@question) %>
+
+<% group_name = h(@group.name) %>
+
+<% page_title = "#{group_name} - 提问问题" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/groups/<%= CustomGroups::ProblemController::Problem_Group_ID %>" style="font-size: 15px;">
+			« 返回 <%= group_name %></a>
+	</div>
+
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<br />
+	
+	<div class="community_block_narrow">
+		<% form_tag "/custom_groups/problem/compose/#{@group.id}", :method => :get do %>
+			问题的标题:
+			&nbsp;&nbsp;&nbsp;
+			<input type="text" name="question" id="question_title" class="text_field" value="<%= h_question %>" style="width: 300px; padding: 3px; font-size: 14px;" />
+			&nbsp;&nbsp;&nbsp;
+			<input type="submit" value="确定" class="button" />
+		<% end %>
+	</div>
+	
+	<% if @posts %>
+		<div style="padding: 15px 25px 0px;">
+			<%= thin_hr %>
+		</div>
+		
+		
+		<div class="community_title" style="margin-bottom: 10px;">
+			找到
+			<b>
+				<%= @posts.total_entries || 0 %>
+			</b>
+			条相关的提问,
+			<% if @posts.size > 0 %>
+				看看它们是否能解答您的疑问:
+			<% else %>
+				请继续直接提问:
+			<% end %>
+		</div>
+
+		<% if @posts.size > 0 %>
+			<% @posts.each do |post| %>
+				<div class="problem_item">
+					<a href="/group/posts/<%= post.id %>" target="_blank" class="account_nick_link" style="font-size: 14px;">
+						<%= h(post.title) %></a>
+				</div>
+			<% end %>
+			<div class="community_block">
+				<%= paging_buttons(@posts) %>
+			</div>
+		
+		
+			<div class="community_title">
+				如果没有找到合适的回答, 请继续提问:
+			</div>
+		<% end %>
+		
+		
+		<div class="community_block_narrow">
+			<br />
+			<div class="div_form">
+				<% form_tag "/group/posts", :method => :post, :multipart => true do %>
+
+					<div>
+						<label for="title">
+					        标题(<span style="color: red;">*</span>)
+					    </label>
+					</div>
+					<div>
+						<input type="text" id="title" name="title" class="text_field" size="75" value="<%= h_question %>" />
+					</div>
+
+					<% if @categories && @categories.size > 0 %>
+						<div style="margin: 20px 0px;">
+							<label for="post_category">
+						        选择分类:
+								&nbsp;&nbsp;&nbsp;
+							</label>
+							<select id="post_category" name="post_category" class="dropdown_list">
+								<option value=""></option>
+								<% @categories.each do |category| %>
+									<option value="<%= category.id %>"><%= h(category.name) %></option>
+								<% end %>
+							</select>
+						</div>
+					<% else %>
+						<br />
+					<% end %>
+
+					<div>
+						<label for="content">
+					        内容(<span style="color: red;">*</span>)
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="#" onclick="remove_rich_editor('content'); return false;">使用 普通编辑框</a>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="#" onclick="add_rich_editor('content'); return false;">使用 高级编辑器</a>
+					    </label>
+					</div>
+					<div>
+						<textarea id="content" name="content" class="text_field" cols="75" rows="15"></textarea>
+					</div>
+
+					<br />
+
+					<div>
+						<input type="hidden" name="type_id" value="<%= @group.id %>" />
+						<%= submit_tag "提交问题", :class => "button", :disabled => @account_limited %>
+					</div>
+
+				<% end %>
+			</div>
+		</div>
+		<script language="JavaScript" type="text/javascript" src="/lib/tiny_mce/tiny_mce.js"></script>
+		<script language="JavaScript" type="text/javascript" src="/javascripts/tinymce.js"></script>
+		
+	<% end %>
+	
+</div>
+

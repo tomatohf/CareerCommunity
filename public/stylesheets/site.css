@@ -1983,6 +1983,13 @@ a.order_by_selected {
 	border-bottom: 1px dashed #EAEAEA;
 }
 
+.problem_item {
+	padding-left: 25px;
+	background: transparent url(/images/index/qa_icon.png) no-repeat scroll left center;
+	margin: 2px 0px 2px 20px;
+	border-bottom: 1px dashed #EAEAEA;
+}
+
 
 
 

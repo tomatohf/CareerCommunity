@@ -1,0 +1,56 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "#{group_name} - 我的提问" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	<div class="community_block align_c">
+		<a href="/groups/<%= CustomGroups::ProblemController::Problem_Group_ID %>" style="font-size: 15px;">
+			« 返回 <%= group_name %></a>
+	</div>
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	
+	<div class="community_block align_c">
+		<a href="/custom_groups/problem/compose/<%= @group.id %>" title="我要提问">
+			<img src="/images/problems/add_question_btn.png" border="0" alt="我要提问" /></a>
+	</div>
+
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @posts.total_entries %></b>
+		个提问
+	</div>
+
+	<div class="community_block">
+		<table cellpadding="0" cellspacing="5" class="main_part_w">
+			<thead>
+				<tr>
+					<td width="52%">问题</td>
+					<td width="6%" align="right">回答</td>
+					<td width="19%" align="right">提问者</td>
+					<td width="23%" align="right">最后参与</td>
+				</tr>
+			</thead>
+			<tbody>
+				<%= render :partial => "/groups/group_post", :collection => @posts %>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="community_block">
+		<%= paging_buttons(@posts) %>
+	</div>
+	
+</div>
+
