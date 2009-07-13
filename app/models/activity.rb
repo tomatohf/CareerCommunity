@@ -9,7 +9,7 @@ class Activity < ActiveRecord::Base
     indexes master.nick, :as => :master_nick
 
     # attributes
-    has :created_at, :updated_at, :cost, :member_limit
+    # has :cost, :member_limit
     
     set_property :delta => true
     

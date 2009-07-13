@@ -12,7 +12,7 @@ class GroupPost < ActiveRecord::Base
     indexes comments.account.nick, :as => :comments_account_nick
 
     # attributes
-    has :created_at, :updated_at, :responded_at
+    has :created_at, :updated_at, :responded_at, :group_id
     
     set_property :delta => true
     

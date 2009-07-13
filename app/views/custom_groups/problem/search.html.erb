@@ -1,0 +1,54 @@
+<% group_name = h(@group.name) %>
+
+<% page_title = "搜索#{group_name}" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	
+	<div class="community_block align_c">
+		<a href="/groups/<%= CustomGroups::ProblemController::Problem_Group_ID %>" style="font-size: 15px;">
+			« 返回 <%= group_name %></a>
+	</div>
+
+</div>
+
+<div class="group_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block align_c">
+		<% form_tag "/custom_groups/problem/search/#{@group.id}", :method => :get do %>
+			<input type="text" name="query" id="query_input" class="text_field search_input" value="<%= @query && h(@query) %>" style="width: 300px; padding-top: 2px; padding-bottom: 2px;" />
+			<input type="submit" value="搜索问答" class="button" />
+		<% end %>
+	</div>
+	
+	
+	
+	<div class="community_block_narrow form_info_s">
+		<b>
+			<%= (@posts && @posts.total_entries) || 0 %>
+		</b>
+		条
+	</div>
+
+	<% if @posts %>
+		<div class="community_block">
+			<% @posts.each do |post| %>
+				<% if post %>
+					<%= render :partial => "/community/search_results/grouppost", :locals => {:result => post, :query => @query, :riddle_client => get_riddle_client, :group => @group} %>
+			
+					<div style="padding: 0px 25px">
+						<%= thin_hr %>
+					</div>
+				<% end %>
+			<% end %>
+		</div>
+
+		<div class="community_block">
+			<%= paging_buttons(@posts) %>
+		</div>
+	<% end %>
+	
+</div>
+

@@ -126,6 +126,11 @@ class JobTargetsController < ApplicationController
       
       unless company.save
         @company_from = "new"
+        @industries = Industry.system.find(
+          :all,
+          :include => [:companies]
+        )
+        
         flash.now[:error_msg] = %Q!
           操作失败, 再试一次吧
           <br />

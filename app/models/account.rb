@@ -45,7 +45,7 @@ class Account < ActiveRecord::Base
     indexes profile_jobs.description, :as => :job_description
 
     # attributes
-    has :created_at, :updated_at, :checked, :active, :enabled
+    has :checked, :active, :enabled
     
     set_property :delta => true
     
