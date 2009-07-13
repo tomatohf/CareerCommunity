@@ -91,10 +91,11 @@ class JobTargetsController < ApplicationController
     if @query && @query != ""
       page = params[:page]
       page = 1 unless page =~ /\d+/
-      @found_system_companies = Company.system.search(
+      @found_system_companies = Company.search(
         @query,
         :page => page,
         :per_page => JobItemsController::Item_Page_Size,
+        :conditions => { :account_id => 0 },
         :match_mode => JobItemsController::Search_Match_Mode,
         :order => JobItemsController::Search_Sort_Order,
         :field_weights => JobItemsController::Search_Field_Weights
@@ -155,10 +156,11 @@ class JobTargetsController < ApplicationController
     if @query && @query != ""
       page = params[:page]
       page = 1 unless page =~ /\d+/
-      @found_system_job_positions = JobPosition.system.search(
+      @found_system_job_positions = JobPosition.search(
         @query,
         :page => page,
         :per_page => JobItemsController::Item_Page_Size,
+        :conditions => { :account_id => 0 },
         :match_mode => JobItemsController::Search_Match_Mode,
         :order => JobItemsController::Search_Sort_Order,
         :field_weights => JobItemsController::Search_Field_Weights
@@ -694,10 +696,11 @@ class JobTargetsController < ApplicationController
     if @query && @query != ""
       page = params[:page]
       page = 1 unless page =~ /\d+/
-      @found_system_companies = item_class.system.search(
+      @found_system_companies = item_class.search(
         @query,
         :page => page,
         :per_page => JobItemsController::Item_Page_Size,
+        :conditions => { :account_id => 0 },
         :match_mode => JobItemsController::Search_Match_Mode,
         :order => JobItemsController::Search_Sort_Order,
         :field_weights => JobItemsController::Search_Field_Weights

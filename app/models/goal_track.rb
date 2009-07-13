@@ -13,7 +13,7 @@ class GoalTrack < ActiveRecord::Base
     indexes comments.account.nick, :as => :comments_account_nick
 
     # attributes
-    has :created_at, :updated_at, :goal_follow_id, :goal_id, :value
+    has :created_at
     
     set_property :delta => true
     

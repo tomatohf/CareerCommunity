@@ -8,7 +8,7 @@ class JobInfo < ActiveRecord::Base
     indexes :title, :content
 
     # attributes
-    has :created_at, :updated_at, :creator_id, :updater_id, :general
+    has :created_at
     
     set_property :delta => true
     

@@ -9,7 +9,7 @@ class Group < ActiveRecord::Base
     indexes master.nick, :as => :master_nick
 
     # attributes
-    has :created_at, :updated_at
+    has :created_at
     
     set_property :delta => true
     

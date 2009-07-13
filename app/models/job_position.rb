@@ -8,7 +8,7 @@ class JobPosition < ActiveRecord::Base
     indexes :name, :desc
 
     # attributes
-    has :created_at, :updated_at, :account_id
+    has :account_id, :created_at
     
     set_property :delta => true
     

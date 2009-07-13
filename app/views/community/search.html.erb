@@ -20,7 +20,8 @@
 			[:talk, "访谈录"],
 			[:goal, "目标"],
 			[:goal_post, "目标话题"],
-			[:goal_track, "目标进度"]
+			[:goal_track, "目标进度"],
+			[:company_post, "公司讨论区"]
 		]
 	%>
 	<div class="community_block">
@@ -140,7 +141,7 @@
 	
 		<div class="community_block_narrow form_info_s">
 			<b>
-				<%= @results ? @results.total_entries : 0 %>
+				<%= (@results && @results.total_entries) || 0 %>
 			</b>
 			条
 		</div>

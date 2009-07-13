@@ -13,7 +13,7 @@ class VoteTopic < ActiveRecord::Base
     indexes comments.account.nick, :as => :comments_account_nick
 
     # attributes
-    has :created_at, :updated_at, :multiple, :allow_add_option, :allow_clear_record
+    has :created_at
     
     set_property :delta => true
     

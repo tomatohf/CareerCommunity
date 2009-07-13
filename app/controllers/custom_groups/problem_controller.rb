@@ -29,7 +29,7 @@ class CustomGroups::ProblemController < CustomGroups::FeedbackController
           :comments_account_nick => 1
         },
         :include => [:account => [:profile_pic]],
-        :conditions => {:group_id => @group.id}
+        :conditions => { :group_id => @group.id }
       )
     end
   end

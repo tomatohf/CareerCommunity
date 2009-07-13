@@ -13,7 +13,7 @@ class GoalPost < ActiveRecord::Base
     indexes comments.account.nick, :as => :comments_account_nick
 
     # attributes
-    has :created_at, :updated_at, :responded_at
+    has :responded_at
     
     set_property :delta => true
     

@@ -6,7 +6,7 @@ class Recruitment < ActiveRecord::Base
     indexes recruitment_tags.name, :as => :recruitment_tags_name
 
     # attributes
-    has :created_at, :updated_at, :recruitment_type, :publish_time
+    has :recruitment_type, :publish_time
     
     set_property :delta => true
     

@@ -5,7 +5,7 @@ class Exp < ActiveRecord::Base
     indexes :title, :content
 
     # attributes
-    has :created_at, :publish_time, :active, :account_id
+    has :publish_time
     
     set_property :delta => true
     

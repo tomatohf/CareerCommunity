@@ -106,10 +106,11 @@ class JobItemsController < ApplicationController
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    @items = get_item_class.system.search(
+    @items = get_item_class.search(
       @item_tip,
       :page => page,
       :per_page => Item_Page_Size,
+      :conditions => { :account_id => 0 },
       :match_mode => Search_Match_Mode,
       :order => Search_Sort_Order,
       :field_weights => Search_Field_Weights
@@ -126,10 +127,11 @@ class JobItemsController < ApplicationController
     page = 1 unless page =~ /\d+/
     
     if @query && @query != ""
-      @industries = Industry.system.search(
+      @industries = Industry.search(
         @query,
         :page => page,
         :per_page => Item_Page_Size,
+        :conditions => { :account_id => 0 },
         :match_mode => Search_Match_Mode,
         :order => Search_Sort_Order,
         :field_weights => Search_Field_Weights
@@ -257,10 +259,11 @@ class JobItemsController < ApplicationController
     page = 1 unless page =~ /\d+/
     
     if @query && @query != ""
-      @items = @item_type.camelize.constantize.system.search(
+      @items = @item_type.camelize.constantize.search(
         @query,
         :page => page,
         :per_page => Item_Page_Size,
+        :conditions => { :account_id => 0 },
         :match_mode => Search_Match_Mode,
         :order => Search_Sort_Order,
         :field_weights => Search_Field_Weights

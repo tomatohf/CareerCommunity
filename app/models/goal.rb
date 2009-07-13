@@ -9,7 +9,7 @@ class Goal < ActiveRecord::Base
     indexes :name
 
     # attributes
-    has :created_at, :updated_at, :account_id, :deprecated
+    has :created_at
     
     set_property :delta => true
     
