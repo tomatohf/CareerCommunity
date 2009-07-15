@@ -900,11 +900,9 @@ class GroupsController < ApplicationController
     group_setting = {
       :notice => group_notice
     }
-    if ApplicationController.helpers.superadmin?(session[:account_id])
-      @group.custom_key = params[:custom_key] && params[:custom_key].strip
-    end
-    
     @group.update_setting(group_setting)
+    
+    @group.custom_key = params[:custom_key] && params[:custom_key].strip if ApplicationController.helpers.superadmin?(session[:account_id])
     
     
     if @group.save
