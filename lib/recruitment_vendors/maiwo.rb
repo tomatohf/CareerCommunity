@@ -169,7 +169,15 @@ module RecruitmentVendor
       content_xpath = "//div[@id='item_content']"
       content_div = doc.search(content_xpath)
       
-      center = content_div.search("/center")[0]
+      centers = content_div.search("/center")
+      
+      unless centers.size > 0
+        r.title = ""
+        r.content = ""
+        return r
+      end
+      
+      center = centers[0]
       center_html = center.inner_html
       the_times = center_html.scan(/\d\d\d\d-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}/)
       r.publish_time = the_times.size > 0 ? the_times[0] : DateTime.now
