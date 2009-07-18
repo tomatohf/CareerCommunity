@@ -18,4 +18,14 @@ class BlogComment < ActiveRecord::Base
   Count_Cache_Group_Field = :blog_id
   include CareerCommunity::CountCacheable
   
+  
+  
+  after_destroy { |blog_comment|
+    PointProfile.adjust_account_points_by_action(blog_comment.account_id, :add_blog_comment, false)
+  }
+  
+  after_create { |blog_comment|
+    PointProfile.adjust_account_points_by_action(blog_comment.account_id, :add_blog_comment, true)
+  }
+  
 end

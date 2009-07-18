@@ -121,14 +121,12 @@ Improve new vote topic performance
 
 服务器运行情况报告
 性能监测
-	http://www.newrelic.com (目前不支持 Lighttpd + fcgi)
+	http://www.newrelic.com (目前支持 Lighttpd + fcgi, 但是需要更新的 rails 版本)
 	
 在设置里面自定义我的空间的内容的显示规则
 
 寻找 MSN Gtalk 好友
 邀请 MSN Gtalk 好友注册
-
-enable 投票客户端, 放到工具箱里面
 
 
 
@@ -176,13 +174,6 @@ Ruby Patch of the GC for Rails
 	
 enable mod_deflate to replace rails output compress plugin
 	- upgrade lighttpd to 1.5
-	
-	
-	
-
-
-好友动态 & 系统消息
-	显示的时候 用户查询的 N+1 问题
 
 	
 
