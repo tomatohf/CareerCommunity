@@ -187,7 +187,7 @@ div.auto_complete ul li {
 
 #top_bar {
 	margin-bottom: 10px;
-	border-bottom: 1px solid #B2B2B2;
+	border-bottom: 1px solid #EAEAEA;
 	
 	font-size: 13px;
 }
@@ -234,6 +234,32 @@ div.auto_complete ul li {
 
 #top_bar_right {
 	margin-right: 30px;
+}
+
+#top_bar_left #top_bar_more_menu {
+	position: absolute;
+	
+	text-align: left;
+	
+	background-color: #FDFDFD;
+	border-top: 1px solid #F0E0CF;
+	border-left: 1px solid #F0E0CF;
+	border-bottom: 1px solid #E0B0BE;
+	border-right: 1px solid #E0B0BE;
+	
+	z-index: 2009;
+}
+
+#top_bar_left #top_bar_more_menu a {
+	display: block;
+	line-height: 18px;
+	padding: 5px 10px 5px 18px;
+	text-decoration: none;
+	background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll 8px center;
+}
+
+#top_bar_left #top_bar_more_menu a:hover {
+	text-decoration: underline;
 }
 
 #bottom_links {

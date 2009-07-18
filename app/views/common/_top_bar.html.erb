@@ -4,27 +4,29 @@
 			<a href="/">乔布堂</a>
 			<a href="/coach">乔布教练</a>
 			<a href="/community">乔布圈</a>
-			
-			&nbsp;
-			<span>
-				(
+			<span style="margin-left: 6px;">
+				<span id="top">|</span>
 				<!--
 				<label for="top_bar_more">更多</label>
 				<input id="top_bar_more" type="checkbox" onclick="var display = 'none';if(this.checked){display=''};document.getElementById('top_bar_more_links').style.display=display;" />
 				-->
 				<span id="top_bar_more_links" style="display: ">
 					<a href="/blogs">博客</a>
+					<a href="/groups/all">圈子</a>
+					<a href="/talks">访谈录</a>
+					<a href="/job_targets">求职管家</a>
+					<a href="#" onclick="var more_menu_div = document.getElementById('top_bar_more_menu'); if(more_menu_div.style.display == 'none'){more_menu_div.style.display = ''; more_menu_div.style.left = (this.offsetLeft - 2) + 'px'; more_menu_div.style.top = (this.offsetTop + this.offsetHeight + 2) + 'px';}else{more_menu_div.style.display = 'none'}; return false;">更多<small style="margin-left: 2px;">▼</small></a>
+				</span>
+				<div id="top_bar_more_menu" style="display: none;">
 					<a href="/activities/all">活动</a>
 					<a href="/votes">投票</a>
-					<a href="/groups/all">圈子</a>
 					<a href="/recruitments">招聘信息</a>
 					<a href="/exps">面经</a>
-					<a href="/talks">访谈录</a>
 					<a href="/job_services">求职导航</a>
+					<a href="/goals">目标进度</a>
 					<a href="/career_tests">测评</a>
 					<a href="/groups/<%= CustomGroups::ProblemController::Problem_Group_ID %>">问答</a>
-				</span>
-				<span id="top">)</span>
+				</div>
 			</span>
 		</nobr>
 	</div>
