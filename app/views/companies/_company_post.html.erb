@@ -19,7 +19,7 @@
 				company = Company.get_company(company_post.company_id)
 				company_name = h(company.name)
 			%>
-			<a href="/companies/post/<%= company_post.company_id %>" title="<%= company_name %>" class="account_nick_link form_info_s">(<%= truncate(company_name) %>)</a>
+			<a href="/companies/show/<%= company_post.company_id %>" title="<%= company_name %>" class="account_nick_link form_info_s">(<%= truncate(company_name) %>)</a>
 			<br />
 			&nbsp;&nbsp;&nbsp;
 		<% end %>

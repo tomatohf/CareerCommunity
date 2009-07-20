@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 65) do
+ActiveRecord::Schema.define(:version => 66) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -388,6 +388,19 @@ ActiveRecord::Schema.define(:version => 65) do
   add_index "company_posts", ["company_id", "top", "responded_at"], :name => "index_company_posts_on_company_id_and_top_and_responded_at"
   add_index "company_posts", ["company_id", "good", "top", "responded_at"], :name => "index_company_posts_on_company_good_top_responded"
   add_index "company_posts", ["account_id", "responded_at"], :name => "index_company_posts_on_account_id_and_responded_at"
+
+  create_table "company_profiles", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "company_id", :limit => 11
+    t.integer  "creator_id", :limit => 11
+    t.integer  "updater_id", :limit => 11
+    t.integer  "photo_id",   :limit => 11
+    t.text     "info"
+    t.boolean  "delta"
+  end
+
+  add_index "company_profiles", ["company_id"], :name => "index_company_profiles_on_company_id"
 
   create_table "contact_profiles", :force => true do |t|
     t.integer  "account_id", :limit => 11

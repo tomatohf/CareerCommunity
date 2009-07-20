@@ -20,6 +20,8 @@ class Photo < ActiveRecord::Base
   
   has_many :vote_image, :class_name => "VoteImage", :foreign_key => "photo_id", :dependent => :destroy
   
+  has_one :company_profile, :class_name => "CompanyProfile", :foreign_key => "photo_id", :dependent => :nullify
+  
   
   
   FCKP_spaces_show_photo = :fc_spaces_show_photo

@@ -17,6 +17,8 @@ class Company < ActiveRecord::Base
   
   
   
+  has_one :profile, :class_name => "CompanyProfile", :foreign_key => "company_id", :dependent => :destroy
+  
   has_and_belongs_to_many :talks,
                           :foreign_key => "company_id",
                           :association_foreign_key => "talk_id",

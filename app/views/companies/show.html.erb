@@ -1,0 +1,197 @@
+<% company_name = h(@company.name) %>
+
+<% page_title = company_name %>
+<% community_page_title(page_title) %>
+
+<div class="float_r group_container_r">
+	<% if @photo %>
+		<div class="community_block align_c">
+			<img src="<%= face_img_src(@photo.image.url(:thumb_200)) %>" border="0" />
+		</div>
+	
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+	<% end %>
+	
+	
+	<% if @industries.size > 0 %>
+		<div class="community_block">
+			<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+				<tr>
+					<td style="width: 60px;">
+						所在行业
+					</td>
+				
+					<td>
+						<% @industries.each do |industry| %>
+							<a href="#" target="_blank">
+								<%= h(industry.name) %></a>
+							
+							&nbsp;&nbsp;
+						<% end %>
+					</td>
+				</tr>
+			</table>
+		</div>
+	<% end %>
+	
+	<% if @info %>
+		<%
+			CompanyProfile::Properties.each do |property|
+			value = @info[property[0]]
+		%>
+			<% if value && value != "" %>
+				<div class="community_block">
+					<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+						<tr>
+							<td style="width: 60px;">
+								<%= property[1] %>
+							</td>
+							
+							<td>
+								<%= value %>
+							</td>
+						</tr>
+					</table>
+				</div>
+			<% end %>
+		<% end %>
+	<% end %>
+	
+	
+	<% if general_admin?(session[:account_id]) %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+		
+		<div class="community_block align_c">
+			<a href="/companies/edit_property/<%= @company.id %>">
+				编辑公司信息</a>
+		</div>
+	<% end %>
+	
+	
+	<div class="community_title">
+		订阅圈子讨论话题 ...
+	</div>
+
+	<div class="community_block align_c">
+		<br />
+		<a href="/companies/feed/<%= @company.id %>.atom">
+			<img src="/images/feed_icon.gif" border="0" alt="订阅公司<%= company_name %>的讨论话题" title="订阅公司<%= company_name %>的讨论话题" /></a>
+	</div>
+	
+</div>
+
+<div class="group_container_l">
+	<div class="float_r">
+		<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/companies/show/#{@company.id}", :title => "公司讨论区: #{company_name}"} %>
+	</div>
+	
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block">
+		
+	</div>
+	
+	
+	<div class="community_title">
+		最近公司讨论话题 ...
+	</div>
+	<div class="community_block">
+		<div class="space_section_title">
+			<a class="float_r" title="收起" id="post_section_expand" href="#" onclick="collapse_section('post_section'); return false;">
+				<img src="/images/expand.png" border="0" /></a>
+			<a class="float_r" title="展开" id="post_section_collapse" href="#" onclick="expand_section('post_section'); return false;" style="display: none">
+				<img src="/images/collapse.png" border="0" /></a>
+			
+			<span class="float_r form_info_s">
+				<a href="/company/posts/compose/<%= @company.id %>">发起新的讨论话题</a>
+			
+				&nbsp;&nbsp;&nbsp;
+			</span>
+		
+			<img class="float_l" src="/images/groups/post_small.png" border="0" />
+			&nbsp;&nbsp;&nbsp;
+			<a href="/companies/post/<%= @company.id %>">全部公司讨论话题</a>
+			
+			&nbsp;&nbsp;&nbsp;
+			<a href="/companies/good_post/<%= @company.id %>">(查看精华区)</a>
+		</div>
+	
+		<div id="post_section">
+			<div style="padding: 0px 5px;">
+				<a href="/groups/1" target="_blank" class="form_info_s account_nick_link">
+					举报话题内容, 或申请置顶,放入精华区等管理操作, 请到 乔布圈反馈小组</a>
+			</div>
+			
+			<table cellpadding="0" cellspacing="5" class="main_part_w">
+				<thead>
+					<tr>
+						<td width="51%">话题</td>
+						<td width="6%" align="right">回帖</td>
+						<td width="18%" align="right">发起人</td>
+						<td width="25%" align="right">最后参与</td>
+					</tr>
+				</thead>
+				<tbody>
+					<%= render :partial => "/groups/group_post", :collection => @top_posts %>
+					<%= render :partial => "/groups/group_post", :collection => @posts %>
+				</tbody>
+			</table>
+			<% unless @top_posts.size + @posts.size > 0 %>
+				<div class="form_info_l">
+					还没有讨论话题 ...
+				</div>
+			<% end %>
+		</div>
+	</div>
+	
+	
+	<% if @exps.size > 0 %>
+		<div class="community_title">
+			公司的面经 ...
+		</div>
+		<div class="community_block">
+			<div class="space_section_title">
+				<a class="float_r" title="收起" id="exp_section_expand" href="#" onclick="collapse_section('exp_section'); return false;">
+					<img src="/images/expand.png" border="0" /></a>
+				<a class="float_r" title="展开" id="exp_section_collapse" href="#" onclick="expand_section('exp_section'); return false;" style="display: none">
+					<img src="/images/collapse.png" border="0" /></a>
+			
+				<img class="float_l" src="/images/index/exp_icon.gif" border="0" width="20" height="20" />
+				&nbsp;&nbsp;&nbsp;
+				<a href="#">全部面经</a>
+			</div>
+		</div>
+		<div id="exp_section" class="overflow_hidden">
+			<%# puts company exps here ... %>
+		</div>
+	<% end %>
+	
+</div>
+
+
+
+<script language="JavaScript">
+	function expand_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "";
+		document.getElementById(expand_icon).style.display = "";
+		document.getElementById(collapse_icon).style.display = "none";
+	}
+	
+	function collapse_section(div_id) {
+		var expand_icon = div_id + "_expand";
+		var collapse_icon = div_id + "_collapse";
+		
+		document.getElementById(div_id).style.display = "none";
+		document.getElementById(expand_icon).style.display = "none";
+		document.getElementById(collapse_icon).style.display = "";
+	}
+</script>
+
