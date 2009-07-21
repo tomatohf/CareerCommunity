@@ -147,6 +147,17 @@ class CompaniesController < ApplicationController
     )
   end
   
+  def industry
+    industry_id = params[:id]
+    
+    all
+    
+    filter_industries = @industries.select { |industry| industry.id.to_s == industry_id }
+    return jump_to("/errors/forbidden") unless filter_industries.size > 0 && (@industry = filter_industries[0]).account_id == 0
+    
+    render :action => "all"
+  end
+  
   
   private
   

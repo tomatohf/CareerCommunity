@@ -1,10 +1,11 @@
 <% page_title = "全部公司讨论区导航" %>
+<% page_title = "#{h(@industry.name)} 行业讨论区导航" if @industry %>
 <% community_page_title(page_title) %>
 
 
 <div class="float_r blog_container_r">
 	
-	<div class="community_block align_c">
+	<div class="community_block">
 		<a href="/companies">
 			返回公司讨论区首页</a>
 	</div>
@@ -13,7 +14,7 @@
 		<%= thin_hr %>
 	</div>
 
-	<div class="community_block align_c">
+	<div class="community_block">
 		<a href="/job_targets" style="font-size: 14px;">
 			<img src="/images/index/job_targets_icon.png" border="0" />
 			去我的求职管家</a>
@@ -23,6 +24,18 @@
 	<div class="community_title">
 		按行业查看 ...
 	</div>
+	<div class="company_industry">
+		<a href="/companies/all"<%= %Q! class="selected_industry"! unless @industry %>>
+			查看全部</a>
+	</div>
+	<% @industries.each do |industry| %>
+		<% if industry.companies.size > 0 %>
+			<div class="company_industry">
+				<a href="/companies/industry/<%= industry.id %>"<%= %Q! class="selected_industry"! if @industry && @industry.id == industry.id %>>
+					<%= h(industry.name) %></a>
+			</div>
+		<% end %>
+	<% end %>
 	
 </div>
 
@@ -30,13 +43,14 @@
 	<h2><%= page_title %></h2>
 	
 	
-	<% @industries.each do |industry| %>
+	<% display_industries = @industry ? [@industry] : @industries %>
+	<% display_industries.each do |industry| %>
 		<% companies = industry.companies %>
 		<% if companies.size > 0 %>
 			<div class="community_block overflow_hidden">
 				
 				<div class="company_disscussion_industry">
-					<%= h(industry.name) %>
+					<strong><%= h(industry.name) %></strong>
 				</div>
 
 				<div>

@@ -260,6 +260,7 @@ div.auto_complete ul li {
 
 #top_bar_left #top_bar_more_menu a:hover {
 	text-decoration: underline;
+	background-color: #FFF5E8;
 }
 
 #bottom_links {
@@ -2004,7 +2005,7 @@ a.order_by_selected {
 	margin: 5px;
 	width: 170px;
 	padding-left: 10px;
-	background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left center;
+	background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 7px;
 	padding-bottom: 5px;
 	border-bottom: 1px dashed #EAEAEA;
 }
@@ -2014,6 +2015,30 @@ a.order_by_selected {
 	background: transparent url(/images/index/qa_icon.png) no-repeat scroll left center;
 	margin: 2px 0px 2px 20px;
 	border-bottom: 1px dashed #EAEAEA;
+}
+
+.company_industry {
+	font-size: 13px;
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+.company_industry a {
+	padding-left: 5px;
+	margin-right: 10px;
+	text-decoration: none;
+}
+
+.company_industry a:hover {
+	text-decoration: underline;
+}
+
+.company_industry a.selected_industry {
+	background-color: #EEEEEE;
+	border: 1px solid #E2E2E2;
+	display: block;
+	font-weight: bold;
+	padding: 2px 5px 0px;
 }
 
 
