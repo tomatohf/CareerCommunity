@@ -672,7 +672,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/career_tests/history/:id/:test_id/p/:page", :controller => "career_tests", :action => "history", :id => /\d+/, :test_id => /\d+/, :page => /\d+/
   
   
-  map.connect "/companies/:id", :controller => "companies", :action => "post", :id => /\d+/
+  map.connect "/companies/:id", :controller => "companies", :action => "show", :id => /\d+/
   map.connect "/companies/p/:page", :controller => "companies", :action => "index", :page => /\d+/
   map.connect "/companies/post/:id/:page", :controller => "companies", :action => "post", :id => /\d+/, :page => /\d+/
   map.connect "/companies/good_post/:id/:page", :controller => "companies", :action => "good_post", :id => /\d+/, :page => /\d+/
