@@ -17,10 +17,11 @@ class CompanyProfile < ActiveRecord::Base
   
   Properties = [
 		[:company_type, "公司类型"],
-		[:establish_at, "成立时间"],
+		[:establish_at, "成立"],
 		[:product, "代表产品"],
-		
-		[:website, "公司网站"]
+		[:headquarter, "总部地点"],
+		[:slogan, "口号"],
+		[:website, "网站"]
 	]
   
   

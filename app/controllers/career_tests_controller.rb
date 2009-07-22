@@ -15,8 +15,6 @@ class CareerTestsController < ApplicationController
   
   
   def index
-    return jump_to("/career_tests/show/1")
-    
     @tests = CareerTest.find(:all)
     
     @has_login = has_login?
