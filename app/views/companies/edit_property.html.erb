@@ -1,0 +1,51 @@
+<% company_name = h(@company.name) %>
+
+<% page_title = "编辑公司 #{company_name} 的信息" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r album_container_r">
+	
+</div>
+
+<div class="album_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow">
+		
+		<% if flash[:message] %>
+			<p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @profile.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@profile) %>
+			</p>
+		<% end %>
+		
+		<div class="div_form">
+			<% form_tag "/companies/update_property/#{@profile.id}", :method => :post do %>
+			
+				<div>
+					<table cellpadding="0" cellspacing="10" class="main_part_w">
+						<tr>
+							<td style="width: 80px">
+								<label for="activity_online">
+					                <b>这是线上活动</b>
+									:
+					            </label>
+							</td>
+							<td>
+								
+							</td>
+						</tr>
+					</table>
+				</div>
+			
+			<% end %>
+		</div>
+		
+	</div>
+	
+</div>

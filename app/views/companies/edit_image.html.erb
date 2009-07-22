@@ -1,0 +1,94 @@
+<% company_name = h(@company.name) %>
+
+<% page_title = "设置公司 #{company_name} 的图标" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r profile_container_r">
+	<div class="community_block">
+		<a href="/companies/show/<%= @company.id %>">返回公司 <%= company_name %></a>
+	</div>
+</div>
+
+<div class="profile_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_title">
+		从相册中选择一张图片作为公司的图标 ...
+	</div>
+	
+	<div class="community_block_narrow">
+
+		<div id="error_msg" style="display: none"></div>
+		<div id="info_msg" style="display: none"></div>
+
+	</div>
+	
+	<div class="community_block_narrow">
+		<% form_tag "/companies/update_image/#{@company.id}", :method => :post, :onsubmit => "on_company_img_submit(this); return false;" do %>
+			<span id="current_pic_label">公司当前图标:</span>
+			<div class="pic_profile_current_pic_photo">
+				<img id="current_img" src="<%= face_img_src(@company_image) %>" border="0" />
+				<input id="photo_id" name="photo_id" type="hidden" value="" />
+			</div>
+			
+			<p class="form_info_l">
+				选定一个相册, 然后选择你想用作公司图标的图片
+			</p>
+			
+			<input type="submit" id="save_img_button" value="保存公司图标" class="button" disabled="true" />
+			&nbsp;&nbsp;&nbsp;
+			<img src="/images/loading_small.gif" id="saving_indicator" style="display: none" />
+			&nbsp;&nbsp;&nbsp;
+			或者, 先去 <a href="/albums">相册</a> 上传想用作公司图标的图片
+		<% end %>
+	</div>
+	
+	<br />
+	
+	<div class="community_block_narrow" id="photo_selector_container">
+		<img src="/images/loading_small.gif" />
+		正在加载 相册 ...
+	</div>
+</div>
+
+<script language="JavaScript" src="/lib/protopack/protoculous-effects-packer.js"></script>
+<script type="text/javascript" src="/javascripts/photo_selector.js"></script>
+
+<script language="JavaScript">
+	new Ajax.Updater(
+        "photo_selector_container",
+        "/companies/photo_selector_for_company_image",
+        {
+            asynchronous:true,
+            evalScripts:true,
+			method: "get"
+        }
+    );
+	
+	function on_photo_selected(photo_id, img_src){
+		$("photo_id").value = photo_id;
+		$("current_img").src = img_src;
+		$("save_img_button").disabled = <%= @account_limited.to_s %>;
+	}
+	
+	function on_company_img_submit(company_img_form){
+		$("save_img_button").disabled = true;
+		Element.show("saving_indicator");
+		
+		new Ajax.Request(
+            "/companies/update_image/<%= @company.id %>",
+            {
+            	asynchronous:true,
+                evalScripts:true,
+                onComplete:function(request){
+					Element.hide("saving_indicator");
+				},
+                //onLoading:function(request){},
+				method:"post",
+                parameters:Form.serialize(company_img_form)
+            }
+        );
+
+	}
+</script>
+

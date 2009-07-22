@@ -7,10 +7,12 @@ class CompaniesController < ApplicationController
   
   layout "community"
   
-  before_filter :check_login, :only => [:edit_property, :update_property]
-  before_filter :check_limited, :only => [:update_property]
+  before_filter :check_login, :only => [:edit_property, :update_property,
+                                        :edit_image, :update_image]
+  before_filter :check_limited, :only => [:update_property, :update_image]
   
-  before_filter :check_general_admin, :only => [:edit_property, :update_property]
+  before_filter :check_general_admin, :only => [:edit_property, :update_property,
+                                                :edit_image, :update_image]
   
   
   
@@ -90,11 +92,30 @@ class CompaniesController < ApplicationController
   end
   
   def edit_property
+    @company = Company.get_company(params[:id])
     
+    @profile = CompanyProfile.get_profile(@company.id) || CompanyProfile.new(:company_id => @company.id)
   end
   
   def update_property
     
+  end
+  
+  def edit_image
+    @company = Company.get_company(params[:id])
+    
+    profile = CompanyProfile.get_profile(@company.id) || CompanyProfile.new(:company_id => @company.id)
+    
+    @company_image = profile.photo_id && Photo.get_photo(profile.photo_id).image.url(:thumb_48)
+  end
+  
+  def update_image
+    
+  end
+  
+  def photo_selector_for_company_image
+    albums = Album.get_all_names_by_account_id(session[:account_id])
+    render :partial => "/albums/photo_selector", :locals => {:albums => albums, :photo_list_template => "/profiles/album_photo_list_for_face"}
   end
   
   def post

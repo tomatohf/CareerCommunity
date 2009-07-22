@@ -3,13 +3,10 @@ class CreateCompanyProfiles < ActiveRecord::Migration
     
     # company_profiles table
     create_table :company_profiles, :force => true do |t|
-      t.column :created_at, :datetime
       t.column :updated_at, :datetime
+      t.column :updater_id, :integer
       
       t.column :company_id, :integer
-      
-      t.column :creator_id, :integer
-      t.column :updater_id, :integer
       
       t.column :photo_id, :integer
       t.column :info, :text

@@ -845,7 +845,7 @@ class GroupsController < ApplicationController
   
   def photo_selector_for_group_image
     albums = Album.get_all_names_by_account_id(session[:account_id])
-    render :partial => "albums/photo_selector", :locals => {:albums => albums, :photo_list_template => "/profiles/album_photo_list_for_face"}
+    render :partial => "/albums/photo_selector", :locals => {:albums => albums, :photo_list_template => "/profiles/album_photo_list_for_face"}
   end
   
   def post_categories
