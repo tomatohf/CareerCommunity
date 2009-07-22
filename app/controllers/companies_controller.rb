@@ -105,7 +105,7 @@ class CompaniesController < ApplicationController
     CompanyProfile::Properties.each do |property|
       company_info[property[0]] = params[property[0]] && params[property[0]].strip
     end
-    company_info[:desc] = params[:company_desc] && params[:company_desc].strip
+    company_info[:desc] = params[:company_desc]
     @profile.update_info(company_info)
     
     if @profile.save
