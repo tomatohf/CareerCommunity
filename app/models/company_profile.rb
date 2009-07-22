@@ -11,7 +11,7 @@ class CompanyProfile < ActiveRecord::Base
   belongs_to :photo, :class_name => "Photo", :foreign_key => "photo_id"
   
   
-  validates_presence_of :company_id, :creator_id, :updater_id, :photo_id
+  validates_presence_of :company_id, :updater_id
   
   
   
@@ -20,7 +20,7 @@ class CompanyProfile < ActiveRecord::Base
 		[:establish_at, "成立时间"],
 		[:product, "代表产品"],
 		
-		[:website, "网站"]
+		[:website, "公司网站"]
 	]
   
   

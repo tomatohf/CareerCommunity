@@ -2041,6 +2041,23 @@ a.order_by_selected {
 	padding: 2px 5px 0px;
 }
 
+.company_properties {
+	font-size: 13px;
+}
+
+.company_properties p {
+	margin: 0px;
+	padding: 0px;
+}
+
+.company_properties a {
+	text-decoration: none;
+}
+
+.company_properties a:hover {
+	text-decoration: underline;
+}
+
 
 
 

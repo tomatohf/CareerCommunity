@@ -36,7 +36,8 @@
 			<% @companies.each do |company| %>
 				<% form_tag "/company/job_items/#{@talk.id}/del_job_item", :method => :post, :onsubmit => "if(confirm('确定要删除此公司么 ?')) { return true; }; return false;" do %>
 					<span style="font-size: 14px; font-weight: bold;" title="<%= h(company.desc) %>">
-						<%= h(company.name) %>
+						<a href="/companies/show/<%= company.id %>" target="_blank" class="account_nick_link">
+							<%= h(company.name) %></a>
 					</span>
 
 					<input type="hidden" name="item_id" value="<%= company.id %>" />

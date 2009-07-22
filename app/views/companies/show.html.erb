@@ -15,59 +15,48 @@
 	<% end %>
 	
 	
-	<% if @industries.size > 0 %>
-		<div class="community_block">
-			<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+	<div class="community_block company_properties">
+		<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+			<% if @industries.size > 0 %>
 				<tr>
-					<td style="width: 60px;">
-						所在行业
+					<td style="width: 60px;" align="right" valign="top">
+						<strong>所在行业</strong>
 					</td>
-				
+					
+					<td style="width: 10px;">&nbsp;</td>
+
 					<td>
 						<% @industries.each do |industry| %>
 							<a href="/companies/industry/<%= industry.id %>" target="_blank">
 								<%= h(industry.name) %></a>
-							
+
 							&nbsp;&nbsp;
 						<% end %>
 					</td>
 				</tr>
-			</table>
-		</div>
-	<% end %>
-	
-	<% if @info %>
-		<%
-			CompanyProfile::Properties.each do |property|
-			value = @info[property[0]]
-		%>
-			<% if value && value != "" %>
-				<div class="community_block">
-					<table border="0" cellspacing="5" cellpadding="0" class="main_part_w">
+			<% end %>
+			
+			<% if @info %>
+				<%
+					CompanyProfile::Properties.each do |property|
+					value = @info[property[0]]
+				%>
+					<% if value && value != "" %>
 						<tr>
-							<td style="width: 60px;">
-								<%= property[1] %>
+							<td style="width: 60px;" align="right" valign="top">
+								<strong><%= property[1] %></strong>
 							</td>
 							
+							<td style="width: 10px;">&nbsp;</td>
+
 							<td>
-								<%= value %>
+								<%= textilize_format(value) %>
 							</td>
 						</tr>
-					</table>
-				</div>
+					<% end %>
+				<% end %>
 			<% end %>
-		<% end %>
-	<% end %>
-	
-	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
-	
-	<div class="community_block align_c">
-		<a href="/company/posts/compose/<%= @company.id %>" style="font-size: 14px;">
-			<img src="/images/groups/add_post_small.png" border="0" />
-			发起新的讨论话题</a>
+		</table>
 	</div>
 	
 	
@@ -86,6 +75,17 @@
 				设置公司图标</a>
 		</div>
 	<% end %>
+	
+	
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+	<div class="community_block align_c">
+		<a href="/company/posts/compose/<%= @company.id %>" style="font-size: 14px;">
+			<img src="/images/groups/add_post_small.png" border="0" />
+			发起新的讨论话题</a>
+	</div>
 	
 	
 	<div class="community_title">
@@ -108,9 +108,26 @@
 	<h2><%= page_title %></h2>
 	
 	
-	<div class="community_block">
-		
-	</div>
+	<% if @info %>
+		<div class="community_block">
+			<div class="space_section_title">
+				<a class="float_r" title="收起" id="notice_section_expand" href="#" onclick="collapse_section('notice_section'); return false;">
+					<img src="/images/expand.png" border="0" /></a>
+				<a class="float_r" title="展开" id="notice_section_collapse" href="#" onclick="expand_section('notice_section'); return false;" style="display: none">
+					<img src="/images/collapse.png" border="0" /></a>
+				
+				<img class="float_l" src="/images/groups/notice_small.png" border="0" />
+				&nbsp;&nbsp;&nbsp;
+				<b>
+					公司简介
+				</b>
+			</div>
+
+			<div id="notice_section" class="group_notice" style="padding: 0px 15px;">
+				<%= textilize_format(@info[:desc]) %>
+			</div>
+		</div>
+	<% end %>
 	
 	
 	<div class="community_title">

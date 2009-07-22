@@ -11,6 +11,9 @@ class CompaniesController < ApplicationController
                                         :edit_image, :update_image]
   before_filter :check_limited, :only => [:update_property, :update_image]
   
+  before_filter :check_system_company, :only => [:show, :edit_property, :update_property,
+                                                :edit_image, :update_image, :post, :good_post]
+  
   before_filter :check_general_admin, :only => [:edit_property, :update_property,
                                                 :edit_image, :update_image]
   
@@ -63,7 +66,6 @@ class CompaniesController < ApplicationController
   end
   
   def show
-    @company = Company.get_company(params[:id])
     @industries = Industry.get_company_industries(@company.id)
     
     profile = CompanyProfile.get_profile(@company.id)
@@ -92,25 +94,53 @@ class CompaniesController < ApplicationController
   end
   
   def edit_property
-    @company = Company.get_company(params[:id])
-    
     @profile = CompanyProfile.get_profile(@company.id) || CompanyProfile.new(:company_id => @company.id)
   end
   
   def update_property
+    @profile = CompanyProfile.get_profile(@company.id) || CompanyProfile.new(:company_id => @company.id)
+    @profile.updater_id = session[:account_id]
     
+    company_info = {}
+    CompanyProfile::Properties.each do |property|
+      company_info[property[0]] = params[property[0]] && params[property[0]].strip
+    end
+    company_info[:desc] = params[:company_desc] && params[:company_desc].strip
+    @profile.update_info(company_info)
+    
+    if @profile.save
+      flash.now[:message] = "公司信息已成功保存"
+    else
+      flash.now[:error_msg] = "操作失败, 再试一次吧"
+    end
+    
+    render(:action => "edit_property")
   end
   
   def edit_image
-    @company = Company.get_company(params[:id])
-    
-    profile = CompanyProfile.get_profile(@company.id) || CompanyProfile.new(:company_id => @company.id)
-    
-    @company_image = profile.photo_id && Photo.get_photo(profile.photo_id).image.url(:thumb_48)
+    @profile = CompanyProfile.get_profile(@company.id) || CompanyProfile.new
   end
   
   def update_image
+    @profile = CompanyProfile.get_profile(@company.id) || CompanyProfile.new(:company_id => @company.id)
+    @profile.updater_id = session[:account_id]
     
+    old_photo_id = @profile.photo_id
+    @profile.photo_id = params[:photo_id]
+    
+    # validate the photo
+    if @profile.photo_id && @profile.photo_id != old_photo_id
+      photo = Photo.get_photo(@profile.photo_id)
+      if photo && photo.account_id == session[:account_id]
+        if @profile.save
+          flash.now[:message] = "已成功保存"
+        else
+          flash.now[:error_msg] = "操作失败, 再试一次吧"
+        end
+      else
+        jump_to("/errors/forbidden")
+      end
+    end
   end
   
   def photo_selector_for_company_image
@@ -119,8 +149,6 @@ class CompaniesController < ApplicationController
   end
   
   def post
-    @company = Company.get_company(params[:id])
-    
     @top_company_posts = CompanyPost.find(
       :all,
       :select => "id, created_at, company_id, top, good, account_id, title, responded_at, responded_by",
@@ -140,8 +168,6 @@ class CompaniesController < ApplicationController
   end
   
   def good_post
-    @company = Company.get_company(params[:id])
-    
     @top_company_posts = CompanyPost.good.find(
       :all,
       :select => "id, created_at, company_id, top, good, account_id, title, responded_at, responded_by",
@@ -184,6 +210,12 @@ class CompaniesController < ApplicationController
   
   def check_general_admin
     return jump_to("/errors/forbidden") unless ApplicationController.helpers.general_admin?(session[:account_id])
+  end
+  
+  def check_system_company
+    @company = Company.get_company(params[:id])
+    
+    return jump_to("/errors/forbidden") unless @company.account_id == 0
   end
   
 end

@@ -71,7 +71,7 @@
 										涉及的公司:
 										<% companies.each do |company|%>
 											<% company_name = h(company.name) %>
-											<%= company_name %><% if @can_edit %><a title="移除公司 <%= company_name %>" href="#" onclick="remove_job_item('company', <%= company.id %>); return false;">(移除)</a><% end %>
+											<a href="/companies/show/<%= company.id %>" target="_blank" class="account_nick_link"><%= company_name %></a><% if @can_edit %><a title="移除公司 <%= company_name %>" href="#" onclick="remove_job_item('company', <%= company.id %>); return false;">(移除)</a><% end %>
 										<% end %>
 									</div>
 								<% end %>

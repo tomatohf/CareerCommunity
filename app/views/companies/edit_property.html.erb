@@ -3,11 +3,14 @@
 <% page_title = "编辑公司 #{company_name} 的信息" %>
 <% community_page_title(page_title) %>
 
-<div class="float_r album_container_r">
-	
+<div class="float_r group_container_r">
+	<div class="community_block">
+		<a href="/companies/show/<%= @company.id %>">
+			返回公司 <%= company_name %></a>
+	</div>
 </div>
 
-<div class="album_container_l">
+<div class="group_container_l">
 	<h2><%= page_title %></h2>
 	
 	<div class="community_block_narrow">
@@ -24,25 +27,45 @@
 			</p>
 		<% end %>
 		
-		<div class="div_form">
-			<% form_tag "/companies/update_property/#{@profile.id}", :method => :post do %>
-			
-				<div>
-					<table cellpadding="0" cellspacing="10" class="main_part_w">
+		<div>
+			<% form_tag "/companies/update_property/#{@company.id}", :method => :post do %>
+				<table cellpadding="0" cellspacing="10" class="main_part_w">
+					<%
+						info = @profile.get_info
+						CompanyProfile::Properties.each do |property|
+					%>
 						<tr>
-							<td style="width: 80px">
-								<label for="activity_online">
-					                <b>这是线上活动</b>
+							<td style="width: 80px" valign="top">
+								<label for="<%= property[0] %>">
+									<%= property[1] %>
 									:
 					            </label>
 							</td>
 							<td>
-								
+								<textarea id="<%= property[0] %>" name="<%= property[0] %>" class="text_field" cols="50" rows="2"><%= h(info[property[0]]) %></textarea>
 							</td>
 						</tr>
-					</table>
-				</div>
-			
+					<% end %>
+					
+					<tr>
+						<td style="width: 80px" valign="top">
+							<label for="company_desc">
+								<strong>公司简介</strong>
+								:
+				            </label>
+						</td>
+						<td>
+							<textarea id="company_desc" name="company_desc" class="text_field" cols="50" rows="5"><%= h(info[:desc]) %></textarea>
+						</td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td>
+							<%= submit_tag "更新信息", :class => "button", :disabled => @account_limited %>
+						</td>
+					</tr>
+				</table>
 			<% end %>
 		</div>
 		
