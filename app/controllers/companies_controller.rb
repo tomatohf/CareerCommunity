@@ -14,7 +14,7 @@ class CompaniesController < ApplicationController
   before_filter :check_system_company, :only => [:show, :edit_property, :update_property,
                                                 :edit_image, :update_image, :post, :good_post]
   
-  before_filter :check_general_admin, :only => [:edit_property, :update_property,
+  before_filter :check_info_editor, :only => [:edit_property, :update_property,
                                                 :edit_image, :update_image]
   
   
@@ -208,8 +208,8 @@ class CompaniesController < ApplicationController
   
   private
   
-  def check_general_admin
-    return jump_to("/errors/forbidden") unless ApplicationController.helpers.general_admin?(session[:account_id])
+  def check_info_editor
+    return jump_to("/errors/forbidden") unless ApplicationController.helpers.info_editor?(session[:account_id])
   end
   
   def check_system_company

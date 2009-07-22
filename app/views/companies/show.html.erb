@@ -60,7 +60,7 @@
 	</div>
 	
 	
-	<% if general_admin?(session[:account_id]) %>
+	<% if info_editor?(session[:account_id]) %>
 		<div class="community_block_narrow">
 			<%= thin_hr %>
 		</div>
