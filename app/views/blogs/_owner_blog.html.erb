@@ -65,6 +65,13 @@
 			<a href="/blogs/<%= owner_blog.id %>/edit">修改</a>
 		<% end %>
 		
+		<% if show_face %>
+			|
+			
+			<a href="/blogs/list/<%= account_id %>">
+				博客列表</a>
+		<% end %>
+		
 		|
 		查看:<b><%= ViewCounter.get_count(:blog, owner_blog.id) %></b>
 		|
