@@ -116,8 +116,11 @@ class ExpsController < ApplicationController
     
     if @zz
       @exp.source_name = params[:exp_source_name] && params[:exp_source_name].strip
-      @exp.source_link = params[:exp_source_link] && params[:exp_source_link].strip
       @exp.publish_time = params[:exp_publish_time] && params[:exp_publish_time].strip
+      
+      exp_source_link = params[:exp_source_link] && params[:exp_source_link].strip
+      exp_source_link = nil if exp_source_link == ""
+      @exp.source_link = exp_source_link
     end
     
     @exp.publish_time ||= DateTime.now
@@ -141,8 +144,11 @@ class ExpsController < ApplicationController
     
     if ApplicationController.helpers.info_editor?(session[:account_id])
       @exp.source_name = params[:exp_source_name] && params[:exp_source_name].strip
-      @exp.source_link = params[:exp_source_link] && params[:exp_source_link].strip
       @exp.publish_time = params[:exp_publish_time] && params[:exp_publish_time].strip
+      
+      exp_source_link = params[:exp_source_link] && params[:exp_source_link].strip
+      exp_source_link = nil if exp_source_link == ""
+      @exp.source_link = exp_source_link
     end
     
     if @exp.save

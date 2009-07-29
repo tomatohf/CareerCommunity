@@ -174,7 +174,10 @@ class RecruitmentsController < ApplicationController
     @recruitment.content = params[:recruitment_content] && params[:recruitment_content].strip
     
     @recruitment.source_name = params[:recruitment_source_name] && params[:recruitment_source_name].strip
-    @recruitment.source_link = params[:recruitment_source_link] && params[:recruitment_source_link].strip
+
+    recruitment_source_link = params[:recruitment_source_link] && params[:recruitment_source_link].strip
+    recruitment_source_link = nil if recruitment_source_link == ""
+    @recruitment.source_link = recruitment_source_link
     
     # @recruitment.source_link += "/" if @recruitment.source_link[-1, 1] != "/"
     
