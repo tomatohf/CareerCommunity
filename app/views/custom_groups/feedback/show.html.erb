@@ -129,6 +129,11 @@
 				<div class="form_info_l">
 					还没有讨论话题 ...
 				</div>
+			<% else %>
+				<div class="align_r" style="margin-right: 10px;">
+					<a href="/groups/post/<%= @group_id %>" class="account_nick_link">
+						全部讨论话题 »</a>
+				</div>
 			<% end %>
 		</div>
 	</div>

@@ -178,6 +178,11 @@
 				<div class="form_info_l">
 					还没有讨论话题 ...
 				</div>
+			<% else %>
+				<div class="align_r" style="margin-right: 10px;">
+					<a href="/companies/post/<%= @company.id %>" class="account_nick_link">
+						全部讨论话题 »</a>
+				</div>
 			<% end %>
 		</div>
 	</div>
@@ -194,13 +199,73 @@
 				<a class="float_r" title="展开" id="exp_section_collapse" href="#" onclick="expand_section('exp_section'); return false;" style="display: none">
 					<img src="/images/collapse.png" border="0" /></a>
 			
-				<img class="float_l" src="/images/index/exp_icon.gif" border="0" width="20" height="20" />
+				<img class="float_l" src="/images/index/exp_icon.gif" border="0" />
 				&nbsp;&nbsp;&nbsp;
-				<a href="#">全部面经</a>
+				<a href="/companies/exp/<%= @company.id %>">全部面经</a>
+			</div>
+			
+			<div id="exp_section">
+				<% @exps.each do |exp| %>
+					<div class="company_exp">
+						<a href="/exps/<%= exp.id %>" class="account_nick_link" target="_blank">
+							<%= h(exp.title) %></a>
+					</div>
+				<% end %>
+				
+				<div class="align_r" style="margin-right: 10px;">
+					<a href="/companies/exp/<%= @company.id %>" class="account_nick_link">
+						全部公司面经 »</a>
+				</div>
 			</div>
 		</div>
-		<div id="exp_section" class="overflow_hidden">
-			<%# puts company exps here ... %>
+	<% end %>
+	
+	
+	<% if @talks.size > 0 %>
+		<div class="community_title">
+			公司的访谈录 ...
+		</div>
+		<div class="community_block">
+			<div class="space_section_title">
+				<a class="float_r" title="收起" id="talk_section_expand" href="#" onclick="collapse_section('talk_section'); return false;">
+					<img src="/images/expand.png" border="0" /></a>
+				<a class="float_r" title="展开" id="talk_section_collapse" href="#" onclick="expand_section('talk_section'); return false;" style="display: none">
+					<img src="/images/collapse.png" border="0" /></a>
+			
+				<img class="float_l" src="/images/index/talk_icon.png" border="0" />
+				&nbsp;&nbsp;&nbsp;
+				<a href="/companies/talk/<%= @company.id %>">全部访谈录</a>
+			</div>
+			
+			<div id="talk_section">
+				<% @talks.each do |talk| %>
+					<div class="company_exp">
+						<a href="/talks/<%= talk.id %>" class="account_nick_link" target="_blank">
+							<%= h(talk.title) %></a>
+							
+						<span class="form_info_s" style="margin-left: 10px;">
+							<% if talk.published %>
+								<%= format_date(talk.publish_at) %>
+								|
+							<% end %>
+
+							查看:
+							<b>
+								<%= ViewCounter.get_count(:talk, talk.id) %>
+							</b>
+							|
+							
+							<a href="/talks/<%= talk.id %>#comment_list" class="account_nick_link" target="_blank">
+								评论(<%= TalkComment.get_count(talk.id) %>)</a>
+						</span>
+					</div>
+				<% end %>
+				
+				<div class="align_r" style="margin-right: 10px;">
+					<a href="/companies/talk/<%= @company.id %>" class="account_nick_link">
+						全部访谈录 »</a>
+				</div>
+			</div>
 		</div>
 	<% end %>
 	

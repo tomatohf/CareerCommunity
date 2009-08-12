@@ -1,8 +1,12 @@
 class CompaniesController < ApplicationController
   
-  Company_Post_Num = 20
+  Company_Post_Num = 15
+  Company_Exp_Num = 10
+  Company_Talk_Num = 5
   
   Post_List_Size = 50
+  Exp_List_Size = 30
+  Talk_List_Size = 15
   
   
   layout "community"
@@ -11,8 +15,10 @@ class CompaniesController < ApplicationController
                                         :edit_image, :update_image]
   before_filter :check_limited, :only => [:update_property, :update_image]
   
-  before_filter :check_system_company, :only => [:show, :edit_property, :update_property,
-                                                :edit_image, :update_image, :post, :good_post]
+  before_filter :check_system_company, :only => [:show, :exp, :talk, 
+                                                :edit_property, :update_property,
+                                                :edit_image, :update_image, 
+                                                :post, :good_post]
   
   before_filter :check_info_editor, :only => [:edit_property, :update_property,
                                                 :edit_image, :update_image]
@@ -90,7 +96,49 @@ class CompaniesController < ApplicationController
       :order => "responded_at DESC"
     )
     
-    @exps = []
+    @exps = Exp.find(
+      :all,
+      :limit => Company_Exp_Num,
+      :select => "exps.id, exps.title",
+      :joins => " INNER JOIN exps_companies ON exps.id = exps_companies.exp_id",
+      :conditions => ["exps_companies.company_id = ?", @company.id],
+      :order => "exps_companies.exp_id DESC"
+    )
+    
+    @talks = Talk.find(
+      :all,
+      :limit => Company_Talk_Num,
+      :select => "talks.id, talks.title, talks.published, talks.publish_at",
+      :joins => " INNER JOIN talks_companies ON talks.id = talks_companies.talk_id",
+      :conditions => ["talks_companies.company_id = ? and talks.published = ?", @company.id, true],
+      :order => "talks_companies.talk_id DESC"
+    )
+  end
+  
+  def exp
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @exps = Exp.paginate(
+      :page => page,
+      :per_page => Exp_List_Size,
+      :select => "exps.id, exps.title, exps.publish_time",
+      :joins => " INNER JOIN exps_companies ON exps.id = exps_companies.exp_id",
+      :conditions => ["exps_companies.company_id = ?", @company.id],
+      :order => "exps_companies.exp_id DESC"
+    )
+  end
+  
+  def talk
+    page = params[:page]
+    page = 1 unless page =~ /\d+/
+    @talks = Talk.paginate(
+      :page => page,
+      :per_page => Talk_List_Size,
+      :select => "talks.id, talks.title, talks.published, talks.publish_at, talks.info",
+      :joins => " INNER JOIN talks_companies ON talks.id = talks_companies.talk_id",
+      :conditions => ["talks_companies.company_id = ? and talks.published = ?", @company.id, true],
+      :order => "talks_companies.talk_id DESC"
+    )
   end
   
   def edit_property

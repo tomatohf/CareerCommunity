@@ -2058,6 +2058,12 @@ a.order_by_selected {
 	text-decoration: underline;
 }
 
+.company_exp {
+	margin: 3px;
+	padding-bottom: 3px;
+	border-bottom: 1px dashed #EAEAEA;
+}
+
 
 
 

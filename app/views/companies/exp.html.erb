@@ -1,0 +1,38 @@
+<% company_name = h(@company.name) %>
+
+<% page_title = "公司 #{company_name} 的全部面经" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r blog_container_r">
+	
+	<div class="community_block">
+		<a href="/companies/show/<%= @company.id %>" style="font-size: 13px;">
+			返回公司 <%= company_name %></a>
+	</div>
+
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @exps.total_entries %></b>
+		篇面经
+	</div>
+
+	<div class="community_title">
+		所有面经 ...
+	</div>
+
+	<div class="community_block">
+		<%= render :partial => "/exps/exp", :collection => @exps %>
+	</div>
+
+	<div class="community_block">
+		<%= paging_buttons(@exps) %>
+	</div>
+	
+</div>
+

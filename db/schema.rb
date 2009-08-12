@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 66) do
+ActiveRecord::Schema.define(:version => 67) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -1323,6 +1323,7 @@ ActiveRecord::Schema.define(:version => 66) do
   end
 
   add_index "talks_companies", ["talk_id", "company_id"], :name => "index_talks_companies_on_talk_id_and_company_id", :unique => true
+  add_index "talks_companies", ["company_id", "talk_id"], :name => "index_talks_companies_on_company_id_and_talk_id", :unique => true
 
   create_table "talks_industries", :id => false, :force => true do |t|
     t.integer "talk_id",     :limit => 11
