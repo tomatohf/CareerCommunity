@@ -55,12 +55,12 @@
 							:select => "company_id, COUNT(exp_id) as count",
 							:from => "exps_companies",
 							:group => "company_id",
-							:limit => 200,
+							:limit => 100,
 							:order => "count DESC"
 					    )
 					%>
 
-					<div class="community_block" style="word-spacing: 20px; margin-top: 5px;">
+					<div class="community_block" style="word-spacing: 25px; line-height: 2.5; margin-top: 5px;">
 						<% companies.each do |c| %>
 							<% company = Company.get_company(c.company_id) %>
 							<a href="/companies/exp/<%= company.id %>" target="_blank" class="account_nick_link" style="font-size: 14px;">
