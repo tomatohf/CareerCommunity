@@ -560,7 +560,7 @@ function create_table_grid() {
 		menu_items.push(
 			{
 				//id: "",
-				text: "看看相关的面经",
+				text: "看看目标公司的面经",
 				icon: "/images/index/exp_icon.gif",
 				handler: function() {
 					link_to_blank("/job_targets/" + target_id + "/exps");

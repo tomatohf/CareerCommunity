@@ -88,6 +88,12 @@
 									</div>
 								<% end %>
 								
+								
+								<div>
+									查看:
+									<%= ViewCounter.increase_count(:exp, @exp.id) %>
+								</div>
+								
 
 								<% if @can_edit %>
 									<% form_tag "", :method => :post, :id => "remove_job_item_form" do %>

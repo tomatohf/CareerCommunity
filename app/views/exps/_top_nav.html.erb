@@ -1,14 +1,13 @@
+<% hide_search &&= true %>
+
 <div class="community_block">
 	<div class="recruitment_nav" style="word-spacing: 15px;">
 		<img src="/images/recruitments/nav_icon.gif" border="0" />
 		<a href="/exps" class="account_nick_link">
 			面经首页</a>
 		|
-		<a href="/exps/list" class="account_nick_link">
-			面经列表</a>
-		|
 		<a href="/exps/company" class="account_nick_link">
-			热门公司面经导航</a>
+			公司面经导航</a>
 		|	
 		<a href="/exps/search" class="account_nick_link">
 			搜索面经</a>
@@ -24,30 +23,22 @@
 </div>
 
 
-<div class="community_block">
-	<span class="float_r" style="margin: 0px 10px; word-spacing: 15px;">
-		<a href="/recruitments" target="_blank">
-			找招聘信息</a>
+<% unless hide_search %>
+	<div class="community_block align_c">
+		<% form_tag "/exps/search", :method => :get do %>
+			<input type="text" name="query" class="text_field exp_search_input" value="" />
+			&nbsp;
+			<input type="submit" value="搜索面经" class="button" />
+			
+			<span style="margin-left: 15px; word-spacing: 10px;">
+				<a href="/job_targets" target="_blank">
+					管理求职目标</a>
 
-		<a href="/talks" target="_blank">
-			找职业访谈录</a>
-
-		<a href="/job_targets" target="_blank">
-			管理求职目标</a>
-
-		<a href="/job_services" target="_blank">
-			求职服务导航</a>
-		
-		<a href="/groups/all" target="_blank">
-			去圈子看看更多讨论</a>
-	</span>
-	
-	
-	<% form_tag "/exps/search", :method => :get do %>
-		<input type="text" name="query" class="text_field" style="width: 200px;" />
-		
-		<input type="submit" value="搜索面经" class="button" />
-	<% end %>
-</div>
+				<a href="/companies" target="_blank">
+					去公司讨论区</a>
+			</span>
+		<% end %>
+	</div>
+<% end %>
 
 

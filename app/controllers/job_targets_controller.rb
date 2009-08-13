@@ -764,37 +764,19 @@ class JobTargetsController < ApplicationController
     end
   end
   
-  def exps_by_time
-    @by_time = true
-    
-    exps
-    render :action => "exps"
-  end
-  
   def exps
     @company_name = JobTargetsController.helpers.get_target_company_name(@target)
-    @target_name = JobTargetsController.helpers.append_job_position_name(@company_name, JobPosition.get_job_position(@target.job_position_id))
     
     page = params[:page]
     page = 1 unless page =~ /\d+/
-    
-    if @company_name && @company_name.strip != ""
-      @exps = Exp.search(
-        @company_name,
-        :page => page,
-        :per_page => 30,
-        :match_mode => CommunityController::Search_Match_Mode,
-        :order => @by_time ? "publish_time DESC, @relevance DESC" : "@relevance DESC, publish_time DESC",
-        :field_weights => {
-          :title => 4,
-          :content => 3,
-        }
-      ).compact
-    else
-      
-      @exps = []
-      
-    end
+    @exps = Exp.paginate(
+      :page => page,
+      :per_page => 30,
+      :select => "exps.id, exps.title, exps.publish_time",
+      :joins => " INNER JOIN exps_companies ON exps.id = exps_companies.exp_id",
+      :conditions => ["exps_companies.company_id = ?", @target.company_id],
+      :order => "exps_companies.exp_id DESC"
+    )
   end
   
   

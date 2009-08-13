@@ -19,7 +19,7 @@
 	
 	
 	
-	<%= render :partial => "top_nav" %>
+	<%= render :partial => "top_nav", :locals => {:hide_search => true} %>
 	
 	
 	<% if ApplicationHelper::Show_Google_Ad %>
@@ -59,8 +59,8 @@
 		
 		<div class="community_block align_c">
 			<% form_tag "/exps/search", :method => :get do %>
-				<input type="text" name="query" class="text_field" style="padding: 5px;" value="<%= h(@query) %>" style="width: 200px;" />
-
+				<input type="text" name="query" class="text_field exp_search_input" value="<%= h(@query) %>" />
+				&nbsp;
 				<input type="submit" value="搜索面经" class="button" />
 			<% end %>
 			

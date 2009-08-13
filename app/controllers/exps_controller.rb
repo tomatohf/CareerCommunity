@@ -57,6 +57,9 @@ class ExpsController < ApplicationController
   end
   
   def list
+    # disable the exp list page
+    #return jump_to("/exps")
+    
     page = params[:page]
     page = 1 unless page =~ /\d+/
     
@@ -90,7 +93,10 @@ class ExpsController < ApplicationController
   end
   
   def company
-    
+    @industries = Industry.system.find(
+      :all,
+      :include => [:companies]
+    )
   end
   
   

@@ -1,4 +1,4 @@
-<% page_title = "与求职目标 #{@target_name} 相关的面经" %>
+<% page_title = "目标公司 #{@company_name} 的面经" %>
 <% community_page_title(page_title) %>
 
 
@@ -18,20 +18,12 @@
 		为您找到了
 		<span style="font-size: 14px; color: #000000;"><b><%= @exps.total_entries %></b></span>
 		条
-		与您的求职目标
-		<span style="font-size: 14px; color: #000000;"><strong><%= @target_name %></strong></span>
-		相关的面经
+		目标公司
+		<span style="font-size: 14px; color: #000000;"><strong><%= @company_name %></strong></span>
+		的面经
 	</div>
 	
-	<div class="overflow_hidden">
-		<a href="/job_targets/<%= @target.id %>/exps" class="<%= @by_time ? "order_by" : "order_by_selected" %>">
-			按相关度排序</a>
-			
-		<a href="/job_targets/<%= @target.id %>/exps_by_time" class="<%= @by_time ? "order_by_selected" : "order_by" %>">
-			按发布时间排序</a>
-			
-		<div class="clear_r"></div>
-	</div>
+	<br />
 	
 	
 	<div class="community_block">

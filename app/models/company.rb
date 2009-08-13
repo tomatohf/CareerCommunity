@@ -72,6 +72,8 @@ class Company < ActiveRecord::Base
     self.clear_industry_related_cache(company)
     
     self.clear_account_companies_cache(company.account_id) if company.account_id && company.account_id > 0
+    
+    Exp.clear_index_company_cache
   }
   
   after_destroy { |company|
@@ -81,6 +83,8 @@ class Company < ActiveRecord::Base
     self.clear_industry_related_cache(company)
     
     self.clear_account_companies_cache(company.account_id) if company.account_id && company.account_id > 0
+    
+    Exp.clear_index_company_cache
   }
   
   def self.clear_talk_related_cache(company)

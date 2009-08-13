@@ -1,4 +1,4 @@
-<% page_title = "热门公司面经导航" %>
+<% page_title = "公司面经导航" %>
 <% community_page_title(page_title) %>
 
 <div id="ad_col" class="float_l left_ad_container" style="display: none;">
@@ -22,35 +22,42 @@
 	
 	
 	
-	<div class="community_block">
-		<div class="recruitment_list_container">
-			<div class="recruitment_list_title align_c">
-				<strong>热门公司面经</strong>
-			</div>
-			
+	<% if ApplicationHelper::Show_Google_Ad %>
+		<div class="community_block">
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-3439613867319084";
+			/* 728x15 */
+			google_ad_slot = "8608645276";
+			google_ad_width = 728;
+			google_ad_height = 15;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+		</div>
+	<% end %>
+	
+	
+	<% @industries.each do |industry| %>
+		<% companies = industry.companies %>
+		<% if companies.size > 0 %>
 			<div class="community_block">
-				<% if ApplicationHelper::Show_Google_Ad %>
-					<div>
-						<script type="text/javascript"><!--
-						google_ad_client = "pub-3439613867319084";
-						/* 728x15 */
-						google_ad_slot = "8608645276";
-						google_ad_width = 728;
-						google_ad_height = 15;
-						//-->
-						</script>
-						<script type="text/javascript"
-						src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-						</script>
+				<div class="recruitment_list_container">
+					<div class="recruitment_list_title">
+						<strong><%= h(industry.name) %></strong>
 					</div>
-				<% end %>
 
-				<div class="community_block">
-					<%= render :partial => "company_area", :locals => {:all => true} %>
+					<div class="community_block" style="word-spacing: 20px;">
+						<% companies.each do |company| %>
+							<a href="/companies/exp/<%= company.id %>" target="_blank" class="account_nick_link" style="font-size: 14px;">
+								<%= h(company.name) %></a>
+						<% end %>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+		<% end %>
+	<% end %>
 	
 	
 	<% if ApplicationHelper::Show_Google_Ad %>

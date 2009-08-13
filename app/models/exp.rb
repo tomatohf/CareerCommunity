@@ -17,7 +17,9 @@ class Exp < ActiveRecord::Base
   has_and_belongs_to_many :companies,
                           :foreign_key => "exp_id",
                           :association_foreign_key => "company_id",
-                          :join_table => "exps_companies"
+                          :join_table => "exps_companies",
+                          :after_add => Proc.new { |exp, company| Exp.clear_index_company_cache },
+                          :after_remove => Proc.new { |exp, company| Exp.clear_index_company_cache }
   has_and_belongs_to_many :job_positions,
                           :foreign_key => "exp_id",
                           :association_foreign_key => "job_position_id",
@@ -54,18 +56,22 @@ class Exp < ActiveRecord::Base
   
   FCKP_index_list = :fc_index_exp_list
   
-  FCKP_community_index_list = :fc_community_index_exp_list
+  FCKP_community_index_companies = :fc_community_index_companies
   
   after_destroy { |exp|
     self.clear_exps_feed_cache
     
     self.clear_index_list_cache
+    
+    self.clear_index_company_cache
   }
   
   after_save { |exp|
     self.clear_exps_feed_cache
     
     self.clear_index_list_cache
+    
+    self.clear_index_company_cache
   }
   
   def self.clear_exps_feed_cache
@@ -74,8 +80,10 @@ class Exp < ActiveRecord::Base
   
   def self.clear_index_list_cache
     Cache.delete(expand_cache_key(FCKP_index_list))
-    
-    Cache.delete(expand_cache_key(FCKP_community_index_list))
+  end
+  
+  def self.clear_index_company_cache
+    Cache.delete(expand_cache_key(FCKP_community_index_companies))
   end
   
   

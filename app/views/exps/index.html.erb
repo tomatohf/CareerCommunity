@@ -26,7 +26,7 @@
 		<div class="recruitment_list_container">
 			<div class="recruitment_list_title">
 				<a class="float_r account_nick_link" href="/exps/company">
-					更多热门公司 »</a>
+					更多公司面经导航 »</a>
 				
 				<strong>热门公司面经</strong>
 			</div>
@@ -48,69 +48,30 @@
 					</div>
 				<% end %>
 
-				<div class="community_block">
-					<%= render :partial => "company_area" %>
-				</div>
+				<% cache(Exp::FCKP_community_index_companies) do %>
+					<%
+						companies = Company.find(
+							:all,
+							:select => "company_id, COUNT(exp_id) as count",
+							:from => "exps_companies",
+							:group => "company_id",
+							:limit => 200,
+							:order => "count DESC"
+					    )
+					%>
 
-				<% if ApplicationHelper::Show_Google_Ad %>
-					<div>
-						<script type="text/javascript"><!--
-						google_ad_client = "pub-3439613867319084";
-						/* 728x15 */
-						google_ad_slot = "8608645276";
-						google_ad_width = 728;
-						google_ad_height = 15;
-						//-->
-						</script>
-						<script type="text/javascript"
-						src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-						</script>
+					<div class="community_block" style="word-spacing: 20px; margin-top: 5px;">
+						<% companies.each do |c| %>
+							<% company = Company.get_company(c.company_id) %>
+							<a href="/companies/exp/<%= company.id %>" target="_blank" class="account_nick_link" style="font-size: 14px;">
+								<%= h(company.name) %>(<%= c.count %>)</a>
+						<% end %>
 					</div>
 				<% end %>
-			</div>
-		</div>
-	</div>
-	
-	
-	<div class="community_block">
-		<div class="recruitment_list_container">
-			<div class="recruitment_list_title">
-				<span class="float_r">
-					»</span>
-				
-				<strong>最新面经</strong>
-				
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				
-				(
-				<a class="account_nick_link" href="/exps/list">
-					更多面经列表 »</a>
-				)
-			</div>
-			
-			<div class="community_block">
-				<%= render :partial => "talks_area" %>
-				
-				
-				<div style="margin-right: 280px;">
-					<% cache(Exp::FCKP_community_index_list) do %>
-						<%
-							exps = Exp.find(
-								:all,
-						      	:limit => ExpsController::Exp_List_Size,
-								:select => "id, title, publish_time",
-								:order => "publish_time DESC"
-							)
-						%>
 
-						<%= render :partial => "exp", :collection => exps %>
-					<% end %>
-					
-					
-					<div class="community_block align_r" style="border-top: dashed 1px #DADADA;">
-						<a href="/exps/list">
-							更多面经列表 »</a>
-					</div>
+				<div class="align_r" style="padding-right: 20px;">
+					<a href="/exps/company" class="account_nick_link">
+						全部公司面经导航 »</a>
 				</div>
 			</div>
 		</div>
@@ -132,6 +93,7 @@
 			</script>
 		</div>
 	<% end %>
+	
 </div>
 
 
