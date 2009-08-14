@@ -756,7 +756,7 @@ function reconfig_step(step_dom_id) {
 		step_dom.addListener(
 			"dblclick",
 			function(evt, target, options) {
-				edit_step_label(options.step_id, steps["step_" + options.step_id].target_id);
+				step_double_clicked(options.step_id, steps["step_" + options.step_id].target_id);
 			},
 			null,
 			{
@@ -818,6 +818,20 @@ function show_step_menu(evt, target, options) {
 			{
 				text: "当前状态: " + status.name,
 				disabled: true
+			}
+		);
+	}
+	
+	if(system_process_ids["resume"] == process_id || system_process_ids["interview"] == process_id) {
+		menu_items.push("-");
+		menu_items.push(
+			{
+				//id: "",
+				text: "<b>去" + process_name + "圈子</b>",
+				//icon: "",
+				handler: function(item, e) {
+					goto_process_related_group(process_id);
+				}
 			}
 		);
 	}
@@ -1099,6 +1113,27 @@ function edit_step_label(step_id, target_id) {
 		false,
 		step_label
 	);
+}
+
+
+function step_double_clicked(step_id, target_id) {
+	var step_dom_id = "step_" + step_id;
+	var step = steps[step_dom_id];
+	
+	var process_id = processes["" + step.process_id].id;
+	
+	goto_process_related_group(process_id);
+}
+
+
+function goto_process_related_group(process_id) {
+	if(system_process_ids["resume"] == process_id) {
+		return link_to_blank("/groups/3");
+	}
+	
+	if(system_process_ids["interview"] == process_id) {
+		return link_to_blank("/groups/8");
+	}
 }
 
 

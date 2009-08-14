@@ -28,6 +28,13 @@ class JobProcess < ActiveRecord::Base
   
   
   
+  System_Process_ID = {
+    :resume => 1003,
+    :interview => 1004
+  }
+  
+  
+  
   CKP_system_processes = :system_job_processes
   CKP_account_processes = :account_job_processes
   CKP_process = :job_process

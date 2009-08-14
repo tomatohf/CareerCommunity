@@ -136,6 +136,12 @@
 			);
 		<% end %>
 		
+		
+		var system_process_ids = {}
+		<% JobProcess::System_Process_ID.each do |name, id| %>
+			system_process_ids["<%= name %>"] = "<%= id %>";
+		<% end %>
+		
 
 		Ext.onReady(
 			function() {

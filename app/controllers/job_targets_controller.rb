@@ -953,7 +953,7 @@ class JobTargetsController < ApplicationController
     step_order = target.get_info[:step_order] || []
     
     
-    resume_process = JobProcess.get_system_process_by_name("简历")
+    resume_process = JobProcess.get_process(JobProcess::System_Process_ID[:resume])
     if resume_process
       resume_step = JobStep.new(
         :job_target_id => target.id,
@@ -964,7 +964,7 @@ class JobTargetsController < ApplicationController
       step_order << resume_step.id if resume_step.save
     end
     
-    interview_process = JobProcess.get_system_process_by_name("面试")
+    interview_process = JobProcess.get_process(JobProcess::System_Process_ID[:interview])
     if interview_process
       interview1_step = JobStep.new(
         :job_target_id => target.id,
