@@ -77,7 +77,7 @@ class PostsController < ApplicationController
         :post_id => @post.id,
         :post_title => @post.title,
         @type_handler.get_type_id.to_sym => @type_id
-      })
+      }) if @type_handler.record_action?
       
       jump_to("/#{@post_type}/posts/#{@post.id}")
     else
@@ -137,6 +137,8 @@ class PostsController < ApplicationController
       @is_kind_hearted ||= (role_type_id == RoleProfile.ids.kind_hearted_role_id)
     end
     
+    @show_good_post_link = type_handler.show_good_post_link?
+    
     @type_name, @type_image, @display_image = type_handler.get_type_with_image(@type_id)
     @type_label = type_handler.get_type_label
     
@@ -192,7 +194,7 @@ class PostsController < ApplicationController
     end
     
     
-    if comment_saved
+    if comment_saved && @type_handler.record_comment_action?
       AccountAction.create_new(session[:account_id], "add_#{@post_type}_post_comment", {
         @type_handler.get_type_post_id.to_sym => comment.send(@type_handler.get_type_post_id),
         :comment_id => comment.id,
@@ -473,6 +475,18 @@ class PostsController < ApplicationController
       
       def get_type_post_id
         "#{@type}_post_id"
+      end
+      
+      def record_action?
+        true
+      end
+      
+      def record_comment_action?
+        true
+      end
+      
+      def show_good_post_link?
+        true
       end
       
     end
@@ -795,6 +809,101 @@ class PostsController < ApplicationController
       def get_type_label
         "公司讨论区"
       end
+    end
+    
+    
+    class Customer < Base
+      def get_type_with_image(type_id)
+        account_nick_pic = ::Account.get_nick_and_pic(type_id)
+        [account_nick_pic[0], account_nick_pic[1], true]
+      end
+      
+      def get_type_label
+        "学员档案"
+      end
+      
+      def check_compose_access(type_id, account_id)
+        is_teacher(account_id) || is_customer_self(type_id, account_id)
+      end
+      
+      def check_create_access(type_id, account_id)
+        check_compose_access(type_id, account_id)
+      end
+      
+      def check_destroy_access(type_id, account_id, poster_id)
+        is_teacher(account_id)
+      end
+      
+      def check_create_comment_access(type_id, account_id)
+        check_compose_access(type_id, account_id)
+      end
+      
+      def check_delete_comment_access(type_id, account_id)
+        is_teacher(account_id)
+      end
+      
+      def check_top_access(type_id, account_id)
+        is_teacher(account_id)
+      end
+      
+      def check_view_access(type_id, account_id)
+        check_compose_access(type_id, account_id)
+      end
+      
+      def check_attachment_access(type_id, account_id)
+        check_view_access(type_id, account_id)
+      end
+      
+      def check_create_attachment_access(type_id, account_id, poster_id)
+        check_compose_access(type_id, account_id)
+      end
+      
+      def check_delete_attachment_access(type_id, account_id, poster_id)
+        is_teacher(account_id)
+      end
+      
+      def get_access(current_account_id, poster_id, type_id)
+        access = []
+        
+        if current_account_id
+          access << :can_compose if check_compose_access(type_id, current_account_id)
+          
+          access << :can_top if is_teacher(current_account_id)
+          # access << :can_good if is_teacher(current_account_id)
+          access << :can_del_comment if is_teacher(current_account_id)
+          
+          access << :can_edit if is_customer_self(type_id, current_account_id)
+          access << :can_del if is_teacher(current_account_id)
+          access << :can_add_attachment if is_customer_self(type_id, current_account_id) || is_teacher(current_account_id)
+          access << :can_del_attachment if is_teacher(current_account_id)
+        end
+        
+        access
+      end
+      
+      def record_action?
+        false
+      end
+      
+      def record_comment_action?
+        false
+      end
+      
+      def show_good_post_link?
+        false
+      end
+      
+      
+      private
+      
+      def is_teacher(account_id)
+        ApplicationController.helpers.teacher?(account_id)
+      end
+      
+      def is_customer_self(type_id, account_id)
+        account_id.to_s == type_id.to_s
+      end
+      
     end
     
   end

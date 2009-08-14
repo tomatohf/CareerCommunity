@@ -676,6 +676,13 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/companies/good_post/:id/:page", :controller => "companies", :action => "good_post", :id => /\d+/, :page => /\d+/
   map.connect "/companies/exp/:id/:page", :controller => "companies", :action => "exp", :id => /\d+/, :page => /\d+/
   map.connect "/companies/talk/:id/:page", :controller => "companies", :action => "talk", :id => /\d+/, :page => /\d+/
+  
+  
+  map.connect "/customers/:id", :controller => "customers", :action => "post", :id => /\d+/
+  map.connect "/customers/post/:id/:page", :controller => "customers", :action => "post", :id => /\d+/, :page => /\d+/
+  map.connect "/customers/good_post/:id/:page", :controller => "customers", :action => "good_post", :id => /\d+/, :page => /\d+/
+  map.connect "/customers/p/:page", :controller => "customers", :action => "index", :page => /\d+/
+  map.connect "/customers/all/p/:page", :controller => "customers", :action => "all", :page => /\d+/
 
   
   

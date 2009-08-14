@@ -15,7 +15,8 @@ class ViewCounter < ActiveRecord::Base
     :activity_post => ["activity_post_view_count", 10004],
     :goal_post => ["goal_post_view_count", 10005],
     :company_post => ["company_post_view_count", 10006],
-    :exp => ["exp_view_count", 10007]
+    :exp => ["exp_view_count", 10007],
+    :customer_post => ["customer_post_view_count", 10008]
   }
   
   

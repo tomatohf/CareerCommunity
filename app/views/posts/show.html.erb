@@ -32,10 +32,12 @@
 				全部<%= @type_label %>讨论话题</a>
 		</div>
 		
-		<div class="community_block">
-			<a href="/<%= pluralized_post_type %>/good_post/<%= @type_id %>">
-				查看<%= @type_label %>的精华区</a>
-		</div>
+		<% if @show_good_post_link %>
+			<div class="community_block">
+				<a href="/<%= pluralized_post_type %>/good_post/<%= @type_id %>">
+					查看<%= @type_label %>的精华区</a>
+			</div>
+		<% end %>
 	
 		<% if @access.include?(:can_compose) %>
 			<div class="community_block_narrow">

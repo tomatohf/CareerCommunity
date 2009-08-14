@@ -167,6 +167,12 @@ module ApplicationHelper
     general_admin?(account_id) || [1004, 1005, 1581].include?(account_id)
   end
   
+  def teacher?(account_id)
+    # 1002 - MaXiao
+    
+    general_admin?(account_id) || [1002].include?(account_id)
+  end
+  
   def tag_cloud_font_styling (total, lowest, highest, options={})
     return nil if total.nil? || highest.nil? || lowest.nil?
 

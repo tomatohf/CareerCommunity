@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 67) do
+ActiveRecord::Schema.define(:version => 69) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id",  :limit => 11
@@ -415,6 +415,50 @@ ActiveRecord::Schema.define(:version => 67) do
   end
 
   add_index "contact_profiles", ["account_id"], :name => "index_contact_profiles_on_account_id"
+
+  create_table "customer_post_attachments", :force => true do |t|
+    t.datetime "created_at"
+    t.integer  "customer_post_id",        :limit => 11
+    t.integer  "account_id",              :limit => 11
+    t.string   "desc",                    :limit => 1000
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size",    :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "customer_post_attachments", ["customer_post_id"], :name => "index_customer_post_attachments_on_customer_post_id"
+
+  create_table "customer_post_comments", :force => true do |t|
+    t.integer  "customer_post_id", :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id",       :limit => 11
+    t.string   "content",          :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "customer_post_comments", ["customer_post_id", "created_at"], :name => "index_customer_post_comments_on_customer_post_id_and_created_at"
+
+  create_table "customer_posts", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "customer_id",  :limit => 11
+    t.integer  "account_id",   :limit => 11
+    t.string   "title"
+    t.text     "content"
+    t.boolean  "top",                        :default => false
+    t.boolean  "good",                       :default => false
+    t.datetime "responded_at"
+    t.integer  "responded_by", :limit => 11
+    t.boolean  "delta"
+  end
+
+  add_index "customer_posts", ["responded_at"], :name => "index_customer_posts_on_responded_at"
+  add_index "customer_posts", ["customer_id", "responded_at"], :name => "index_customer_posts_on_customer_id_and_responded_at"
+  add_index "customer_posts", ["customer_id", "top", "responded_at"], :name => "index_customer_posts_on_customer_id_and_top_and_responded_at"
+  add_index "customer_posts", ["customer_id", "good", "top", "responded_at"], :name => "index_customer_posts_on_customer_good_top_responded"
+  add_index "customer_posts", ["account_id", "responded_at"], :name => "index_customer_posts_on_account_id_and_responded_at"
 
   create_table "education_profiles", :force => true do |t|
     t.integer  "account_id",   :limit => 11
@@ -1134,6 +1178,7 @@ ActiveRecord::Schema.define(:version => 67) do
   end
 
   add_index "role_profiles", ["account_id"], :name => "index_role_profiles_on_account_id"
+  add_index "role_profiles", ["role_type", "updated_at"], :name => "index_role_profiles_on_role_type_and_updated_at"
 
   create_table "roles", :force => true do |t|
     t.string   "name"
