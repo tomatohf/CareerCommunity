@@ -1,0 +1,37 @@
+<% page_title = "全部学员档案列表" %>
+<% community_page_title(page_title) %>
+
+<div class="float_r friend_container_r">
+	
+	<div class="community_block" style="font-size: 14px;">
+		<a href="/customers">
+			学员档案的讨论话题</a>
+	</div>
+
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+</div>
+
+<div class="friend_container_l">
+	<h2><%= page_title %></h2>
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b>
+			<%= @customers.total_entries %>
+		</b>
+		名学员
+	</div>
+
+	<div class="community_block overflow_hidden">
+		<%= float_list(@customers, "customer_nick_pic", :customer_role_profile, {}, 7) %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@customers) %>
+	</div>
+</div>
+
+

@@ -1,0 +1,16 @@
+<%
+	account_nick_pic = Account.get_nick_and_pic(customer_role_profile.account_id)
+%>
+
+<div class="friend_nick_pic" title="<%= customer_role_profile.desc %>">
+	<div>
+		<a href="/customers/post/<%= customer_role_profile.account_id %>">
+			<img src="<%= face_img_src(account_nick_pic[1]) %>" border="0" /></a>
+	</div>
+	<div>
+		<a href="/customers/post/<%= customer_role_profile.account_id %>" class="account_nick_link">
+			<%= h(account_nick_pic[0]) %></a>
+	</div>	
+</div>
+
+

@@ -1,0 +1,52 @@
+<% page_title = "学员档案的全部讨论话题" %>
+<% community_page_title(page_title) %>
+
+
+<div class="float_r blog_container_r">
+	
+	<div class="community_block" style="font-size: 14px;">
+		<a href="/customers/all">
+			查看全部学员档案列表</a>
+	</div>
+
+	<div class="community_block_narrow">
+		<%= thin_hr %>
+	</div>
+	
+</div>
+
+<div class="blog_container_l">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_title">
+		讨论话题 ...
+	</div>
+	<div>
+		<table cellpadding="0" cellspacing="5" border="0" class="main_part_w">
+			<thead>
+				<tr>
+					<td width="51%">话题</td>
+					<td width="6%" align="right">回帖</td>
+					<td width="18%" align="right">发起人</td>
+					<td width="25%" align="right">最后参与</td>
+				</tr>
+			</thead>
+			<tbody>
+				<%= render :partial => "customer_post", :collection => @posts, :locals => {:show_customer_name => true, :hide_top => true} %>
+			</tbody>
+		</table>
+		<% unless @posts.size > 0 %>
+			<div class="form_info_l">
+				还没有讨论话题 ...
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="community_block">
+		<%= paging_buttons(@posts) %>
+	</div>
+	
+</div>
+
+

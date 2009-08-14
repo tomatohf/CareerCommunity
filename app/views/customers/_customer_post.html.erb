@@ -1,0 +1,65 @@
+<% hide_top &&= true %>
+<% show_customer_name &&= true %>
+
+<% comment_count = CustomerPostComment.get_count(customer_post.id) %>
+
+<tr>
+	<td valign="middle" style="border-bottom: dashed 1px #DDDDDD;">
+		<% unless hide_top %>
+			<% if customer_post.top %>
+				<b>
+					[置顶]
+				</b>
+				&nbsp;
+			<% end %>
+		<% end %>
+		
+		<% if show_customer_name %>
+			<%
+				customer_nick_pic = Account.get_nick_and_pic(customer_post.customer_id)
+				customer_nick = h(customer_nick_pic[0])
+			%>
+			<a href="/customers/post/<%= customer_post.customer_id %>" class="account_nick_link form_info_s">(<%= customer_nick %>)</a>
+			<br />
+			&nbsp;&nbsp;&nbsp;
+		<% end %>
+		
+		<% customer_post_title = h(customer_post.title) %>
+		<a href="/customer/posts/<%= customer_post.id %>" title="<%= customer_post_title %>" class="account_nick_link">
+			<%= truncate(customer_post_title) %>
+			<% if customer_post.good %>
+				&nbsp;
+				<img src="/images/groups/good_small.gif" border="0" alt="精华" title="精华" />
+			<% end %>
+		</a>
+	</td>
+	
+	<td valign="middle" align="right">
+		<a href="/customer/posts/<%= customer_post.id %>#comment_list" class="account_nick_link">
+			<%= comment_count %></a>
+	</td>
+	
+	<td valign="middle" align="right">
+		<% account_nick = Account.get_nick_and_pic(customer_post.account_id)[0] %>
+		<a href="/spaces/show/<%= customer_post.account_id %>" class="account_nick_link">
+			<%= h(account_nick) %></a>
+	</td>
+	
+	<td valign="middle" align="right" class="form_info_s" style="line-height: 1.2;">
+		<div>
+			<% if customer_post.responded_by %>
+				<%
+					responded_account_id = customer_post.responded_by
+					responded_account_nick = Account.get_nick_and_pic(responded_account_id)[0]
+				%>
+				<a href="/spaces/show/<%= responded_account_id %>" class="account_nick_link form_info_s">
+					<%= h(responded_account_nick) %></a>
+			<% end %>
+		</div>
+		
+		<div style="font-size: 9px;">
+			<%= format_datetime(customer_post.responded_at || customer_post.created_at) %>
+		</div>
+	</td>
+</tr>
+
