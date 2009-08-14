@@ -94,7 +94,7 @@
 
 					<div class="align_c" style="margin-top: 10px; border-top: 1px solid #EEEEEE;">
 						<p>
-							<button class="button_field" style="font-weight: bold; color: #111111; width: 180px;" onclick="window.top.location.href='http://apps.xiaonei.com/invite.do?app_id=26807'">邀请好友来看周三访谈录</button>
+							<button class="button_field" style="font-weight: bold; color: #111111; width: 180px;" onclick="window.top.location.href='http://apps.renren.com/invite.do?app_id=26807'">邀请好友来看周三访谈录</button>
 						</p>
 					</div>
 					
@@ -280,12 +280,12 @@
 					
 					var view_html = "";
 					view_html += "<a href='";
-					view_html += 	"http://xiaonei.com/profile.do?id=" + viewer.getId();
+					view_html += 	"http://renren.com/profile.do?id=" + viewer.getId();
 					view_html += 	"'>";
 					view_html += 		viewer.getDisplayName();
 					view_html += "</a>";
 					
-					var app_url = "http://apps.xiaonei.com/wednesdaytalks";
+					var app_url = "http://apps.renren.com/wednesdaytalks";
 					
 					var talks_html = "";
 					talks_html += "<a href='" + app_url + "'>";

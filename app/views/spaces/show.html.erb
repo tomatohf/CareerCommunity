@@ -149,14 +149,14 @@
 		</div>
 	<% end %>
 	
-	<% if @is_vip && (teacher?(session[:account_id]) || session[:account_id].to_s == @account_id) %>
+	<% if @is_vip && (teacher?(session[:account_id]) || @edit) %>
 		<div class="community_block align_c">
 			<a href="/customers/<%= @account_id %>" class="account_nick_link" style="font-size: 13px;">
 				进入<%= @edit ? "我的" : "其" %>学员档案 »</a>
 		</div>
 	<% end %>
 	
-	<% if teacher?(session[:account_id]) %>
+	<% if @edit && teacher?(session[:account_id]) %>
 		<div class="community_block align_c">
 			<a href="/customers" class="account_nick_link" style="font-size: 13px;">
 				查看学员档案的讨论话题 »</a>

@@ -95,6 +95,11 @@
 				<%= render :partial => "customer_post", :collection => @posts %>
 			</tbody>
 		</table>
+		<% unless @posts.size > 0 %>
+			<div class="form_info_l">
+				还没有讨论话题 ...
+			</div>
+		<% end %>
 	</div>
 
 	<div class="community_block">
