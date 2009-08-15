@@ -243,4 +243,27 @@ class Postman < ActionMailer::Base
     content_type "text/html"
   end
   
+  
+  
+  def problem_group_notification(poster, recipient, post_id, post_title)
+    recipients(
+      [
+        recipient.email
+      ]
+    )
+    
+    from(self.class.from)
+    
+    post_url = "#{self.class.host}/group/posts/#{post_id}"
+    
+    subject("乔布圈上有人向您提问: #{post_title}")
+    body(
+      :poster => poster,
+      :recipient => recipient,
+      :post_url => post_url,
+      :post_title => post_title
+    )
+    content_type "text/html"
+  end
+  
 end

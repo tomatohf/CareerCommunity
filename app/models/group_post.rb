@@ -61,6 +61,20 @@ class GroupPost < ActiveRecord::Base
   
   after_create { |post|
     PointProfile.adjust_account_points_by_action(post.account_id, :add_post, true)
+    
+    # check whether the post is in the problem group
+    # if so, send email notifications
+    if post.group_id == CustomGroups::ProblemController::Problem_Group_ID && post.category_id && post.category_id != ""
+      observers = CustomGroups::ProblemController::Category_Observers[post.category_id]
+      self.add_problem_group_notification(
+        {
+          :post_id => post.id,
+          :poster_id => post.account_id,
+          :post_title => post.title,
+          :observers_id => observers
+        }
+      ) if observers.size > 0
+    end
   }
   
   def self.clear_posts_group_feed_cache(group_id)
@@ -73,6 +87,8 @@ class GroupPost < ActiveRecord::Base
   
   
   CKP_group_post = :group_post
+  
+  CKP_problem_group_notifications = :problem_group_notifications
   
   
   
@@ -106,6 +122,23 @@ class GroupPost < ActiveRecord::Base
   
   def self.load_associations(posts, includes)
     preload_associations(posts, includes)
+  end
+  
+  
+  
+  # problem group related methods
+  def self.get_problem_group_notifications
+    Cache.get(CKP_problem_group_notifications) || []
+  end
+  
+  def self.add_problem_group_notification(notification)
+    notifications = get_problem_group_notifications
+    notifications << notification
+    Cache.set(CKP_problem_group_notifications, notifications)
+  end
+  
+  def self.clear_problem_group_notifications
+    Cache.delete(CKP_problem_group_notifications)
   end
   
   

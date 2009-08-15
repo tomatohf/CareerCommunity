@@ -1,0 +1,46 @@
+<div>
+	
+	<p>
+		Hi <%= h(@recipient.get_nick) %>,
+	</p>
+	
+	<p>
+		<a href="http://www.qiaobutang.com/spaces/show/<%= @poster.id %>" target="_blank">
+			<%= h(@poster.get_nick) %></a>
+		在乔布圈上提出了如下问题:
+		<a href="<%= @post_url %>" target="_blank" style="font-size: 14px;">
+			<%= h(@post_title) %></a>
+	</p>
+	
+	<p>
+		你可以到如下链接地址进行回复:
+		<br />
+		<a href="<%= @post_url %>" target="_blank">
+			<%= @post_url %></a>
+	</p>
+	
+	<br />
+	<p>
+		非常感谢你的帮助和对乔布堂的支持 ! :p
+	</p>
+	
+	
+	
+	<br />
+	<br />
+	<br />
+	<font color="#B3ABA2">
+		<div>
+			---
+		</div>
+		<div>
+			乔布堂: <a href="http://www.qiaobutang.com" target="_blank">http://www.qiaobutang.com</a>
+		</div>
+		<div>
+			乔布圈: <a href="http://www.qiaobuquan.com" target="_blank">http://www.qiaobuquan.com</a>
+		</div>
+	</font>
+	
+</div>
+
+

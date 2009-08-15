@@ -7,6 +7,16 @@ class CustomGroups::ProblemController < CustomGroups::FeedbackController
   
   Search_Result_Page_Size = 10
   
+  Category_Observers = {
+    1002 => [1020], # 小孙
+    1003 => [1001], # Tomato
+    1004 => [1002], # Rick
+    1005 => [1002], # Rick
+    1006 => [1019], # Kai
+    1007 => [4102], # Martin
+    1000 => [1000]
+  }
+  
   
   
   before_filter :check_login, :only => [:asked, :compose]

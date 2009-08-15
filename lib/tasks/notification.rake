@@ -279,7 +279,36 @@ namespace :notification do
         end
       end
     end
-    
+  end
+  
+  
+  desc "send problem group notification emails"
+  task :send_problem_group_notifications => :environment do
+    notifications = GroupPost.get_problem_group_notifications
+    GroupPost.clear_problem_group_notifications
+
+    notifications.each do |notification|
+      begin
+        post_id = notification[:post_id]
+        poster_id = notification[:poster_id]
+        post_title = notification[:post_title]
+        observers_id = notification[:observers_id]
+
+        poster = Account.find_enabled(poster_id)
+
+        if poster
+          observers = Account.enabled.find(
+            :all,
+            :conditions => ["id in (?)", observers_id]
+          )
+
+          observers.each do |observer|
+            Postman.deliver_problem_group_notification(poster, observer, post_id, post_title)
+          end
+        end
+      rescue
+      end
+    end
   end
   
   
