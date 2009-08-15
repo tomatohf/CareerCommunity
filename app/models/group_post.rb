@@ -73,7 +73,7 @@ class GroupPost < ActiveRecord::Base
           :post_title => post.title,
           :observers_id => observers
         }
-      ) if observers.size > 0
+      ) if observers && observers.size > 0
     end
   }
   
