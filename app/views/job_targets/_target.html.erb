@@ -73,17 +73,17 @@
 	</td>
 	
 	<td>
-		<% very_large_time = Time.mktime(2037, 5, 29) %>
-		<% now = Time.now %>
+		<% very_large_time = Time.mktime(2037, 5, 29).to_i %>
+		<% now = Time.now.to_i %>
 		<% if current_step && current_step.end_at %>
-			<% next_day = current_step.end_at + 60*60*24 %>
+			<% next_day = current_step.end_at.to_i + 60*60*24 %>
 			<% if next_day > now %>
 				<%= current_step.end_at.to_i * 1000 %>
 			<% else %>
-				<%= (very_large_time + (now - current_step.end_at)).to_i * 1000 %>
+				<%= (very_large_time + (now - current_step.end_at.to_i)) * 1000 %>
 			<% end %>
 		<% else %>
-			<%= very_large_time.to_i * 1000 %>
+			<%= very_large_time * 1000 %>
 		<% end %>
 	</td>
 	

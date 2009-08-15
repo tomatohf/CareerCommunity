@@ -295,7 +295,16 @@ module CareerTests
         result[n-1] += 1
       end
       
-      result
+      [result, question_ids.size]
+    end
+    
+    
+    def result_template
+      "/career_tests/results/sales_style/sales_style"
+    end
+    
+    def side_template
+      nil
     end
     
     

@@ -3,6 +3,9 @@ class CareerTestsController < ApplicationController
   
   Result_List_Size = 30
   
+  Sales_Style_Names = ["鼓吹者", "执行", "大使", "顾问"]
+  Sales_Style_Colors = %w{6C81B6 D843B3 5DBC5B FF6600}
+  
   
   layout "community"
   
@@ -106,6 +109,36 @@ class CareerTestsController < ApplicationController
   end
   
   
+  def sales_style_chart
+    chart_type = params[:chart_type]
+    counts = params[:id].split("_")
+    
+    series = []
+    categories = []
+    colors = []
+    
+    styles = Sales_Style_Names
+    1.upto(4) do |i|
+      count = (counts[i-1].to_f)/100
+      
+      series << count
+      
+      # 65.chr = A
+      categories << "#{(i - 1 + 65).chr}: #{count}"
+      colors << Sales_Style_Colors[i-1]
+    end
+    
+    graph  = get_graph(chart_type)
+    graph.add(:axis_category_text, categories)
+    graph.add(:series, "series legend label", series)
+    graph.add(:theme, "vote")
+    graph.add(:user_data, :colors, colors.join(","))
+    graph.add(:user_data, :delay_count, series.size - 1)
+    
+    render(:xml => graph.to_xml)
+  end
+  
+  
   
   private
   
@@ -117,6 +150,20 @@ class CareerTestsController < ApplicationController
   
   def check_history_owner
     jump_to("/errors/forbidden") unless session[:account_id].to_s == params[:id]
+  end
+  
+  
+  def get_graph(chart_type, chart_id = "vote_result")
+    chart_title = "类型构成"
+    case chart_type
+      when "pie"
+        graph = Ziya::Charts::Pie.new(nil, chart_title, chart_id)
+      when "pie_3d"
+        graph = Ziya::Charts::Pie3D.new(nil, chart_title, chart_id)
+      else
+        graph = Ziya::Charts::Pie.new(nil, chart_title, chart_id)
+    end
+    graph
   end
   
 end

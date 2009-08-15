@@ -1,0 +1,153 @@
+<%
+	percents = info[0].collect { |num| (num*100)/info[1].to_f }
+	
+	percent_params = percents.collect { |percent| (percent*100).to_i }.join("_")
+%>
+
+<div class="community_block align_c" style="font-size: 16px;">
+	<div class="float_r" style="width: 250px;">
+		<div id="style_chart_container">
+
+		</div>
+		
+		<div>
+			<a href="#" onclick="chart_type('pie'); return false;" title="饼状图">
+				<img src="/images/votes/chart_icons/pie.png" alt="饼状图" border="0" /></a>
+
+	    	<a href="#" onclick="chart_type('pie_3d'); return false;" title="饼状图[3D]">
+	        	<img src="/images/votes/chart_icons/pie_3d.png" alt="饼状图[3D]" border="0" /></a>
+		</div>
+		
+		<script language="JavaScript">
+			function chart_type(chart_type) {
+				document.getElementById("style_chart_container").innerHTML = get_chart_html(chart_type);
+			}
+
+			function get_chart_html(chart_type) {
+				return "<embed width='250' height='200' src='/charts/charts.swf?library_path=/charts/charts_library&xml_source=/career_tests/sales_style_chart/<%= percent_params %>?chart_type=" + chart_type + "' quality='high' type='application/x-shockwave-flash'></embed>"
+			}
+
+			chart_type("pie");
+		</script>
+	</div>
+	
+	<div style="margin-right: 260px; margin-top: 20px;">
+		<% 1.upto(4) do |i| %>
+			<div class="community_block" style="text-align: left;">
+				<%  # 65.chr = A %>
+				<span style="color: #111111<%#= CareerTestsController::Sales_Style_Colors[i-1] %>;">
+					<%= (i-1+65).chr %>
+					.
+					<%= CareerTestsController::Sales_Style_Names[i-1] %>
+				</span>
+				:
+				<span style="color: #CC3300; margin-left: 5px;">
+					<%= sprintf("%.2f", percents[i-1]) %>%
+				</span>
+			</div>
+		<% end %>
+	</div>
+</div>
+<div class="clear_r"></div>
+
+
+<div class="community_title">
+	类型解析 ...
+</div>
+<br />
+<div class="community_block align_c">
+	<img src="/images/career_tests/sales_styles.png" border="0" />
+</div>
+<div class="community_block">
+	<p>
+		<span style="font-size: 14px; font-weight: bold;">执行者</span>：高效的组织者，保证事件按时运作。执行者往往是公司政策和销售规则的坚定捍卫者。在<a href="/coach/stp" target="_blank">乔布堂的专业销售培训</a>课程中，我们常常会发现学员陷入到那些看起来很完美的销售技巧中。但是真实的商业环境是多种多样的，销售员应该具备一定的灵活性。
+	</p>
+	
+	<p>
+		所有的 <a href="/coach/stp" target="_blank">STP</a> 学员都应该明白，每一次跟客户接触都要在“人际关系”或者“销售结果”上迈进一步，否则拜访就失去了意义。但是执行者也有可以借鉴的优点，下文从个性、技能以及知识方面来举例说明。
+		
+		<ul>
+			<li>
+				个性：客观、精确、可靠、讲究方法、乐于助人
+			</li>
+			
+			<li>
+				技能：沟通、计划、组织、时间观念、处理文档工作、区域规划
+			</li>
+			
+			<li>
+				知识：保持纪录、公司政策、地理知识、客户情况、技术细节
+			</li>
+		</ul>
+	</p>
+	
+	<br />
+	
+	<p>
+		<span style="font-size: 14px; font-weight: bold;">鼓吹者</span>：非常有说服力地说明自己的公司组织及可以提供的产品或服务。鼓吹者在乔布堂学员中也有一定的比例。他们常常热衷于把自己的想法“灌输”给客户。也容易在处理反对意见的时候跟客户争论起来，甚至表露出对客户的鄙视。鼓吹者的典型就是候总，感兴趣的同学可以看一下这个视频 <a href="/group/posts/329" target="_blank">《牛叉的候总》</a> 。
+	</p>
+	
+	<p>
+		鼓吹者也有可以借鉴的优点，下文从个性、技能以及知识方面来举例说明。
+		
+		<ul>
+			<li>
+				个性：自信、积极、热情、诚实、有说服力
+			</li>
+			
+			<li>
+				技能：沟通、创造兴趣、陈述、达成协议、吸引注意力、坚守目标
+			</li>
+			
+			<li>
+				知识：产品、竞争、财务意识、市场、决策者
+			</li>
+		</ul>
+	</p>
+	
+	<br />
+	
+	<p>
+		<span style="font-size: 14px; font-weight: bold;">大使</span>：与他人有着良好关系的亲善代表。大使型销售员会尽量去满足客户的所有合理以及不合理的要求，而只是期望在客户心满意足之后赏一个订单。他们在客户面前的典型表现就是“不好意思”。不好意思谈订单，不好意思侃价，不好意思给客户压力。因为乔布堂的绝大多数学员都是大学生，所以大部分类型都是大使型。几年前我写过一篇短文 <a href="/blogs/170" target="_blank">《敏感型销售员》</a> ，实际上就是大使型销售员。
+	</p>
+	
+	<p>
+		我们可以从大使型销售员身上可以借鉴的优点如下。
+		
+		<ul>
+			<li>
+				个性：友善、善解人意、擅长外交辞令、富有幽默感、谦逊有礼、有同情心
+			</li>
+			
+			<li>
+				技能：提问、倾听、解决问题、收集信息、提供服务
+			</li>
+			
+			<li>
+				知识：客户的需要、客户的态度、客户的政策、客户所关注的
+			</li>
+		</ul>
+	</p>
+	
+	<br />
+	
+	<p>
+		<span style="font-size: 14px; font-weight: bold;">顾问</span>：帮助客户发现和满足他们的需求，分析并解决问题。顾问式销售员能够在取得订单的同时与客户保持良好的关系---明天的订单。这是每一个销售员都应该努力的方向。
+	</p>
+	
+	<br />
+	
+	<p>
+		实际上，在销售过程中，一个销售员可能要扮演不同的角色。比如在刚开始建立关系的时候，应该更像一个友善的大使；在介绍产品的时候，应该更像一个鼓吹者；而在进行客户关系管理和时间管理的时候，就应该更像一个执行者。
+	</p>
+	
+	<p>
+		真正的专业销售人员能够灵活把握什么时候对什么人应该采取何种角色---但请记住，其他角色的任务一旦达成，你必须回到业务顾问的角色。这是我刚刚开始找到一点“顾问的感觉”时写的一篇短文，感兴趣的同学，可以交流一下： <a href="/blogs/171" target="_blank">《多花点时间跟最重要的客户在一起》</a> 。
+	</p>
+</div>
+<br />
+<div class="community_block align_r">
+	作者： <a href="/blogs/list/1002" target="_blank" class="account_nick_link">RicK.Ma</a> 乔布堂高级培训师
+</div>
+
+

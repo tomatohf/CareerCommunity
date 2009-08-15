@@ -3,8 +3,8 @@ class CareerTest < StaticModel::OrderedStringBase
   def self.all
     [
       ["mbti", 10], # 1
-      ["enneagram", 20] # 2
-      #["sales_style", 20] # 3
+      ["enneagram", 20], # 2
+      ["sales_style", 30] # 3
     ]
   end
   
