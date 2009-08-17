@@ -2,7 +2,11 @@
 	
 	<% h_invitor_nick = h(@invitor_nick) %>
 	<p>
-		<%= h_invitor_nick %>(<a href="http://www.qiaobutang.com/spaces/show/<%= @invitor_account_id %>" target="_blank">http://www.qiaobutang.com/spaces/show/<%= @invitor_account_id %></a>) 邀请你参加活动 <%= h(@activity.get_title) %>, 活动地点在 <%= h(@activity.place) %>, 你可以到 <a href="http://www.qiaobutang.com/activities/<%= @activity.id %>" target="_blank">http://www.qiaobutang.com/activities/<%= @activity.id %></a> 查看活动的详情和报名参加这个活动
+		<%= h_invitor_nick %>(<a href="http://www.qiaobutang.com/spaces/show/<%= @invitor_account_id %>" target="_blank">http://www.qiaobutang.com/spaces/show/<%= @invitor_account_id %></a>) 邀请你参加活动 <%= h(@activity.get_title) %>,
+		<% if @activity.place && @activity.place != "" %>
+			活动地点在 <%= h(@activity.place) %>,
+		<% end %>
+		你可以到 <a href="http://www.qiaobutang.com/activities/<%= @activity.id %>" target="_blank">http://www.qiaobutang.com/activities/<%= @activity.id %></a> 查看活动的详情和报名参加这个活动
 	</p>
 
 	<% if @invitation_words && @invitation_words != "" %>
