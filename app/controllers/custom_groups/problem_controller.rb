@@ -14,6 +14,7 @@ class CustomGroups::ProblemController < CustomGroups::FeedbackController
     1005 => [1002], # Rick
     1006 => [1019], # Kai
     1007 => [4102], # Martin
+    1008 => [1660], # 姜鑫
     1000 => [1000]
   }
   
