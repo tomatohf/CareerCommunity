@@ -176,7 +176,10 @@
 
 								<select name="sid" id="sid" class="dropdown_list">
 									<% services.each_index do |i| %>
-										<option value="<%= i+1 %>"><%= services[i] %></option>
+										<% s = services[i] %>
+										<% if s && s != "" %>
+											<option value="<%= i+1 %>"><%= services[i] %></option>
+										<% end %>
 									<% end %>
 								</select>
 							</div>
