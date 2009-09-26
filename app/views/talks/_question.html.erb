@@ -67,7 +67,7 @@
 					<%= h(@talkers_mapping[answer.talker_id].get_name) %>
 				</span>
 				<span class="activity_info_label">回答说:</span>
-				<%= h(truncate(answer.answer, 50)) %>
+				<%= h(truncate(answer.answer, :length => 50)) %>
 			</div>
 			
 			<div>

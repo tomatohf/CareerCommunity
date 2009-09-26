@@ -5,6 +5,7 @@ development:
   username: root
   password: root
   host: localhost
+  reconnect: true
 
 test:
   adapter: mysql
@@ -21,3 +22,6 @@ production:
   username: root
   password: ***REMOVED***
   host: localhost
+  pool: 10
+  wait_timeout: 10
+  reconnect: true

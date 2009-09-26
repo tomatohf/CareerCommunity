@@ -1,6 +1,6 @@
 class CustomGroups::ProblemController < CustomGroups::FeedbackController
 
-  Problem_Group_ID = (ENV["RAILS_ENV"] == "production") ? 28 : 13
+  Problem_Group_ID = Rails.env.production? ? 28 : 13
   
   
   Group_Post_Num = 40

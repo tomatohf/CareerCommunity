@@ -22,7 +22,7 @@
 				<%= h(account.get_nick) %></a>
 			链接到
 			<a href="/<%= type.to_s.pluralize %>/<%= type_obj.id %>" title="<%= type_text %>" class="account_nick_link" target="_blank">
-				<%= truncate(type_text, 20) %>
+				<%= truncate(type_text, :length => 20) %>
 			</a>
 		</div>
 		<div class="align_c">

@@ -206,7 +206,7 @@ class AccountsController < ApplicationController
   end
   
   def set_autologin(account)
-    session_id = session.session_id
+    session_id = request.session_options[:id]
     account_id = account.id
     expire_time = 30.days.from_now
     

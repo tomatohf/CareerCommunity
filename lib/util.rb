@@ -83,7 +83,7 @@ module CareerCommunity
     
     def truncate_text(text, len, append = "...")
       return "" if text.nil?
-      text.chars.length > len ? text.chars[0...(len - append.chars.length)] + append : text
+      text.mb_chars.length > len ? text.mb_chars[0...(len - append.mb_chars.length)] + append : text
     end
     
     def get_unique_id

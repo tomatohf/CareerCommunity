@@ -40,7 +40,7 @@
 		<% form_tag "/job_services/#{@service.id}/create_evaluation", :method => :post, :onsubmit => "return validate_evaluation_form();", :target => "_top" do %>
 			<div style="margin: 0px auto; width: 950px;">
 				<span style="font-size: 14px; font-weight: bold; padding-left: 20px; background: transparent url(/images/index/job_services_icon.gif) no-repeat scroll 0px 0px; padding-right: 20px;">
-					<%= truncate(page_title, 20) %>
+					<%= truncate(page_title, :length => 20) %>
 				</span>
 				
 				|

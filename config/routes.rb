@@ -41,9 +41,9 @@ ActionController::Routing::Routes.draw do |map|
     
   }, :member => {
   
-    :basic => :any,
-    :contact => :any,
-    :hobby => :any,
+    :basic => [:get, :post],
+    :contact => [:get, :post],
+    :hobby => [:get, :post],
     
     :educations => :get,
     :educations_add => :post,
@@ -51,7 +51,7 @@ ActionController::Routing::Routes.draw do |map|
     :jobs => :any,
     :jobs_add => :post,
     
-    :pic => :any
+    :pic => [:get, :post]
     
   }
   
@@ -257,7 +257,7 @@ ActionController::Routing::Routes.draw do |map|
     
     :del_interest => :post,
     
-    :check_profile => :any,
+    :check_profile => [:get, :post],
     
     :cancel => :post,
     :recover => :post,
@@ -356,7 +356,7 @@ ActionController::Routing::Routes.draw do |map|
     
     :new_group_bookmark => :post,
     
-    :inline_add_form => :any,
+    :inline_add_form => [:get, :post],
     :create_inline => :post
     
   }, :member => {
@@ -371,7 +371,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/job_targets/calendar/:id/:month", :controller => "job_targets", :action => "calendar", :month => /\d\d\d\d\d\d/, :id => /\d+/
   map.resources :job_targets, :collection => {
     
-    :new_for_position => :any,
+    :new_for_position => [:get, :post],
     
     :add_account_process => :post,
     :create_account_process => :post,
@@ -523,7 +523,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/:item_type/job_items/:owner_type/:id/select_job_item", :controller => "job_items", :action => "select_job_item"
   map.resources :job_items, :path_prefix => "/:item_type", :collection => {
     
-    :search => :any
+    :search => [:get, :post]
     
   }, :member => {
     
@@ -551,7 +551,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/job_infos/p/:page", :controller => "job_infos", :action => "index", :page => /\d+/
   map.resources :job_infos, :collection => {
     
-    :search => :any,
+    :search => [:get, :post],
     
     :categories => :get,
     :category_new => :get,

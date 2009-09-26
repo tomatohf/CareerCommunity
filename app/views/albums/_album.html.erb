@@ -12,7 +12,7 @@
 	
 	<div class="album_info">
 		<div class="form_info_s">
-			<%= truncate(h(album.description), 40) %>
+			<%= truncate(h(album.description), :length => 40) %>
 		</div>
 		<div class="form_info_s">
 			<i><%= format_date(album.created_at) %></i>

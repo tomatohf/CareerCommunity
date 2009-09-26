@@ -100,7 +100,7 @@
 						<% talks.each do |talk| %>
 							<div class="form_info_s talk">
 								<a href="/talks/<%= talk.id %>" target="_blank" title="<%= h(extract_text(talk.get_info[:desc])) %>">
-									<%= truncate(h(talk.get_title), 22) %></a>
+									<%= truncate(h(talk.get_title), :length => 22) %></a>
 							
 								<span style="color: #999999;">
 									(<%= talk.publish_at.strftime("%m.%d") %>)
@@ -135,7 +135,7 @@
 							<div style="background: transparent url(/images/real_index/activity_icon.png) no-repeat scroll left center;padding-left: 18px;">
 								<% activity_title = h(activity.get_title) %>
 								<a href="/activities/<%= activity.id %>" target="_blank" title="<%= activity_title %>">
-									<%= truncate(activity_title, 22) %></a>
+									<%= truncate(activity_title, :length => 22) %></a>
 
 								<span style="color: #999999;">
 									<script language="JavaScript">
@@ -173,11 +173,11 @@
 							<div style="background: transparent url(/images/real_index/post_icon.png) no-repeat scroll left center;padding-left: 18px;">
 								<% group_post_title = h(group_post.title) %>
 								<a href="/group/posts/<%= group_post.id %>" target="_blank" title="<%= group_post_title %>">
-									<%= truncate(group_post_title, 20) %></a>
+									<%= truncate(group_post_title, :length => 20) %></a>
 
 								<% group_name = h(Group.get_group_with_image(group_post.group_id)[0].name) %>
 								<a href="/groups/<%= group_post.group_id %>" target="_blank" title="<%= group_name %>" style="color: #999999;">
-									(<%= truncate(group_name, 8) %>)
+									(<%= truncate(group_name, :length => 8) %>)
 								</a>
 							</div>
 						<% end %>
@@ -208,7 +208,7 @@
 							<div style="background: transparent url(/images/real_index/vote_icon.png) no-repeat scroll left center;padding-left: 18px;">
 								<% vote_topic_title = h(vote_topic.title) %>
 								<a href="/votes/<%= vote_topic.id %>" target="_blank" title="<%= vote_topic_title %>">
-									<%= truncate(vote_topic_title, 21) %></a>
+									<%= truncate(vote_topic_title, :length => 21) %></a>
 
 								<a href="/votes/category/<%= vote_topic.category_id %>" target="_blank" style="color: #999999;">
 									(<%= VoteCategory.get_category(vote_topic.category_id) %>)
@@ -242,7 +242,7 @@
 							<div style="background: transparent url(/images/real_index/blog_icon.png) no-repeat scroll left center;padding-left: 18px;">
 								<% blog_title = h(blog.title) %>
 								<a href="/blogs/<%= blog.id %>" target="_blank" title="<%= blog_title %>">
-									<%= truncate(blog_title, 26) %></a>
+									<%= truncate(blog_title, :length => 26) %></a>
 							</div>
 						<% end %>
 					<% end %>
@@ -272,7 +272,7 @@
 							<div style="background: transparent url(/images/index/exp_icon.gif) no-repeat scroll left center;padding-left: 18px;">
 								<% exp_title = h(exp.title) %>
 								<a href="/exps/<%= exp.id %>" target="_blank" title="<%= exp_title %>">
-									<%= truncate(exp_title, 23) %></a>
+									<%= truncate(exp_title, :length => 23) %></a>
 
 								<span style="color: #999999; font-size: 10px;">
 									(<%= exp.publish_time.strftime("%y-%m-%d") %>)

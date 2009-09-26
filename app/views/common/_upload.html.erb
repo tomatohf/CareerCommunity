@@ -92,7 +92,7 @@
 <script language="JavaScript" src="/lib/SWFUpload/swfupload.swfobject.js"></script>
 
 <script type="text/javascript" language="JavaScript">
-	var upload_action = "<%= upload_action %>?_session_id_4_swf=<%= session.session_id %>";
+	var upload_action = "<%= upload_action %>?_session_id_4_swf=<%= request.session_options[:id] %>";
 	var file_size_limitation = "<%= file_size_limit.megabyte %> B";
 	var form_token = "<%= form_authenticity_token %>";
 	var is_account_limited = <%= @account_limited.to_s %>;

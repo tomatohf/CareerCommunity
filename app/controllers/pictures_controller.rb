@@ -109,7 +109,7 @@ class PicturesController < ApplicationController
     file_name = picture.image_file_name
     file_name = URI.encode(file_name) if (request.env["HTTP_USER_AGENT"] || "") =~ /MSIE/i
     
-    if ENV["RAILS_ENV"] == "production"
+    if Rails.env.production?
       # invoke the x-sendfile of lighttpd to download file
       response.headers["Content-Type"] = picture.image_content_type
       response.headers["Content-Disposition"] = %Q!inline; filename=#{file_name}!

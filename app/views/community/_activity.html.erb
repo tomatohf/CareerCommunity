@@ -7,7 +7,7 @@
 	</div>
 	<div class="text_part">
 		<a href="/activities/<%= activity.id %>" class="account_nick_link">
-			<%= truncate(h(activity.get_title), 18) %></a>
+			<%= truncate(h(activity.get_title), :length => 18) %></a>
 	</div>
 </div>
 

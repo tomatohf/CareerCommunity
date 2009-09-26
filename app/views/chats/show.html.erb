@@ -109,7 +109,7 @@
 			:channels => @channels,
 			:client_id => @account_id,
 			:debug => false,
-			:session_id => session.session_id
+			:session_id => request.session_options[:id]
 		)
 	%>
 	

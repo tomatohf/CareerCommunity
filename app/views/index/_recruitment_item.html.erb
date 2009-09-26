@@ -8,7 +8,7 @@
 	<% end %>
 	<% lr_title = h(recruitment_item.title) %>
 	<a href="/recruitments/<%= recruitment_item.id %>" target="_blank" title="<%= lr_title %>">
-		<%= truncate(lr_title, show_location ? 20 : 23) %></a>
+		<%= truncate(lr_title, :length => (show_location ? 20 : 23)) %></a>
 		
 	<span style="color: #999999; font-size: 10px;">
 		(<%= recruitment_item.publish_time.strftime("%y-%m-%d") %>)

@@ -14,7 +14,7 @@
 	
 	<% track_desc = h(small_track.desc) %>
 	<div style="color: #222222; padding-left: 25px;" title="<%= track_desc %>">
-		<%= truncate(track_desc, 50) %>
+		<%= truncate(track_desc, :length => 50) %>
 	</div>
 	
 	<div class="form_info_s align_r" style="word-spacing: 10px;">

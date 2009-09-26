@@ -8,7 +8,7 @@ module ApplicationHelper
   def round_corner_div(attr = {}, &block)
     attr[:border_color] ||= "#A3988C"
     attr[:bg_color] ||= "#FAFFE7"
-    concat(render(:partial => "common/round_corner_div", :locals => {:attr => attr, :content => capture(&block)}), block.binding)
+    concat(render(:partial => "common/round_corner_div", :locals => {:attr => attr, :content => capture(&block)}))
   end
   
   def list_model_validate_errors(model)

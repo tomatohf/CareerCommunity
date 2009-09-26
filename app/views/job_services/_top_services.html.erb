@@ -41,7 +41,7 @@
 											<% if service %>
 												<% service_name = h(service.name) %>
 												<a href="/job_services/<%= service.id %><%= %Q!/url_preview! if service.url && (service.url != "") %>" title="<%= service_name %>" target="_blank">
-													<%= truncate(service_name, 15) %></a>
+													<%= truncate(service_name, :length => 15) %></a>
 											<% else %>
 												<a href="/job_services/new" style="font-size: 12px; color: #DDDDDD; margin-left: 20px;">
 													...我来添加...</a>

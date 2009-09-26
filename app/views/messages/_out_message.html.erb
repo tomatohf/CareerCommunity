@@ -11,7 +11,7 @@
 	<div class="message_content">
 		<a href="/spaces/show/<%= receiver_id %>">
 			<img class="float_l" src="<%= face_img_src(receiver_pic_url) %>" border="0" /></a>
-		<%= truncate(h(out_message.content), 200) %>
+		<%= truncate(h(out_message.content), :length => 200) %>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a href="/messages/thread/<%= out_message.sender_id %>/<%= receiver_id %>/<%= reply_to_id %>">展开</a>
 	</div>

@@ -58,7 +58,7 @@
 	
 	<% unless small %>
 		<div style="padding: 0px 15px; color: #666666">
-			<%= truncate(talk_desc, 200) %>
+			<%= truncate(talk_desc, :length => 200) %>
 		</div>
 	<% end %>
 

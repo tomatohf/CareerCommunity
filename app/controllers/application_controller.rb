@@ -6,20 +6,21 @@ class ApplicationController < ActionController::Base
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
-  protect_from_forgery :secret => '6de6e02443a6e9d99a232d1b668dd8d6'
+  # 
+  # protect_from_forgery :secret => '6de6e02443a6e9d99a232d1b668dd8d6'
+  # 
+  # From Rails 2.3
+  # The :digest and :secret options to protect_from_forgery are deprecated 
+  # and have no effect.
+  protect_from_forgery
+  
   
   filter_parameter_logging "password"
   
   
   
-  
-  # include hoptoad exception notifier
-  include HoptoadNotifier::Catcher
-  
-  
-  
   # enable output GZip compression
-  after_filter OutputCompressionFilter unless ENV["RAILS_ENV"] == "development"
+  after_filter OutputCompressionFilter unless Rails.env.development?
   
   
   
@@ -185,7 +186,9 @@ class ApplicationController < ActionController::Base
     request.parameters.reject! { true }
     request.parameters.merge!(redirect_post_params)
     
-    controller.process(request, response)
+    # controller.process(request, response)
+    # Now could invoke the public API - Controller.call(request.env)
+    controller.call(request.env)
     
     if response.redirected_to
       @performed_redirect = true

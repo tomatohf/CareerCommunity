@@ -27,7 +27,9 @@ if Log.info?
 end
 
 if ENV['RAILS_ENV'] == 'development'
-  Dependencies.mechanism = :load
+  # Dependencies.mechanism = :load
+  # Modified by Tomato to be compatible with Rails 2.3.4
+  ActiveSupport::Dependencies.mechanism = :load
 end
 
 WebORBConfig.init

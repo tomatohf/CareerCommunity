@@ -59,8 +59,9 @@ Rails::Initializer.run do |config|
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_CareerCommunity_session',
-    :secret      => '5f6fe7958ee4a9f7f2e9f26de75c307a1f85ac96d29642bf11d5fd1feb7ef8f9e83d3a00298285850b5d75ed4cb2935f5ce058d5b24fd0ea12df6c361b3a6aa0'
+    :key => '_CareerCommunity_session',
+    :secret => '5f6fe7958ee4a9f7f2e9f26de75c307a1f85ac96d29642bf11d5fd1feb7ef8f9e83d3a00298285850b5d75ed4cb2935f5ce058d5b24fd0ea12df6c361b3a6aa0',
+    :expire_after => 60*15 # set the session expire time to 60 * 15 = 15 minutes
   }
 
   # Use the database for sessions instead of the cookie-based default,
@@ -86,10 +87,3 @@ Rails::Initializer.run do |config|
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
 end
-
-
-
-# added by Tomato
-# - share the memcache with fragment cache
-# - set the session expire time to 60 * 15 = 15 minutes
-ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.merge!({"cache" => Cache, "expires" => 60*15})

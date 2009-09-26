@@ -153,7 +153,7 @@
 		</div>
 	
 		<div class="community_block align_r">
-			<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/#{@picture_type}/pictures/#{@picture.id}", :title => (@picture.title && @picture.title != "") ? "照片: #{h(truncate(@picture.title, 250))}" : ""} %>
+			<%= render :partial => "/bookmarks/inline_add", :locals => {:url => "/#{@picture_type}/pictures/#{@picture.id}", :title => (@picture.title && @picture.title != "") ? "照片: #{h(truncate(@picture.title, :length => 250))}" : ""} %>
 		</div>
 	
 		<% if @access.include?(:admin) %>	

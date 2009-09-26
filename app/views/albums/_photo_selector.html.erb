@@ -11,7 +11,7 @@
 								<% h_album_name = h(al[1]) %>
 								<a title="<%= h_album_name %>" href="#" onclick="photo_selector.show_album_photos(<%= al[0] %>, '<%= photo_list_template %>'); return false;" style="text-decoration: none;">
 									<img src="/images/index/pic_icon.gif" border="0"/>
-									<%= truncate(h_album_name, 25) %>
+									<%= truncate(h_album_name, :length => 25) %>
 								</a>
 							</span>
 							

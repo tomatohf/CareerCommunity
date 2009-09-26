@@ -1,4 +1,16 @@
-﻿EXT IE8 menu 宽度问题
+﻿升级 Rails 2.3
+	- file upload (swfupload)
+	- plugins
+	- gems
+	- gem 固化
+	- page errors
+		* custom groups
+		* errors pages
+	- 部署方式
+	
+
+
+EXT IE8 menu 宽度问题
 升级EXT ?
 
 
@@ -227,11 +239,12 @@ Denpendencies:
 	rcov (xmpp4r-simple needs it)
 	xmpp4r-simple
 	SystemTimer
-	erubis
+	erubis (disabled currently ...)
 	json
 	eventmachine
 	juggernaut (*need to update from source code manually* http://github.com/maccman/juggernaut_gem/tree/master)
 	RedCloth (NB: The RedCloth gem name is CamelCase, not lowercase. If you mistakenly do a gem install redcloth, you’ll get ERROR: could not find redcloth locally or in a repository.)
+	libxml-ruby
 	-----
 	
 	[only on production server]

@@ -128,7 +128,7 @@ class CommunityController < ApplicationController
       
     end
     
-    render :text => %Q!
+    render :js => %Q!
     
       var unread_msg_count_container = document.getElementById("unread_msg_count");
       if(unread_msg_count_container) {
