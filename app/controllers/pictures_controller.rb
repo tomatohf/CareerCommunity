@@ -16,8 +16,6 @@ class PicturesController < ApplicationController
   before_filter :check_create_comment_access, :only => [:create_comment]
   before_filter :check_delete_comment_access, :only => [:delete_comment]
   
-  skip_after_filter OutputCompressionFilter, :only => [:image, :create_picture]
-  
   
   
   def upload

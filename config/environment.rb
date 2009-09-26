@@ -86,4 +86,9 @@ Rails::Initializer.run do |config|
 
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
+  
+  
+  # config middlewares
+  config.middleware.insert_before ActionController::Base.session_store, "FlashSessionCookieMiddleware"
+  config.middleware.use Rack::Deflater
 end

@@ -154,7 +154,8 @@ SWFUpload.onload = function(){
 		upload_complete_handler: Upload.upload_complete,
 		
 		post_params: {
-			authenticity_token: encodeURIComponent(form_token)
+			// authenticity_token: encodeURIComponent(form_token)
+			authenticity_token: form_token
 		},
 
 		debug: false, // Set to true to find out why things aren't working

@@ -55,6 +55,20 @@ require "redcloth"
 
 
 ##################################################
+### require middlewares
+##################################################
+
+require "middlewares/flash_session_cookie_middleware"
+
+##################################################
+### END
+##################################################
+
+
+
+
+
+##################################################
 ### require lib files
 ##################################################
 
@@ -69,7 +83,7 @@ require "exp_vendors/base"
 
 require "goal_follow_types/base"
 
-require_dependency "career_tests/base"
+require "career_tests/base"
 
 ##################################################
 ### END

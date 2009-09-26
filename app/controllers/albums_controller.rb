@@ -10,8 +10,6 @@ class AlbumsController < ApplicationController
   before_filter :check_album_access, :only => [:upload, :upload_simple,
                                               :create_photo_simple, :fetch_photos, :destroy, :create_photo_from_photo_selector]
   before_filter :check_album_access_full, :only => [:edit, :update]
-  
-  skip_after_filter OutputCompressionFilter, :only => [:create_photo]
     
 
   
