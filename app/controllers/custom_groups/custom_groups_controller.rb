@@ -36,5 +36,15 @@ class CustomGroups::CustomGroupsController < GroupsController
     (self.respond_to?(action_name, false) && !template_exists?(template_name)) ? "#{self.class.inherited_template_dir}/#{action_name}" : template_name
   end
   
+  
+  # Define template_exists? for Rails 2.3 (cause it's removed ...)
+  unless ActionController::Base.private_instance_methods.include?("template_exists?")
+    def template_exists?(path)
+      self.view_paths.find_template(path, response.template.template_format)
+    rescue ActionView::MissingTemplate
+      false
+    end
+  end
+  
 end
 

@@ -1,12 +1,9 @@
 ﻿升级 Rails 2.3
-	- page errors
-		* custom groups
-		* errors pages
+	- 部署方式 - 需要测试一下 dispatch.fcgi 执行是否会出错 ...
+	- enable erubis ...
 	- 用 Metal 实现
 		* interval
 		* public chatroom online count
-	- 部署方式 - 需要测试一下 dispatch.fcgi 执行是否会出错 ...
-	- enable erubis ...
 	
 
 

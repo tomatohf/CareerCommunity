@@ -17,7 +17,7 @@ class ErrorsController < ApplicationController
     @code = params[:id] || "500"
     
     # default to render status 500 page
-    render :status => @code
+    render :layout => true, :status => @code
   end
   
 end
