@@ -1,13 +1,12 @@
-﻿升级 Rails 2.3
-	- enable erubis ...
-	- 用 Metal 实现
-		* interval
-		* public chatroom online count
-	
-
-
-EXT IE8 menu 宽度问题
+﻿EXT IE8 menu 宽度问题
 升级EXT ?
+
+
+
+用 Metal 实现
+	- interval
+	- public chatroom online count
+	
 
 
 面经
