@@ -58,7 +58,7 @@ require "redcloth"
 ### require middlewares
 ##################################################
 
-require "middlewares/flash_session_cookie_middleware"
+
 
 ##################################################
 ### END

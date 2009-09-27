@@ -154,6 +154,7 @@ SWFUpload.onload = function(){
 		upload_complete_handler: Upload.upload_complete,
 		
 		post_params: {
+			_session_id_4_swf: sid,
 			// authenticity_token: encodeURIComponent(form_token)
 			authenticity_token: form_token
 		},

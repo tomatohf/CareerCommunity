@@ -5,7 +5,7 @@
 
 <% comment_count = TalkComment.get_count(talk.id) %>
 
-<% if highlight_latest && (page.to_i < 2) && (talk_counter < 2) %>
+<% if highlight_latest && (page.to_i < 2) && (talk_counter < 1) %>
 
 	<%= render(:partial => "/talks/latest_talk", :object => talk) %>
 

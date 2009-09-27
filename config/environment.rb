@@ -89,6 +89,5 @@ Rails::Initializer.run do |config|
   
   
   # config middlewares
-  config.middleware.insert_before ActionController::Base.session_store, "FlashSessionCookieMiddleware"
-  config.middleware.use Rack::Deflater
+  #config.middleware.use Rack::Deflater
 end
