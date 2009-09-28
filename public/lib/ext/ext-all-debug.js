@@ -24982,7 +24982,10 @@ Ext.extend(Ext.menu.Menu, Ext.util.Observable, {
         if(w){
             el.setWidth(w);
         }else if(Ext.isIE){
-            el.setWidth(this.minWidth);
+            // Modified by Tomato to fix the menu width issue on IE8
+			// el.setWidth(this.minWidth);
+			el.setWidth(Ext.isStrict && (Ext.isIE7 || Ext.isIE8) ? "auto" : el.minWidth);
+			
             var t = el.dom.offsetWidth;             el.setWidth(ul.getWidth()+el.getFrameWidth("lr"));
         }
     },
