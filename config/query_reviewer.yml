@@ -4,7 +4,7 @@ all:
     trace_includes_vendor: false
     trace_includes_lib: true
     profiling: enabled
-    production_data: true
+    production_data: false
     max_safe_key_length: 100
     disable_sql_cache: true    
 
