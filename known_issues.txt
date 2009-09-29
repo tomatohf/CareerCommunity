@@ -243,6 +243,9 @@ Denpendencies:
 	
 	[only on production server]
 	scout (sudo gem install scout --source http://gems.scoutapp.com)
+		Dependencies:
+			* elif
+			* request-log-analyzer
 	-----
 	
 ======
