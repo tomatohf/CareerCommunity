@@ -83,7 +83,7 @@ require "exp_vendors/base"
 
 require "goal_follow_types/base"
 
-require "career_tests/base"
+require_dependency "career_tests/base"
 
 ##################################################
 ### END
