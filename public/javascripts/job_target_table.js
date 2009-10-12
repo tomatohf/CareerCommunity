@@ -110,10 +110,9 @@ JobTownGrid = function(table_id, config) {
 							return function(value, metadata, record, rowIndex, colIndex, store) {
 								var target_id = get_element_from_html(record.data.column_5).id.substr("step_group_".length);
 								var target = targets["target_" + target_id];
-								var desc = target.desc.company;
 								
 								var html = "";
-								html += "<div class='target_text' ext:qtip='" + desc + "'>";
+								html += "<div class='target_text' ext:qtip='" + value + "'>";
 								html += value;
 								html += "</div>";
 								return html;
@@ -124,10 +123,9 @@ JobTownGrid = function(table_id, config) {
 							return function(value, metadata, record, rowIndex, colIndex, store) {
 								var target_id = get_element_from_html(record.data.column_5).id.substr("step_group_".length);
 								var target = targets["target_" + target_id];
-								var desc = target.desc.position;
 								
 								var html = "";
-								html += "<div class='target_text' ext:qtip='" + desc + "'>";
+								html += "<div class='target_text' ext:qtip='" + value + "'>";
 								html += value;
 								html += "</div>";
 								return html;
