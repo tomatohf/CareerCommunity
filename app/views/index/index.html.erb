@@ -1,22 +1,3 @@
-<div style="float: right; width: 250px;">
-	<a href="/group/posts/219" target="_blank">
-		<img src="/images/coach/for_index/rick_ma_video.jpg" border="0" /></a>
-</div>
-
-<div style="margin-right: 250px;">
-	<a href="/coach/stp" target="_blank">
-		<img src="/images/coach/for_index/STP_small.jpg" border="0" /></a>
-</div>
-
-
-<div class="clear" style="margin-bottom: 40px;"></div>
-
-
-
-
-
-<!-- ++++++++++++++++ sep line ++++++++++++++++ -->
-
 <div class="index_partner_container">
 	<div class="index_section_title">
 		乔布热
@@ -72,383 +53,391 @@
 	<% end %>
 </div>
 
-<table cellpadding="0" cellspacing="0" border="0" class="index_community_container">
-	<tr>
-		<td align="left" valign="top" style="width: 50%;">
-			<div style="margin-right: 30px;">
-				<div class="index_section_title" style="padding-left: 15px; border-bottom: 5px solid #EAEAEA;">
-					<a href="/community" target="_blank" style="float: right; color: #B3ABA2; font-size: 12px;">
-						| 更多乔布圈内容
-						<img src="/images/real_index/more_icon.png" border="0" /></a>
-					乔布圈
-				</div>
-				
-				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
-					<div class="align_c" style="margin-bottom: 12px;">
-						<a href="/talks">
-							<img src="/images/talks/qiaobutang_talk_logo.png" border="0" alt="周三访谈录" title="周三访谈录" /></a>
-					</div>
-					<% cache(Talk::FCKP_index_talk) do %>
-						<%
-							talks = Talk.published.find(
-								:all,
-								:limit => 5,
-								:order => "publish_at DESC"
-						    )
-						%>
-					
-						<% talks.each do |talk| %>
-							<div class="form_info_s talk">
-								<a href="/talks/<%= talk.id %>" target="_blank" title="<%= h(extract_text(talk.get_info[:desc])) %>">
-									<%= truncate(h(talk.get_title), :length => 22) %></a>
-							
-								<span style="color: #999999;">
-									(<%= talk.publish_at.strftime("%m.%d") %>)
-								</span>
-							</div>
-						<% end %>
-					<% end %>
-				
-					<div style="text-align: right;">
-						<a href="/talks" target="_blank" style="color: #333333; font-size: 12px;">
-							更多周三访谈录
-							<img src="/images/real_index/more_icon.png" border="0" /></a>
-					</div>
-				</div>
-				
-				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
-					<div style="font-weight: bold;">
-						活动/沙龙
-					</div>
-					<% cache(Activity::FCKP_index_activity) do %>
-						<%
-							activities = Activity.uncancelled.find(
-								:all,
-								:limit => 5,
-								:conditions => ["creator_id in (?)", IndexController::Index_Activity_Account_Id_Scope],
-								:select => "id, created_at, creator_id, cancelled, online, title, begin_at, end_at, application_deadline",
-								:order => "created_at DESC"
-							)
-						%>
-						
-						<% activities.each do |activity| %>
-							<div style="background: transparent url(/images/real_index/activity_icon.png) no-repeat scroll left center;padding-left: 18px;">
-								<% activity_title = h(activity.get_title) %>
-								<a href="/activities/<%= activity.id %>" target="_blank" title="<%= activity_title %>">
-									<%= truncate(activity_title, :length => 22) %></a>
-
-								<span style="color: #999999;">
-									<script language="JavaScript">
-										var status_label = <%= show_activity_status_script(activity) %>;
-										
-										document.write("(" + status_label + ")");
-									</script>
-								</span>
-							</div>
-						<% end %>
-					<% end %>
-					
-					<div style="text-align: right;">
-						<a href="/activities/all" target="_blank" style="color: #333333; font-size: 12px;">
-							更多活动
-							<img src="/images/real_index/more_icon.png" border="0" /></a>
-					</div>
-				</div>
-				
-				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
-					<div style="font-weight: bold;">
-						圈子话题
-					</div>
-					<%# place holder for fragment cache codes ... %>
-						<%
-							group_posts = GroupPost.find(
-								:all,
-								:limit => 20,
-								:select => "id, created_at, group_id, title",
-								:order => "id DESC"
-						    )
-						%>
-						
-						<% group_posts.each do |group_post| %>
-							<div style="background: transparent url(/images/real_index/post_icon.png) no-repeat scroll left center;padding-left: 18px;">
-								<% group_post_title = h(group_post.title) %>
-								<a href="/group/posts/<%= group_post.id %>" target="_blank" title="<%= group_post_title %>">
-									<%= truncate(group_post_title, :length => 20) %></a>
-
-								<% group_name = h(Group.get_group_with_image(group_post.group_id)[0].name) %>
-								<a href="/groups/<%= group_post.group_id %>" target="_blank" title="<%= group_name %>" style="color: #999999;">
-									(<%= truncate(group_name, :length => 8) %>)
-								</a>
-							</div>
-						<% end %>
-					<%# end place holder for fragment cache codes ... %>
-					
-					<div style="text-align: right;">
-						<a href="/groups/all" target="_blank" style="color: #333333; font-size: 12px;">
-							更多圈子
-							<img src="/images/real_index/more_icon.png" border="0" /></a>
-					</div>
-				</div>
-				
-				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
-					<div style="font-weight: bold;">
-						投票
-					</div>
-					<% cache(VoteTopic::FCKP_index_vote_topic) do %>
-						<%
-							vote_topics = VoteTopic.find(
-								:all,
-								:limit => 5,
-								:select => "id, created_at, title, category_id",
-								:order => "created_at DESC"
-						    )
-						%>
-						
-						<% vote_topics.each do |vote_topic| %>
-							<div style="background: transparent url(/images/real_index/vote_icon.png) no-repeat scroll left center;padding-left: 18px;">
-								<% vote_topic_title = h(vote_topic.title) %>
-								<a href="/votes/<%= vote_topic.id %>" target="_blank" title="<%= vote_topic_title %>">
-									<%= truncate(vote_topic_title, :length => 21) %></a>
-
-								<a href="/votes/category/<%= vote_topic.category_id %>" target="_blank" style="color: #999999;">
-									(<%= VoteCategory.get_category(vote_topic.category_id) %>)
-								</a>
-							</div>
-						<% end %>
-					<% end %>
-					
-					<div style="text-align: right;">
-						<a href="/votes" target="_blank" style="color: #333333; font-size: 12px;">
-							更多投票
-							<img src="/images/real_index/more_icon.png" border="0" /></a>
-					</div>
-				</div>
-				
-				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
-					<div style="font-weight: bold;">
-						博客
-					</div>
-					<% cache(Blog::FCKP_index_blog) do %>
-						<%
-							blogs = Blog.find(
-								:all,
-								:limit => 5,
-								:select => "id, created_at, title",
-								:order => "created_at DESC"
-						    )
-						%>
-						
-						<% blogs.each do |blog| %>
-							<div style="background: transparent url(/images/real_index/blog_icon.png) no-repeat scroll left center;padding-left: 18px;">
-								<% blog_title = h(blog.title) %>
-								<a href="/blogs/<%= blog.id %>" target="_blank" title="<%= blog_title %>">
-									<%= truncate(blog_title, :length => 26) %></a>
-							</div>
-						<% end %>
-					<% end %>
-					
-					<div style="text-align: right;">
-						<a href="/blogs" target="_blank" style="color: #333333; font-size: 12px;">
-							更多博客
-							<img src="/images/real_index/more_icon.png" border="0" /></a>
-					</div>
-				</div>
-				
-				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
-					<div style="font-weight: bold;">
-						面经
-					</div>
-					<% cache(Exp::FCKP_index_list) do %>
-						<%
-							exps = Exp.find(
-								:all,
-								:limit => 10,
-								:select => "id, title, publish_time",
-								:order => "publish_time DESC"
-						    )
-						%>
-						
-						<% exps.each do |exp| %>
-							<div style="background: transparent url(/images/index/exp_icon.gif) no-repeat scroll left center;padding-left: 18px;">
-								<% exp_title = h(exp.title) %>
-								<a href="/exps/<%= exp.id %>" target="_blank" title="<%= exp_title %>">
-									<%= truncate(exp_title, :length => 23) %></a>
-
-								<span style="color: #999999; font-size: 10px;">
-									(<%= exp.publish_time.strftime("%y-%m-%d") %>)
-								</span>
-							</div>
-						<% end %>
-					<% end %>
-					
-					<div style="text-align: right;">
-						<a href="/exps" target="_blank" style="color: #333333; font-size: 12px;">
-							更多面经
-							<img src="/images/real_index/more_icon.png" border="0" /></a>
-					</div>
-				</div>
-				
-			</div>
-		</td>
-		
-		<td align="left" valign="top" style="width: 50%;">
-			<div style="margin-right: 25px;">
-				<div class="index_section_title" style="padding-left: 15px; border-bottom: 5px solid #EAEAEA;">
-					<a href="/recruitments" target="_blank" style="float: right; color: #B3ABA2; font-size: 12px;">
-						| 更多招聘信息
-						<img src="/images/real_index/more_icon.png" border="0" /></a>
-					死磕乔布
-				</div>
-				
-				
-				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
-					<div style="font-weight: bold;">
-						全职
-					</div>
-					<% cache(Recruitment::FCKP_index_fulltime) do %>
-						<%
-							fulltime_recruitments = Recruitment.find(
-								:all,
-								:limit => 25,
-								:conditions => ["recruitment_type = ?", Recruitment::Type_fulltime],
-								:select => "id, title, publish_time, location, recruitment_type",
-								:order => "publish_time DESC"
-						    )
-						%>
-						
-						<%= render :partial => "recruitment_item", :collection => fulltime_recruitments %>
-					<% end %>
-					
-					<div style="text-align: right;">
-						<a href="/recruitments/recruitment_type/<%= Recruitment::Type_fulltime %>" target="_blank" style="color: #333333; font-size: 12px;">
-							更多全职信息
-							<img src="/images/real_index/more_icon.png" border="0" /></a>
-					</div>
-				</div>
-				
-				
-				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
-					<div style="font-weight: bold;">
-						宣讲会
-					</div>
-					<% cache(Recruitment::FCKP_index_lecture) do %>
-						<%
-							lecture_recruitments = Recruitment.find(
-								:all,
-								:limit => 5,
-								:conditions => ["recruitment_type = ?", Recruitment::Type_lecture],
-								:select => "id, title, publish_time, location, recruitment_type",
-								:order => "publish_time DESC"
-						    )
-						%>
-						
-						<%= render :partial => "recruitment_item", :collection => lecture_recruitments %>
-					<% end %>
-					
-					<div style="text-align: right;">
-						<a href="/recruitments/recruitment_type/<%= Recruitment::Type_lecture %>" target="_blank" style="color: #333333; font-size: 12px;">
-							更多宣讲会信息
-							<img src="/images/real_index/more_icon.png" border="0" /></a>
-					</div>
-				</div>
-				
-				
-				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
-					<div style="font-weight: bold;">
-						招聘会
-					</div>
-					<% cache(Recruitment::FCKP_index_jobfair) do %>
-						<%
-							jobfair_recruitments = Recruitment.find(
-								:all,
-								:limit => 5,
-								:conditions => ["recruitment_type = ?", Recruitment::Type_jobfair],
-								:select => "id, title, publish_time, location, recruitment_type",
-								:order => "publish_time DESC"
-						    )
-						%>
-						
-						<%= render :partial => "recruitment_item", :collection => jobfair_recruitments %>
-					<% end %>
-					
-					<div style="text-align: right;">
-						<a href="/recruitments/recruitment_type/<%= Recruitment::Type_jobfair %>" target="_blank" style="color: #333333; font-size: 12px;">
-							更多招聘会信息
-							<img src="/images/real_index/more_icon.png" border="0" /></a>
-					</div>
-				</div>
-				
-				
-				<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
-					<div style="font-weight: bold;">
-						兼职
-					</div>
-					<% cache(Recruitment::FCKP_index_parttime) do %>
-						<%
-							parttime_recruitments = Recruitment.find(
-								:all,
-								:limit => 20,
-								:conditions => ["recruitment_type = ?", Recruitment::Type_parttime],
-								:select => "id, title, publish_time, location, recruitment_type",
-								:order => "publish_time DESC"
-						    )
-						%>
-						
-						<%= render :partial => "recruitment_item", :collection => parttime_recruitments %>
-					<% end %>
-					
-					<div style="text-align: right;">
-						<a href="/recruitments/recruitment_type/<%= Recruitment::Type_parttime %>" target="_blank" style="color: #333333; font-size: 12px;">
-							更多兼职信息
-							<img src="/images/real_index/more_icon.png" border="0" /></a>
-					</div>
-				</div>
-				
-			</div>
-		</td>
-	</tr>
+<div class="index_community_container">
+	<div class="align_c" style="margin-bottom: 50px;">
+		<a href="/coach/stp" title="销售培训项目 (STP)">
+			<img src="/images/real_index/stp_post.jpg" border="0" alt="销售培训项目 (STP)" /></a>
+	</div>
 	
-	<tr>
-		<td colspan="2">
-			<div style="padding-top: 30px;">
-				<div class="index_section_title">
-					从搜索感兴趣的东西开始
-				</div>
-				
-				<% round_corner_div :border_color => "#E0E0E0", :bg_color => "#FAFAFA", :style => "margin: 8px 5px; padding-right: 60px;" do %>
-					<div style="padding: 10px 15px;">
-						<% form_tag "/community/search", :method => :get, :target => "_blank" do %>
-							<img class="float_l" src="/images/real_index/seek_job_icon.png" border="0" alt="搜索" />
-							&nbsp;&nbsp;&nbsp;
-							
-							<select name="scope" class="dropdown_list">
-								<option value="all">选择搜索范围</option>
-								<option value="account">成员</option>
-								<option value="blog">博客</option>
-								<option value="group">圈子</option>
-								<option value="group_post">圈子话题</option>
-								<option value="activity">活动</option>
-								<option value="activity_post">活动话题</option>
-								<option value="recruitment">招聘信息</option>
-								<option value="exp">面经</option>
-								<option value="vote">投票</option>
-								<option value="talk">访谈录</option>
-								<option value="goal">目标</option>
-								<option value="goal_post">目标话题</option>
-								<option value="goal_track">目标进度</option>
-								<option value="company_post">公司讨论区</option>
-							</select>
-							&nbsp;
-							<input type="text" name="query" class="text_field" size="50" />
-							&nbsp;
-							<input type="submit" value="搜索" class="button" />
-						<% end %>
+	
+	<table cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td align="left" valign="top" style="width: 50%;">
+				<div style="margin-right: 30px;">
+					<div class="index_section_title" style="padding-left: 15px; border-bottom: 5px solid #EAEAEA;">
+						<a href="/community" target="_blank" style="float: right; color: #B3ABA2; font-size: 12px;">
+							| 更多乔布圈内容
+							<img src="/images/real_index/more_icon.png" border="0" /></a>
+						乔布圈
 					</div>
-				<% end %>
-			</div>
-		</td>
-	</tr>
-</table>
+
+					<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+						<div class="align_c" style="margin-bottom: 12px;">
+							<a href="/talks">
+								<img src="/images/talks/qiaobutang_talk_logo.png" border="0" alt="周三访谈录" title="周三访谈录" /></a>
+						</div>
+						<% cache(Talk::FCKP_index_talk) do %>
+							<%
+								talks = Talk.published.find(
+									:all,
+									:limit => 5,
+									:order => "publish_at DESC"
+							    )
+							%>
+
+							<% talks.each do |talk| %>
+								<div class="form_info_s talk">
+									<a href="/talks/<%= talk.id %>" target="_blank" title="<%= h(extract_text(talk.get_info[:desc])) %>">
+										<%= truncate(h(talk.get_title), :length => 22) %></a>
+
+									<span style="color: #999999;">
+										(<%= talk.publish_at.strftime("%m.%d") %>)
+									</span>
+								</div>
+							<% end %>
+						<% end %>
+
+						<div style="text-align: right;">
+							<a href="/talks" target="_blank" style="color: #333333; font-size: 12px;">
+								更多周三访谈录
+								<img src="/images/real_index/more_icon.png" border="0" /></a>
+						</div>
+					</div>
+
+					<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+						<div style="font-weight: bold;">
+							活动/沙龙
+						</div>
+						<% cache(Activity::FCKP_index_activity) do %>
+							<%
+								activities = Activity.uncancelled.find(
+									:all,
+									:limit => 5,
+									:conditions => ["creator_id in (?)", IndexController::Index_Activity_Account_Id_Scope],
+									:select => "id, created_at, creator_id, cancelled, online, title, begin_at, end_at, application_deadline",
+									:order => "created_at DESC"
+								)
+							%>
+
+							<% activities.each do |activity| %>
+								<div style="background: transparent url(/images/real_index/activity_icon.png) no-repeat scroll left center;padding-left: 18px;">
+									<% activity_title = h(activity.get_title) %>
+									<a href="/activities/<%= activity.id %>" target="_blank" title="<%= activity_title %>">
+										<%= truncate(activity_title, :length => 22) %></a>
+
+									<span style="color: #999999;">
+										<script language="JavaScript">
+											var status_label = <%= show_activity_status_script(activity) %>;
+
+											document.write("(" + status_label + ")");
+										</script>
+									</span>
+								</div>
+							<% end %>
+						<% end %>
+
+						<div style="text-align: right;">
+							<a href="/activities/all" target="_blank" style="color: #333333; font-size: 12px;">
+								更多活动
+								<img src="/images/real_index/more_icon.png" border="0" /></a>
+						</div>
+					</div>
+
+					<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+						<div style="font-weight: bold;">
+							圈子话题
+						</div>
+						<%# place holder for fragment cache codes ... %>
+							<%
+								group_posts = GroupPost.find(
+									:all,
+									:limit => 20,
+									:select => "id, created_at, group_id, title",
+									:order => "id DESC"
+							    )
+							%>
+
+							<% group_posts.each do |group_post| %>
+								<div style="background: transparent url(/images/real_index/post_icon.png) no-repeat scroll left center;padding-left: 18px;">
+									<% group_post_title = h(group_post.title) %>
+									<a href="/group/posts/<%= group_post.id %>" target="_blank" title="<%= group_post_title %>">
+										<%= truncate(group_post_title, :length => 20) %></a>
+
+									<% group_name = h(Group.get_group_with_image(group_post.group_id)[0].name) %>
+									<a href="/groups/<%= group_post.group_id %>" target="_blank" title="<%= group_name %>" style="color: #999999;">
+										(<%= truncate(group_name, :length => 8) %>)
+									</a>
+								</div>
+							<% end %>
+						<%# end place holder for fragment cache codes ... %>
+
+						<div style="text-align: right;">
+							<a href="/groups/all" target="_blank" style="color: #333333; font-size: 12px;">
+								更多圈子
+								<img src="/images/real_index/more_icon.png" border="0" /></a>
+						</div>
+					</div>
+
+					<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+						<div style="font-weight: bold;">
+							投票
+						</div>
+						<% cache(VoteTopic::FCKP_index_vote_topic) do %>
+							<%
+								vote_topics = VoteTopic.find(
+									:all,
+									:limit => 5,
+									:select => "id, created_at, title, category_id",
+									:order => "created_at DESC"
+							    )
+							%>
+
+							<% vote_topics.each do |vote_topic| %>
+								<div style="background: transparent url(/images/real_index/vote_icon.png) no-repeat scroll left center;padding-left: 18px;">
+									<% vote_topic_title = h(vote_topic.title) %>
+									<a href="/votes/<%= vote_topic.id %>" target="_blank" title="<%= vote_topic_title %>">
+										<%= truncate(vote_topic_title, :length => 21) %></a>
+
+									<a href="/votes/category/<%= vote_topic.category_id %>" target="_blank" style="color: #999999;">
+										(<%= VoteCategory.get_category(vote_topic.category_id) %>)
+									</a>
+								</div>
+							<% end %>
+						<% end %>
+
+						<div style="text-align: right;">
+							<a href="/votes" target="_blank" style="color: #333333; font-size: 12px;">
+								更多投票
+								<img src="/images/real_index/more_icon.png" border="0" /></a>
+						</div>
+					</div>
+
+					<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+						<div style="font-weight: bold;">
+							博客
+						</div>
+						<% cache(Blog::FCKP_index_blog) do %>
+							<%
+								blogs = Blog.find(
+									:all,
+									:limit => 5,
+									:select => "id, created_at, title",
+									:order => "created_at DESC"
+							    )
+							%>
+
+							<% blogs.each do |blog| %>
+								<div style="background: transparent url(/images/real_index/blog_icon.png) no-repeat scroll left center;padding-left: 18px;">
+									<% blog_title = h(blog.title) %>
+									<a href="/blogs/<%= blog.id %>" target="_blank" title="<%= blog_title %>">
+										<%= truncate(blog_title, :length => 26) %></a>
+								</div>
+							<% end %>
+						<% end %>
+
+						<div style="text-align: right;">
+							<a href="/blogs" target="_blank" style="color: #333333; font-size: 12px;">
+								更多博客
+								<img src="/images/real_index/more_icon.png" border="0" /></a>
+						</div>
+					</div>
+
+					<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+						<div style="font-weight: bold;">
+							面经
+						</div>
+						<% cache(Exp::FCKP_index_list) do %>
+							<%
+								exps = Exp.find(
+									:all,
+									:limit => 10,
+									:select => "id, title, publish_time",
+									:order => "publish_time DESC"
+							    )
+							%>
+
+							<% exps.each do |exp| %>
+								<div style="background: transparent url(/images/index/exp_icon.gif) no-repeat scroll left center;padding-left: 18px;">
+									<% exp_title = h(exp.title) %>
+									<a href="/exps/<%= exp.id %>" target="_blank" title="<%= exp_title %>">
+										<%= truncate(exp_title, :length => 23) %></a>
+
+									<span style="color: #999999; font-size: 10px;">
+										(<%= exp.publish_time.strftime("%y-%m-%d") %>)
+									</span>
+								</div>
+							<% end %>
+						<% end %>
+
+						<div style="text-align: right;">
+							<a href="/exps" target="_blank" style="color: #333333; font-size: 12px;">
+								更多面经
+								<img src="/images/real_index/more_icon.png" border="0" /></a>
+						</div>
+					</div>
+
+				</div>
+			</td>
+
+			<td align="left" valign="top" style="width: 50%;">
+				<div style="margin-right: 25px;">
+					<div class="index_section_title" style="padding-left: 15px; border-bottom: 5px solid #EAEAEA;">
+						<a href="/recruitments" target="_blank" style="float: right; color: #B3ABA2; font-size: 12px;">
+							| 更多招聘信息
+							<img src="/images/real_index/more_icon.png" border="0" /></a>
+						死磕乔布
+					</div>
+
+
+					<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+						<div style="font-weight: bold;">
+							全职
+						</div>
+						<% cache(Recruitment::FCKP_index_fulltime) do %>
+							<%
+								fulltime_recruitments = Recruitment.find(
+									:all,
+									:limit => 25,
+									:conditions => ["recruitment_type = ?", Recruitment::Type_fulltime],
+									:select => "id, title, publish_time, location, recruitment_type",
+									:order => "publish_time DESC"
+							    )
+							%>
+
+							<%= render :partial => "recruitment_item", :collection => fulltime_recruitments %>
+						<% end %>
+
+						<div style="text-align: right;">
+							<a href="/recruitments/recruitment_type/<%= Recruitment::Type_fulltime %>" target="_blank" style="color: #333333; font-size: 12px;">
+								更多全职信息
+								<img src="/images/real_index/more_icon.png" border="0" /></a>
+						</div>
+					</div>
+
+
+					<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+						<div style="font-weight: bold;">
+							宣讲会
+						</div>
+						<% cache(Recruitment::FCKP_index_lecture) do %>
+							<%
+								lecture_recruitments = Recruitment.find(
+									:all,
+									:limit => 5,
+									:conditions => ["recruitment_type = ?", Recruitment::Type_lecture],
+									:select => "id, title, publish_time, location, recruitment_type",
+									:order => "publish_time DESC"
+							    )
+							%>
+
+							<%= render :partial => "recruitment_item", :collection => lecture_recruitments %>
+						<% end %>
+
+						<div style="text-align: right;">
+							<a href="/recruitments/recruitment_type/<%= Recruitment::Type_lecture %>" target="_blank" style="color: #333333; font-size: 12px;">
+								更多宣讲会信息
+								<img src="/images/real_index/more_icon.png" border="0" /></a>
+						</div>
+					</div>
+
+
+					<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+						<div style="font-weight: bold;">
+							招聘会
+						</div>
+						<% cache(Recruitment::FCKP_index_jobfair) do %>
+							<%
+								jobfair_recruitments = Recruitment.find(
+									:all,
+									:limit => 5,
+									:conditions => ["recruitment_type = ?", Recruitment::Type_jobfair],
+									:select => "id, title, publish_time, location, recruitment_type",
+									:order => "publish_time DESC"
+							    )
+							%>
+
+							<%= render :partial => "recruitment_item", :collection => jobfair_recruitments %>
+						<% end %>
+
+						<div style="text-align: right;">
+							<a href="/recruitments/recruitment_type/<%= Recruitment::Type_jobfair %>" target="_blank" style="color: #333333; font-size: 12px;">
+								更多招聘会信息
+								<img src="/images/real_index/more_icon.png" border="0" /></a>
+						</div>
+					</div>
+
+
+					<div style="margin-top: 10px; border-bottom: 3px dotted #EAEAEA;">
+						<div style="font-weight: bold;">
+							兼职
+						</div>
+						<% cache(Recruitment::FCKP_index_parttime) do %>
+							<%
+								parttime_recruitments = Recruitment.find(
+									:all,
+									:limit => 20,
+									:conditions => ["recruitment_type = ?", Recruitment::Type_parttime],
+									:select => "id, title, publish_time, location, recruitment_type",
+									:order => "publish_time DESC"
+							    )
+							%>
+
+							<%= render :partial => "recruitment_item", :collection => parttime_recruitments %>
+						<% end %>
+
+						<div style="text-align: right;">
+							<a href="/recruitments/recruitment_type/<%= Recruitment::Type_parttime %>" target="_blank" style="color: #333333; font-size: 12px;">
+								更多兼职信息
+								<img src="/images/real_index/more_icon.png" border="0" /></a>
+						</div>
+					</div>
+
+				</div>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="2">
+				<div style="padding-top: 30px;">
+					<div class="index_section_title">
+						从搜索感兴趣的东西开始
+					</div>
+
+					<% round_corner_div :border_color => "#E0E0E0", :bg_color => "#FAFAFA", :style => "margin: 8px 5px; padding-right: 60px;" do %>
+						<div style="padding: 10px 15px;">
+							<% form_tag "/community/search", :method => :get, :target => "_blank" do %>
+								<img class="float_l" src="/images/real_index/seek_job_icon.png" border="0" alt="搜索" />
+								&nbsp;&nbsp;&nbsp;
+
+								<select name="scope" class="dropdown_list">
+									<option value="all">选择搜索范围</option>
+									<option value="account">成员</option>
+									<option value="blog">博客</option>
+									<option value="group">圈子</option>
+									<option value="group_post">圈子话题</option>
+									<option value="activity">活动</option>
+									<option value="activity_post">活动话题</option>
+									<option value="recruitment">招聘信息</option>
+									<option value="exp">面经</option>
+									<option value="vote">投票</option>
+									<option value="talk">访谈录</option>
+									<option value="goal">目标</option>
+									<option value="goal_post">目标话题</option>
+									<option value="goal_track">目标进度</option>
+									<option value="company_post">公司讨论区</option>
+								</select>
+								&nbsp;
+								<input type="text" name="query" class="text_field" size="50" />
+								&nbsp;
+								<input type="submit" value="搜索" class="button" />
+							<% end %>
+						</div>
+					<% end %>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
 
 <div class="clear"></div>
 
