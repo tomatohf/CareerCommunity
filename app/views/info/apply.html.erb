@@ -49,30 +49,9 @@
 				</div>
 
 				<div class="index_container_l_section_content" style="padding: 20px;">
-					乔布堂提供全面的培训项目，你可以按照自己的需求进行选择：
+					乔布堂提供全面的培训项目，你可以按照自己的需求进行选择
 					
-					<%
-						courses = [
-							["/coach/consultant", "乔布堂求职顾问"],
-							["/coach/courses#cocareer_path", "职业决策研讨班"],
-							["/coach/courses#resume_8_hrs", "简历网申求职信8 小时特训"],
-							["/coach/courses#interview_2_days", "面试和职场礼仪模拟训练"],
-							# ["/coach/courses#sales_training", "销售精英启航班"],
-							["/coach/courses#course32", "求职精品班"],
-							["/coach/courses#course64", "求职拓展班"],
-							["/coach/pharmaceutical#how_to_join", "医药行业 精品班"],
-							["/coach/pharmaceutical#how_to_join", "医药行业 拓展班"]
-						]
-					%>
-					<% courses.each do |course| %>
-						<div style="background: transparent url(/images/coach/bullet_icon_small.png) no-repeat scroll left 6px; padding-left: 10px;">
-							<a href="<%= course[0] %>" target="_blank">
-								<%= course[1] %></a>
-						</div>
-					<% end %>
-					
-					
-					<div style="font-weight: bold; margin-top: 30px;">
+					<div style="font-weight: bold; margin-top: 15px;">
 						报名方式：
 					</div>
 					<div>

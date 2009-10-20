@@ -280,30 +280,6 @@ a {
 	margin-bottom: 15px;
 }
 
-.course_info_table, .course_info_table_2 {
-	width: 100%;
-	margin-top: 10px;
-	text-align: left;
-}
-
-.course_info_table td, .course_info_table_2 td {
-	padding: 3px;
-}
-
-.course_info_table th, .course_info_table_2 th {
-	border-right: 2px solid #C0C0C0;
-	border-bottom: 2px solid #C0C0C0;
-	text-align: center;
-}
-
-.course_info_table th, .course_info_table td {
-	background-color: #E5F5FF;
-}
-
-.course_info_table_2 th, .course_info_table_2 td {
-	background-color: #FFF9E1;
-}
-
 .know_more_section {
 	margin-left: 15px;
 	margin-top: 25px;
@@ -372,29 +348,6 @@ a {
 .breadcrumb a {
 	color: #B3ABA2;
 	text-decoration: none;
-}
-
-.course_bullets_container div {
-	background: transparent url(/images/coach/bullet_icon.png) no-repeat scroll center left;
-	padding-left: 10px;
-}
-
-.course_section {
-	padding-bottom: 50px;
-	border-bottom: 1px dashed #D2D2D2;
-}
-
-.course_tip {
-	background-color: #FFEFAB;
-	width: 140px;
-	padding: 5px 10px;
-	margin-top: 50px;
-}
-
-.course_tip_title {
-	font-weight: bold;
-	text-align: center;
-	margin-bottom: 10px;
 }
 
 div.course_menus {

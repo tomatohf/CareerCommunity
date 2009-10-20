@@ -8,10 +8,6 @@ class CoachController < ApplicationController
     
   end
   
-  def courses
-    
-  end
-  
   def consultant
     
   end
@@ -144,7 +140,7 @@ class CoachController < ApplicationController
   private
   
   def check_general_admin
-    return jump_to("/coach/courses") unless has_login? && ApplicationController.helpers.general_admin?(session[:account_id])
+    return jump_to("/coach") unless has_login? && ApplicationController.helpers.general_admin?(session[:account_id])
   end
   
 end

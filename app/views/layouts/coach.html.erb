@@ -33,7 +33,6 @@
 						<%
 							menus = [
 								["trainers", "培训师团队"],
-								["courses", "培训项目"],
 								["consultant", "乔布堂求职顾问"],
 								["stp", "销售实习生计划"],
 								["course_apply", "我要报名 / 咨询详情"]
@@ -51,36 +50,12 @@
 								<a href="/coach/<%= menu[0] %>">
 									<%= menu[1] %>
 									
-									<% if action_name == "courses" && menu[0] == action_name %>
-										&nbsp;
-										<img src="/images/coach/course_menu_expand_icon.png" border="0" />
-									<% end %>
-									
 									<% if menu[0] == "stp" %>
 										&nbsp;
 										<img src="/images/coach/hot_icon.gif" border="0" />
 									<% end %>
 								</a>
 							</div>
-							
-							<% if action_name == "courses" && menu[0] == action_name %>
-								<div class="course_menus">
-									<%
-										course_menus = [
-											["career_path", "职业决策研讨班"],
-											["resume_8_hrs", "简历网申求职信8 小时特训"],
-											["interview_2_days", "面试和职场礼仪模拟训练"],
-											# ["sales_training", "销售精英启航班"],
-											["course32", "求职精品班"],
-											["course64", "求职拓展班"]
-										]
-									%>
-									<% course_menus.each do |course_menu| %>
-										<a href="/coach/courses#<%= course_menu[0] %>">
-											<%= course_menu[1] %></a>
-									<% end %>
-								</div>
-							<% end %>
 						<% end %>
 					</div>
 					
