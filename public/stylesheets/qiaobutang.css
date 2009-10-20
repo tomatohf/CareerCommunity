@@ -140,31 +140,6 @@ a {
 	padding: 5px;
 }
 
-.seek_job_form {
-	padding: 5px 15px;
-}
-
-.index_post, .orange_bar {
-	width: 550px;
-	margin-left: 23px;
-}
-
-.orange_bar {
-	background:transparent url(/images/real_index/orange_bar.gif) no-repeat scroll 0 0;
-	color: #FFFFFF;
-	font-size: 12px;
-	height: 47px;
-	width: 550px;
-}
-
-.orange_bar table {
-	width: 540px;
-	margin-left: 5px;
-	margin-top: 5px;
-	
-	border: 1px solid;
-}
-
 .index_button {
 	padding: 3px 5px;
 	border-style: solid;
