@@ -27,6 +27,7 @@ require "mime/types"
 require "will_paginate"
 
 require "hpricot"
+Hpricot.buffer_size = 131072 # 16384 bytes (16k) default. increase to 128K here.
 require "open-uri"
 
 require "select_with_include"
