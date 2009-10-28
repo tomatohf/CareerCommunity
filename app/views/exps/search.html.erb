@@ -76,7 +76,7 @@
 							<div>
 								<% @exps.each do |exp| %>
 									<% if exp %>
-										<%= render(:partial => "/community/search_results/exp", :locals => {:result => exp, :query => @query, :riddle_client => get_riddle_client}) %>
+										<%= render(:partial => "/community/search_results/exp", :locals => {:result => exp, :query => @query, :riddle_client => @exps.get_client}) %>
 
 										<div style="height: 30px;">
 

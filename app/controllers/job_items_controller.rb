@@ -114,7 +114,8 @@ class JobItemsController < ApplicationController
       :match_mode => Search_Match_Mode,
       :order => Search_Sort_Order,
       :field_weights => Search_Field_Weights
-    ).compact
+    )
+    @items.compact!
   end
   
   def manage_company_industries
@@ -135,7 +136,8 @@ class JobItemsController < ApplicationController
         :match_mode => Search_Match_Mode,
         :order => Search_Sort_Order,
         :field_weights => Search_Field_Weights
-      ).compact
+      )
+      @industries.compact!
     else
       @industries = Industry.system.find(
         :all,
@@ -267,7 +269,8 @@ class JobItemsController < ApplicationController
         :match_mode => Search_Match_Mode,
         :order => Search_Sort_Order,
         :field_weights => Search_Field_Weights
-      ).compact
+      )
+      @items.compact!
     else
       @items = @item_type.camelize.constantize.system.find(
         :all,

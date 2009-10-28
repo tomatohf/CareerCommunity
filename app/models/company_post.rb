@@ -3,6 +3,14 @@ class CompanyPost < ActiveRecord::Base
   acts_as_trashable
   
   
+  include CareerCommunity::Util
+  
+  has_many :comments, :class_name => "CompanyPostComment", :foreign_key => "company_post_id", :dependent => :destroy
+  has_many :attachments, :class_name => "CompanyPostAttachment", :foreign_key => "company_post_id", :dependent => :destroy
+  
+  belongs_to :company, :class_name => "Company", :foreign_key => "company_id"
+  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
+  
   
   define_index do
     # fields
@@ -19,14 +27,6 @@ class CompanyPost < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
-  
-  include CareerCommunity::Util
-  
-  has_many :comments, :class_name => "CompanyPostComment", :foreign_key => "company_post_id", :dependent => :destroy
-  has_many :attachments, :class_name => "CompanyPostAttachment", :foreign_key => "company_post_id", :dependent => :destroy
-  
-  belongs_to :company, :class_name => "Company", :foreign_key => "company_id"
-  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   
   
   validates_presence_of :account_id, :company_id

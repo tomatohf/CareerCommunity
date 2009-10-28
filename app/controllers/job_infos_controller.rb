@@ -48,7 +48,8 @@ class JobInfosController < ApplicationController
       :field_weights => Search_Field_Weights,
       :select => "id, title, general, created_at",
       :include => [:job_info_categories, :industries, :companies, :job_positions, :job_processes]
-    ).compact
+    )
+    @infos.compact!
   end
   
   def show

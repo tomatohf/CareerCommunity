@@ -4,6 +4,11 @@ class GoalTrack < ActiveRecord::Base
   
   
   
+  has_many :comments, :class_name => "GoalTrackComment", :foreign_key => "goal_track_id", :dependent => :destroy
+  
+  belongs_to :goal_follow, :class_name => "GoalFollow", :foreign_key => "goal_follow_id"
+  
+  
   define_index do
     # fields
     indexes :desc
@@ -19,12 +24,6 @@ class GoalTrack < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
-
-  
-  
-  has_many :comments, :class_name => "GoalTrackComment", :foreign_key => "goal_track_id", :dependent => :destroy
-  
-  belongs_to :goal_follow, :class_name => "GoalFollow", :foreign_key => "goal_follow_id"
   
   
   validates_presence_of :goal_follow_id, :goal_id

@@ -3,20 +3,6 @@ class Industry < ActiveRecord::Base
   acts_as_trashable
   
   
-  define_index do
-    # fields
-    indexes :name, :desc
-
-    # attributes
-    has :account_id, :created_at
-    
-    set_property :delta => true
-    
-    # set_property :field_weights => {:field => number}
-  end
-  
-  
-  
   has_and_belongs_to_many :talks,
                           :foreign_key => "industry_id",
                           :association_foreign_key => "talk_id",
@@ -37,6 +23,20 @@ class Industry < ActiveRecord::Base
                             Industry.clear_company_industries_cache(company.id)
                             Company.clear_industry_companies_cache(industry.id)
                           }
+                          
+                          
+                          
+  define_index do
+    # fields
+    indexes :name, :desc
+
+    # attributes
+    has :account_id, :created_at
+
+    set_property :delta => true
+
+    # set_property :field_weights => {:field => number}
+  end
   
   
   

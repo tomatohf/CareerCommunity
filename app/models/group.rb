@@ -3,6 +3,18 @@ class Group < ActiveRecord::Base
   acts_as_trashable
   
   
+  include CareerCommunity::Util
+  
+  has_many :members, :class_name => "GroupMember", :foreign_key => "group_id", :dependent => :destroy
+  
+  belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"
+  belongs_to :master, :class_name => "Account", :foreign_key => "master_id"
+  
+  has_one :image, :class_name => "GroupImage", :foreign_key => "group_id", :dependent => :destroy
+  
+  has_many :group_photos, :class_name => "GroupPhoto", :foreign_key => "group_id", :dependent => :destroy
+  
+  
   define_index do
     # fields
     indexes :name, :desc, :setting
@@ -15,17 +27,6 @@ class Group < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
-  
-  include CareerCommunity::Util
-  
-  has_many :members, :class_name => "GroupMember", :foreign_key => "group_id", :dependent => :destroy
-  
-  belongs_to :creator, :class_name => "Account", :foreign_key => "creator_id"
-  belongs_to :master, :class_name => "Account", :foreign_key => "master_id"
-  
-  has_one :image, :class_name => "GroupImage", :foreign_key => "group_id", :dependent => :destroy
-  
-  has_many :group_photos, :class_name => "GroupPhoto", :foreign_key => "group_id", :dependent => :destroy
   
   
   validates_presence_of :creator_id, :master_id

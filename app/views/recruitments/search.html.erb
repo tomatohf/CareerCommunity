@@ -67,7 +67,7 @@
 			<div class="community_block">
 				<% @recruitments.each do |r| %>
 					<% if r %>
-						<%= render(:partial => "/community/search_results/recruitment", :locals => {:result => r, :query => @query, :riddle_client => get_riddle_client}) %>
+						<%= render(:partial => "/community/search_results/recruitment", :locals => {:result => r, :query => @query, :riddle_client => @recruitments.get_client}) %>
 					
 						<div style="height: 30px;">
 						

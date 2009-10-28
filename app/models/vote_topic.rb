@@ -3,6 +3,19 @@ class VoteTopic < ActiveRecord::Base
   acts_as_trashable
   
   
+  include CareerCommunity::Util
+  
+  has_many :records, :class_name => "VoteRecord", :foreign_key => "vote_topic_id", :dependent => :destroy
+  has_many :options, :class_name => "VoteOption", :foreign_key => "vote_topic_id", :dependent => :destroy
+  
+  has_many :comments, :class_name => "VoteComment", :foreign_key => "vote_topic_id", :dependent => :destroy
+  
+  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
+  belongs_to :category, :class_name => "VoteCategory", :foreign_key => "category_id"
+  
+  has_one :image, :class_name => "VoteImage", :foreign_key => "vote_topic_id", :dependent => :destroy
+  
+  
   define_index do
     # fields
     indexes :title, :desc
@@ -19,18 +32,6 @@ class VoteTopic < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
-  
-  include CareerCommunity::Util
-  
-  has_many :records, :class_name => "VoteRecord", :foreign_key => "vote_topic_id", :dependent => :destroy
-  has_many :options, :class_name => "VoteOption", :foreign_key => "vote_topic_id", :dependent => :destroy
-  
-  has_many :comments, :class_name => "VoteComment", :foreign_key => "vote_topic_id", :dependent => :destroy
-  
-  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
-  belongs_to :category, :class_name => "VoteCategory", :foreign_key => "category_id"
-  
-  has_one :image, :class_name => "VoteImage", :foreign_key => "vote_topic_id", :dependent => :destroy
   
   
   validates_presence_of :account_id

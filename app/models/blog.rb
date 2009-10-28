@@ -3,6 +3,14 @@ class Blog < ActiveRecord::Base
   acts_as_trashable
   
   
+  include CareerCommunity::AccountBelongings
+  include CareerCommunity::Util
+  
+  has_many :comments, :class_name => "BlogComment", :foreign_key => "blog_id", :dependent => :destroy
+  
+  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
+  
+  
   define_index do
     # fields
     indexes :title, :content
@@ -17,14 +25,6 @@ class Blog < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
-  
-  
-  include CareerCommunity::AccountBelongings
-  include CareerCommunity::Util
-  
-  has_many :comments, :class_name => "BlogComment", :foreign_key => "blog_id", :dependent => :destroy
-  
-  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   
   
   validates_presence_of :account_id

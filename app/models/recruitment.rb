@@ -1,18 +1,5 @@
 class Recruitment < ActiveRecord::Base
   
-  define_index do
-    # fields
-    indexes :title, :content, :location
-    indexes recruitment_tags.name, :as => :recruitment_tags_name
-
-    # attributes
-    has :recruitment_type, :publish_time
-    
-    set_property :delta => true
-    
-    # set_property :field_weights => {:field => number}
-  end
-  
   include CareerCommunity::Util
   
   has_and_belongs_to_many :recruitment_tags,
@@ -29,6 +16,21 @@ class Recruitment < ActiveRecord::Base
                           :foreign_key => "recruitment_id",
                           :association_foreign_key => "job_position_id",
                           :join_table => "recruitments_job_positions"
+                          
+                          
+                          
+  define_index do
+    # fields
+    indexes :title, :content, :location
+    indexes recruitment_tags.name, :as => :recruitment_tags_name
+
+    # attributes
+    has :recruitment_type, :publish_time
+
+    set_property :delta => true
+
+    # set_property :field_weights => {:field => number}
+  end
   
   
   

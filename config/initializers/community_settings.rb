@@ -32,8 +32,6 @@ require "open-uri"
 
 require "select_with_include"
 
-require "thinking_sphinx"
-
 require "RMagick"
 
 require "pathname"

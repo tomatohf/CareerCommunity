@@ -99,7 +99,8 @@ class JobTargetsController < ApplicationController
         :match_mode => JobItemsController::Search_Match_Mode,
         :order => JobItemsController::Search_Sort_Order,
         :field_weights => JobItemsController::Search_Field_Weights
-      ).compact
+      )
+      @found_system_companies.compact!
     end
     
     @company_from = "system" if @found_system_companies
@@ -164,7 +165,8 @@ class JobTargetsController < ApplicationController
         :match_mode => JobItemsController::Search_Match_Mode,
         :order => JobItemsController::Search_Sort_Order,
         :field_weights => JobItemsController::Search_Field_Weights
-      ).compact
+      )
+      @found_system_job_positions.compact!
     end
     
     @position_from = "system" if @found_system_job_positions
@@ -704,7 +706,8 @@ class JobTargetsController < ApplicationController
         :match_mode => JobItemsController::Search_Match_Mode,
         :order => JobItemsController::Search_Sort_Order,
         :field_weights => JobItemsController::Search_Field_Weights
-      ).compact
+      )
+      @found_system_companies.compact!
     end
 
     @account_items = item_class.send("get_account_#{@item_type.pluralize}", session[:account_id])
@@ -755,7 +758,8 @@ class JobTargetsController < ApplicationController
           :recruitment_tags_name => 8
         },
         :include => [:recruitment_tags]
-      ).compact
+      )
+      @recruitments.compact!
       
     else
       

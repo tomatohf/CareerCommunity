@@ -94,7 +94,8 @@ class RecruitmentsController < ApplicationController
         :recruitment_tags_name => 5
       },
       :include => [:recruitment_tags]
-    ).compact
+    )
+    @recruitments.compact!
   end
   
   def tag
@@ -151,7 +152,8 @@ class RecruitmentsController < ApplicationController
           :recruitment_tags_name => 8
         },
         :include => [:recruitment_tags]
-      ).compact
+      )
+      @recruitments.compact!
     end
   end
   

@@ -3,20 +3,6 @@ class JobInfo < ActiveRecord::Base
   acts_as_trashable
   
   
-  define_index do
-    # fields
-    indexes :title, :content
-
-    # attributes
-    has :created_at
-    
-    set_property :delta => true
-    
-    # set_property :field_weights => {:field => number}
-  end
-  
-  
-  
   has_and_belongs_to_many :industries,
                           :foreign_key => "job_info_id",
                           :association_foreign_key => "industry_id",
@@ -37,6 +23,20 @@ class JobInfo < ActiveRecord::Base
                           :foreign_key => "job_info_id",
                           :association_foreign_key => "job_info_category_id",
                           :join_table => "job_infos_job_info_categories"
+                          
+                          
+                          
+  define_index do
+    # fields
+    indexes :title, :content
+
+    # attributes
+    has :created_at
+
+    set_property :delta => true
+
+    # set_property :field_weights => {:field => number}
+  end
   
   
   

@@ -229,7 +229,7 @@ Denpendencies:
 	mime-types
 	mislav-will_paginate (gem install mislav-will_paginate --source http://gems.github.com)
 	select_with_include
-	freelancing-god-thinking-sphinx (gem install freelancing-god-thinking-sphinx --source http://gems.github.com)
+	thinking-sphinx (gem install thinking-sphinx --source http://gemcutter.org)
 	rcov (xmpp4r-simple needs it)
 	xmpp4r-simple
 	SystemTimer

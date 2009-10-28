@@ -4,6 +4,15 @@ class GoalPost < ActiveRecord::Base
   
   
   
+  include CareerCommunity::Util
+  
+  has_many :comments, :class_name => "GoalPostComment", :foreign_key => "goal_post_id", :dependent => :destroy
+  has_many :attachments, :class_name => "GoalPostAttachment", :foreign_key => "goal_post_id", :dependent => :destroy
+  
+  belongs_to :goal, :class_name => "Goal", :foreign_key => "goal_id"
+  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
+  
+  
   define_index do
     # fields
     indexes :title, :content
@@ -19,14 +28,6 @@ class GoalPost < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
-  
-  include CareerCommunity::Util
-  
-  has_many :comments, :class_name => "GoalPostComment", :foreign_key => "goal_post_id", :dependent => :destroy
-  has_many :attachments, :class_name => "GoalPostAttachment", :foreign_key => "goal_post_id", :dependent => :destroy
-  
-  belongs_to :goal, :class_name => "Goal", :foreign_key => "goal_id"
-  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   
   
   validates_presence_of :account_id, :goal_id

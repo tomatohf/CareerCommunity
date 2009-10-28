@@ -3,6 +3,16 @@ class ActivityPost < ActiveRecord::Base
   acts_as_trashable
   
   
+  include CareerCommunity::AccountBelongings
+  include CareerCommunity::Util
+  
+  has_many :comments, :class_name => "ActivityPostComment", :foreign_key => "activity_post_id", :dependent => :destroy
+  has_many :attachments, :class_name => "ActivityPostAttachment", :foreign_key => "activity_post_id", :dependent => :destroy
+  
+  belongs_to :activity, :class_name => "Activity", :foreign_key => "activity_id"
+  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
+  
+  
   define_index do
     # fields
     indexes :title, :content
@@ -18,15 +28,6 @@ class ActivityPost < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
-  
-  include CareerCommunity::AccountBelongings
-  include CareerCommunity::Util
-  
-  has_many :comments, :class_name => "ActivityPostComment", :foreign_key => "activity_post_id", :dependent => :destroy
-  has_many :attachments, :class_name => "ActivityPostAttachment", :foreign_key => "activity_post_id", :dependent => :destroy
-  
-  belongs_to :activity, :class_name => "Activity", :foreign_key => "activity_id"
-  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   
   
   validates_presence_of :account_id, :activity_id

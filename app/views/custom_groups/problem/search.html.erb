@@ -36,7 +36,7 @@
 		<div class="community_block">
 			<% @posts.each do |post| %>
 				<% if post %>
-					<%= render :partial => "/community/search_results/grouppost", :locals => {:result => post, :query => @query, :riddle_client => get_riddle_client, :group => @group} %>
+					<%= render :partial => "/community/search_results/grouppost", :locals => {:result => post, :query => @query, :riddle_client => @posts.get_client, :group => @group} %>
 			
 					<div style="padding: 0px 25px">
 						<%= thin_hr %>

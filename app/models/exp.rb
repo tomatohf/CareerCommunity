@@ -1,17 +1,5 @@
 class Exp < ActiveRecord::Base
   
-  define_index do
-    # fields
-    indexes :title, :content
-
-    # attributes
-    has :publish_time
-    
-    set_property :delta => true
-    
-    # set_property :field_weights => {:field => number}
-  end
-  
   include CareerCommunity::Util
   
   has_and_belongs_to_many :companies,
@@ -24,6 +12,20 @@ class Exp < ActiveRecord::Base
                           :foreign_key => "exp_id",
                           :association_foreign_key => "job_position_id",
                           :join_table => "exps_job_positions"
+                          
+                          
+                          
+  define_index do
+    # fields
+    indexes :title, :content
+
+    # attributes
+    has :publish_time
+
+    set_property :delta => true
+
+    # set_property :field_weights => {:field => number}
+  end
   
   
   

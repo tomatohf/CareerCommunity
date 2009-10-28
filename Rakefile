@@ -8,3 +8,7 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 require 'tasks/rails'
+
+
+# added by Tomato for thinking_sphinx
+require "thinking_sphinx/tasks"

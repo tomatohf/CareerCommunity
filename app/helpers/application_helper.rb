@@ -126,10 +126,6 @@ module ApplicationHelper
   def extract_text(text)
     Hpricot(text || "").inner_text || ""
   end
-
-  def get_riddle_client()
-    ThinkingSphinx::Search.get_client(:match_mode => CommunityController::Search_Match_Mode)
-  end
   
   def build_excerpts(riddle_client, docs, words, index)
     riddle_client.excerpts(

@@ -1,5 +1,44 @@
 class Account < ActiveRecord::Base
   
+  include CareerCommunity::Util
+  
+  def self.email_regexp
+    %r{^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$}i
+  end
+  
+  def self.nick_regexp
+    %r{^[^\s]*$}i
+  end
+
+  has_and_belongs_to_many :roles, :foreign_key => "account_id"
+  
+  belongs_to :timezone, :class_name => "Timezone", :foreign_key => "timezone_id"
+  
+  has_one :setting, :class_name => "AccountSetting", :foreign_key => "account_id", :dependent => :destroy
+  
+  has_one :profile_basic, :class_name => "BasicProfile", :foreign_key => "account_id", :dependent => :destroy
+  has_one :profile_contact, :class_name => "ContactProfile", :foreign_key => "account_id", :dependent => :destroy
+  has_one :profile_hobby, :class_name => "HobbyProfile", :foreign_key => "account_id", :dependent => :destroy
+  has_many :profile_educations, :class_name => "EducationProfile", :foreign_key => "account_id", :order => "education_id DESC, enter_year DESC", :dependent => :destroy
+  has_many :profile_jobs, :class_name => "JobProfile", :foreign_key => "account_id", :order => "enter_year DESC, enter_month DESC", :dependent => :destroy
+  has_one :profile_point, :class_name => "PointProfile", :foreign_key => "account_id", :dependent => :destroy
+  has_one :profile_pic, :class_name => "PicProfile", :foreign_key => "account_id", :dependent => :destroy
+
+  has_many :albums, :class_name => "Album", :foreign_key => "account_id", :dependent => :destroy
+  has_many :blogs, :class_name => "Blog", :foreign_key => "account_id", :dependent => :destroy
+  
+  has_many :friends, :class_name => "Friend", :foreign_key => "account_id", :dependent => :destroy
+  has_many :be_friends, :class_name => "Friend", :foreign_key => "friend_id", :dependent => :destroy
+  
+  has_many :messages, :class_name => "Message", :foreign_key => "receiver_id", :dependent => :destroy
+  has_many :sent_messages, :class_name => "SentMessage", :foreign_key => "sender_id", :dependent => :destroy
+  has_many :be_sent_messages, :class_name => "SentMessage", :foreign_key => "receiver_id", :dependent => :destroy
+  has_many :sys_messages, :class_name => "SysMessage", :foreign_key => "account_id", :dependent => :destroy
+  
+  has_many :activity_photos, :class_name => "ActivityPhoto", :foreign_key => "account_id", :dependent => :destroy
+  has_many :group_photos, :class_name => "GroupPhoto", :foreign_key => "account_id", :dependent => :destroy
+  
+  
   define_index do
     # fields
     
@@ -51,45 +90,6 @@ class Account < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
-  
-  
-  include CareerCommunity::Util
-  
-  def self.email_regexp
-    %r{^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$}i
-  end
-  
-  def self.nick_regexp
-    %r{^[^\s]*$}i
-  end
-
-  has_and_belongs_to_many :roles, :foreign_key => "account_id"
-  
-  belongs_to :timezone, :class_name => "Timezone", :foreign_key => "timezone_id"
-  
-  has_one :setting, :class_name => "AccountSetting", :foreign_key => "account_id", :dependent => :destroy
-  
-  has_one :profile_basic, :class_name => "BasicProfile", :foreign_key => "account_id", :dependent => :destroy
-  has_one :profile_contact, :class_name => "ContactProfile", :foreign_key => "account_id", :dependent => :destroy
-  has_one :profile_hobby, :class_name => "HobbyProfile", :foreign_key => "account_id", :dependent => :destroy
-  has_many :profile_educations, :class_name => "EducationProfile", :foreign_key => "account_id", :order => "education_id DESC, enter_year DESC", :dependent => :destroy
-  has_many :profile_jobs, :class_name => "JobProfile", :foreign_key => "account_id", :order => "enter_year DESC, enter_month DESC", :dependent => :destroy
-  has_one :profile_point, :class_name => "PointProfile", :foreign_key => "account_id", :dependent => :destroy
-  has_one :profile_pic, :class_name => "PicProfile", :foreign_key => "account_id", :dependent => :destroy
-
-  has_many :albums, :class_name => "Album", :foreign_key => "account_id", :dependent => :destroy
-  has_many :blogs, :class_name => "Blog", :foreign_key => "account_id", :dependent => :destroy
-  
-  has_many :friends, :class_name => "Friend", :foreign_key => "account_id", :dependent => :destroy
-  has_many :be_friends, :class_name => "Friend", :foreign_key => "friend_id", :dependent => :destroy
-  
-  has_many :messages, :class_name => "Message", :foreign_key => "receiver_id", :dependent => :destroy
-  has_many :sent_messages, :class_name => "SentMessage", :foreign_key => "sender_id", :dependent => :destroy
-  has_many :be_sent_messages, :class_name => "SentMessage", :foreign_key => "receiver_id", :dependent => :destroy
-  has_many :sys_messages, :class_name => "SysMessage", :foreign_key => "account_id", :dependent => :destroy
-  
-  has_many :activity_photos, :class_name => "ActivityPhoto", :foreign_key => "account_id", :dependent => :destroy
-  has_many :group_photos, :class_name => "GroupPhoto", :foreign_key => "account_id", :dependent => :destroy
   
   
   attr_protected :checked, :enabled, :active

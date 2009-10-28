@@ -88,7 +88,8 @@ class ExpsController < ApplicationController
           :title => 4,
           :content => 3,
         }
-      ).compact
+      )
+      @exps.compact!
     end
   end
   

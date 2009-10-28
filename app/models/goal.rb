@@ -2,6 +2,14 @@ class Goal < ActiveRecord::Base
   
   acts_as_trashable
   
+    
+  include CareerCommunity::Util
+
+
+  has_many :follows, :class_name => "GoalFollow", :foreign_key => "goal_id", :dependent => :destroy
+  has_many :posts, :class_name => "GoalPost", :foreign_key => "goal_id", :dependent => :destroy
+  
+  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   
   
   define_index do
@@ -15,17 +23,6 @@ class Goal < ActiveRecord::Base
     
     # set_property :field_weights => {:field => number}
   end
-  
-  
-  
-  include CareerCommunity::Util
-
-  
-  
-  has_many :follows, :class_name => "GoalFollow", :foreign_key => "goal_id", :dependent => :destroy
-  has_many :posts, :class_name => "GoalPost", :foreign_key => "goal_id", :dependent => :destroy
-  
-  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   
   
   validates_presence_of :account_id

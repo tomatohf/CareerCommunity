@@ -3,7 +3,15 @@ class CustomerPost < ActiveRecord::Base
   acts_as_trashable
   
   
+  include CareerCommunity::Util
   
+  has_many :comments, :class_name => "CustomerPostComment", :foreign_key => "customer_post_id", :dependent => :destroy
+  has_many :attachments, :class_name => "CustomerPostAttachment", :foreign_key => "customer_post_id", :dependent => :destroy
+  
+  belongs_to :customer, :class_name => "Account", :foreign_key => "customer_id"
+  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
+  
+    
   # define_index do
   #   # fields
   #   indexes :title, :content
@@ -19,14 +27,6 @@ class CustomerPost < ActiveRecord::Base
   #   
   #   # set_property :field_weights => {:field => number}
   # end
-  
-  include CareerCommunity::Util
-  
-  has_many :comments, :class_name => "CustomerPostComment", :foreign_key => "customer_post_id", :dependent => :destroy
-  has_many :attachments, :class_name => "CustomerPostAttachment", :foreign_key => "customer_post_id", :dependent => :destroy
-  
-  belongs_to :customer, :class_name => "Account", :foreign_key => "customer_id"
-  belongs_to :account, :class_name => "Account", :foreign_key => "account_id"
   
   
   validates_presence_of :account_id, :customer_id

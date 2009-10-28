@@ -3,19 +3,6 @@ class Activity < ActiveRecord::Base
   acts_as_trashable
   
   
-  define_index do
-    # fields
-    indexes :title, :place, :setting
-    indexes master.nick, :as => :master_nick
-
-    # attributes
-    has :created_at
-    
-    set_property :delta => true
-    
-    # set_property :field_weights => {:field => number}
-  end
-  
   include CareerCommunity::Util
   
   has_many :members, :class_name => "ActivityMember", :foreign_key => "activity_id", :dependent => :destroy
@@ -28,6 +15,20 @@ class Activity < ActiveRecord::Base
   
   has_many :photos, :class_name => "ActivityPhoto", :foreign_key => "activity_id", :dependent => :destroy
   has_many :posts, :class_name => "ActivityPost", :foreign_key => "activity_id", :dependent => :destroy
+  
+  
+  define_index do
+    # fields
+    indexes :title, :place, :setting
+    indexes master.nick, :as => :master_nick
+
+    # attributes
+    has :created_at
+    
+    set_property :delta => true
+    
+    # set_property :field_weights => {:field => number}
+  end
   
   
   validates_presence_of :creator_id, :master_id

@@ -3,30 +3,6 @@ class Talk < ActiveRecord::Base
   acts_as_trashable
   
   
-  define_index do
-    # fields
-    indexes :title, :info
-    
-    indexes question_categories.name, :as => :question_categories_name
-    indexes question_categories.desc, :as => :question_categories_desc
-    
-    indexes questions.question, :as => :questions_question
-    indexes questions.summary, :as => :questions_summary
-    
-    indexes answers.answer, :as => :answers_answer
-    indexes answers.summary, :as => :answers_summary
-    
-    indexes comments.content, :as => :comments_content
-    
-
-    # attributes
-    has :published, :publish_at
-    
-    set_property :delta => true
-    
-    # set_property :field_weights => {:field => number}
-  end
-  
   include CareerCommunity::Util
   
   has_many :comments, :class_name => "TalkComment", :foreign_key => "talk_id", :dependent => :destroy
@@ -72,6 +48,31 @@ class Talk < ActiveRecord::Base
                           :after_remove => Proc.new { |talk, job_process| JobProcess.clear_talk_job_processes_cache(talk.id) }
   
   
+  define_index do
+    # fields
+    indexes :title, :info
+
+    indexes question_categories.name, :as => :question_categories_name
+    indexes question_categories.desc, :as => :question_categories_desc
+
+    indexes questions.question, :as => :questions_question
+    indexes questions.summary, :as => :questions_summary
+
+    indexes answers.answer, :as => :answers_answer
+    indexes answers.summary, :as => :answers_summary
+
+    indexes comments.content, :as => :comments_content
+
+
+    # attributes
+    has :published, :publish_at
+
+    set_property :delta => true
+
+    # set_property :field_weights => {:field => number}
+  end
+                          
+                          
   validates_presence_of :creator_id, :updater_id
   
   validates_presence_of :title, :message => "请输入 标题"

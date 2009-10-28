@@ -3,20 +3,6 @@ class JobPosition < ActiveRecord::Base
   acts_as_trashable
   
   
-  define_index do
-    # fields
-    indexes :name, :desc
-
-    # attributes
-    has :account_id, :created_at
-    
-    set_property :delta => true
-    
-    # set_property :field_weights => {:field => number}
-  end
-  
-  
-  
   has_and_belongs_to_many :talks,
                           :foreign_key => "job_position_id",
                           :association_foreign_key => "talk_id",
@@ -24,6 +10,20 @@ class JobPosition < ActiveRecord::Base
                           #:order => "created_at DESC",
                           :after_add => Proc.new { |job_position, talk| JobPosition.clear_talk_job_positions_cache(talk.id) },
                           :after_remove => Proc.new { |job_position, talk| JobPosition.clear_talk_job_positions_cache(talk.id) }
+                          
+                          
+                          
+  define_index do
+    # fields
+    indexes :name, :desc
+
+    # attributes
+    has :account_id, :created_at
+
+    set_property :delta => true
+
+    # set_property :field_weights => {:field => number}
+  end
   
   
   

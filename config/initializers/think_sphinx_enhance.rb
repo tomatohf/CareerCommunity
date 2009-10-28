@@ -1,61 +1,56 @@
+require "thinking_sphinx"
+
+
 # added by Tomato
+# 
 # to make thinking sphinx recognize the parameter: charset_dictpath
 # and build its value into sphinx configure file
+# 
+# we have to use this kind of *hack* way
+# since *charset_dictpath* is not a sphinx parameter, but a Coreseek's
+# for Chinese word segmentation
+
+module Riddle
+  class Configuration
+    class Section
+      
+      alias original_settings_body settings_body
+      
+      private
+      
+      def settings_body
+        charset_dictpath = if ThinkingSphinx::Configuration.environment == "production"
+          "/home/tomato/websites/app/CareerCommunity/shared/sphinx/dict"
+        else
+          "/Users/tomato/Dev/git/projects/CareerCommunity/db/sphinx/dict"
+        end
+        
+        if self.class.name == "Riddle::Configuration::Index"
+          original_settings_body << "  charset_dictpath = #{charset_dictpath}"
+        else
+          original_settings_body
+        end
+      end
+      
+    end
+  end
+end
+
+
+# added by Tomato
+# 
+# to expose the riddle client object
 
 module ThinkingSphinx
   
-  class Configuration
-    attr_accessor :charset_dictpath
-    
-    alias original_core_index_for_model core_index_for_model
-    alias original_distributed_index_for_model distributed_index_for_model
-    
-    private
-    def core_index_for_model(model, sources)
-      output = original_core_index_for_model(model, sources)
-      
-      insert_parameter_by_tomato(output, :charset_dictpath)
-    end
-    
-    def distributed_index_for_model(model)
-      output = original_distributed_index_for_model(model)
-      
-      insert_parameter_by_tomato(output, :charset_dictpath)
-    end
-    
-    def insert_parameter_by_tomato(output, param, before = "}")
-      position = output.rindex(before)
-      output.insert(position, "#{param} = #{self.send(param)}\n")
-    end
-    
-  end
-  
-  # to fix the "sql_query_pre = SET NAMES utf8" issue
-  class Index
-    
-    alias original_to_config to_config
-
-    def to_config(index, database_conf, charset_type)
-      config = original_to_config(index, database_conf, charset_type)
-      config.gsub!("#", "\\#")
-      
-      insert_value_by_tomato(config, "sql_query_pre = SET NAMES utf8\n") if charset_type =~ /utf-8/
-    end
-
-    def insert_value_by_tomato(config, value, before = "}")
-      config.gsub(before, "#{value}\n#{before}")
-    end
-    
-  end
-  
-  # to public the riddle client object
   class Search
-    class << self
-      def get_client(*args)
-        options = args.extract_options!
-        client  = client_from_options options
-      end
+    
+    public :client
+    
+    def get_client
+      self.client
     end
+    
   end
   
 end

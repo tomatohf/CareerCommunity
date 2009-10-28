@@ -125,7 +125,7 @@
 					<div id="<%= key %>_section">
 						<% item_results.each do |result| %>
 							<% if result %>
-								<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => get_riddle_client} %>
+								<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => item_results.get_client} %>
 
 								<div style="padding: 0px 25px">
 									<%= thin_hr %>
@@ -150,7 +150,7 @@
 			<div class="community_block">
 				<% @results.each do |result| %>
 					<% if result %>
-						<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => get_riddle_client} %>
+						<%= render :partial => "/community/search_results/#{result.class.name.downcase}", :locals => {:result => result, :query => @query, :riddle_client => @results.get_client} %>
 				
 						<div style="padding: 0px 25px">
 							<%= thin_hr %>
