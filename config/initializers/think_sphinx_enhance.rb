@@ -54,3 +54,26 @@ module ThinkingSphinx
   end
   
 end
+
+
+# added by Tomato
+# 
+# to prevent think sphinx creating singleton class for search resule object.
+# it will break the Marshal.dump method,
+# which is required by session and active record deep copy
+
+module ThinkingSphinx
+  
+  class Search
+    
+    def add_excerpter
+      # just do nothing ...
+    end
+    
+    def add_sphinx_attributes
+      # just do nothing ...
+    end
+    
+  end
+  
+end
