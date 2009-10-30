@@ -6,6 +6,9 @@ development:
   sql_query_pre: SET NAMES utf8
   searchd_file_path: /Users/tomato/Dev/git/projects/CareerCommunity/db/sphinx/development
   config_file: /Users/tomato/Dev/git/projects/CareerCommunity/config/development.sphinx.conf
+  searchd_log_file: /Users/tomato/Dev/git/projects/CareerCommunity/log/searchd.log
+  query_log_file: /Users/tomato/Dev/git/projects/CareerCommunity/log/searchd.query.log
+  pid_file: /Users/tomato/Dev/git/projects/CareerCommunity/log/searchd.development.pid
 
 test:
 #  port: 3312
@@ -15,6 +18,9 @@ test:
   sql_query_pre: SET NAMES utf8
   searchd_file_path: /Users/tomato/Dev/git/projects/CareerCommunity/db/sphinx/test
   config_file: /Users/tomato/Dev/git/projects/CareerCommunity/config/test.sphinx.conf
+  searchd_log_file: /Users/tomato/Dev/git/projects/CareerCommunity/log/searchd.log
+  query_log_file: /Users/tomato/Dev/git/projects/CareerCommunity/log/searchd.query.log
+  pid_file: /Users/tomato/Dev/git/projects/CareerCommunity/log/searchd.test.pid
 
 production:
 #  port: 3312
@@ -24,3 +30,6 @@ production:
   sql_query_pre: SET NAMES utf8
   searchd_file_path: /home/tomato/websites/app/CareerCommunity/shared/sphinx/production
   config_file: /home/tomato/websites/app/CareerCommunity/shared/sphinx/conf/production.sphinx.conf
+  searchd_log_file: /home/tomato/websites/app/CareerCommunity/shared/log/searchd.log
+  query_log_file: /home/tomato/websites/app/CareerCommunity/shared/log/searchd.query.log
+  pid_file: /home/tomato/websites/app/CareerCommunity/shared/log/searchd.production.pid
