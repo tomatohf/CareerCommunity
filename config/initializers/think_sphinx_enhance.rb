@@ -39,6 +39,26 @@ end
 
 # added by Tomato
 # 
+# to fix the boolean not being converted to int bug,
+# the boolean value true/false can NOT be used to pack
+
+module Riddle
+  class Client
+    class Message
+      
+      alias original_append_int append_int
+      
+      def append_int(int)
+        original_append_int(int.to_i rescue (int ? 1 : 0))
+      end
+      
+    end
+  end
+end
+
+
+# added by Tomato
+# 
 # to expose the riddle client object
 
 module ThinkingSphinx
