@@ -97,3 +97,22 @@ module ThinkingSphinx
   end
   
 end
+
+
+# added by Tomato
+# 
+# to set "SET NAMES utf8" sql_query_pre for delta index
+
+module ThinkingSphinx
+  class Source
+    module SQL
+
+      alias original_sql_query_pre_for_delta sql_query_pre_for_delta
+      
+      def sql_query_pre_for_delta
+        original_sql_query_pre_for_delta << "SET NAMES utf8"
+      end
+      
+    end
+  end
+end
