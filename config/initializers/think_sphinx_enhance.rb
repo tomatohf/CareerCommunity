@@ -49,7 +49,9 @@ module Riddle
       alias original_append_int append_int
       
       def append_int(int)
-        original_append_int(int.to_i rescue (int ? 1 : 0))
+        int = int.to_i rescue (int ? 1 : 0)
+        
+        original_append_int(int)
       end
       
     end
