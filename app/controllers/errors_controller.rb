@@ -17,7 +17,10 @@ class ErrorsController < ApplicationController
     @code = params[:id] || "500"
     
     # default to render status 500 page
-    render :layout => true, :status => @code
+    # 
+    # lighttpd's bug that can not handle all kinds of status code, like 422
+    # it will remove the page body ... so we just return status code 404 or 500
+    render :layout => true, :status => (@code == "404") ? "404" : "500"
   end
   
 end
