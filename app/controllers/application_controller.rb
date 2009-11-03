@@ -14,17 +14,18 @@ class ApplicationController < ActionController::Base
   # and have no effect.
   protect_from_forgery
   
-  
   filter_parameter_logging "password"
-  
-  
   
   # enable output GZip compression
   after_filter OutputCompressionFilter unless Rails.env.development?
   
+  rescue_from(ActionController::InvalidAuthenticityToken) { |e|
+    save_original_address
+    jump_to("/accounts/login_form")
+  }
   
   
-  
+    
   private
   
 #  before_filter :configure_charsets
@@ -152,6 +153,7 @@ class ApplicationController < ActionController::Base
     session[:original_url] = nil
     
     if original_method != :get && original_params
+      original_params[:authenticity_token] = form_authenticity_token
       redirect_non_get(original_params)
     else
       jump_to(original_url || { :controller => "community" })
