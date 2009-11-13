@@ -104,6 +104,10 @@ end
 # added by Tomato
 # 
 # to set "SET NAMES utf8" sql_query_pre for delta index
+#
+# and remove the sql_query_info value from config file,
+# since it's just used for CLI and debug
+# and would increase db SQL queries during indexing
 
 module ThinkingSphinx
   class Source
@@ -113,6 +117,11 @@ module ThinkingSphinx
       
       def sql_query_pre_for_delta
         original_sql_query_pre_for_delta << "SET NAMES utf8"
+      end
+      
+      
+      def to_sql_query_info(offset)
+        nil
       end
       
     end
