@@ -70,7 +70,7 @@ module ExpVendor
       ].each { |item|
         link = item
         urls(link, start_page, page_count).each { |url|
-          gotten_new_links_info = get_esojob_new_links(url).to_hash { |info| [info[0], info[1]] }
+          gotten_new_links_info = get_esojob_new_links(url).build_hash { |info| [info[0], info[1]] }
           gotten_new_links = gotten_new_links_info.keys
           
           existing_links = Exp.find(

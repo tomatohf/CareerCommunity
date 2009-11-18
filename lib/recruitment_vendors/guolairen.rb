@@ -90,7 +90,7 @@ module RecruitmentVendor
         new_links.merge!(
           urls(link, start_page, page_count).collect { |url|
             get_guolairen_new_links(url)
-          }.flatten.to_hash { |link_info|
+          }.flatten.build_hash { |link_info|
             [link_info.keys[0], init_values.merge({:publish_time => link_info.values[0]})]
           }
         )
@@ -112,7 +112,7 @@ module RecruitmentVendor
         link = item[0]
         start_page.upto(start_page + adjusted_page_count - 1) { |page|
           url = page_url(link, page)
-          gotten_new_link_infos = get_guolairen_new_links(url).to_hash { |link_info|
+          gotten_new_link_infos = get_guolairen_new_links(url).build_hash { |link_info|
             [link_info.keys[0], link_info.values[0]]
           }
           gotten_new_links = gotten_new_link_infos.keys

@@ -217,17 +217,17 @@ end
 class Array
     
   # block should return two values, the 1st value is the hash key and the 2nd value is the hash value
-  def to_hash(&block)
+  def build_hash(&block)
     Hash[*self.collect{|item| block.call(item) }.flatten]
   end
   
-  def to_hash_keys(&block)
+  def build_hash_keys(&block)
     Hash[*self.collect { |v|
       [v, block.call(v)]
     }.flatten]
   end
   
-  def to_hash_values(&block)
+  def build_hash_values(&block)
     Hash[*self.collect { |v|
       [block.call(v), v]
     }.flatten]

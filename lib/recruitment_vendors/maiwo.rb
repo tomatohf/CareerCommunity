@@ -105,7 +105,7 @@ module RecruitmentVendor
         new_links.merge!(
           urls(link, start_page, page_count).collect { |url|
             get_maiwo_new_links(url)
-          }.flatten.to_hash_keys{
+          }.flatten.build_hash_keys{
             init_values
           }
         )
