@@ -27,7 +27,10 @@ class Recruitment < ActiveRecord::Base
     # attributes
     has :recruitment_type, :publish_time
 
-    set_property :delta => true
+    # since there would be large number of records added at one time,
+    # run delta index every record saving is slow.
+    # so just disable delta index and run full index after collecting recruitment messages
+    set_property :delta => false
 
     # set_property :field_weights => {:field => number}
   end
