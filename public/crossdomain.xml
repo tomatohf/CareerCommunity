@@ -8,8 +8,6 @@
 	
 	<allow-access-from domain="qiaobuquan.*" />
 	<allow-access-from domain="*.qiaobuquan.*" />
-	
-	<allow-access-from domain="221.130.201.43" />
 	-->
 </cross-domain-policy>
 
