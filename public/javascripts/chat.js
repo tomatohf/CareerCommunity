@@ -236,6 +236,8 @@ function add_im_listeners(client_id, channels, auth_token, custom_handler) {
 		"click",
 		function() {
 			update_online_friends(auth_token);
+			
+			return false;
 		}
 	);
 	
@@ -481,6 +483,8 @@ function add_chatroom_listeners(client_id, channels, auth_token) {
 		"click",
 		function() {
 			notify_to_update_online_list(channels, auth_token);
+			
+			return false;
 		}
 	);
 	
