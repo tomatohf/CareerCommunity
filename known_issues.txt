@@ -119,8 +119,6 @@ Improve new vote topic performance
 
 缓存 activity/group show/recent pages
 
-使用 C 版本的 Memcache client
-
 调整查看数的实现方法 ... 把查看数记录到各自的表
 
 照片按相册设置查看权限 - 私密相册, 之前的相册都叫公开相册?
@@ -222,9 +220,10 @@ http://www.hokstad.com/mini-reviews-of-19-ruby-template-engines.html
 ======
 
 Denpendencies:
+	memcached (gem install memcached --no-rdoc --no-ri)
+	libmemcached_store (plugin install git://github.com/cheald/libmemcached_store.git)
 	Hpricot
 	RMagic (ImageMagic)
-	memcache-client
 	paperclip
 	mime-types
 	mislav-will_paginate (gem install mislav-will_paginate --source http://gems.github.com)

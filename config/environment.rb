@@ -12,22 +12,26 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 
 
-require "memcache"
 # added by Tomato
-MemCache_Options = {
-  :compression => false, # Turn compression on or off temporarily.
-  # :c_threshold => 10_000, # The compression threshold setting, in bytes. Values larger than this threshold will be compressed by #[]= (and set) and decompressed by #[] (and get).
-  :namespace => "community", # If specified, all keys will have the given value prepended before accessing the cache. Defaults to nil.
-  :debug => false, # Send debugging output to the object specified as a value if it responds to call, and to $deferr if set to anything else but false or nil.
-  :urlencode => false, # If this is set, all cache keys will be urlencoded. If this is not set, keys with certain characters in them may generate client errors when interacting with the cache, but they will be more compatible with those set by other clients. If you plan to use anything but Strings for keys, you should keep this enabled. Defaults to true.
-  # :connect_timeout => 300, # If set, specifies the number of floating-point seconds to wait when attempting to connect to a memcached server.
-  :readonly => false # If this is set, any attempt to write to the cache will generate an exception. Defaults to false.
-}
+Using_Libmemcached = true
 
-Cache = MemCache.new("127.0.0.1", MemCache_Options)
-
-# in seconds, which means cache 1 day = 24 hours
-Cache_TTL = 60*60*24
+Cache_Store_Name, MemCache_Options = if Using_Libmemcached
+[
+    :libmemcached_store,
+    {
+      :prefix_key => "talent:",
+      :default_ttl => 0
+    }
+  ]
+else
+  [
+    :mem_cache_store,
+    {
+      :namespace => "talent",
+      :readonly => false
+    }
+  ]
+end
 
 
 
@@ -70,11 +74,13 @@ Rails::Initializer.run do |config|
   # config.action_controller.session_store = :active_record_store
 
   # enable memcached to store sessions
-  config.action_controller.session_store = :mem_cache_store
+  # config.action_controller.session_store = :mem_cache_store
+  config.action_controller.session_store = Cache_Store_Name
   
   # enable memcached to store fragment cache
   # config.action_controller.fragment_cache_store = :mem_cache_store, "127.0.0.1", {}
-  config.cache_store = :mem_cache_store, "127.0.0.1", MemCache_Options
+  # config.cache_store = :mem_cache_store, "127.0.0.1", MemCache_Options
+  config.cache_store = Cache_Store_Name, "127.0.0.1", MemCache_Options
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -87,3 +93,9 @@ Rails::Initializer.run do |config|
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
 end
+
+
+
+# added by Tomato
+# in seconds
+Cache_TTL = 1.day.to_i
