@@ -19,7 +19,7 @@ Cache_Store_Name, MemCache_Options = if Using_Libmemcached
 [
     :libmemcached_store,
     {
-      :prefix_key => "talent:",
+      :prefix_key => "community:",
       :default_ttl => 0
     }
   ]
@@ -27,7 +27,7 @@ else
   [
     :mem_cache_store,
     {
-      :namespace => "talent",
+      :namespace => "community",
       :readonly => false
     }
   ]
