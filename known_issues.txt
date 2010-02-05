@@ -175,9 +175,6 @@ HR交流圈子:
 
 
 
-Ruby Patch of the GC for Rails
-	需要重新编译 Ruby
-	
 enable mod_deflate to replace rails output compress plugin
 	- upgrade lighttpd to 1.5
 
@@ -220,6 +217,7 @@ http://www.hokstad.com/mini-reviews-of-19-ruby-template-engines.html
 ======
 
 Denpendencies:
+	mysql
 	memcached (gem install memcached --no-rdoc --no-ri)
 	libmemcached_store (plugin install git://github.com/cheald/libmemcached_store.git)
 	Hpricot
@@ -235,7 +233,7 @@ Denpendencies:
 	erubis (disabled currently ...)
 	json
 	eventmachine
-	juggernaut (*need to update from source code manually* http://github.com/maccman/juggernaut_gem/tree/master)
+	juggernaut
 	RedCloth (NB: The RedCloth gem name is CamelCase, not lowercase. If you mistakenly do a gem install redcloth, you’ll get ERROR: could not find redcloth locally or in a repository.)
 	libxml-ruby
 	-----
@@ -247,13 +245,6 @@ Denpendencies:
 			* request-log-analyzer
 	-----
 	
-======
-
-
-Rails 异常监控
-exception_notification   ===>   http://dev.rubyonrails.org/svn/rails/plugins/exception_notification/README
-
-
 ======
 
 respond_to do |wants|
