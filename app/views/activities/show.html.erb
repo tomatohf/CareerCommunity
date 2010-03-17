@@ -328,7 +328,8 @@
 				<td align="center" valign="middle" style="width: 200px;">
 					<% face_image_url = @activity_image || "" %>
 					<% face_image_url = face_image_url.gsub("thumb_48", @activity.online ? "thumb_120" : "thumb_200") if face_image_url.include?("thumb_48") %>
-					<% if @is_admin # && (@activity.online || activity_status[0] <= Activity::Status::Ongoing[0]) %>
+					<%# if @is_admin && (@activity.online || activity_status[0] <= Activity::Status::Ongoing[0]) %>
+					<% if @is_admin %>
 						<a href="/activities/<%= @activity_id %>/edit_image">
 							<img src="<%= face_img_src(face_image_url) %>" border="0" /></a>
 					<% else %>
@@ -392,7 +393,8 @@
 				<img src="/images/expand.png" border="0" /></a>
 			<a class="float_r" title="展开" id="desc_section_collapse" href="#" onclick="expand_section('desc_section'); return false;" style="display: none">
 				<img src="/images/collapse.png" border="0" /></a>
-			<% if @is_admin # && (@activity.online || activity_status[0] <= Activity::Status::Ongoing[0]) %>
+			<%# if @is_admin && (@activity.online || activity_status[0] <= Activity::Status::Ongoing[0]) %>
+			<% if @is_admin %>
 				<span class="float_r">
 					<a href="/activities/<%= @activity_id %>/edit#edit_activity_desc">编辑活动的描述</a>
 					&nbsp;&nbsp;&nbsp;

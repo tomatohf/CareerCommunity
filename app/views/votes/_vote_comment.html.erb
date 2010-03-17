@@ -5,10 +5,6 @@
 <% account_nick = vote_comment.account.get_nick %>
 <% account_pic_url = vote_comment.account.get_profile_pic_url %>
 
-<% # since the accounts and their pic_profile have been got from database, %>
-<% # let's cache them in order to reuse them %>
-<% # maybe putting these codes here smells not so good %>
-<% # just from performance's perspective to avoid double loop of the comments %>
 <% Account.set_account_nick_pic_cache(vote_comment.account_id, account_nick, account_pic_url, vote_comment.account.email) %>
 
 <%

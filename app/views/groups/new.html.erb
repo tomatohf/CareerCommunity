@@ -97,8 +97,10 @@
 						</tr>
 						
 						<% if superadmin?(session[:account_id]) %>
-							<% # only the first registered user can see this option %>
-							<% # it should be only Tomato %>
+							<%
+								# only the first registered user can see this option
+								# it should be only Tomato
+							%>
 							<tr>
 								<td>
 									<label for="custom_key">

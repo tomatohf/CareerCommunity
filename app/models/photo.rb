@@ -24,6 +24,41 @@ class Photo < ActiveRecord::Base
   
   
   
+  # paperclip
+  has_attached_file :image, :styles => {
+    :big => "800x600>",
+    :normal => "600x600>",
+    :thumb_200 => "200x200>",
+    :thumb_120 => "120x120>",
+    :thumb_80 => "80x80>",
+    :thumb_48 => "48x48#"
+  },
+    #:url => "/system/files/:class_:attachment/:album_id/:id/:style_:id.:extension",
+    #:path => ":rails_root/public/system/files/:class_:attachment/:album_id/:id/:style_:id.:extension",
+    :url => "/system/files/:class_:attachment/:created_year/:created_month/:created_mday/:id/:style_:id.:extension",
+    :path => ":rails_root/public/system/files/:class_:attachment/:created_year/:created_month/:created_mday/:id/:style_:id.:extension",
+    :default_url => "",
+    :storage => :filesystem,
+    :whiny_thumbnails => false # to avoid displaying internal errors
+
+  validates_attachment_presence :image, :message => "请选择 图片文件"
+  validates_attachment_content_type :image, :content_type => [
+    "image/jpg", "image/jpeg", "image/gif", "image/png", "image/bmp",
+    
+    # to be compatible with IE ...
+    "image/pjpeg", "image/x-png"
+  ], :message => "只能上传 JPG, JPEG, GIF, PNG 或 BMP 格式的图片"
+  validates_attachment_size :image, :less_than => 3.megabyte, :message => "每个图片文件大小不能超过 3M"
+  # to avoid displaying internal errors
+  # validates_attachment_thumbnails :image
+  
+  
+  validates_presence_of :account_id, :album_id
+  
+  validates_length_of :title, :maximum => 256, :message => "照片描述 超过长度限制", :allow_nil => true
+  
+  
+  
   FCKP_spaces_show_photo = :fc_spaces_show_photo
 
   after_destroy { |photo|
@@ -71,40 +106,6 @@ class Photo < ActiveRecord::Base
         
     end
   }
-  
-  
-  # paperclip
-  has_attached_file :image, :styles => {
-    :big => "800x600>",
-    :normal => "600x600>",
-    :thumb_200 => "200x200>",
-    :thumb_120 => "120x120>",
-    :thumb_80 => "80x80>",
-    :thumb_48 => "48x48#"
-  },
-    #:url => "/system/files/:class_:attachment/:album_id/:id/:style_:id.:extension",
-    #:path => ":rails_root/public/system/files/:class_:attachment/:album_id/:id/:style_:id.:extension",
-    :url => "/system/files/:class_:attachment/:created_year/:created_month/:created_mday/:id/:style_:id.:extension",
-    :path => ":rails_root/public/system/files/:class_:attachment/:created_year/:created_month/:created_mday/:id/:style_:id.:extension",
-    :default_url => "",
-    :storage => :filesystem,
-    :whiny_thumbnails => false # to avoid displaying internal errors
-
-  validates_attachment_presence :image, :message => "请选择 图片文件"
-  validates_attachment_content_type :image, :content_type => [
-    "image/jpg", "image/jpeg", "image/gif", "image/png", "image/bmp",
-    
-    # to be compatible with IE ...
-    "image/pjpeg", "image/x-png"
-  ], :message => "只能上传 JPG, JPEG, GIF, PNG 或 BMP 格式的图片"
-  validates_attachment_size :image, :less_than => 3.megabyte, :message => "每个图片文件大小不能超过 3M"
-  # to avoid displaying internal errors
-  # validates_attachment_thumbnails :image
-  
-  
-  validates_presence_of :account_id, :album_id
-  
-  validates_length_of :title, :maximum => 256, :message => "照片描述 超过长度限制", :allow_nil => true
   
   
   

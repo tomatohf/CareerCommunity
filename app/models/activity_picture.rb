@@ -47,6 +47,12 @@ class ActivityPicture < ActiveRecord::Base
   
   
   
+  CKP_count = :activity_picture_count
+  Count_Cache_Group_Field = :activity_id
+  include CareerCommunity::CountCacheable
+  
+  
+  
   after_destroy { |picture|
     self.clear_picture_cache(picture.id)
     
@@ -68,12 +74,6 @@ class ActivityPicture < ActiveRecord::Base
   CKP_activity_picture = :activity_picture
   
   CKP_activity_pictures_id = :activity_pictures_id
-  
-  
-  
-  CKP_count = :activity_picture_count
-  Count_Cache_Group_Field = :activity_id
-  include CareerCommunity::CountCacheable
   
   
   
