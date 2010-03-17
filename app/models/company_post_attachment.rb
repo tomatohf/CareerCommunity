@@ -7,6 +7,7 @@ class CompanyPostAttachment < ActiveRecord::Base
   has_attached_file :attachment,
     :url => "/company/posts/attachment/:id",
     :path => ":rails_root/files/company_post_attachments/:created_year/:created_month/:created_mday/:id/:basename.:extension",
+    :default_url => "",
     :storage => :filesystem,
     :whiny_thumbnails => false # to avoid displaying internal errors
 

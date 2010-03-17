@@ -28,6 +28,7 @@ class ActivityPicture < ActiveRecord::Base
   },
     :url => "/activity/pictures/image/:id/:style",
     :path => ":rails_root/files/activity_picture_images/:created_year/:created_month/:created_mday/:id/:style_:id.:extension",
+    :default_url => "",
     :storage => :filesystem,
     :whiny_thumbnails => false # to avoid displaying internal errors
 
