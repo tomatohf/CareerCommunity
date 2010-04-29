@@ -683,6 +683,15 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/customers/good_post/:id/:page", :controller => "customers", :action => "good_post", :id => /\d+/, :page => /\d+/
   map.connect "/customers/p/:page", :controller => "customers", :action => "index", :page => /\d+/
   map.connect "/customers/all/p/:page", :controller => "customers", :action => "all", :page => /\d+/
+  
+  
+  map.namespace(:intranet) do |intranet|
+    intranet.resources :employees, :only => [] do |employees|
+      employees.resources :sales_opportunities
+    
+      employees.resources :sales_contacts
+    end
+  end
 
   
   

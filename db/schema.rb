@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 69) do
+ActiveRecord::Schema.define(:version => 70) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id"
@@ -1186,6 +1186,83 @@ ActiveRecord::Schema.define(:version => 69) do
     t.datetime "updated_at"
     t.boolean  "delta"
   end
+
+  create_table "sales_contacts", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id"
+    t.integer  "updated_by"
+    t.string   "name",       :limit => 25
+    t.boolean  "gender"
+    t.string   "company",    :limit => 50
+    t.string   "title",      :limit => 25
+    t.string   "mobile",     :limit => 20
+    t.string   "phone",      :limit => 20
+    t.string   "fax",        :limit => 20
+    t.string   "email"
+    t.string   "address"
+    t.string   "zip",        :limit => 10
+    t.string   "notes",      :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "sales_contacts", ["account_id", "created_at"], :name => "index_sales_contacts_on_account_id_and_created_at"
+
+  create_table "sales_opportunities", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "contact_id"
+    t.integer  "status_id",  :limit => 1
+    t.string   "title",      :limit => 50
+    t.boolean  "delta"
+  end
+
+  add_index "sales_opportunities", ["contact_id", "status_id"], :name => "index_sales_opportunities_on_contact_id_and_status_id"
+
+  create_table "sales_opportunity_attachments", :force => true do |t|
+    t.datetime "updated_at"
+    t.integer  "opportunity_id"
+    t.string   "desc",                    :limit => 100
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.boolean  "delta"
+  end
+
+  add_index "sales_opportunity_attachments", ["opportunity_id", "updated_at"], :name => "index_sales_opportunity_attachments_on_opportunity_updated"
+
+  create_table "sales_opportunity_records", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "opportunity_id"
+    t.integer  "step_id",        :limit => 2
+    t.datetime "occur_at"
+    t.string   "notes",          :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "sales_opportunity_records", ["opportunity_id", "step_id", "occur_at"], :name => "index_sales_opportunity_records_on_opportunity_step_occur"
+
+  create_table "sales_opportunity_step_records", :force => true do |t|
+    t.datetime "updated_at"
+    t.integer  "opportunity_id"
+    t.integer  "step_id",        :limit => 2
+    t.boolean  "delta"
+  end
+
+  add_index "sales_opportunity_step_records", ["opportunity_id", "step_id"], :name => "index_sales_opportunity_step_records_on_opportunity_and_step", :unique => true
+
+  create_table "sales_opportunity_todos", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "opportunity_id"
+    t.boolean  "done"
+    t.datetime "due_at"
+    t.string   "desc",           :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "sales_opportunity_todos", ["opportunity_id", "done", "due_at"], :name => "index_sales_opportunity_todos_on_opportunity_done_due"
 
   create_table "sent_messages", :force => true do |t|
     t.datetime "created_at"
