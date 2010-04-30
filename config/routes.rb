@@ -687,9 +687,11 @@ ActionController::Routing::Routes.draw do |map|
   
   map.namespace(:intranet) do |intranet|
     intranet.resources :employees, :only => [] do |employees|
+      employees.resources :sales_contacts, :collection => {
+        :search => [:get, :post]
+      }
+      
       employees.resources :sales_opportunities
-    
-      employees.resources :sales_contacts
     end
   end
 

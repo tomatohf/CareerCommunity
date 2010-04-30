@@ -1,5 +1,11 @@
 module Intranet
   class SalesContactsController < ApplicationController
+    
+    Contact_Page_Size = 20
+    
+    Search_Match_Mode = CommunityController::Search_Match_Mode
+    Search_Sort_Order = "@relevance DESC, created_at DESC"
+    
   
     layout "community"
   
@@ -15,10 +21,36 @@ module Intranet
 
       @contacts = SalesContact.paginate(
         :page => page,
-        :per_page => 20,
+        :per_page => Contact_Page_Size,
         :select => "id, name, gender, company, title, mobile, phone, email, account_id, created_at",
         :conditions => ["account_id = ?", @employee[:account_id]],
         :order => "created_at DESC"
+      )
+    end
+    
+    
+    def search
+      @contact_tip = params[:contact_tip] && params[:contact_tip].strip
+
+      return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_contacts") if @contact_tip.blank?
+
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @contacts = SalesContact.search(
+        @contact_tip,
+        :page => page,
+        :per_page => Contact_Page_Size,
+        :match_mode => Search_Match_Mode,
+        :order => Search_Sort_Order,
+        :field_weights => {
+          :name => 3,
+          :company => 2,
+          :notes => 2
+        },
+        :select => "id, name, gender, company, title, mobile, phone, email, account_id, created_at",
+        :with => {
+          :account_id => @employee[:account_id]
+        }
       )
     end
     

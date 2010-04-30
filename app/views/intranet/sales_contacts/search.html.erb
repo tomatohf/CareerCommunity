@@ -1,0 +1,23 @@
+<%
+	page_title = "客户搜索结果"
+	community_page_title(page_title)
+%>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		共搜索到
+		<b><%= @contacts.total_entries %></b>
+		个结果
+		,
+		&nbsp;&nbsp;&nbsp;
+		<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts">
+			返回全部客户列表</a>
+	</div>
+	
+	<%= render :partial => "contacts_list" %>
+</div>
+
+

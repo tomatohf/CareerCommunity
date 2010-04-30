@@ -15,7 +15,7 @@ module Intranet
       indexes name, company, title, mobile, phone, fax, email, address, zip, notes
 
       # attributes
-      has gender
+      has gender, account_id, created_at
     
       set_property :delta => true
     

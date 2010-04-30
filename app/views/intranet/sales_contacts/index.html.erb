@@ -25,34 +25,5 @@
 		条客户记录
 	</div>
 	
-	<div class="community_block align_r">
-		<% form_tag "", :method => :get do %>
-			<input type="text" name="contact_tip" class="text_field search_input" size="30" />
-			&nbsp;&nbsp;&nbsp;
-			<input type="submit" value="搜索客户" class="button" />
-		<% end %>
-	</div>
-	
-	<table border="0" cellspacing="0" cellpadding="0" class="main_part_w list" style="margin: 10px 0px;">
-		<thead>
-			<tr>
-				<td>姓名</td>
-				<td>公司</td>
-				<td>职位</td>
-				<td>手机</td>
-				<td>电话</td>
-				<td>电子邮件</td>
-				<td style="width: 26px;"></td>
-				<td style="width: 26px;"></td>
-			</tr>
-		</thead>
-		
-		<tbody>
-			<%= render :partial => "contact", :collection => @contacts %>
-		</tbody>
-	</table>
-	
-	<div class="community_block">
-		<%= paging_buttons(@contacts) %>
-	</div>
+	<%= render :partial => "contacts_list" %>
 </div>
