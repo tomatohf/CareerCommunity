@@ -1,0 +1,150 @@
+<table border="0" cellspacing="5" cellpadding="5">
+	<tr>
+		<td style="width: 100px;">
+			<label for="name">
+				姓名(<span style="color: red;">*</span>)
+			</label>
+		</td>
+		
+		<td>
+			<input type="text" id="name" name="name" class="text_field" size="15" value="<%= h(@contact.name) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="gender">
+				性别
+			</label>
+		</td>
+		
+		<td>
+			<select name="gender" id="gender" class="dropdown_list">
+				<option value=""<%= %Q! selected="selected"! if @contact.gender.nil? %>></option>
+				<option value="true"<%= %Q! selected="selected"! if @contact.gender == true %>>男</option>
+				<option value="false"<%= %Q! selected="selected"! if @contact.gender == false %>>女</option>
+			</select>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="company">
+				公司
+			</label>
+		</td>
+		
+		<td>
+			<input type="text" id="company" name="company" class="text_field" size="30" value="<%= h(@contact.company) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="title">
+				职位
+			</label>
+		</td>
+		
+		<td>
+			<input type="text" id="title" name="title" class="text_field" size="30" value="<%= h(@contact.title) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="mobile">
+				手机
+			</label>
+		</td>
+		
+		<td>
+			<input type="text" id="mobile" name="mobile" class="text_field" size="30" value="<%= h(@contact.mobile) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="phone">
+				电话
+			</label>
+		</td>
+		
+		<td>
+			<input type="text" id="phone" name="phone" class="text_field" size="30" value="<%= h(@contact.phone) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="fax">
+				传真
+			</label>
+		</td>
+		
+		<td>
+			<input type="text" id="fax" name="fax" class="text_field" size="30" value="<%= h(@contact.fax) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="email">
+				电子邮件
+			</label>
+		</td>
+		
+		<td>
+			<input type="text" id="email" name="email" class="text_field" size="30" value="<%= h(@contact.email) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="address">
+				地址
+			</label>
+		</td>
+		
+		<td>
+			<input type="text" id="address" name="address" class="text_field" size="30" value="<%= h(@contact.address) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="zip">
+				邮编
+			</label>
+		</td>
+		
+		<td>
+			<input type="text" id="zip" name="zip" class="text_field" size="30" value="<%= h(@contact.zip) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td valign="top">
+			<label for="notes">
+				备注
+			</label>
+		</td>
+		
+		<td>
+			<textarea id="notes" name="notes" class="text_field" cols="50" rows="8"><%= h(@contact.notes) %></textarea>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			
+		</td>
+		
+		<td>
+			<%= submit_tag submit_label, :class => "button", :disabled => @account_limited %>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts">
+				返回客户列表</a>
+		</td>
+	</tr>
+</table>

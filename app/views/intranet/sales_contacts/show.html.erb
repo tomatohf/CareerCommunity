@@ -1,0 +1,157 @@
+<%
+	contact_name = h(@contact.name)
+	page_title = "客户 #{contact_name}"
+	community_page_title(page_title)
+%>
+
+<div class="float_r">
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 250px;" do %>
+		<div class="action_bar">
+			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts/<%= @contact.id %>/edit">
+				修改客户资料</a>
+			|
+			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts">
+				返回客户列表</a>
+		</div>
+	<% end %>
+</div>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow">
+
+		<table border="0" cellspacing="0" cellpadding="5">
+			<tr>
+				<td style="width: 100px;">
+					姓名
+				</td>
+
+				<td>
+					<%= contact_name %>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					性别
+				</td>
+
+				<td>
+					<%=
+						case @contact.gender
+			        		when true
+			          			"男"
+			        		when false
+			          			"女"
+			        		else
+			          			nil
+			      		end
+					%>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					公司
+				</td>
+
+				<td>
+					<%= h(@contact.company) %>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					职位
+				</td>
+
+				<td>
+					<%= h(@contact.title) %>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					手机
+				</td>
+
+				<td>
+					<%= h(@contact.mobile) %>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					电话
+				</td>
+
+				<td>
+					<%= h(@contact.phone) %>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					传真
+				</td>
+
+				<td>
+					<%= h(@contact.fax) %>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					电子邮件
+				</td>
+
+				<td>
+					<%= h(@contact.email) %>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					地址
+				</td>
+
+				<td>
+					<%= h(@contact.address) %>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					邮编
+				</td>
+
+				<td>
+					<%= h(@contact.zip) %>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					备注
+				</td>
+
+				<td>
+					<%=
+						simple_format(
+							auto_link(
+								h(@contact.notes),
+								:urls,
+								:target => "_blank"
+							)
+						)
+					%>
+				</td>
+			</tr>
+		</table>
+		
+		
+	</div>
+	
+</div>

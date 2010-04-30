@@ -65,18 +65,18 @@ div.auto_complete ul li {
 	padding: .3em;
 }
 .pagination a, .pagination span {
-	padding: .2em .5em; 
+	padding: .3em .5em .2em; 
 }
 .pagination span.disabled {
 	color: #AAA; 
 }
 .pagination span.current {
 	font-weight: bold;
-	color: #FF0084;
+	/* color: #FF0084; */
 }
 .pagination a {
 	border: 1px solid #DDDDDD;
-	color: #0063DC;
+	/* color: #0063DC; */
 	text-decoration: none;
 }
 .pagination a:hover, .pagination a:focus {
@@ -89,7 +89,7 @@ div.auto_complete ul li {
 	padding-top: .8em;
 }
 .pagination .prev_page, .pagination .next_page {
-	border-width: 2px;
+	border-color: #BBBBBB;
 }
 .pagination .prev_page {
 	margin-right: 1em;
@@ -331,6 +331,26 @@ div.auto_complete ul li {
 
 .tag_cloud a:hover {
 	text-decoration: underline;
+}
+
+
+.list {
+	border-collapse: collapse;
+}
+
+.list thead td {
+	border-bottom: 1px solid #BBBBBB;
+	padding: 5px;
+	color: #555555;
+}
+
+.list tbody td {
+	border-bottom: 1px solid #DDDDDD;
+	padding: 5px;
+}
+
+.list tbody tr.even td {
+	background-color: #F8F8F8;
 }
 
 

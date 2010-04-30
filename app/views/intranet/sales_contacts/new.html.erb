@@ -1,0 +1,29 @@
+<%
+	page_title = "添加客户"
+	community_page_title(page_title)
+%>
+
+<div class="job_item_container">
+	<a class="float_r" href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts">
+		返回客户列表</a>
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @contact.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@contact) %>
+			</p>
+		<% end %>
+
+		<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_contacts", :method => :post do %>
+			<%= render :partial => "contact_form", :locals => {:submit_label => "添加"} %>
+		<% end %>
+		
+	</div>
+	
+</div>

@@ -10,7 +10,7 @@ module Intranet
   
   
     def index
-      @contacts = SalesContact
+      
     end
   
   
