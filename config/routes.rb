@@ -691,7 +691,10 @@ ActionController::Routing::Routes.draw do |map|
         :search => [:get, :post]
       }
       
-      employees.resources :sales_opportunities
+      employees.resources :sales_opportunities, :collection => {
+        :fail => :get,
+        :success => :get
+      }
     end
   end
 

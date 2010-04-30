@@ -1,1 +1,64 @@
-<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts">客户管理</a>
+<%
+	page_title = "#{@status[:label]}的销售机会"
+	community_page_title(page_title)
+%>
+
+<div class="float_r">
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 250px;" do %>
+		<div class="action_bar">
+			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/new">
+				添加新的销售机会</a>
+			|
+			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts">
+				客户管理</a>
+		</div>
+	<% end %>
+</div>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @opportunities.respond_to?(:total_entries) ? @opportunities.total_entries : @opportunities.size %></b>
+		个<%= @status[:label] %>的销售机会
+	</div>
+	
+	<div class="community_block">
+		<table border="0" cellspacing="0" cellpadding="0" class="main_part_w">
+			<tr>
+				<td>
+					
+				</td>
+				
+				<td align="right" style="width: 150px;">
+					<select id="" class="dropdown_list">
+						<% Intranet::SalesOpportunityStatus.data.each do |status| %>
+							<option value="<%= status[:name] == "ongoing" ? "" : status[:name] %>"<%= %Q! selected="selected"! if status[:id] == @status[:id] %>>
+								<%= status[:label] %>的销售机会
+							</option>
+						<% end %>
+					</select>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<table border="0" cellspacing="0" cellpadding="0" class="main_part_w list">
+		<thead>
+			<tr>
+				<td></td>
+			</tr>
+		</thead>
+
+		<tbody>
+			<%#= render :partial => "opportunity", :collection => @opportunities %>
+		</tbody>
+	</table>
+
+	<div class="community_block">
+		<%= paging_buttons(@opportunities) if @opportunities.respond_to?(:total_entries) %>
+	</div>
+	
+</div>
