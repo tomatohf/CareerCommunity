@@ -11,7 +11,7 @@ module Intranet
   
     before_filter :check_login
     before_filter :check_employee
-    before_filter :check_limited, :only => []
+    before_filter :check_limited, :only => [:create, :update]
   
   
   
