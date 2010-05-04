@@ -8,7 +8,10 @@ module Intranet
   
     before_filter :check_login
     before_filter :check_employee
-    before_filter :check_limited, :only => [:create, :update]
+    before_filter :check_limited, :only => [:create, :update, :update_step_done]
+    
+    before_filter :check_opportunity, :except => [:index, :fail, :success,
+                                                  :new, :create]
   
   
   
@@ -47,7 +50,8 @@ module Intranet
     
     
     def new
-      @opportunity = SalesOpportunity.new(:contact_id => params[:contact])
+      @opportunity = SalesOpportunity.new
+      @contact_name = params[:contact]
     end
     
     def create
@@ -61,13 +65,21 @@ module Intranet
     end
     
     
+    def update_step_done
+      @step_record = SalesOpportunityStepRecord.get_record(@opportunity.id, params[:step_id])
+      @step_record.done = (params[:done] == "true")
+      
+      @step_record.save!
+      
+      render :nothing => true
+    end
+    
+    
     def edit
-      @opportunity = SalesOpportunity.find(params[:id])
+      @contact_name = @contact.name
     end
     
     def update
-      @opportunity = SalesOpportunity.find(params[:id])
-      
       if save_opportunity
         return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
       end
@@ -77,13 +89,19 @@ module Intranet
   
   
     def show
-      @opportunity = SalesOpportunity.find(params[:id])
-      @contact = SalesContact.find(@opportunity.contact_id)
+      
     end
   
   
   
     private
+    
+    def check_opportunity
+      @opportunity = SalesOpportunity.find(params[:id])
+      @contact = SalesContact.find(@opportunity.contact_id)
+      
+      jump_to("/errors/unauthorized") unless @employee[:account_id] == @contact.account_id
+    end
   
     def save_opportunity
       @opportunity.title = params[:title] && params[:title].strip
@@ -95,10 +113,13 @@ module Intranet
       ).select { |contact| contact.account_id = @employee[:account_id] }.first
       
       if contact
-        @opportunity.contact_id = contact.id
+        @contact_name = contact.name
         
+        @opportunity.contact_id = contact.id
         return @opportunity.save
       else
+        @contact_name = @contact && @contact.name
+        
         flash.now[:error_msg] = "输入的客户姓名不存在"
       end
       

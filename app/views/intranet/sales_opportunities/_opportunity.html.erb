@@ -21,7 +21,7 @@
 			done = step_record && step_record.done
 		%>
 		<td align="center">
-			<div class="sales_opportunity_step<%= "_done" if done %>">
+			<div id="sales_opportunity_step_<%= opportunity.id %>_<%= step[:id] %>" class="sales_opportunity_step<%= "_done" if done %>">
 				
 			</div>
 		</td>

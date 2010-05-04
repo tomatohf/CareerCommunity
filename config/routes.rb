@@ -694,6 +694,8 @@ ActionController::Routing::Routes.draw do |map|
       employees.resources :sales_opportunities, :collection => {
         :fail => :get,
         :success => :get
+      }, :member => {
+        :update_step_done => :post
       }
     end
   end

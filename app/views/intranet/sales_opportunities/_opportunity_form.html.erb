@@ -7,8 +7,7 @@
 		</td>
 		
 		<td>
-			<% contact = @opportunity.contact_id && Intranet::SalesContact.find(@opportunity.contact_id) %>
-			<input type="text" id="contact" name="contact" class="text_field" size="15" value="<%= h(contact && contact.name) %>" />
+			<input type="text" id="contact" name="contact" class="text_field" size="15" value="<%= h(@contact_name) %>" />
 		</td>
 	</tr>
 	
