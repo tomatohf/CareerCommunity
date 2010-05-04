@@ -28,6 +28,11 @@
 	<div class="community_block">
 		<table border="0" cellspacing="0" cellpadding="0" class="main_part_w">
 			<tr>
+				<td style="width: 20px;">
+					<a href="#" onclick="toggle_func_list(); return false;" title="显示/隐藏左边的功能列表栏">
+						<img src="/images/job_targets/hide_left_icon.gif" border="0" /></a>
+				</td>
+				
 				<td>
 					
 				</td>
@@ -74,6 +79,8 @@
 
 <script type="text/javascript">
 	var ACCOUNT_ID = <%= @employee[:account_id] %>;
+	
+	toggle_func_list(false);
 </script>
 <script type="text/javascript" src="/lib/jquery/jquery-pack.js"></script>
 <script type="text/javascript" src="/javascripts/intranet/sales_opportunity.js"></script>

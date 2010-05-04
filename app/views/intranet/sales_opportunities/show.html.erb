@@ -20,8 +20,65 @@
 	<h2><%= page_title %></h2>
 	
 	
-	<div class="community_block_narrow">
+	<div class="community_block_narrow" style="font-size: 14px;">
 		<%= h(@opportunity.title) %>
 	</div>
 	
+	<table border="0" cellspacing="0" cellpadding="0" class="main_part_w list">
+		<thead>
+			<tr>
+				<td></td>
+				<% Intranet::SalesOpportunityStep.data.each do |step| %>
+					<td style="width: 60px;" align="center"><%= step[:label] %></td>
+				<% end %>
+				<td align="right">附件</td>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr>
+				<td style="font-size: 13px; color: #888888;">
+					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts/<%= @contact.id %>" class="account_nick_link">
+						<%= h(@contact.name) %></a>
+				</td>
+
+				<% Intranet::SalesOpportunityStep.data.each do |step| %>
+					<%
+						step_record = @step_records.detect { |record| record.step_id == step[:id] }
+						done = step_record && step_record.done
+					%>
+					<td align="center">
+						<div id="sales_opportunity_step_<%= @opportunity.id %>_<%= step[:id] %>" class="sales_opportunity_step<%= "_done" if done %>" style="width: 60px;">
+
+						</div>
+					</td>
+				<% end %>
+				
+				<td>
+					
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<br />
+	
+	<table border="1" cellspacing="0" cellpadding="0" class="main_part_w">
+		<tr>
+			<td style="width: 50%;">
+				
+			</td>
+
+			<td></td>
+		</tr>
+	</table>
+	
 </div>
+
+
+
+<script type="text/javascript">
+	var ACCOUNT_ID = <%= @employee[:account_id] %>;
+</script>
+<script type="text/javascript" src="/lib/jquery/jquery-pack.js"></script>
+<script type="text/javascript" src="/javascripts/intranet/sales_opportunity.js"></script>

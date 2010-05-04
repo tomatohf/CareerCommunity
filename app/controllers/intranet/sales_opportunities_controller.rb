@@ -65,16 +65,6 @@ module Intranet
     end
     
     
-    def update_step_done
-      @step_record = SalesOpportunityStepRecord.get_record(@opportunity.id, params[:step_id])
-      @step_record.done = (params[:done] == "true")
-      
-      @step_record.save!
-      
-      render :nothing => true
-    end
-    
-    
     def edit
       @contact_name = @contact.name
     end
@@ -86,10 +76,23 @@ module Intranet
       
       render :action => "edit"
     end
+    
+    
+    def update_step_done
+      @step_record = SalesOpportunityStepRecord.get_record(@opportunity.id, params[:step_id])
+      @step_record.done = (params[:done] == "true")
+      
+      @step_record.save!
+      
+      render :nothing => true
+    end
   
   
     def show
-      
+      @step_records = SalesOpportunityStepRecord.find(
+        :all,
+        :conditions => ["opportunity_id = ?", @opportunity]
+      )
     end
   
   
