@@ -10,17 +10,17 @@ module Intranet
     has_many :opportunities, :class_name => "SalesOpportunity", :foreign_key => "contact_id", :dependent => :destroy
   
   
-    define_index do
-      # fields
-      indexes name, company, title, mobile, phone, fax, email, address, zip, notes
-
-      # attributes
-      has gender, account_id, created_at
-    
-      set_property :delta => true
-    
-      # set_property :field_weights => {:field => number}
-    end
+    # define_index do
+    #   # fields
+    #   indexes name, company, title, mobile, phone, fax, email, address, zip, notes
+    # 
+    #   # attributes
+    #   has gender, account_id, created_at
+    # 
+    #   set_property :delta => true
+    # 
+    #   # set_property :field_weights => {:field => number}
+    # end
   
   
     validates_presence_of :account_id, :updated_by

@@ -1,0 +1,36 @@
+<table border="0" cellspacing="5" cellpadding="5">
+	<tr>
+		<td style="width: 120px;">
+			<label for="contact">
+				客户的姓名(<span style="color: red;">*</span>)
+			</label>
+		</td>
+		
+		<td>
+			<% contact = @opportunity.contact_id && Intranet::SalesContact.find(@opportunity.contact_id) %>
+			<input type="text" id="contact" name="contact" class="text_field" size="15" value="<%= h(contact && contact.name) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="title">
+				机会的标题
+			</label>
+		</td>
+		
+		<td>
+			<input type="text" id="title" name="title" class="text_field" size="30" value="<%= h(@opportunity.title) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			
+		</td>
+		
+		<td>
+			<%= submit_tag submit_label, :class => "button", :disabled => @account_limited %>
+		</td>
+	</tr>
+</table>

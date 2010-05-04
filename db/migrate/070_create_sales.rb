@@ -30,6 +30,7 @@ class CreateSales < ActiveRecord::Migration
       t.column :delta, :boolean
     end
     add_index :sales_contacts, [:account_id, :created_at]
+    add_index :sales_contacts, :name
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO sales_contacts (id) VALUES (1000)")
     ActiveRecord::Base.connection.execute("DELETE FROM sales_contacts WHERE id = 1000")
@@ -61,6 +62,9 @@ class CreateSales < ActiveRecord::Migration
       t.column :opportunity_id, :integer
       t.column :step_id, :integer, :limit => 2
       
+      t.column :done, :boolean, :default => false
+      t.column :notes, :string, :limit => 1000
+      
       
       # enable sphinx delta index
       t.column :delta, :boolean
@@ -79,8 +83,6 @@ class CreateSales < ActiveRecord::Migration
       t.column :updated_at, :datetime
       
       t.column :opportunity_id, :integer
-      t.column :step_id, :integer, :limit => 2
-      
       t.column :occur_at, :datetime
       t.column :notes, :string, :limit => 1000
       
@@ -88,8 +90,8 @@ class CreateSales < ActiveRecord::Migration
       # enable sphinx delta index
       t.column :delta, :boolean
     end
-    add_index :sales_opportunity_records, [:opportunity_id, :step_id, :occur_at],
-              :name => :index_sales_opportunity_records_on_opportunity_step_occur
+    add_index :sales_opportunity_records, [:opportunity_id, :occur_at],
+              :name => :index_sales_opportunity_records_on_opportunity_occur
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO sales_opportunity_records (id) VALUES (1000)")
     ActiveRecord::Base.connection.execute("DELETE FROM sales_opportunity_records WHERE id = 1000")
@@ -126,7 +128,7 @@ class CreateSales < ActiveRecord::Migration
       t.column :updated_at, :datetime
       
       t.column :opportunity_id, :integer
-      t.column :done, :boolean
+      t.column :done, :boolean, :default => false
       
       t.column :due_at, :datetime
       t.column :desc, :string, :limit => 1000

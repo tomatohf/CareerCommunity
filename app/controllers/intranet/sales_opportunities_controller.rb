@@ -8,7 +8,7 @@ module Intranet
   
     before_filter :check_login
     before_filter :check_employee
-    before_filter :check_limited, :only => []
+    before_filter :check_limited, :only => [:create, :update]
   
   
   
@@ -22,7 +22,8 @@ module Intranet
           "sales_contacts.account_id = ? and sales_opportunities.status_id = ?",
           @employee[:account_id],
           @status[:id]
-        ]
+        ],
+        :include => [:contact, :step_records]
       )
     end
     
@@ -43,17 +44,66 @@ module Intranet
     def success
       @status = SalesOpportunityStatus.find_by(:name, "success")
     end
+    
+    
+    def new
+      @opportunity = SalesOpportunity.new(:contact_id => params[:contact])
+    end
+    
+    def create
+      @opportunity = SalesOpportunity.new(:status_id => SalesOpportunityStatus.find_by(:name, "ongoing")[:id])
+      
+      if save_opportunity
+        return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+      end
+
+      render :action => "new"
+    end
+    
+    
+    def edit
+      @opportunity = SalesOpportunity.find(params[:id])
+    end
+    
+    def update
+      @opportunity = SalesOpportunity.find(params[:id])
+      
+      if save_opportunity
+        return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+      end
+      
+      render :action => "edit"
+    end
   
   
     def show
-    
+      @opportunity = SalesOpportunity.find(params[:id])
+      @contact = SalesContact.find(@opportunity.contact_id)
     end
   
   
   
     private
   
-  
+    def save_opportunity
+      @opportunity.title = params[:title] && params[:title].strip
+      
+      contact = SalesContact.find(
+        :all,
+        :select => "id, name",
+        :conditions => ["name = ?", params[:contact] && params[:contact].strip]
+      ).select { |contact| contact.account_id = @employee[:account_id] }.first
+      
+      if contact
+        @opportunity.contact_id = contact.id
+        
+        return @opportunity.save
+      else
+        flash.now[:error_msg] = "输入的客户姓名不存在"
+      end
+      
+      false
+    end
   
   end
 end

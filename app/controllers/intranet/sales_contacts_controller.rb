@@ -30,28 +30,15 @@ module Intranet
     
     
     def search
-      @contact_tip = params[:contact_tip] && params[:contact_tip].strip
+      @contact_name = params[:contact_name] && params[:contact_name].strip
 
-      return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_contacts") if @contact_tip.blank?
+      return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_contacts") if @contact_name.blank?
 
-      page = params[:page]
-      page = 1 unless page =~ /\d+/
-      @contacts = SalesContact.search(
-        @contact_tip,
-        :page => page,
-        :per_page => Contact_Page_Size,
-        :match_mode => Search_Match_Mode,
-        :order => Search_Sort_Order,
-        :field_weights => {
-          :name => 3,
-          :company => 2,
-          :notes => 2
-        },
+      @contacts = SalesContact.find(
+        :all,
         :select => "id, name, gender, company, title, mobile, phone, email, account_id, created_at",
-        :with => {
-          :account_id => @employee[:account_id]
-        }
-      )
+        :conditions => ["name like ?", "#{@contact_name}%"]
+      ).select { |contact| contact.account_id = @employee[:account_id] }
     end
     
     

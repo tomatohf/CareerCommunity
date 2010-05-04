@@ -1,0 +1,48 @@
+<tr<%= %Q! class="even"! if opportunity_counter.even? %>>
+	<td style="font-size: 13px; color: #888888;">
+		<% opportunity_title = h(opportunity.title) %>
+		
+		<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts/<%= opportunity.contact.id %>" class="account_nick_link">
+			<%= h(opportunity.contact.name) %></a>
+			
+		<% unless opportunity_title.blank? %>
+			&nbsp;
+			(
+				<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= opportunity.id %>" class="account_nick_link">
+					<%= opportunity_title %></a>
+			)
+		<% end %>
+	</td>
+	
+	
+	<% Intranet::SalesOpportunityStep.data.each do |step| %>
+		<%
+			step_record = opportunity.step_records.detect { |record| record.step_id == step[:id] }
+			done = step_record && step_record.done
+		%>
+		<td>
+			
+		</td>
+	<% end %>
+	
+	
+	<td>
+		
+	</td>
+	
+	
+	<td>
+	
+	</td>
+	
+	
+	<td>
+		
+	</td>
+	
+	
+	<td align="right">
+		<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= opportunity.id %>" class="account_nick_link">
+			查看</a>
+	</td>
+</tr>

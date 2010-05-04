@@ -1,8 +1,10 @@
 <div class="community_block align_r">
-	<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_contacts/search", :method => :get do %>
-		<input type="text" name="contact_tip" class="text_field search_input" size="30" value="<%= h(@contact_tip) %>" />
-		&nbsp;&nbsp;&nbsp;
-		<input type="submit" value="搜索客户" class="button" />
+	<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_contacts/search", :method => :get, :class => "form_info_s" do %>
+		客户姓名开头:
+		&nbsp;
+		<input type="text" name="contact_name" class="text_field search_input" size="15" value="<%= h(@contact_name) %>" />
+		&nbsp;
+		<input type="submit" value="查询" class="button" />
 	<% end %>
 </div>
 
@@ -26,5 +28,5 @@
 </table>
 
 <div class="community_block">
-	<%= paging_buttons(@contacts) %>
+	<%= paging_buttons(@contacts) if @contacts.respond_to?(:total_entries) %>
 </div>

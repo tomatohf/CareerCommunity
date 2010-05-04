@@ -7,7 +7,7 @@ module Intranet
     belongs_to :opportunity, :class_name => "SalesOpportunity", :foreign_key => "opportunity_id"
   
   
-    validates_presence_of :opportunity_id, :step_id
+    validates_presence_of :opportunity_id
     
     validates_presence_of :occur_at, :message => "请输入 时间"
     

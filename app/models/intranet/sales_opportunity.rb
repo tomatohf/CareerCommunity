@@ -10,7 +10,9 @@ module Intranet
     has_many :records, :class_name => "SalesOpportunityRecord", :foreign_key => "opportunity_id", :dependent => :destroy
   
   
-    validates_presence_of :contact_id, :status_id
+    validates_presence_of :status_id
+    
+    validates_presence_of :contact_id, :message => "请输入 客户"
   
     validates_length_of :title, :maximum => 50, :message => "标题 超过长度限制", :allow_nil => true
   

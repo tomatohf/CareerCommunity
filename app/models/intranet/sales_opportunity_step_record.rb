@@ -5,6 +5,8 @@ module Intranet
   
   
     validates_presence_of :opportunity_id, :step_id
+    
+    validates_length_of :notes, :maximum => 1000, :message => "备注 超过长度限制", :allow_nil => true
   
   
     def get_record(opportunity_id, step_id)

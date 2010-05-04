@@ -1207,6 +1207,7 @@ ActiveRecord::Schema.define(:version => 70) do
   end
 
   add_index "sales_contacts", ["account_id", "created_at"], :name => "index_sales_contacts_on_account_id_and_created_at"
+  add_index "sales_contacts", ["name"], :name => "index_sales_contacts_on_name"
 
   create_table "sales_opportunities", :force => true do |t|
     t.datetime "created_at"
@@ -1235,18 +1236,19 @@ ActiveRecord::Schema.define(:version => 70) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "opportunity_id"
-    t.integer  "step_id",        :limit => 2
     t.datetime "occur_at"
     t.string   "notes",          :limit => 1000
     t.boolean  "delta"
   end
 
-  add_index "sales_opportunity_records", ["opportunity_id", "step_id", "occur_at"], :name => "index_sales_opportunity_records_on_opportunity_step_occur"
+  add_index "sales_opportunity_records", ["opportunity_id", "occur_at"], :name => "index_sales_opportunity_records_on_opportunity_occur"
 
   create_table "sales_opportunity_step_records", :force => true do |t|
     t.datetime "updated_at"
     t.integer  "opportunity_id"
     t.integer  "step_id",        :limit => 2
+    t.boolean  "done",                           :default => false
+    t.string   "notes",          :limit => 1000
     t.boolean  "delta"
   end
 
@@ -1256,7 +1258,7 @@ ActiveRecord::Schema.define(:version => 70) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "opportunity_id"
-    t.boolean  "done"
+    t.boolean  "done",                           :default => false
     t.datetime "due_at"
     t.string   "desc",           :limit => 1000
     t.boolean  "delta"

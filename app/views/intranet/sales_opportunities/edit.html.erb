@@ -1,0 +1,29 @@
+<%
+	page_title = "修改销售机会"
+	community_page_title(page_title)
+%>
+
+<div class="job_item_container">
+	<a class="float_r" href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>">
+		返回销售机会</a>
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow">
+
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @opportunity.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@opportunity) %>
+			</p>
+		<% end %>
+
+		<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}", :method => :put do %>
+			<%= render :partial => "opportunity_form", :locals => {:submit_label => "修改"} %>
+		<% end %>
+		
+	</div>
+	
+</div>
