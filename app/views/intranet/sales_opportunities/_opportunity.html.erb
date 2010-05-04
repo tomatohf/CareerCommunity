@@ -1,4 +1,4 @@
-<tr<%= %Q! class="even"! if opportunity_counter.even? %>>
+<tr>
 	<td style="font-size: 13px; color: #888888;">
 		<% opportunity_title = h(opportunity.title) %>
 		
@@ -20,8 +20,10 @@
 			step_record = opportunity.step_records.detect { |record| record.step_id == step[:id] }
 			done = step_record && step_record.done
 		%>
-		<td>
-			
+		<td align="center">
+			<div class="sales_opportunity_step<%= "_done" if done %>">
+				
+			</div>
 		</td>
 	<% end %>
 	
