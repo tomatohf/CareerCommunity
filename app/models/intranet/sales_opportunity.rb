@@ -8,6 +8,7 @@ module Intranet
   
     has_many :step_records, :class_name => "SalesOpportunityStepRecord", :foreign_key => "opportunity_id", :dependent => :destroy
     has_many :records, :class_name => "SalesOpportunityRecord", :foreign_key => "opportunity_id", :dependent => :destroy
+    has_many :attachments, :class_name => "SalesOpportunityAttachment", :foreign_key => "opportunity_id", :dependent => :destroy
   
   
     validates_presence_of :status_id

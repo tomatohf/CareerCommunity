@@ -1,0 +1,30 @@
+<div style="margin: 6px;">
+	<div style="color: #888888;">
+		<span class="float_r">
+			<a title="删除记录" href="#" onclick="delete_record(<%= record.id %>); return false;" class="account_nick_link">
+				删除</a>
+				
+			<a title="修改记录" href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/edit_record?record_id=<%= record.id %>" class="account_nick_link" style="margin: 0px 10px;">
+				修改</a>
+		</span>
+		
+		<%= format_datetime(record.occur_at) %>
+		的记录:
+	</div>
+	
+	<div style="padding: 0px 15px;">
+		<%=
+			simple_format(
+				auto_link(
+					h(record.notes),
+					:urls,
+					:target => "_blank"
+				)
+			)
+		%>
+	</div>
+		
+	<div style="padding: 0px 30px;">
+		<%= thin_hr %>
+	</div>
+</div>

@@ -37,3 +37,11 @@ function delete_attachment(attachment_id) {
 		$("#delete_attachment_form").submit();
 	}
 }
+
+
+function delete_record(record_id) {
+	if(confirm("确定要删除这条记录么 ?")) {
+		$("#record_id").val(record_id);
+		$("#delete_record_form").submit();
+	}
+}

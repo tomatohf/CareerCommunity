@@ -28,13 +28,20 @@
 	<% end %>
 	
 	
-	<td>
-		
+	<td align="center">
+		<% if latest_record = @latest_records.detect { |record| record.opportunity_id == opportunity.id } %>
+			<span title="<%= h(latest_record.notes) %>"><%= format_date(latest_record.occur_at) %></span>
+		<% else %>
+			<span class="form_info_s">无记录</span>
+		<% end %>
 	</td>
 	
 	
-	<td>
-	
+	<td align="center">
+		<% attachment_count = opportunity.attachments.size %>
+		<% if attachment_count > 0 %>
+			<img src="/images/attachment_icon.gif" alt="<%= attachment_count %>个附件" title="<%= attachment_count %>个附件" border="0" />
+		<% end %>
 	</td>
 	
 	

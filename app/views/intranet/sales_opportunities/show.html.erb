@@ -28,10 +28,11 @@
 		<thead>
 			<tr>
 				<td></td>
+				<% step_width = 80 %>
 				<% Intranet::SalesOpportunityStep.data.each do |step| %>
-					<td style="width: 60px;" align="center"><%= step[:label] %></td>
+					<td style="width: <%= step_width %>px;" align="center"><%= step[:label] %></td>
 				<% end %>
-				<td align="right">附件</td>
+				<td style="width: 100px;"></td>
 			</tr>
 		</thead>
 
@@ -48,15 +49,13 @@
 						done = step_record && step_record.done
 					%>
 					<td align="center">
-						<div id="sales_opportunity_step_<%= @opportunity.id %>_<%= step[:id] %>" class="sales_opportunity_step<%= "_done" if done %>" style="width: 60px;">
+						<div id="sales_opportunity_step_<%= @opportunity.id %>_<%= step[:id] %>" class="sales_opportunity_step<%= "_done" if done %>" style="width: <%= step_width %>px;">
 
 						</div>
 					</td>
 				<% end %>
 				
-				<td>
-					
-				</td>
+				<td></td>
 			</tr>
 		</tbody>
 	</table>
@@ -65,14 +64,14 @@
 		<tr>
 			<td style="width: 60%;">
 				<div class="community_title">
-					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_attachment" class="float_r" style="font-size: 12px; margin: 0px 10px;">
-						添加附件</a>
-					
 					有
 					<b>
 						<%= @attachments.size %>
 					</b>
 					个附件 ...
+					
+					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_attachment" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
+						添加附件</a>
 				</div>
 				<div class="community_block">
 					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_attachment", :method => :post, :id => "delete_attachment_form" do %>
@@ -84,21 +83,21 @@
 				
 				
 				<div class="community_title">
-					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_record" class="float_r" style="font-size: 12px; margin: 0px 10px;">
-						添加记录</a>
-					
 					有
 					<b>
 						<%= @records.size %>
 					</b>
 					条记录 ...
+					
+					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_record" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
+						添加记录</a>
 				</div>
 				<div class="community_block">
 					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_record", :method => :post, :id => "delete_record_form" do %>
 						<input type="hidden" id="record_id" name="record_id" value="" />
 					<% end %>
 					
-					<%= render :partial => "record", :collection => @record %>
+					<%= render :partial => "record", :collection => @records %>
 				</div>
 			</td>
 

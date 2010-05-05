@@ -7,7 +7,8 @@
 		</td>
 
 		<td>
-			<input type="text" name="occur_at" id="occur_at" class="text_field" size="30" value="<%= h(@record.occur_at) %>" />
+			<% occur_at = @record.occur_at || DateTime.now %>
+			<input type="text" name="occur_at" id="occur_at" class="text_field" size="20" value="<%= format_datetime(occur_at) %>" />
 		</td>
 	</tr>
 	

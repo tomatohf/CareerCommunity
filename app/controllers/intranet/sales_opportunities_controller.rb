@@ -30,7 +30,13 @@ module Intranet
           @employee[:account_id],
           @status[:id]
         ],
-        :include => [:contact, :step_records]
+        :include => [:contact, :step_records, :attachments]
+      )
+      
+      @latest_records = SalesOpportunityRecord.find(
+        :all,
+        :joins => "LEFT JOIN sales_opportunity_records records ON sales_opportunity_records.opportunity_id = records.opportunity_id AND sales_opportunity_records.occur_at < records.occur_at",
+        :conditions => ["records.occur_at IS NULL and sales_opportunity_records.opportunity_id in (?)", @opportunities]
       )
     end
     
@@ -165,19 +171,40 @@ module Intranet
     end
     
     def create_record
-      @attachment = SalesOpportunityAttachment.new(
-        :opportunity_id => @opportunity.id,
-        :desc => params[:attachment_desc] && params[:attachment_desc].strip
-      )
-      @attachment.attachment = params[:attachment_file]
+      @record = SalesOpportunityRecord.new(:opportunity_id => @opportunity.id)
+      @record.occur_at = params[:occur_at]
+      @record.notes = params[:notes] && params[:notes].strip
 
-      if @attachment.save
+      if @record.save
         return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
       else
         flash.now[:error_msg] = "操作失败, 再试一次吧"
       end
 
-      render :action => "new_attachment"
+      render :action => "new_record"
+    end
+    
+    def edit_record
+      
+    end
+    
+    def update_record
+      @record.occur_at = params[:occur_at]
+      @record.notes = params[:notes] && params[:notes].strip
+
+      if @record.save
+        return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+      else
+        flash.now[:error_msg] = "操作失败, 再试一次吧"
+      end
+
+      render :action => "edit_record"
+    end
+    
+    def delete_record
+      @record.destroy
+      
+      jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
     end
   
   
