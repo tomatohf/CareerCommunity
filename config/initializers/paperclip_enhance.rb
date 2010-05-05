@@ -17,6 +17,18 @@ module Paperclip
       attachment.instance.created_at.mday
     end
     
+    def updated_year(attachment, style)
+      attachment.instance.updated_at.year
+    end
+    
+    def updated_month(attachment, style)
+      attachment.instance.updated_at.month
+    end
+    
+    def updated_mday(attachment, style)
+      attachment.instance.updated_at.mday
+    end
+    
     def extension(attachment, style)
       ext_name = ((style = attachment.styles[style]) && style[:format]) ||
         File.extname(attachment.original_filename).gsub(/^\.+/, "")

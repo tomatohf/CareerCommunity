@@ -1,0 +1,47 @@
+<%
+	page_title = "添加销售机会记录"
+	community_page_title(page_title)
+%>
+
+<div class="float_r">
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 125px;" do %>
+		<div class="action_bar">
+			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>">
+				返回销售机会</a>
+		</div>
+	<% end %>
+</div>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow" style="font-size: 14px;">
+		客户<%= h(@contact.name) %>的销售机会
+		-
+		<%= h(@opportunity.title) %>
+	</div>
+	
+	
+	<div class="community_block_narrow">
+		<% if flash[:error_msg] %>
+			<p class="error_msg"><%= flash[:error_msg] %></p>
+		<% end %>
+		<% if @record.errors.size > 0 %>
+			<p class="error_msg">
+				<%= list_model_validate_errors(@record) %>
+			</p>
+		<% end %>
+		<% if flash[:message] %>
+		    <p class="info_msg"><%= flash[:message] %></p>
+		<% end %>
+	</div>
+	
+	<br />
+	
+	<div class="community_block">
+		<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/create_record", :method => :post do %>
+			<%= render :partial => "record_form", :locals => {:submit_label => "添加"} %>
+		<% end %>
+	</div>
+</div>

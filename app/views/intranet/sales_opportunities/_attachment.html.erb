@@ -1,0 +1,14 @@
+<div class="post_attachment">
+	<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/attachment?attachment_id=<%= attachment.id %>" title="<%= h(attachment.desc) %>" class="account_nick_link">
+		<img src="<%= get_content_type_icon(attachment.attachment_content_type, attachment.attachment_file_name) %>" border="0" style="margin: 0px 2px -3px 0px;" />
+		<%= attachment.attachment_file_name %></a>
+		
+	<span class="form_info_s" style="margin: 0px 5px;">
+		(<%= format("%.1f", attachment.attachment_file_size.to_f / 1024) %> K)
+		&nbsp;
+		(<%= format_datetime(attachment.updated_at) %>)
+	</span>
+	
+	<a title="删除附件" href="#" onclick="delete_attachment(<%= attachment.id %>); return false;" class="account_nick_link">
+		删除</a>
+</div>

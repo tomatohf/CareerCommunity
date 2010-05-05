@@ -1,0 +1,36 @@
+<table border="0" cellspacing="5" cellpadding="5">
+	<tr>
+		<td style="width: 120px;">
+			<label for="occur_at">
+				时间(<span style="color: red;">*</span>)
+			</label>
+		</td>
+
+		<td>
+			<input type="text" name="occur_at" id="occur_at" class="text_field" size="30" value="<%= h(@record.occur_at) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td valign="top">
+			<label for="notes">
+				内容(<span style="color: red;">*</span>)
+			</label>
+		</td>
+		
+		<td>
+			<textarea id="notes" name="notes" class="text_field" cols="50" rows="8"><%= h(@record.notes) %></textarea>
+		</td>
+	</tr>
+	
+
+	<tr>
+		<td>
+
+		</td>
+
+		<td>
+			<%= submit_tag submit_label, :class => "button", :disabled => @account_limited %>
+		</td>
+	</tr>
+</table>

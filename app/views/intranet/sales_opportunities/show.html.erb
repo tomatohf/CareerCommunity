@@ -5,7 +5,7 @@
 %>
 
 <div class="float_r">
-	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 350px;" do %>
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 260px;" do %>
 		<div class="action_bar">
 			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/edit">
 				修改销售机会</a>
@@ -61,15 +61,50 @@
 		</tbody>
 	</table>
 	
-	<br />
-	
-	<table border="1" cellspacing="0" cellpadding="0" class="main_part_w">
+	<table border="0" cellspacing="0" cellpadding="0" class="main_part_w">
 		<tr>
-			<td style="width: 50%;">
+			<td style="width: 60%;">
+				<div class="community_title">
+					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_attachment" class="float_r" style="font-size: 12px; margin: 0px 10px;">
+						添加附件</a>
+					
+					有
+					<b>
+						<%= @attachments.size %>
+					</b>
+					个附件 ...
+				</div>
+				<div class="community_block">
+					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_attachment", :method => :post, :id => "delete_attachment_form" do %>
+						<input type="hidden" id="attachment_id" name="attachment_id" value="" />
+					<% end %>
+					
+					<%= render :partial => "attachment", :collection => @attachments %>
+				</div>
 				
+				
+				<div class="community_title">
+					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_record" class="float_r" style="font-size: 12px; margin: 0px 10px;">
+						添加记录</a>
+					
+					有
+					<b>
+						<%= @records.size %>
+					</b>
+					条记录 ...
+				</div>
+				<div class="community_block">
+					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_record", :method => :post, :id => "delete_record_form" do %>
+						<input type="hidden" id="record_id" name="record_id" value="" />
+					<% end %>
+					
+					<%= render :partial => "record", :collection => @record %>
+				</div>
 			</td>
 
-			<td></td>
+			<td>
+				
+			</td>
 		</tr>
 	</table>
 	

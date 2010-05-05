@@ -695,7 +695,18 @@ ActionController::Routing::Routes.draw do |map|
         :fail => :get,
         :success => :get
       }, :member => {
-        :update_step_done => :post
+        :update_step_done => :post,
+        
+        :new_attachment => :get,
+        :create_attachment => :post,
+        :attachment => :get,
+        :delete_attachment => :post,
+        
+        :new_record => :get,
+        :create_record => :post,
+        :edit_record => :get,
+        :update_record => :post,
+        :delete_record => :post
       }
     end
   end

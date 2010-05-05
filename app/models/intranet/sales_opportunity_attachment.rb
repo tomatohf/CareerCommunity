@@ -7,7 +7,7 @@ module Intranet
     # paperclip
     has_attached_file :attachment,
       :url => "",
-      :path => ":rails_root/files/sales_opportunity_attachments/:created_year/:created_month/:created_mday/:id/:basename.:extension",
+      :path => ":rails_root/files/sales_opportunity_attachments/:updated_year/:updated_month/:updated_mday/:id/:basename.:extension",
       :default_url => "",
       :storage => :filesystem,
       :whiny_thumbnails => false # to avoid displaying internal errors

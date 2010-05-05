@@ -18,7 +18,6 @@ function update_step_done(opportunity_id, step_id, done) {
 }
 
 
-
 $(document).ready(
 	function() {
 		$("[class^='sales_opportunity_step']").unbind("click").click(
@@ -30,3 +29,11 @@ $(document).ready(
 		);
 	}
 );
+
+
+function delete_attachment(attachment_id) {
+	if(confirm("确定要删除这个附件么 ?")) {
+		$("#attachment_id").val(attachment_id);
+		$("#delete_attachment_form").submit();
+	}
+}
