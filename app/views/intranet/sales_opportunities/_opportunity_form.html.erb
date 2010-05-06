@@ -2,7 +2,7 @@
 	<tr>
 		<td style="width: 120px;">
 			<label for="contact">
-				客户的姓名(<span style="color: red;">*</span>)
+				客户姓名(<span style="color: red;">*</span>)
 			</label>
 		</td>
 		
@@ -14,7 +14,7 @@
 	<tr>
 		<td>
 			<label for="title">
-				机会的标题
+				标题
 			</label>
 		</td>
 		
@@ -22,6 +22,26 @@
 			<input type="text" id="title" name="title" class="text_field" size="30" value="<%= h(@opportunity.title) %>" />
 		</td>
 	</tr>
+	
+	<% if action_name == "edit" %>
+		<tr>
+			<td>
+				<label for="status">
+					状态
+				</label>
+			</td>
+
+			<td>
+				<select id="status" name="status" class="dropdown_list">
+					<% Intranet::SalesOpportunityStatus.data.each do |status| %>
+						<option value="<%= status[:id] %>"<%= %Q! selected="selected"! if status[:id] == @opportunity.status_id %>>
+							<%= status[:label] %>
+						</option>
+					<% end %>
+				</select>
+			</td>
+		</tr>
+	<% end %>
 	
 	<tr>
 		<td>

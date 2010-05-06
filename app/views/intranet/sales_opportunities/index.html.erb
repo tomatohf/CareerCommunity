@@ -38,9 +38,9 @@
 				</td>
 				
 				<td align="right" style="width: 150px;">
-					<select id="" class="dropdown_list">
+					<select id="status_switcher" class="dropdown_list" style="font-size: 13px;">
 						<% Intranet::SalesOpportunityStatus.data.each do |status| %>
-							<option value="<%= status[:name] == "ongoing" ? "" : status[:name] %>"<%= %Q! selected="selected"! if status[:id] == @status[:id] %>>
+							<option value="<%= status[:name] == "ongoing" ? "" : "/#{status[:name]}" %>"<%= %Q! selected="selected"! if status[:id] == @status[:id] %>>
 								<%= status[:label] %>的销售机会
 							</option>
 						<% end %>

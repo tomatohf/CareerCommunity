@@ -1,7 +1,7 @@
 module Intranet
   class SalesOpportunitiesController < ApplicationController
     
-    Opportunity_Page_Size = 20
+    Opportunity_Page_Size = 50
     
   
     layout "community"
@@ -33,30 +33,35 @@ module Intranet
         :include => [:contact, :step_records, :attachments]
       )
       
-      @latest_records = SalesOpportunityRecord.find(
-        :all,
-        # :from => "sales_opportunity_records FORCE INDEX (index_sales_opportunity_records_on_opportunity_occur)",
-        :joins => "LEFT JOIN sales_opportunity_records records ON records.opportunity_id = sales_opportunity_records.opportunity_id AND records.occur_at > sales_opportunity_records.occur_at",
-        :conditions => ["records.occur_at IS NULL and sales_opportunity_records.opportunity_id in (?)", @opportunities]
+      prepare_latest_records
+    end
+    
+    def success
+      @status ||= SalesOpportunityStatus.find_by(:name, "success")
+      
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      @opportunities = SalesOpportunity.paginate(
+        :page => page,
+        :per_page => Opportunity_Page_Size,
+        :joins => "INNER JOIN sales_contacts ON sales_contacts.id = sales_opportunities.contact_id",
+        :conditions => [
+          "sales_contacts.account_id = ? and sales_opportunities.status_id = ?",
+          @employee[:account_id],
+          @status[:id]
+        ],
+        :include => [:contact, :step_records, :attachments]
       )
+      
+      prepare_latest_records
+      
+      render :action => "index"
     end
     
     def fail
       @status = SalesOpportunityStatus.find_by(:name, "fail")
       
-      page = params[:page]
-      page = 1 unless page =~ /\d+/
-      
-      @opportunities = SalesOpportunity.paginate(
-        :page => page,
-        :per_page => Opportunity_Page_Size,
-        :conditions => ["status_id = ?", @employee[:account_id]],
-        :order => "created_at DESC"
-      )
-    end
-    
-    def success
-      @status = SalesOpportunityStatus.find_by(:name, "success")
+      success
     end
     
     
@@ -81,6 +86,9 @@ module Intranet
     end
     
     def update
+      status = SalesOpportunityStatus.find(params[:status].to_i)
+      @opportunity.status_id = status[:id] if status
+      
       if save_opportunity
         return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
       end
@@ -250,6 +258,15 @@ module Intranet
       end
       
       false
+    end
+    
+    def prepare_latest_records
+      @latest_records = SalesOpportunityRecord.find(
+        :all,
+        # :from => "sales_opportunity_records FORCE INDEX (index_sales_opportunity_records_on_opportunity_occur)",
+        :joins => "LEFT JOIN sales_opportunity_records records ON records.opportunity_id = sales_opportunity_records.opportunity_id AND records.occur_at > sales_opportunity_records.occur_at",
+        :conditions => ["records.occur_at IS NULL and sales_opportunity_records.opportunity_id in (?)", @opportunities]
+      )
     end
   
   end

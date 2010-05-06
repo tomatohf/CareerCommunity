@@ -18,8 +18,20 @@ function update_step_done(opportunity_id, step_id, done) {
 }
 
 
+function setup_status_switcher() {
+	$("select#status_switcher").unbind("change").change(
+		function() {
+			window.location.href = "/intranet/employees/" + ACCOUNT_ID + "/sales_opportunities" + $(this).val();
+		}
+	);
+}
+
+
 $(document).ready(
 	function() {
+		setup_status_switcher();
+		
+		
 		$("[class^='sales_opportunity_step']").unbind("click").click(
 			function() {
 				var ids = $(this).attr("id").substr("sales_opportunity_step_".length).split("_");

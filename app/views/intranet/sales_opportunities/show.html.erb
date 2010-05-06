@@ -2,6 +2,8 @@
 	contact_name = h(@contact.name)
 	page_title = "客户 #{contact_name} 的销售机会"
 	community_page_title(page_title)
+	
+	status = Intranet::SalesOpportunityStatus.find(@opportunity.status_id)
 %>
 
 <div class="float_r">
@@ -10,7 +12,7 @@
 			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/edit">
 				修改销售机会</a>
 			|
-			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities">
+			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities<%= "/#{status[:name]}" unless status[:name] == "ongoing" %>">
 				返回销售机会列表</a>
 		</div>
 	<% end %>
@@ -32,7 +34,7 @@
 				<% Intranet::SalesOpportunityStep.data.each do |step| %>
 					<td style="width: <%= step_width %>px;" align="center"><%= step[:label] %></td>
 				<% end %>
-				<td style="width: 100px;"></td>
+				<td align="right" style="width: 115px;">状态</td>
 			</tr>
 		</thead>
 
@@ -55,7 +57,9 @@
 					</td>
 				<% end %>
 				
-				<td></td>
+				<td align="right">
+					<%= status[:label] %>
+				</td>
 			</tr>
 		</tbody>
 	</table>
