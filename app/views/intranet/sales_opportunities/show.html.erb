@@ -66,26 +66,7 @@
 	
 	<table border="0" cellspacing="0" cellpadding="0" class="main_part_w">
 		<tr>
-			<td style="width: 60%;">
-				<div class="community_title">
-					有
-					<b>
-						<%= @attachments.size %>
-					</b>
-					个附件 ...
-					
-					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_attachment" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
-						添加附件</a>
-				</div>
-				<div class="community_block">
-					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_attachment", :method => :post, :id => "delete_attachment_form" do %>
-						<input type="hidden" id="attachment_id" name="attachment_id" value="" />
-					<% end %>
-					
-					<%= render :partial => "attachment", :collection => @attachments %>
-				</div>
-				
-				
+			<td valign="top" style="width: 60%;">
 				<div class="community_title">
 					有
 					<b>
@@ -105,8 +86,49 @@
 				</div>
 			</td>
 
-			<td>
+			<td valign="top">
+				<div class="community_title">
+					有
+					<b>
+						<%= @todos.size %>
+					</b>
+					条待办事项 ...
+					
+					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_todo" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
+						添加事项</a>
+					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/done_todos" class="account_nick_link" style="font-size: 12px;">
+						已完成的事项</a>
+				</div>
+				<div class="community_block">
+					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_todo", :method => :post, :id => "delete_todo_form" do %>
+						<input type="hidden" id="delete_todo_id" name="todo_id" value="" />
+					<% end %>
+					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/update_todo_done", :method => :post, :id => "update_todo_done_form" do %>
+						<input type="hidden" id="update_todo_id" name="todo_id" value="" />
+						<input type="hidden" id="update_todo_done" name="done" value="" />
+					<% end %>
+					
+					<%= render :partial => "todo", :collection => @todos %>
+				</div>
 				
+				
+				<div class="community_title">
+					有
+					<b>
+						<%= @attachments.size %>
+					</b>
+					个附件 ...
+					
+					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_attachment" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
+						添加附件</a>
+				</div>
+				<div class="community_block">
+					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_attachment", :method => :post, :id => "delete_attachment_form" do %>
+						<input type="hidden" id="attachment_id" name="attachment_id" value="" />
+					<% end %>
+					
+					<%= render :partial => "attachment", :collection => @attachments %>
+				</div>
 			</td>
 		</tr>
 	</table>

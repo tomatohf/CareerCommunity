@@ -2,6 +2,7 @@ module Intranet
   class SalesOpportunitiesController < ApplicationController
     
     Opportunity_Page_Size = 50
+    Todo_Page_Size = 100
     
   
     layout "community"
@@ -10,12 +11,15 @@ module Intranet
     before_filter :check_employee
     before_filter :check_limited, :only => [:create, :update, :update_step_done,
                                             :create_attachment, :delete_attachment,
-                                            :create_record, :update_record, :delete_record]
+                                            :create_record, :update_record, :delete_record,
+                                            :create_todo, :update_todo, :delete_todo,
+                                            :update_todo_done]
     
     before_filter :check_opportunity, :except => [:index, :fail, :success,
                                                   :new, :create]
     before_filter :check_attachment, :only => [:attachment, :delete_attachment]
     before_filter :check_record, :only => [:edit_record, :update_record, :delete_record]
+    before_filter :check_todo, :only => [:edit_todo, :update_todo, :delete_todo, :update_todo_done]
   
   
   
@@ -30,7 +34,7 @@ module Intranet
           @employee[:account_id],
           @status[:id]
         ],
-        :include => [:contact, :step_records, :attachments]
+        :include => [:contact, :step_records, :attachments, :todos]
       )
       
       prepare_latest_records
@@ -50,7 +54,7 @@ module Intranet
           @employee[:account_id],
           @status[:id]
         ],
-        :include => [:contact, :step_records, :attachments]
+        :include => [:contact, :step_records, :attachments, :todos]
       )
       
       prepare_latest_records
@@ -110,19 +114,25 @@ module Intranet
     def show
       @step_records = SalesOpportunityStepRecord.find(
         :all,
-        :conditions => ["opportunity_id = ?", @opportunity]
+        :conditions => ["opportunity_id = ?", @opportunity.id]
       )
       
       @attachments = SalesOpportunityAttachment.find(
         :all,
-        :conditions => ["opportunity_id = ?", @opportunity],
+        :conditions => ["opportunity_id = ?", @opportunity.id],
         :order => "updated_at DESC"
       )
       
       @records = SalesOpportunityRecord.find(
         :all,
-        :conditions => ["opportunity_id = ?", @opportunity],
+        :conditions => ["opportunity_id = ?", @opportunity.id],
         :order => "occur_at DESC"
+      )
+      
+      @todos = SalesOpportunityTodo.find(
+        :all,
+        :conditions => ["opportunity_id = ? and done = ?", @opportunity.id, false],
+        :order => "created_at DESC"
       )
     end
     
@@ -215,6 +225,70 @@ module Intranet
       
       jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
     end
+    
+    
+    def new_todo
+      @todo = SalesOpportunityTodo.new
+    end
+    
+    def create_todo
+      @todo = SalesOpportunityTodo.new(:opportunity_id => @opportunity.id)
+      @todo.title = params[:title] && params[:title].strip
+
+      if @todo.save
+        return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+      else
+        flash.now[:error_msg] = "操作失败, 再试一次吧"
+      end
+
+      render :action => "new_todo"
+    end
+    
+    def edit_todo
+      
+    end
+    
+    def update_todo
+      @todo.title = params[:title] && params[:title].strip
+
+      if @todo.save
+        return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+      else
+        flash.now[:error_msg] = "操作失败, 再试一次吧"
+      end
+
+      render :action => "edit_todo"
+    end
+    
+    def delete_todo
+      @todo.destroy
+      
+      jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+    end
+    
+    def update_todo_done
+      @todo.done = (params[:done] == "true")
+      
+      @todo.save
+      
+      if @todo.done
+        jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+      else
+        jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+      end
+    end
+    
+    def done_todos
+      page = params[:page]
+      page = 1 unless page =~ /\d+/
+      
+      @todos = SalesOpportunityTodo.paginate(
+        :page => page,
+        :per_page => Todo_Page_Size,
+        :conditions => ["opportunity_id = ? and done = ?", @opportunity.id, true],
+        :order => "created_at DESC"
+      )
+    end
   
   
   
@@ -235,6 +309,11 @@ module Intranet
     def check_record
       @record = SalesOpportunityRecord.find(params[:record_id])
       jump_to("/errors/unauthorized") unless @record.opportunity_id == @opportunity.id
+    end
+    
+    def check_todo
+      @todo = SalesOpportunityTodo.find(params[:todo_id])
+      jump_to("/errors/unauthorized") unless @todo.opportunity_id == @opportunity.id
     end
   
     def save_opportunity

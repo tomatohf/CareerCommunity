@@ -130,15 +130,14 @@ class CreateSales < ActiveRecord::Migration
       t.column :opportunity_id, :integer
       t.column :done, :boolean, :default => false
       
-      t.column :due_at, :datetime
-      t.column :desc, :string, :limit => 1000
+      t.column :title, :string, :limit => 100
       
       
       # enable sphinx delta index
       t.column :delta, :boolean
     end
-    add_index :sales_opportunity_todos, [:opportunity_id, :done, :due_at],
-              :name => :index_sales_opportunity_todos_on_opportunity_done_due
+    add_index :sales_opportunity_todos, [:opportunity_id, :done, :created_at],
+              :name => :index_sales_opportunity_todos_on_opportunity_done_created
     # reserve first 1000 ID
     ActiveRecord::Base.connection.execute("INSERT INTO sales_opportunity_todos (id) VALUES (1000)")
     ActiveRecord::Base.connection.execute("DELETE FROM sales_opportunity_todos WHERE id = 1000")

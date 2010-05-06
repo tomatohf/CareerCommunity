@@ -2104,3 +2104,8 @@ a.order_by_selected {
 .sales_opportunity_step_done {
 	background: #FFF5E8 url(/images/index/goal_icon.gif) no-repeat scroll center;
 }
+
+.sales_opportunity_todo {
+	background: transparent url(/images/job_targets/remind_small.gif) no-repeat scroll left center;
+	padding: 3px 3px 2px 22px;
+}

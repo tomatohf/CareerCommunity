@@ -1,0 +1,36 @@
+<table border="0" cellspacing="5" cellpadding="5">
+	<tr>
+		<td style="width: 80px;">
+			<label for="title">
+				事项(<span style="color: red;">*</span>)
+			</label>
+		</td>
+
+		<td>
+			<input type="text" name="title" id="title" class="text_field" size="60" value="<%= h(@todo.title) %>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			
+		</td>
+		
+		<td>
+			<div class="form_info_l">
+				100 字以内
+			</div>
+		</td>
+	</tr>
+	
+
+	<tr>
+		<td>
+
+		</td>
+
+		<td>
+			<%= submit_tag submit_label, :class => "button", :disabled => @account_limited %>
+		</td>
+	</tr>
+</table>

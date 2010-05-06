@@ -1258,13 +1258,12 @@ ActiveRecord::Schema.define(:version => 70) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "opportunity_id"
-    t.boolean  "done",                           :default => false
-    t.datetime "due_at"
-    t.string   "desc",           :limit => 1000
+    t.boolean  "done",                          :default => false
+    t.string   "title",          :limit => 100
     t.boolean  "delta"
   end
 
-  add_index "sales_opportunity_todos", ["opportunity_id", "done", "due_at"], :name => "index_sales_opportunity_todos_on_opportunity_done_due"
+  add_index "sales_opportunity_todos", ["opportunity_id", "done", "created_at"], :name => "index_sales_opportunity_todos_on_opportunity_done_created"
 
   create_table "sent_messages", :force => true do |t|
     t.datetime "created_at"

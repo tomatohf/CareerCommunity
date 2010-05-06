@@ -57,3 +57,22 @@ function delete_record(record_id) {
 		$("#delete_record_form").submit();
 	}
 }
+
+
+function delete_todo(todo_id) {
+	if(confirm("确定要删除这条事项么 ?")) {
+		$("#delete_todo_id").val(todo_id);
+		$("#delete_todo_form").submit();
+	}
+}
+
+
+function update_todo_done(todo_id, done) {
+	var label = "未完成";
+	if(done) { label = "已完成"; }
+	if(confirm("确定要将这条事项标记为" + label + "么 ?")) {
+		$("#update_todo_id").val(todo_id);
+		$("#update_todo_done").val(done);
+		$("#update_todo_done_form").submit();
+	}
+}

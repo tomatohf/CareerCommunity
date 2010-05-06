@@ -1,0 +1,59 @@
+<%
+	page_title = "销售机会已完成的待办事项"
+	community_page_title(page_title)
+%>
+
+<div class="float_r">
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 125px;" do %>
+		<div class="action_bar">
+			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>">
+				返回销售机会</a>
+		</div>
+	<% end %>
+</div>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow" style="font-size: 14px;">
+		客户<%= h(@contact.name) %>的销售机会
+		-
+		<%= h(@opportunity.title) %>
+	</div>
+	
+	
+	<br />
+	
+	<div class="community_block_narrow">
+		<div class="community_block">
+			<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_todo", :method => :post, :id => "delete_todo_form" do %>
+				<input type="hidden" id="delete_todo_id" name="todo_id" value="" />
+			<% end %>
+			<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/update_todo_done", :method => :post, :id => "update_todo_done_form" do %>
+				<input type="hidden" id="update_todo_id" name="todo_id" value="" />
+				<input type="hidden" id="update_todo_done" name="done" value="" />
+			<% end %>
+			
+			<%= render :partial => "todo", :collection => @todos %>
+			
+			<% unless @todos.size > 0 %>
+				<div class="form_info_l">
+					还没有已完成的待办事项 ...
+				</div>
+			<% end %>
+		</div>
+		
+		<div class="community_block">
+			<%= paging_buttons(@todos) %>
+		</div>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+	var ACCOUNT_ID = <%= @employee[:account_id] %>;
+</script>
+<script type="text/javascript" src="/lib/jquery/jquery-pack.js"></script>
+<script type="text/javascript" src="/javascripts/intranet/sales_opportunity.js"></script>

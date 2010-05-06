@@ -706,7 +706,15 @@ ActionController::Routing::Routes.draw do |map|
         :create_record => :post,
         :edit_record => :get,
         :update_record => :post,
-        :delete_record => :post
+        :delete_record => :post,
+        
+        :new_todo => :get,
+        :create_todo => :post,
+        :edit_todo => :get,
+        :update_todo => :post,
+        :delete_todo => :post,
+        :update_todo_done => :post,
+        :done_todos => :get
       }
     end
   end
