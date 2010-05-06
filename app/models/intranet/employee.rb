@@ -3,8 +3,8 @@ module Intranet
   
     def self.data
       [
-        {:id => 10, :name => "托马托", :account_id => 1001, :manager => true},
-        {:id => 20, :name => "娃哈哈", :account_id => 1002, :manager => false}
+        {:id => 10, :name => "何帆", :account_id => 1001, :manager => false},
+        {:id => 20, :name => "马晓", :account_id => 1002, :manager => true}
       ]
     end
   
