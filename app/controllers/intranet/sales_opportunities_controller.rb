@@ -35,7 +35,8 @@ module Intranet
       
       @latest_records = SalesOpportunityRecord.find(
         :all,
-        :joins => "LEFT JOIN sales_opportunity_records records ON sales_opportunity_records.opportunity_id = records.opportunity_id AND sales_opportunity_records.occur_at < records.occur_at",
+        # :from => "sales_opportunity_records FORCE INDEX (index_sales_opportunity_records_on_opportunity_occur)",
+        :joins => "LEFT JOIN sales_opportunity_records records ON records.opportunity_id = sales_opportunity_records.opportunity_id AND records.occur_at > sales_opportunity_records.occur_at",
         :conditions => ["records.occur_at IS NULL and sales_opportunity_records.opportunity_id in (?)", @opportunities]
       )
     end

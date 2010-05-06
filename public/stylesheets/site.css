@@ -2095,7 +2095,7 @@ a.order_by_selected {
 .sales_opportunity_step, .sales_opportunity_step_done {
 	border: 1px solid #DDDDDD;
 	
-	width: 50px;
+	width: 60px;
 	height: 24px;
 	
 	cursor: pointer;
