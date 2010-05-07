@@ -36,5 +36,5 @@ task :after_update_code do
   
   run "find #{release_path}/public -type d -exec chmod 0755 {} \\;"
   run "find #{release_path}/public -type f -exec chmod 0644 {} \\;"
-  run "chmod 0755 #{release_path}/public/dispatch.*"
+  run "chmod 0755 #{release_path}/public/CareerCommunity.fcgi"
 end
