@@ -22,7 +22,7 @@ module Intranet
       @contacts = SalesContact.paginate(
         :page => page,
         :per_page => Contact_Page_Size,
-        :select => "id, name, gender, company, title, mobile, phone, email, account_id, created_at",
+        :select => "id, name, gender, company, title, mobile, phone, account_id, created_at",
         :conditions => ["account_id = ?", @employee[:account_id]],
         :order => "created_at DESC"
       )
