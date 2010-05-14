@@ -1,13 +1,18 @@
 <%
 	page_title = "客户管理"
+	page_title += " (#{@employee[:name]})" if @manager
 	community_page_title(page_title)
 %>
 
 <div class="float_r">
 	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 250px;" do %>
 		<div class="action_bar">
-			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts/new">
-				添加新的客户</a>
+			<% if @manager %>
+				<span class="form_info_s">添加新的客户</span>
+			<% else %>
+				<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts/new">
+					添加新的客户</a>
+			<% end %>
 			|
 			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities">
 				销售机会管理</a>

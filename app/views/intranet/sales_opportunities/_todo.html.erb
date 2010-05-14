@@ -1,14 +1,16 @@
 <div class="sales_opportunity_todo">
 	<%= h(todo.title) %>
 	
-	<span style="margin-left: 10px; word-spacing: 5px;">
-		<a title="完成事项" href="#" onclick="update_todo_done(<%= todo.id %>, <%= !todo.done %>); return false;" class="account_nick_link">
-			<%= todo.done ? "尚未完成" : "完成" %></a>
+	<% unless @manager %>
+		<span style="margin-left: 10px; word-spacing: 5px;">
+			<a title="完成事项" href="#" onclick="update_todo_done(<%= todo.id %>, <%= !todo.done %>); return false;" class="account_nick_link">
+				<%= todo.done ? "尚未完成" : "完成" %></a>
 
-		<a title="删除事项" href="#" onclick="delete_todo(<%= todo.id %>); return false;" class="account_nick_link">
-			删除</a>
+			<a title="删除事项" href="#" onclick="delete_todo(<%= todo.id %>); return false;" class="account_nick_link">
+				删除</a>
 
-		<a title="修改事项" href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/edit_todo?todo_id=<%= todo.id %>" class="account_nick_link">
-			修改</a>
-	</span>
+			<a title="修改事项" href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/edit_todo?todo_id=<%= todo.id %>" class="account_nick_link">
+				修改</a>
+		</span>
+	<% end %>
 </div>

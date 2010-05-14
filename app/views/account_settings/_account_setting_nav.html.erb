@@ -5,7 +5,8 @@
 
 <% if general_admin?(session[:account_id]) %>
 	<div class="community_block">
-		<a href="/coach/course_applications?closed_filter=unclosed">浏览 报名课程/咨询详情 申请表</a>
+		<a href="/coach/course_applications?closed_filter=unclosed">
+			浏览 报名课程/咨询详情 申请表</a>
 	</div>
 	
 	<div class="community_block_narrow">
@@ -13,10 +14,18 @@
 	</div>
 <% end %>
 
-<% if Intranet::Employee.find_by(:account_id, session[:account_id]) %>
+<% if employee = Intranet::Employee.find_by(:account_id, session[:account_id]) %>
 	<div class="community_block">
-		<a href="/intranet/employees/<%= session[:account_id] %>/sales_opportunities">销售机会管理</a>
+		<a href="/intranet/employees/<%= session[:account_id] %>/sales_opportunities">
+			管理我的销售机会</a>
 	</div>
+	
+	<% if employee[:manager] %>
+		<div class="community_block">
+			<a href="/intranet/employees">
+				查看销售团队</a>
+		</div>
+	<% end %>
 <% end %>
 
 

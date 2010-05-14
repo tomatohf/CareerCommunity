@@ -229,11 +229,16 @@ class ApplicationController < ActionController::Base
   end
   
   def check_employee
-    account_id = params[:employee_id].to_i
-    return jump_to("/errors/unauthorized") unless (session[:account_id] == account_id)
+    @employee = Intranet::Employee.find_by(:account_id, params[:employee_id].to_i)
+    return jump_to("/errors/forbidden") unless @employee
     
-    @employee = Intranet::Employee.find_by(:account_id, account_id)
-    jump_to("/errors/forbidden") unless @employee
+    unless session[:account_id] == @employee[:account_id]
+      if e = Intranet::Employee.find_by(:account_id, session[:account_id])
+        @manager = e[:manager]
+      end
+      
+      jump_to("/errors/unauthorized") unless @manager
+    end
   end
   
   def is_limited?(account_or_limited)

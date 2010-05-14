@@ -20,6 +20,13 @@ module Intranet
     before_filter :check_attachment, :only => [:attachment, :delete_attachment]
     before_filter :check_record, :only => [:edit_record, :update_record, :delete_record]
     before_filter :check_todo, :only => [:edit_todo, :update_todo, :delete_todo, :update_todo_done]
+    
+    before_filter :check_not_manager, :only => [:new, :create, :edit, :update, :update_step_done,
+                                                :new_attachment, :create_attachment, :delete_attachment,
+                                                :new_record, :create_record, :edit_record,
+                                                :update_record, :delete_record,
+                                                :new_todo, :create_todo, :edit_todo,
+                                                :update_todo, :delete_todo, :update_todo_done]
   
   
   
@@ -346,6 +353,10 @@ module Intranet
         :joins => "LEFT JOIN sales_opportunity_records records ON records.opportunity_id = sales_opportunity_records.opportunity_id AND records.occur_at > sales_opportunity_records.occur_at",
         :conditions => ["records.occur_at IS NULL and sales_opportunity_records.opportunity_id in (?)", @opportunities]
       )
+    end
+    
+    def check_not_manager
+      jump_to("/errors/forbidden") if @manager
     end
   
   end

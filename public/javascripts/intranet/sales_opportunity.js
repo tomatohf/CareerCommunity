@@ -31,14 +31,18 @@ $(document).ready(
 	function() {
 		setup_status_switcher();
 		
-		
-		$("[class^='sales_opportunity_step']").unbind("click").click(
-			function() {
-				var ids = $(this).attr("id").substr("sales_opportunity_step_".length).split("_");
+		if(readonly) {
+			$("[class^='sales_opportunity_step']").css("cursor", "auto");
+		}
+		else {
+			$("[class^='sales_opportunity_step']").unbind("click").click(
+				function() {
+					var ids = $(this).attr("id").substr("sales_opportunity_step_".length).split("_");
 				
-				update_step_done(ids[0], ids[1], !$(this).hasClass("sales_opportunity_step_done"));
-			}
-		);
+					update_step_done(ids[0], ids[1], !$(this).hasClass("sales_opportunity_step_done"));
+				}
+			);
+		}
 	}
 );
 

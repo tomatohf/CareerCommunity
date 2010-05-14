@@ -7,12 +7,24 @@
 <div class="float_r">
 	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 350px;" do %>
 		<div class="action_bar">
-			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts/<%= @contact.id %>/edit">
-				修改客户资料</a>
+			<% if @manager %>
+				<span class="form_info_s">修改客户资料</span>
+			<% else %>
+				<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts/<%= @contact.id %>/edit">
+					修改客户资料</a>
+			<% end %>
+			
 			|
-			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/new?contact=<%= @contact.name %>">
-				创建销售机会</a>
+			
+			<% if @manager %>
+				<span class="form_info_s">创建销售机会</span>
+			<% else %>
+				<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/new?contact=<%= @contact.name %>">
+					创建销售机会</a>
+			<% end %>
+			
 			|
+			
 			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts">
 				返回客户列表</a>
 		</div>

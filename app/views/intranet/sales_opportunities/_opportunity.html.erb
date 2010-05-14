@@ -46,9 +46,12 @@
 	
 	
 	<td align="center">
-		<% todo_count = opportunity.todos.size %>
+		<% 
+			todos = opportunity.todos.select { |todo| !todo.done }
+			todo_count = todos.size
+		%>
 		<% if todo_count > 0 %>
-			<img src="/images/job_targets/remind_small.gif" alt="<%= todo_count %>个待办事项" title="<%= todo_count %>个待办事项:<% opportunity.todos.each_with_index do |todo, i| %><%= i+1 %>.<%= h(todo.title) %><% end %>" border="0" />
+			<img src="/images/job_targets/remind_small.gif" alt="<%= todo_count %>个待办事项" title="<%= todo_count %>个待办事项:<% todos.each_with_index do |todo, i| %>(<%= i+1 %>)<%= h(todo.title) %><% end %>" border="0" />
 		<% end %>
 	</td>
 	

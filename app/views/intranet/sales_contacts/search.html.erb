@@ -1,5 +1,6 @@
 <%
 	page_title = "客户搜索结果"
+	page_title += " (#{@employee[:name]})" if @manager
 	community_page_title(page_title)
 %>
 

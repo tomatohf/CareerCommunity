@@ -3,15 +3,14 @@ module Intranet
     
     Contact_Page_Size = 20
     
-    Search_Match_Mode = CommunityController::Search_Match_Mode
-    Search_Sort_Order = "@relevance DESC, created_at DESC"
-    
   
     layout "community"
   
     before_filter :check_login
     before_filter :check_employee
     before_filter :check_limited, :only => [:create, :update]
+    
+    before_filter :check_not_manager, :only => [:new, :create, :edit, :update]
   
   
   
@@ -126,7 +125,9 @@ module Intranet
   
     private
   
-  
+    def check_not_manager
+      jump_to("/errors/forbidden") if @manager
+    end
   
   end
 end

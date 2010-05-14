@@ -9,6 +9,8 @@
 		(<%= format_datetime(attachment.updated_at) %>)
 	</span>
 	
-	<a title="删除附件" href="#" onclick="delete_attachment(<%= attachment.id %>); return false;" class="account_nick_link">
-		删除</a>
+	<% unless @manager %>
+		<a title="删除附件" href="#" onclick="delete_attachment(<%= attachment.id %>); return false;" class="account_nick_link">
+			删除</a>
+	<% end %>
 </div>

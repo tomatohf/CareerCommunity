@@ -35,8 +35,10 @@
 	
 	
 	<td align="right">
-		<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts/<%= contact.id %>/edit" class="account_nick_link">
-			修改</a>
+		<% unless @manager %>
+			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts/<%= contact.id %>/edit" class="account_nick_link">
+				修改</a>
+		<% end %>
 	</td>
 	
 	<td align="right">

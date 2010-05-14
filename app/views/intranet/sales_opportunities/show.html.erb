@@ -1,6 +1,7 @@
 <%
 	contact_name = h(@contact.name)
 	page_title = "客户 #{contact_name} 的销售机会"
+	page_title += " (#{@employee[:name]})" if @manager
 	community_page_title(page_title)
 	
 	status = Intranet::SalesOpportunityStatus.find(@opportunity.status_id)
@@ -9,9 +10,15 @@
 <div class="float_r">
 	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 260px;" do %>
 		<div class="action_bar">
-			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/edit">
-				修改销售机会</a>
+			<% if @manager %>
+				<span class="form_info_s">修改销售机会</span>
+			<% else %>
+				<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/edit">
+					修改销售机会</a>
+			<% end %>
+			
 			|
+			
 			<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities<%= "/#{status[:name]}" unless status[:name] == "ongoing" %>">
 				返回销售机会列表</a>
 		</div>
@@ -74,8 +81,10 @@
 					</b>
 					条记录 ...
 					
-					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_record" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
-						添加记录</a>
+					<% unless @manager %>
+						<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_record" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
+							添加记录</a>
+					<% end %>
 				</div>
 				<div class="community_block">
 					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_record", :method => :post, :id => "delete_record_form" do %>
@@ -94,8 +103,10 @@
 					</b>
 					条待办事项 ...
 					
-					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_todo" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
-						添加事项</a>
+					<% unless @manager %>
+						<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_todo" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
+							添加事项</a>
+					<% end %>
 					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/done_todos" class="account_nick_link" style="font-size: 12px;">
 						已完成的事项</a>
 				</div>
@@ -119,8 +130,10 @@
 					</b>
 					个附件 ...
 					
-					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_attachment" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
-						添加附件</a>
+					<% unless @manager %>
+						<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_attachment" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
+							添加附件</a>
+					<% end %>
 				</div>
 				<div class="community_block">
 					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_attachment", :method => :post, :id => "delete_attachment_form" do %>
@@ -139,6 +152,8 @@
 
 <script type="text/javascript">
 	var ACCOUNT_ID = <%= @employee[:account_id] %>;
+	
+	var readonly = <%= !!@manager %>;
 </script>
 <script type="text/javascript" src="/lib/jquery/jquery-pack.js"></script>
 <script type="text/javascript" src="/javascripts/intranet/sales_opportunity.js"></script>

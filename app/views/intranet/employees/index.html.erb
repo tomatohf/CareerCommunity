@@ -1,0 +1,51 @@
+<%
+	page_title = "销售团队"
+	community_page_title(page_title)
+%>
+
+<div class="float_r">
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 160px;" do %>
+		<div class="action_bar">
+			<a href="/intranet/employees/contacts">
+				查看现有的全部客户</a>
+		</div>
+	<% end %>
+</div>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<table border="0" cellspacing="0" cellpadding="0" class="main_part_w list" style="font-size: 14px;">
+		<thead>
+			<tr>
+				<td style="width: 100px;">姓名</td>
+				<td style="width: 100px;"></td>
+				<td style="width: 150px;"></td>
+				<td>电子邮件</td>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% @employees.each_with_index do |employee, i| %>
+				<tr<%= %Q! class="even"! if i.even? %>>
+					<td><%= employee[:name] %></td>
+					
+					<td>
+						<a href="/intranet/employees/<%= employee[:account_id] %>/sales_contacts" class="account_nick_link">
+							客户列表</a>
+					</td>
+					
+					<td>
+						<a href="/intranet/employees/<%= employee[:account_id] %>/sales_opportunities" class="account_nick_link">
+							销售机会列表</a>
+					</td>
+					
+					<td style="color: #888888;">
+						<%= employee[:email].split("@").first %>@qiaobutang.com
+					</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

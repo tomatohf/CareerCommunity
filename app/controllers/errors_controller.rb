@@ -5,11 +5,11 @@ class ErrorsController < ApplicationController
   end
   
   def forbidden
-    render :status => 403
+    render :layout => true, :status => 403
   end
   
   def unauthorized
-    render :status => 401
+    render :layout => true, :status => 401
   end
   
   # --- to override the default rails error pages: 500.html, 422.html, 404.html
