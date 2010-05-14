@@ -27,6 +27,8 @@ module Intranet
   
     validates_presence_of :name, :message => "请输入 姓名"
     validates_length_of :name, :maximum => 25, :message => "姓名 超过长度限制", :allow_nil => false
+    
+    validates_uniqueness_of :name, :case_sensitive => false, :message => "姓名 已存在"
   
     validates_length_of :company, :maximum => 50, :message => "公司 超过长度限制", :allow_nil => true
     validates_length_of :title, :maximum => 25, :message => "职位 超过长度限制", :allow_nil => true

@@ -38,7 +38,7 @@ module Intranet
         :all,
         :select => "id, name, gender, company, title, mobile, phone, email, account_id, created_at",
         :conditions => ["name like ?", "#{@contact_name}%"]
-      ).select { |contact| contact.account_id = @employee[:account_id] }
+      ).select { |contact| contact.account_id == @employee[:account_id] }
     end
     
     
