@@ -1,0 +1,25 @@
+<%
+	page_title = "全部客户"
+	community_page_title(page_title)
+%>
+
+<div class="float_r">
+	<% round_corner_div :border_color => "#F0E0CF", :bg_color => "#FFF5E8", :style => "width: 150px;" do %>
+		<div class="action_bar">
+			<a href="/intranet/employees">返回查看销售团队</a>
+		</div>
+	<% end %>
+</div>
+
+<div class="job_item_container">
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow form_info_s">
+		共有
+		<b><%= @contacts.total_entries %></b>
+		条客户记录
+	</div>
+	
+	<%= render :partial => "contacts_list" %>
+</div>

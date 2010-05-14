@@ -1,0 +1,45 @@
+<tr<%= %Q! class="even"! if contact_counter.even? %>>
+	<td>
+		<a href="/intranet/employees/<%= contact.account_id %>/sales_contacts/<%= contact.id %>" style="font-size: 13px;" class="account_nick_link">
+			<%= h(contact.name) %></a>
+		<%=
+			case contact.gender
+        		when true
+          			"(男)"
+        		when false
+          			"(女)"
+        		else
+          			nil
+      		end
+		%>
+	</td>
+	
+	
+	<td>
+		<%= h(contact.company) %>
+	</td>
+	
+	
+	<td>
+		<%= h(contact.title) %>
+	</td>
+	
+	
+	<td>
+		<%= h(contact.mobile) %>
+	</td>
+	
+	<td>
+		<%= h(contact.phone) %>
+	</td>
+	
+	<td>
+		<%= (employee = Intranet::Employee.find_by(:account_id, contact.account_id)) && employee[:name] %>
+	</td>
+	
+	
+	<td align="right">
+		<a href="/intranet/employees/<%= contact.account_id %>/sales_contacts/<%= contact.id %>" class="account_nick_link">
+			查看</a>
+	</td>
+</tr>

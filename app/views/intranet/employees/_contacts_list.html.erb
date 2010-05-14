@@ -1,0 +1,31 @@
+<div class="community_block align_r">
+	<% form_tag "/intranet/employees/search_contacts", :method => :get, :class => "form_info_s" do %>
+		客户姓名开头:
+		&nbsp;
+		<input type="text" name="contact_name" class="text_field search_input" size="15" value="<%= h(@contact_name) %>" />
+		&nbsp;
+		<input type="submit" value="查询" class="button" />
+	<% end %>
+</div>
+
+<table border="0" cellspacing="0" cellpadding="0" class="main_part_w list" style="margin: 10px 0px;">
+	<thead>
+		<tr>
+			<td style="width: 80px;">姓名</td>
+			<td>公司</td>
+			<td>职位</td>
+			<td>手机</td>
+			<td>电话</td>
+			<td style="width: 60px;">销售员</td>
+			<td style="width: 26px;"></td>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%= render :partial => "contact", :collection => @contacts %>
+	</tbody>
+</table>
+
+<div class="community_block">
+	<%= paging_buttons(@contacts) if @contacts.respond_to?(:total_entries) %>
+</div>
