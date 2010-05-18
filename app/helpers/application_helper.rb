@@ -151,8 +151,9 @@ module ApplicationHelper
   def general_admin?(account_id)
     # 1002 - MaXiao
     # 1019 - Kai
+    # 1422 - GuYan
     
-    superadmin?(account_id) || [1002, 1019].include?(account_id)
+    superadmin?(account_id) || [1002, 1019, 1422].include?(account_id)
   end
   
   def info_editor?(account_id)
