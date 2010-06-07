@@ -217,25 +217,25 @@ http://www.hokstad.com/mini-reviews-of-19-ruby-template-engines.html
 ======
 
 Denpendencies:
-	mysql
-	memcached (gem install memcached --no-rdoc --no-ri)
+	mysql (sudo env ARCHFLAGS="-arch i386 -arch x86_64" gem install mysql -- --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config --with-mysql-includes=/opt/local/include/mysql5/mysql/ --with-mysql-libs=/opt/local/lib/mysql5/mysql)
+	memcached (0.17.7) (gem install memcached --no-rdoc --no-ri)
 	libmemcached_store (plugin install git://github.com/cheald/libmemcached_store.git)
-	Hpricot
-	RMagic (ImageMagic)
-	paperclip
-	mime-types
-	mislav-will_paginate (gem install mislav-will_paginate --source http://gems.github.com)
-	select_with_include
-	thinking-sphinx (gem install thinking-sphinx --source http://gemcutter.org)
-	rcov (xmpp4r-simple needs it)
-	xmpp4r-simple
-	SystemTimer
-	erubis (disabled currently ...)
-	json
-	eventmachine
-	juggernaut
-	RedCloth (NB: The RedCloth gem name is CamelCase, not lowercase. If you mistakenly do a gem install redcloth, you’ll get ERROR: could not find redcloth locally or in a repository.)
-	libxml-ruby
+	hpricot (0.6.161)
+	rmagick (2.6.0) (RMagic) (ImageMagic) (sudo port install tiff -macosx imagemagick +q8 +gs +wmf)
+	paperclip (2.3.1.1)
+	mime-types (1.15)
+	mislav-will_paginate (2.3.4) (gem install mislav-will_paginate --source http://gems.github.com)
+	select_with_include (0.0.1)
+	thinking-sphinx (1.2.12) (gem install thinking-sphinx --source http://gemcutter.org)
+	rcov (0.8.1.2.0) (xmpp4r-simple needs it)
+	xmpp4r-simple (0.8.8)
+	SystemTimer (1.1)
+	erubis (2.6.2) (disabled currently ...)
+	json (1.1.6)
+	eventmachine (0.12.6)
+	juggernaut (0.5.8)
+	RedCloth (4.2.2) (NB: The RedCloth gem name is CamelCase, not lowercase. If you mistakenly do a gem install redcloth, you’ll get ERROR: could not find redcloth locally or in a repository.)
+	libxml-ruby (1.1.3)
 	-----
 	
 	[only on production server]

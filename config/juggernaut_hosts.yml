@@ -13,7 +13,7 @@
   - :port: 800
     # :port: 5001
     :host: 127.0.0.1
-    :public_host: Tomatos-MacBook.local
+    :public_host: 127.0.0.1
     :public_port: 800
     # :public_port: 5001
     # :secret_key: your_secret_key

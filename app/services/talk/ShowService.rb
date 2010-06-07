@@ -88,7 +88,7 @@ class ShowService
     
     
     # get forecast
-    post_id = Rails.env.production? ? 294 : 87
+    post_id = 294
     post = GroupPost.get_post(post_id)
     talk_content[:forecast] = {
       :title => post.title,
