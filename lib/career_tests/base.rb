@@ -34,14 +34,14 @@ module CareerTests
       ]
     end
     
-    def question_ids
-      ids = []
+    def flatten_questions
+      result = []
       questions.each do |category|
         category[2..-1].each do |question|
-          ids << question[0]
+          result << question
         end
       end
-      ids
+      result
     end
     
     def display_question_title(index, title)

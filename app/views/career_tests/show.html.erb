@@ -8,7 +8,7 @@
 	<div class="community_block align_c">
 		已有
 		<b>
-			<%= @result_count %></b>
+			<%= CareerTestResult.get_count(@test_id) %></b>
 		人次参与
 	</div>
 	
@@ -54,7 +54,7 @@
 	<h2><%= test_name %></h2>
 	
 	
-	<div class="community_block_narrow form_info_s">
+	<div class="community_block_narrow form_info_s" style="text-indent: 25px;">
 		<%= @test.desc %>
 	</div>
 	
@@ -75,7 +75,15 @@
 			<% categories.each_index do |category_index| %>
 				<% category = categories[category_index] %>
 				<div class="community_block test_category_title" style="background-color: #<%= @test.category_title_bg_color %>;">
-					<%= @test.display_category_title(category_index, category[0]) %>
+					<%
+						level = false
+						category_title = category[0]
+						if category[0].kind_of?(Hash)
+							level = category[0][:level]
+							category_title = category[0][:title]
+						end
+					%>
+					<%= @test.display_category_title(category_index, category_title) %>
 				</div>
 				
 				<div class="community_block_narrow form_info_s test_category_desc">
@@ -83,36 +91,94 @@
 				</div>
 				
 				<% questions = category[2..-1] %>
-				<% questions.each do |question| %>
-					<div class="community_block">
-						<div id="question_title_<%= question[0] %>">
-							<%= @test.display_question_title(question_index, question[1]) %>
-							<% question_index += 1 %>
-							<% question_ids << question[0] %>
-						</div>
-					</div>
-					
-					<div class="community_block_narrow test_question_options">
-						<% options = question[2..-1] %>
-						<% options.each_index do |option_index| %>
-							<% option = options[option_index] %>
-							<div class="community_block">
-								<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
-									<tr>
-										<td valign="top" style="width: 30px;">
+				<% if level && questions.size > 0 %>
+					<table border="0" cellspacing="0" cellpadding="0" class="main_part_w list" style="margin-bottom: 20px;">
+						<thead>
+							<tr>
+								<td></td>
+								<% questions.first[2..-1].each_index do |oi| %>
+									<td align="center" style="font-size: 14px; font-weight: bold;">
+										<%= oi + 1 %>
+									</td>
+								<% end %>
+							</tr>
+						</thead>
+						<tbody>
+							<% questions.each do |question| %>
+								<tr<%= %Q! class="even"! if question_index.even? %>>
+									<td>
+										<div id="question_title_<%= question[0] %>">
+											<%= @test.display_question_title(question_index, question[1]) %>
+											<%
+												question_index += 1
+												question_ids << question[0]
+											%>
+										</div>
+									</td>
+									<% options = question[2..-1] %>
+									<% options.each_index do |option_index| %>
+										<% option = options[option_index] %>
+										<td align="center">
 											<input type="radio" name="question_<%= question[0] %>" id="option_<%= option[0] %>_of_question_<%= question[0] %>" value="<%= option[0] %>" onclick="update_question_status(<%= question[0] %>, true);"<%= %Q! checked="checked"! if flash.now[:answers] && flash.now[:answers][question[0]] == option[0].to_s %> />
 										</td>
-										
-										<td>
-											<label for="option_<%= option[0] %>_of_question_<%= question[0] %>">
-												<%= @test.display_option_title(option_index, option[1]) %>
-											</label>
-										</td>
-									</tr>
-								</table>
+									<% end %>
+								</tr>
+							<% end %>
+						</tbody>
+					</table>
+				<% else %>
+					<% questions.each do |question| %>
+						<div class="community_block">
+							<%
+								question_title = question[1]
+								input_type = :radio
+								if question[1].kind_of?(Hash)
+									question_title = question[1][:title]
+									input_type = question[1][:input_type]
+								end
+							%>
+							<div id="question_title_<%= question[0] %>">
+								<%= @test.display_question_title(question_index, question_title) %>
+								<%
+									question_index += 1
+									question_ids << question[0]
+								%>
 							</div>
-						<% end %>
-					</div>
+						</div>
+
+						<div class="community_block_narrow test_question_options">
+							<% if input_type == :text %>
+								<% question_ids.pop %>
+								<div style="margin-top: 10px;">
+									<% if question[1][:multi_line] %>
+										<textarea name="question_<%= question[0] %>" id="question_<%= question[0] %>" class="text_field" cols="50" rows="5"><%= flash.now[:answers] && flash.now[:answers][question[0]] %></textarea>
+									<% else %>
+										<input type="text" name="question_<%= question[0] %>" id="question_<%= question[0] %>" class="text_field" size="50" value="<%= h(flash.now[:answers] && flash.now[:answers][question[0]]) %>" />
+									<% end %>
+								</div>
+							<% else %>
+								<% options = question[2..-1] %>
+								<% options.each_index do |option_index| %>
+									<% option = options[option_index] %>
+									<div class="community_block">
+										<table cellpadding="0" cellspacing="0" border="0" class="main_part_w">
+											<tr>
+												<td valign="top" style="width: 30px;">
+													<input type="radio" name="question_<%= question[0] %>" id="option_<%= option[0] %>_of_question_<%= question[0] %>" value="<%= option[0] %>" onclick="update_question_status(<%= question[0] %>, true);"<%= %Q! checked="checked"! if flash.now[:answers] && flash.now[:answers][question[0]] == option[0].to_s %> />
+												</td>
+
+												<td>
+													<label for="option_<%= option[0] %>_of_question_<%= question[0] %>">
+														<%= @test.display_option_title(option_index, option[1]) %>
+													</label>
+												</td>
+											</tr>
+										</table>
+									</div>
+								<% end %>
+							<% end %>
+						</div>
+					<% end %>
 				<% end %>
 			<% end %>
 			

@@ -1275,7 +1275,8 @@ module CareerTests
       ]
       
       mapping = result_mapping
-      question_ids.each do |question_id|
+      flatten_questions.each do |q|
+        question_id = q[0]
         n = mapping[question_id][answer[question_id]]
         result[n-1] += 1
       end

@@ -4,7 +4,8 @@ class CareerTest < StaticModel::HashBase
     [
       {:id => 1, :name => "mbti", :hide => false},
       {:id => 2, :name => "enneagram", :hide => false},
-      {:id => 3, :name => "sales_style", :hide => false}
+      {:id => 3, :name => "sales_style", :hide => false},
+      {:id => 4, :name => "shou_talent_feedback", :hide => true}
     ]
   end
   

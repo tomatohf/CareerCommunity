@@ -27,18 +27,20 @@
 	
 	<div class="community_block">
 		<% CareerTest.data.each do |t| %>
-			<% test = CareerTest.get_test(t[:name]) %>
+			<% unless t[:hide] %>
+				<% test = CareerTest.get_test(t[:name]) %>
 
-			<div class="test_item form_info_s">
-				<a href="/career_tests/show/<%= t[:id] %>" class="account_nick_link" style="font-size: 16px;">
-					<%= test.name %></a>
+				<div class="test_item form_info_s">
+					<a href="/career_tests/show/<%= t[:id] %>" class="account_nick_link" style="font-size: 16px;">
+						<%= test.name %></a>
 
-				&nbsp;&nbsp;
+					&nbsp;&nbsp;
 
-				<%= test.question_ids.size %>道题
-				|
-				参与(<%= CareerTestResult.get_count(t[:id]) %>)
-			</div>
+					<%= test.flatten_questions.size %>道题
+					|
+					参与(<%= CareerTestResult.get_count(t[:id]) %>)
+				</div>
+			<% end %>
 		<% end %>
 	</div>
 	

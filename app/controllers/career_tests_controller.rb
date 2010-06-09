@@ -25,8 +25,6 @@ class CareerTestsController < ApplicationController
     @test_id = params[:id].to_i
     @has_login = has_login?
     @test = CareerTest.get_test(@test_id)
-    
-    @result_count = CareerTestResult.get_count(@test_id)
   end
   
   def create_result
@@ -39,9 +37,11 @@ class CareerTestsController < ApplicationController
     
     all_filled = true
     answers = {}
-    @test.question_ids.each do |question_id|
+    @test.flatten_questions.each do |q|
+      question_id = q[0]
       answers[question_id] = params["question_#{question_id}".to_sym]
-      all_filled &&= answers[question_id] && answers[question_id] != ""
+      all_filled &&= (q[1].kind_of?(Hash) && q[1][:input_type] == :text) ||
+                      (answers[question_id] && answers[question_id] != "")
     end
     
     unless all_filled
