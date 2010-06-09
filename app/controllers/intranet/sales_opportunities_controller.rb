@@ -42,7 +42,7 @@ module Intranet
           @status[:id]
         ],
         :include => [:contact, :step_records, :attachments, :todos]
-      )
+      ).sort! {|x, y| y.title <=> x.title }
       
       prepare_latest_records
     end
