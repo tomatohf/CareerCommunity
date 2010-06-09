@@ -38,11 +38,11 @@
 				显示全部</a>
 		</div>
 		
-		<% CareerTest.find(:all).each_index do |i| %>
-			<% test = CareerTest.get_test(i+1) %>
+		<% CareerTest.data.each do |ct| %>
+			<% test = CareerTest.get_test(ct[:name]) %>
 
 			<div class="community_block">
-				<a href="/career_tests/history/<%= session[:account_id] %>/<%= i+1 %>"<%= %Q! class="link_selected"! if @test_id && @test_id == (i+1) %>>
+				<a href="/career_tests/history/<%= session[:account_id] %>/<%= ct[:id] %>"<%= %Q! class="link_selected"! if @test_id && @test_id == ct[:id] %>>
 					<%= test.name %></a>
 			</div>
 		<% end %>

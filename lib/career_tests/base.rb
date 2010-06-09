@@ -75,7 +75,7 @@ module CareerTests
     
   end
   
-  CareerTest.find(:all).each { |file| require_dependency "career_tests/#{file}" }
+  CareerTest.data.each { |test| require_dependency "career_tests/#{test[:name]}" }
 
 end
 

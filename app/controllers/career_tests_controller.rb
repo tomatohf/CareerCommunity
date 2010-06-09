@@ -18,8 +18,6 @@ class CareerTestsController < ApplicationController
   
   
   def index
-    @tests = CareerTest.find(:all)
-    
     @has_login = has_login?
   end
   
