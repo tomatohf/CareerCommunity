@@ -16,27 +16,28 @@
 			去职业测评讨论组查看更多免费结果分析</a>
 	</div>
 	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
+	<% if @has_login %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
 	
-	<div class="community_block align_c">
-		<a href="/career_tests/history/<%= session[:account_id] %>" style="font-size: 13px;">
-			<%= owner_name %> 的全部测试结果列表</a>
-	</div>
+		<div class="community_block align_c">
+			<a href="/career_tests/history/<%= session[:account_id] %>" style="font-size: 13px;">
+				<%= owner_name %> 的全部测试结果列表</a>
+		</div>
 	
-	<div class="community_block align_c">
-		<a href="/career_tests/history/<%= session[:account_id] %>/<%= @result.career_test_id %>">
-			<%= owner_name %> 的全部 <%= test_name %> 结果</a>
-	</div>
-	
-	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
+		<div class="community_block align_c">
+			<a href="/career_tests/history/<%= session[:account_id] %>/<%= @result.career_test_id %>">
+				<%= owner_name %> 的全部 <%= test_name %> 结果</a>
+		</div>
+	<% end %>
 	
 	
 	<% if @test.side_template && @test.side_template != "" %>
+		<div class="community_block_narrow">
+			<%= thin_hr %>
+		</div>
+		
 		<div>
 			<%= render(:partial => @test.side_template, :locals => {:info => @result_info}) %>
 		</div>

@@ -188,6 +188,15 @@ module CareerTests
               :input_type => :text,
               :multi_line => true
             }
+          ],
+          
+          [
+            210,
+            {
+              :title => "请填写你的学号或姓名，你将有可能获得乔布堂送出的奖品或服务",
+              :input_type => :text,
+              :multi_line => false
+            }
           ]
         ]
       ]

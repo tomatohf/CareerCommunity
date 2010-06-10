@@ -9,10 +9,11 @@ class CareerTestsController < ApplicationController
   
   layout "community"
   
-  before_filter :check_login, :only => [:show, :create_result, :result, :history]
+  before_filter :check_login_for_career_test, :only => [:show, :create_result, :result]
+  before_filter :check_login, :only => [:history]
   before_filter :check_limited, :only => [:create_result]
   
-  before_filter :check_result_owner, :only => [:result]
+  before_filter :check_result, :only => [:result]
   before_filter :check_history_owner, :only => [:history]
 
   
@@ -22,17 +23,15 @@ class CareerTestsController < ApplicationController
   end
   
   def show
-    @test_id = params[:id].to_i
     @has_login = has_login?
     @test = CareerTest.get_test(@test_id)
   end
   
   def create_result
-    @test_id = params[:id].to_i
-    
     return jump_to("/career_tests/show/#{@test_id}") unless request.post?
     
     
+    @has_login = has_login?
     @test = CareerTest.get_test(@test_id)
     
     all_filled = true
@@ -47,15 +46,13 @@ class CareerTestsController < ApplicationController
     unless all_filled
       flash.now[:answers] = answers
       
-      @has_login = has_login?
-      
       return render(:action => "show")
     end
     
     
     # record the result
     result = CareerTestResult.new(
-      :account_id => session[:account_id],
+      :account_id => @has_login ? session[:account_id] : 0,
       :career_test_id => @test_id
     )
     result.fill_answer(answers)
@@ -66,14 +63,12 @@ class CareerTestsController < ApplicationController
         :career_test_id => @test_id,
         :career_test_result_id => result.id,
         :answer => answers
-      })
+      }) if @has_login
       
       jump_to("/career_tests/result/#{result.id}")    
     else
       flash.now[:answers] = answers
       flash.now[:error_msg] = "操作失败, 再试一次吧"
-      
-      @has_login = has_login?
       
       return render(:action => "show")
     end
@@ -81,6 +76,7 @@ class CareerTestsController < ApplicationController
   end
   
   def result
+    @has_login = has_login?
     @test = CareerTest.get_test(@result.career_test_id)
     @result_info = @test.process_answer(@result.get_answer)
   end
@@ -140,10 +136,23 @@ class CareerTestsController < ApplicationController
   
   private
   
-  def check_result_owner
-    @result = CareerTestResult.find(params[:id])
+  def check_login_for_career_test
+    @test_id = if action_name == "result"
+      @result = CareerTestResult.find(params[:id])
+      @result.career_test_id
+    else
+      params[:id].to_i
+    end
     
-    jump_to("/errors/forbidden") unless session[:account_id] == @result.account_id
+    t = CareerTest.find(@test_id)
+    return jump_to("/career_tests") unless t
+    
+    check_login unless t[:hide]
+  end
+  
+  def check_result
+    jump_to("/errors/forbidden") unless @result.account_id == 0 ||
+                                        @result.account_id == session[:account_id]
   end
   
   def check_history_owner
