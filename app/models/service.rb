@@ -19,7 +19,7 @@ class Service < StaticModel::StringBase
   
   
   def self.avaliable?(sid)
-    sid < 3 || sid > 10
+    sid < 3 || sid == 11
   end
   
         
