@@ -19,8 +19,7 @@ class Postman < ActionMailer::Base
   def test(other = "")
     recipients(
       [
-        "Tomato.HF@gmail.com",
-        "Tomato_HF@hotmail.com"
+        "Tomato.HF@gmail.com"
       ]
     )
     from(self.class.from)
@@ -263,6 +262,16 @@ class Postman < ActionMailer::Base
       :post_url => post_url,
       :post_title => post_title
     )
+    content_type "text/html"
+  end
+  
+  
+  
+  def shou_talent_feedback_remind(email, name)
+    recipients([email])
+    from(self.class.from)
+    subject("简历修改反馈调研 (from 乔布堂)")
+    body(:name => name)
     content_type "text/html"
   end
   
