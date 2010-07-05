@@ -27,6 +27,8 @@ module Intranet
                                                 :update_record, :delete_record,
                                                 :new_todo, :create_todo, :edit_todo,
                                                 :update_todo, :delete_todo, :update_todo_done]
+                                                
+  skip_after_filter OutputCompressionFilter, :only => [:attachment]
   
   
   
