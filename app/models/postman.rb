@@ -55,7 +55,8 @@ class Postman < ActionMailer::Base
         "Tomato.HF@gmail.com",
         "hefan@qiaobutang.com",
         "shenkai@qiaobutang.com",
-        "rick@qiaobutang.com"
+        "rick@qiaobutang.com",
+        "zhangjie@qiaobutang.com"
       ]
     )
     
