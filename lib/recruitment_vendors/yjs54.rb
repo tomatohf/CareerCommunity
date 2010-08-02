@@ -82,10 +82,6 @@ module RecruitmentVendor
     end
     
     def build_info_obj(link, init_values = {})
-      link.include?("xjh") ? build_recruitment_for_xjh(link, init_values) : build_recruitment_for_non_xjh(link, init_values)
-    end
-    
-    def build_recruitment_for_xjh(link, init_values = {})
       doc = get_doc_from_url(link, true)
       
       return nil if doc.nil?
@@ -93,93 +89,37 @@ module RecruitmentVendor
       r = Recruitment.new
       init_values.each_pair { |key, value| r.send("#{key}=", value) }
       
-      context_xpath = "//div[@class='context']"
-      context_divs = doc.search(context_xpath)
+      h1 = doc.search("//div[@class=bodys]/h1")
+      return nil unless h1.size > 0
+      r.title = h1[0].inner_html
       
-      return nil unless context_divs.size > 0
+      fubiaoti = doc.search("//div[@class=fubiaoti]")
+      return nil unless fubiaoti.size > 0
+      datetimes = fubiaoti.to_s.scan(/\d{4}-\d{1,2}-\d{1,2}/)
+      r.publish_time = if datetimes.size > 0
+        DateTime.parse(datetimes[0])
+      else
+        DateTime.now
+      end
+      spans = fubiaoti.search("/span/a")
+      if spans.size > 0
+        r.location = spans[0].inner_html      
+        tag_text = []
+        spans[1..-1].each { |span| tag_text << span.inner_html }
+        tag_text.uniq!
+        tag_text.each { |tag| r.recruitment_tags << RecruitmentTag.get_tag(tag) if tag && (tag.strip != "") }
+      end
       
-      context_div = context_divs[0]
-      
-      title_element = context_div.at("/h1")
-      r.title = title_element.inner_html
-      
-      # disable this check for performance concern ...
-      # return nil if Recruitment.find(:first, :conditions => ["recruitment_type = ? and title = ?", Recruitment::Type_lecture, r.title])
-      
-      
-      title_element.search("").remove
-      
-      context_div.search("//div[@class^=zph]").remove
-      context_div.search("//a[@href^=/xjh/]").remove
-      
-      
-      r.content = context_div.inner_html
-      
-      
-      # add the fixed attributes
-      r.source_name = source_name
-      r.source_link = link
-      
-      r.publish_time = DateTime.now
-      
-      
-      r
-    end
-    
-    def build_recruitment_for_non_xjh(link, init_values = {})
-      doc = get_doc_from_url(link, true)
-      
-      return nil if doc.nil?
-      
-      r = Recruitment.new
-      init_values.each_pair { |key, value| r.send("#{key}=", value) }
-      
-      content_xpath = "//div[@class='infoer']"
-      content_divs = doc.search(content_xpath)
-      
-      return nil unless content_divs.size > 0
-      
-      content_div = content_divs[0]
-      
-      header_elements = content_div.search("/div[@align=center]")
-      return nil unless header_elements.size > 0
-      
-      header_element = header_elements[0]
-      
-      title_element = header_element.at("/h1")
-      r.title = title_element.inner_html
-      
-      texter_divs = content_div.search("/div[@class=texter]")
-      return nil unless texter_divs.size > 1
-      
-      content_text_divs = texter_divs[0].search("/div[@class=c]")
-      return nil unless content_text_divs.size > 0
-      
-      r.content = content_text_divs[0].inner_html
-      
-      
-      tag_text = []
-      
-      spans = header_element.search("/span")
-      return nil if spans.size < 3
-      
-      r.location = spans[0].inner_html
-      
-      r.publish_time = DateTime.parse(spans[2].inner_html)
-      
-      tag_text << spans[1].inner_html
-      
+      bodys2 = doc.search("//div[@class=bodys2]/p")
+      return nil unless bodys2.size > 0
+      r.content = bodys2.to_s
+      return nil if r.content.blank?
       
       # add the fixed attributes
       r.source_name = source_name
       r.source_link = link
       
-      # tags
-      tag_text.uniq!
-      tag_text.each { |tag| r.recruitment_tags << RecruitmentTag.get_tag(tag) if tag && (tag.strip != "") }
-      
       r
-      
     end
     
     def get_yjs54_new_links(url)
@@ -187,29 +127,12 @@ module RecruitmentVendor
       
       return [] if doc.nil?
       
-      if url.include?("xjh")
-        
-        list_xpath = "//a[@href^=/xjhhtml/]"
-        list = doc.search(list_xpath)
-        
-        list.collect { |a|
-          href = a["href"].strip
-          root_url + href unless href[0, 4] == "http"
-        }.select { |href| href =~ /\d+\.html$/ }
-                
-      else
-        
-        list_xpath = "//td[@class='company']"
-        list = doc.search(list_xpath)
-      
-        list.collect { |td|
-          a = td.at("a")
-          href = a["href"].strip
-          root_url + href unless href[0, 4] == "http"
-        }.select { |href| href =~ /\d+\.html$/ }
-        
-      end
-      
+      doc.search(
+        url.include?("xjh") ? "//div[@class=chakan]/a" : "//div[@class=danwei]/a"
+      ).collect { |a|
+        href = a["href"].strip
+        root_url + href unless href[0, 4] == "http"
+      }.select { |href| href =~ /\d+\.html$/ }
     end
     
   end

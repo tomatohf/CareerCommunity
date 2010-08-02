@@ -13,19 +13,11 @@ module RecruitmentVendor
     end
     
     def list_url_fulltime
-      "http://hiall.com.cn/hiall_home/m.php?name=hr&mo_catid=1"
-    end
-    
-    def list_url_fulltime_important
-      "http://hiall.com.cn/hiall_home/m.php?name=hr&mo_catid=9"
+      "http://hiall.com.cn/info/index.php?"
     end
     
     def list_url_parttime
-      "http://hiall.com.cn/hiall_home/m.php?name=hr&mo_catid=2"
-    end
-    
-    def list_url_lecture
-      "http://hiall.com.cn/hiall_home/m.php?name=hr&mo_catid=3"
+      "http://hiall.com.cn/info/part.php?"
     end
     
     def urls(link, start_page = 1, page_count = 1)
@@ -73,8 +65,6 @@ module RecruitmentVendor
       new_links = {}
       [
         [list_url_fulltime, Recruitment::Type_fulltime],
-        [list_url_fulltime_important, Recruitment::Type_fulltime],
-        # [list_url_lecture, Recruitment::Type_lecture], # disable to retrieve lecture messages
         [list_url_parttime, Recruitment::Type_parttime]
       ].each { |item|
         init_values = { :recruitment_type => item[1] }
@@ -94,8 +84,6 @@ module RecruitmentVendor
     def save_new_messages(start_page = 1, page_count = 1)
       [
         [list_url_fulltime, Recruitment::Type_fulltime],
-        [list_url_fulltime_important, Recruitment::Type_fulltime],
-        # [list_url_lecture, Recruitment::Type_lecture], # disable to retrieve lecture messages
         [list_url_parttime, Recruitment::Type_parttime]
       ].each { |item|
         init_values = { :recruitment_type => item[1] }
@@ -121,73 +109,38 @@ module RecruitmentVendor
     end
     
     def build_info_obj(link, init_values = {})
-      doc = get_doc_from_url(link, true)
+      doc = get_doc_from_url(link, true, "UTF-8")
       
       return nil if doc.nil?
       
       r = Recruitment.new
       init_values.each_pair { |key, value| r.send("#{key}=", value) }
       
-      content_xpath = "//div[@class='models-articletitle']"
-      content_div = doc.search(content_xpath)
+      h1 = doc.search("//h1[@class=positiontitle]")
+      return nil unless h1.size > 0
+      r.title = h1[0].inner_html
       
-      title_elements = content_div.search("/h1")
-      if title_elements.size > 0
-        h1_element = title_elements[0]
-        
-        h1_sub_div_elements = h1_element.search("//div")
-        r.title = h1_sub_div_elements[0].inner_html if h1_sub_div_elements.size > 0
-        
-        h1_element.search("").remove
+      job_detail = doc.search("//div[@class=job_detail]")
+      return nil unless job_detail.size > 0
+      job_detail.search("/p/span").each do |span|
+        chars = span.inner_html.strip.split("")
+        r.location = chars[5..-1].join if chars[0, 4].join == "工作地区"
+        r.publish_time = DateTime.parse(chars[5..-1].join) if chars[0, 4].join == "发布时间"
       end
+      r.publish_time ||= DateTime.now
       
-      tag_text = []
-      info_exp = /^.*?<a.*?>.*?<\/a>\s*$/im
-      
-      p_elements = content_div.search("/p")
-      p_elements.select { |p|
-        p_inner_html = p.inner_html
-        p_inner_html && p_inner_html.size < 300 && p_inner_html =~ info_exp
-      }.each{ |p|
-        p.search("/a").each { |a| tag_text << a.inner_html }
-        p.search("").remove
-      }
-      
-      r.content = content_div.to_html
-      
-      info_xpath = "//div[@class='models-minfield']"
-      info_div = doc.search(info_xpath)
-      
-      info_div.search("/ul/li").each{ |li|
-        li_content = li.inner_html
-        case li_content
-          when /.*?工作地区.*/im
-            locations = []
-            li.search("/a").each{ |a|
-              locations << a.inner_html unless a.inner_html =~ /^\s*$/im
-            }
-            
-            # only use the first the location
-            # r.location = locations.join(" ")
-            r.location = locations[0] if (locations.size > 0)
-          when /.*?发布时间.*?\d{4}-\d{1,2}-\d{1,2}.*/im
-            publish_time = li.inner_html.scan(/\d{4}-\d{1,2}-\d{1,2}/)[0]
-            r.publish_time = DateTime.parse(publish_time) unless publish_time.nil?
-          else
-            li.search("/a").each { |a| tag_text << a.inner_html }
-        end
-      }
+      job_detail.search("/h1").remove
+      job_detail.search("/p").remove
+      job_detail.search("/div[@class]").remove
+      job_detail.search("/div[@style]").remove
+      r.content = job_detail.at("div").inner_html.strip
+      return nil if r.content.blank?
       
       # add the fixed attributes
       r.source_name = source_name
       r.source_link = link
       
-      # tags
-      tag_text.uniq!
-      tag_text.each { |tag| r.recruitment_tags << RecruitmentTag.get_tag(tag) if tag && (tag.strip != "") }
-      
       r
-      
     end
     
     def get_hiall_new_links(url)
@@ -195,24 +148,10 @@ module RecruitmentVendor
       
       return [] if doc.nil?
       
-      list_xpath = "//div[@class='models-articlelist no_top_bg']"
-      lists = doc.search(list_xpath)
-      
-      return [] if lists.size < 1
-      
-      p_xpath = "/div[@class='models-article']/div[@class='models-articlelistinfo']/p[@class='title']"
-      
-      paragraphs = lists[0].search(p_xpath)
-      paragraphs.collect { |p|
-        p.search("//a").collect{|a| 
-          href = a["href"].strip
-          href += "/" if href[-1, 1] != "/"
-          href = (root_url + href) unless href[0, 4] == "http"
-          
-          href
-        }.select { |href| href =~ /action-model-name-hr-itemid-\d*/ }
-      }.flatten
-      
+      doc.search("//div.list_midcontent/a").collect { |a|
+        href = a["href"].strip
+        root_url + href unless href[0, 4] == "http"
+      }.select { |href| href =~ /\d+\.html$/ }
     end
     
   end

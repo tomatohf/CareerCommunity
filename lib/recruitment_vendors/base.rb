@@ -7,9 +7,9 @@ module RecruitmentVendor
     #"utomorrow" => "Utomorrow",
     "yjs54" => "Yjs54",
     "hiall" => "Hiall",
-    "guolairen" => "Guolairen",
-    "maiwo" => "Maiwo",
-    "yingjiesheng" => "Yingjiesheng"
+    # "guolairen" => "Guolairen",
+    # "yingjiesheng" => "Yingjiesheng",
+    "maiwo" => "Maiwo"
   }
   
   
@@ -123,7 +123,7 @@ module RecruitmentVendor
     
     
     # method get_new_links should return a hash containing all *new* links, from which we should fetch information
-    # method build_recruitment method return a Recruitment model object by the information got from the link
+    # method get_info_obj method return a Recruitment model object by the information got from the link
     def collect_new_messages(start_page = 1, page_count = 1)
       gotten_new_links = get_new_links(start_page, page_count)
       
