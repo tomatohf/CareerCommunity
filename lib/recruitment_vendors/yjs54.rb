@@ -110,7 +110,7 @@ module RecruitmentVendor
         tag_text.each { |tag| r.recruitment_tags << RecruitmentTag.get_tag(tag) if tag && (tag.strip != "") }
       end
       
-      bodys2 = doc.search("//div[@class=bodys2]/p")
+      bodys2 = doc.search("//div[@class=bodys2]//p")
       return nil unless bodys2.size > 0
       r.content = bodys2.to_s
       return nil if r.content.blank?
