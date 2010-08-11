@@ -4,4 +4,9 @@ class TrainingsController < ApplicationController
     
   end
   
+  
+  def about
+    
+  end
+  
 end

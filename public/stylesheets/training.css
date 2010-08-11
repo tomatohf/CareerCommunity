@@ -15,9 +15,6 @@ a {
 .root_container {
 	margin: 0px auto;
 	width: 856px;
-	
-	text-align: left;
-	
 	font-size: 12px;
 }
 
@@ -36,4 +33,33 @@ a {
 }
 .bottom #beianhao:hover {
 	text-decoration: underline;
+}
+
+
+.top {
+	margin-top: 10px;
+}
+
+
+.top_menu {
+	margin: 10px 0px;
+	background-color: #CC0000;
+	color: #FFFFFF;
+	font-size: 14px;
+	text-align: center;
+}
+.top_menu a {
+	margin: 3px 10px 0px;
+	padding: 4px 0px 5px;
+	color: #FFFFFF;
+	text-decoration: none;
+	display: block;
+	width: 80px;
+}
+.top_menu a:hover {
+	color: #CC0000;
+	background-color: #FFFFFF;
+}
+.top_menu table {
+	margin: 0px auto;
 }
