@@ -153,7 +153,7 @@
 					<td class="dropdown_list">
 						<select name="birthday_year" id="birthday" class="dropdown_list">
 							<option value=""></option>
-							<% 1949.upto(2010) do |i| %>
+							<% 1949.upto(Time.now.year) do |i| %>
 								<option value="<%= i %>"<%= " selected=\"selected\"" if @profile.birthday && @profile.birthday.year == i %>><%= i %></option>
 							<% end %>
 						</select>

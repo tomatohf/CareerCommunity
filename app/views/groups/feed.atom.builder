@@ -1,4 +1,4 @@
-atom_feed(:language => "zh_CN", :schema_date => 2010, "xmlns:app" => "http://www.w3.org/2007/app") do |feed|
+atom_feed(:language => "zh_CN", :schema_date => Time.now.year, "xmlns:app" => "http://www.w3.org/2007/app") do |feed|
   
   feed.title("圈子 #{h(@group.name)} 的讨论话题 - 乔布圈")
   feed.updated(@posts.first && @posts.first.updated_at)
