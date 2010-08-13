@@ -15,15 +15,15 @@
     </head>
     <body>
 	
-		<%= render :partial => "top" %>
-		
-		<%= render :partial => "top_menu" %>
-	
-	    <div class="root_container">
+		<div class="root_container">
+			<%= render :partial => "top" %>
+
+			<%= render :partial => "top_menu" %>
+			
 			<%= yield %>
+			
+			<%= render :partial => "bottom" %>
 		</div>
-		
-		<%= render :partial => "bottom" %>
 	
 	
 	

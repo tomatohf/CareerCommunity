@@ -14,7 +14,7 @@ a {
 
 .root_container {
 	margin: 0px auto;
-	width: 856px;
+	width: 800px;
 	font-size: 12px;
 }
 
@@ -42,7 +42,7 @@ a {
 
 
 .top_menu {
-	margin: 10px 0px;
+	margin-top: 10px;
 	background-color: #CC0000;
 	color: #FFFFFF;
 	font-size: 14px;
@@ -62,4 +62,62 @@ a {
 }
 .top_menu table {
 	margin: 0px auto;
+}
+
+
+.top_post {
+	text-align: center;
+	margin-top: 10px;
+}
+
+
+.breadcrumb {
+	padding: 10px 3px 15px;
+	color: #666666;
+	word-spacing: 5px;
+}
+.breadcrumb a {
+	color: #666666;
+	text-decoration: none;
+}
+.breadcrumb a:hover {
+	color: #CC0000;
+}
+
+
+.slide_title {
+	padding: 10px 0px 30px;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+}
+
+
+.slide_content {
+	font-size: 14px;
+}
+.slide_content p {
+	text-indent: 28px;
+}
+
+
+.left_menus {
+	width: 200px;
+}
+.left_menus a {
+	display: block;
+	text-decoration: none;
+	color: #000000;
+	background-color: #EAEAEA;
+	border: 1px solid #EEEEEE;
+	margin-top: 5px;
+	padding: 6px 10px 5px;
+}
+.left_menus a:hover {
+	background-color: #F8F8F8;
+	color: #CC0000;
+}
+.left_menus a.selected {
+	color: #FFFFFF;
+	background-color: #CC0000;
 }

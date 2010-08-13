@@ -1,0 +1,26 @@
+<div class="breadcrumb">
+	当前位置：
+	<a href="/trainings">乔布咨询</a>
+	»
+	<a href="/trainings/cases">经典案例</a>
+	»
+	<a href="/trainings/cases/<%= @case[0] %>"><%= @case[1] %></a>
+</div>
+
+<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+	<tr>
+		<td class="left_menus" valign="top">
+			<% @cases.each do |c| %>
+				<a href="/trainings/cases/<%= c[0] %>"<%= %Q! class="selected"! if c[0] == @case[0] %>>
+					<%= c[1] %></a>
+			<% end %>
+		</td>
+		
+		
+		<td valign="top">
+			<div class="slide_title">
+				<%= @case[1] %>
+			</div>
+		</td>
+	</tr>
+</table>
