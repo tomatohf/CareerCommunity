@@ -19,7 +19,7 @@ a {
 }
 
 .bottom {
-	margin-top: 10px;
+	margin-top: 50px;
 	padding-top: 10px;
 	border-top: 5px solid #CC0000;
 	text-align: center;
@@ -120,4 +120,59 @@ a {
 .left_menus a.selected {
 	color: #FFFFFF;
 	background-color: #CC0000;
+}
+
+
+.case_content {
+	padding: 5px;
+	font-size: 14px;
+}
+.case_content img.right {
+	float: right;
+	margin-left: 30px;
+}
+.case_content ul {
+	margin: 0px;
+	padding-left: 40px;
+}
+.case_content li {
+	list-style-type: disc;
+	margin: 10px 0px;
+}
+
+
+.trainee_feedback {
+
+}
+.trainee_feedback td {
+	vertical-align: top;
+	padding: 5px 2px;
+}
+
+
+.expo_case {
+	margin-left: 20px;
+}
+.expo_case ul {
+	margin: 0px;
+	padding-left: 10px;
+	width: 90%;
+}
+.expo_case td {
+	vertical-align: top;
+}
+
+
+.recent_grid {
+	width: 100%;
+}
+.recent_grid td, .recent_grid th {
+	text-align: center;
+	padding: 2px;
+}
+.recent_grid th {
+	font-weight: bold;
+}
+.recent_grid td.grey, .recent_grid th.grey {
+	background-color: #EAEAEA;
 }

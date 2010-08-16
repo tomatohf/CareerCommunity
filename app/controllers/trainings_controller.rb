@@ -5,6 +5,11 @@ class TrainingsController < ApplicationController
   end
   
   
+  def recent
+    
+  end
+  
+  
   def cases
     @cases = [
       ["expo", "世博志愿者培训"],
@@ -15,7 +20,7 @@ class TrainingsController < ApplicationController
     ]
     
     @case = @cases.detect{ |c| c[0] == params[:id] }
-    return jump_to("/trainings/cases/expo") unless @case
+    return jump_to("/trainings/cases/#{@cases[0][0]}") unless @case
   end
   
   
