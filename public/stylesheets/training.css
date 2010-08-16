@@ -176,3 +176,9 @@ a {
 .recent_grid td.grey, .recent_grid th.grey {
 	background-color: #EAEAEA;
 }
+
+
+.highlight {
+	color: #CC0000;
+	font-weight: bold;
+}

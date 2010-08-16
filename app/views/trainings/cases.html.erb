@@ -2,16 +2,16 @@
 	当前位置：
 	<a href="/trainings">乔布咨询</a>
 	»
-	<a href="/trainings/cases">经典案例</a>
+	<a href="/trainings/<%= action_name %>">经典案例</a>
 	»
-	<a href="/trainings/cases/<%= @case[0] %>"><%= @case[1] %></a>
+	<a href="/trainings/<%= action_name %>/<%= @case[0] %>"><%= @case[1] %></a>
 </div>
 
 <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
 	<tr>
 		<td class="left_menus" valign="top">
 			<% @cases.each do |c| %>
-				<a href="/trainings/cases/<%= c[0] %>"<%= %Q! class="selected"! if c[0] == @case[0] %>>
+				<a href="/trainings/<%= action_name %>/<%= c[0] %>"<%= %Q! class="selected"! if c[0] == @case[0] %>>
 					<%= c[1] %></a>
 			<% end %>
 		</td>
@@ -71,7 +71,7 @@
 									<li>
 										6个场馆，设置场景游戏，学员通过完成“任务书”中的任务展开小组竞赛
 									</li>
-									<li>
+									<li class="highlight">
 										将书面的内容立体化，并融练习、考察、相互学习、团队合作、激励于一体的创新培训方式
 									</li>
 								</ul>

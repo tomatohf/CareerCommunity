@@ -5,6 +5,22 @@ class TrainingsController < ApplicationController
   end
   
   
+  def products
+    @grids = [
+      ["recommend", "学员推荐课程"],
+      ["list", "课程一览表"]
+    ]
+    
+    @grid = @grids.detect{ |c| c[0] == params[:id] }
+    return jump_to("/trainings/#{action_name}/#{@grids[0][0]}") unless @grid
+  end
+  
+  
+  def featured
+    
+  end
+  
+  
   def recent
     
   end
@@ -20,7 +36,7 @@ class TrainingsController < ApplicationController
     ]
     
     @case = @cases.detect{ |c| c[0] == params[:id] }
-    return jump_to("/trainings/cases/#{@cases[0][0]}") unless @case
+    return jump_to("/trainings/#{action_name}/#{@cases[0][0]}") unless @case
   end
   
   

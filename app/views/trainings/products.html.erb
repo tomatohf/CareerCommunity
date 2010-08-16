@@ -1,0 +1,37 @@
+<div class="breadcrumb">
+	当前位置：
+	<a href="/trainings">乔布咨询</a>
+	»
+	<a href="/trainings/<%= action_name %>">培训产品</a>
+	»
+	<a href="/trainings/<%= action_name %>/<%= @grid[0] %>"><%= @grid[1] %></a>
+</div>
+
+<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+	<tr>
+		<td class="left_menus" valign="top" style="width: 120px;">
+			<% @grids.each do |c| %>
+				<a href="/trainings/<%= action_name %>/<%= c[0] %>"<%= %Q! class="selected"! if c[0] == @grid[0] %>>
+					<%= c[1] %></a>
+			<% end %>
+		</td>
+		
+		
+		<td valign="top">
+			<div class="slide_title">
+				<%= @grid[1] %>
+			</div>
+			
+			<div>
+				<% if @grid[0] == "recommend" %>
+					
+				<% end %>
+				
+				
+				<% if @grid[0] == "list" %>
+					
+				<% end %>
+			</div>
+		</td>
+	</tr>
+</table>
