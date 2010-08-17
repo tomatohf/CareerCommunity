@@ -121,7 +121,9 @@
 						<option value="">更多地区</option>
 						<% Recruitment.get_locations.each do |l| %>
 							<% location_name = h(l) %>
-							<option value="<%= location_name %>"><%= location_name %></option>
+							<% unless location_name.jsize > 8 %>
+								<option value="<%= location_name %>"><%= location_name %></option>
+							<% end %>
 						<% end %>
 					</select>
 				<% end %>
