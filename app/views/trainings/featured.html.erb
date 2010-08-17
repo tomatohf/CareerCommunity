@@ -2,5 +2,282 @@
 	当前位置：
 	<a href="/trainings">乔布咨询</a>
 	»
-	<a href="/trainings/featured">特色课程</a>
+	<a href="/trainings/<%= action_name %>">特色课程</a>
+	»
+	<a href="/trainings/<%= action_name %>/<%= @sub_page[0] %>"><%= @sub_page[1] %></a>
 </div>
+
+<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+	<tr>
+		<td class="left_menus" valign="top" style="width: 130px;">
+			<% @sub_pages.each do |c| %>
+				<a href="/trainings/<%= action_name %>/<%= c[0] %>"<%= %Q! class="selected"! if c[0] == @sub_page[0] %>>
+					<%= c[1] %></a>
+			<% end %>
+		</td>
+		
+		
+		<td valign="top" style="padding: 0px 15px;">
+			<% if @sub_page[0] == "sales" %>
+				<div class="slide_title">
+					<img src="/images/trainings/featured/main_course.png" border="0" alt="主打课程" class="featured_label" />
+					<%= @sub_page[1] %>
+				</div>
+				
+				<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+					<tr>
+						<td valign="top">
+							<div class="featured_title">1. 团队拓展训练</div>
+							<div class="featured_content">
+								<ul>
+									<li>有意识探寻客户需求，掌握拜访的技巧和方法</li>
+									<li>掌握专业拜访的6个步骤</li>
+									<li>4大案例反复训练拜访基本功</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">2. 群体销售技巧</div>
+							<div class="featured_content">
+								<ul>
+									<li>掌握群体销售技巧方法</li>
+									<li>群体销售的基本技巧和流程</li>
+									<li>练习：有技巧的结束语</li>
+									<li>关键点练习：处理异议</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">3. 销售谈判技巧</div>
+							<div class="featured_content">
+								<ul>
+									<li>识别客户的谈判技巧</li>
+									<li>识别使用谈判技巧时机</li>
+									<li>掌握谈判的基本方法和技巧</li>
+									<li>有效的谈判前准备；谈判4阶段训练</li>
+									<li>三大案例练习：从双方博弈到赢得订单</li>
+								</ul>
+							</div>
+						</td>
+						
+						<td valign="top" align="right" style="width: 230px;">
+							<div>
+								<img src="/images/trainings/featured/sales_1.png" border="0" alt="2009.3.14 STP课程 一对一拜访训练" title="2009.3.14 STP课程 一对一拜访训练" />
+							</div>
+							
+							<div style="margin-top: 20px;">
+								<img src="/images/trainings/featured/sales_2.png" border="0" alt="2009.9.23 沧源科技园区中小企业专业销售技巧培训" title="2009.9.23 沧源科技园区中小企业专业销售技巧培训" />
+							</div>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+			
+			
+			<% if @sub_page[0] == "manage" %>
+				<div class="slide_title">
+					<img src="/images/trainings/featured/recommend_course.png" border="0" alt="学员推荐" class="featured_label" />
+					<%= @sub_page[1] %>
+				</div>
+				
+				<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+					<tr>
+						<td valign="top">
+							<div class="featured_title">1. 有效沟通</div>
+							<div class="featured_content">
+								<ul>
+									<li>了解有效沟通的原则和方法，提高沟通质量</li>
+									<li>设定典型的沟通情境，包括自我介绍、说服他人、面试应答、说明情况等</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">2. 项目管理</div>
+							<div class="featured_content">
+								<ul>
+									<li>学习项目管理的方法，提高项目管理效率</li>
+									<li>根据背景材料设计与日常工作相关的项目，学员根据所学，制定项目计划</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">3. 压力管理</div>
+							<div class="featured_content">
+								<ul>
+									<li>讲解压力的来源和种类</li>
+									<li>讲解压力管理的方法</li>
+									<li>培养健康良好的面对挫折、面对压力的心态</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">4. 媒体接待</div>
+							<div class="featured_content">
+								<ul>
+									<li>讲解应对媒体的方法</li>
+									<li>从记者角度体验采访过程</li>
+									<li>强化沟通交流能力和语言表达技巧</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">5. 危机管理</div>
+							<div class="featured_content">
+								<ul>
+									<li>提高员工对突发紧急事件的处理能力</li>
+									<li>紧急突发事件的应对和危机公关处理方法</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">6. 急救消防</div>
+							<div class="featured_content">
+								<ul>
+									<li>基本的外科急救</li>
+									<li>心肺脑复苏训练</li>
+									<li>突发事件应对</li>
+								</ul>
+							</div>
+						</td>
+						
+						<td valign="top" align="right" style="width: 200px;">
+							<div>
+								<img src="/images/trainings/featured/manage_1.png" border="0" />
+							</div>
+							
+							<div style="margin: 50px 0px;">
+								<img src="/images/trainings/featured/manage_2.png" border="0" />
+							</div>
+							
+							<div>
+								<img src="/images/trainings/featured/manage_3.png" border="0" />
+							</div>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+			
+			
+			<% if @sub_page[0] == "career" %>
+				<div class="slide_title">
+					<img src="/images/trainings/featured/recommend_course.png" border="0" alt="学员推荐" class="featured_label" />
+					<%= @sub_page[1] %>
+				</div>
+				
+				<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+					<tr>
+						<td valign="top">
+							<div class="featured_title">1. 结构化思维训练</div>
+							<div class="featured_content">
+								<ul>
+									<li>讲解思考、总结、组织语言的方法</li>
+									<li>使学员掌握结构化思考方式，提高表达的准确性和系统性</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">2. 演讲训练</div>
+							<div class="featured_content">
+								<ul>
+									<li>讲解专业演讲的准备工作、开场白、主体内容、问答、结束语、讲台风采等环节</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">3. 商务英语训练</div>
+							<div class="featured_content">
+								<ul>
+									<li>提高员工商务英语的沟通能力</li>
+									<li>提高跨文化沟通意识</li>
+									<li>结合产品和服务特点进行口语/书面训练</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">4. 模拟竞聘训练</div>
+							<div class="featured_content">
+								<ul>
+									<li>模拟竞岗的实际情景，培训师扮演面试官，学员依次模拟竞聘</li>
+								</ul>
+							</div>
+						</td>
+						
+						<td valign="top" align="right" style="width: 150px;">
+							<div>
+								<img src="/images/trainings/featured/career_1.png" border="0" alt="2009.4.23 卢湾区团委 结构化思维训练" title="2009.4.23 卢湾区团委 结构化思维训练" />
+							</div>
+							
+							<div style="margin: 10px 0px;">
+								<img src="/images/trainings/featured/career_2.png" border="0" alt="2010.4.4 伊利 门店礼仪培训" title="2010.4.4 伊利 门店礼仪培训" />
+							</div>
+							
+							<div>
+								<img src="/images/trainings/featured/career_3.png" border="0" alt="2009.9.27 STP 模拟面试训练" title="2009.9.27 STP 模拟面试训练" />
+							</div>
+							
+							<div style="margin-top: 10px;">
+								<img src="/images/trainings/featured/career_4.png" border="0" alt="2009.9.16 STP 演讲训练" title="2009.9.16 STP 演讲训练" />
+							</div>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+			
+			
+			<% if @sub_page[0] == "outward" %>
+				<div class="slide_title">
+					<img src="/images/trainings/featured/featured_course.png" border="0" alt="特色训练" class="featured_label" />
+					<%= @sub_page[1] %>
+				</div>
+				
+				<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+					<tr>
+						<td valign="top">
+							<div class="featured_title highlight">体验营训练</div>
+							<div class="featured_content">
+								<ul>
+									<li>把培训内容游戏化的培训方式；通过具体情境，模拟体验工作中的问题，让学员对培训有更直观的感受</li>
+									<li>可通过多种环节达到体验效果</li>
+									<li>结合公司本身的产品服务，以小组为单位竞赛更佳</li>
+								</ul>
+							</div>
+							
+							<div class="featured_title">团队拓展训练</div>
+							<div class="featured_content">
+								<ul>
+									<li>在培训课程中，结合工作特点，设计拓展游戏，让学员在充满趣味的管理游戏中体验培训教学内容，获得感悟</li>
+									<li>同时，拓展训练环节在培训中也具有热身的效果</li>
+									<li>
+										培训中的拓展训练包括：
+										<table border="0" cellspacing="0" cellpadding="0" class="trainee_feedback">
+											<tr>
+												<td style="width: 25px;">--</td>
+												<td>主动沟通</td>
+											</tr>
+											<tr>
+												<td>--</td>
+												<td>积极调整心态</td>
+											</tr>
+											<tr>
+												<td>--</td>
+												<td>勇于自我展示</td>
+											</tr>
+											<tr>
+												<td>--</td>
+												<td>团队合作</td>
+											</tr>
+										</table>
+									</li>
+								</ul>
+							</div>
+						</td>
+						
+						<td valign="top" align="right" style="width: 230px;">
+							<div>
+								<img src="/images/trainings/featured/outward_1.png" border="0" />
+							</div>
+							
+							<div style="margin: 10px 0px;">
+								<img src="/images/trainings/featured/outward_2.png" border="0" />
+							</div>
+							
+							<div>
+								<img src="/images/trainings/featured/outward_3.png" border="0" />
+							</div>
+						</td>
+					</tr>
+				</table>
+			<% end %>
+		</td>
+	</tr>
+</table>

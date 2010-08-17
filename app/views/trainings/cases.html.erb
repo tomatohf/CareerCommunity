@@ -4,14 +4,14 @@
 	»
 	<a href="/trainings/<%= action_name %>">经典案例</a>
 	»
-	<a href="/trainings/<%= action_name %>/<%= @case[0] %>"><%= @case[1] %></a>
+	<a href="/trainings/<%= action_name %>/<%= @sub_page[0] %>"><%= @sub_page[1] %></a>
 </div>
 
 <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
 	<tr>
 		<td class="left_menus" valign="top">
-			<% @cases.each do |c| %>
-				<a href="/trainings/<%= action_name %>/<%= c[0] %>"<%= %Q! class="selected"! if c[0] == @case[0] %>>
+			<% @sub_pages.each do |c| %>
+				<a href="/trainings/<%= action_name %>/<%= c[0] %>"<%= %Q! class="selected"! if c[0] == @sub_page[0] %>>
 					<%= c[1] %></a>
 			<% end %>
 		</td>
@@ -19,11 +19,11 @@
 		
 		<td valign="top">
 			<div class="slide_title">
-				<%= @case[1] %>
+				<%= @sub_page[1] %>
 			</div>
 			
 			<div class="case_content">
-				<% if @case[0] == "expo" %>
+				<% if @sub_page[0] == "expo" %>
 					<table border="0" cellspacing="0" cellpadding="0" class="expo_case">
 						<tr>
 							<td style="width: 320px;">
@@ -60,7 +60,7 @@
 				<% end %>
 				
 				
-				<% if @case[0] == "tiyan" %>
+				<% if @sub_page[0] == "tiyan" %>
 					<table border="0" cellspacing="0" cellpadding="0" class="expo_case">
 						<tr>
 							<td style="width: 250px;">
@@ -108,7 +108,7 @@
 				<% end %>
 				
 				
-				<% if @case[0] == "yili" %>
+				<% if @sub_page[0] == "yili" %>
 					<img src="/images/trainings/cases/yili.png" class="right" border="0" />
 					
 					<ul>
@@ -147,7 +147,7 @@
 				<% end %>
 				
 				
-				<% if @case[0] == "pudong" %>
+				<% if @sub_page[0] == "pudong" %>
 					<img src="/images/trainings/cases/pudong.png" class="right" border="0" />
 					
 					<ul>
@@ -182,7 +182,7 @@
 				<% end %>
 				
 				
-				<% if @case[0] == "cangyuan" %>
+				<% if @sub_page[0] == "cangyuan" %>
 					<img src="/images/trainings/cases/cangyuan.png" class="right" border="0" />
 					
 					<ul>

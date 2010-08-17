@@ -206,3 +206,31 @@ a {
 .product_grid td, .product_grid th {
 	padding: 5px 8px 4px;
 }
+
+
+img.featured_label {
+	margin: 0px 10px -7px 0px;
+}
+
+
+.featured_title {
+	background-color: #EAEAEA;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 6px 10px 4px;
+}
+
+.featured_content {
+	border: 1px dashed #EAEAEA;
+	font-size: 14px;
+	padding: 6px 10px 4px 0px;
+	margin-bottom: 3px;
+}
+.featured_content ul {
+	margin: 0px;
+	padding-left: 40px;
+}
+.featured_content li {
+	list-style-type: disc;
+	margin: 3px 0px;
+}
