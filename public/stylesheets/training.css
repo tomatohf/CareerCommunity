@@ -182,3 +182,27 @@ a {
 	color: #CC0000;
 	font-weight: bold;
 }
+
+
+.product_grid {
+	width: 100%;
+	border-collapse: collapse;
+}
+.product_grid td {
+	border: 1px solid #FFFFFF;
+	background-color: #D8E0EB;
+}
+.product_grid td.grey {
+	background-color: #EDF1F6;
+}
+.product_grid th {
+	border-style: solid;
+	border-color: #FFFFFF;
+	border-width: 1px 1px 3px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #5D96C5;
+}
+.product_grid td, .product_grid th {
+	padding: 5px 8px 4px;
+}

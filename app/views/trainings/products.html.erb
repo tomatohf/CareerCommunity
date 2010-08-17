@@ -22,14 +22,183 @@
 				<%= @grid[1] %>
 			</div>
 			
-			<div>
+			<div style="padding-left: 15px;">
 				<% if @grid[0] == "recommend" %>
-					
+					<table border="0" cellspacing="0" cellpadding="0" class="product_grid" style="text-align: center; font-size: 14px;">
+						<tr>
+							<th>类别</th>
+							<th>课程</th>
+							<th>类别</th>
+							<th>课程</th>
+						</tr>
+						
+						<tr>
+							<td rowspan="5" class="highlight">专业销售技巧<br />（主打课程）</td>
+							<td>专业拜访技巧</td>
+							<td rowspan="6">管理沟通课程</td>
+							<td>有效沟通</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">群体销售技巧</td>
+							<td class="grey">项目管理</td>
+						</tr>
+						
+						<tr>
+							<td>销售谈判技巧</td>
+							<td>压力管理</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">商务礼仪训练</td>
+							<td class="grey">危机管理</td>
+						</tr>
+						
+						<tr>
+							<td>高效能销售员</td>
+							<td>接待媒体</td>
+						</tr>
+						
+						<tr>
+							<td rowspan="3" class="grey">分行业<br />销售培训</td>
+							<td class="grey">医药销售</td>
+							<td class="grey">急救消防</td>
+						</tr>
+						
+						<tr>
+							<td>门店销售</td>
+							<td rowspan="4" class="grey">职场提升训练</td>
+							<td>结构化思维训练</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">软件销售</td>
+							<td class="grey">演讲训练</td>
+						</tr>
+						
+						<tr>
+							<td rowspan="2">拓展训练</td>
+							<td>团队建设拓展</td>
+							<td>模拟竞聘训练</td>
+						</tr>
+						
+						<tr>
+							<td class="grey highlight">体验营训练（特色训练）</td>
+							<td class="grey">商务英语训练</td>
+						</tr>
+					</table>
 				<% end %>
 				
 				
 				<% if @grid[0] == "list" %>
-					
+					<table border="0" cellspacing="0" cellpadding="0" class="product_grid">
+						<tr>
+							<th>类别</th>
+							<th>课程</th>
+							<th>类别</th>
+							<th>课程</th>
+						</tr>
+						
+						<tr>
+							<td rowspan="13" style="text-align: center;">人力资源类</td>
+							<td>战略性人力资源管理</td>
+							<td rowspan="7" style="text-align: center;">生产管理类</td>
+							<td>生产管理综合技能训练（MTP）</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">企业培训体系的建立和人才素质提升策略</td>
+							<td class="grey">现场管理实务</td>
+						</tr>
+						
+						<tr>
+							<td>TTT企业内部讲师培训</td>
+							<td>如何做好生产计划与物料控制</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">目标管理与绩效考核</td>
+							<td class="grey">TPM（完全生产力维护）</td>
+						</tr>
+						
+						<tr>
+							<td>高级招聘与面试技巧</td>
+							<td>时间研究与生产线平衡</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">如何建立公平且具激励性的薪酬系统</td>
+							<td class="grey">生产现场管理问题分析、解决与成本控制</td>
+						</tr>
+						
+						<tr>
+							<td>员工关系管理</td>
+							<td>现场5S管理、准时化生产和看板管理</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">职位分析、职位评估及职业生涯规划</td>
+							<td rowspan="8" style="text-align: center;" class="grey">供应链管理类</td>
+							<td class="grey">标杆采购管理</td>
+						</tr>
+						
+						<tr>
+							<td>我的“职业锚”</td>
+							<td>精益采购管理&amp;优势谈判技巧</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">岗位胜任力与素质模型</td>
+							<td class="grey">采购风险管理与控制实战训练</td>
+						</tr>
+						
+						<tr>
+							<td>储备干部与“接班人”培养</td>
+							<td>如何选择与评估供应商</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">企业如何应对全新的《劳动合同法》</td>
+							<td class="grey">采购成本分析与成本控制</td>
+						</tr>
+						
+						<tr>
+							<td>用新《劳动合同法》建立健全企业规章制度</td>
+							<td>采购策略与战略制定</td>
+						</tr>
+						
+						<tr>
+							<td rowspan="6" style="text-align: center;" class="grey">项目管理类</td>
+							<td class="grey">项目管理软件的应用</td>
+							<td class="grey">SCM供应链管理</td>
+						</tr>
+						
+						<tr>
+							<td>项目时间管理与进度控制</td>
+							<td>采购必备的法律知识和合同管理</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">高级项目风险管理</td>
+							<td rowspan="4" style="text-align: center;">技术研发类</td>
+							<td class="grey">从技术走向管理</td>
+						</tr>
+						
+						<tr>
+							<td>多项目与项目组合管理</td>
+							<td>数据库开发培训</td>
+						</tr>
+						
+						<tr>
+							<td class="grey">大型活动项目策划与管理</td>
+							<td class="grey">办公系统管理培训</td>
+						</tr>
+						
+						<tr>
+							<td>项目管理实战案例分析</td>
+							<td>创新思维、创新工具TRIZ和创新心理</td>
+						</tr>
+					</table>
 				<% end %>
 			</div>
 		</td>
