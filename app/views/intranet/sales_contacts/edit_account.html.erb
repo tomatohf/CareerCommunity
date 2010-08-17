@@ -1,0 +1,38 @@
+<%
+	page_title = "转移客户"
+	community_page_title(page_title)
+%>
+
+<div class="job_item_container">
+	<a class="float_r" href="/intranet/employees/<%= @employee[:account_id] %>/sales_contacts/<%= @contact.id %>">
+		返回客户</a>
+	<h2><%= page_title %></h2>
+	
+	
+	<div class="community_block_narrow">
+		<table border="0" cellspacing="0" cellpadding="0" class="list" style="font-size: 14px;">
+			<thead>
+				<tr>
+					<td style="width: 200px;">姓名</td>
+					<td style="width: 100px;">移交</td>
+				</tr>
+			</thead>
+
+			<tbody>
+				<% Intranet::Employee.data.each_with_index do |employee, i| %>
+					<tr<%= %Q! class="even"! if i.even? %>>
+						<td><%= employee[:name] %></td>
+
+						<td>
+							<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_contacts/#{@contact.id}/update_account", :method => :post, :onsubmit => "if(!confirm('确定要将客户移交给 #{employee[:name]} 么 ?')){ return false; }" do %>
+								<input type="hidden" id="account_id" name="account_id" value="<%= employee[:account_id] %>" />
+								<%= submit_tag "移交", :class => "button", :disabled => @account_limited %>
+							<% end %>
+						</td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+	
+</div>

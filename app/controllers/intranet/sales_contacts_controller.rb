@@ -8,9 +8,11 @@ module Intranet
   
     before_filter :check_login
     before_filter :check_employee
-    before_filter :check_limited, :only => [:create, :update]
-    
-    before_filter :check_not_manager, :only => [:new, :create, :edit, :update]
+    before_filter :check_limited, :only => [:create, :update, :update_account]
+    before_filter :check_contact, :except => [:index, :search, :new, :create]
+                                                  
+    before_filter :check_not_manager, :only => [:new, :create, :edit, :update,
+                                                :edit_account, :update_account]
   
   
   
@@ -79,17 +81,15 @@ module Intranet
   
   
     def show
-      @contact = SalesContact.find(params[:id])
+      
     end
     
     
     def edit
-      @contact = SalesContact.find(params[:id])
+      
     end
     
     def update
-      @contact = SalesContact.find(params[:id])
-      
       @contact.updated_by = session[:account_id]
       
       @contact.name = params[:name] && params[:name].strip
@@ -120,10 +120,36 @@ module Intranet
 
       render :action => "edit"
     end
+    
+    
+    def edit_account
+      
+    end
+    
+    def update_account
+      @contact.updated_by = session[:account_id]
+      
+      employee = Intranet::Employee.find_by(:account_id, params[:account_id].to_i)
+      return jump_to("/errors/unauthorized") unless employee
+
+      @contact.account_id = employee[:account_id]
+      
+      if @contact.save
+        return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_contacts")
+      end
+
+      render :action => "edit_account"
+    end
   
   
   
     private
+    
+    def check_contact
+      @contact = SalesContact.find(params[:id])
+      
+      jump_to("/errors/unauthorized") unless @employee[:account_id] == @contact.account_id
+    end
   
     def check_not_manager
       jump_to("/errors/forbidden") if @manager

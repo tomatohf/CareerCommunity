@@ -692,6 +692,9 @@ ActionController::Routing::Routes.draw do |map|
     } do |employees|
       employees.resources :sales_contacts, :collection => {
         :search => [:get, :post]
+      }, :member => {
+        :edit_account => :get,
+        :update_account => :post
       }
       
       employees.resources :sales_opportunities, :collection => {
