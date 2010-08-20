@@ -1,29 +1,25 @@
 <div class="top_menu">
 	<table cellpadding="0" cellspacing="0" border="0">
 		<tr>
-			<td>
-				<a href="/trainings">首&nbsp;&nbsp;&nbsp;&nbsp;页</a>
-			</td>
-			<td>|</td>
-			<td>
-				<a href="/trainings/products">培训产品</a>
-			</td>
-			<td>|</td>
-			<td>
-				<a href="/trainings/featured">特色课程</a>
-			</td>
-			<td>|</td>
-			<td>
-				<a href="/trainings/recent">近期项目</a>
-			</td>
-			<td>|</td>
-			<td>
-				<a href="/trainings/cases">经典案例</a>
-			</td>
-			<td>|</td>
-			<td>
-				<a href="/trainings/about">关于我们</a>
-			</td>
+			<%=
+				[
+					["index", "首&nbsp;&nbsp;&nbsp;&nbsp;页"],
+					["products", "培训产品"],
+					["featured", "特色课程"],
+					["recent", "近期项目"],
+					["cases", "经典案例"],
+					["about", "关于我们"]
+				].map { |menu|
+					%Q!
+						<td>
+							<a href="/trainings/#{menu[0]}"#{%Q! class="selected"! if menu[0] == action_name}>
+								#{menu[1]}</a>
+						</td>
+					!
+				}.join(
+					%Q!<td>|</td>!
+				)
+			%>
 		</tr>
 	</table>
 </div>

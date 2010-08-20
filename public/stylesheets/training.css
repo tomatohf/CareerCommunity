@@ -56,9 +56,12 @@ a {
 	display: block;
 	width: 80px;
 }
-.top_menu a:hover {
+.top_menu a:hover, .top_menu a.selected {
 	color: #CC0000;
 	background-color: #FFFFFF;
+}
+.top_menu a.selected {
+	font-weight: bold;
 }
 .top_menu table {
 	margin: 0px auto;
