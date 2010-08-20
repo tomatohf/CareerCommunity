@@ -21,7 +21,7 @@ a {
 .bottom {
 	margin-top: 50px;
 	padding-top: 10px;
-	border-top: 5px solid #CC0000;
+	border-top: 5px solid #FF6600;
 	text-align: center;
 	color: #808080;
 	font-size: 12px;
@@ -43,7 +43,7 @@ a {
 
 .top_menu {
 	margin-top: 10px;
-	background-color: #CC0000;
+	background-color: #FF6600;
 	color: #FFFFFF;
 	font-size: 14px;
 	text-align: center;
@@ -57,7 +57,7 @@ a {
 	width: 80px;
 }
 .top_menu a:hover, .top_menu a.selected {
-	color: #CC0000;
+	color: #FF6600;
 	background-color: #FFFFFF;
 }
 .top_menu a.selected {
@@ -84,7 +84,7 @@ a {
 	text-decoration: none;
 }
 .breadcrumb a:hover {
-	color: #CC0000;
+	color: #FF6600;
 }
 
 
@@ -118,11 +118,11 @@ a {
 }
 .left_menus a:hover {
 	background-color: #F8F8F8;
-	color: #CC0000;
+	color: #FF6600;
 }
 .left_menus a.selected {
 	color: #FFFFFF;
-	background-color: #CC0000;
+	background-color: #FF6600;
 }
 
 
@@ -182,7 +182,7 @@ a {
 
 
 .highlight {
-	color: #CC0000;
+	color: #FF6600;
 	font-weight: bold;
 }
 
