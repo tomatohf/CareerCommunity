@@ -5,6 +5,11 @@ class TrainingsController < ApplicationController
   end
   
   
+  def solution
+    
+  end
+  
+  
   def products
     @sub_pages = [
       ["recommend", "学员推荐课程"],
