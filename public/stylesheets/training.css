@@ -21,7 +21,7 @@ a {
 .bottom {
 	margin-top: 50px;
 	padding-top: 10px;
-	border-top: 5px solid #0070C0;
+	border-top: 5px solid #000000;
 	text-align: center;
 	color: #808080;
 	font-size: 12px;
@@ -44,13 +44,13 @@ a {
 	text-decoration: none;
 }
 .top a:hover {
-	color: #0070C0;
+	color: #FF6600;
 }
 
 
 .top_menu {
 	margin-top: 10px;
-	background-color: #0070C0;
+	background-color: #000000;
 	color: #FFFFFF;
 	font-size: 14px;
 	text-align: center;
@@ -64,7 +64,7 @@ a {
 	width: 80px;
 }
 .top_menu a:hover, .top_menu a.selected {
-	color: #0070C0;
+	color: #FF6600;
 	background-color: #FFFFFF;
 }
 .top_menu a.selected {
@@ -91,7 +91,7 @@ a {
 	text-decoration: none;
 }
 .breadcrumb a:hover {
-	color: #0070C0;
+	color: #FF6600;
 }
 
 
@@ -125,11 +125,11 @@ a {
 }
 .left_menus a:hover {
 	background-color: #F8F8F8;
-	color: #0070C0;
+	color: #000000;
 }
 .left_menus a.selected {
 	color: #FFFFFF;
-	background-color: #0070C0;
+	background-color: #000000;
 }
 
 
@@ -189,7 +189,7 @@ a {
 
 
 .highlight {
-	color: #0070C0;
+	color: #FF6600;
 	font-weight: bold;
 }
 
