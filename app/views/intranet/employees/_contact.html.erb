@@ -37,6 +37,10 @@
 		<%= (employee = Intranet::Employee.find_by(:account_id, contact.account_id)) && employee[:name] %>
 	</td>
 	
+	<td>
+		<%= format_date(contact.created_at) %>
+	</td>
+	
 	
 	<td align="right">
 		<a href="/intranet/employees/<%= contact.account_id %>/sales_contacts/<%= contact.id %>" class="account_nick_link">

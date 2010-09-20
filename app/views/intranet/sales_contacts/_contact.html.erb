@@ -33,6 +33,10 @@
 		<%= h(contact.phone) %>
 	</td>
 	
+	<td>
+		<%= format_date(contact.created_at) %>
+	</td>
+	
 	
 	<td align="right">
 		<% unless @manager %>
