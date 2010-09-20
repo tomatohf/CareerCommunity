@@ -40,11 +40,25 @@
 						<img src="/images/job_targets/hide_left_icon.gif" border="0" /></a>
 				</td>
 				
-				<td>
-					
+				<td align="right" style="word-spacing: 10px;">
+					<span class="form_info_s">排序:</span>
+					<%
+						[
+							["title", "标题"],
+							["time", "时间"],
+							["status", "进度"]
+						].each do |s|
+					%>
+						<% if s[0] == @sort %>
+							<strong><%= s[1] %></strong>
+						<% else %>
+							<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities?sort=<%= s[0] %>" class="account_nick_link">
+								<%= s[1] %></a>
+						<% end %>
+					<% end %>
 				</td>
 				
-				<td align="right" style="width: 150px;">
+				<td align="right" style="width: 200px;">
 					<select id="status_switcher" class="dropdown_list" style="font-size: 13px;">
 						<% Intranet::SalesOpportunityStatus.data.each do |status| %>
 							<option value="<%= status[:name] == "ongoing" ? "" : "/#{status[:name]}" %>"<%= %Q! selected="selected"! if status[:id] == @status[:id] %>>

@@ -44,9 +44,42 @@ module Intranet
           @status[:id]
         ],
         :include => [:contact, :step_records, :attachments, :todos]
-      ).sort! {|x, y| y.title <=> x.title }
+      )
       
       prepare_latest_records
+      
+      @sort = (params[:sort] && params[:sort].strip) || "time"
+      case @sort
+      when "title"
+        @opportunities.sort! {|x, y| x.title <=> y.title }
+      when "time"
+        @opportunities.sort! { |x, y|
+          x_record = @latest_records.detect { |record| record.opportunity_id == x.id }
+          y_record = @latest_records.detect { |record| record.opportunity_id == y.id }
+          
+          if x_record && y_record
+            y_record.occur_at <=> x_record.occur_at
+          else
+            if x_record
+              -1
+            else
+              if y_record
+                1
+              else
+                0
+              end
+            end
+          end
+        }
+      when "status"
+        @opportunities.sort! { |x, y|
+          y.step_records.select{ |record|
+            record.done
+          }.size <=> x.step_records.select{ |record|
+            record.done
+          }.size
+        }
+      end
     end
     
     def success
