@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 70) do
+ActiveRecord::Schema.define(:version => 71) do
 
   create_table "account_actions", :force => true do |t|
     t.integer  "account_id"
@@ -1035,9 +1035,9 @@ ActiveRecord::Schema.define(:version => 70) do
     t.integer  "job_position_id"
     t.integer  "current_job_step_id"
     t.boolean  "closed",              :default => false
+    t.boolean  "starred",             :default => false
     t.text     "info"
     t.boolean  "delta"
-    t.boolean  "starred",             :default => false
   end
 
   add_index "job_targets", ["closed", "account_id", "created_at"], :name => "index_job_targets_on_closed_and_account_id_and_created_at"
@@ -1232,6 +1232,17 @@ ActiveRecord::Schema.define(:version => 70) do
 
   add_index "sales_opportunity_attachments", ["opportunity_id", "updated_at"], :name => "index_sales_opportunity_attachments_on_opportunity_updated"
 
+  create_table "sales_opportunity_comments", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "opportunity_id"
+    t.integer  "account_id"
+    t.string   "content",        :limit => 1000
+    t.boolean  "delta"
+  end
+
+  add_index "sales_opportunity_comments", ["opportunity_id", "created_at"], :name => "index_sales_opportunity_comments_on_opportunity_created"
+
   create_table "sales_opportunity_records", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -1410,7 +1421,6 @@ ActiveRecord::Schema.define(:version => 70) do
     t.string   "nick"
     t.string   "company"
     t.string   "position"
-    t.string   "experience", :limit => 1000
     t.string   "email"
     t.string   "mobile",     :limit => 25
     t.string   "phone",      :limit => 25
@@ -1418,6 +1428,7 @@ ActiveRecord::Schema.define(:version => 70) do
     t.string   "gtalk"
     t.string   "qq",         :limit => 20
     t.string   "skype"
+    t.string   "experience", :limit => 1000
     t.string   "other",      :limit => 1000
     t.boolean  "delta"
   end
@@ -1553,9 +1564,9 @@ ActiveRecord::Schema.define(:version => 70) do
     t.integer  "category_id"
     t.boolean  "multiple",                           :default => false
     t.boolean  "allow_add_option",                   :default => false
+    t.boolean  "allow_clear_record",                 :default => false
     t.integer  "group_id",                           :default => 0
     t.boolean  "delta"
-    t.boolean  "allow_clear_record",                 :default => false
     t.boolean  "allow_anonymous",                    :default => false
   end
 

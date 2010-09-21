@@ -73,7 +73,7 @@
 	
 	<table border="0" cellspacing="0" cellpadding="0" class="main_part_w">
 		<tr>
-			<td valign="top" style="width: 60%;">
+			<td valign="top" style="width: 50%;">
 				<div class="community_title">
 					有
 					<b>
@@ -141,6 +141,25 @@
 					<% end %>
 					
 					<%= render :partial => "attachment", :collection => @attachments %>
+				</div>
+				
+				
+				<div class="community_title">
+					有
+					<b>
+						<%= @comments.size %>
+					</b>
+					条评论 ...
+					
+					<a href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/new_comment" class="account_nick_link" style="font-size: 12px; margin: 0px 10px;">
+						添加评论</a>
+				</div>
+				<div class="community_block">
+					<% form_tag "/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}/delete_comment", :method => :post, :id => "delete_comment_form" do %>
+						<input type="hidden" id="comment_id" name="comment_id" value="" />
+					<% end %>
+					
+					<%= render :partial => "comment", :collection => @comments %>
 				</div>
 			</td>
 		</tr>

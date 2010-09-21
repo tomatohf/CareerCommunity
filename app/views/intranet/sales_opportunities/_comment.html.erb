@@ -1,0 +1,44 @@
+<div style="margin: 6px;">
+	<div style="color: #888888;">
+		<% if comment.account_id == session[:account_id] %>
+			<span class="float_r">
+				<a title="删除评论" href="#" onclick="delete_comment(<%= comment.id %>); return false;" class="account_nick_link">
+					删除</a>
+				
+				<a title="修改评论" href="/intranet/employees/<%= @employee[:account_id] %>/sales_opportunities/<%= @opportunity.id %>/edit_comment?comment_id=<%= comment.id %>" class="account_nick_link" style="margin: 0px 10px;">
+					修改</a>
+			</span>
+		<% end %>
+		
+		<b>
+			<%= ((employee = Intranet::Employee.find_by(:account_id, comment.account_id)) && employee[:name]) || comment.account_id %>
+		</b>
+		在
+		<%= format_datetime(comment.created_at) %>
+		评论说
+		:
+	</div>
+	
+	<div style="padding: 0px 15px;">
+		<%=
+			simple_format(
+				auto_link(
+					h(comment.content),
+					:urls,
+					:target => "_blank"
+				)
+			)
+		%>
+	</div>
+	
+	<div class="align_r form_info_s">
+		最后更新于
+		<i>
+			<%= format_datetime(comment.updated_at) %>
+		</i>
+	</div>
+		
+	<div style="padding: 0px 30px;">
+		<%= thin_hr %>
+	</div>
+</div>

@@ -13,13 +13,15 @@ module Intranet
                                             :create_attachment, :delete_attachment,
                                             :create_record, :update_record, :delete_record,
                                             :create_todo, :update_todo, :delete_todo,
-                                            :update_todo_done]
+                                            :update_todo_done,
+                                            :create_comment]
     
     before_filter :check_opportunity, :except => [:index, :fail, :success,
                                                   :new, :create]
     before_filter :check_attachment, :only => [:attachment, :delete_attachment]
     before_filter :check_record, :only => [:edit_record, :update_record, :delete_record]
     before_filter :check_todo, :only => [:edit_todo, :update_todo, :delete_todo, :update_todo_done]
+    before_filter :check_comment, :only => [:edit_comment, :update_comment, :delete_comment]
     
     before_filter :check_not_manager, :only => [:new, :create, :edit, :update, :update_step_done,
                                                 :new_attachment, :create_attachment, :delete_attachment,
@@ -174,6 +176,12 @@ module Intranet
       @todos = SalesOpportunityTodo.find(
         :all,
         :conditions => ["opportunity_id = ? and done = ?", @opportunity.id, false],
+        :order => "created_at DESC"
+      )
+      
+      @comments = SalesOpportunityComment.find(
+        :all,
+        :conditions => ["opportunity_id = ?", @opportunity.id],
         :order => "created_at DESC"
       )
     end
@@ -331,6 +339,63 @@ module Intranet
         :order => "created_at DESC"
       )
     end
+    
+    
+    def new_comment
+      @comment = SalesOpportunityComment.new
+    end
+    
+    def create_comment
+      @comment = SalesOpportunityComment.new(
+        :opportunity_id => @opportunity.id,
+        :account_id => session[:account_id]
+      )
+      @comment.content = params[:content] && params[:content].strip
+
+      if @comment.save
+        Intranet::Employee.find_all_by(:manager, true).collect { |employee|
+          employee[:account_id]
+        }.push(@contact.account_id).delete_if { |account_id|
+          account_id == session[:account_id]
+        }.uniq.each do |owner_id|
+          SysMessage.create_new(owner_id, "add_sales_opportunity_comment", {
+            :opportunity_id => @opportunity.id,
+            :opportunity_account_id => @contact.account_id,
+            :account_id => session[:account_id],
+            :comment_id => @comment.id,
+            :comment_content => @comment.content
+          })
+        end
+        
+        return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+      else
+        flash.now[:error_msg] = "操作失败, 再试一次吧"
+      end
+
+      render :action => "new_comment"
+    end
+    
+    def edit_comment
+      
+    end
+    
+    def update_comment
+      @comment.content = params[:content] && params[:content].strip
+
+      if @comment.save
+        return jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+      else
+        flash.now[:error_msg] = "操作失败, 再试一次吧"
+      end
+
+      render :action => "edit_comment"
+    end
+    
+    def delete_comment
+      @comment.destroy
+      
+      jump_to("/intranet/employees/#{@employee[:account_id]}/sales_opportunities/#{@opportunity.id}")
+    end
   
   
   
@@ -356,6 +421,11 @@ module Intranet
     def check_todo
       @todo = SalesOpportunityTodo.find(params[:todo_id])
       jump_to("/errors/unauthorized") unless @todo.opportunity_id == @opportunity.id
+    end
+    
+    def check_comment
+      @comment = SalesOpportunityComment.find(params[:comment_id])
+      jump_to("/errors/unauthorized") unless @comment.opportunity_id == @opportunity.id && @comment.account_id == session[:account_id]
     end
   
     def save_opportunity

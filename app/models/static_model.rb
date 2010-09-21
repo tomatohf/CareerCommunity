@@ -32,6 +32,10 @@ module StaticModel
       self.select_one(self.data, field, value)
     end
     
+    def self.find_all_by(field, value)
+      self.data.select { |record| record[field] == value }
+    end
+    
     def self.data
       [
         # {id => 10000, attr1 => value1, attr2 => value2, ...}

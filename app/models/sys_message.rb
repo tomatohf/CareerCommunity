@@ -71,7 +71,9 @@ class SysMessage < ActiveRecord::Base
     "invite_join_activity" => "邀请参加活动",
     "deleted_from_activity" => "从活动中删除",
     "invite_join_vote" => "邀请参与投票",
-    "adjust_point" => "调整积分"
+    "adjust_point" => "调整积分",
+    
+    "add_sales_opportunity_comment" => "添加销售机会评论"
   }
   
   Msg_Types.keys.each do |t|
@@ -670,6 +672,60 @@ class SysMessage < ActiveRecord::Base
           {
             :points => points,
             :reason => reason
+          }
+        ]
+      end
+    end
+    
+    
+    class AddSalesOpportunityComment < Base
+      def msg_text(data, owner_id)
+        opportunity_id = data[:opportunity_id]
+        opportunity_account_id = data[:opportunity_account_id]
+        account_id = data[:account_id]
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        
+        account_nick_pic = Account.get_nick_and_pic(account_id)
+        account_nick = ((employee = Intranet::Employee.find_by(:account_id, account_id)) && employee[:name]) || account_nick_pic[0]
+        account_pic_url = account_nick_pic[1]
+        
+        %Q!
+          render(:partial => "/messages/sys/add_sales_opportunity_comment", :locals => {
+            :owner_id => #{owner_id},
+            :opportunity_id => #{opportunity_id},
+            :opportunity_account_id => #{opportunity_account_id},
+            :account_id => #{account_id},
+            :comment_id => #{comment_id},
+            :comment_content => #{comment_content.inspect},
+            :account_nick => #{account_nick.inspect},
+            :account_pic_url => #{account_pic_url.inspect}
+          })
+        !
+      end
+      
+      def render_info(data, owner_id)
+        opportunity_id = data[:opportunity_id]
+        opportunity_account_id = data[:opportunity_account_id]
+        account_id = data[:account_id]
+        comment_id = data[:comment_id]
+        comment_content = data[:comment_content]
+        
+        account_nick_pic = Account.get_nick_and_pic(account_id)
+        account_nick = ((employee = Intranet::Employee.find_by(:account_id, account_id)) && employee[:name]) || account_nick_pic[0]
+        account_pic_url = account_nick_pic[1]
+        
+        [
+          "add_sales_opportunity_comment",
+          {
+            :owner_id => owner_id,
+            :opportunity_id => opportunity_id,
+            :opportunity_account_id => opportunity_account_id,
+            :account_id => account_id,
+            :comment_id => comment_id,
+            :comment_content => comment_content,
+            :account_nick => account_nick,
+            :account_pic_url => account_pic_url
           }
         ]
       end

@@ -720,7 +720,13 @@ ActionController::Routing::Routes.draw do |map|
         :update_todo => :post,
         :delete_todo => :post,
         :update_todo_done => :post,
-        :done_todos => :get
+        :done_todos => :get,
+        
+        :new_comment => :get,
+        :create_comment => :post,
+        :edit_comment => :get,
+        :update_comment => :post,
+        :delete_comment => :post
       }
     end
   end

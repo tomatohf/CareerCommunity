@@ -80,3 +80,11 @@ function update_todo_done(todo_id, done) {
 		$("#update_todo_done_form").submit();
 	}
 }
+
+
+function delete_comment(comment_id) {
+	if(confirm("确定要删除这条评论么 ?")) {
+		$("#comment_id").val(comment_id);
+		$("#delete_comment_form").submit();
+	}
+}
