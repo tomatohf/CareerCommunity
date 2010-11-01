@@ -12,6 +12,35 @@ a {
 }
 
 
+.mini_pagination {
+	text-align: right;
+	padding: 0px;
+	margin: 0px;
+}
+.mini_pagination a, .mini_pagination span {
+	padding: 3px 3px 2px;
+}
+.mini_pagination span.disabled {
+	display: none;
+}
+.mini_pagination span.current {
+	font-weight: bold;
+	padding-left: 1px;
+	margin-left: 2px;
+	padding-right: 1px;
+	margin-right: 2px;
+	border-bottom: 2px solid #000000;
+}
+.mini_pagination a {
+	color: #000000;
+	text-decoration: none;
+}
+.mini_pagination a:hover, .mini_pagination a:focus {
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+
 .root_container {
 	margin: 0px auto;
 	width: 800px;

@@ -82,14 +82,14 @@ module ApplicationHelper
   def paging_buttons(collection, params = {})
     will_paginate(
       collection,
-      :previous_label => "« 上一页",
-      :next_label => "下一页 »",
+      :previous_label => params.delete(:previous_label) || "« 上一页",
+      :next_label => params.delete(:next_label) || "下一页 »",
       :param_name => :page, # parameter name for page number in URLs (default: :page)
       :page_links => true, # when false, only previous/next links are rendered (default: true) 
       # :separator => "", # string separator for page HTML elements (default: single space)
       # :inner_window => 4, # how many links are shown around the current page (default: 4)
       # :outer_window => 1, # how many links are around the first and the last page (default: 1)
-      :class => "pagination", # CSS class name for the generated DIV (default: "pagination")
+      :class => params.delete(:class) || "pagination", # CSS class name for the generated DIV (default: "pagination")
       :params => params # additional parameters when generating pagination links (eg. :controller => "foo", :action => nil)
     )
   end

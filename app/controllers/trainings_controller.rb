@@ -1,5 +1,7 @@
 class TrainingsController < ApplicationController
   
+  Recent_Projects_Group = 36
+  
   def index
     
   end
@@ -26,7 +28,19 @@ class TrainingsController < ApplicationController
   
   
   def recent
+    @page = params[:page].to_i
+    @page = 1 unless @page > 0
+    @posts = GroupPost.paginate(
+      :page => @page,
+      :per_page => 10,
+      :select => "id, created_at, group_id, title, responded_at",
+      :conditions => ["group_id = ?", Recent_Projects_Group],
+      :order => "responded_at DESC"
+    )
+    return jump_to(%Q!/trainings/#{@page > 1 ? "recent" : "cases"}!) unless @posts.size > 0
     
+    @post = GroupPost.get_post(params[:id].blank? ? @posts.first.id : params[:id])
+    return jump_to("/trainings") unless @post.group_id == Recent_Projects_Group
   end
   
   

@@ -5,152 +5,40 @@
 	<a href="/trainings/recent">近期项目</a>
 </div>
 
-<div class="slide_title">
-	近期培训项目
-</div>
-
-<table border="0" cellspacing="0" cellpadding="0" class="recent_grid">
+<table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
 	<tr>
-		<th rowspan="2" class="grey" style="width: 60px;">公司</th>
-		<td style="width: 110px;"><img src="/images/trainings/recent/chongbang.png" border="0" /></td>
-		<td class="grey" style="width: 110px;"><img src="/images/trainings/recent/yili.png" border="0" /></td>
-		<td><img src="/images/trainings/recent/expo.png" border="0" /></td>
-		<td class="grey" style="width: 110px;"><img src="/images/trainings/recent/pudong.png" border="0" /></td>
-		<td style="width: 110px;"><img src="/images/trainings/recent/sanyuan.png" border="0" /></td>
-		<td class="grey" style="width: 115px;"><img src="/images/trainings/recent/tiyan.png" border="0" /></td>
-	</tr>
-	<tr>
-		<td>崇邦医疗器械</td>
-		<td class="grey">伊利集团</td>
-		<td>世博志愿者培训</td>
-		<td class="grey">浦东团委</td>
-		<td>上海第三人民医院</td>
-		<td class="grey">世博志愿者体验营</td>
-	</tr>
-	<tr>
-		<td style="height: 5px;"></td>
-		<td class="grey"></td>
-		<td></td>
-		<td class="grey"></td>
-		<td></td>
-		<td class="grey"></td>
-		<td></td>
-	</tr>
-	<tr>
-		<th class="grey">培训类别</th>
-		<th>
-			销售培训<br />
-			&lt;大客户销售&gt;
-		</th>
-		<th class="grey">
-			销售培训<br />
-			&lt;门店销售&gt;
-		</th>
-		<th>
-			管理沟通<br />
-			&lt;沟通技巧&gt;
-		</th>
-		<th class="grey">
-			管理沟通<br />
-			&lt;基层干部&gt;
-		</th>
-		<th>
-			拓展训练<br />
-			&lt;团队建设&gt;
-		</th>
-		<th class="grey">
-			体验式培训
-		</th>
-	</tr>
-	<tr>
-		<th class="grey" style="height: 25px;"></th>
-		<td></td>
-		<td class="grey"></td>
-		<td></td>
-		<td class="grey"></td>
-		<td></td>
-		<td class="grey"></td>
-	</tr>
-	<tr>
-		<th class="grey">培训内容</th>
-		<td>
-			《专业拜访技巧》<br />
-			《群体销售技巧》<br />
-			《初级销售谈判》
+		<td valign="top">
+			<div class="left_menus" style="width: 180px;">
+				<% @posts.each do |post| %>
+					<%=
+						link_to(
+							h(post.title),
+							{:id => post.id, :page => @page},
+							:class => (post.id == @post.id) ? "selected" : ""
+						)
+					%>
+				<% end %>
+			</div>
+			
+			<div style="margin-top: 20px;">
+				<%=
+					paging_buttons(
+						@posts, :class => "mini_pagination",
+						:previous_label => "«", :next_label => "»"
+					)
+				%>
+			</div>
 		</td>
-		<td class="grey">
-			《门店销售技巧》<br />
-			《门店应急处置》<br />
-			《有效沟通技巧》<br />
-			《门店礼仪形象》<br />
-			《零售商务英语》<br />
-			《消防急救知识》
+		
+		
+		<td valign="top" style="width: 620px; padding-left: 20px;">
+			<div class="slide_title">
+				<%= h(@post.title) %>
+			</div>
+			
+			<div class="tinymce_content">
+				<%= sanitize_tinymce(@post.content) %>
+			</div>
 		</td>
-		<td>
-			《沟通与接待》<br />
-			包括课程研发，“心缘世博”种子培训师选拔活动，培训师备课组织，及实施培训
-		</td>
-		<td class="grey">
-			《结构化思维》<br />
-			《演讲训练》<br />
-			《项目管理》<br />
-			《压力管理》<br />
-			《媒体接待》<br />
-			《模拟竞聘》
-		</td>
-		<td>
-			《松树和松鼠》<br />
-			《草裙舞》<br />
-			《偷天陷阱》<br />
-			《孤岛求生》
-		</td>
-		<td class="grey">
-			《特殊人群服务》<br />
-			《突发事件处理》<br />
-			《跨文化交流》<br />
-			《投诉争执》<br />
-			《岗位知识》<br />
-			《媒体沟通》
-		</td>
-	</tr>
-	<tr>
-		<th class="grey" style="height: 15px;"></th>
-		<td></td>
-		<td class="grey"></td>
-		<td></td>
-		<td class="grey"></td>
-		<td></td>
-		<td class="grey"></td>
-	</tr>
-	<tr>
-		<th class="grey">时间/人数</th>
-		<td>
-			连续2天；20人销售团队培训
-		</td>
-		<td class="grey">
-			累计6天；75人，圆桌式培训
-		</td>
-		<td>
-			每周周末，连续6周；累计培训4000名管理岗位志愿者
-		</td>
-		<td class="grey">
-			连续3天
-			封闭式培训；30人
-		</td>
-		<td>
-			半天；40人
-		</td>
-		<td class="grey">
-			4场，每场半天；每场240人，累计千人参与体验
-		</td>
-	</tr>
-	<tr>
-		<th class="grey">效果反馈</th>
-		<td><img src="/images/trainings/recent/chongbang_feedback.png" border="0" /></td>
-		<td class="grey"><img src="/images/trainings/recent/yili_feedback.png" border="0" /></td>
-		<td><img src="/images/trainings/recent/expo_feedback.png" border="0" /></td>
-		<td class="grey"><img src="/images/trainings/recent/pudong_feedback.png" border="0" /></td>
-		<td></td>
-		<td class="grey"></td>
 	</tr>
 </table>
