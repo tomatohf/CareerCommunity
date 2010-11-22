@@ -111,7 +111,7 @@ module ApplicationHelper
     sanitize(
       html,
       :tags => ActionView::Base.sanitized_allowed_tags + %w(table th tr td embed),
-      :attributes => ActionView::Base.sanitized_allowed_attributes + %w(style src href border title bgcolor type allowfullscreen rowspan colspan align valign target)
+      :attributes => ActionView::Base.sanitized_allowed_attributes + %w(style src href border title bgcolor type allowfullscreen rowspan colspan cellpadding cellspacing align valign target)
     )
   end
   
