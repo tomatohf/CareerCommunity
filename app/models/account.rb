@@ -163,7 +163,11 @@ class Account < ActiveRecord::Base
   end
   
   def deliver_register_confirmation
-    Postman.deliver_register_confirmation(self)
+    begin
+      Postman.deliver_register_confirmation(self)
+    rescue
+      # do nothing ...
+    end
   end
   
   def deliver_password_remind
