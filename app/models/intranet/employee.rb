@@ -19,6 +19,7 @@ module Intranet
         {:id => 130, :name => "陆圆", :account_id => 7317, :manager => false, :email => "luyuan@900103"}
         # {:id => 140, :name => "方旭东", :account_id => , :manager => false, :email => "fangxudong@0874018"},
         # {:id => 150, :name => "沙宏刚", :account_id => , :manager => false, :email => "shahonggang@xiaosha"},
+        # {:id => 160, :name => "刘玥佩", :account_id => , :manager => false, :email => "liuyuepei@04211123"},
       ]
     end
   
