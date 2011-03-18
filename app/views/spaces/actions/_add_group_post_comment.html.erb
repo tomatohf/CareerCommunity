@@ -3,9 +3,10 @@
 		<td>
 			<a href="/spaces/show/<%= operator[2] %>" class="account_nick_link">
 				<%= h(operator[0]) %></a>
-			回应
+			回应了
 			<a href="/group/posts/<%= group_post_id %>">
 				圈子话题</a>
+			<% if false %>
 			说:
 			&nbsp;
 			<% 
@@ -18,6 +19,7 @@
 					<%= comment_content %>
 				<img src="/images/right_quote.gif" border="0" />
 			</span>
+			<% end %>
 		</td>
 		
 		<% unless save_space %>
