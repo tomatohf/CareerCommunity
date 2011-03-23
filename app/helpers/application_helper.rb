@@ -159,8 +159,10 @@ module ApplicationHelper
   def info_editor?(account_id)
     # 1005 - job info editor account
     # 1004 - 鲁路修
+    # 7114 -　汪刘益
+    # 7562 - 朱岚
     
-    general_admin?(account_id) || [1004, 1005].include?(account_id)
+    general_admin?(account_id) || [1004, 1005, 7114, 7562].include?(account_id)
   end
   
   def teacher?(account_id)
