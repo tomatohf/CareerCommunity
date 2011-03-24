@@ -68,7 +68,7 @@ class JobTarget < ActiveRecord::Base
   
   
   def get_info
-    ((self.info && self.info != "") && eval(self.info)) || {}
+    (eval(self.info || "") || {}) rescue {}
   end
   
   def fill_info(hash_info)

@@ -16,7 +16,7 @@ class CareerTestResult < ActiveRecord::Base
   
   
   def get_answer
-    ((self.answer && self.answer != "") && eval(self.answer)) || {}
+    (eval(self.answer || "") || {}) rescue {}
   end
   
   def fill_answer(hash_answer)

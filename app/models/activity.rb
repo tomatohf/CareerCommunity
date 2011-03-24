@@ -211,7 +211,7 @@ class Activity < ActiveRecord::Base
   
   
   def get_setting
-    ((self.setting && self.setting != "") && eval(self.setting)) || {}
+    (eval(self.setting || "") || {}) rescue {}
   end
   
   def fill_setting(hash_setting)
