@@ -163,8 +163,9 @@ module ApplicationHelper
     # 7562 - 朱岚
     # 6887 -　陆洁扬
     # 7560 - 夏迪
+    # 7317 - 陆园
     
-    general_admin?(account_id) || [1004, 1005, 7114, 7562, 6887, 7560].include?(account_id)
+    general_admin?(account_id) || [1004, 1005, 7114, 7562, 6887, 7560, 7317].include?(account_id)
   end
   
   def teacher?(account_id)
