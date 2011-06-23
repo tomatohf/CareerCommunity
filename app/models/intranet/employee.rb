@@ -27,7 +27,7 @@ module Intranet
         {:id => 220, :name => "裔传洁", :account_id => 7960, :manager => false, :email => "yichuanjie@7758258"},
         # {:id => 230, :name => "陈颖川", :account_id => , :manager => false, :email => "chenyingchuan@chuan1314"},
         # {:id => 240, :name => "严晓丹", :account_id => , :manager => false, :email => "yanxiaodan@2wsx3edc"},
-        {:id => 250, :name => "杜肖锋", :account_id => 7962, :manager => false, :email => "duxiaofeng@592617331"},
+        # {:id => 250, :name => "杜肖锋", :account_id => 7962, :manager => false, :email => "duxiaofeng@592617331"},
         # {:id => 260, :name => "杨汝宸", :account_id => 7961, :manager => false, :email => "yangruchen@yangruchen"},
         # {:id => 270, :name => "李慧", :account_id => , :manager => false, :email => "lihui@sz13807981240"},
         
