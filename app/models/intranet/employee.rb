@@ -31,6 +31,9 @@ module Intranet
         # {:id => 260, :name => "杨汝宸", :account_id => 7961, :manager => false, :email => "yangruchen@yangruchen"},
         # {:id => 270, :name => "李慧", :account_id => , :manager => false, :email => "lihui@sz13807981240"},
         # {:id => 280, :name => "赵唯", :account_id => , :manager => false, :email => "zhaowei@zha0wei"},
+        # {:id => 290, :name => "陈惟琪", :account_id => , :manager => false, :email => "chenweiqi@chenweiqi"},
+        # {:id => 300, :name => "曹世铭", :account_id => , :manager => false, :email => "caoshiming@caoshiming"},
+        # {:id => 310, :name => "沈斌", :account_id => , :manager => false, :email => "shenbin@shenbin"},
         
         {:id => 10, :name => "何帆", :account_id => 1001, :manager => true, :email => "hefan@"}
       ]
