@@ -65,12 +65,12 @@ class ActivityPost < ActiveRecord::Base
   named_scope :good, :conditions => { :good => true }
   
   
-  CKP_group_post = :group_post
+  CKP_activity_post = :activity_post
   
   
   
   def self.get_post(post_id)
-    post = Cache.get("#{CKP_group_post}_#{post_id}".to_sym)
+    post = Cache.get("#{CKP_activity_post}_#{post_id}".to_sym)
     
     unless post
       post = self.find(post_id)
@@ -81,11 +81,11 @@ class ActivityPost < ActiveRecord::Base
   end
   
   def self.set_post_cache(post_id, post)
-    Cache.set("#{CKP_group_post}_#{post_id}".to_sym, post.clear_association, Cache_TTL)
+    Cache.set("#{CKP_activity_post}_#{post_id}".to_sym, post.clear_association, Cache_TTL)
   end
   
   def self.clear_post_cache(post_id)
-    Cache.delete("#{CKP_group_post}_#{post_id}".to_sym)
+    Cache.delete("#{CKP_activity_post}_#{post_id}".to_sym)
   end
   
   
