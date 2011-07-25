@@ -231,7 +231,7 @@ Denpendencies:
 	xmpp4r-simple (0.8.8)
 	SystemTimer (1.1)
 	erubis (2.6.2) (disabled currently ...)
-	json (1.1.6)
+	json (1.1.4)
 	eventmachine (0.12.6)
 	juggernaut (0.5.8)
 	RedCloth (4.2.2) (NB: The RedCloth gem name is CamelCase, not lowercase. If you mistakenly do a gem install redcloth, you’ll get ERROR: could not find redcloth locally or in a repository.)
