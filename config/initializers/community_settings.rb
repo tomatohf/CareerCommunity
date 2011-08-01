@@ -112,14 +112,48 @@ ActionMailer::Base.raise_delivery_errors = true
 #}
 
 # setting for localhost smtp
-ActionMailer::Base.smtp_settings = {  
-  #:address =>  "localhost",
-  :address =>  "qiaobutang.com",
+# ActionMailer::Base.smtp_settings = {
+#   #:address =>  "localhost",
+#   :address =>  "qiaobutang.com",
+#   :domain =>  "qiaobutang.com",
+#   :authentication => :plain,
+#   :user_name => "noreply@qiaobutang.com",
+#   :password => "***REMOVED***"
+# }
+
+# setting for QQ exmail smtp
+ActionMailer::Base.smtp_settings = {
+  :address =>  "smtp.exmail.qq.com",
   :domain =>  "qiaobutang.com",
   :authentication => :plain,
   :user_name => "noreply@qiaobutang.com",
   :password => "***REMOVED***"
 }
+
+# within Rails 2.3.3 a bug within the ActionMailer was introduced.
+# You can see the ticket over here Ticket #2340
+# It's resolved in 2-3-stable and master so it will be fixed in 3.x and 2.3.6.
+# For fixing the problem within 2.3.* you can use the code provided within the ticket comments:
+module ActionMailer
+  class Base
+    def perform_delivery_smtp(mail)
+      destinations = mail.destinations
+      mail.ready_to_send
+      sender = (mail['return-path'] && mail['return-path'].spec) || Array(mail.from).first
+
+      smtp = Net::SMTP.new(smtp_settings[:address], smtp_settings[:port])
+      smtp.enable_starttls_auto if smtp_settings[:enable_starttls_auto] && smtp.respond_to?(:enable_starttls_auto)
+      smtp.start(
+        smtp_settings[:domain],
+        smtp_settings[:user_name],
+        smtp_settings[:password],
+        smtp_settings[:authentication]
+      ) do |smtp|
+        smtp.sendmail(mail.encoded, sender, destinations)
+      end
+    end
+  end
+end
 
 ##################################################
 ### END
