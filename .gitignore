@@ -1,0 +1,24 @@
+.DS_Store
+
+# exclude log files
+/log/*
+
+# exclude tmp files
+# include empty directories under tmp
+/tmp/cache/*
+/tmp/pids/*
+/tmp/sessions/*
+/tmp/sockets/*
+
+# exclude uploaded files
+/public/system
+/public/system/files
+/files
+
+# exclude sphinx configure files
+# since they can and will be generated
+/config/*.sphinx.conf
+
+# exclude sphinx index files and dict file
+/db/sphinx
+/db/sphinx/*
