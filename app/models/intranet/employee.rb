@@ -14,7 +14,7 @@ module Intranet
         # {:id => 100, :name => "陆洁扬", :account_id => 6887, :manager => false, :email => "lujieyang@lujieyang1103"},
         
         # {:id => 110, :name => "汪刘益", :account_id => 7114, :manager => false, :email => "wangliuyi@609234989"},
-        {:id => 120, :name => "刘鹤鸣", :account_id => 7292, :manager => false, :email => "liuheming@raulgood"},
+        # {:id => 120, :name => "刘鹤鸣", :account_id => 7292, :manager => false, :email => "liuheming@raulgood"},
         {:id => 130, :name => "陆圆", :account_id => 7317, :manager => false, :email => "luyuan@900103"},
         # {:id => 140, :name => "方旭东", :account_id => , :manager => false, :email => "fangxudong@0874018"},
         # {:id => 150, :name => "沙宏刚", :account_id => , :manager => false, :email => "shahonggang@xiaosha"},
