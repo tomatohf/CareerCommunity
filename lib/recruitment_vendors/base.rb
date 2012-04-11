@@ -9,7 +9,7 @@ module RecruitmentVendor
     "hiall" => "Hiall",
     # "guolairen" => "Guolairen",
     # "yingjiesheng" => "Yingjiesheng",
-    "maiwo" => "Maiwo"
+    # "maiwo" => "Maiwo"
   }
   
   
