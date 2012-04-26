@@ -16,7 +16,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 Using_Libmemcached = true
 
 Cache_Store_Name, MemCache_Options = if Using_Libmemcached
-[
+  [
     :libmemcached_store,
     {
       :prefix_key => "community:",
