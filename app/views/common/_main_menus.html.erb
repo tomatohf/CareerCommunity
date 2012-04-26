@@ -14,12 +14,13 @@
 
 						<%
 							menus = [
-								["/index", "首页"],
-								["/methodology", "乔布哲学"],
-								["/coach", "乔布教练"],
-								#["/seekjob", "死磕乔布"],
-								["/talks", "周三访谈录"],
-								["/community", "乔布圈"]
+								["/index", "首页", false],
+								["/methodology", "乔布哲学", false],
+								# ["/coach", "乔布教练", false],
+								# ["/seekjob", "死磕乔布", false],
+								["http://cv.qiaobutang.com", "乔布简历", true],
+								["/talks", "周三访谈录", true],
+								["/community", "乔布圈", true]
 							]
 						%>
 						<% menus.each_index do |i| %>
@@ -33,7 +34,7 @@
 									onmouseover="this.className='menu_selected'"
 									onmouseout="this.className=''"
 									<% end %>
-									<% if (menu[0] == "/community") || (menu[0] == "/talks") %>
+									<% if menu[2] %>
 									target="_blank"
 									<% end %>
 									>
