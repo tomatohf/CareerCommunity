@@ -1,19 +1,19 @@
 class AddTalksOrderWeight < ActiveRecord::Migration
   def self.up
 
-    add_column :talk_question_categories, :order_weight, :integer, :limit => 15
+    add_column :talk_question_categories, :order_weight, :integer, :limit => 2
 
     remove_index :talk_question_categories, :talk_id
     add_index :talk_question_categories, [:talk_id, :order_weight]
     
     
-    add_column :talk_questions, :order_weight, :integer, :limit => 15
+    add_column :talk_questions, :order_weight, :integer, :limit => 2
     
     remove_index :talk_questions, :talk_id
     add_index :talk_questions, [:talk_id, :order_weight]
     
     
-    add_column :talk_answers, :order_weight, :integer, :limit => 15
+    add_column :talk_answers, :order_weight, :integer, :limit => 2
     
     remove_index :talk_answers, :question_id
     add_index :talk_answers, [:question_id, :order_weight]

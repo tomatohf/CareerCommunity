@@ -220,7 +220,7 @@ ActiveRecord::Schema.define(:version => 71) do
     t.text     "content"
     t.datetime "publish_time"
     t.string   "location"
-    t.integer  "recruitment_type", :limit => 2
+    t.integer  "recruitment_type", :limit => 1
     t.string   "source_name"
     t.string   "source_link"
     t.boolean  "active"
@@ -463,7 +463,7 @@ ActiveRecord::Schema.define(:version => 71) do
   create_table "education_profiles", :force => true do |t|
     t.integer  "account_id"
     t.datetime "updated_at"
-    t.integer  "education_id", :limit => 2
+    t.integer  "education_id", :limit => 1
     t.integer  "enter_year",   :limit => 2
     t.string   "edu_name"
     t.string   "major"
@@ -762,10 +762,10 @@ ActiveRecord::Schema.define(:version => 71) do
     t.integer  "master_id"
     t.string   "name"
     t.string   "desc",       :limit => 1000
+    t.string   "custom_key"
     t.text     "setting"
     t.boolean  "delta"
     t.boolean  "dismissed",                  :default => false
-    t.string   "custom_key"
   end
 
   add_index "groups", ["created_at"], :name => "index_groups_on_created_at"
@@ -927,9 +927,9 @@ ActiveRecord::Schema.define(:version => 71) do
   create_table "job_profiles", :force => true do |t|
     t.integer  "account_id"
     t.datetime "updated_at"
-    t.integer  "profession_id",  :limit => 2
+    t.integer  "profession_id",  :limit => 1
     t.integer  "enter_year",     :limit => 2
-    t.integer  "enter_month",    :limit => 2
+    t.integer  "enter_month",    :limit => 1
     t.string   "job_name"
     t.string   "dept"
     t.string   "position_title"
@@ -955,7 +955,7 @@ ActiveRecord::Schema.define(:version => 71) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "account_id"
-    t.integer  "point",          :limit => 2
+    t.integer  "point",          :limit => 1
     t.string   "content",        :limit => 1000
     t.boolean  "delta"
   end
@@ -1131,7 +1131,7 @@ ActiveRecord::Schema.define(:version => 71) do
     t.text     "content"
     t.datetime "publish_time"
     t.string   "location"
-    t.integer  "recruitment_type", :limit => 2
+    t.integer  "recruitment_type", :limit => 1
     t.string   "source_name"
     t.string   "source_link"
     t.boolean  "active",                        :default => true
