@@ -1,4 +1,10 @@
 class TrainingsController < ApplicationController
+
+  before_filter :disable
+  def disable
+    jump_to("/")
+  end
+
   
   Recent_Projects_Group = 36
   
