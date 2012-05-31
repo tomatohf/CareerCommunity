@@ -1,4 +1,10 @@
 class SeekjobController < ApplicationController
+
+  before_filter :disable
+  def disable
+    jump_to("/")
+  end
+  
   
   def index
     jump_to("/seekjob/pharmaceutical")
