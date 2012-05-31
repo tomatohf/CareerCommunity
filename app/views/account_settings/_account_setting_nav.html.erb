@@ -3,17 +3,6 @@
 </div>
 
 
-<% if general_admin?(session[:account_id]) %>
-	<div class="community_block">
-		<a href="/coach/course_applications?closed_filter=unclosed">
-			浏览 报名课程/咨询详情 申请表</a>
-	</div>
-	
-	<div class="community_block_narrow">
-		<%= thin_hr %>
-	</div>
-<% end %>
-
 <% if employee = Intranet::Employee.find_by(:account_id, session[:account_id]) %>
 	<div class="community_block">
 		<a href="/intranet/employees/<%= session[:account_id] %>/sales_opportunities">

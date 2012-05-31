@@ -65,6 +65,13 @@
 								<img src="/images/coach/subjects/pharmaceutical.jpg" border="0" /></a>
 						</div>
 					</div>
+
+					<% if general_admin?(session[:account_id]) %>
+						<div class="subjects_container">
+							<a href="/coach/course_applications?closed_filter=unclosed">
+								浏览 课程/咨询 申请表</a>
+						</div>
+					<% end %>
 					
 				</div>
 				

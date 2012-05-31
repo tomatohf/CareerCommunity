@@ -1,4 +1,10 @@
 class CoachController < ApplicationController
+
+  before_filter :disable
+  def disable
+    jump_to("/")
+  end
+  
   
   def index
     

@@ -75,7 +75,7 @@
 					
 					<%
 						subjects = [
-							["/coach/pharmaceutical", "医药专题"]
+							# ["/coach/pharmaceutical", "医药专题"]
 						]
 					%>
 					<% subjects.each do |subject| %>
@@ -184,9 +184,11 @@
 						<div>
 							2. 在线报名：
 							<div style="text-indent: 25px;">
+								<% if false %>
 								点击：
 								<a href="/coach/course_apply" target="_blank">
 									我要报名 / 咨询详情</a>
+								<% end %>
 								乔布堂工作人员会尽快与你取得联系。
 							</div>
 						</div>
