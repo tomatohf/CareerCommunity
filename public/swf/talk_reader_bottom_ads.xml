@@ -1,44 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ads>
 	<ad>
-		<label>快消? 金融? IT? 还是咨询? 马上投票, 你来决定访谈谁 !</label>
-		<link>http://www.qiaobutang.com/votes/1016</link>
-		<icon>http://www.qiaobutang.com/images/index/vote_icon.png</icon>
-	</ad>
-	
-	<ad>
-		<label>改变你 ! 成就你 ! 乔布堂销售实习生计划 !</label>
-		<link>http://stp.qiaobutang.com</link>
-		<icon></icon>
-	</ad>
-	
-	<ad>
-		<label>评周三访谈录, 获免费求职培训 !</label>
-		<link>http://www.qiaobutang.com/group/posts/259</link>
-		<icon>http://www.qiaobutang.com/images/index/calendar_icon.gif</icon>
-	</ad>
-	
-	<ad>
-		<label>海量最新校园招聘信息, 兼职实习信息, 宣讲会信息, 招聘会信息.</label>
-		<link>http://www.qiaobutang.com/recruitments</link>
-		<icon>http://www.qiaobutang.com/images/index/recruitment_icon.png</icon>
-	</ad>
-	
-	<ad>
-		<label>校园求职面经大全.</label>
-		<link>http://www.qiaobutang.com/exps</link>
-		<icon>http://www.qiaobutang.com/images/index/exp_icon.gif</icon>
-	</ad>
-	
-	<ad>
-		<label>求职管家, 管理求职目标, 优化求职效率, 提高求职成功率.</label>
-		<link>http://www.qiaobutang.com/job_targets</link>
+		<label>乔布简历 - 更快地制作一份更专业的简历</label>
+		<link>http://cv.qiaobutang.com</link>
 		<icon>http://www.qiaobutang.com/images/index/job_targets_icon.png</icon>
 	</ad>
-	
+
 	<ad>
-		<label>求职服务导航, 实用求职相关网址, 网友点评评分, 各类求职服务一网打尽.</label>
-		<link>http://www.qiaobutang.com/job_services</link>
-		<icon>http://www.qiaobutang.com/images/index/job_services_icon.gif</icon>
+		<label>轻松在线写简历 - 海量模板就在这里</label>
+		<link>http://cv.qiaobutang.com/template/list</link>
+		<icon>http://www.qiaobutang.com/images/index/exp_icon.gif</icon>
 	</ad>
 </ads>
