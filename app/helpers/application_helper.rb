@@ -151,21 +151,16 @@ module ApplicationHelper
   def general_admin?(account_id)
     # 1002 - MaXiao
     # 1019 - Kai
-    # 1422 - GuYan
     
-    superadmin?(account_id) || [1002, 1019, 1422].include?(account_id)
+    superadmin?(account_id) || [1002, 1019].include?(account_id)
   end
   
   def info_editor?(account_id)
     # 1005 - job info editor account
     # 1004 - 鲁路修
-    # 7114 -　汪刘益
-    # 7562 - 朱岚
-    # 6887 -　陆洁扬
-    # 7560 - 夏迪
     # 7317 - 陆园
     
-    general_admin?(account_id) || [1004, 1005, 7114, 7562, 6887, 7560, 7317].include?(account_id)
+    general_admin?(account_id) || [1004, 1005, 7317].include?(account_id)
   end
   
   def teacher?(account_id)
