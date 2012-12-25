@@ -125,15 +125,18 @@ module RecruitmentVendor
       job_detail.search("/p/span").each do |span|
         chars = span.inner_html.strip.split("")
         r.location = chars[5..-1].join if chars[0, 4].join == "工作地区"
-        r.publish_time = DateTime.parse(chars[5..-1].join) if chars[0, 4].join == "发布时间"
+        r.publish_time = DateTime.parse(chars[5..-1].join) if chars[0, 4].join == "更新时间"
       end
       r.publish_time ||= DateTime.now
       
-      job_detail.search("/h1").remove
-      job_detail.search("/p").remove
-      job_detail.search("/div[@class]").remove
-      job_detail.search("/div[@style]").remove
-      r.content = job_detail.at("div").inner_html.strip
+      # job_detail.search("/h1").remove
+      # job_detail.search("/p").remove
+      # job_detail.search("/div[@class]").remove
+      # job_detail.search("/div[@style]").remove
+      # r.content = job_detail.at("div").inner_html.strip
+      box = doc.search("//div[@class=box]")
+      return nil unless box.size > 0
+      r.content = box[0].inner_html.strip
       return nil if r.content.blank?
       
       # add the fixed attributes
