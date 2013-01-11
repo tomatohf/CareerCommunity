@@ -34,6 +34,7 @@ module Intranet
         # {:id => 290, :name => "陈惟琪", :account_id => , :manager => false, :email => "chenweiqi@chenweiqi"},
         # {:id => 300, :name => "曹世铭", :account_id => , :manager => false, :email => "caoshiming@caoshiming"},
         # {:id => 310, :name => "沈斌", :account_id => , :manager => false, :email => "shenbin@shenbin"},
+        {:id => 320, :name => "rebecca", :account_id => 12306, :manager => false, :email => "rebecca@"},
         
         {:id => 10, :name => "何帆", :account_id => 1001, :manager => true, :email => "hefan@"}
       ]
