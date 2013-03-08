@@ -230,6 +230,7 @@ div.auto_complete ul li {
 
 #top_bar_left, #top_bar_right {
 	word-spacing: 5px;
+	white-space: nowrap;
 }
 
 #top_bar_right {
