@@ -1,5 +1,5 @@
 set :application, "CareerCommunity"
-set :repository,  "ssh://tomato@qiaobutang.com/~/projects/repo/CareerCommunity.git"
+set :repository,  "ssh://tomato@sh.qiaobutang.com/~/repo/CareerCommunity.git"
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
